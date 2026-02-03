@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="hi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Admission Form | पुलिस मॉडर्न स्कूल</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Tiro+Devanagari+Hindi&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/main.css">
+
+    <style>
+        body {
+            font-family: 'Tiro Devanagari Hindi', serif;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50">
+
+    <!-- Header -->
+    <header class="bg-blue-900 text-white py-6 shadow-lg">
+        <div class="container mx-auto px-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="text-2xl font-bold">ऑनलाइन प्रवेश फॉर्म</h1>
+                    <p class="text-blue-200 text-sm">पुलिस मॉडर्न स्कूल, रायबरेली</p>
+                </div>
+                <a href="../index.html" class="bg-white text-blue-900 px-4 py-2 rounded-lg hover:bg-gray-100">
+                    <i class="fas fa-home mr-2"></i>होम
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <div class="container mx-auto px-6 py-12">
+        <!-- Progress Bar -->
+        <div class="progress-bar mb-12">
+            <div class="progress-step active">
+                <div class="progress-step-circle">1</div>
+                <p class="mt-2 text-sm font-semibold hidden md:block">छात्र विवरण</p>
+            </div>
+            <div class="progress-step">
+                <div class="progress-step-circle">2</div>
+                <p class="mt-2 text-sm font-semibold hidden md:block">अभिभावक विवरण</p>
+            </div>
+            <div class="progress-step">
+                <div class="progress-step-circle">3</div>
+                <p class="mt-2 text-sm font-semibold hidden md:block">पिछली शिक्षा</p>
+            </div>
+            <div class="progress-step">
+                <div class="progress-step-circle">4</div>
+                <p class="mt-2 text-sm font-semibold hidden md:block">दस्तावेज़</p>
+            </div>
+            <div class="progress-step">
+                <div class="progress-step-circle">5</div>
+                <p class="mt-2 text-sm font-semibold hidden md:block">समीक्षा</p>
+            </div>
+        </div>
+
+        <!-- Form -->
+        <form id="admission-form" data-autosave class="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl p-8">
+
+            <!-- Step 1: Student Details -->
+            <div class="form-step active">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">छात्र का विवरण</h2>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">छात्र का नाम (पूरा नाम) *</label>
+                        <input type="text" name="student_name" required
+                            class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-blue-900 focus:outline-none">
+                    </div>
+
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">जन्म तिथि *</label>
+                        <input type="date" name="dob" required
+                            class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-blue-900 focus:outline-none">
+                    </div>
+
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">लिंग *</label>
+                        <select name="gender" required
+                            class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-blue-900 focus:outline-none">
+                            <option value="">चुनें</option>
+                            <option value="male">बालक</option>
+                            <option value="female">बालिका</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">प्रवेश के लिए कक्षा *</label>
+                        <select name="class" required
+                            class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-blue-900 focus:outline-none">
+                            <option value="">चुनें</option>
+                            <option value="pre-nursery">Pre-Nursery</option>
+                            <option value="nursery">Nursery</option>
+                            <option value="lkg">LKG</option>
+                            <option value="ukg">UKG</option>
+                            <option value="1">कक्षा 1</option>
+                            <option value="2">कक्षा 2</option>
+                            <option value="3">कक्षा 3</option>
+                            <option value="4">कक्षा 4</option>
+                            <option value="5">कक्षा 5</option>
+                        </select>
+                    </div>
+
+                    <div class="md:col-span-2">
+                        <label class="block text-gray-700 font-semibold mb-2">आधार नंबर *</label>
+                        <input type="text" name="aadhar" pattern="[0-9]{12}" maxlength="12" required
+                            placeholder="12 अंकों का आधार नंबर"
+                            class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-blue-900 focus:outline-none">
+                    </div>
+                </div>
+
+                <div class="mt-8 flex justify-end">
+                    <button type="button" onclick="nextStep()"
+                        class="bg-blue-900 text-white px-8 py-3 rounded-lg font-bold hover:bg-blue-800">
+                        अगला <i class="fas fa-arrow-right ml-2"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 2: Parent Details -->
+            <div class="form-step">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">अभिभावक का विवरण</h2>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">पिता का नाम *</label>
+                        <input type="text" name="father_name" required
+                            class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-blue-900 focus:outline-none">
+                    </div>
+
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">माता का नाम *</label>
+                        <input type="text" name="mother_name" required
+                            class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-blue-900 focus:outline-none">
+                    </div>
+
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">मोबाइल नंबर *</label>
+                        <input type="tel" name="mobile" pattern="[0-9]{10}" maxlength="10" required
+                            placeholder="10 अंकों का मोबाइल नंबर"
+                            class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-blue-900 focus:outline-none">
+                    </div>
+
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">ईमेल</label>
+                        <input type="email" name="email"
+                            class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-blue-900 focus:outline-none">
+                    </div>
+
+                    <div class="md:col-span-2">
+                        <label class="block text-gray-700 font-semibold mb-2">पता *</label>
+                        <textarea name="address" rows="3" required
+                            class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-blue-900 focus:outline-none"></textarea>
+                    </div>
+                </div>
+
+                <div class="mt-8 flex justify-between">
+                    <button type="button" onclick="prevStep()"
+                        class="bg-gray-300 text-gray-700 px-8 py-3 rounded-lg font-bold hover:bg-gray-400">
+                        <i class="fas fa-arrow-left mr-2"></i>पिछला
+                    </button>
+                    <button type="button" onclick="nextStep()"
+                        class="bg-blue-900 text-white px-8 py-3 rounded-lg font-bold hover:bg-blue-800">
+                        अगला <i class="fas fa-arrow-right ml-2"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 3: Previous Education -->
+            <div class="form-step">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">पिछली शिक्षा का विवरण</h2>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="md:col-span-2">
+                        <label class="block text-gray-700 font-semibold mb-2">पिछले स्कूल का नाम</label>
+                        <input type="text" name="previous_school"
+                            class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-blue-900 focus:outline-none">
+                    </div>
+
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">पिछली कक्षा</label>
+                        <input type="text" name="previous_class"
+                            class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-blue-900 focus:outline-none">
+                    </div>
+
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">प्राप्तांक (%)</label>
+                        <input type="number" name="previous_marks" min="0" max="100"
+                            class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-blue-900 focus:outline-none">
+                    </div>
+                </div>
+
+                <div class="mt-8 flex justify-between">
+                    <button type="button" onclick="prevStep()"
+                        class="bg-gray-300 text-gray-700 px-8 py-3 rounded-lg font-bold hover:bg-gray-400">
+                        <i class="fas fa-arrow-left mr-2"></i>पिछला
+                    </button>
+                    <button type="button" onclick="nextStep()"
+                        class="bg-blue-900 text-white px-8 py-3 rounded-lg font-bold hover:bg-blue-800">
+                        अगला <i class="fas fa-arrow-right ml-2"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 4: Documents -->
+            <div class="form-step">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">आवश्यक दस्तावेज़</h2>
+
+                <div class="space-y-6">
+                    <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+                        <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-3"></i>
+                        <p class="text-gray-600 mb-2">जन्म प्रमाण पत्र (PDF/Image)</p>
+                        <input type="file" name="birth_certificate" accept=".pdf,.jpg,.jpeg,.png"
+                            class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-900 hover:file:bg-blue-100">
+                    </div>
+
+                    <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+                        <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-3"></i>
+                        <p class="text-gray-600 mb-2">आधार कार्ड (PDF/Image)</p>
+                        <input type="file" name="aadhar_card" accept=".pdf,.jpg,.jpeg,.png"
+                            class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-900 hover:file:bg-blue-100">
+                    </div>
+
+                    <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+                        <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-3"></i>
+                        <p class="text-gray-600 mb-2">पासपोर्ट साइज फोटो</p>
+                        <input type="file" name="photo" accept=".jpg,.jpeg,.png"
+                            class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-900 hover:file:bg-blue-100">
+                    </div>
+                </div>
+
+                <div class="mt-8 flex justify-between">
+                    <button type="button" onclick="prevStep()"
+                        class="bg-gray-300 text-gray-700 px-8 py-3 rounded-lg font-bold hover:bg-gray-400">
+                        <i class="fas fa-arrow-left mr-2"></i>पिछला
+                    </button>
+                    <button type="button" onclick="nextStep()"
+                        class="bg-blue-900 text-white px-8 py-3 rounded-lg font-bold hover:bg-blue-800">
+                        अगला <i class="fas fa-arrow-right ml-2"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 5: Review & Submit -->
+            <div class="form-step">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">समीक्षा और सबमिट करें</h2>
+
+                <div class="bg-blue-50 border-l-4 border-blue-900 p-6 mb-6">
+                    <p class="text-gray-700">
+                        <i class="fas fa-info-circle text-blue-900 mr-2"></i>
+                        कृपया सबमिट करने से पहले सभी जानकारी की जांच कर लें। सबमिट करने के बाद आपको एक पुष्टिकरण
+                        ईमेल/SMS प्राप्त होगा।
+                    </p>
+                </div>
+
+                <div id="review-content" class="space-y-4 mb-8">
+                    <!-- Review content will be populated by JavaScript -->
+                </div>
+
+                <div class="flex items-start mb-6">
+                    <input type="checkbox" id="terms" required class="mt-1 mr-3">
+                    <label for="terms" class="text-sm text-gray-600">
+                        मैं घोषणा करता/करती हूँ कि ऊपर दी गई सभी जानकारी सत्य है। मैं स्कूल के
+                        <a href="terms.html" class="text-blue-900 underline">नियम और शर्तें</a> स्वीकार करता/करती हूँ।
+                    </label>
+                </div>
+
+                <div class="mt-8 flex justify-between">
+                    <button type="button" onclick="prevStep()"
+                        class="bg-gray-300 text-gray-700 px-8 py-3 rounded-lg font-bold hover:bg-gray-400">
+                        <i class="fas fa-arrow-left mr-2"></i>पिछला
+                    </button>
+                    <button type="submit"
+                        class="bg-green-600 text-white px-8 py-3 rounded-lg font-bold hover:bg-green-700">
+                        <i class="fas fa-check mr-2"></i>सबमिट करें
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <script src="../assets/js/main.js"></script>
+    <script type="module" src="../assets/js/admission-form.js"></script>
+</body>
+
+</html>

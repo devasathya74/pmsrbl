@@ -1,0 +1,79 @@
+{
+  "name": "पुलिस मॉडर्न स्कूल, रायबरेली",
+  "short_name": "PMS Raebareli",
+  "description": "Police Modern School - Quality education from Pre-Nursery to Class 5 in a secure environment",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#1e3a8a",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "assets/images/logo/icon-72x72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/images/logo/icon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/images/logo/icon-128x128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/images/logo/icon-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/images/logo/icon-152x152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/images/logo/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/images/logo/icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/images/logo/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["education", "school"],
+  "lang": "hi",
+  "dir": "ltr",
+  "shortcuts": [
+    {
+      "name": "Admission Form",
+      "short_name": "Admission",
+      "description": "Apply for admission",
+      "url": "/pages/admission.html",
+      "icons": [{ "src": "assets/images/logo/icon-96x96.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Parent Login",
+      "short_name": "Login",
+      "description": "Access parent portal",
+      "url": "/pages/login.html",
+      "icons": [{ "src": "assets/images/logo/icon-96x96.png", "sizes": "96x96" }]
+    }
+  ]
+}

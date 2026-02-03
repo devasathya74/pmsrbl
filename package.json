@@ -1,0 +1,17 @@
+{
+  "name": "pms",
+  "version": "1.0.0",
+  "description": "This is a comprehensive, modern website for **Police Modern School, Raebareli** - a primary school (Pre-Nursery to Class 5) located within the 25th Battalion PAC campus.",
+  "main": "service-worker.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.1.18",
+    "tailwindcss": "^4.1.18"
+  }
+}

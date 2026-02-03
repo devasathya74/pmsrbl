@@ -294,7 +294,7 @@ For technical support or questions:
 - Phone: +91 98765 43210
 
 ## 🎉 Credits
-- Developed by: Antigravity AI
+- Developed by: Sathya Deva
 - Design: Modern, responsive, accessible
 - Framework: Tailwind CSS
 - Icons: Font Awesome

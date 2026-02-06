@@ -31,6 +31,9 @@
         content="Quality primary education from Pre-Nursery to Class 5 in a secure PAC campus environment.">
     <meta property="twitter:image" content="https://pmsraebareli.com/assets/images/logo/og-image.jpg">
 
+    <!-- Cache Busting - Auto refresh on first load -->
+    <script src="assets/js/cache-bust.js"></script>
+
     <!-- PWA Manifest -->
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#1e3a8a">
@@ -100,6 +103,9 @@
             background-color: var(--color-soft) !important;
         }
     </style>
+
+    <!-- Responsive CSS Framework -->
+    <link rel="stylesheet" href="/assets/css/responsive.css">
 
     <!-- Google Fonts with display=swap for better performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -330,7 +336,7 @@
 
     <!-- Hero Section -->
     <section id="home"
-        class="hero-bg min-h-screen flex items-center justify-center text-center px-4 pt-20 relative overflow-hidden">
+        class="hero-bg min-h-screen flex items-start justify-center text-center px-4 pt-32 md:pt-40 relative overflow-hidden">
         <!-- Floating Badge Icons - Alternating System -->
         <img src="/assets/images/admission-badge.png" id="hero-badge-right"
             class="absolute top-28 right-4 md:top-32 md:right-20 w-24 md:w-32 z-10 drop-shadow-2xl hover:scale-110 transition-transform cursor-pointer"
@@ -419,7 +425,7 @@
                     <ul class="space-y-4 mb-8">
                         <li class="flex items-start gap-3">
                             <i class="fas fa-check-circle text-secondary mt-1"></i>
-                            <span class="text-gray-700"><strong>कक्षाएं:</strong> प्री-नर्सरी से कक्षा 5 तक</span>
+                            <span class="text-gray-700"><strong>कक्षाएं:</strong> एलकेजी (LKG) से कक्षा 5 तक</span>
                         </li>
                         <li class="flex items-start gap-3">
                             <i class="fas fa-check-circle text-secondary mt-1"></i>
@@ -620,7 +626,7 @@
                             P</div>
                         <h3 class="text-2xl font-bold">प्री-प्राइमरी विंग</h3>
                     </div>
-                    <p class="mb-4 opacity-90">इसमें प्ले ग्रुप, नर्सरी, एलकेजी और यूकेजी शामिल हैं।</p>
+                    <p class="mb-4 opacity-90">इसमें एलकेजी (LKG) और यूकेजी (UKG) शामिल हैं।</p>
                     <ul class="space-y-2 text-sm">
                         <li class="flex items-center gap-2"><i class="fas fa-star text-secondary"></i> खेल-खेल में
                             शिक्षा (Play-way Method)</li>
@@ -1233,11 +1239,18 @@
     <script type="module">
         try {
             const { authHelper, firestoreHelper, analyticsHelper } = await import('/assets/js/firebase-config.js');
-            // Make helpers available globally for contact form and main.js
+
+            // Make firestoreHelper globally available for main.js
             window.firestoreHelper = firestoreHelper;
+
+            // Log page view
+            analyticsHelper.logPageView('home');
             window.analyticsHelper = analyticsHelper;
             window.authHelper = authHelper;
             console.log('Firebase loaded successfully');
+
+            // Dispatch event to notify that Firebase is ready
+            window.dispatchEvent(new CustomEvent('firebase-loaded'));
         } catch (error) {
             console.warn('Firebase failed to load:', error);
             // Page will still work without Firebase

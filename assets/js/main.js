@@ -737,36 +737,74 @@ async function loadNewsTicker() {
     const tickerContent = document.getElementById('news-ticker-content');
     if (!tickerContent) return;
 
-    // Check if firestoreHelper is available
-    if (typeof firestoreHelper === 'undefined') {
-        console.warn('Firestore helper not loaded for ticker');
-        return;
+    // 1. FAST PATH: Load from LocalStorage immediately for instant display
+    const cachedNotifications = localStorage.getItem('pms_notifications');
+    if (cachedNotifications) {
+        try {
+            const notifications = JSON.parse(cachedNotifications);
+            const activeNotifications = notifications.filter(n => n.status === 'active' || !n.status);
+
+            if (activeNotifications.length > 0) {
+                // Display cached content immediately
+                tickerContent.innerHTML = activeNotifications.map(notification =>
+                    `<span class="inline-block mx-8 text-blue-900 font-semibold">• ${notification.message || notification.text}</span>`
+                ).join('');
+                console.log('✅ Loaded notifications from cache (Instant)');
+            }
+        } catch (e) {
+            console.error('Cache parse error:', e);
+        }
     }
 
-    try {
-        const result = await firestoreHelper.getDocuments('notifications');
-
-        if (result.success && result.data.length > 0) {
-            // Filter active notifications if you implement active status later
-            const notifications = result.data.filter(n => n.active !== false);
-
-            if (notifications.length > 0) {
-                tickerContent.innerHTML = notifications.map(item => `
-                    <span class="news-item">
-                        <i class="fas ${item.icon || 'fa-bell'} text-yellow-300 mr-2"></i>
-                        ${item.message}
-                    </span>
-                `).join('');
-            }
+    // 2. SLOW PATH: Fetch fresh data when Firebase is ready
+    const fetchFreshData = async () => {
+        if (typeof firestoreHelper === 'undefined') {
+            // Wait for firebase-loaded event if helper not ready
+            window.addEventListener('firebase-loaded', async () => {
+                await fetchAndCacheNotifications();
+            }, { once: true });
+        } else {
+            await fetchAndCacheNotifications();
         }
-    } catch (error) {
-        console.error('Error loading news ticker:', error);
+    };
+
+    // Helper to fetch and update cache
+    const fetchAndCacheNotifications = async () => {
+        try {
+            const result = await firestoreHelper.getDocuments('notifications');
+            if (result.success && result.data.length > 0) {
+                // Update cache
+                localStorage.setItem('pms_notifications', JSON.stringify(result.data));
+
+                // Update UI with fresh data if different (optional, or just update silently for next reload)
+                const activeNotifications = result.data.filter(n => n.status === 'active' || !n.status);
+                if (activeNotifications.length > 0) {
+                    tickerContent.innerHTML = activeNotifications.map(notification =>
+                        `<span class="inline-block mx-8 text-blue-900 font-semibold">• ${notification.message || notification.text}</span>`
+                    ).join('');
+                    console.log('✅ Updated notifications from server');
+                }
+            }
+        } catch (error) {
+            console.warn('Failed to fetch fresh notifications:', error);
+        }
+    };
+
+    // Trigger background fetch
+    // Use requestIdleCallback if available to not block main thread
+    if ('requestIdleCallback' in window) {
+        requestIdleCallback(() => fetchFreshData());
+    } else {
+        setTimeout(fetchFreshData, 1000); // Wait a bit to let critical resources load
     }
 }
 
-// Initialize on page load
+// Initialize immediately (don't wait for DOMContentLoaded if script is deferred)
+loadNewsTicker();
+
+// Initialize others on load
 document.addEventListener('DOMContentLoaded', () => {
     initBlastEffect();
     initContactForm();
-    loadNewsTicker();
+    // Ticker already started
 });

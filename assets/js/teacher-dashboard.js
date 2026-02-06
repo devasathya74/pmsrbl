@@ -84,6 +84,13 @@ async function loadStudents(className) {
 
     if (result.success) {
         myStudents = result.data;
+        // Sort by Roll Number (Numeric)
+        myStudents.sort((a, b) => {
+            const r1 = parseInt(a.rollNumber) || 999999;
+            const r2 = parseInt(b.rollNumber) || 999999;
+            return r1 - r2;
+        });
+
         document.getElementById('stat-total-students').textContent = myStudents.length;
 
         // Render Students List
@@ -156,19 +163,43 @@ function renderAttendanceList(students) {
     container.innerHTML = students.map(student => `
         <div class="flex items-center justify-between p-3 border rounded-lg hover:shadow-sm bg-gray-50">
             <span class="font-medium text-gray-700">${student.studentName || student.name}</span>
-            <label class="relative inline-flex items-center cursor-pointer">
-                <input type="checkbox" value="${student.id}" class="sr-only peer attendance-checkbox" checked>
-                <div class="w-11 h-6 bg-red-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div>
-                <span class="ml-2 text-sm font-medium text-gray-600 peer-checked:text-green-600 status-text">Present</span>
-            </label>
+            <div class="flex gap-4">
+                <label class="flex items-center cursor-pointer">
+                    <input type="checkbox" value="${student.id}" class="attendance-present w-4 h-4 text-green-600 border-gray-300 rounded focus:ring-green-500" checked>
+                    <span class="ml-2 text-sm font-medium text-green-700">Present</span>
+                </label>
+                <label class="flex items-center cursor-pointer">
+                    <input type="checkbox" value="${student.id}" class="attendance-absent w-4 h-4 text-red-600 border-gray-300 rounded focus:ring-red-500">
+                    <span class="ml-2 text-sm font-medium text-red-700">Absent</span>
+                </label>
+            </div>
         </div>
     `).join('');
 
-    // Add listeners to toggle text
-    document.querySelectorAll('.attendance-checkbox').forEach(cb => {
-        cb.addEventListener('change', (e) => {
-            e.target.parentElement.querySelector('.status-text').textContent = e.target.checked ? 'Present' : 'Absent';
-            e.target.parentElement.querySelector('.status-text').classList.toggle('text-red-500', !e.target.checked);
+    // Add listeners to ensure only one checkbox is selected at a time (radio-like behavior)
+    document.querySelectorAll('.attendance-present, .attendance-absent').forEach(checkbox => {
+        checkbox.addEventListener('change', (e) => {
+            if (e.target.checked) {
+                const studentId = e.target.value;
+                const isPresent = e.target.classList.contains('attendance-present');
+
+                // Find the other checkbox for this student and uncheck it
+                const otherClass = isPresent ? 'attendance-absent' : 'attendance-present';
+                const otherCheckbox = document.querySelector(`.${otherClass}[value="${studentId}"]`);
+                if (otherCheckbox) {
+                    otherCheckbox.checked = false;
+                }
+            } else {
+                // Prevent unchecking - at least one must be selected
+                // If user tries to uncheck, check the other one
+                const studentId = e.target.value;
+                const isPresent = e.target.classList.contains('attendance-present');
+                const otherClass = isPresent ? 'attendance-absent' : 'attendance-present';
+                const otherCheckbox = document.querySelector(`.${otherClass}[value="${studentId}"]`);
+                if (otherCheckbox && !otherCheckbox.checked) {
+                    e.target.checked = true; // Keep current checked
+                }
+            }
         });
     });
 }
@@ -206,11 +237,20 @@ window.loadAttendanceHistory = async function () {
     if (result.success && result.data) {
         const records = result.data.records || {};
         // Update checkboxes based on history
-        document.querySelectorAll('.attendance-checkbox').forEach(cb => {
-            const status = records[cb.value];
-            cb.checked = status === 'present';
-            // Trigger change event to update text color
-            cb.dispatchEvent(new Event('change'));
+        Object.keys(records).forEach(studentId => {
+            const status = records[studentId];
+            const presentCheckbox = document.querySelector(`.attendance-present[value="${studentId}"]`);
+            const absentCheckbox = document.querySelector(`.attendance-absent[value="${studentId}"]`);
+
+            if (presentCheckbox && absentCheckbox) {
+                if (status === 'present') {
+                    presentCheckbox.checked = true;
+                    absentCheckbox.checked = false;
+                } else {
+                    presentCheckbox.checked = false;
+                    absentCheckbox.checked = true;
+                }
+            }
         });
         alert(`Loaded attendance for ${date}.`);
     } else {
@@ -227,9 +267,12 @@ window.saveAttendance = async function () {
     const records = {};
     let presentCount = 0;
 
-    document.querySelectorAll('.attendance-checkbox').forEach(cb => {
-        records[cb.value] = cb.checked ? 'present' : 'absent';
-        if (cb.checked) presentCount++;
+    // Collect attendance from present checkboxes
+    document.querySelectorAll('.attendance-present').forEach(checkbox => {
+        const studentId = checkbox.value;
+        const isPresent = checkbox.checked;
+        records[studentId] = isPresent ? 'present' : 'absent';
+        if (isPresent) presentCount++;
     });
 
     const attendanceData = {

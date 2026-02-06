@@ -16,13 +16,25 @@ self.addEventListener('install', event => {
         caches.open(CACHE_NAME)
             .then(cache => {
                 console.log('Opened cache');
-                return cache.addAll(urlsToCache);
+                // Only cache local resources, skip external CDNs during install
+                const localUrls = urlsToCache.filter(url => !url.startsWith('http'));
+                return cache.addAll(localUrls).catch(err => {
+                    console.warn('Failed to cache some resources:', err);
+                });
             })
     );
 });
 
 // Fetch from cache
 self.addEventListener('fetch', event => {
+    // Skip caching for chrome-extension and other non-http requests
+    if (!event.request.url.startsWith('http') ||
+        event.request.url.includes('firestore.googleapis.com') ||
+        event.request.url.includes('apis.google.com') ||
+        event.request.url.includes('firebase')) {
+        return;
+    }
+
     event.respondWith(
         caches.match(event.request)
             .then(response => {
@@ -48,7 +60,14 @@ self.addEventListener('fetch', event => {
 
                         return response;
                     }
-                );
+                ).catch(error => {
+                    console.warn('Fetch failed for:', event.request.url, error);
+                    // Return a fallback or just fail gracefully
+                    return new Response('Network error', {
+                        status: 408,
+                        headers: { 'Content-Type': 'text/plain' }
+                    });
+                });
             })
     );
 });

@@ -3,9 +3,9 @@
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-import { getFirestore, collection, addDoc, getDocs, doc, getDoc, setDoc, updateDoc, deleteDoc, query, where, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { getFirestore, collection, addDoc, getDocs, doc, getDoc, setDoc, updateDoc, deleteDoc, query, where, orderBy, limit, startAfter } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
-import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
+import { getAnalytics, isSupported } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
 
 // Firebase configuration
 const firebaseConfig = {
@@ -23,7 +23,12 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 const storage = getStorage(app);
-const analytics = getAnalytics(app);
+let analytics = null;
+isSupported().then(supported => {
+    if (supported) {
+        analytics = getAnalytics(app);
+    }
+}).catch(e => console.warn("Analytics not supported:", e));
 
 // Export Firebase services
 export {
@@ -66,7 +71,7 @@ export const authHelper = {
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
             return { success: true, user: userCredential.user };
         } catch (error) {
-            return { success: false, error: error.message };
+            return { success: false, error: error.code, errorMessage: error.message };
         }
     },
 
@@ -198,6 +203,53 @@ export const firestoreHelper = {
         }
     },
 
+    // Get paginated documents
+    async getPaginatedData(collectionName, pageSize = 20, lastDoc = null, orderByField = 'createdAt') {
+        try {
+            let q;
+            if (lastDoc) {
+                q = query(collection(db, collectionName), orderBy(orderByField, 'desc'), startAfter(lastDoc), limit(pageSize));
+            } else {
+                q = query(collection(db, collectionName), orderBy(orderByField, 'desc'), limit(pageSize));
+            }
+
+            const querySnapshot = await getDocs(q);
+            const data = [];
+            let lastVisible = null;
+
+            querySnapshot.forEach((doc) => {
+                data.push({ id: doc.id, ...doc.data() });
+                lastVisible = doc;
+            });
+
+            return {
+                success: true,
+                data: data,
+                lastDoc: lastVisible,
+                hasMore: data.length === pageSize
+            };
+        } catch (error) {
+            console.error("Error getting paginated documents: ", error);
+            // Fallback for no index/orderBy support
+            try {
+                let qFallback = query(collection(db, collectionName), limit(pageSize));
+                if (lastDoc) {
+                    qFallback = query(collection(db, collectionName), startAfter(lastDoc), limit(pageSize));
+                }
+                const snapshot = await getDocs(qFallback);
+                const fallbackData = [];
+                let fallbackLast = null;
+                snapshot.forEach(doc => {
+                    fallbackData.push({ id: doc.id, ...doc.data() });
+                    fallbackLast = doc;
+                });
+                return { success: true, data: fallbackData, lastDoc: fallbackLast, hasMore: fallbackData.length === pageSize };
+            } catch (e2) {
+                return { success: false, error: e2.message };
+            }
+        }
+    },
+
     // Update document
     async updateDocument(collectionName, docId, data) {
         try {
@@ -232,12 +284,12 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 
 // Storage Helper (Moved to Supabase)
 export const storageHelper = {
-    // Upload file
-    async uploadFile(file, path) {
+    // Upload file to specific bucket and folder
+    async uploadFile(file, path, bucket = 'admissions') {
         try {
             const { data, error } = await supabase
                 .storage
-                .from('admissions')
+                .from(bucket)
                 .upload(path, file, {
                     cacheControl: '3600',
                     upsert: false
@@ -247,7 +299,7 @@ export const storageHelper = {
 
             const { data: { publicUrl } } = supabase
                 .storage
-                .from('admissions')
+                .from(bucket)
                 .getPublicUrl(path);
 
             return { success: true, url: publicUrl };
@@ -257,18 +309,42 @@ export const storageHelper = {
         }
     },
 
-    // Get file URL
-    async getFileURL(path) {
+    // Get file URL from specific bucket
+    async getFileURL(path, bucket = 'admissions') {
         try {
             const { data: { publicUrl } } = supabase
                 .storage
-                .from('admissions')
+                .from(bucket)
                 .getPublicUrl(path);
 
             return { success: true, url: publicUrl };
         } catch (error) {
             return { success: false, error: error.message };
         }
+    },
+
+    // Upload to students folder
+    async uploadStudentFile(file, filename) {
+        const path = `students/${filename}`;
+        return await this.uploadFile(file, path, 'admissions');
+    },
+
+    // Upload to teachers folder
+    async uploadTeacherFile(file, filename) {
+        const path = `teachers/${filename}`;
+        return await this.uploadFile(file, path, 'admissions');
+    },
+
+    // Upload admission document (PDF)
+    async uploadAdmissionDocument(file, filename) {
+        const path = `admissions/documents/${filename}`;
+        return await this.uploadFile(file, path, 'admissions');
+    },
+
+    // Upload admission image (student photo)
+    async uploadAdmissionImage(file, filename) {
+        const path = `admissions/images/${filename}`;
+        return await this.uploadFile(file, path, 'admissions');
     }
 };
 
@@ -277,32 +353,101 @@ export const admissionHelper = {
     // Submit admission form
     async submitAdmission(formData, files) {
         try {
+            console.log('Starting admission submission...');
+            console.log('Files received:', Object.keys(files));
+
+            // Get student name and create sanitized filename
+            const studentName = formData.student_name || formData.scholarName || 'student';
+            // Sanitize name: remove special chars, replace spaces with underscore, lowercase
+            const sanitizedName = studentName
+                .toLowerCase()
+                .replace(/[^a-z0-9\s]/g, '')
+                .replace(/\s+/g, '_')
+                .substring(0, 50); // Limit length
+
+            console.log('Student name for files:', sanitizedName);
+
             // Upload documents if provided
             const uploadedFiles = {};
 
+            // Upload documents to admissions/documents folder
             if (files.birthCertificate) {
-                const result = await storageHelper.uploadFile(
+                console.log('Uploading birth certificate...');
+                const ext = files.birthCertificate.name.split('.').pop();
+                const result = await storageHelper.uploadAdmissionDocument(
                     files.birthCertificate,
-                    `${Date.now()}_birth_certificate`
+                    `${sanitizedName}_birth_certificate.${ext}`
                 );
-                if (result.success) uploadedFiles.birthCertificate = result.url;
+                if (result.success) {
+                    uploadedFiles.birthCertificate = result.url;
+                    console.log('Birth certificate uploaded:', result.url);
+                } else {
+                    console.error('Birth certificate upload failed:', result.error);
+                }
             }
 
             if (files.aadharCard) {
-                const result = await storageHelper.uploadFile(
+                console.log('Uploading aadhar card...');
+                const ext = files.aadharCard.name.split('.').pop();
+                const result = await storageHelper.uploadAdmissionDocument(
                     files.aadharCard,
-                    `${Date.now()}_aadhar_card`
+                    `${sanitizedName}_aadhar_card.${ext}`
                 );
-                if (result.success) uploadedFiles.aadharCard = result.url;
+                if (result.success) {
+                    uploadedFiles.aadharCard = result.url;
+                    console.log('Aadhar card uploaded:', result.url);
+                } else {
+                    console.error('Aadhar card upload failed:', result.error);
+                }
             }
 
-            if (files.photo) {
-                const result = await storageHelper.uploadFile(
-                    files.photo,
-                    `${Date.now()}_photo`
+            if (files.casteCertificate) {
+                console.log('Uploading caste certificate...');
+                const ext = files.casteCertificate.name.split('.').pop();
+                const result = await storageHelper.uploadAdmissionDocument(
+                    files.casteCertificate,
+                    `${sanitizedName}_caste_certificate.${ext}`
                 );
-                if (result.success) uploadedFiles.photo = result.url;
+                if (result.success) {
+                    uploadedFiles.casteCertificate = result.url;
+                    console.log('Caste certificate uploaded:', result.url);
+                } else {
+                    console.error('Caste certificate upload failed:', result.error);
+                }
             }
+
+            if (files.domicileCertificate) {
+                console.log('Uploading domicile certificate...');
+                const ext = files.domicileCertificate.name.split('.').pop();
+                const result = await storageHelper.uploadAdmissionDocument(
+                    files.domicileCertificate,
+                    `${sanitizedName}_domicile_certificate.${ext}`
+                );
+                if (result.success) {
+                    uploadedFiles.domicileCertificate = result.url;
+                    console.log('Domicile certificate uploaded:', result.url);
+                } else {
+                    console.error('Domicile certificate upload failed:', result.error);
+                }
+            }
+
+            // Upload student photo to admissions/images folder
+            if (files.photo) {
+                console.log('Uploading student photo...');
+                const ext = files.photo.name.split('.').pop();
+                const result = await storageHelper.uploadAdmissionImage(
+                    files.photo,
+                    `${sanitizedName}_photo.${ext}`
+                );
+                if (result.success) {
+                    uploadedFiles.photo = result.url;
+                    console.log('Photo uploaded:', result.url);
+                } else {
+                    console.error('Photo upload failed:', result.error);
+                }
+            }
+
+            console.log('All uploads completed. Uploaded files:', uploadedFiles);
 
             // Save admission data to Firestore
             // Generate Custom Registration Number (PMS-XXXXX)
@@ -318,11 +463,14 @@ export const admissionHelper = {
                 id: regNum // Save ID within the document for easier retrieval
             };
 
+            console.log('Saving to Firestore with registration number:', regNum);
             // Use setDoc to create document with custom ID instead of addDocument
             await setDoc(doc(db, 'admissions', regNum), admissionData);
+            console.log('Admission saved successfully!');
 
             return { success: true, id: regNum };
         } catch (error) {
+            console.error('Admission submission error:', error);
             return { success: false, error: error.message };
         }
     },

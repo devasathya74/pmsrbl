@@ -12,6 +12,80 @@ let allNotifications = [];
 let currentEditingStudent = null;
 let currentEditingTeacher = null;
 
+// Helper: Toast Notification
+window.showToast = function (type, message) {
+    const toast = document.createElement('div');
+    toast.className = `fixed top-4 right-4 z-50 px-6 py-3 rounded-lg shadow-lg transform transition-all duration-300 translate-y-0 ${type === 'success' ? 'bg-green-600 text-white' : 'bg-red-600 text-white'
+        }`;
+    toast.innerHTML = `
+        <div class="flex items-center gap-2">
+            <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i>
+            <span class="font-bold">${message}</span>
+        </div>
+    `;
+    document.body.appendChild(toast);
+
+    // Animate out
+    setTimeout(() => {
+        toast.classList.add('-translate-y-full', 'opacity-0');
+        setTimeout(() => toast.remove(), 300);
+    }, 3000);
+};
+
+// Roll Number Edit Logic
+let editingRollId = null;
+
+window.openRollNoModal = function (id, currentVal) {
+    editingRollId = id;
+    const input = document.getElementById('edit-roll-input');
+    input.value = currentVal === '-' ? '' : currentVal;
+    document.getElementById('roll-no-modal').classList.remove('hidden');
+    setTimeout(() => input.focus(), 100);
+}
+
+window.closeRollNoModal = function () {
+    document.getElementById('roll-no-modal').classList.add('hidden');
+    editingRollId = null;
+}
+
+window.saveRollNo = async function () {
+    if (!editingRollId) return;
+
+    const newVal = document.getElementById('edit-roll-input').value.trim();
+    const btn = document.querySelector('#roll-no-modal button:last-child');
+    const originalText = btn.innerHTML;
+
+    try {
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+        btn.disabled = true;
+
+        // Update Firestore
+        const result = await firestoreHelper.updateDocument('students', editingRollId, { rollNumber: newVal });
+
+        if (result.success) {
+            // Optimistic Local Update
+            const student = allStudents.find(s => s.id === editingRollId);
+            if (student) {
+                student.rollNumber = newVal;
+                // Refresh current view
+                student.rollNumber = newVal;
+                // Refresh current view (All loaded students)
+                displayStudents(allStudents);
+            }
+            closeRollNoModal();
+            showToast('success', 'Roll Number updated successfully');
+        } else {
+            showToast('error', 'Failed to update Roll Number');
+        }
+    } catch (error) {
+        console.error('Error updating roll no:', error);
+        showToast('error', 'An error occurred');
+    } finally {
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+    }
+}
+
 // Initialize dashboard
 export async function initDashboard() {
     // Check authentication
@@ -45,10 +119,26 @@ export async function initDashboard() {
 
     // Setup event listeners
     setupEventListeners();
+
+    // Check for tab parameter in URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const tab = urlParams.get('tab');
+    if (tab) {
+        switchTab(tab);
+    }
 }
+
+// Guard flag to prevent duplicate event listener registration
+let eventListenersSetup = false;
 
 // Setup all event listeners
 function setupEventListeners() {
+    // Prevent duplicate event listener registration
+    if (eventListenersSetup) {
+        console.log('Event listeners already setup, skipping...');
+        return;
+    }
+    eventListenersSetup = true;
     // Logout
     document.getElementById('logout-btn').addEventListener('click', async () => {
         if (confirm('क्या आप लॉगआउट करना चाहते हैं?')) {
@@ -117,6 +207,32 @@ function setupEventListeners() {
     };
 }
 
+// Tab switching function
+window.switchTab = function (tabName) {
+    // Hide all tab content
+    const tabs = document.querySelectorAll('.tab-content');
+    tabs.forEach(tab => tab.classList.remove('active'));
+
+    // Remove active class from all tab buttons
+    const tabButtons = document.querySelectorAll('.tab-btn');
+    tabButtons.forEach(btn => btn.classList.remove('active'));
+
+    // Show selected tab
+    const selectedTab = document.getElementById(`${tabName}-tab`);
+    if (selectedTab) {
+        selectedTab.classList.add('active');
+    }
+
+    // Activate corresponding button
+    const buttons = document.querySelectorAll('.tab-btn');
+    buttons.forEach(btn => {
+        if (btn.textContent.toLowerCase().includes(tabName) ||
+            btn.onclick?.toString().includes(`'${tabName}'`)) {
+            btn.classList.add('active');
+        }
+    });
+};
+
 // Global state for monitoring
 let monitoringData = { students: [] };
 
@@ -179,7 +295,19 @@ window.deleteTeacherReport = async function (id) {
 
 // 2. Class Monitoring
 window.loadClassMonitoringData = async function () {
-    const className = document.getElementById('monitor-class-select').value;
+    // Check which tab is active and use the appropriate class selector
+    const attView = document.getElementById('monitor-view-attendance');
+    const resView = document.getElementById('monitor-view-results');
+
+    let className;
+    if (resView && !resView.classList.contains('hidden')) {
+        // Results tab is active, use its class selector
+        className = document.getElementById('monitor-results-class-select').value;
+    } else {
+        // Attendance tab is active (or default), use its class selector
+        className = document.getElementById('monitor-class-select').value;
+    }
+
     if (!className) return;
 
     // Fetch students for this class once
@@ -187,7 +315,6 @@ window.loadClassMonitoringData = async function () {
     if (result.success) {
         monitoringData.students = result.data;
         // Trigger reload of active view
-        const attView = document.getElementById('monitor-view-attendance');
         if (attView && !attView.classList.contains('hidden')) {
             loadClassAttendance();
         } else {
@@ -254,10 +381,10 @@ window.loadClassAttendance = async function () {
     }
 };
 
-window.loadClassResults = function () {
-    const className = document.getElementById('monitor-class-select').value;
-    const examName = document.getElementById('monitor-exam-select').value;
-    const examKey = examName.replace(/\s+/g, '_');
+window.loadClassResults = async function () {
+    // Use Results tab's own class selector
+    const className = document.getElementById('monitor-results-class-select')?.value;
+    const examName = document.getElementById('monitor-exam-select')?.value;
     const tbody = document.getElementById('monitor-results-body');
 
     if (!className) {
@@ -265,23 +392,47 @@ window.loadClassResults = function () {
         return;
     }
 
-    if (tbody) {
-        tbody.innerHTML = monitoringData.students.map(student => {
-            let marks = '-';
-            let details = '-';
-            if (student.examMarks && student.examMarks[examKey]) {
-                marks = `<span class="font-bold text-blue-700">${student.examMarks[examKey].percentage}%</span>`;
-                details = `<span class="text-xs text-gray-500">Updated: ${new Date(student.examMarks[examKey].updatedAt).toLocaleDateString()}</span>`;
-            }
+    if (!examName) {
+        if (tbody) tbody.innerHTML = '<tr><td colspan="3" class="px-6 py-4 text-center text-gray-500">Please select an exam.</td></tr>';
+        return;
+    }
 
-            return `
-                <tr class="border-b hover:bg-gray-50">
-                    <td class="px-6 py-4 font-medium">${student.studentName || student.name}</td>
-                    <td class="px-6 py-4">${marks}</td>
-                    <td class="px-6 py-4">${details}</td>
-                </tr>
-            `;
-        }).join('');
+    // Show loading
+    if (tbody) tbody.innerHTML = '<tr><td colspan="3" class="px-6 py-4 text-center text-gray-500">Loading results...</td></tr>';
+
+    try {
+        // Fetch students for this class
+        const result = await firestoreHelper.getDocuments('students', [where('class', '==', className)]);
+
+        if (!result.success || result.data.length === 0) {
+            if (tbody) tbody.innerHTML = '<tr><td colspan="3" class="px-6 py-4 text-center text-gray-500">No students found in this class.</td></tr>';
+            return;
+        }
+
+        const students = result.data;
+        const examKey = examName.replace(/\s+/g, '_');
+
+        if (tbody) {
+            tbody.innerHTML = students.map(student => {
+                let marks = '-';
+                let details = '-';
+                if (student.examMarks && student.examMarks[examKey]) {
+                    marks = `<span class="font-bold text-blue-700">${student.examMarks[examKey].percentage}%</span>`;
+                    details = `<span class="text-xs text-gray-500">Updated: ${new Date(student.examMarks[examKey].updatedAt).toLocaleDateString()}</span>`;
+                }
+
+                return `
+                    <tr class="border-b hover:bg-gray-50">
+                        <td class="px-6 py-4 font-medium">${student.studentName || student.name}</td>
+                        <td class="px-6 py-4">${marks}</td>
+                        <td class="px-6 py-4">${details}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+    } catch (error) {
+        console.error('Error loading results:', error);
+        if (tbody) tbody.innerHTML = '<tr><td colspan="3" class="px-6 py-4 text-center text-red-500">Error loading results</td></tr>';
     }
 };
 
@@ -301,31 +452,77 @@ async function loadAllData() {
 // ========== STUDENTS MANAGEMENT ==========
 
 async function loadStudents() {
-    const result = await firestoreHelper.getDocuments('students');
-    if (result.success) {
-        allStudents = result.data;
-        displayStudents(allStudents);
-    } else {
-        allStudents = [];
-        displayStudents([]);
+    console.log('Loading students progressively...');
+    const tbody = document.getElementById('students-table-body');
+    tbody.innerHTML = '<tr><td colspan="7" class="px-6 py-8 text-center text-gray-500"><div class="flex flex-col items-center"><i class="fas fa-spinner fa-spin text-3xl mb-3 text-blue-600"></i><span>Loading students...</span></div></td></tr>';
+
+    allStudents = [];
+    let lastDoc = null;
+    let hasMore = true;
+    let isFirstChunk = true;
+
+    try {
+        while (hasMore) {
+            // Load chunk
+            const result = await firestoreHelper.getPaginatedData('students', 20, lastDoc);
+
+            if (result.success) {
+                const chunk = result.data;
+                lastDoc = result.lastDoc;
+                hasMore = result.hasMore;
+
+                if (isFirstChunk) {
+                    // Clear loading message and render first chunk
+                    tbody.innerHTML = '';
+                    allStudents = chunk;
+                    displayStudents(chunk, false); // append = false (replace)
+                    isFirstChunk = false;
+                } else {
+                    // Append subsequent chunks
+                    allStudents = [...allStudents, ...chunk];
+                    displayStudents(chunk, true); // append = true
+                }
+
+                // If it's the very first chunk and empty
+                if (allStudents.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="7" class="px-6 py-8 text-center text-gray-500">No students found</td></tr>';
+                    return;
+                }
+
+                // Small delay to allow UI to update and not block main thread
+                if (hasMore) {
+                    await new Promise(resolve => setTimeout(resolve, 50));
+                }
+            } else {
+                console.error("Error loading students chunk:", result.error);
+                hasMore = false;
+                if (isFirstChunk) {
+                    tbody.innerHTML = `<tr><td colspan="7" class="px-6 py-8 text-center text-red-500">Error: ${result.error}</td></tr>`;
+                }
+            }
+        }
+    } catch (error) {
+        console.error("Critical error in loadStudents:", error);
     }
 }
 
-function displayStudents(students) {
+function displayStudents(students, append = false) {
     const tbody = document.getElementById('students-table-body');
 
-    if (students.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="7" class="px-6 py-8 text-center text-gray-500">No students found</td></tr>';
-        return;
-    }
-
-    tbody.innerHTML = students.map(student => `
-        <tr class="border-b hover:bg-gray-50">
+    const rowsHtml = students.map(student => `
+        <tr class="border-b hover:bg-gray-50 animate-fade-in">
             <td class="px-6 py-4">
                 <img src="${student.photo || '../assets/images/logo.png'}" alt="Student" 
-                     class="w-10 h-10 rounded-full object-cover border border-gray-200">
+                     class="w-10 h-10 rounded-full object-cover border border-gray-200"
+                     loading="lazy">
             </td>
-            <td class="px-6 py-4">${student.rollNumber || 'N/A'}</td>
+            <td class="px-6 py-4">${student.admissionId || student.rollNumber || 'N/A'}</td>
+            <td class="px-6 py-4 cursor-pointer hover:bg-gray-100 transition-colors group" onclick="openRollNoModal('${student.id}', '${student.rollNumber || ''}')" title="Click to Edit Roll No">
+                <div class="flex items-center gap-2">
+                    <span class="font-bold text-blue-900">${student.rollNumber !== student.admissionId ? (student.rollNumber || '-') : '-'}</span>
+                    <i class="fas fa-pencil-alt text-xs text-gray-400 group-hover:text-blue-600"></i>
+                </div>
+            </td>
             <td class="px-6 py-4 font-semibold">${student.studentName || 'N/A'}</td>
             <td class="px-6 py-4">${formatClass(student.class)}</td>
             <td class="px-6 py-4">${student.fatherName || 'N/A'}</td>
@@ -336,6 +533,9 @@ function displayStudents(students) {
                 </span>
             </td>
             <td class="px-6 py-4 text-center">
+                <button onclick="window.open('print-student.html?id=${student.id}', '_blank')" class="text-green-600 hover:text-green-800 mr-3" title="Download Form PDF">
+                    <i class="fas fa-file-pdf"></i>
+                </button>
                 <button onclick="editStudent('${student.id}')" class="text-blue-600 hover:text-blue-800 mr-3" title="Edit">
                     <i class="fas fa-edit"></i>
                 </button>
@@ -345,15 +545,17 @@ function displayStudents(students) {
             </td>
         </tr>
     `).join('');
+
+    if (append) {
+        tbody.insertAdjacentHTML('beforeend', rowsHtml);
+    } else {
+        tbody.innerHTML = rowsHtml;
+    }
 }
 
 window.openAddStudentModal = function () {
-    currentEditingStudent = null;
-    document.getElementById('student-modal-title').textContent = 'Add Student';
-    document.getElementById('student-form').reset();
-    document.getElementById('student-id').value = '';
-    document.getElementById('student-preview').src = '../assets/images/logo.png'; // Reset preview
-    document.getElementById('student-modal').classList.remove('hidden');
+    // Redirect to admission form with source parameter
+    window.location.href = 'admission.html?source=admin';
 };
 
 window.closeStudentModal = function () {
@@ -362,25 +564,8 @@ window.closeStudentModal = function () {
 };
 
 window.editStudent = async function (id) {
-    const student = allStudents.find(s => s.id === id);
-    if (!student) return;
-
-    currentEditingStudent = student;
-    document.getElementById('student-modal-title').textContent = 'Edit Student';
-    document.getElementById('student-id').value = student.id;
-    document.getElementById('student-name').value = student.studentName || student.name || '';
-    document.getElementById('student-roll').value = student.rollNumber || '';
-    document.getElementById('student-class').value = student.class || '';
-    document.getElementById('student-dob').value = student.dob || '';
-    document.getElementById('student-gender').value = student.gender || '';
-    document.getElementById('student-father').value = student.fatherName || '';
-    document.getElementById('student-mother').value = student.motherName || '';
-    document.getElementById('student-mobile').value = student.mobile || '';
-    document.getElementById('student-email').value = student.email || '';
-    document.getElementById('student-address').value = student.address || '';
-    document.getElementById('student-preview').src = student.photo || '../assets/images/logo.png'; // Set preview
-
-    document.getElementById('student-modal').classList.remove('hidden');
+    // Redirect to admission form with student ID for editing
+    window.location.href = `admission.html?source=admin&studentId=${id}`;
 };
 
 window.handleStudentSubmit = async function (e) {
@@ -482,11 +667,12 @@ window.exportStudents = function () {
     }
 
     // Create CSV
-    const headers = ['Roll No', 'Name', 'Class', 'DOB', 'Gender', 'Father Name', 'Mother Name', 'Mobile', 'Email', 'Address', 'Status'];
+    const headers = ['Serial No', 'Roll No', 'Name', 'Class', 'DOB', 'Gender', 'Father Name', 'Mother Name', 'Mobile', 'Email', 'Address', 'Status'];
     const rows = allStudents.map(s => [
-        s.rollNumber || '',
+        s.admissionId || '',
+        s.rollNumber !== s.admissionId ? (s.rollNumber || '') : '',
         s.studentName || '',
-        s.class || '',
+        formatClass(s.class),
         s.dob || '',
         s.gender || '',
         s.fatherName || '',
@@ -515,29 +701,67 @@ window.exportStudents = function () {
 // ========== TEACHERS MANAGEMENT ==========
 
 async function loadTeachers() {
-    const result = await firestoreHelper.getDocuments('teachers');
-    if (result.success) {
-        allTeachers = result.data;
-        displayTeachers(allTeachers);
-    } else {
-        allTeachers = [];
-        displayTeachers([]);
+    console.log('Loading teachers progressively...');
+    const tbody = document.getElementById('teachers-table-body');
+    tbody.innerHTML = '<tr><td colspan="7" class="px-6 py-8 text-center text-gray-500"><div class="flex flex-col items-center"><i class="fas fa-spinner fa-spin text-3xl mb-3 text-blue-600"></i><span>Loading teachers...</span></div></td></tr>';
+
+    allTeachers = [];
+    let lastDoc = null;
+    let hasMore = true;
+    let isFirstChunk = true;
+
+    try {
+        while (hasMore) {
+            // Load chunk
+            const result = await firestoreHelper.getPaginatedData('teachers', 20, lastDoc);
+
+            if (result.success) {
+                const chunk = result.data;
+                lastDoc = result.lastDoc;
+                hasMore = result.hasMore;
+
+                if (isFirstChunk) {
+                    // Clear loading message and render first chunk
+                    tbody.innerHTML = '';
+                    allTeachers = chunk;
+                    displayTeachers(chunk, false); // append = false
+                    isFirstChunk = false;
+                } else {
+                    // Append chunks
+                    allTeachers = [...allTeachers, ...chunk];
+                    displayTeachers(chunk, true); // append = true
+                }
+
+                if (allTeachers.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="7" class="px-6 py-8 text-center text-gray-500">No teachers found</td></tr>';
+                    return;
+                }
+
+                if (hasMore) {
+                    await new Promise(resolve => setTimeout(resolve, 50));
+                }
+            } else {
+                console.error("Error loading teachers chunk:", result.error);
+                hasMore = false;
+                if (isFirstChunk) {
+                    tbody.innerHTML = `<tr><td colspan="7" class="px-6 py-8 text-center text-red-500">Error: ${result.error}</td></tr>`;
+                }
+            }
+        }
+    } catch (error) {
+        console.error("Critical error in loadTeachers:", error);
     }
 }
 
-function displayTeachers(teachers) {
+function displayTeachers(teachers, append = false) {
     const tbody = document.getElementById('teachers-table-body');
 
-    if (teachers.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="7" class="px-6 py-8 text-center text-gray-500">No teachers found</td></tr>';
-        return;
-    }
-
-    tbody.innerHTML = teachers.map(teacher => `
-        <tr class="border-b hover:bg-gray-50">
+    const rowsHtml = teachers.map(teacher => `
+        <tr class="border-b hover:bg-gray-50 animate-fade-in">
             <td class="px-6 py-4">
                 <img src="${teacher.photo || '../assets/images/logo.png'}" alt="Teacher" 
-                     class="w-10 h-10 rounded-full object-cover border border-gray-200">
+                     class="w-10 h-10 rounded-full object-cover border border-gray-200"
+                     loading="lazy">
             </td>
             <td class="px-6 py-4 font-semibold">${teacher.name || 'N/A'}</td>
             <td class="px-6 py-4">${teacher.email || 'N/A'}</td>
@@ -561,6 +785,12 @@ function displayTeachers(teachers) {
             </td>
         </tr>
     `).join('');
+
+    if (append) {
+        tbody.insertAdjacentHTML('beforeend', rowsHtml);
+    } else {
+        tbody.innerHTML = rowsHtml;
+    }
 }
 
 // Global Preview Function
@@ -575,33 +805,9 @@ window.previewImage = function (input, previewId) {
 };
 
 
-window.openAddStudentModal = function () {
-    currentEditingStudent = null;
-    document.getElementById('student-modal-title').textContent = 'Add Student';
-    document.getElementById('student-form').reset();
-    document.getElementById('student-id').value = '';
-    document.getElementById('student-preview').src = '../assets/images/logo/logo.png';
-    document.getElementById('student-modal').classList.remove('hidden');
-};
 
-window.editStudent = function (id) {
-    const student = allStudents.find(s => s.id === id);
-    if (!student) return;
 
-    currentEditingStudent = student;
-    document.getElementById('student-modal-title').textContent = 'Edit Student';
-    document.getElementById('student-id').value = student.id;
-    document.getElementById('student-roll').value = student.rollNumber || '';
-    document.getElementById('student-name').value = student.studentName || '';
-    document.getElementById('student-class').value = student.class || '';
-    document.getElementById('student-father').value = student.fatherName || '';
-    document.getElementById('student-mother').value = student.motherName || '';
-    document.getElementById('student-mobile').value = student.mobile || '';
-    document.getElementById('student-admission-date').value = student.admissionDate || '';
-    document.getElementById('student-preview').src = student.photo || '../assets/images/logo/logo.png';
-
-    document.getElementById('student-modal').classList.remove('hidden');
-};
+// Duplicate editStudent function removed - using the complete version at line 393
 
 window.handleStudentSubmit = async function (e) {
     e.preventDefault();
@@ -616,9 +822,13 @@ window.handleStudentSubmit = async function (e) {
             rollNumber: document.getElementById('student-roll').value,
             studentName: document.getElementById('student-name').value,
             class: document.getElementById('student-class').value,
+            dob: document.getElementById('student-dob').value,
+            gender: document.getElementById('student-gender').value,
             fatherName: document.getElementById('student-father').value,
             motherName: document.getElementById('student-mother').value,
             mobile: document.getElementById('student-mobile').value,
+            email: document.getElementById('student-email').value,
+            address: document.getElementById('student-address').value,
             admissionDate: document.getElementById('student-admission-date').value,
             updatedAt: new Date().toISOString()
         };
@@ -814,30 +1024,89 @@ window.searchTeachers = function () {
 // ========== ADMISSIONS MANAGEMENT ==========
 
 async function loadAdmissions() {
-    const result = await firestoreHelper.getDocuments('admissions');
-    if (result.success) {
-        allAdmissions = result.data;
-        displayAdmissions(allAdmissions);
-        displayRecentActivity();
+    console.log('Loading admissions progressively...');
+    const container = document.getElementById('admissions-list');
+    container.innerHTML = '<div class="text-gray-500 text-center py-8"><i class="fas fa-spinner fa-spin text-2xl mb-2 text-blue-600"></i><p>Loading admissions...</p></div>';
+
+    allAdmissions = [];
+    let lastDoc = null;
+    let hasMore = true;
+    let isFirstChunk = true;
+
+    try {
+        while (hasMore) {
+            const result = await firestoreHelper.getPaginatedData('admissions', 15, lastDoc, 'submittedAt');
+
+            if (result.success) {
+                const chunk = result.data;
+                lastDoc = result.lastDoc;
+                hasMore = result.hasMore;
+
+                // Stop if no data returned
+                if (result.data.length === 0) {
+                    hasMore = false;
+                }
+
+                if (isFirstChunk) {
+                    // container.innerHTML = ''; // Don't clear here, let displayAdmissions handle it or clear before loop
+                    allAdmissions = chunk;
+
+                    // Filter based on current dropdown selection
+                    const currentFilter = document.getElementById('admission-filter').value;
+                    const filteredChunk = currentFilter === 'all' ? chunk : chunk.filter(a => a.status === currentFilter);
+
+                    if (filteredChunk.length > 0) {
+                        displayAdmissions(filteredChunk, false);
+                    } else {
+                        document.getElementById('admissions-list').innerHTML = `<p class="text-gray-500 text-center py-8">No ${currentFilter !== 'all' ? currentFilter : ''} admissions found</p>`;
+                    }
+
+                    displayRecentActivity();
+                    isFirstChunk = false;
+                } else {
+                    allAdmissions = [...allAdmissions, ...chunk];
+
+                    // Filter based on current dropdown selection
+                    const currentFilter = document.getElementById('admission-filter').value;
+                    const filteredChunk = currentFilter === 'all' ? chunk : chunk.filter(a => a.status === currentFilter);
+
+                    if (filteredChunk.length > 0) {
+                        displayAdmissions(filteredChunk, true);
+                    }
+                }
+
+                if (allAdmissions.length === 0) {
+                    document.getElementById('admissions-list').innerHTML = '<p class="text-gray-500 text-center py-8">No admissions found</p>';
+                    return;
+                }
+
+                if (hasMore) {
+                    await new Promise(resolve => setTimeout(resolve, 50));
+                }
+            } else {
+                console.error("Error loading admissions chunk:", result.error);
+                hasMore = false;
+                if (isFirstChunk) {
+                    document.getElementById('admissions-list').innerHTML = `<p class="text-red-500 text-center py-8">Error: ${result.error}</p>`;
+                }
+            }
+        }
+    } catch (error) {
+        console.error("Critical error in loadAdmissions:", error);
     }
 }
 
-function displayAdmissions(admissions) {
+function displayAdmissions(admissions, append = false) {
     const container = document.getElementById('admissions-list');
 
-    if (admissions.length === 0) {
-        container.innerHTML = '<p class="text-gray-500 text-center py-8">No admissions found</p>';
-        return;
-    }
-
-    container.innerHTML = admissions.map(admission => `
-        <div class="bg-white border-2 border-gray-200 rounded-lg p-6 hover:shadow-lg transition-shadow">
+    const html = admissions.map(admission => `
+        <div class="bg-white border-2 border-gray-200 rounded-lg p-6 hover:shadow-lg transition-shadow animate-fade-in block mb-4">
             <div class="flex justify-between items-start mb-4">
                 <div class="flex-1">
                     <h4 class="text-lg font-bold text-gray-800">${admission.student_name || 'N/A'}</h4>
                     <div class="grid grid-cols-2 gap-2 mt-2 text-sm text-gray-600">
                         <p><i class="fas fa-graduation-cap mr-2"></i>Class: ${admission.class || 'N/A'}</p>
-                        <p><i class="fas fa-calendar mr-2"></i>DOB: ${admission.dob || 'N/A'}</p>
+                        <p><i class="fas fa-calendar mr-2"></i>DOB: ${admission.dob ? admission.dob.split('-').reverse().join('/') : 'N/A'}</p>
                         <p><i class="fas fa-phone mr-2"></i>${admission.mobile || 'N/A'}</p>
                         <p><i class="fas fa-envelope mr-2"></i>${admission.email || 'N/A'}</p>
                     </div>
@@ -873,6 +1142,12 @@ function displayAdmissions(admissions) {
             </div>
         </div>
     `).join('');
+
+    if (append) {
+        container.insertAdjacentHTML('beforeend', html);
+    } else {
+        container.innerHTML = html;
+    }
 }
 
 window.updateAdmissionStatus = async function (id, status) {
@@ -898,15 +1173,37 @@ window.updateAdmissionStatus = async function (id, status) {
 async function createStudentFromAdmission(admission) {
     const studentData = {
         studentName: admission.student_name,
-        rollNumber: '', // Will be assigned manually
+        rollNumber: '', // Manual assignment required
+        serialNumber: admission.id, // Display ID (PMS-XXXXX)
         class: admission.class,
         dob: admission.dob,
         gender: admission.gender || '',
         fatherName: admission.father_name,
+        fatherOccupation: admission.father_occupation || '',
+        fatherCompany: admission.father_company || '', // key from form submission
+        fatherPost: admission.father_post || '',
         motherName: admission.mother_name,
+        motherOccupation: admission.mother_occupation || '',
         mobile: admission.mobile,
         email: admission.email,
         address: admission.address,
+        postalAddress: admission.postal_address || '', // check admission keys
+        guardianName: admission.guardian_name || '',
+        guardianAddress: admission.guardian_address || '',
+        guardianRelation: admission.guardian_relation || '',
+        lastSchool: admission.lastInst || admission.last_school || '',
+        motherTongue: admission.tongue || admission.mother_tongue || '',
+        religion: admission.religion || '',
+        durationOfStay: admission.stayUp || admission.duration_of_stay || '',
+
+        // Documents
+        photo: admission.documents?.photo || '',
+        birthCertificate: admission.documents?.birthCertificate || '',
+        aadharCard: admission.documents?.aadharCard || '',
+        casteCert: admission.documents?.casteCert || '',
+        domicileCert: admission.documents?.domicileCert || '',
+
+        admissionId: admission.id, // Link back to admission
         status: 'active',
         createdAt: new Date().toISOString()
     };
@@ -923,73 +1220,89 @@ window.viewAdmissionDetails = function (id) {
     const admission = allAdmissions.find(a => a.id === id);
     if (!admission) return;
 
-    // Populate Text Fields
-    const fields = {
-        'modal-name': admission.student_name,
-        'modal-class': admission.class,
-        'modal-dob': admission.dob,
-        'modal-gender': admission.gender,
-        'modal-aadhar': admission.aadhar,
-        'modal-father': admission.father_name,
-        'modal-mother': admission.mother_name,
-        'modal-mobile': admission.mobile,
-        'modal-email': admission.email,
-        'modal-address': admission.address,
-        'modal-prev-school': admission.previous_school || '-',
-        'modal-prev-class': admission.previous_class || '-',
-        'modal-prev-marks': admission.previous_marks ? admission.previous_marks + '%' : '-',
-        'modal-status': admission.status
+    // Populate Fields
+    const set = (id, val) => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = val || '-';
     };
 
-    for (const [id, value] of Object.entries(fields)) {
-        const el = document.getElementById(id);
-        if (el) el.textContent = value || 'N/A';
-    }
+    set('preview-name', admission.student_name);
+    set('preview-class', admission.class);
+    set('preview-dob', admission.dob ? admission.dob.split('-').reverse().join('/') : 'N/A');
+    set('preview-father', admission.father_name);
+    set('preview-father-occ', admission.father_occupation);
+    set('preview-mother', admission.mother_name);
+    set('preview-mother-occ', admission.mother_occupation);
+    set('preview-mobile', admission.mobile);
+    set('preview-email', admission.email);
+    set('preview-address', admission.address);
+    set('preview-prev-school', admission.previous_school || 'N/A');
 
-    // Status Banner Styling
+    // Status Banner Updates
+    const statusSpan = document.getElementById('modal-status');
     const banner = document.getElementById('modal-status-banner');
-    const statusText = document.getElementById('modal-status');
-    banner.className = `p-4 rounded-lg border-l-4 mb-6 ${admission.status === 'approved' ? 'bg-green-100 border-green-500 text-green-800' :
+    statusSpan.textContent = (admission.status || 'Pending').toUpperCase();
+
+    // Style banner based on status
+    banner.className = `p-4 rounded-lg border-l-4 mb-6 flex justify-between items-center ${admission.status === 'approved' ? 'bg-green-100 border-green-500 text-green-800' :
         admission.status === 'rejected' ? 'bg-red-100 border-red-500 text-red-800' :
             'bg-yellow-100 border-yellow-500 text-yellow-800'
         }`;
 
-    // Action Buttons
-    const actionContainer = document.getElementById('modal-actions');
-    // preserve the close button
-    actionContainer.innerHTML = '<button onclick="closeAdmissionModal()" class="px-6 py-2 rounded-lg bg-gray-300 hover:bg-gray-400 font-bold text-gray-700">Close</button>';
-
-    if (admission.status === 'pending') {
-        actionContainer.innerHTML = `
-            <button onclick="updateAdmissionStatus('${admission.id}', 'approved'); closeAdmissionModal()" class="px-6 py-2 rounded-lg bg-green-600 hover:bg-green-700 font-bold text-white">Approve</button>
-            <button onclick="updateAdmissionStatus('${admission.id}', 'rejected'); closeAdmissionModal()" class="px-6 py-2 rounded-lg bg-red-600 hover:bg-red-700 font-bold text-white">Reject</button>
-            <button onclick="closeAdmissionModal()" class="px-6 py-2 rounded-lg bg-gray-300 hover:bg-gray-400 font-bold text-gray-700">Close</button>
-        `;
-    }
-
-    // Populate Images
+    // Images
     const docs = admission.documents || {};
-
-    const setupImage = (imgId, linkId, url, placeholder) => {
+    const setupImg = (imgId, linkId, url, defaultText) => {
         const img = document.getElementById(imgId);
         const link = document.getElementById(linkId);
-
         if (url) {
             img.src = url;
             link.href = url;
-            img.parentElement.style.display = 'block';
+            link.classList.remove('pointer-events-none', 'opacity-50');
         } else {
-            img.src = 'https://via.placeholder.com/300?text=No+Document'; // Or a local placeholder
-            link.href = '#';
-            link.onclick = (e) => e.preventDefault();
+            img.src = 'https://via.placeholder.com/150?text=Not+Uploaded';
+            link.removeAttribute('href');
+            link.classList.add('pointer-events-none', 'opacity-50');
         }
     };
 
-    setupImage('img-photo', 'link-photo', docs.photo);
-    setupImage('img-aadhar', 'link-aadhar', docs.aadharCard);
-    setupImage('img-birth', 'link-birth', docs.birthCertificate);
+    setupImg('preview-photo', 'preview-photo', docs.photo); // Photo is just an img, no link wrapper in my HTML but I'll fix if needed. Actually photo is raw img.
+    // Correction for photo:
+    const photoImg = document.getElementById('preview-photo');
+    if (docs.photo) photoImg.src = docs.photo;
+    else photoImg.src = 'https://via.placeholder.com/150?text=No+Photo';
 
-    // Show Modal
+    setupImg('preview-img-birth', 'preview-link-birth', docs.birthCertificate);
+    setupImg('preview-img-aadhar', 'preview-link-aadhar', docs.aadharCard);
+
+    // Actions
+    const bottomActions = document.getElementById('modal-actions-bottom');
+    const topActions = document.getElementById('modal-actions-top');
+
+    // Clear previous actions
+    bottomActions.innerHTML = '';
+    topActions.innerHTML = '';
+
+    const closeBtn = `<button onclick="closeAdmissionModal()" class="px-6 py-2 rounded-lg bg-gray-500 hover:bg-gray-600 font-bold text-white">Close Preview</button>`;
+
+    if (admission.status === 'pending') {
+        const actions = `
+            <div class="flex gap-4">
+                <button onclick="updateAdmissionStatus('${admission.id}', 'rejected'); closeAdmissionModal()" 
+                    class="px-6 py-2 rounded-lg bg-red-600 hover:bg-red-700 font-bold text-white shadow-md">
+                    <i class="fas fa-times mr-2"></i>Reject Application
+                </button>
+                <button onclick="updateAdmissionStatus('${admission.id}', 'approved'); closeAdmissionModal()" 
+                    class="px-6 py-2 rounded-lg bg-green-600 hover:bg-green-700 font-bold text-white shadow-md">
+                    <i class="fas fa-check mr-2"></i>Approve & Admit
+                </button>
+            </div>
+        `;
+        bottomActions.innerHTML = closeBtn + actions;
+        topActions.innerHTML = `<span class="bg-blue-600 text-white text-xs px-2 py-1 rounded">Action Required</span>`;
+    } else {
+        bottomActions.innerHTML = closeBtn;
+    }
+
     document.getElementById('admission-modal').classList.remove('hidden');
 };
 
@@ -1029,23 +1342,60 @@ function displayRecentActivity() {
 // ========== MESSAGES MANAGEMENT ==========
 
 async function loadMessages() {
-    const result = await firestoreHelper.getDocuments('contacts');
-    if (result.success) {
-        allMessages = result.data;
-        displayMessages(allMessages);
+    console.log('Loading messages progressively...');
+    const container = document.getElementById('messages-list');
+    container.innerHTML = '<div class="text-gray-500 text-center py-8"><i class="fas fa-spinner fa-spin text-2xl mb-2 text-blue-600"></i><p>Loading messages...</p></div>';
+
+    allMessages = [];
+    let lastDoc = null;
+    let hasMore = true;
+    let isFirstChunk = true;
+
+    try {
+        while (hasMore) {
+            const result = await firestoreHelper.getPaginatedData('contacts', 25, lastDoc);
+
+            if (result.success) {
+                const chunk = result.data;
+                lastDoc = result.lastDoc;
+                hasMore = result.hasMore;
+
+                if (isFirstChunk) {
+                    container.innerHTML = '';
+                    allMessages = chunk;
+                    displayMessages(chunk, false);
+                    isFirstChunk = false;
+                } else {
+                    allMessages = [...allMessages, ...chunk];
+                    displayMessages(chunk, true);
+                }
+
+                if (allMessages.length === 0) {
+                    container.innerHTML = '<p class="text-gray-500 text-center py-8">No messages yet</p>';
+                    return;
+                }
+
+                if (hasMore) {
+                    await new Promise(resolve => setTimeout(resolve, 50));
+                }
+            } else {
+                console.error("Error loading messages chunk:", result.error);
+                hasMore = false;
+                if (isFirstChunk) {
+                    container.innerHTML = `<p class="text-red-500 text-center py-8">Error: ${result.error}</p>`;
+                }
+            }
+        }
+    } catch (error) {
+        console.error("Critical error in loadMessages:", error);
     }
 }
 
-function displayMessages(messages) {
+function displayMessages(messages, append = false) {
     const container = document.getElementById('messages-list');
 
-    if (messages.length === 0) {
-        container.innerHTML = '<p class="text-gray-500 text-center py-8">No messages yet</p>';
-        return;
-    }
-
-    container.innerHTML = messages.map(msg => `
-        <div class="bg-white border-2 border-gray-200 rounded-lg p-6 hover:shadow-lg transition-shadow ${!msg.read ? 'border-l-4 border-l-blue-600' : ''}">
+    const html = messages.map(msg => `
+        <div class="bg-white border-2 border-gray-200 rounded-lg p-6 hover:shadow-lg transition-shadow animate-fade-in block mb-4 ${!msg.read ? 'border-l-4 border-l-blue-600' : ''}">
             <div class="flex justify-between items-start mb-3">
                 <div class="flex-1">
                     <h4 class="font-bold text-gray-800">${msg.name || 'Anonymous'}</h4>
@@ -1076,6 +1426,12 @@ function displayMessages(messages) {
             </div>
         </div>
     `).join('');
+
+    if (append) {
+        container.insertAdjacentHTML('beforeend', html);
+    } else {
+        container.innerHTML = html;
+    }
 }
 
 window.markAsRead = async function (id) {
@@ -1106,35 +1462,76 @@ window.filterMessages = function () {
 // ========== NOTIFICATIONS MANAGEMENT ==========
 
 async function loadNotifications() {
-    const result = await firestoreHelper.getDocuments('notifications');
-    if (result.success) {
-        allNotifications = result.data;
-        displayNotifications(allNotifications);
-    } else {
-        document.getElementById('notifications-list').innerHTML = '<p class="text-gray-500 text-center py-4">No notifications yet</p>';
+    console.log('Loading notifications progressively...');
+    const container = document.getElementById('notifications-list');
+    container.innerHTML = '<div class="text-gray-500 text-center py-4"><i class="fas fa-spinner fa-spin mr-2"></i>Loading...</div>';
+
+    allNotifications = [];
+    let lastDoc = null;
+    let hasMore = true;
+    let isFirstChunk = true;
+
+    try {
+        while (hasMore) {
+            const result = await firestoreHelper.getPaginatedData('notifications', 20, lastDoc);
+
+            if (result.success) {
+                const chunk = result.data;
+                lastDoc = result.lastDoc;
+                hasMore = result.hasMore;
+
+                if (isFirstChunk) {
+                    container.innerHTML = '';
+                    allNotifications = chunk;
+                    displayNotifications(chunk, false);
+                    isFirstChunk = false;
+                } else {
+                    allNotifications = [...allNotifications, ...chunk];
+                    displayNotifications(chunk, true);
+                }
+
+                if (allNotifications.length === 0) {
+                    container.innerHTML = '<p class="text-gray-500 text-center py-4">No notifications yet</p>';
+                    return;
+                }
+
+                if (hasMore) {
+                    await new Promise(resolve => setTimeout(resolve, 50));
+                }
+            } else {
+                console.error("Error loading notifications chunk:", result.error);
+                hasMore = false;
+                if (isFirstChunk) {
+                    container.innerHTML = '<p class="text-gray-500 text-center py-4">No notifications yet</p>';
+                }
+            }
+        }
+    } catch (error) {
+        console.error("Critical error in loadNotifications:", error);
     }
 }
 
-function displayNotifications(notifications) {
+function displayNotifications(notifications, append = false) {
     const container = document.getElementById('notifications-list');
 
-    if (notifications.length === 0) {
-        container.innerHTML = '<p class="text-gray-500 text-center py-4">No notifications yet. Add one above!</p>';
-        return;
-    }
-
-    container.innerHTML = notifications.map(notif => `
-        <div class="bg-white border-2 border-gray-200 rounded-lg p-4 flex justify-between items-center">
+    const html = notifications.map(notif => `
+        <div class="bg-white border-2 border-gray-200 rounded-lg p-4 flex justify-between items-start animate-fade-in mb-3">
             <div class="flex items-center gap-3">
-                <i class="fas ${notif.icon} text-yellow-500 text-xl"></i>
+                <i class="fas ${notif.icon || 'fa-bell'} text-yellow-500 text-xl mt-1"></i>
                 <p class="text-gray-800">${notif.message}</p>
             </div>
             <button onclick="deleteNotification('${notif.id}')" 
-                class="text-red-600 hover:text-red-800">
+                class="text-red-600 hover:text-red-800 ml-2">
                 <i class="fas fa-trash"></i>
             </button>
         </div>
     `).join('');
+
+    if (append) {
+        container.insertAdjacentHTML('beforeend', html);
+    } else {
+        container.innerHTML = html;
+    }
 }
 
 async function handleNotificationSubmit(e) {
@@ -1172,8 +1569,7 @@ window.deleteNotification = async function (id) {
 
 function formatClass(cls) {
     const classMap = {
-        'pre-nursery': 'Pre-Nursery',
-        'nursery': 'Nursery',
+
         'lkg': 'LKG',
         'ukg': 'UKG',
         '1': 'Class 1',

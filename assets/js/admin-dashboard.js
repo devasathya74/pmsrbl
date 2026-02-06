@@ -1217,6 +1217,30 @@ window.closeAdmissionModal = function () {
 };
 
 window.viewAdmissionDetails = function (id) {
+    // Check for mobile device (width < 768px)
+    if (window.innerWidth < 768) {
+        // Create toast element
+        const toast = document.createElement('div');
+        // Added style z-index explicitly to ensure it overrides everything
+        toast.style.zIndex = '999999';
+        toast.className = 'fixed top-4 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-90 text-white px-6 py-4 rounded-full shadow-2xl text-center min-w-[280px] animate-fade-in flex items-center justify-center gap-3 border border-gray-700 backdrop-blur-sm';
+        toast.innerHTML = `
+            <i class="fas fa-desktop text-yellow-400 text-xl"></i>
+            <div>
+                <p class="font-bold text-sm">कृपया डेस्कटॉप मोड ऑन करें</p>
+            </div>
+        `;
+        document.body.appendChild(toast);
+
+        // Remove after 3 seconds
+        setTimeout(() => {
+            toast.classList.add('opacity-0', 'transition-opacity', 'duration-500');
+            setTimeout(() => toast.remove(), 500);
+        }, 3000);
+
+        // Continue to open modal (removed return)
+    }
+
     const admission = allAdmissions.find(a => a.id === id);
     if (!admission) return;
 
@@ -1581,11 +1605,43 @@ function formatClass(cls) {
     return classMap[cls] || cls;
 }
 
+function updateNotificationDots() {
+    // 1. Check pending admissions
+    const pendingAdmissions = allAdmissions.filter(a => a.status === 'pending').length;
+    const admissionBadge = document.getElementById('nav-admissions-badge');
+    if (admissionBadge) {
+        if (pendingAdmissions > 0) {
+            admissionBadge.classList.remove('hidden');
+        } else {
+            admissionBadge.classList.add('hidden');
+        }
+    }
+
+    // 2. Check pending messages
+    // Assuming messages have a 'read' status, otherwise count all or implement logic later
+    // For now, if there are any messages, let's treat new ones since last session as notification worthy
+    // Or just show dot if there are any messages (simple version)
+    // Better: Show dot if count > 0 (since we don't have read status yet)
+    // Actually, let's stick to showing dot if there are pending items of some sort
+    // For messages, we'll just check if total > 0 for now as 'unread' logic isn't fully built
+    const messageBadge = document.getElementById('nav-messages-badge');
+    if (messageBadge) {
+        if (allMessages.length > 0) { // Ideally filter by !msg.read
+            messageBadge.classList.remove('hidden');
+        } else {
+            messageBadge.classList.add('hidden');
+        }
+    }
+}
+
 function updateStats() {
     document.getElementById('total-admissions').textContent = allAdmissions.length;
     document.getElementById('pending-admissions').textContent = allAdmissions.filter(a => a.status === 'pending').length;
     document.getElementById('total-contacts').textContent = allMessages.length;
     document.getElementById('total-students').textContent = allStudents.length;
+
+    // Update sidebar dots whenever stats update
+    updateNotificationDots();
 }
 
 // Tab switching

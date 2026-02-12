@@ -96,6 +96,14 @@
     display: inline-block;
     padding: 0 50px;
     font-weight: 500;
+    color: white !important;
+    /* Force white text */
+}
+
+.news-item a {
+    color: white !important;
+    /* Force links to be white */
+    text-decoration: none;
 }
 
 @keyframes ticker {

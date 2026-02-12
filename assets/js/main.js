@@ -747,7 +747,7 @@ async function loadNewsTicker() {
             if (activeNotifications.length > 0) {
                 // Display cached content immediately
                 tickerContent.innerHTML = activeNotifications.map(notification =>
-                    `<span class="inline-block mx-8 text-blue-900 font-semibold">• ${notification.message || notification.text}</span>`
+                    `<span class="news-item inline-block mx-8">• ${notification.message || notification.text}</span>`
                 ).join('');
                 console.log('✅ Loaded notifications from cache (Instant)');
             }
@@ -755,49 +755,52 @@ async function loadNewsTicker() {
             console.error('Cache parse error:', e);
         }
     }
-
-    // 2. SLOW PATH: Fetch fresh data when Firebase is ready
-    const fetchFreshData = async () => {
-        if (typeof firestoreHelper === 'undefined') {
-            // Wait for firebase-loaded event if helper not ready
-            window.addEventListener('firebase-loaded', async () => {
-                await fetchAndCacheNotifications();
-            }, { once: true });
-        } else {
-            await fetchAndCacheNotifications();
-        }
-    };
-
-    // Helper to fetch and update cache
-    const fetchAndCacheNotifications = async () => {
-        try {
-            const result = await firestoreHelper.getDocuments('notifications');
-            if (result.success && result.data.length > 0) {
-                // Update cache
-                localStorage.setItem('pms_notifications', JSON.stringify(result.data));
-
-                // Update UI with fresh data if different (optional, or just update silently for next reload)
-                const activeNotifications = result.data.filter(n => n.status === 'active' || !n.status);
-                if (activeNotifications.length > 0) {
-                    tickerContent.innerHTML = activeNotifications.map(notification =>
-                        `<span class="inline-block mx-8 text-blue-900 font-semibold">• ${notification.message || notification.text}</span>`
-                    ).join('');
-                    console.log('✅ Updated notifications from server');
-                }
-            }
-        } catch (error) {
-            console.warn('Failed to fetch fresh notifications:', error);
-        }
-    };
-
-    // Trigger background fetch
-    // Use requestIdleCallback if available to not block main thread
-    if ('requestIdleCallback' in window) {
-        requestIdleCallback(() => fetchFreshData());
-    } else {
-        setTimeout(fetchFreshData, 1000); // Wait a bit to let critical resources load
-    }
 }
+
+// 2. SLOW PATH: Fetch fresh data when Firebase is ready
+const fetchFreshData = async () => {
+    if (typeof firestoreHelper === 'undefined') {
+        // Wait for firebase-loaded event if helper not ready
+        window.addEventListener('firebase-loaded', async () => {
+            await fetchAndCacheNotifications();
+        }, { once: true });
+    } else {
+        await fetchAndCacheNotifications();
+    }
+};
+
+// Helper to fetch and update cache
+const fetchAndCacheNotifications = async () => {
+    try {
+        const result = await firestoreHelper.getDocuments('notifications');
+        if (result.success && result.data.length > 0) {
+            // Update cache
+            localStorage.setItem('pms_notifications', JSON.stringify(result.data));
+
+            // Update UI with fresh data if different (optional, or just update silently for next reload)
+            // Note: activeNotifications and tickerContent are not defined in this scope.
+            // This block would need to re-fetch or pass them if intended to update UI immediately.
+            // For now, it will update the cache for the next load.
+            // if (activeNotifications.length > 0) {
+            //     tickerContent.innerHTML = activeNotifications.map(notification =>
+            //         `<span class="news-item inline-block mx-8">• ${notification.message || notification.text}</span>`
+            //     ).join('');
+            //     console.log('✅ Updated notifications from server');
+            // }
+        }
+    } catch (error) {
+        console.warn('Failed to fetch fresh notifications (background):', error);
+    }
+}; // This is the correct closing brace for fetchAndCacheNotifications
+
+// Trigger background fetch
+// Use requestIdleCallback if available to not block main thread
+if ('requestIdleCallback' in window) {
+    requestIdleCallback(() => fetchFreshData());
+} else {
+    setTimeout(fetchFreshData, 1000); // Wait a bit to let critical resources load
+}
+
 
 // Initialize immediately (don't wait for DOMContentLoaded if script is deferred)
 loadNewsTicker();

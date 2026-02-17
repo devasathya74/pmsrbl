@@ -627,3 +627,13 @@
 .gallery-label {
     display: none;
 }
+
+/* Mobile Gallery Adjustments */
+@media (max-width: 768px) {
+    .gallery-wrapper {
+        aspect-ratio: 20 / 14 !important;
+    }
+    .slide {
+        width: 75% !important;
+    }
+}

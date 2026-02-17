@@ -525,3 +525,105 @@
     transform-origin: center;
     box-shadow: 0 0 4px rgba(255, 255, 255, 0.8);
 }
+
+/* ========================================
+   Overlap Gallery Slider Styles
+   ======================================== */
+
+.gallery-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+    /* Full screen width */
+    padding: 0;
+    /* Remove visual background/border/shadow */
+    background: transparent;
+    backdrop-filter: none;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Container size optimized for content */
+    aspect-ratio: 20 / 5;
+    /* 0.625x height compared to original 20/8 - close to requested 0.7x */
+    margin: 0 auto;
+}
+
+.slider-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.slide {
+    position: absolute;
+    width: 35%;
+    /* Reduced from 45% to fit vertically */
+    aspect-ratio: 3/2;
+    /* Actual image ratio */
+    object-fit: cover;
+    border-radius: 15px;
+    transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0;
+    pointer-events: none;
+    filter: brightness(0.4) blur(2px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+/* Positions Logic */
+
+/* 1st Image (Left) */
+.slide.pos-1 {
+    transform: translateX(-65%) scale(0.85);
+    opacity: 0.6;
+    z-index: 10;
+    filter: brightness(0.6) blur(1px);
+    pointer-events: auto;
+}
+
+/* 2nd Image (Center - Overlapping) */
+.slide.pos-2 {
+    transform: translateX(0) scale(1.1);
+    opacity: 1;
+    z-index: 30;
+    /* Highest Z-index for overlap */
+    filter: brightness(1) blur(0);
+    pointer-events: auto;
+    /* Keep border/shadow on the center image for pop or remove if requested "only image" */
+    /* Assuming user wants the image to still look good, keeping border on image itself is fine, wrapper gone */
+    border: 3px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+}
+
+/* 3rd Image (Right) */
+.slide.pos-3 {
+    transform: translateX(65%) scale(0.85);
+    opacity: 0.6;
+    z-index: 10;
+    filter: brightness(0.6) blur(1px);
+    pointer-events: auto;
+}
+
+/* Exit Animation (Left ki taraf hide hona) */
+.slide.hide-left {
+    transform: translateX(-150%) scale(0.5);
+    opacity: 0;
+    z-index: 5;
+}
+
+/* Entry Animation (Right se load hona) */
+.slide.show-right {
+    transform: translateX(150%) scale(0.5);
+    opacity: 0;
+    z-index: 5;
+}
+
+.gallery-label {
+    display: none;
+}

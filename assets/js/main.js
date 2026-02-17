@@ -603,8 +603,8 @@ function initBlastEffect() {
 
     // Configuration
     const SHOW_DURATION = 1000; // 1 second
-    const BLAST_DURATION = 3000; // 3 seconds
-    const PARTICLE_COUNT = 100; // Increased for better visibility
+    const BLAST_DURATION = 2000; // 3 seconds
+    const PARTICLE_COUNT = 300; // Increased for better visibility
 
     function createParticles(badge) {
         // Badge geometric center

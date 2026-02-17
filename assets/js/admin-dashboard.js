@@ -1593,14 +1593,16 @@ window.deleteNotification = async function (id) {
 
 function formatClass(cls) {
     const classMap = {
-
         'lkg': 'LKG',
         'ukg': 'UKG',
-        '1': 'Class 1',
-        '2': 'Class 2',
-        '3': 'Class 3',
-        '4': 'Class 4',
-        '5': 'Class 5'
+        '1': '1',
+        '2': '2',
+        '3': '3',
+        '4': '4',
+        '5': '5',
+        '6': '6',
+        '7': '7',
+        '8': '8'
     };
     return classMap[cls] || cls;
 }

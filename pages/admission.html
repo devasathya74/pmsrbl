@@ -216,7 +216,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="space-y-4">
                         <div>
-                            <label class="block text-sm font-medium text-gray-700" data-key="scholar_name">Name of
+                            <label class="block text-sm font-medium text-gray-700" data-key="scholar_name">1:- Name of
                                 Scholar <span class="text-red-500">*</span></label>
                             <input type="text" name="scholarName" required
                                 class="mt-1 block w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none shadow-sm">
@@ -229,6 +229,17 @@
                             <p class="text-xs text-gray-500 mt-1">Format: mm/dd/yyyy</p>
                         </div>
                         <div>
+                            <label class="block text-sm font-medium text-gray-700" data-key="gender">Gender <span
+                                    class="text-red-500">*</span></label>
+                            <select name="gender" required
+                                class="mt-1 block w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none shadow-sm cursor-pointer">
+                                <option value="" data-key="select_gender">-- Select Gender --</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div>
                             <label class="block text-sm font-medium text-gray-700" data-key="target_class">Class to
                                 which admission is sought <span class="text-red-500">*</span></label>
                             <select name="targetClass" required
@@ -236,11 +247,14 @@
                                 <option value="" data-key="select_class">-- Select Class --</option>
                                 <option value="LKG">LKG</option>
                                 <option value="UKG">UKG</option>
-                                <option value="1">Class 1</option>
-                                <option value="2">Class 2</option>
-                                <option value="3">Class 3</option>
-                                <option value="4">Class 4</option>
-                                <option value="5">Class 5</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
                             </select>
                         </div>
                     </div>
@@ -689,6 +703,8 @@
                 s1_title: "Step 1: Scholar Details",
                 scholar_name: "Name of Scholar",
                 dob: "Date of Birth",
+                gender: "Gender",
+                select_gender: "-- Select Gender --",
                 target_class: "Class to which admission is sought",
                 select_class: "-- Select Class --",
                 photo_label: "Student Photo Preview",
@@ -759,6 +775,8 @@
                 s1_title: "चरण 1: छात्र का विवरण",
                 scholar_name: "छात्र का नाम",
                 dob: "जन्म तिथि",
+                gender: "लिंग",
+                select_gender: "-- लिंग चुनें --",
                 target_class: "कक्षा जिसके लिए प्रवेश चाहिए",
                 select_class: "-- कक्षा चुनें --",
                 photo_label: "छात्र फोटो प्रीव्यू",

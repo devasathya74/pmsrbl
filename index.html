@@ -38,6 +38,23 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="PMS Raebareli">
 
+    <!-- Firebase Preload: Start loading Firebase as early as possible -->
+    <script type="module">
+        (async () => {
+            try {
+                const { authHelper, firestoreHelper, analyticsHelper } = await import('/assets/js/firebase-config.js');
+                window.firestoreHelper = firestoreHelper;
+                window.authHelper = authHelper;
+                window.analyticsHelper = analyticsHelper;
+                analyticsHelper.logPageView('home');
+                console.log('✅ Firebase preloaded early');
+                window.dispatchEvent(new CustomEvent('firebase-loaded'));
+            } catch (error) {
+                console.warn('Firebase failed to preload:', error);
+            }
+        })();
+    </script>
+
     <!-- Google Analytics (Firebase) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-8BD9FCNCB2"></script>
     <script>
@@ -1360,27 +1377,7 @@
     <!-- AOS (Animate On Scroll) -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
-    <!-- Firebase Configuration -->
-    <script type="module">
-        try {
-            const { authHelper, firestoreHelper, analyticsHelper } = await import('/assets/js/firebase-config.js');
-
-            // Make firestoreHelper globally available for main.js
-            window.firestoreHelper = firestoreHelper;
-
-            // Log page view
-            analyticsHelper.logPageView('home');
-            window.analyticsHelper = analyticsHelper;
-            window.authHelper = authHelper;
-            console.log('Firebase loaded successfully');
-
-            // Dispatch event to notify that Firebase is ready
-            window.dispatchEvent(new CustomEvent('firebase-loaded'));
-        } catch (error) {
-            console.warn('Firebase failed to load:', error);
-            // Page will still work without Firebase
-        }
-    </script>
+    <!-- Firebase is now preloaded in <head> for faster startup -->
 
     <!-- AOS (Animate On Scroll) -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>

@@ -1,5 +1,5 @@
 // Service Worker for PWA
-const CACHE_NAME = 'pms-raebareli-v1';
+const CACHE_NAME = 'pms-raebareli-v2';
 const urlsToCache = [
     '/',
     '/index.html',

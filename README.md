@@ -187,7 +187,7 @@ pms/
 #### 1. Update Contact Information
 Edit `index.html` and replace placeholder contact details:
 - Phone: `+91 98765 43210`
-- Email: `info@pmsraebareli.com`
+- Email: `info@pmsraebareli.online`
 - Address: Update with actual address
 
 #### 2. Google Maps
@@ -290,7 +290,7 @@ This project is created for Police Modern School, Raebareli.
 
 ## 👥 Support
 For technical support or questions:
-- Email: info@pmsraebareli.com
+- Email: info@pmsraebareli.online
 - Phone: +91 98765 43210
 
 ## 🎉 Credits

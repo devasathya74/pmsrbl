@@ -2,6 +2,7 @@
 """
 Simple HTTP Server with proper MIME types for ES6 modules
 """
+import os
 import http.server
 import socketserver
 import mimetypes
@@ -30,8 +31,6 @@ class MyHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
         return super().guess_type(path)
 
 if __name__ == '__main__':
-    import os
-    
     Handler = MyHTTPRequestHandler
     
     with socketserver.TCPServer(("", PORT), Handler) as httpd:

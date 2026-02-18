@@ -165,7 +165,13 @@
             background-image: linear-gradient(rgba(30, 58, 138, 0.8), rgba(30, 58, 138, 0.7)), url('https://images.unsplash.com/photo-1503676260728-1c00da094a0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
             background-size: cover;
             background-position: center;
-            background-attachment: fixed;
+            background-attachment: scroll;
+        }
+
+        @media (min-width: 1024px) {
+            .hero-bg {
+                background-attachment: fixed;
+            }
         }
 
         .blob-shape {
@@ -389,14 +395,14 @@
     <nav id="navbar" class="fixed top-0 left-0 w-full z-50 bg-primary shadow-lg text-white">
         <div class="container mx-auto px-6 py-4 flex justify-between items-center relative">
             <!-- Logo -->
-            <a href="#" class="flex items-center gap-3 group">
+            <a href="#" class="flex items-center gap-2 group min-w-0">
                 <img src="/assets/images/logo/logo.png" alt="Police Modern School Logo"
-                    class="w-12 h-12 object-contain rounded-lg shadow-lg group-hover:scale-110 transition-transform">
-                <div class="flex flex-col">
+                    class="w-10 h-10 md:w-12 md:h-12 flex-shrink-0 object-contain rounded-lg shadow-lg group-hover:scale-110 transition-transform">
+                <div class="flex flex-col min-w-0">
                     <span
-                        class="text-3xl md:text-4xl font-bold tracking-wide leading-tight group-hover:text-secondary transition-colors">पुलिस
+                        class="text-base sm:text-xl md:text-2xl lg:text-3xl font-bold tracking-wide leading-tight group-hover:text-secondary transition-colors truncate">पुलिस
                         मॉडर्न स्कूल रायबरेली</span>
-                    <span class="text-lg font-medium opacity-90">25वीं वाहिनी पीएसी, रायबरेली</span>
+                    <span class="text-xs sm:text-sm font-medium opacity-90 truncate">25वीं वाहिनी पीएसी, रायबरेली</span>
                 </div>
             </a>
 
@@ -424,7 +430,7 @@
 
         <!-- Mobile Menu Dropdown -->
         <div id="mobile-menu"
-            class="hidden absolute top-full right-4 w-64 bg-white text-gray-800 shadow-xl rounded-xl z-50 overflow-hidden">
+            class="absolute top-full right-4 w-64 bg-white text-gray-800 shadow-xl rounded-xl z-50 overflow-hidden">
             <div class="flex flex-col p-4 space-y-4 font-medium text-center">
                 <a href="#home" class="hover:text-primary py-2 border-b border-gray-100">मुख्य पृष्ठ</a>
                 <a href="#about" class="hover:text-primary py-2 border-b border-gray-100">हमारे बारे में</a>
@@ -443,7 +449,7 @@
     </nav>
 
     <!-- News Ticker / Notice Board -->
-    <div id="notice-board" class="bg-gradient-to-r from-red-600 to-red-700 text-white py-3 sticky z-40 shadow-lg mt-28">
+    <div id="notice-board" class="bg-gradient-to-r from-red-600 to-red-700 text-white py-3 sticky z-40 shadow-lg">
         <div class="container mx-auto px-6">
             <div class="flex items-center gap-4">
                 <div
@@ -488,14 +494,14 @@
 
     <!-- Hero Section -->
     <section id="home"
-        class="hero-bg h-auto pb-20 flex items-start justify-center text-center px-4 pt-28 md:pt-34 relative overflow-hidden">
+        class="hero-bg min-h-screen pb-20 flex items-center justify-center text-center px-4 pt-24 md:pt-32 relative overflow-hidden">
         <!-- Floating Badge Icons - Alternating System -->
         <img src="/assets/images/admission-badge.png" id="hero-badge-right"
-            class="absolute top-20 right-4 md:top-24 md:right-20 w-24 md:w-32 z-10 drop-shadow-2xl hover:scale-110 transition-transform cursor-pointer"
+            class="absolute top-16 right-2 md:top-24 md:right-20 w-16 md:w-32 z-10 drop-shadow-2xl hover:scale-110 transition-transform cursor-pointer"
             alt="Admission Open Badge">
 
         <img src="/assets/images/admission-badge.png" id="hero-badge-left"
-            class="absolute top-20 left-4 md:top-24 md:left-20 w-24 md:w-32 z-10 drop-shadow-2xl hover:scale-110 transition-transform cursor-pointer"
+            class="absolute top-16 left-2 md:top-24 md:left-20 w-16 md:w-32 z-10 drop-shadow-2xl hover:scale-110 transition-transform cursor-pointer"
             alt="Admission Open Badge" style="opacity: 0; transform: scale(0);">
         <div class="max-w-4xl text-white animate-fade-in-up">
             <div
@@ -819,15 +825,15 @@
 
                 <!-- Junior -->
                 <div
-                    class="bg-white/10 backdrop-blur-md p-8 rounded-2xl border border-white/20 hover:bg-white/20 transition-all">
-                    <div class="flex items-center gap-4 mb-4">
+                    class="bg-white/10 backdrop-blur-md p-6 rounded-2xl border border-white/20 hover:bg-white/20 transition-all">
+                    <div class="flex items-center gap-3 mb-3">
                         <div
-                            class="bg-white text-primary w-12 h-12 rounded-full flex items-center justify-center font-bold text-xl">
+                            class="bg-white text-primary w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg">
                             6-8</div>
-                        <h3 class="text-xl md:text-2xl font-bold">जूनियर विंग</h3>
+                        <h3 class="text-lg md:text-xl font-bold">जूनियर विंग</h3>
                     </div>
-                    <p class="mb-4 opacity-90">इसमें कक्षा 6 से कक्षा 8 तक शामिल हैं।</p>
-                    <ul class="space-y-2 text-sm">
+                    <p class="mb-3 opacity-90 text-sm">इसमें कक्षा 6 से कक्षा 8 तक शामिल हैं।</p>
+                    <ul class="space-y-2 text-xs">
                         <li class="flex items-center gap-2"><i class="fas fa-star text-secondary"></i> अनुभवी और
                             विषय विशेषज्ञ शिक्षक</li>
                         <li class="flex items-center gap-2"><i class="fas fa-star text-secondary"></i> विज्ञान और
@@ -1218,15 +1224,15 @@
                     <!-- SOCIAL MEDIA LINKS - Change URLs below as needed -->
                     <div class="flex space-x-4">
                         <!-- Facebook Link - CHANGE URL HERE -->
-                        <a href="https://t.me/oxaam475" target="_blank"
+                        <a href="https://t.me/sathyadeva" target="_blank"
                             class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-secondary hover:text-primary transition-all"><i
                                 class="fab fa-facebook-f"></i></a>
                         <!-- Instagram Link - CHANGE URL HERE -->
-                        <a href="https://t.me/oxaam475" target="_blank"
+                        <a href="https://t.me/sathyadeva" target="_blank"
                             class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-secondary hover:text-primary transition-all"><i
                                 class="fab fa-instagram"></i></a>
                         <!-- WhatsApp Link - CHANGE URL HERE -->
-                        <a href="https://t.me/oxaam475" target="_blank"
+                        <a href="https://t.me/sathyadeva" target="_blank"
                             class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-secondary hover:text-primary transition-all"><i
                                 class="fab fa-whatsapp"></i></a>
                     </div>
@@ -1300,7 +1306,6 @@
 
         // Mobile Menu Toggle
         mobileMenuBtn.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
             mobileMenu.classList.toggle('open');
             const icon = mobileMenuBtn.querySelector('i');
             if (mobileMenu.classList.contains('open')) {
@@ -1316,7 +1321,9 @@
         links.forEach(link => {
             link.addEventListener('click', function () {
                 mobileMenu.classList.remove('open');
-                mobileMenu.classList.add('hidden');
+                const icon = mobileMenuBtn.querySelector('i');
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
             });
         });
 

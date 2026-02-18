@@ -89,7 +89,7 @@ export const authHelper = {
             await setDoc(doc(db, 'users', user.uid), {
                 email: email,
                 createdAt: new Date().toISOString(),
-                role: userData.role || 'admin', // Use provided role or default to 'admin'
+                role: userData.role || 'student', // Use provided role or default to 'student'
                 ...userData
             });
 

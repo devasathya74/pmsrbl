@@ -30,6 +30,7 @@ document.addEventListener('DOMContentLoaded', function () {
 function initGalleryLightbox() {
     const galleryImages = document.querySelectorAll('.gallery-img');
     const lightbox = createLightbox();
+    let keyboardHandler = null;
 
     galleryImages.forEach((img, index) => {
         img.addEventListener('click', () => {
@@ -78,20 +79,28 @@ function initGalleryLightbox() {
             lightboxImg.src = images[currentIndex].src;
         };
 
+        // Remove any existing keyboard handler before adding a new one
+        if (keyboardHandler) {
+            document.removeEventListener('keydown', keyboardHandler);
+        }
+
         // Keyboard navigation
-        document.addEventListener('keydown', handleKeyboard);
-        function handleKeyboard(e) {
+        keyboardHandler = function handleKeyboard(e) {
             if (e.key === 'Escape') closeLightbox();
             if (e.key === 'ArrowLeft') prev.click();
             if (e.key === 'ArrowRight') next.click();
-        }
+        };
+        document.addEventListener('keydown', keyboardHandler);
     }
 
     function closeLightbox() {
         const lightbox = document.querySelector('.lightbox');
         lightbox.classList.remove('active');
         document.body.style.overflow = '';
-        document.removeEventListener('keydown', handleKeyboard);
+        if (keyboardHandler) {
+            document.removeEventListener('keydown', keyboardHandler);
+            keyboardHandler = null;
+        }
     }
 }
 
@@ -400,7 +409,7 @@ function initChatbot() {
     if (!chatBtn) return;
 
     chatBtn.addEventListener('click', () => {
-        const phone = '919876543210'; // Replace with actual WhatsApp number
+        const phone = '919506170180';
         const message = 'नमस्ते! मुझे प्रवेश के बारे में जानकारी चाहिए।';
         const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
         window.open(url, '_blank');

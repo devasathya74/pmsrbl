@@ -10,7 +10,8 @@ document.addEventListener('DOMContentLoaded', function () {
             duration: 800,
             easing: 'ease-in-out',
             once: true,
-            offset: 100
+            offset: 20, // Reduced offset for better bot detection
+            disable: window.innerWidth < 100 // Safety for extremely narrow crawlers
         });
     }
 

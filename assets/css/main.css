@@ -447,6 +447,24 @@
     }
 }
 
+.animate-fade-in-up {
+    animation: fadeInUp 1s ease-out forwards;
+}
+
+/* Ensure content is visible even if AOS fails to trigger */
+[data-aos] {
+    transition-property: opacity, transform !important;
+}
+
+/* Search Engine Bot & No-JS Fallback */
+@media screen and (max-width: 0px) {
+    [data-aos] {
+        opacity: 1 !important;
+        transform: none !important;
+        visibility: visible !important;
+    }
+}
+
 @keyframes slideIn {
     from {
         opacity: 0;
@@ -633,6 +651,7 @@
     .gallery-wrapper {
         aspect-ratio: 20 / 14 !important;
     }
+
     .slide {
         width: 75% !important;
     }

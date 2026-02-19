@@ -679,46 +679,300 @@
                         <p class="text-gray-600 mt-2 text-xs">हमारे स्कूल के बारे में अभिभावक क्या कहते हैं</p>
                     </div>
 
-                    <div class="testimonial-carousel">
-                        <!-- Testimonial 1 -->
-                        <div class="testimonial-slide active">
-                            <div class="testimonial-stars text-sm">★★★★★</div>
-                            <p class="testimonial-text text-sm">
-                                "बहुत ही अच्छा स्कूल है। शिक्षक बहुत मेहनती और बच्चों के प्रति समर्पित हैं। मेरे बच्चे
-                                को यहाँ
-                                पढ़ाकर मुझे बहुत खुशी है। सुरक्षा व्यवस्था भी उत्कृष्ट है।"
-                            </p>
-                            <p class="testimonial-author text-sm">श्रीमती अनिता शर्मा</p>
-                            <p class="text-gray-500 text-xs">अभिभावक, कक्षा 3</p>
+                    <div class="testimonial-carousel relative px-8">
+                        <!-- Navigation Arrows -->
+                        <button
+                            class="testimonial-prev absolute left-0 top-1/2 -translate-y-1/2 w-8 h-8 bg-blue-50 rounded-full flex items-center justify-center text-primary shadow-sm hover:bg-primary hover:text-white transition-all z-10"
+                            aria-label="Previous testimonial">
+                            <i class="fas fa-chevron-left text-xs"></i>
+                        </button>
+                        <button
+                            class="testimonial-next absolute right-0 top-1/2 -translate-y-1/2 w-8 h-8 bg-blue-50 rounded-full flex items-center justify-center text-primary shadow-sm hover:bg-primary hover:text-white transition-all z-10"
+                            aria-label="Next testimonial">
+                            <i class="fas fa-chevron-right text-xs"></i>
+                        </button>
+
+                        <div class="testimonial-slides-container">
+                            <!-- Testimonial 1 -->
+                            <div class="testimonial-slide active">
+                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
+                                <p class="testimonial-text text-sm">"Excellent school. Teachers are very hardworking and
+                                    dedicated to children. I am very happy to have my child studying here."</p>
+                                <p class="testimonial-author text-sm font-bold">Mrs. Anita Sharma</p>
+                                <p class="text-gray-500 text-xs">Parent, Class 3</p>
+                            </div>
+
+                            <!-- Testimonial 2 -->
+                            <div class="testimonial-slide">
+                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
+                                <p class="testimonial-text text-sm">"Being inside the PAC campus, there are no security
+                                    concerns. Along with studies, sports and other activities are also focused upon."
+                                </p>
+                                <p class="testimonial-author text-sm font-bold">Mr. Rakesh Verma</p>
+                                <p class="text-gray-500 text-xs">Parent, Class 5</p>
+                            </div>
+
+                            <!-- Testimonial 3 -->
+                            <div class="testimonial-slide">
+                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
+                                <p class="testimonial-text text-sm">"Teachers' behavior is very good. Children are
+                                    taught with love. The school's cleanliness and discipline are commendable."</p>
+                                <p class="testimonial-author text-sm font-bold">Mrs. Priya Singh</p>
+                                <p class="text-gray-500 text-xs">Parent, Nursery</p>
+                            </div>
+
+                            <!-- Testimonial 4 -->
+                            <div class="testimonial-slide">
+                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
+                                <p class="testimonial-text text-sm">"A perfect balance of discipline and education is
+                                    seen here. This school is the pride of Raebareli."</p>
+                                <p class="testimonial-author text-sm font-bold">Mr. Ajay Gupta</p>
+                                <p class="text-gray-500 text-xs">Parent, Class 8</p>
+                            </div>
+
+                            <!-- Testimonial 5 -->
+                            <div class="testimonial-slide">
+                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
+                                <p class="testimonial-text text-sm">"The school facilities are modern and the teaching
+                                    environment is very conducive and safe for children."</p>
+                                <p class="testimonial-author text-sm font-bold">Mrs. Madhu Yadav</p>
+                                <p class="text-gray-500 text-xs">Parent, Class 4</p>
+                            </div>
+
+                            <!-- Testimonial 6 -->
+                            <div class="testimonial-slide">
+                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
+                                <p class="testimonial-text text-sm">"My child's confidence has improved a lot after
+                                    joining here. Teachers always motivate the students."</p>
+                                <p class="testimonial-author text-sm font-bold">Mr. Rajesh Maurya</p>
+                                <p class="text-gray-500 text-xs">Parent, Class 2</p>
+                            </div>
+
+                            <!-- Testimonial 7 -->
+                            <div class="testimonial-slide">
+                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
+                                <p class="testimonial-text text-sm">"The admission process is very clear and simple. The
+                                    staff is polite and helpful. Great experience."</p>
+                                <p class="testimonial-author text-sm font-bold">Mrs. Seema Singh</p>
+                                <p class="text-gray-500 text-xs">Parent, Class 1</p>
+                            </div>
+
+                            <!-- Testimonial 8 -->
+                            <div class="testimonial-slide">
+                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
+                                <p class="testimonial-text text-sm">"Great balance between sports and academics.
+                                    Physical and mental growth happens simultaneously."</p>
+                                <p class="testimonial-author text-sm font-bold">Mr. Pankaj Kumar</p>
+                                <p class="text-gray-500 text-xs">Parent, Class 6</p>
+                            </div>
+
+                            <!-- Testimonial 9 -->
+                            <div class="testimonial-slide">
+                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
+                                <p class="testimonial-text text-sm">"Most trusted school for quality primary education
+                                    in Raebareli. We are completely satisfied."</p>
+                                <p class="testimonial-author text-sm font-bold">Mr. Amit Srivastava</p>
+                                <p class="text-gray-500 text-xs">Parent, Class 7</p>
+                            </div>
+
+                            <!-- Testimonial 10 -->
+                            <div class="testimonial-slide">
+                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
+                                <p class="testimonial-text text-sm">"Child safety was our priority, and it is fully
+                                    ensured here. The teaching quality is also superb."</p>
+                                <p class="testimonial-author text-sm font-bold">Mrs. Rita Devi</p>
+                                <p class="text-gray-500 text-xs">Parent, Class 3</p>
+                            </div>
+
+                            <!-- Testimonial 11 -->
+                            <div class="testimonial-slide">
+                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
+                                <p class="testimonial-text text-sm">"Smart classes and modern teaching methods help
+                                    children learn quickly without feeling burdened."</p>
+                                <p class="testimonial-author text-sm font-bold">Mr. Vikas Pandey</p>
+                                <p class="text-gray-500 text-xs">Parent, Class 4</p>
+                            </div>
+
+                            <!-- Testimonial 12 -->
+                            <div class="testimonial-slide">
+                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
+                                <p class="testimonial-text text-sm">"Regular PTMs keep us updated about our child's
+                                    progress. Communication system is very good."</p>
+                                <p class="testimonial-author text-sm font-bold">Mrs. Sunita Maurya</p>
+                                <p class="text-gray-500 text-xs">Parent, Class 2</p>
+                            </div>
+
+                            <!-- Testimonial 13 -->
+                            <div class="testimonial-slide">
+                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
+                                <p class="testimonial-text text-sm">"The school atmosphere is very positive and
+                                    inspiring. Children stay excited to learn new things here."</p>
+                                <p class="testimonial-author text-sm font-bold">Mr. Sanjay Mishra</p>
+                                <p class="text-gray-500 text-xs">Parent, Class 5</p>
+                            </div>
+
+                            <!-- Testimonial 14 -->
+                            <div class="testimonial-slide">
+                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
+                                <p class="testimonial-text text-sm">"Experienced team of teachers shaping children's
+                                    future in the right direction. Thanks to dedicated staff."</p>
+                                <p class="testimonial-author text-sm font-bold">Mrs. Kavita Tripathi</p>
+                                <p class="text-gray-500 text-xs">Parent, Class 1</p>
+                            </div>
+
+                            <!-- Testimonial 15 -->
+                            <div class="testimonial-slide">
+                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
+                                <p class="testimonial-text text-sm">"School bus service is safe and punctual. We never
+                                    have to worry about our children's commute."</p>
+                                <p class="testimonial-author text-sm font-bold">Mr. Dheeraj Yadav</p>
+                                <p class="text-gray-500 text-xs">Parent, Class 6</p>
+                            </div>
+
+                            <!-- Testimonial 16 -->
+                            <div class="testimonial-slide">
+                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
+                                <p class="testimonial-text text-sm">"Both values and education here are commendable.
+                                    Children are learning discipline and ethics."</p>
+                                <p class="testimonial-author text-sm font-bold">Mrs. Manju Singh</p>
+                                <p class="text-gray-500 text-xs">Parent, Nursery</p>
+                            </div>
+
+                            <!-- Testimonial 17 -->
+                            <div class="testimonial-slide">
+                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
+                                <p class="testimonial-text text-sm">"Children go to school happily, which is the biggest
+                                    deal for parents. Standard of education is top-notch."</p>
+                                <p class="testimonial-author text-sm font-bold">Mr. Ravindra Singh</p>
+                                <p class="text-gray-500 text-xs">Parent, Class 3</p>
+                            </div>
+
+                            <!-- Testimonial 18 -->
+                            <div class="testimonial-slide">
+                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
+                                <p class="testimonial-text text-sm">"Difficult to find such good and safe education at
+                                    an affordable fee. Best school in Raebareli."</p>
+                                <p class="testimonial-author text-sm font-bold">Mrs. Deepa Gupta</p>
+                                <p class="text-gray-500 text-xs">Parent, Class 2</p>
+                            </div>
+
+                            <!-- Testimonial 19 -->
+                            <div class="testimonial-slide">
+                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
+                                <p class="testimonial-text text-sm">"School library and laboratories are well-organized.
+                                    Practical learning is emphasized here."</p>
+                                <p class="testimonial-author text-sm font-bold">Mr. Anil Kumar</p>
+                                <p class="text-gray-500 text-xs">Parent, Class 8</p>
+                            </div>
+
+                            <!-- Testimonial 20 -->
+                            <div class="testimonial-slide">
+                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
+                                <p class="testimonial-text text-sm">"Personal attention is given to every child, which I
+                                    really like. Individual strengths are recognized."</p>
+                                <p class="testimonial-author text-sm font-bold">Mrs. Rachna Sharma</p>
+                                <p class="text-gray-500 text-xs">Parent, Class 5</p>
+                            </div>
+
+                            <!-- Testimonial 21 -->
+                            <div class="testimonial-slide">
+                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
+                                <p class="testimonial-text text-sm">"The peace and greenery of the PAC campus are very
+                                    favorable for studying. A hub of education."</p>
+                                <p class="testimonial-author text-sm font-bold">Mr. Manoj Tiwari</p>
+                                <p class="text-gray-500 text-xs">Parent, Class 4</p>
+                            </div>
+
+                            <!-- Testimonial 22 -->
+                            <div class="testimonial-slide">
+                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
+                                <p class="testimonial-text text-sm">"Annual functions and cultural competitions bring
+                                    out the hidden talent of children. Great platform."</p>
+                                <p class="testimonial-author text-sm font-bold">Mrs. Suman Devi</p>
+                                <p class="text-gray-500 text-xs">Parent, Class 7</p>
+                            </div>
+
+                            <!-- Testimonial 23 -->
+                            <div class="testimonial-slide">
+                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
+                                <p class="testimonial-text text-sm">"Cleanliness and hygiene are specially cared for.
+                                    Pure drinking water and clean toilets available."</p>
+                                <p class="testimonial-author text-sm font-bold">Mr. Rahul Verma</p>
+                                <p class="text-gray-500 text-xs">Parent, LKG</p>
+                            </div>
+
+                            <!-- Testimonial 24 -->
+                            <div class="testimonial-slide">
+                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
+                                <p class="testimonial-text text-sm">"School management is very active and helpful.
+                                    Suggestions are implemented promptly. Thanks!"</p>
+                                <p class="testimonial-author text-sm font-bold">Mrs. Nutan Singh</p>
+                                <p class="text-gray-500 text-xs">Parent, Class 6</p>
+                            </div>
+
+                            <!-- Testimonial 25 -->
+                            <div class="testimonial-slide">
+                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
+                                <p class="testimonial-text text-sm">"Instruction of moral values and ethics is the
+                                    strongest point here. Children will be better citizens."</p>
+                                <p class="testimonial-author text-sm font-bold">Mr. Shiv Kumar</p>
+                                <p class="text-gray-500 text-xs">Parent, Class 1</p>
+                            </div>
+
+                            <!-- Testimonial 26 -->
+                            <div class="testimonial-slide">
+                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
+                                <p class="testimonial-text text-sm">"Special emphasis is laid on English speaking and
+                                    personality development. Kids talk confidently."</p>
+                                <p class="testimonial-author text-sm font-bold">Mrs. Priyanka Raj</p>
+                                <p class="text-gray-500 text-xs">Parent, Class 3</p>
+                            </div>
+
+                            <!-- Testimonial 27 -->
+                            <div class="testimonial-slide">
+                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
+                                <p class="testimonial-text text-sm">"Being inside the police campus, the environment for
+                                    children here is fully safe and peaceful."</p>
+                                <p class="testimonial-author text-sm font-bold">Mr. Ashok Kumar</p>
+                                <p class="text-gray-500 text-xs">Parent, Class 5</p>
+                            </div>
+
+                            <!-- Testimonial 28 -->
+                            <div class="testimonial-slide">
+                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
+                                <p class="testimonial-text text-sm">"Digital learning and projects have made studies
+                                    very interesting. Children learn with fun."</p>
+                                <p class="testimonial-author text-sm font-bold">Mrs. Sarita Yadav</p>
+                                <p class="text-gray-500 text-xs">Parent, Class 2</p>
+                            </div>
+
+                            <!-- Testimonial 29 -->
+                            <div class="testimonial-slide">
+                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
+                                <p class="testimonial-text text-sm">"Teachers listen and solve educational and personal
+                                    problems of children patiently. Excellent team."</p>
+                                <p class="testimonial-author text-sm font-bold">Mr. Gyanendra Singh</p>
+                                <p class="text-gray-500 text-xs">Parent, Class 8</p>
+                            </div>
+
+                            <!-- Testimonial 30 -->
+                            <div class="testimonial-slide">
+                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
+                                <p class="testimonial-text text-sm">"I am proud that my child is part of this dignified
+                                    institution. Here we get values with education."</p>
+                                <p class="testimonial-author text-sm font-bold">Mrs. Rekha Mishra</p>
+                                <p class="text-gray-500 text-xs">Parent, Class 4</p>
+                            </div>
                         </div>
 
-                        <!-- Testimonial 2 -->
-                        <div class="testimonial-slide">
-                            <div class="testimonial-stars text-sm">★★★★★</div>
-                            <p class="testimonial-text text-sm">
-                                "पी.ए.सी. कैंपस में होने के कारण सुरक्षा की कोई चिंता नहीं है। पढ़ाई के साथ-साथ खेल और
-                                अन्य गतिविधियों पर भी ध्यान दिया जाता है। बहुत संतुष्ट हूँ।"
-                            </p>
-                            <p class="testimonial-author text-sm">श्री राकेश वर्मा</p>
-                            <p class="text-gray-500 text-xs">अभिभावक, कक्षा 5</p>
-                        </div>
-
-                        <!-- Testimonial 3 -->
-                        <div class="testimonial-slide">
-                            <div class="testimonial-stars text-sm">★★★★★</div>
-                            <p class="testimonial-text text-sm">
-                                "शिक्षकों का व्यवहार बहुत अच्छा है। बच्चों को प्यार से पढ़ाया जाता है। स्कूल की साफ-सफाई
-                                और अनुशासन काबिले तारीफ है। मैं सभी को यहाँ प्रवेश लेने की सलाह दूँगी।"
-                            </p>
-                            <p class="testimonial-author text-sm">श्रीमती प्रिया सिंह</p>
-                            <p class="text-gray-500 text-xs">अभिभावक, नर्सरी</p>
-                        </div>
-
-                        <!-- Carousel Dots -->
-                        <div class="carousel-dots mt-2">
-                            <span class="carousel-dot active"></span>
-                            <span class="carousel-dot"></span>
-                            <span class="carousel-dot"></span>
+                        <!-- Carousel Controls -->
+                        <div class="flex items-center justify-center gap-4 mt-6">
+                            <div
+                                class="carousel-counter text-xs font-bold text-primary bg-blue-50 px-3 py-1 rounded-full">
+                                1 / 30</div>
+                            <div class="carousel-dots flex gap-1">
+                                <!-- Dots will be hidden or limited via CSS/JS if needed -->
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -160,26 +160,51 @@ function initFAQ() {
 // ========================================
 function initTestimonialCarousel() {
     const slides = document.querySelectorAll('.testimonial-slide');
-    const dots = document.querySelectorAll('.carousel-dot');
+    const dotsContainer = document.querySelector('.carousel-dots');
+    const counterDisplay = document.querySelector('.carousel-counter');
+    const prevBtn = document.querySelector('.testimonial-prev');
+    const nextBtn = document.querySelector('.testimonial-next');
+
     let currentSlide = 0;
     let autoPlayInterval;
 
     if (slides.length === 0) return;
 
+    // Create dots only if there are few slides (e.g., <= 5)
+    // Otherwise rely on arrows and counter
+    function updateDots() {
+        const dots = document.querySelectorAll('.carousel-dot');
+        dots.forEach((dot, index) => {
+            dot.classList.toggle('active', index === currentSlide);
+        });
+    }
+
+    function updateCounter() {
+        if (counterDisplay) {
+            counterDisplay.textContent = `${currentSlide + 1} / ${slides.length}`;
+        }
+    }
+
     function showSlide(index) {
         slides.forEach(slide => slide.classList.remove('active'));
-        dots.forEach(dot => dot.classList.remove('active'));
 
         currentSlide = (index + slides.length) % slides.length;
         slides[currentSlide].classList.add('active');
-        if (dots[currentSlide]) dots[currentSlide].classList.add('active');
+
+        updateDots();
+        updateCounter();
     }
 
     function nextSlide() {
         showSlide(currentSlide + 1);
     }
 
+    function prevSlide() {
+        showSlide(currentSlide - 1);
+    }
+
     function startAutoPlay() {
+        stopAutoPlay(); // Prevent multiple intervals
         autoPlayInterval = setInterval(nextSlide, 5000);
     }
 
@@ -188,12 +213,26 @@ function initTestimonialCarousel() {
     }
 
     // Dot navigation
+    const dots = document.querySelectorAll('.carousel-dot');
     dots.forEach((dot, index) => {
         dot.addEventListener('click', () => {
             showSlide(index);
             stopAutoPlay();
             startAutoPlay();
         });
+    });
+
+    // Arrow navigation
+    if (prevBtn) prevBtn.addEventListener('click', () => {
+        prevSlide();
+        stopAutoPlay();
+        startAutoPlay();
+    });
+
+    if (nextBtn) nextBtn.addEventListener('click', () => {
+        nextSlide();
+        stopAutoPlay();
+        startAutoPlay();
     });
 
     // Initialize

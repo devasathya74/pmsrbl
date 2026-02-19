@@ -760,46 +760,299 @@
                         <p class="text-gray-600 mt-2 text-xs">हमारे स्कूल के बारे में अभिभावक क्या कहते हैं</p>
                     </div>
 
-                    <div class="testimonial-carousel">
-                        <!-- Testimonial 1 -->
-                        <div class="testimonial-slide active">
-                            <div class="testimonial-stars text-sm">★★★★★</div>
-                            <p class="testimonial-text text-sm">
-                                "बहुत ही अच्छा स्कूल है। शिक्षक बहुत मेहनती और बच्चों के प्रति समर्पित हैं। मेरे बच्चे
-                                को यहाँ
-                                पढ़ाकर मुझे बहुत खुशी है। सुरक्षा व्यवस्था भी उत्कृष्ट है।"
-                            </p>
-                            <p class="testimonial-author text-sm">श्रीमती अनिता शर्मा</p>
-                            <p class="text-gray-500 text-xs">अभिभावक, कक्षा 3</p>
+                    <div class="testimonial-carousel relative px-8">
+                        <!-- Navigation Arrows -->
+                        <button
+                            class="testimonial-prev absolute left-0 top-1/2 -translate-y-1/2 w-8 h-8 bg-blue-50 rounded-full flex items-center justify-center text-primary shadow-sm hover:bg-primary hover:text-white transition-all z-10"
+                            aria-label="Previous testimonial">
+                            <i class="fas fa-chevron-left text-xs"></i>
+                        </button>
+                        <button
+                            class="testimonial-next absolute right-0 top-1/2 -translate-y-1/2 w-8 h-8 bg-blue-50 rounded-full flex items-center justify-center text-primary shadow-sm hover:bg-primary hover:text-white transition-all z-10"
+                            aria-label="Next testimonial">
+                            <i class="fas fa-chevron-right text-xs"></i>
+                        </button>
+
+                        <div class="testimonial-slides-container">
+                            <!-- Testimonial 1 -->
+                            <div class="testimonial-slide active">
+                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
+                                <p class="testimonial-text text-sm">"बहुत ही अच्छा स्कूल है। शिक्षक बहुत मेहनती और
+                                    बच्चों के प्रति समर्पित हैं। मेरे बच्चे को यहाँ पढ़ाकर मुझे बहुत खुशी है।"</p>
+                                <p class="testimonial-author text-sm font-bold">श्रीमती अनिता शर्मा</p>
+                                <p class="text-gray-500 text-xs">अभिभावक, कक्षा 3</p>
+                            </div>
+
+                            <!-- Testimonial 2 -->
+                            <div class="testimonial-slide">
+                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
+                                <p class="testimonial-text text-sm">"पी.ए.सी. कैंपस में होने के कारण सुरक्षा की कोई
+                                    चिंता नहीं है। पढ़ाई के साथ-साथ खेल और अन्य गतिविधियों पर ध्यान दिया जाता है।"</p>
+                                <p class="testimonial-author text-sm font-bold">श्री राकेश वर्मा</p>
+                                <p class="text-gray-500 text-xs">अभिभावक, कक्षा 5</p>
+                            </div>
+
+                            <!-- Testimonial 3 -->
+                            <div class="testimonial-slide">
+                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
+                                <p class="testimonial-text text-sm">"शिक्षकों का व्यवहार बहुत अच्छा है। बच्चों को प्यार
+                                    से पढ़ाया जाता है। स्कूल की साफ-सफाई और अनुशासन काबिले तारीफ है।"</p>
+                                <p class="testimonial-author text-sm font-bold">श्रीमती प्रिया सिंह</p>
+                                <p class="text-gray-500 text-xs">अभिभावक, नर्सरी</p>
+                            </div>
+
+                            <!-- Testimonial 4 -->
+                            <div class="testimonial-slide">
+                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
+                                <p class="testimonial-text text-sm">"अनुशासन और शिक्षा का बेहतरीन तालमेल यहाँ देखने को
+                                    मिलता है। रायबरेली का गौरव है यह स्कूल।"</p>
+                                <p class="testimonial-author text-sm font-bold">श्री अजय गुप्त</p>
+                                <p class="text-gray-500 text-xs">अभिभावक, कक्षा 8</p>
+                            </div>
+
+                            <!-- Testimonial 5 -->
+                            <div class="testimonial-slide">
+                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
+                                <p class="testimonial-text text-sm">"स्कूल की सुविधाएं आधुनिक हैं और पढ़ाई का माहौल
+                                    बच्चों के लिए बहुत ही अनुकूल और सुरक्षित है।"</p>
+                                <p class="testimonial-author text-sm font-bold">श्रीमती मधु यादव</p>
+                                <p class="text-gray-500 text-xs">अभिभावक, कक्षा 4</p>
+                            </div>
+
+                            <!-- Testimonial 6 -->
+                            <div class="testimonial-slide">
+                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
+                                <p class="testimonial-text text-sm">"मेरे बच्चे के आत्मविश्वास में यहाँ आने के बाद बहुत
+                                    सुधार हुआ है। शिक्षक बच्चों को प्रेरित करते हैं।"</p>
+                                <p class="testimonial-author text-sm font-bold">श्री राजेश मौर्या</p>
+                                <p class="text-gray-500 text-xs">अभिभावक, कक्षा 2</p>
+                            </div>
+
+                            <!-- Testimonial 7 -->
+                            <div class="testimonial-slide">
+                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
+                                <p class="testimonial-text text-sm">"प्रवेश प्रक्रिया बहुत ही स्पष्ट और सरल है। स्टाफ
+                                    बहुत ही विनम्र और सहयोगी है। बहुत अच्छा अनुभव।"</p>
+                                <p class="testimonial-author text-sm font-bold">श्रीमती सीमा सिंह</p>
+                                <p class="text-gray-500 text-xs">अभिभावक, कक्षा 1</p>
+                            </div>
+
+                            <!-- Testimonial 8 -->
+                            <div class="testimonial-slide">
+                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
+                                <p class="testimonial-text text-sm">"खेलकूद और पढ़ाई का यहाँ बहुत अच्छा संतुलन है। बच्चे
+                                    का शारीरिक और मानसिक विकास साथ-साथ होता है।"</p>
+                                <p class="testimonial-author text-sm font-bold">श्री पंकज कुमार</p>
+                                <p class="text-gray-500 text-xs">अभिभावक, कक्षा 6</p>
+                            </div>
+
+                            <!-- Testimonial 9 -->
+                            <div class="testimonial-slide">
+                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
+                                <p class="testimonial-text text-sm">"रायबरेली में गुणवत्तापूर्ण प्राथमिक शिक्षा के लिए
+                                    यह सबसे भरोसेमंद स्कूल है। हम पूरी तरह संतुष्ट हैं।"</p>
+                                <p class="testimonial-author text-sm font-bold">श्री अमित श्रीवास्तव</p>
+                                <p class="text-gray-500 text-xs">अभिभावक, कक्षा 7</p>
+                            </div>
+
+                            <!-- Testimonial 10 -->
+                            <div class="testimonial-slide">
+                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
+                                <p class="testimonial-text text-sm">"बच्चों की सुरक्षा हमारे लिए सबसे महत्वपूर्ण थी, और
+                                    यहाँ वह पूरी तरह सुनिश्चित है। पढ़ाई भी लाजवाब है।"</p>
+                                <p class="testimonial-author text-sm font-bold">श्रीमती रीता देवी</p>
+                                <p class="text-gray-500 text-xs">अभिभावक, कक्षा 3</p>
+                            </div>
+
+                            <!-- Testimonial 11 -->
+                            <div class="testimonial-slide">
+                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
+                                <p class="testimonial-text text-sm">"स्मार्ट क्लास और आधुनिक शिक्षण पद्धति से बच्चे
+                                    जल्दी सीखते हैं और उन्हें पढ़ाई बोझ नहीं लगती।"</p>
+                                <p class="testimonial-author text-sm font-bold">श्री विकास पाण्डेय</p>
+                                <p class="text-gray-500 text-xs">अभिभावक, कक्षा 4</p>
+                            </div>
+
+                            <!-- Testimonial 12 -->
+                            <div class="testimonial-slide">
+                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
+                                <p class="testimonial-text text-sm">"पीटीएम के माध्यम से हमें बच्चे की प्रगति की नियमित
+                                    जानकारी मिलती है। संवाद व्यवस्था बहुत अच्छी है।"</p>
+                                <p class="testimonial-author text-sm font-bold">श्रीमती सुनीता मौर्या</p>
+                                <p class="text-gray-500 text-xs">अभिभावक, कक्षा 2</p>
+                            </div>
+
+                            <!-- Testimonial 13 -->
+                            <div class="testimonial-slide">
+                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
+                                <p class="testimonial-text text-sm">"स्कूल का वातावरण बहुत ही सकारात्मक और प्रेरणादायक
+                                    है। बच्चे यहाँ नया सीखने के लिए उत्साहित रहते हैं।"</p>
+                                <p class="testimonial-author text-sm font-bold">श्री संजय मिश्रा</p>
+                                <p class="text-gray-500 text-xs">अभिभावक, कक्षा 5</p>
+                            </div>
+
+                            <!-- Testimonial 14 -->
+                            <div class="testimonial-slide">
+                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
+                                <p class="testimonial-text text-sm">"अनुभवी शिक्षकों की टीम बच्चों के भविष्य को सही दिशा
+                                    में संवार रही है। समर्पित स्टाफ का धन्यवाद।"</p>
+                                <p class="testimonial-author text-sm font-bold">श्रीमती कविता त्रिपाठी</p>
+                                <p class="text-gray-500 text-xs">अभिभावक, कक्षा 1</p>
+                            </div>
+
+                            <!-- Testimonial 15 -->
+                            <div class="testimonial-slide">
+                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
+                                <p class="testimonial-text text-sm">"स्कूल की बस सेवा बहुत ही सुरक्षित और समय की पाबंद
+                                    है। हमें बच्चों को लेकर कोई चिंता नहीं रहती।"</p>
+                                <p class="testimonial-author text-sm font-bold">श्री धीरज यादव</p>
+                                <p class="text-gray-500 text-xs">अभिभावक, कक्षा 6</p>
+                            </div>
+
+                            <!-- Testimonial 16 -->
+                            <div class="testimonial-slide">
+                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
+                                <p class="testimonial-text text-sm">"यहाँ के संस्कार और शिक्षा दोनों ही काबिले तारीफ
+                                    हैं। बच्चे अनुशासन और नैतिकता भी सीख रहे हैं।"</p>
+                                <p class="testimonial-author text-sm font-bold">श्रीमती मंजू सिंह</p>
+                                <p class="text-gray-500 text-xs">अभिभावक, नर्सरी</p>
+                            </div>
+
+                            <!-- Testimonial 17 -->
+                            <div class="testimonial-slide">
+                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
+                                <p class="testimonial-text text-sm">"बच्चे यहाँ खुशी-खुशी स्कूल जाते हैं, जो पेरेंट्स के
+                                    लिए सबसे बड़ी बात है। शिक्षा का स्तर उत्कृष्ट है।"</p>
+                                <p class="testimonial-author text-sm font-bold">श्री रविंद्र सिंह</p>
+                                <p class="text-gray-500 text-xs">अभिभावक, कक्षा 3</p>
+                            </div>
+
+                            <!-- Testimonial 18 -->
+                            <div class="testimonial-slide">
+                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
+                                <p class="testimonial-text text-sm">"किफायती फीस में इतनी अच्छी और सुरक्षित शिक्षा मिलना
+                                    मुश्किल है। यह रायबरेली का बेस्ट स्कूल है।"</p>
+                                <p class="testimonial-author text-sm font-bold">श्रीमती दीपा गुप्ता</p>
+                                <p class="text-gray-500 text-xs">अभिभावक, कक्षा 2</p>
+                            </div>
+
+                            <!-- Testimonial 19 -->
+                            <div class="testimonial-slide">
+                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
+                                <p class="testimonial-text text-sm">"स्कूल की लाइब्रेरी और प्रयोगशालाएं बहुत ही
+                                    व्यवस्थित हैं। प्रैक्टिकल लर्निंग पर यहाँ जोर दिया जाता है।"</p>
+                                <p class="testimonial-author text-sm font-bold">श्री अनिल कुमार</p>
+                                <p class="text-gray-500 text-xs">अभिभावक, कक्षा 8</p>
+                            </div>
+
+                            <!-- Testimonial 20 -->
+                            <div class="testimonial-slide">
+                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
+                                <p class="testimonial-text text-sm">"हर बच्चे पर व्यक्तिगत ध्यान दिया जाता है, जो मुझे
+                                    बहुत पसंद है। बच्चे की खूबियों को पहचाना जाता है।"</p>
+                                <p class="testimonial-author text-sm font-bold">श्रीमती रचना शर्मा</p>
+                                <p class="text-gray-500 text-xs">अभिभावक, कक्षा 5</p>
+                            </div>
+
+                            <!-- Testimonial 21 -->
+                            <div class="testimonial-slide">
+                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
+                                <p class="testimonial-text text-sm">"पीएसी परिसर की शांति और हरियाली पढ़ाई के लिए बहुत
+                                    अनुकूल है। शोर-शराबे से दूर शिक्षा का केंद्र।"</p>
+                                <p class="testimonial-author text-sm font-bold">श्री मनोज तिवारी</p>
+                                <p class="text-gray-500 text-xs">अभिभावक, कक्षा 4</p>
+                            </div>
+
+                            <!-- Testimonial 22 -->
+                            <div class="testimonial-slide">
+                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
+                                <p class="testimonial-text text-sm">"वार्षिक उत्सव और सांस्कृतिक प्रतियोगिताएं बच्चों के
+                                    टैलेंट को खुलकर सामने लाती हैं। बहुत अच्छा मंच है।"</p>
+                                <p class="testimonial-author text-sm font-bold">श्रीमती सुमन देवी</p>
+                                <p class="text-gray-500 text-xs">अभिभावक, कक्षा 7</p>
+                            </div>
+
+                            <!-- Testimonial 23 -->
+                            <div class="testimonial-slide">
+                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
+                                <p class="testimonial-text text-sm">"साफ-सफाई और हाइजीन का यहाँ विशेष ध्यान रखा जाता है।
+                                    पीने का शुद्ध पानी और स्वच्छ टॉयलेट की सुविधा है।"</p>
+                                <p class="testimonial-author text-sm font-bold">श्री राहुल वर्मा</p>
+                                <p class="text-gray-500 text-xs">अभिभावक, एलकेजी</p>
+                            </div>
+
+                            <!-- Testimonial 24 -->
+                            <div class="testimonial-slide">
+                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
+                                <p class="testimonial-text text-sm">"स्कूल का प्रबंधन बहुत ही सक्रिय और सहायक है।
+                                    सुझावों पर तुरंत अमल किया जाता है। धन्यवाद मैनेजमेंट।"</p>
+                                <p class="testimonial-author text-sm font-bold">श्रीमती नूतन सिंह</p>
+                                <p class="text-gray-500 text-xs">अभिभावक, कक्षा 6</p>
+                            </div>
+
+                            <!-- Testimonial 25 -->
+                            <div class="testimonial-slide">
+                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
+                                <p class="testimonial-text text-sm">"नैतिक मूल्यों और संस्कारों की शिक्षा यहाँ का सबसे
+                                    मजबूत पक्ष है। बच्चे बड़े होकर अच्छे नागरिक बनेंगे।"</p>
+                                <p class="testimonial-author text-sm font-bold">श्री शिव कुमार</p>
+                                <p class="text-gray-500 text-xs">अभिभावक, कक्षा 1</p>
+                            </div>
+
+                            <!-- Testimonial 26 -->
+                            <div class="testimonial-slide">
+                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
+                                <p class="testimonial-text text-sm">"इंग्लिश स्पीकिंग और व्यक्तित्व विकास पर विशेष जोर
+                                    दिया जाता है। बच्चे आत्मविश्वास से बात करते हैं।"</p>
+                                <p class="testimonial-author text-sm font-bold">श्रीमती प्रियंका राज</p>
+                                <p class="text-gray-500 text-xs">अभिभावक, कक्षा 3</p>
+                            </div>
+
+                            <!-- Testimonial 27 -->
+                            <div class="testimonial-slide">
+                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
+                                <p class="testimonial-text text-sm">"पुलिस कैंपस के अंदर होने के कारण बच्चों के लिए यहाँ
+                                    का वातावरण पूरी तरह से सुरक्षित और शांतिपूर्ण है।"</p>
+                                <p class="testimonial-author text-sm font-bold">श्री अशोक कुमार</p>
+                                <p class="text-gray-500 text-xs">अभिभावक, कक्षा 5</p>
+                            </div>
+
+                            <!-- Testimonial 28 -->
+                            <div class="testimonial-slide">
+                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
+                                <p class="testimonial-text text-sm">"डिजिटल लर्निंग और प्रोजेक्ट्स के माध्यम से पढ़ाई को
+                                    बहुत ही रुचिकर बनाया गया है। बच्चे मजे से सीखते हैं।"</p>
+                                <p class="testimonial-author text-sm font-bold">श्रीमती सरिता यादव</p>
+                                <p class="text-gray-500 text-xs">अभिभावक, कक्षा 2</p>
+                            </div>
+
+                            <!-- Testimonial 29 -->
+                            <div class="testimonial-slide">
+                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
+                                <p class="testimonial-text text-sm">"शिक्षक बच्चों की शैक्षिक और व्यक्तिगत समस्याओं को
+                                    बहुत धैर्य से सुनते और सुलझाते हैं। बेहतरीन टीम।"</p>
+                                <p class="testimonial-author text-sm font-bold">श्री ज्ञानेंद्र सिंह</p>
+                                <p class="text-gray-500 text-xs">अभिभावक, कक्षा 8</p>
+                            </div>
+
+                            <!-- Testimonial 30 -->
+                            <div class="testimonial-slide">
+                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
+                                <p class="testimonial-text text-sm">"मुझे गर्व है कि मेरा बच्चा इस गरिमापूर्ण संस्थान का
+                                    हिस्सा है। यहाँ शिक्षा के साथ संस्कार भी मिलते हैं।"</p>
+                                <p class="testimonial-author text-sm font-bold">श्रीमती रेखा मिश्रा</p>
+                                <p class="text-gray-500 text-xs">अभिभावक, कक्षा 4</p>
+                            </div>
                         </div>
 
-                        <!-- Testimonial 2 -->
-                        <div class="testimonial-slide">
-                            <div class="testimonial-stars text-sm">★★★★★</div>
-                            <p class="testimonial-text text-sm">
-                                "पी.ए.सी. कैंपस में होने के कारण सुरक्षा की कोई चिंता नहीं है। पढ़ाई के साथ-साथ खेल और
-                                अन्य गतिविधियों पर भी ध्यान दिया जाता है। बहुत संतुष्ट हूँ।"
-                            </p>
-                            <p class="testimonial-author text-sm">श्री राकेश वर्मा</p>
-                            <p class="text-gray-500 text-xs">अभिभावक, कक्षा 5</p>
-                        </div>
-
-                        <!-- Testimonial 3 -->
-                        <div class="testimonial-slide">
-                            <div class="testimonial-stars text-sm">★★★★★</div>
-                            <p class="testimonial-text text-sm">
-                                "शिक्षकों का व्यवहार बहुत अच्छा है। बच्चों को प्यार से पढ़ाया जाता है। स्कूल की साफ-सफाई
-                                और अनुशासन काबिले तारीफ है। मैं सभी को यहाँ प्रवेश लेने की सलाह दूँगी।"
-                            </p>
-                            <p class="testimonial-author text-sm">श्रीमती प्रिया सिंह</p>
-                            <p class="text-gray-500 text-xs">अभिभावक, नर्सरी</p>
-                        </div>
-
-                        <!-- Carousel Dots -->
-                        <div class="carousel-dots mt-2">
-                            <span class="carousel-dot active"></span>
-                            <span class="carousel-dot"></span>
-                            <span class="carousel-dot"></span>
+                        <!-- Carousel Controls -->
+                        <div class="flex items-center justify-center gap-4 mt-6">
+                            <div
+                                class="carousel-counter text-xs font-bold text-primary bg-blue-50 px-3 py-1 rounded-full">
+                                1 / 30</div>
+                            <div class="carousel-dots flex gap-1">
+                                <!-- Dots will be hidden or limited via CSS/JS if needed -->
+                            </div>
                         </div>
                     </div>
                 </div>

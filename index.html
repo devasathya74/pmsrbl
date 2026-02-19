@@ -4,6 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link rel="preconnect" href="https://pagead2.googlesyndication.com">
+    <link rel="preconnect" href="https://www.googletagmanager.com">
 
     <!-- Google AdSense -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6154654647536398"
@@ -434,7 +439,7 @@
         <div class="container mx-auto px-6 py-4 flex justify-between items-center relative">
             <!-- Logo -->
             <a href="#" class="flex items-center gap-2 group min-w-0">
-                <img src="/assets/images/logo/logo.png" alt="Police Modern School Logo"
+                <img src="/assets/images/logo/logo.png" alt="Police Modern School Logo" width="48" height="48"
                     class="w-10 h-10 md:w-12 md:h-12 flex-shrink-0 object-contain rounded-lg shadow-lg group-hover:scale-110 transition-transform">
                 <div class="flex flex-col min-w-0">
                     <span
@@ -472,7 +477,7 @@
             <!-- Mobile Action Items (Hamburger Only) -->
             <div class="flex lg:hidden items-center">
                 <!-- Mobile Menu Button -->
-                <button id="menu-btn" class="text-2xl focus:outline-none">
+                <button id="menu-btn" class="text-2xl focus:outline-none" aria-label="Open navigation menu">
                     <i class="fas fa-bars"></i>
                 </button>
             </div>
@@ -555,11 +560,11 @@
     <section id="home"
         class="hero-bg min-h-[60vh] pb-20 flex items-center justify-center text-center px-4 pt-24 md:pt-32 relative overflow-hidden">
         <!-- Floating Badge Icons - Alternating System -->
-        <img src="/assets/images/admission-badge.png" id="hero-badge-right"
+        <img src="/assets/images/admission-badge.png" id="hero-badge-right" width="128" height="128"
             class="absolute top-16 right-2 md:top-24 md:right-20 w-16 md:w-32 z-10 drop-shadow-2xl hover:scale-110 transition-transform cursor-pointer"
             alt="Police Modern School Raebareli - Admission Open">
 
-        <img src="/assets/images/admission-badge.png" id="hero-badge-left"
+        <img src="/assets/images/admission-badge.png" id="hero-badge-left" width="128" height="128"
             class="absolute top-16 left-2 md:top-24 md:left-20 w-16 md:w-32 z-10 drop-shadow-2xl hover:scale-110 transition-transform cursor-pointer"
             alt="Police Modern School Raebareli - Admission Open" style="opacity: 0; transform: scale(0);">
         <div class="max-w-4xl text-white animate-fade-in-up">
@@ -581,7 +586,8 @@
                     अभी आवेदन करें <i class="fas fa-arrow-right ml-2"></i>
                 </a>
                 <a href="#about"
-                    class="bg-transparent border-2 border-white text-white px-6 py-3 rounded-full font-bold text-lg hover:bg-white hover:text-primary transition-all">
+                    class="bg-transparent border-2 border-white text-white px-6 py-3 rounded-full font-bold text-lg hover:bg-white hover:text-primary transition-all"
+                    aria-label="हमारे स्कूल के बारे में और जानें">
                     और जानें
                 </a>
             </div>
@@ -628,11 +634,12 @@
                     <div class="absolute -bottom-4 -right-4 w-24 h-24 bg-primary rounded-full opacity-10 blob-shape">
                     </div>
                     <img src="/assets/images/school-building.jpg" alt="Police Modern School Raebareli Building"
+                        loading="lazy" decoding="async" width="800" height="630"
                         class="rounded-2xl shadow-2xl relative z-10 w-full object-cover h-[630px] about-image-premium">
                 </div>
                 <div class="md:w-1/2">
-                    <h4 class="text-primary font-bold uppercase tracking-widest text-sm mb-2">हमारे स्कूल के बारे में
-                    </h4>
+                    <span class="block text-primary font-bold uppercase tracking-widest text-sm mb-2">हमारे स्कूल के
+                        बारे में</span>
                     <h2 class="text-2xl md:text-3xl font-bold mb-4 text-gray-800"><span class="text-primary">पुलिस
                             मॉडर्न स्कूल</span> में बच्चों के उज्ज्वल भविष्य का निर्माण</h2>
 
@@ -681,7 +688,8 @@
 
                     <!-- Toggle Button -->
                     <button id="about-toggle-btn"
-                        class="text-primary font-bold hover:text-secondary transition-colors inline-flex items-center text-sm mb-6 outline-none">
+                        class="text-primary font-bold hover:text-secondary transition-colors inline-flex items-center text-sm mb-6 outline-none"
+                        aria-label="स्कूल के बारे में और पढ़ें">
                         और जानें <i class="fas fa-chevron-down ml-2 transform transition-transform"
                             id="about-toggle-icon"></i>
                     </button>
@@ -724,6 +732,7 @@
                     <div class="bg-primary p-4 text-center">
                         <div class="w-24 h-24 mx-auto mb-3 rounded-full overflow-hidden border-4 border-secondary">
                             <img src="/assets/images/principal.png" alt="Police Modern School Raebareli Principal"
+                                loading="lazy" decoding="async" width="96" height="96"
                                 class="w-full h-full object-cover">
                         </div>
                         <h3 class="text-white font-bold text-lg">लाल भरत कुमार पाल (IPS)</h3>
@@ -1387,33 +1396,38 @@
 
             <div id="slider" class="slider-container">
                 <!-- Images list -->
-                <img src="/assets/images/gallery/1.jpg" class="slide"
-                    alt="Best school campus in Raebareli - Police Modern School">
-                <img src="/assets/images/gallery/2.jpg" class="slide"
-                    alt="Students classroom activity at Police Modern School Raebareli">
-                <img src="/assets/images/gallery/3.jpg" class="slide"
-                    alt="Smart class facility at best school in Raebareli">
-                <img src="/assets/images/gallery/4.jpg" class="slide"
-                    alt="Sports and playground activity at Police Modern School">
-                <img src="/assets/images/gallery/5.jpg" class="slide"
-                    alt="Science laboratory at best school in Raebareli">
-                <img src="/assets/images/gallery/6.jpg" class="slide"
-                    alt="Cultural events at Police Modern School Raebareli">
-                <img src="/assets/images/gallery/7.jpg" class="slide" alt="Modern computer lab at PMS Raebareli">
-                <img src="/assets/images/gallery/8.jpg" class="slide"
-                    alt="Library and resource center at Police Modern School">
-                <img src="/assets/images/gallery/9.jpg" class="slide"
-                    alt="School building and entrance - Police Modern School">
-                <img src="/assets/images/gallery/10.jpg" class="slide"
-                    alt="Indoor activities at best primary school in Raebareli">
-                <img src="/assets/images/gallery/11.jpg" class="slide"
-                    alt="Morning assembly at Police Modern School Raebareli">
-                <img src="/assets/images/gallery/12.jpg" class="slide" alt="Educational tour and field trip activities">
-                <img src="/assets/images/gallery/13.jpg" class="slide"
-                    alt="Student achievements showcase - PMS Raebareli">
-                <img src="/assets/images/gallery/14.jpg" class="slide" alt="Creative arts and crafts by students">
-                <img src="/assets/images/gallery/15.jpg" class="slide" alt="Physical education and yoga sessions">
-                <img src="/assets/images/gallery/16.jpg" class="slide" alt="Parent-teacher meeting and collaboration">
+                <img src="/assets/images/gallery/1.jpg" class="slide" loading="lazy" decoding="async" width="400"
+                    height="300" alt="Best school campus in Raebareli - Police Modern School">
+                <img src="/assets/images/gallery/2.jpg" class="slide" loading="lazy" decoding="async" width="400"
+                    height="300" alt="Students classroom activity at Police Modern School Raebareli">
+                <img src="/assets/images/gallery/3.jpg" class="slide" loading="lazy" decoding="async" width="400"
+                    height="300" alt="Smart class facility at best school in Raebareli">
+                <img src="/assets/images/gallery/4.jpg" class="slide" loading="lazy" decoding="async" width="400"
+                    height="300" alt="Sports and playground activity at Police Modern School">
+                <img src="/assets/images/gallery/5.jpg" class="slide" loading="lazy" decoding="async" width="400"
+                    height="300" alt="Science laboratory at best school in Raebareli">
+                <img src="/assets/images/gallery/6.jpg" class="slide" loading="lazy" decoding="async" width="400"
+                    height="300" alt="Cultural events at Police Modern School Raebareli">
+                <img src="/assets/images/gallery/7.jpg" class="slide" loading="lazy" decoding="async" width="400"
+                    height="300" alt="Modern computer lab at PMS Raebareli">
+                <img src="/assets/images/gallery/8.jpg" class="slide" loading="lazy" decoding="async" width="400"
+                    height="300" alt="Library and resource center at Police Modern School">
+                <img src="/assets/images/gallery/9.jpg" class="slide" loading="lazy" decoding="async" width="400"
+                    height="300" alt="School building and entrance - Police Modern School">
+                <img src="/assets/images/gallery/10.jpg" class="slide" loading="lazy" decoding="async" width="400"
+                    height="300" alt="Indoor activities at best primary school in Raebareli">
+                <img src="/assets/images/gallery/11.jpg" class="slide" loading="lazy" decoding="async" width="400"
+                    height="300" alt="Morning assembly at Police Modern School Raebareli">
+                <img src="/assets/images/gallery/12.jpg" class="slide" loading="lazy" decoding="async" width="400"
+                    height="300" alt="Educational tour and field trip activities">
+                <img src="/assets/images/gallery/13.jpg" class="slide" loading="lazy" decoding="async" width="400"
+                    height="300" alt="Student achievements showcase - PMS Raebareli">
+                <img src="/assets/images/gallery/14.jpg" class="slide" loading="lazy" decoding="async" width="400"
+                    height="300" alt="Creative arts and crafts by students">
+                <img src="/assets/images/gallery/15.jpg" class="slide" loading="lazy" decoding="async" width="400"
+                    height="300" alt="Physical education and yoga sessions">
+                <img src="/assets/images/gallery/16.jpg" class="slide" loading="lazy" decoding="async" width="400"
+                    height="300" alt="Parent-teacher meeting and collaboration">
             </div>
         </div>
     </section>
@@ -1996,10 +2010,10 @@
     <!-- Firebase is now preloaded in <head> for faster startup -->
 
     <!-- AOS (Animate On Scroll) -->
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script defer src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
     <!-- Swiper JS -->
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
     <!-- Custom JavaScript - Loaded after Firebase -->
     <script defer src="/assets/js/main.js"></script>

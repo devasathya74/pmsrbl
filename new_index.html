@@ -7,8 +7,12 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdn.jsdelivr.net">
-    <link rel="preconnect" href="https://pagead2.googlesyndication.com">
-    <link rel="preconnect" href="https://www.googletagmanager.com">
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+
+    <!-- Preloads for LCP and discovery -->
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" as="style">
+    <link rel="preload" as="image" href="/assets/images/hero1.avif"
+        imagesrcset="/assets/images/hero2.avif 800w, /assets/images/hero3.avif 1920w" imagesizes="100vw">
 
     <!-- Google AdSense -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6154654647536398"
@@ -48,22 +52,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="PMS Raebareli">
 
-    <!-- Firebase Preload: Start loading Firebase as early as possible -->
-    <script type="module">
-        (async () => {
-            try {
-                const { authHelper, firestoreHelper, analyticsHelper } = await import('/assets/js/firebase-config.js');
-                window.firestoreHelper = firestoreHelper;
-                window.authHelper = authHelper;
-                window.analyticsHelper = analyticsHelper;
-                analyticsHelper.logPageView('home');
-                console.log('✅ Firebase preloaded early');
-                window.dispatchEvent(new CustomEvent('firebase-loaded'));
-            } catch (error) {
-                console.warn('Firebase failed to preload:', error);
-            }
-        })();
-    </script>
+    <!-- Firebase deferred to body end -->
 
     <!-- Google Analytics (Firebase) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-8BD9FCNCB2"></script>
@@ -126,6 +115,17 @@
 
         .bg-soft {
             background-color: var(--color-soft) !important;
+        }
+
+        /* Mobile Interaction Fix (Phase 7) */
+        @media (max-width: 768px) {
+
+            .card-hover:hover,
+            .hover\:scale-110:hover,
+            .group:hover .group-hover\:scale-105 {
+                transform: none !important;
+                box-shadow: none !important;
+            }
         }
     </style>
 
@@ -1136,7 +1136,7 @@
                                     <div class="w-20 h-1 bg-secondary mx-auto rounded-full"></div>
                                 </div>
                                 <div class="w-full h-96 lg:h-full rounded-2xl overflow-hidden shadow-xl relative group">
-                                    <iframe
+                                    <iframe title="Police Modern School Location Map"
                                         src="https://maps.google.com/maps?q=26.2097599058714,81.27065212644898&hl=hi&z=16&output=embed"
                                         width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"
                                         referrerpolicy="no-referrer-when-downgrade">
@@ -1531,8 +1531,35 @@
     }
     </script>
 
-                <!-- AOS (Animate On Scroll) -->
-                <script defer src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+                <!-- AOS (Animate On Scroll) - Loading Delayed (Phase 5) -->
+                <script>
+                    window.addEventListener('load', () => {
+                        const s = document.createElement('script');
+                        s.src = "https://unpkg.com/aos@2.3.1/dist/aos.js";
+                        s.defer = true;
+                        s.onload = () => {
+                            AOS.init({
+                                duration: 800,
+                                once: true,
+                                disable: 'mobile'
+                            });
+                        };
+                        document.body.appendChild(s);
+                    });
+                </script>
+
+                <!-- Firebase deferred to body end (Phase 1) -->
+                <script type="module" defer>
+                    import('/assets/js/firebase-config.js')
+                        .then(({ authHelper, firestoreHelper, analyticsHelper }) => {
+                            window.firestoreHelper = firestoreHelper;
+                            window.authHelper = authHelper;
+                            window.analyticsHelper = analyticsHelper;
+                            analyticsHelper?.logPageView('home');
+                            console.log('✅ Firebase deferred load complete');
+                        })
+                        .catch(() => { });
+                </script>
 
                 <!-- Custom JavaScript - Loaded after Firebase -->
                 <script defer src="/assets/js/main.js"></script>

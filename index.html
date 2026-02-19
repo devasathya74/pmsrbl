@@ -137,11 +137,11 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
         href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet">
+        rel="stylesheet" media="print" onload="this.media='all'">
     <!-- Hindi Font -->
     <link
         href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Tiro+Devanagari+Hindi:ital@0;1&display=swap"
-        rel="stylesheet">
+        rel="stylesheet" media="print" onload="this.media='all'">
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
@@ -153,8 +153,6 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/assets/css/main.css">
 
-    <!-- Swiper CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 
     <noscript>
         <style>
@@ -184,19 +182,6 @@
         h5,
         h6 {
             font-family: 'Tiro Devanagari Hindi', serif;
-        }
-
-        .hero-bg {
-            background-image: linear-gradient(rgba(30, 58, 138, 0.8), rgba(30, 58, 138, 0.7)), url('https://images.unsplash.com/photo-1503676260728-1c00da094a0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
-            background-size: cover;
-            background-position: center;
-            background-attachment: scroll;
-        }
-
-        @media (min-width: 1024px) {
-            .hero-bg {
-                background-attachment: fixed;
-            }
         }
 
         .blob-shape {
@@ -556,9 +541,14 @@
         </div>
     </div>
 
-    <!-- Hero Section - Height adjusted to 0.6X (from min-h-screen to min-h-[60vh]) -->
     <section id="home"
-        class="hero-bg min-h-[60vh] pb-20 flex items-center justify-center text-center px-4 pt-24 md:pt-32 relative overflow-hidden">
+        class="min-h-[60vh] pb-20 flex items-center justify-center text-center px-4 pt-24 md:pt-32 relative overflow-hidden bg-primary">
+        <!-- Hero Background Image (LCP Optimization) -->
+        <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=1920&q=80"
+            srcset="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=800&q=60 800w, https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=1920&q=80 1920w"
+            sizes="100vw" fetchpriority="high" alt="Police Modern School Building"
+            class="absolute inset-0 w-full h-full object-cover z-0 opacity-40">
+
         <!-- Floating Badge Icons - Alternating System -->
         <img src="/assets/images/admission-badge.png" id="hero-badge-right" width="128" height="128"
             class="absolute top-16 right-2 md:top-24 md:right-20 w-16 md:w-32 z-10 drop-shadow-2xl hover:scale-110 transition-transform cursor-pointer"
@@ -567,7 +557,7 @@
         <img src="/assets/images/admission-badge.png" id="hero-badge-left" width="128" height="128"
             class="absolute top-16 left-2 md:top-24 md:left-20 w-16 md:w-32 z-10 drop-shadow-2xl hover:scale-110 transition-transform cursor-pointer"
             alt="Police Modern School Raebareli - Admission Open" style="opacity: 0; transform: scale(0);">
-        <div class="max-w-4xl text-white animate-fade-in-up">
+        <div class="max-w-4xl text-white animate-fade-in-up relative z-10">
             <div
                 class="inline-block bg-secondary text-primary font-bold px-4 py-1 rounded-full text-sm mb-4 shadow-lg transform -rotate-2">
                 <i class="fas fa-star mr-1"></i> सत्र 2026-27 के लिए प्रवेश प्रारंभ
@@ -635,7 +625,7 @@
                     </div>
                     <img src="/assets/images/school-building.jpg" alt="Police Modern School Raebareli Building"
                         loading="lazy" decoding="async" width="800" height="630"
-                        class="rounded-2xl shadow-2xl relative z-10 w-full object-cover h-[630px] about-image-premium">
+                        class="rounded-2xl shadow-2xl relative z-10 w-full object-cover h-[400px] md:h-[630px] about-image-premium">
                 </div>
                 <div class="md:w-1/2">
                     <span class="block text-primary font-bold uppercase tracking-widest text-sm mb-2">हमारे स्कूल के
@@ -784,274 +774,9 @@
                         </button>
 
                         <div class="testimonial-slides-container">
-                            <!-- Testimonial 1 -->
-                            <div class="testimonial-slide active">
-                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
-                                <p class="testimonial-text text-sm">"बहुत ही अच्छा स्कूल है। शिक्षक बहुत मेहनती और
-                                    बच्चों के प्रति समर्पित हैं। मेरे बच्चे को यहाँ पढ़ाकर मुझे बहुत खुशी है।"</p>
-                                <p class="testimonial-author text-sm font-bold">श्रीमती अनिता शर्मा</p>
-                                <p class="text-gray-500 text-xs">अभिभावक, कक्षा 3</p>
-                            </div>
-
-                            <!-- Testimonial 2 -->
-                            <div class="testimonial-slide">
-                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
-                                <p class="testimonial-text text-sm">"पी.ए.सी. कैंपस में होने के कारण सुरक्षा की कोई
-                                    चिंता नहीं है। पढ़ाई के साथ-साथ खेल और अन्य गतिविधियों पर ध्यान दिया जाता है।"</p>
-                                <p class="testimonial-author text-sm font-bold">श्री राकेश वर्मा</p>
-                                <p class="text-gray-500 text-xs">अभिभावक, कक्षा 5</p>
-                            </div>
-
-                            <!-- Testimonial 3 -->
-                            <div class="testimonial-slide">
-                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
-                                <p class="testimonial-text text-sm">"शिक्षकों का व्यवहार बहुत अच्छा है। बच्चों को प्यार
-                                    से पढ़ाया जाता है। स्कूल की साफ-सफाई और अनुशासन काबिले तारीफ है।"</p>
-                                <p class="testimonial-author text-sm font-bold">श्रीमती प्रिया सिंह</p>
-                                <p class="text-gray-500 text-xs">अभिभावक, नर्सरी</p>
-                            </div>
-
-                            <!-- Testimonial 4 -->
-                            <div class="testimonial-slide">
-                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
-                                <p class="testimonial-text text-sm">"अनुशासन और शिक्षा का बेहतरीन तालमेल यहाँ देखने को
-                                    मिलता है। रायबरेली का गौरव है यह स्कूल।"</p>
-                                <p class="testimonial-author text-sm font-bold">श्री अजय गुप्त</p>
-                                <p class="text-gray-500 text-xs">अभिभावक, कक्षा 8</p>
-                            </div>
-
-                            <!-- Testimonial 5 -->
-                            <div class="testimonial-slide">
-                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
-                                <p class="testimonial-text text-sm">"स्कूल की सुविधाएं आधुनिक हैं और पढ़ाई का माहौल
-                                    बच्चों के लिए बहुत ही अनुकूल और सुरक्षित है।"</p>
-                                <p class="testimonial-author text-sm font-bold">श्रीमती मधु यादव</p>
-                                <p class="text-gray-500 text-xs">अभिभावक, कक्षा 4</p>
-                            </div>
-
-                            <!-- Testimonial 6 -->
-                            <div class="testimonial-slide">
-                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
-                                <p class="testimonial-text text-sm">"मेरे बच्चे के आत्मविश्वास में यहाँ आने के बाद बहुत
-                                    सुधार हुआ है। शिक्षक बच्चों को प्रेरित करते हैं।"</p>
-                                <p class="testimonial-author text-sm font-bold">श्री राजेश मौर्या</p>
-                                <p class="text-gray-500 text-xs">अभिभावक, कक्षा 2</p>
-                            </div>
-
-                            <!-- Testimonial 7 -->
-                            <div class="testimonial-slide">
-                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
-                                <p class="testimonial-text text-sm">"प्रवेश प्रक्रिया बहुत ही स्पष्ट और सरल है। स्टाफ
-                                    बहुत ही विनम्र और सहयोगी है। बहुत अच्छा अनुभव।"</p>
-                                <p class="testimonial-author text-sm font-bold">श्रीमती सीमा सिंह</p>
-                                <p class="text-gray-500 text-xs">अभिभावक, कक्षा 1</p>
-                            </div>
-
-                            <!-- Testimonial 8 -->
-                            <div class="testimonial-slide">
-                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
-                                <p class="testimonial-text text-sm">"खेलकूद और पढ़ाई का यहाँ बहुत अच्छा संतुलन है। बच्चे
-                                    का शारीरिक और मानसिक विकास साथ-साथ होता है।"</p>
-                                <p class="testimonial-author text-sm font-bold">श्री पंकज कुमार</p>
-                                <p class="text-gray-500 text-xs">अभिभावक, कक्षा 6</p>
-                            </div>
-
-                            <!-- Testimonial 9 -->
-                            <div class="testimonial-slide">
-                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
-                                <p class="testimonial-text text-sm">"रायबरेली में गुणवत्तापूर्ण प्राथमिक शिक्षा के लिए
-                                    यह सबसे भरोसेमंद स्कूल है। हम पूरी तरह संतुष्ट हैं।"</p>
-                                <p class="testimonial-author text-sm font-bold">श्री अमित श्रीवास्तव</p>
-                                <p class="text-gray-500 text-xs">अभिभावक, कक्षा 7</p>
-                            </div>
-
-                            <!-- Testimonial 10 -->
-                            <div class="testimonial-slide">
-                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
-                                <p class="testimonial-text text-sm">"बच्चों की सुरक्षा हमारे लिए सबसे महत्वपूर्ण थी, और
-                                    यहाँ वह पूरी तरह सुनिश्चित है। पढ़ाई भी लाजवाब है।"</p>
-                                <p class="testimonial-author text-sm font-bold">श्रीमती रीता देवी</p>
-                                <p class="text-gray-500 text-xs">अभिभावक, कक्षा 3</p>
-                            </div>
-
-                            <!-- Testimonial 11 -->
-                            <div class="testimonial-slide">
-                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
-                                <p class="testimonial-text text-sm">"स्मार्ट क्लास और आधुनिक शिक्षण पद्धति से बच्चे
-                                    जल्दी सीखते हैं और उन्हें पढ़ाई बोझ नहीं लगती।"</p>
-                                <p class="testimonial-author text-sm font-bold">श्री विकास पाण्डेय</p>
-                                <p class="text-gray-500 text-xs">अभिभावक, कक्षा 4</p>
-                            </div>
-
-                            <!-- Testimonial 12 -->
-                            <div class="testimonial-slide">
-                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
-                                <p class="testimonial-text text-sm">"पीटीएम के माध्यम से हमें बच्चे की प्रगति की नियमित
-                                    जानकारी मिलती है। संवाद व्यवस्था बहुत अच्छी है।"</p>
-                                <p class="testimonial-author text-sm font-bold">श्रीमती सुनीता मौर्या</p>
-                                <p class="text-gray-500 text-xs">अभिभावक, कक्षा 2</p>
-                            </div>
-
-                            <!-- Testimonial 13 -->
-                            <div class="testimonial-slide">
-                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
-                                <p class="testimonial-text text-sm">"स्कूल का वातावरण बहुत ही सकारात्मक और प्रेरणादायक
-                                    है। बच्चे यहाँ नया सीखने के लिए उत्साहित रहते हैं।"</p>
-                                <p class="testimonial-author text-sm font-bold">श्री संजय मिश्रा</p>
-                                <p class="text-gray-500 text-xs">अभिभावक, कक्षा 5</p>
-                            </div>
-
-                            <!-- Testimonial 14 -->
-                            <div class="testimonial-slide">
-                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
-                                <p class="testimonial-text text-sm">"अनुभवी शिक्षकों की टीम बच्चों के भविष्य को सही दिशा
-                                    में संवार रही है। समर्पित स्टाफ का धन्यवाद।"</p>
-                                <p class="testimonial-author text-sm font-bold">श्रीमती कविता त्रिपाठी</p>
-                                <p class="text-gray-500 text-xs">अभिभावक, कक्षा 1</p>
-                            </div>
-
-                            <!-- Testimonial 15 -->
-                            <div class="testimonial-slide">
-                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
-                                <p class="testimonial-text text-sm">"स्कूल की बस सेवा बहुत ही सुरक्षित और समय की पाबंद
-                                    है। हमें बच्चों को लेकर कोई चिंता नहीं रहती।"</p>
-                                <p class="testimonial-author text-sm font-bold">श्री धीरज यादव</p>
-                                <p class="text-gray-500 text-xs">अभिभावक, कक्षा 6</p>
-                            </div>
-
-                            <!-- Testimonial 16 -->
-                            <div class="testimonial-slide">
-                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
-                                <p class="testimonial-text text-sm">"यहाँ के संस्कार और शिक्षा दोनों ही काबिले तारीफ
-                                    हैं। बच्चे अनुशासन और नैतिकता भी सीख रहे हैं।"</p>
-                                <p class="testimonial-author text-sm font-bold">श्रीमती मंजू सिंह</p>
-                                <p class="text-gray-500 text-xs">अभिभावक, नर्सरी</p>
-                            </div>
-
-                            <!-- Testimonial 17 -->
-                            <div class="testimonial-slide">
-                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
-                                <p class="testimonial-text text-sm">"बच्चे यहाँ खुशी-खुशी स्कूल जाते हैं, जो पेरेंट्स के
-                                    लिए सबसे बड़ी बात है। शिक्षा का स्तर उत्कृष्ट है।"</p>
-                                <p class="testimonial-author text-sm font-bold">श्री रविंद्र सिंह</p>
-                                <p class="text-gray-500 text-xs">अभिभावक, कक्षा 3</p>
-                            </div>
-
-                            <!-- Testimonial 18 -->
-                            <div class="testimonial-slide">
-                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
-                                <p class="testimonial-text text-sm">"किफायती फीस में इतनी अच्छी और सुरक्षित शिक्षा मिलना
-                                    मुश्किल है। यह रायबरेली का बेस्ट स्कूल है।"</p>
-                                <p class="testimonial-author text-sm font-bold">श्रीमती दीपा गुप्ता</p>
-                                <p class="text-gray-500 text-xs">अभिभावक, कक्षा 2</p>
-                            </div>
-
-                            <!-- Testimonial 19 -->
-                            <div class="testimonial-slide">
-                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
-                                <p class="testimonial-text text-sm">"स्कूल की लाइब्रेरी और प्रयोगशालाएं बहुत ही
-                                    व्यवस्थित हैं। प्रैक्टिकल लर्निंग पर यहाँ जोर दिया जाता है।"</p>
-                                <p class="testimonial-author text-sm font-bold">श्री अनिल कुमार</p>
-                                <p class="text-gray-500 text-xs">अभिभावक, कक्षा 8</p>
-                            </div>
-
-                            <!-- Testimonial 20 -->
-                            <div class="testimonial-slide">
-                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
-                                <p class="testimonial-text text-sm">"हर बच्चे पर व्यक्तिगत ध्यान दिया जाता है, जो मुझे
-                                    बहुत पसंद है। बच्चे की खूबियों को पहचाना जाता है।"</p>
-                                <p class="testimonial-author text-sm font-bold">श्रीमती रचना शर्मा</p>
-                                <p class="text-gray-500 text-xs">अभिभावक, कक्षा 5</p>
-                            </div>
-
-                            <!-- Testimonial 21 -->
-                            <div class="testimonial-slide">
-                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
-                                <p class="testimonial-text text-sm">"पीएसी परिसर की शांति और हरियाली पढ़ाई के लिए बहुत
-                                    अनुकूल है। शोर-शराबे से दूर शिक्षा का केंद्र।"</p>
-                                <p class="testimonial-author text-sm font-bold">श्री मनोज तिवारी</p>
-                                <p class="text-gray-500 text-xs">अभिभावक, कक्षा 4</p>
-                            </div>
-
-                            <!-- Testimonial 22 -->
-                            <div class="testimonial-slide">
-                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
-                                <p class="testimonial-text text-sm">"वार्षिक उत्सव और सांस्कृतिक प्रतियोगिताएं बच्चों के
-                                    टैलेंट को खुलकर सामने लाती हैं। बहुत अच्छा मंच है।"</p>
-                                <p class="testimonial-author text-sm font-bold">श्रीमती सुमन देवी</p>
-                                <p class="text-gray-500 text-xs">अभिभावक, कक्षा 7</p>
-                            </div>
-
-                            <!-- Testimonial 23 -->
-                            <div class="testimonial-slide">
-                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
-                                <p class="testimonial-text text-sm">"साफ-सफाई और हाइजीन का यहाँ विशेष ध्यान रखा जाता है।
-                                    पीने का शुद्ध पानी और स्वच्छ टॉयलेट की सुविधा है।"</p>
-                                <p class="testimonial-author text-sm font-bold">श्री राहुल वर्मा</p>
-                                <p class="text-gray-500 text-xs">अभिभावक, एलकेजी</p>
-                            </div>
-
-                            <!-- Testimonial 24 -->
-                            <div class="testimonial-slide">
-                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
-                                <p class="testimonial-text text-sm">"स्कूल का प्रबंधन बहुत ही सक्रिय और सहायक है।
-                                    सुझावों पर तुरंत अमल किया जाता है। धन्यवाद मैनेजमेंट।"</p>
-                                <p class="testimonial-author text-sm font-bold">श्रीमती नूतन सिंह</p>
-                                <p class="text-gray-500 text-xs">अभिभावक, कक्षा 6</p>
-                            </div>
-
-                            <!-- Testimonial 25 -->
-                            <div class="testimonial-slide">
-                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
-                                <p class="testimonial-text text-sm">"नैतिक मूल्यों और संस्कारों की शिक्षा यहाँ का सबसे
-                                    मजबूत पक्ष है। बच्चे बड़े होकर अच्छे नागरिक बनेंगे।"</p>
-                                <p class="testimonial-author text-sm font-bold">श्री शिव कुमार</p>
-                                <p class="text-gray-500 text-xs">अभिभावक, कक्षा 1</p>
-                            </div>
-
-                            <!-- Testimonial 26 -->
-                            <div class="testimonial-slide">
-                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
-                                <p class="testimonial-text text-sm">"इंग्लिश स्पीकिंग और व्यक्तित्व विकास पर विशेष जोर
-                                    दिया जाता है। बच्चे आत्मविश्वास से बात करते हैं।"</p>
-                                <p class="testimonial-author text-sm font-bold">श्रीमती प्रियंका राज</p>
-                                <p class="text-gray-500 text-xs">अभिभावक, कक्षा 3</p>
-                            </div>
-
-                            <!-- Testimonial 27 -->
-                            <div class="testimonial-slide">
-                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
-                                <p class="testimonial-text text-sm">"पुलिस कैंपस के अंदर होने के कारण बच्चों के लिए यहाँ
-                                    का वातावरण पूरी तरह से सुरक्षित और शांतिपूर्ण है।"</p>
-                                <p class="testimonial-author text-sm font-bold">श्री अशोक कुमार</p>
-                                <p class="text-gray-500 text-xs">अभिभावक, कक्षा 5</p>
-                            </div>
-
-                            <!-- Testimonial 28 -->
-                            <div class="testimonial-slide">
-                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
-                                <p class="testimonial-text text-sm">"डिजिटल लर्निंग और प्रोजेक्ट्स के माध्यम से पढ़ाई को
-                                    बहुत ही रुचिकर बनाया गया है। बच्चे मजे से सीखते हैं।"</p>
-                                <p class="testimonial-author text-sm font-bold">श्रीमती सरिता यादव</p>
-                                <p class="text-gray-500 text-xs">अभिभावक, कक्षा 2</p>
-                            </div>
-
-                            <!-- Testimonial 29 -->
-                            <div class="testimonial-slide">
-                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
-                                <p class="testimonial-text text-sm">"शिक्षक बच्चों की शैक्षिक और व्यक्तिगत समस्याओं को
-                                    बहुत धैर्य से सुनते और सुलझाते हैं। बेहतरीन टीम।"</p>
-                                <p class="testimonial-author text-sm font-bold">श्री ज्ञानेंद्र सिंह</p>
-                                <p class="text-gray-500 text-xs">अभिभावक, कक्षा 8</p>
-                            </div>
-
-                            <!-- Testimonial 30 -->
-                            <div class="testimonial-slide">
-                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
-                                <p class="testimonial-text text-sm">"मुझे गर्व है कि मेरा बच्चा इस गरिमापूर्ण संस्थान का
-                                    हिस्सा है। यहाँ शिक्षा के साथ संस्कार भी मिलते हैं।"</p>
-                                <p class="testimonial-author text-sm font-bold">श्रीमती रेखा मिश्रा</p>
-                                <p class="text-gray-500 text-xs">अभिभावक, कक्षा 4</p>
+                            <!-- Testimonials will be injected here by main.js for performance -->
+                            <div class="text-center py-10">
+                                <i class="fas fa-spinner fa-spin text-primary text-2xl"></i>
                             </div>
                         </div>
 
@@ -1395,98 +1120,13 @@
             <!-- <div class="gallery-label">Premium Showcase</div> -->
 
             <div id="slider" class="slider-container">
-                <!-- Images list -->
-                <img src="/assets/images/gallery/1.jpg" class="slide" loading="lazy" decoding="async" width="400"
-                    height="300" alt="Best school campus in Raebareli - Police Modern School">
-                <img src="/assets/images/gallery/2.jpg" class="slide" loading="lazy" decoding="async" width="400"
-                    height="300" alt="Students classroom activity at Police Modern School Raebareli">
-                <img src="/assets/images/gallery/3.jpg" class="slide" loading="lazy" decoding="async" width="400"
-                    height="300" alt="Smart class facility at best school in Raebareli">
-                <img src="/assets/images/gallery/4.jpg" class="slide" loading="lazy" decoding="async" width="400"
-                    height="300" alt="Sports and playground activity at Police Modern School">
-                <img src="/assets/images/gallery/5.jpg" class="slide" loading="lazy" decoding="async" width="400"
-                    height="300" alt="Science laboratory at best school in Raebareli">
-                <img src="/assets/images/gallery/6.jpg" class="slide" loading="lazy" decoding="async" width="400"
-                    height="300" alt="Cultural events at Police Modern School Raebareli">
-                <img src="/assets/images/gallery/7.jpg" class="slide" loading="lazy" decoding="async" width="400"
-                    height="300" alt="Modern computer lab at PMS Raebareli">
-                <img src="/assets/images/gallery/8.jpg" class="slide" loading="lazy" decoding="async" width="400"
-                    height="300" alt="Library and resource center at Police Modern School">
-                <img src="/assets/images/gallery/9.jpg" class="slide" loading="lazy" decoding="async" width="400"
-                    height="300" alt="School building and entrance - Police Modern School">
-                <img src="/assets/images/gallery/10.jpg" class="slide" loading="lazy" decoding="async" width="400"
-                    height="300" alt="Indoor activities at best primary school in Raebareli">
-                <img src="/assets/images/gallery/11.jpg" class="slide" loading="lazy" decoding="async" width="400"
-                    height="300" alt="Morning assembly at Police Modern School Raebareli">
-                <img src="/assets/images/gallery/12.jpg" class="slide" loading="lazy" decoding="async" width="400"
-                    height="300" alt="Educational tour and field trip activities">
-                <img src="/assets/images/gallery/13.jpg" class="slide" loading="lazy" decoding="async" width="400"
-                    height="300" alt="Student achievements showcase - PMS Raebareli">
-                <img src="/assets/images/gallery/14.jpg" class="slide" loading="lazy" decoding="async" width="400"
-                    height="300" alt="Creative arts and crafts by students">
-                <img src="/assets/images/gallery/15.jpg" class="slide" loading="lazy" decoding="async" width="400"
-                    height="300" alt="Physical education and yoga sessions">
-                <img src="/assets/images/gallery/16.jpg" class="slide" loading="lazy" decoding="async" width="400"
-                    height="300" alt="Parent-teacher meeting and collaboration">
+                <!-- Gallery items will be injected here by main.js for performance -->
+                <div class="text-center py-20 w-full">
+                    <i class="fas fa-spinner fa-spin text-primary text-3xl"></i>
+                </div>
             </div>
         </div>
     </section>
-
-    <!-- Custom Gallery Slider Script -->
-    <script>
-        const slides = document.querySelectorAll('.slide');
-        let currentIndex = 0; // Yeh index hamesha 'pos-1' (peheli visible image) ko track karega
-        const total = slides.length;
-
-        function updateSlider() {
-            slides.forEach((slide, index) => {
-                // Pehle purani classes saaf karein
-                slide.className = 'slide';
-
-                // Infinite calculation
-                let relativePos = (index - currentIndex + total) % total;
-
-                if (relativePos === 0) {
-                    slide.classList.add('pos-1'); // Left image
-                } else if (relativePos === 1) {
-                    slide.classList.add('pos-2'); // Center image (Overlap)
-                } else if (relativePos === 2) {
-                    slide.classList.add('pos-3'); // Right image
-                } else if (relativePos === total - 1) {
-                    slide.classList.add('hide-left'); // Jo abhi-abhi hide hui
-                } else {
-                    slide.classList.add('show-right'); // Baaki sab waiting area mein
-                }
-            });
-        }
-
-        function nextStep() {
-            currentIndex = (currentIndex + 1) % total;
-            updateSlider();
-        }
-
-        // Auto slide har 3 second mein
-        let autoPlay = setInterval(nextStep, 3000);
-
-        // Hover pause and play
-        const container = document.querySelector('.gallery-wrapper');
-        if (container) {
-            container.addEventListener('mouseenter', () => clearInterval(autoPlay));
-            container.addEventListener('mouseleave', () => autoPlay = setInterval(nextStep, 3000));
-        }
-
-        // Initial launch
-        updateSlider();
-
-        // Click on any slide to focus it (Optional interactivity)
-        slides.forEach((slide, index) => {
-            slide.addEventListener('click', () => {
-                // Click karne par wo image Center (pos-2) ban jayegi
-                currentIndex = (index - 1 + total) % total;
-                updateSlider();
-            });
-        });
-    </script>
 
 
     <!-- FAQ & Map Section (Side by Side) -->
@@ -1497,7 +1137,8 @@
                 <!-- FAQ Section -->
                 <div>
                     <div class="text-center mb-8">
-                        <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mb-3">अक्सर पूछे जाने वाले प्रश्न</h2>
+                        <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mb-3">अक्सर पूछे जाने वाले
+                            प्रश्न</h2>
                         <div class="w-20 h-1 bg-secondary mx-auto rounded-full"></div>
                     </div>
 
@@ -1511,7 +1152,8 @@
                             </div>
                             <div class="faq-answer">
                                 <p>Police Modern School is recognized as the best school in Raebareli due to
-                                    its safe campus inside 25वीं वाहिनी PAC, disciplined environment, experienced
+                                    its safe campus inside 25वीं वाहिनी PAC, disciplined environment,
+                                    experienced
                                     faculty, and
                                     commitment to holistic child development.</p>
                             </div>
@@ -1524,8 +1166,10 @@
                                 <i class="fas fa-chevron-down faq-icon"></i>
                             </div>
                             <div class="faq-answer">
-                                <p>The fee structure for Police Modern School is affordable and designed to provide
-                                    value for money. For detailed information, please visit the Fee Structure page or
+                                <p>The fee structure for Police Modern School is affordable and designed to
+                                    provide
+                                    value for money. For detailed information, please visit the Fee
+                                    Structure page or
                                     contact
                                     the school office.</p>
                             </div>
@@ -1539,7 +1183,8 @@
                             </div>
                             <div class="faq-answer">
                                 <p>Yes, Police Modern School follows the CBSE curriculum patterns, ensuring
-                                    high academic standards and quality education for students from LKG to Class 8.</p>
+                                    high academic standards and quality education for students from LKG to
+                                    Class 8.</p>
                             </div>
                         </div>
 
@@ -1551,8 +1196,10 @@
                                 <i class="fas fa-chevron-down faq-icon"></i>
                             </div>
                             <div class="faq-answer">
-                                <p>Unlike many other schools, PMS operates in a highly secure and disciplined
-                                    environment within the PAC battalion area. We balance modern smart classes with
+                                <p>Unlike many other schools, PMS operates in a highly secure and
+                                    disciplined
+                                    environment within the PAC battalion area. We balance modern smart
+                                    classes with
                                     traditional
                                     moral values and physical education.</p>
                             </div>
@@ -1567,7 +1214,8 @@
                             <div class="faq-answer">
                                 <p>Parents can apply by visiting the school office at 25वीं वाहिनी PAC or by
                                     downloading the admission form from our <a href="/pages/admission.html"
-                                        class="text-primary font-bold hover:underline">admissions page</a>. Admissions
+                                        class="text-primary font-bold hover:underline">admissions page</a>.
+                                    Admissions
                                     for 2026-27
                                     are currently open.</p>
                             </div>
@@ -1581,8 +1229,10 @@
                                 <i class="fas fa-chevron-down faq-icon"></i>
                             </div>
                             <div class="faq-answer">
-                                <p>Unlike many other schools, PMS operates in a highly secure and disciplined
-                                    environment within the PAC battalion area. We balance modern smart classes with
+                                <p>Unlike many other schools, PMS operates in a highly secure and
+                                    disciplined
+                                    environment within the PAC battalion area. We balance modern smart
+                                    classes with
                                     traditional
                                     moral values and physical education.</p>
                             </div>
@@ -1597,7 +1247,8 @@
                             <div class="faq-answer">
                                 <p>Parents can apply by visiting the school office at 25वीं वाहिनी PAC or by
                                     downloading the admission form from our <a href="/pages/admission.html"
-                                        class="text-primary font-bold hover:underline">admissions page</a>. Admissions
+                                        class="text-primary font-bold hover:underline">admissions page</a>.
+                                    Admissions
                                     for 2026-27
                                     are currently open.</p>
                             </div>
@@ -1623,7 +1274,8 @@
                         <div
                             class="absolute bottom-4 left-4 right-4 bg-white p-3 rounded-xl shadow-lg border border-gray-200 transform transition-all hover:scale-105">
                             <p class="text-black font-extrabold mb-1 text-sm"><i
-                                    class="fas fa-map-marker-alt text-red-600 mr-2"></i>पता (Address): Police Modern
+                                    class="fas fa-map-marker-alt text-red-600 mr-2"></i>पता (Address):
+                                Police Modern
                                 School, 25th Vahini PAC, Sri Nagar, Raebareli, Uttar Pradesh 229001</p>
                         </div>
                     </div>
@@ -1676,12 +1328,14 @@
 
                 <!-- Contact Info -->
                 <div>
-                    <h3 class="text-xl font-bold mb-6 text-white border-b-2 border-secondary inline-block pb-2">संपर्क
+                    <h3 class="text-xl font-bold mb-6 text-white border-b-2 border-secondary inline-block pb-2">
+                        संपर्क
                         सूत्र</h3>
                     <ul class="space-y-4">
                         <li class="flex items-start gap-4">
                             <i class="fas fa-map-marker-alt text-secondary mt-1"></i>
-                            <span class="text-gray-400">25वीं वाहिनी पी.ए.सी.,<br>रायबरेली, उत्तर प्रदेश</span>
+                            <span class="text-gray-400">25वीं वाहिनी पी.ए.सी.,<br>रायबरेली, उत्तर
+                                प्रदेश</span>
                         </li>
                         <li class="flex items-start gap-4">
                             <i class="fas fa-phone-alt text-secondary mt-1"></i>
@@ -2012,8 +1666,6 @@
     <!-- AOS (Animate On Scroll) -->
     <script defer src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
-    <!-- Swiper JS -->
-    <script defer src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
     <!-- Custom JavaScript - Loaded after Firebase -->
     <script defer src="/assets/js/main.js"></script>

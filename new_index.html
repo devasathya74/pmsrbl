@@ -137,11 +137,11 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
         href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet">
+        rel="stylesheet" media="print" onload="this.media='all'">
     <!-- Hindi Font -->
     <link
         href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Tiro+Devanagari+Hindi:ital@0;1&display=swap"
-        rel="stylesheet">
+        rel="stylesheet" media="print" onload="this.media='all'">
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
@@ -153,8 +153,6 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/assets/css/main.css">
 
-    <!-- Swiper CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 
     <style>
         body {
@@ -169,19 +167,6 @@
         h5,
         h6 {
             font-family: 'Tiro Devanagari Hindi', serif;
-        }
-
-        .hero-bg {
-            background-image: linear-gradient(rgba(30, 58, 138, 0.8), rgba(30, 58, 138, 0.7)), url('https://images.unsplash.com/photo-1503676260728-1c00da094a0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
-            background-size: cover;
-            background-position: center;
-            background-attachment: scroll;
-        }
-
-        @media (min-width: 1024px) {
-            .hero-bg {
-                background-attachment: fixed;
-            }
         }
 
         .blob-shape {
@@ -525,7 +510,13 @@
 
     <!-- Hero Section -->
     <section id="home"
-        class="hero-bg min-h-screen pb-20 flex items-center justify-center text-center px-4 pt-24 md:pt-32 relative overflow-hidden">
+        class="min-h-[60vh] pb-20 flex items-center justify-center text-center px-4 pt-24 md:pt-32 relative overflow-hidden bg-primary">
+        <!-- Hero Background Image (LCP Optimization) -->
+        <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=1920&q=80"
+            srcset="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=800&q=60 800w, https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=1920&q=80 1920w"
+            sizes="100vw" fetchpriority="high" alt="Police Modern School Building"
+            class="absolute inset-0 w-full h-full object-cover z-0 opacity-40">
+
         <!-- Floating Badge Icons - Alternating System -->
         <img src="/assets/images/admission-badge.png" id="hero-badge-right" width="128" height="128"
             class="absolute top-16 right-2 md:top-24 md:right-20 w-16 md:w-32 z-10 drop-shadow-2xl hover:scale-110 transition-transform cursor-pointer"
@@ -534,7 +525,7 @@
         <img src="/assets/images/admission-badge.png" id="hero-badge-left" width="128" height="128"
             class="absolute top-16 left-2 md:top-24 md:left-20 w-16 md:w-32 z-10 drop-shadow-2xl hover:scale-110 transition-transform cursor-pointer"
             alt="Police Modern School Raebareli - Admission Open" style="opacity: 0; transform: scale(0);">
-        <div class="max-w-4xl text-white animate-fade-in-up">
+        <div class="max-w-4xl text-white animate-fade-in-up relative z-10">
             <div
                 class="inline-block bg-secondary text-primary font-bold px-4 py-1 rounded-full text-sm mb-4 shadow-lg transform -rotate-2">
                 <i class="fas fa-star mr-1"></i> सत्र 2026-27 के लिए प्रवेश प्रारंभ
@@ -600,7 +591,7 @@
                     </div>
                     <img src="/assets/images/school-building.jpg" alt="Police Modern School Raebareli Building"
                         loading="lazy" decoding="async" width="800" height="320"
-                        class="rounded-2xl shadow-2xl relative z-10 w-full object-cover h-80">
+                        class="rounded-2xl shadow-2xl relative z-10 w-full object-cover h-64 md:h-80">
                 </div>
                 <div class="md:w-1/2">
                     <span class="block text-primary font-bold uppercase tracking-widest text-sm mb-2">हमारे स्कूल के
@@ -700,275 +691,9 @@
                         </button>
 
                         <div class="testimonial-slides-container">
-                            <!-- Testimonial 1 -->
-                            <div class="testimonial-slide active">
-                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
-                                <p class="testimonial-text text-sm">"Excellent school. Teachers are very hardworking and
-                                    dedicated to children. I am very happy to have my child studying here."</p>
-                                <p class="testimonial-author text-sm font-bold">Mrs. Anita Sharma</p>
-                                <p class="text-gray-500 text-xs">Parent, Class 3</p>
-                            </div>
-
-                            <!-- Testimonial 2 -->
-                            <div class="testimonial-slide">
-                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
-                                <p class="testimonial-text text-sm">"Being inside the PAC campus, there are no security
-                                    concerns. Along with studies, sports and other activities are also focused upon."
-                                </p>
-                                <p class="testimonial-author text-sm font-bold">Mr. Rakesh Verma</p>
-                                <p class="text-gray-500 text-xs">Parent, Class 5</p>
-                            </div>
-
-                            <!-- Testimonial 3 -->
-                            <div class="testimonial-slide">
-                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
-                                <p class="testimonial-text text-sm">"Teachers' behavior is very good. Children are
-                                    taught with love. The school's cleanliness and discipline are commendable."</p>
-                                <p class="testimonial-author text-sm font-bold">Mrs. Priya Singh</p>
-                                <p class="text-gray-500 text-xs">Parent, Nursery</p>
-                            </div>
-
-                            <!-- Testimonial 4 -->
-                            <div class="testimonial-slide">
-                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
-                                <p class="testimonial-text text-sm">"A perfect balance of discipline and education is
-                                    seen here. This school is the pride of Raebareli."</p>
-                                <p class="testimonial-author text-sm font-bold">Mr. Ajay Gupta</p>
-                                <p class="text-gray-500 text-xs">Parent, Class 8</p>
-                            </div>
-
-                            <!-- Testimonial 5 -->
-                            <div class="testimonial-slide">
-                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
-                                <p class="testimonial-text text-sm">"The school facilities are modern and the teaching
-                                    environment is very conducive and safe for children."</p>
-                                <p class="testimonial-author text-sm font-bold">Mrs. Madhu Yadav</p>
-                                <p class="text-gray-500 text-xs">Parent, Class 4</p>
-                            </div>
-
-                            <!-- Testimonial 6 -->
-                            <div class="testimonial-slide">
-                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
-                                <p class="testimonial-text text-sm">"My child's confidence has improved a lot after
-                                    joining here. Teachers always motivate the students."</p>
-                                <p class="testimonial-author text-sm font-bold">Mr. Rajesh Maurya</p>
-                                <p class="text-gray-500 text-xs">Parent, Class 2</p>
-                            </div>
-
-                            <!-- Testimonial 7 -->
-                            <div class="testimonial-slide">
-                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
-                                <p class="testimonial-text text-sm">"The admission process is very clear and simple. The
-                                    staff is polite and helpful. Great experience."</p>
-                                <p class="testimonial-author text-sm font-bold">Mrs. Seema Singh</p>
-                                <p class="text-gray-500 text-xs">Parent, Class 1</p>
-                            </div>
-
-                            <!-- Testimonial 8 -->
-                            <div class="testimonial-slide">
-                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
-                                <p class="testimonial-text text-sm">"Great balance between sports and academics.
-                                    Physical and mental growth happens simultaneously."</p>
-                                <p class="testimonial-author text-sm font-bold">Mr. Pankaj Kumar</p>
-                                <p class="text-gray-500 text-xs">Parent, Class 6</p>
-                            </div>
-
-                            <!-- Testimonial 9 -->
-                            <div class="testimonial-slide">
-                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
-                                <p class="testimonial-text text-sm">"Most trusted school for quality primary education
-                                    in Raebareli. We are completely satisfied."</p>
-                                <p class="testimonial-author text-sm font-bold">Mr. Amit Srivastava</p>
-                                <p class="text-gray-500 text-xs">Parent, Class 7</p>
-                            </div>
-
-                            <!-- Testimonial 10 -->
-                            <div class="testimonial-slide">
-                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
-                                <p class="testimonial-text text-sm">"Child safety was our priority, and it is fully
-                                    ensured here. The teaching quality is also superb."</p>
-                                <p class="testimonial-author text-sm font-bold">Mrs. Rita Devi</p>
-                                <p class="text-gray-500 text-xs">Parent, Class 3</p>
-                            </div>
-
-                            <!-- Testimonial 11 -->
-                            <div class="testimonial-slide">
-                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
-                                <p class="testimonial-text text-sm">"Smart classes and modern teaching methods help
-                                    children learn quickly without feeling burdened."</p>
-                                <p class="testimonial-author text-sm font-bold">Mr. Vikas Pandey</p>
-                                <p class="text-gray-500 text-xs">Parent, Class 4</p>
-                            </div>
-
-                            <!-- Testimonial 12 -->
-                            <div class="testimonial-slide">
-                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
-                                <p class="testimonial-text text-sm">"Regular PTMs keep us updated about our child's
-                                    progress. Communication system is very good."</p>
-                                <p class="testimonial-author text-sm font-bold">Mrs. Sunita Maurya</p>
-                                <p class="text-gray-500 text-xs">Parent, Class 2</p>
-                            </div>
-
-                            <!-- Testimonial 13 -->
-                            <div class="testimonial-slide">
-                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
-                                <p class="testimonial-text text-sm">"The school atmosphere is very positive and
-                                    inspiring. Children stay excited to learn new things here."</p>
-                                <p class="testimonial-author text-sm font-bold">Mr. Sanjay Mishra</p>
-                                <p class="text-gray-500 text-xs">Parent, Class 5</p>
-                            </div>
-
-                            <!-- Testimonial 14 -->
-                            <div class="testimonial-slide">
-                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
-                                <p class="testimonial-text text-sm">"Experienced team of teachers shaping children's
-                                    future in the right direction. Thanks to dedicated staff."</p>
-                                <p class="testimonial-author text-sm font-bold">Mrs. Kavita Tripathi</p>
-                                <p class="text-gray-500 text-xs">Parent, Class 1</p>
-                            </div>
-
-                            <!-- Testimonial 15 -->
-                            <div class="testimonial-slide">
-                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
-                                <p class="testimonial-text text-sm">"School bus service is safe and punctual. We never
-                                    have to worry about our children's commute."</p>
-                                <p class="testimonial-author text-sm font-bold">Mr. Dheeraj Yadav</p>
-                                <p class="text-gray-500 text-xs">Parent, Class 6</p>
-                            </div>
-
-                            <!-- Testimonial 16 -->
-                            <div class="testimonial-slide">
-                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
-                                <p class="testimonial-text text-sm">"Both values and education here are commendable.
-                                    Children are learning discipline and ethics."</p>
-                                <p class="testimonial-author text-sm font-bold">Mrs. Manju Singh</p>
-                                <p class="text-gray-500 text-xs">Parent, Nursery</p>
-                            </div>
-
-                            <!-- Testimonial 17 -->
-                            <div class="testimonial-slide">
-                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
-                                <p class="testimonial-text text-sm">"Children go to school happily, which is the biggest
-                                    deal for parents. Standard of education is top-notch."</p>
-                                <p class="testimonial-author text-sm font-bold">Mr. Ravindra Singh</p>
-                                <p class="text-gray-500 text-xs">Parent, Class 3</p>
-                            </div>
-
-                            <!-- Testimonial 18 -->
-                            <div class="testimonial-slide">
-                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
-                                <p class="testimonial-text text-sm">"Difficult to find such good and safe education at
-                                    an affordable fee. Best school in Raebareli."</p>
-                                <p class="testimonial-author text-sm font-bold">Mrs. Deepa Gupta</p>
-                                <p class="text-gray-500 text-xs">Parent, Class 2</p>
-                            </div>
-
-                            <!-- Testimonial 19 -->
-                            <div class="testimonial-slide">
-                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
-                                <p class="testimonial-text text-sm">"School library and laboratories are well-organized.
-                                    Practical learning is emphasized here."</p>
-                                <p class="testimonial-author text-sm font-bold">Mr. Anil Kumar</p>
-                                <p class="text-gray-500 text-xs">Parent, Class 8</p>
-                            </div>
-
-                            <!-- Testimonial 20 -->
-                            <div class="testimonial-slide">
-                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
-                                <p class="testimonial-text text-sm">"Personal attention is given to every child, which I
-                                    really like. Individual strengths are recognized."</p>
-                                <p class="testimonial-author text-sm font-bold">Mrs. Rachna Sharma</p>
-                                <p class="text-gray-500 text-xs">Parent, Class 5</p>
-                            </div>
-
-                            <!-- Testimonial 21 -->
-                            <div class="testimonial-slide">
-                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
-                                <p class="testimonial-text text-sm">"The peace and greenery of the PAC campus are very
-                                    favorable for studying. A hub of education."</p>
-                                <p class="testimonial-author text-sm font-bold">Mr. Manoj Tiwari</p>
-                                <p class="text-gray-500 text-xs">Parent, Class 4</p>
-                            </div>
-
-                            <!-- Testimonial 22 -->
-                            <div class="testimonial-slide">
-                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
-                                <p class="testimonial-text text-sm">"Annual functions and cultural competitions bring
-                                    out the hidden talent of children. Great platform."</p>
-                                <p class="testimonial-author text-sm font-bold">Mrs. Suman Devi</p>
-                                <p class="text-gray-500 text-xs">Parent, Class 7</p>
-                            </div>
-
-                            <!-- Testimonial 23 -->
-                            <div class="testimonial-slide">
-                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
-                                <p class="testimonial-text text-sm">"Cleanliness and hygiene are specially cared for.
-                                    Pure drinking water and clean toilets available."</p>
-                                <p class="testimonial-author text-sm font-bold">Mr. Rahul Verma</p>
-                                <p class="text-gray-500 text-xs">Parent, LKG</p>
-                            </div>
-
-                            <!-- Testimonial 24 -->
-                            <div class="testimonial-slide">
-                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
-                                <p class="testimonial-text text-sm">"School management is very active and helpful.
-                                    Suggestions are implemented promptly. Thanks!"</p>
-                                <p class="testimonial-author text-sm font-bold">Mrs. Nutan Singh</p>
-                                <p class="text-gray-500 text-xs">Parent, Class 6</p>
-                            </div>
-
-                            <!-- Testimonial 25 -->
-                            <div class="testimonial-slide">
-                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
-                                <p class="testimonial-text text-sm">"Instruction of moral values and ethics is the
-                                    strongest point here. Children will be better citizens."</p>
-                                <p class="testimonial-author text-sm font-bold">Mr. Shiv Kumar</p>
-                                <p class="text-gray-500 text-xs">Parent, Class 1</p>
-                            </div>
-
-                            <!-- Testimonial 26 -->
-                            <div class="testimonial-slide">
-                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
-                                <p class="testimonial-text text-sm">"Special emphasis is laid on English speaking and
-                                    personality development. Kids talk confidently."</p>
-                                <p class="testimonial-author text-sm font-bold">Mrs. Priyanka Raj</p>
-                                <p class="text-gray-500 text-xs">Parent, Class 3</p>
-                            </div>
-
-                            <!-- Testimonial 27 -->
-                            <div class="testimonial-slide">
-                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
-                                <p class="testimonial-text text-sm">"Being inside the police campus, the environment for
-                                    children here is fully safe and peaceful."</p>
-                                <p class="testimonial-author text-sm font-bold">Mr. Ashok Kumar</p>
-                                <p class="text-gray-500 text-xs">Parent, Class 5</p>
-                            </div>
-
-                            <!-- Testimonial 28 -->
-                            <div class="testimonial-slide">
-                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
-                                <p class="testimonial-text text-sm">"Digital learning and projects have made studies
-                                    very interesting. Children learn with fun."</p>
-                                <p class="testimonial-author text-sm font-bold">Mrs. Sarita Yadav</p>
-                                <p class="text-gray-500 text-xs">Parent, Class 2</p>
-                            </div>
-
-                            <!-- Testimonial 29 -->
-                            <div class="testimonial-slide">
-                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
-                                <p class="testimonial-text text-sm">"Teachers listen and solve educational and personal
-                                    problems of children patiently. Excellent team."</p>
-                                <p class="testimonial-author text-sm font-bold">Mr. Gyanendra Singh</p>
-                                <p class="text-gray-500 text-xs">Parent, Class 8</p>
-                            </div>
-
-                            <!-- Testimonial 30 -->
-                            <div class="testimonial-slide">
-                                <div class="testimonial-stars text-sm text-yellow-500">★★★★★</div>
-                                <p class="testimonial-text text-sm">"I am proud that my child is part of this dignified
-                                    institution. Here we get values with education."</p>
-                                <p class="testimonial-author text-sm font-bold">Mrs. Rekha Mishra</p>
-                                <p class="text-gray-500 text-xs">Parent, Class 4</p>
+                            <!-- Testimonials will be injected here by main.js for performance -->
+                            <div class="text-center py-10">
+                                <i class="fas fa-spinner fa-spin text-primary text-2xl"></i>
                             </div>
                         </div>
 
@@ -1288,369 +1013,307 @@
             <!-- <div class="gallery-label">Premium Showcase</div> -->
 
             <div id="slider" class="slider-container">
-                <!-- Images list -->
-                <img src="/assets/images/gallery/1.jpg" class="slide" loading="lazy" decoding="async" width="400"
-                    height="300" alt="Gallery Image 1">
-                <img src="/assets/images/gallery/2.jpg" class="slide" loading="lazy" decoding="async" width="400"
-                    height="300" alt="Gallery Image 2">
-                <img src="/assets/images/gallery/3.jpg" class="slide" loading="lazy" decoding="async" width="400"
-                    height="300" alt="Gallery Image 3">
-                <img src="/assets/images/gallery/4.jpg" class="slide" loading="lazy" decoding="async" width="400"
-                    height="300" alt="Gallery Image 4">
-                <img src="/assets/images/gallery/5.jpg" class="slide" loading="lazy" decoding="async" width="400"
-                    height="300" alt="Gallery Image 5">
-                <img src="/assets/images/gallery/6.jpg" class="slide" loading="lazy" decoding="async" width="400"
-                    height="300" alt="Gallery Image 6">
-                <img src="/assets/images/gallery/7.jpg" class="slide" loading="lazy" decoding="async" width="400"
-                    height="300" alt="Gallery Image 7">
-                <img src="/assets/images/gallery/8.jpg" class="slide" loading="lazy" decoding="async" width="400"
-                    height="300" alt="Gallery Image 8">
-                <img src="/assets/images/gallery/9.jpg" class="slide" loading="lazy" decoding="async" width="400"
-                    height="300" alt="Gallery Image 9">
-                <img src="/assets/images/gallery/10.jpg" class="slide" loading="lazy" decoding="async" width="400"
-                    height="300" alt="Gallery Image 10">
-                <img src="/assets/images/gallery/11.jpg" class="slide" loading="lazy" decoding="async" width="400"
-                    height="300" alt="Gallery Image 11">
-                <img src="/assets/images/gallery/12.jpg" class="slide" loading="lazy" decoding="async" width="400"
-                    height="300" alt="Gallery Image 12">
-                <img src="/assets/images/gallery/13.jpg" class="slide" loading="lazy" decoding="async" width="400"
-                    height="300" alt="Gallery Image 13">
-                <img src="/assets/images/gallery/14.jpg" class="slide" loading="lazy" decoding="async" width="400"
-                    height="300" alt="Gallery Image 14">
-                <img src="/assets/images/gallery/15.jpg" class="slide" loading="lazy" decoding="async" width="400"
-                    height="300" alt="Gallery Image 15">
-                <img src="/assets/images/gallery/16.jpg" class="slide" loading="lazy" decoding="async" width="400"
-                    height="300" alt="Gallery Image 16">
-            </div>
-        </div>
-    </section>
-
-    <!-- Custom Gallery Slider Script -->
-    <script>
-        const slides = document.querySelectorAll('.slide');
-        let currentIndex = 0; // Yeh index hamesha 'pos-1' (peheli visible image) ko track karega
-        const total = slides.length;
-
-        function updateSlider() {
-            slides.forEach((slide, index) => {
-                // Pehle purani classes saaf karein
-                slide.className = 'slide';
-
-                // Infinite calculation
-                let relativePos = (index - currentIndex + total) % total;
-
-                if (relativePos === 0) {
-                    slide.classList.add('pos-1'); // Left image
-                } else if (relativePos === 1) {
-                    slide.classList.add('pos-2'); // Center image (Overlap)
-                } else if (relativePos === 2) {
-                    slide.classList.add('pos-3'); // Right image
-                } else if (relativePos === total - 1) {
-                    slide.classList.add('hide-left'); // Jo abhi-abhi hide hui
-                } else {
-                    slide.classList.add('show-right'); // Baaki sab waiting area mein
+                container.addEventListener('mouseleave', () => autoPlay = setInterval(nextStep, 3000));
                 }
-            });
-        }
 
-        function nextStep() {
-            currentIndex = (currentIndex + 1) % total;
-            updateSlider();
-        }
+                // Initial launch
+                updateSlider();
 
-        // Auto slide har 3 second mein
-        let autoPlay = setInterval(nextStep, 3000);
-
-        // Hover pause and play
-        const container = document.querySelector('.gallery-wrapper');
-        if (container) {
-            container.addEventListener('mouseenter', () => clearInterval(autoPlay));
-            container.addEventListener('mouseleave', () => autoPlay = setInterval(nextStep, 3000));
-        }
-
-        // Initial launch
-        updateSlider();
-
-        // Click on any slide to focus it (Optional interactivity)
-        slides.forEach((slide, index) => {
-            slide.addEventListener('click', () => {
+                // Click on any slide to focus it (Optional interactivity)
+                slides.forEach((slide, index) => {
+                slide.addEventListener('click', () => {
                 // Click karne par wo image Center (pos-2) ban jayegi
                 currentIndex = (index - 1 + total) % total;
                 updateSlider();
-            });
-        });
-    </script>
+                });
+                });
+                </script>
 
 
-    <!-- FAQ & Map Section (Side by Side) -->
-    <section class="py-16 bg-soft" data-aos="fade-up">
-        <div class="container mx-auto px-6">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- FAQ & Map Section (Side by Side) -->
+                <section class="py-16 bg-soft" data-aos="fade-up">
+                    <div class="container mx-auto px-6">
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
 
-                <!-- FAQ Section -->
-                <div>
-                    <div class="text-center mb-8">
-                        <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mb-3">अक्सर पूछे जाने वाले प्रश्न</h2>
-                        <div class="w-20 h-1 bg-secondary mx-auto rounded-full"></div>
+                            <!-- FAQ Section -->
+                            <div>
+                                <div class="text-center mb-8">
+                                    <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mb-3">अक्सर पूछे जाने वाले
+                                        प्रश्न</h2>
+                                    <div class="w-20 h-1 bg-secondary mx-auto rounded-full"></div>
+                                </div>
+
+                                <div class="space-y-3">
+                                    <!-- FAQ 1 -->
+                                    <div class="faq-item">
+                                        <div class="faq-question">
+                                            <span>प्रवेश प्रक्रिया क्या है?</span>
+                                            <i class="fas fa-chevron-down faq-icon"></i>
+                                        </div>
+                                        <div class="faq-answer">
+                                            <p>प्रवेश के लिए आप हमारी वेबसाइट से ऑनलाइन फॉर्म भर सकते हैं या सीधे स्कूल
+                                                आकर फॉर्म
+                                                जमा कर
+                                                सकते हैं।
+                                                आवश्यक दस्तावेज: जन्म प्रमाण पत्र, आधार कार्ड, पिछली कक्षा की मार्कशीट
+                                                (यदि लागू
+                                                हो), और 2
+                                                पासपोर्ट साइज फोटो।</p>
+                                        </div>
+                                    </div>
+
+                                    <!-- FAQ 2 -->
+                                    <div class="faq-item">
+                                        <div class="faq-question">
+                                            <span>क्या परिवहन सुविधा उपलब्ध है?</span>
+                                            <i class="fas fa-chevron-down faq-icon"></i>
+                                        </div>
+                                        <div class="faq-answer">
+                                            <p>हाँ, हम रायबरेली के प्रमुख क्षेत्रों को कवर करने वाली GPS ट्रैक्ड बस सेवा
+                                                प्रदान करते
+                                                हैं।
+                                                परिवहन शुल्क अलग से लागू होता है।</p>
+                                        </div>
+                                    </div>
+
+                                    <!-- FAQ 3 -->
+                                    <div class="faq-item">
+                                        <div class="faq-question">
+                                            <span>फीस संरचना क्या है?</span>
+                                            <i class="fas fa-chevron-down faq-icon"></i>
+                                        </div>
+                                        <div class="faq-answer">
+                                            <p>फीस कक्षा के अनुसार भिन्न होती है। विस्तृत फीस संरचना के लिए कृपया हमारे
+                                                Downloads
+                                                सेक्शन से
+                                                Fee Structure PDF डाउनलोड करें या सीधे स्कूल से संपर्क करें।</p>
+                                        </div>
+                                    </div>
+
+                                    <!-- FAQ 4 -->
+                                    <div class="faq-item">
+                                        <div class="faq-question">
+                                            <span>स्कूल का समय क्या है?</span>
+                                            <i class="fas fa-chevron-down faq-icon"></i>
+                                        </div>
+                                        <div class="faq-answer">
+                                            <p>स्कूल सोमवार से शनिवार तक सुबह 8:00 बजे से दोपहर 2:00 बजे तक खुला रहता
+                                                है।
+                                                रविवार और सरकारी छुट्टियों में स्कूल बंद रहता है।</p>
+                                        </div>
+                                    </div>
+
+                                    <!-- FAQ 5 -->
+                                    <div class="faq-item">
+                                        <div class="faq-question">
+                                            <span>क्या स्कूल CBSE से मान्यता प्राप्त है?</span>
+                                            <i class="fas fa-chevron-down faq-icon"></i>
+                                        </div>
+                                        <div class="faq-answer">
+                                            <p>हाँ, हमारा स्कूल CBSE पाठ्यक्रम पर आधारित है और सभी आवश्यक मान्यताएं
+                                                प्राप्त हैं।</p>
+                                        </div>
+                                    </div>
+
+                                    <!-- FAQ 6 -->
+                                    <div class="faq-item">
+                                        <div class="faq-question">
+                                            <span>क्या स्कूल में कंप्यूटर शिक्षा दी जाती है?</span>
+                                            <i class="fas fa-chevron-down faq-icon"></i>
+                                        </div>
+                                        <div class="faq-answer">
+                                            <p>हाँ, कक्षा 1 से ही बच्चों को कंप्यूटर की बुनियादी शिक्षा दी जाती है।
+                                                हमारे पास आधुनिक
+                                                कंप्यूटर लैब और स्मार्ट क्लासरूम की सुविधा है।</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Google Maps Section -->
+                            <div>
+                                <div class="text-center mb-8">
+                                    <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mb-3">हमारा स्थान</h2>
+                                    <div class="w-20 h-1 bg-secondary mx-auto rounded-full"></div>
+                                </div>
+                                <div class="w-full h-96 lg:h-full rounded-2xl overflow-hidden shadow-xl relative group">
+                                    <iframe
+                                        src="https://maps.google.com/maps?q=26.2097599058714,81.27065212644898&hl=hi&z=16&output=embed"
+                                        width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"
+                                        referrerpolicy="no-referrer-when-downgrade">
+                                    </iframe>
+
+                                    <!-- Address Overlay -->
+                                    <div
+                                        class="absolute bottom-4 left-4 right-4 bg-white p-3 rounded-xl shadow-lg border border-gray-200 transform transition-all hover:scale-105">
+                                        <p class="text-black font-extrabold mb-1 text-sm"><i
+                                                class="fas fa-map-marker-alt text-red-600 mr-2"></i>पता (Address):
+                                            Police Modern
+                                            School, 25th Vahini PAC, Sri Nagar, Raebareli, Uttar Pradesh 229001</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
+                </section>
 
-                    <div class="space-y-3">
-                        <!-- FAQ 1 -->
-                        <div class="faq-item">
-                            <div class="faq-question">
-                                <span>प्रवेश प्रक्रिया क्या है?</span>
-                                <i class="fas fa-chevron-down faq-icon"></i>
+                <!-- WhatsApp Floating Button -->
+                <a href="https://wa.me/918756625623?text=नमस्ते!%20मुझे%20प्रवेश%20के%20बारे%20में%20जानकारी%20चाहिए।"
+                    target="_blank" id="whatsapp-chat"
+                    class="fixed bottom-6 right-6 bg-green-500 text-white w-16 h-16 rounded-full flex items-center justify-center shadow-2xl hover:bg-green-600 transition-all hover:scale-110 z-50 no-print"
+                    aria-label="WhatsApp पर संपर्क करें">
+                    <i class="fab fa-whatsapp text-3xl"></i>
+                </a>
+
+                <!-- Footer & Contact -->
+                <footer id="contact" class="bg-gray-900 text-white pt-16 pb-8">
+                    <div class="container mx-auto px-6">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
+                            <!-- School Info -->
+                            <div>
+                                <div class="flex items-center gap-3 mb-6">
+                                    <img src="/assets/images/logo/logo.png" alt="Police Modern School Raebareli Logo"
+                                        class="w-12 h-12 object-contain">
+                                    <span class="text-2xl font-bold">पी.एम.एस. रायबरेली</span>
+                                </div>
+                                <p class="text-gray-400 mb-6">
+                                    छात्रों को सुरक्षित वातावरण में ज्ञान और अनुशासन के साथ सशक्त बनाना। आपके बच्चे के
+                                    भविष्य के लिए
+                                    सबसे अच्छी नींव।
+                                </p>
+                                <!-- SOCIAL MEDIA LINKS - Change URLs below as needed -->
+                                <div class="flex space-x-4">
+                                    <!-- Facebook Link - CHANGE URL HERE -->
+                                    <a href="https://t.me/sathyadeva" target="_blank"
+                                        class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-secondary hover:text-primary transition-all"><i
+                                            class="fab fa-facebook-f"></i></a>
+                                    <!-- Instagram Link - CHANGE URL HERE -->
+                                    <a href="https://t.me/sathyadeva" target="_blank"
+                                        class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-secondary hover:text-primary transition-all"><i
+                                            class="fab fa-instagram"></i></a>
+                                    <!-- WhatsApp Link - CHANGE URL HERE -->
+                                    <a href="https://t.me/sathyadeva" target="_blank"
+                                        class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-secondary hover:text-primary transition-all"><i
+                                            class="fab fa-whatsapp"></i></a>
+                                </div>
                             </div>
-                            <div class="faq-answer">
-                                <p>प्रवेश के लिए आप हमारी वेबसाइट से ऑनलाइन फॉर्म भर सकते हैं या सीधे स्कूल आकर फॉर्म
-                                    जमा कर
-                                    सकते हैं।
-                                    आवश्यक दस्तावेज: जन्म प्रमाण पत्र, आधार कार्ड, पिछली कक्षा की मार्कशीट (यदि लागू
-                                    हो), और 2
-                                    पासपोर्ट साइज फोटो।</p>
+
+                            <!-- Contact Info -->
+                            <div>
+                                <h3
+                                    class="text-xl font-bold mb-6 text-white border-b-2 border-secondary inline-block pb-2">
+                                    संपर्क
+                                    सूत्र</h3>
+                                <ul class="space-y-4">
+                                    <li class="flex items-start gap-4">
+                                        <i class="fas fa-map-marker-alt text-secondary mt-1"></i>
+                                        <span class="text-gray-400">25वीं वाहिनी पी.ए.सी.,<br>रायबरेली, उत्तर
+                                            प्रदेश</span>
+                                    </li>
+                                    <li class="flex items-start gap-4">
+                                        <i class="fas fa-phone-alt text-secondary mt-1"></i>
+                                        <div class="text-gray-400">
+                                            <a href="tel:+918756625623"
+                                                class="hover:text-secondary transition-colors block">+91
+                                                87566 25623</a>
+                                            <a href="tel:+919140908207"
+                                                class="hover:text-secondary transition-colors block">+91
+                                                91409 08207</a>
+                                        </div>
+                                    </li>
+                                    <li class="flex items-start gap-4">
+                                        <i class="fas fa-envelope text-secondary mt-1"></i>
+                                        <span class="text-gray-400">info@pmsraebareli.online</span>
+                                    </li>
+                                    <li class="flex items-start gap-4">
+                                        <i class="fas fa-clock text-secondary mt-1"></i>
+                                        <span class="text-gray-400">सोम - शनि: सुबह 8:00 - दोपहर 2:00</span>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <!-- Inquiry Form -->
+                            <div class="bg-gray-800 p-6 rounded-xl">
+                                <h3 class="text-lg font-bold mb-4">त्वरित पूछताछ</h3>
+                                <form id="contact-form" class="space-y-3">
+                                    <input type="text" name="name" placeholder="आपका नाम" required
+                                        class="w-full bg-gray-700 border-none rounded-lg px-4 py-2 text-white focus:ring-2 focus:ring-secondary outline-none">
+                                    <input type="email" name="email" placeholder="ईमेल" required
+                                        class="w-full bg-gray-700 border-none rounded-lg px-4 py-2 text-white focus:ring-2 focus:ring-secondary outline-none">
+                                    <input type="tel" name="phone" placeholder="फ़ोन नंबर" required
+                                        class="w-full bg-gray-700 border-none rounded-lg px-4 py-2 text-white focus:ring-2 focus:ring-secondary outline-none">
+                                    <textarea name="message" placeholder="आपका संदेश" rows="3" required
+                                        class="w-full bg-gray-700 border-none rounded-lg px-4 py-2 text-white focus:ring-2 focus:ring-secondary outline-none"></textarea>
+                                    <button type="submit"
+                                        class="w-full bg-secondary text-primary font-bold py-2 rounded-lg hover:bg-yellow-300 transition-colors">संदेश
+                                        भेजें</button>
+                                </form>
                             </div>
                         </div>
 
-                        <!-- FAQ 2 -->
-                        <div class="faq-item">
-                            <div class="faq-question">
-                                <span>क्या परिवहन सुविधा उपलब्ध है?</span>
-                                <i class="fas fa-chevron-down faq-icon"></i>
-                            </div>
-                            <div class="faq-answer">
-                                <p>हाँ, हम रायबरेली के प्रमुख क्षेत्रों को कवर करने वाली GPS ट्रैक्ड बस सेवा प्रदान करते
-                                    हैं।
-                                    परिवहन शुल्क अलग से लागू होता है।</p>
-                            </div>
-                        </div>
-
-                        <!-- FAQ 3 -->
-                        <div class="faq-item">
-                            <div class="faq-question">
-                                <span>फीस संरचना क्या है?</span>
-                                <i class="fas fa-chevron-down faq-icon"></i>
-                            </div>
-                            <div class="faq-answer">
-                                <p>फीस कक्षा के अनुसार भिन्न होती है। विस्तृत फीस संरचना के लिए कृपया हमारे Downloads
-                                    सेक्शन से
-                                    Fee Structure PDF डाउनलोड करें या सीधे स्कूल से संपर्क करें।</p>
-                            </div>
-                        </div>
-
-                        <!-- FAQ 4 -->
-                        <div class="faq-item">
-                            <div class="faq-question">
-                                <span>स्कूल का समय क्या है?</span>
-                                <i class="fas fa-chevron-down faq-icon"></i>
-                            </div>
-                            <div class="faq-answer">
-                                <p>स्कूल सोमवार से शनिवार तक सुबह 8:00 बजे से दोपहर 2:00 बजे तक खुला रहता है।
-                                    रविवार और सरकारी छुट्टियों में स्कूल बंद रहता है।</p>
-                            </div>
-                        </div>
-
-                        <!-- FAQ 5 -->
-                        <div class="faq-item">
-                            <div class="faq-question">
-                                <span>क्या स्कूल CBSE से मान्यता प्राप्त है?</span>
-                                <i class="fas fa-chevron-down faq-icon"></i>
-                            </div>
-                            <div class="faq-answer">
-                                <p>हाँ, हमारा स्कूल CBSE पाठ्यक्रम पर आधारित है और सभी आवश्यक मान्यताएं प्राप्त हैं।</p>
-                            </div>
-                        </div>
-
-                        <!-- FAQ 6 -->
-                        <div class="faq-item">
-                            <div class="faq-question">
-                                <span>क्या स्कूल में कंप्यूटर शिक्षा दी जाती है?</span>
-                                <i class="fas fa-chevron-down faq-icon"></i>
-                            </div>
-                            <div class="faq-answer">
-                                <p>हाँ, कक्षा 1 से ही बच्चों को कंप्यूटर की बुनियादी शिक्षा दी जाती है। हमारे पास आधुनिक
-                                    कंप्यूटर लैब और स्मार्ट क्लासरूम की सुविधा है।</p>
-                            </div>
+                        <div class="border-t border-gray-800 pt-8 text-center text-gray-500 text-sm">
+                            <p>&copy; 2026 पुलिस मॉडर्न स्कूल, रायबरेली। सर्वाधिकार सुरक्षित।</p>
+                            <p>&copy; made with ❤️ by Sathya Deva</p>
                         </div>
                     </div>
-                </div>
+                </footer>
 
-                <!-- Google Maps Section -->
-                <div>
-                    <div class="text-center mb-8">
-                        <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mb-3">हमारा स्थान</h2>
-                        <div class="w-20 h-1 bg-secondary mx-auto rounded-full"></div>
-                    </div>
-                    <div class="w-full h-96 lg:h-full rounded-2xl overflow-hidden shadow-xl relative group">
-                        <iframe
-                            src="https://maps.google.com/maps?q=26.2097599058714,81.27065212644898&hl=hi&z=16&output=embed"
-                            width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"
-                            referrerpolicy="no-referrer-when-downgrade">
-                        </iframe>
+                <!-- JavaScript for Navbar Scroll Effect and Mobile Menu -->
+                <script>
+                    const navbar = document.getElementById('navbar');
+                    const mobileMenuBtn = document.getElementById('menu-btn');
+                    const mobileMenu = document.getElementById('mobile-menu');
+                    const links = document.querySelectorAll('a[href^="#"]');
 
-                        <!-- Address Overlay -->
-                        <div
-                            class="absolute bottom-4 left-4 right-4 bg-white p-3 rounded-xl shadow-lg border border-gray-200 transform transition-all hover:scale-105">
-                            <p class="text-black font-extrabold mb-1 text-sm"><i
-                                    class="fas fa-map-marker-alt text-red-600 mr-2"></i>पता (Address): Police Modern
-                                School, 25th Vahini PAC, Sri Nagar, Raebareli, Uttar Pradesh 229001</p>
-                        </div>
-                    </div>
-                </div>
+                    // Scroll Effect
+                    // Scroll Effect removed to keep header consistent
+                    // window.addEventListener('scroll', () => { ... });
 
-            </div>
-        </div>
-    </section>
+                    // Mobile Menu Toggle
+                    mobileMenuBtn.addEventListener('click', () => {
+                        mobileMenu.classList.toggle('open');
+                        const icon = mobileMenuBtn.querySelector('i');
+                        if (mobileMenu.classList.contains('open')) {
+                            icon.classList.remove('fa-bars');
+                            icon.classList.add('fa-times');
+                        } else {
+                            icon.classList.remove('fa-times');
+                            icon.classList.add('fa-bars');
+                        }
+                    });
 
-    <!-- WhatsApp Floating Button -->
-    <a href="https://wa.me/918756625623?text=नमस्ते!%20मुझे%20प्रवेश%20के%20बारे%20में%20जानकारी%20चाहिए।"
-        target="_blank" id="whatsapp-chat"
-        class="fixed bottom-6 right-6 bg-green-500 text-white w-16 h-16 rounded-full flex items-center justify-center shadow-2xl hover:bg-green-600 transition-all hover:scale-110 z-50 no-print"
-        aria-label="WhatsApp पर संपर्क करें">
-        <i class="fab fa-whatsapp text-3xl"></i>
-    </a>
+                    // Close mobile menu when clicking on a link (smooth scroll handled by main.js)
+                    links.forEach(link => {
+                        link.addEventListener('click', function () {
+                            mobileMenu.classList.remove('open');
+                            const icon = mobileMenuBtn.querySelector('i');
+                            icon.classList.remove('fa-times');
+                            icon.classList.add('fa-bars');
+                        });
+                    });
 
-    <!-- Footer & Contact -->
-    <footer id="contact" class="bg-gray-900 text-white pt-16 pb-8">
-        <div class="container mx-auto px-6">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
-                <!-- School Info -->
-                <div>
-                    <div class="flex items-center gap-3 mb-6">
-                        <img src="/assets/images/logo/logo.png" alt="Police Modern School Raebareli Logo"
-                            class="w-12 h-12 object-contain">
-                        <span class="text-2xl font-bold">पी.एम.एस. रायबरेली</span>
-                    </div>
-                    <p class="text-gray-400 mb-6">
-                        छात्रों को सुरक्षित वातावरण में ज्ञान और अनुशासन के साथ सशक्त बनाना। आपके बच्चे के भविष्य के लिए
-                        सबसे अच्छी नींव।
-                    </p>
-                    <!-- SOCIAL MEDIA LINKS - Change URLs below as needed -->
-                    <div class="flex space-x-4">
-                        <!-- Facebook Link - CHANGE URL HERE -->
-                        <a href="https://t.me/sathyadeva" target="_blank"
-                            class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-secondary hover:text-primary transition-all"><i
-                                class="fab fa-facebook-f"></i></a>
-                        <!-- Instagram Link - CHANGE URL HERE -->
-                        <a href="https://t.me/sathyadeva" target="_blank"
-                            class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-secondary hover:text-primary transition-all"><i
-                                class="fab fa-instagram"></i></a>
-                        <!-- WhatsApp Link - CHANGE URL HERE -->
-                        <a href="https://t.me/sathyadeva" target="_blank"
-                            class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-secondary hover:text-primary transition-all"><i
-                                class="fab fa-whatsapp"></i></a>
-                    </div>
-                </div>
+                    // Dynamic Notice Board Positioning
+                    function adjustNoticeBoard() {
+                        const header = document.getElementById('navbar');
+                        const noticeBoard = document.getElementById('notice-board');
 
-                <!-- Contact Info -->
-                <div>
-                    <h3 class="text-xl font-bold mb-6 text-white border-b-2 border-secondary inline-block pb-2">संपर्क
-                        सूत्र</h3>
-                    <ul class="space-y-4">
-                        <li class="flex items-start gap-4">
-                            <i class="fas fa-map-marker-alt text-secondary mt-1"></i>
-                            <span class="text-gray-400">25वीं वाहिनी पी.ए.सी.,<br>रायबरेली, उत्तर प्रदेश</span>
-                        </li>
-                        <li class="flex items-start gap-4">
-                            <i class="fas fa-phone-alt text-secondary mt-1"></i>
-                            <div class="text-gray-400">
-                                <a href="tel:+918756625623" class="hover:text-secondary transition-colors block">+91
-                                    87566 25623</a>
-                                <a href="tel:+919140908207" class="hover:text-secondary transition-colors block">+91
-                                    91409 08207</a>
-                            </div>
-                        </li>
-                        <li class="flex items-start gap-4">
-                            <i class="fas fa-envelope text-secondary mt-1"></i>
-                            <span class="text-gray-400">info@pmsraebareli.online</span>
-                        </li>
-                        <li class="flex items-start gap-4">
-                            <i class="fas fa-clock text-secondary mt-1"></i>
-                            <span class="text-gray-400">सोम - शनि: सुबह 8:00 - दोपहर 2:00</span>
-                        </li>
-                    </ul>
-                </div>
+                        if (header && noticeBoard) {
+                            const headerHeight = header.offsetHeight;
+                            noticeBoard.style.top = headerHeight + 'px';
+                            noticeBoard.style.marginTop = headerHeight + 'px';
+                        }
+                    }
 
-                <!-- Inquiry Form -->
-                <div class="bg-gray-800 p-6 rounded-xl">
-                    <h3 class="text-lg font-bold mb-4">त्वरित पूछताछ</h3>
-                    <form id="contact-form" class="space-y-3">
-                        <input type="text" name="name" placeholder="आपका नाम" required
-                            class="w-full bg-gray-700 border-none rounded-lg px-4 py-2 text-white focus:ring-2 focus:ring-secondary outline-none">
-                        <input type="email" name="email" placeholder="ईमेल" required
-                            class="w-full bg-gray-700 border-none rounded-lg px-4 py-2 text-white focus:ring-2 focus:ring-secondary outline-none">
-                        <input type="tel" name="phone" placeholder="फ़ोन नंबर" required
-                            class="w-full bg-gray-700 border-none rounded-lg px-4 py-2 text-white focus:ring-2 focus:ring-secondary outline-none">
-                        <textarea name="message" placeholder="आपका संदेश" rows="3" required
-                            class="w-full bg-gray-700 border-none rounded-lg px-4 py-2 text-white focus:ring-2 focus:ring-secondary outline-none"></textarea>
-                        <button type="submit"
-                            class="w-full bg-secondary text-primary font-bold py-2 rounded-lg hover:bg-yellow-300 transition-colors">संदेश
-                            भेजें</button>
-                    </form>
-                </div>
-            </div>
+                    // Run on load, resize, and scroll
+                    window.addEventListener('load', adjustNoticeBoard);
+                    window.addEventListener('resize', adjustNoticeBoard);
+                    // Also run immediately
+                    adjustNoticeBoard();
+                </script>
 
-            <div class="border-t border-gray-800 pt-8 text-center text-gray-500 text-sm">
-                <p>&copy; 2026 पुलिस मॉडर्न स्कूल, रायबरेली। सर्वाधिकार सुरक्षित।</p>
-                <p>&copy; made with ❤️ by Sathya Deva</p>
-            </div>
-        </div>
-    </footer>
-
-    <!-- JavaScript for Navbar Scroll Effect and Mobile Menu -->
-    <script>
-        const navbar = document.getElementById('navbar');
-        const mobileMenuBtn = document.getElementById('menu-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
-        const links = document.querySelectorAll('a[href^="#"]');
-
-        // Scroll Effect
-        // Scroll Effect removed to keep header consistent
-        // window.addEventListener('scroll', () => { ... });
-
-        // Mobile Menu Toggle
-        mobileMenuBtn.addEventListener('click', () => {
-            mobileMenu.classList.toggle('open');
-            const icon = mobileMenuBtn.querySelector('i');
-            if (mobileMenu.classList.contains('open')) {
-                icon.classList.remove('fa-bars');
-                icon.classList.add('fa-times');
-            } else {
-                icon.classList.remove('fa-times');
-                icon.classList.add('fa-bars');
-            }
-        });
-
-        // Close mobile menu when clicking on a link (smooth scroll handled by main.js)
-        links.forEach(link => {
-            link.addEventListener('click', function () {
-                mobileMenu.classList.remove('open');
-                const icon = mobileMenuBtn.querySelector('i');
-                icon.classList.remove('fa-times');
-                icon.classList.add('fa-bars');
-            });
-        });
-
-        // Dynamic Notice Board Positioning
-        function adjustNoticeBoard() {
-            const header = document.getElementById('navbar');
-            const noticeBoard = document.getElementById('notice-board');
-
-            if (header && noticeBoard) {
-                const headerHeight = header.offsetHeight;
-                noticeBoard.style.top = headerHeight + 'px';
-                noticeBoard.style.marginTop = headerHeight + 'px';
-            }
-        }
-
-        // Run on load, resize, and scroll
-        window.addEventListener('load', adjustNoticeBoard);
-        window.addEventListener('resize', adjustNoticeBoard);
-        // Also run immediately
-        adjustNoticeBoard();
-    </script>
-
-    <!-- Structured Data (Schema.org) -->
-    <script type="application/ld+json">
+                <!-- Structured Data (Schema.org) -->
+                <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "School",
@@ -1869,31 +1532,28 @@
     }
     </script>
 
-    <!-- AOS (Animate On Scroll) -->
-    <script defer src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+                <!-- AOS (Animate On Scroll) -->
+                <script defer src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
-    <!-- Swiper JS -->
-    <script defer src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+                <!-- Custom JavaScript - Loaded after Firebase -->
+                <script defer src="/assets/js/main.js"></script>
 
-    <!-- Custom JavaScript - Loaded after Firebase -->
-    <script defer src="/assets/js/main.js"></script>
+                <!-- Service Worker Registration -->
+                <script>
+                    if ('serviceWorker' in navigator) {
+                        window.addEventListener('load', () => {
+                            navigator.serviceWorker.register('/service-worker.js')
+                                .then(registration => {
+                                    console.log('Service Worker registered successfully:', registration.scope);
+                                })
+                                .catch(error => {
+                                    console.log('Service Worker registration failed:', error);
+                                });
+                        });
+                    }
+                </script>
 
-    <!-- Service Worker Registration -->
-    <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/service-worker.js')
-                    .then(registration => {
-                        console.log('Service Worker registered successfully:', registration.scope);
-                    })
-                    .catch(error => {
-                        console.log('Service Worker registration failed:', error);
-                    });
-            });
-        }
-    </script>
-
-    <!-- Google Analytics already loaded in head section -->
+                <!-- Google Analytics already loaded in head section -->
 </body>
 
 </html>

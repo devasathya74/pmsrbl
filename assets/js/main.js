@@ -14,9 +14,9 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // 2. Initialize Core Components
     initFAQ();
     initTestimonialCarousel();
+    initGallerySlider();
     initLanguageSwitcher();
     initContactForm();
     initBlastEffect();
@@ -58,17 +58,124 @@ function initFAQ() {
 }
 
 // ========================================
-// Testimonial Carousel
+// Testimonial Carousel (Dynamic)
 // ========================================
+// ========================================
+// Testimonial Carousel (Dynamic)
+// ========================================
+const testimonialsHindi = [
+    { stars: 5, text: "बहुत ही अच्छा स्कूल है। शिक्षक बहुत मेहनती और बच्चों के प्रति समर्पित हैं।", author: "श्रीमती अनिता शर्मा", class: "3" },
+    { stars: 5, text: "पी.ए.सी. कैंपस में होने के कारण सुरक्षा की कोई चिंता नहीं है।", author: "श्री राकेश वर्मा", class: "5" },
+    { stars: 5, text: "शिक्षकों का व्यवहार बहुत अच्छा है। बच्चों को प्यार से पढ़ाया जाता है।", author: "श्रीमती प्रिया सिंह", class: "नर्सरी" },
+    { stars: 5, text: "अनुशासन और शिक्षा का बेहतरीन तालमेल यहाँ देखने को मिलता है।", author: "श्री अजय गुप्त", class: "8" },
+    { stars: 5, text: "स्कूल की सुविधाएं आधुनिक हैं और पढ़ाई का माहौल बहुत ही अनुकूल है।", author: "श्रीमती मधु यादव", class: "4" },
+    { stars: 5, text: "मेरे बच्चे के आत्मविश्वास में यहाँ आने के बाद बहुत सुधार हुआ है।", author: "श्री राजेश मौर्या", class: "2" },
+    { stars: 5, text: "प्रवेश प्रक्रिया बहुत ही स्पष्ट और सरल है। स्टाफ बहुत ही विनम्र है।", author: "श्रीमती सीमा सिंह", class: "1" },
+    { stars: 5, text: "खेलकूद और पढ़ाई का यहाँ बहुत अच्छा संतुलन है।", author: "श्री पंकज कुमार", class: "6" },
+    { stars: 5, text: "रायबरेली में गुणवत्तापूर्ण शिक्षा के लिए यह सबसे भरोसेमंद स्कूल है।", author: "श्री अमित श्रीवास्तव", class: "7" },
+    { stars: 5, text: "बच्चों की सुरक्षा और पढ़ाई दोनों यहाँ लाजवाब है।", author: "श्रीमती रीता देवी", class: "3" },
+    { stars: 5, text: "स्मार्ट क्लास और आधुनिक शिक्षण पद्धति से बच्चे जल्दी सीखते हैं।", author: "श्री विकास पाण्डेय", class: "4" },
+    { stars: 5, text: "पीटीएम के माध्यम से हमें बच्चे की प्रगति की नियमित जानकारी मिलती है।", author: "श्रीमती सुनीता मौर्या", class: "2" },
+    { stars: 5, text: "स्कूल का वातावरण बहुत ही सकारात्मक और प्रेरणादायक है।", author: "श्री संजय मिश्रा", class: "5" },
+    { stars: 5, text: "अनुभवी शिक्षकों की टीम बच्चों के भविष्य को सही दिशा में संवार रही है।", author: "श्रीमती कविता त्रिपाठी", class: "1" },
+    { stars: 5, text: "स्कूल की बस सेवा बहुत ही सुरक्षित और समय की पाबंद है।", author: "श्री धीरज यादव", class: "6" },
+    { stars: 5, text: "यहाँ के संस्कार और शिक्षा दोनों ही काबिले तारीफ हैं।", author: "श्रीमती मंजू सिंह", class: "नर्सरी" },
+    { stars: 5, text: "बच्चे यहाँ खुशी-खुशी स्कूल जाते हैं, जो पेरेंट्स के लिए सबसे बड़ी बात है।", author: "श्री रविंद्र सिंह", class: "3" },
+    { stars: 5, text: "किफायती फीस में इतनी अच्छी और सुरक्षित शिक्षा मिलना मुश्किल है।", author: "श्रीमती दीपा गुप्ता", class: "2" },
+    { stars: 5, text: "स्कूल की लाइब्रेरी और प्रयोगशालाएं बहुत ही व्यवस्थित हैं।", author: "श्री अनिल कुमार", class: "8" },
+    { stars: 5, text: "हर बच्चे पर व्यक्तिगत ध्यान दिया जाता है, जो मुझे बहुत पसंद है।", author: "श्रीमती रचना शर्मा", class: "5" },
+    { stars: 5, text: "पीएसी परिसर की शांति और हरियाली पढ़ाई के लिए बहुत अनुकूल है।", author: "श्री मनोज तिवारी", class: "4" },
+    { stars: 5, text: "वार्षिक उत्सव और सांस्कृतिक प्रतियोगिताएं बहुत अच्छा मंच है।", author: "श्रीमती सुमन देवी", class: "7" },
+    { stars: 5, text: "साफ-सफाई और हाइजीन का यहाँ विशेष ध्यान रखा जाता है।", author: "श्री राहुल वर्मा", class: "एलकेजी" },
+    { stars: 5, text: "स्कूल का प्रबंधन बहुत ही सक्रिय और सहायक है। धन्यवाद मैनेजमेंट।", author: "श्रीमती नूतन सिंह", class: "6" },
+    { stars: 5, text: "नैतिक मूल्यों और संस्कारों की शिक्षा यहाँ का सबसे मजबूत पक्ष है।", author: "श्री शिव कुमार", class: "1" },
+    { stars: 5, text: "इंग्लिश स्पीकिंग और व्यक्तित्व विकास पर विशेष जोर दिया जाता है।", author: "श्रीमती प्रियंका राज", class: "3" },
+    { stars: 5, text: "पुलिस कैंपस के अंदर वातावरण पूरी तरह से सुरक्षित है।", author: "श्री अशोक कुमार", class: "5" },
+    { stars: 5, text: "डिजिटल लर्निंग ने पढ़ाई को बहुत ही रुचिकर बनाया है।", author: "श्रीमती सरिता यादव", class: "2" },
+    { stars: 5, text: "शिक्षक बच्चों की समस्याओं को बहुत धैर्य से सुनते हैं।", author: "श्री ज्ञानेंद्र सिंह", class: "8" },
+    { stars: 5, text: "मुझे गर्व है कि मेरा बच्चा इस गरिमापूर्ण संस्थान का हिस्सा है।", author: "श्रीमती रेखा मिश्रा", class: "4" }
+];
+
+const galleryData = [
+    { src: "/assets/images/gallery/1.jpg", alt: "Best school campus in Raebareli - Police Modern School" },
+    { src: "/assets/images/gallery/2.jpg", alt: "Students classroom activity at Police Modern School Raebareli" },
+    { src: "/assets/images/gallery/3.jpg", alt: "Smart class facility at best school in Raebareli" },
+    { src: "/assets/images/gallery/4.jpg", alt: "Sports and playground activity at Police Modern School" },
+    { src: "/assets/images/gallery/5.jpg", alt: "Science laboratory at best school in Raebareli" },
+    { src: "/assets/images/gallery/6.jpg", alt: "Cultural events at Police Modern School Raebareli" },
+    { src: "/assets/images/gallery/7.jpg", alt: "Modern computer lab at PMS Raebareli" },
+    { src: "/assets/images/gallery/8.jpg", alt: "Library and resource center at Police Modern School" },
+    { src: "/assets/images/gallery/9.jpg", alt: "School building and entrance - Police Modern School" },
+    { src: "/assets/images/gallery/10.jpg", alt: "Indoor activities at best primary school in Raebareli" },
+    { src: "/assets/images/gallery/11.jpg", alt: "Morning assembly at Police Modern School Raebareli" },
+    { src: "/assets/images/gallery/12.jpg", alt: "Educational tour and field trip activities" },
+    { src: "/assets/images/gallery/13.jpg", alt: "Student achievements showcase - PMS Raebareli" },
+    { src: "/assets/images/gallery/14.jpg", alt: "Creative arts and crafts by students" },
+    { src: "/assets/images/gallery/15.jpg", alt: "Physical education and yoga sessions" },
+    { src: "/assets/images/gallery/16.jpg", alt: "Parent-teacher meeting and collaboration" }
+];
+
+function initGallerySlider() {
+    const slider = document.getElementById('slider');
+    if (!slider) return;
+
+    // Inject images
+    slider.innerHTML = galleryData.map(img => `
+        <img src="${img.src}" class="slide" loading="lazy" decoding="async" width="400" height="300" alt="${img.alt}">
+    `).join('');
+
+    const slides = slider.querySelectorAll('.slide');
+    let currentIndex = 0;
+    const total = slides.length;
+
+    if (total === 0) return;
+
+    function updateSlider() {
+        slides.forEach((slide, index) => {
+            slide.className = 'slide';
+            let relativePos = (index - currentIndex + total) % total;
+            if (relativePos === 0) slide.classList.add('pos-1');
+            else if (relativePos === 1) slide.classList.add('pos-2');
+            else if (relativePos === 2) slide.classList.add('pos-3');
+        });
+    }
+
+    function nextSlide() {
+        currentIndex = (currentIndex + 1) % total;
+        updateSlider();
+    }
+
+    // Auto loop
+    setInterval(nextSlide, 3500);
+    updateSlider();
+}
+
 function initTestimonialCarousel() {
-    const slides = document.querySelectorAll('.testimonial-slide');
+    const container = document.querySelector('.testimonial-slides-container');
     const counterDisplay = document.querySelector('.carousel-counter');
     const prevBtn = document.querySelector('.testimonial-prev');
     const nextBtn = document.querySelector('.testimonial-next');
+
+    if (!container) return;
+
+    // Detect language
+    const currentLang = document.documentElement.lang || 'hi';
+    const activeData = currentLang === 'en' ? testimonialsEnglish : testimonialsHindi;
+    const parentLabel = currentLang === 'en' ? 'Parent, Class' : 'अभिभावक, कक्षा';
+
+    // Inject testimonials dynamically to reduce initial DOM size
+    container.innerHTML = activeData.map((t, i) => `
+        <div class="testimonial-slide ${i === 0 ? 'active' : ''}">
+            <div class="testimonial-stars text-sm text-yellow-500">${'★'.repeat(t.stars)}</div>
+            <p class="testimonial-text text-sm">"${t.text}"</p>
+            <p class="testimonial-author text-sm font-bold">${t.author}</p>
+            <p class="text-gray-500 text-xs">${parentLabel} ${t.class}</p>
+        </div>
+    `).join('');
+
+    const slides = container.querySelectorAll('.testimonial-slide');
     let currentSlide = 0;
     let autoPlayInterval;
-
-    if (slides.length === 0) return;
 
     function showSlide(index) {
         slides.forEach(slide => slide.classList.remove('active'));
@@ -79,7 +186,7 @@ function initTestimonialCarousel() {
 
     function startAutoPlay() {
         stopAutoPlay();
-        autoPlayInterval = setInterval(() => showSlide(currentSlide + 1), 5000);
+        autoPlayInterval = setInterval(() => showSlide(currentSlide + 1), 6000);
     }
 
     function stopAutoPlay() { clearInterval(autoPlayInterval); }

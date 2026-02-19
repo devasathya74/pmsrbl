@@ -508,12 +508,13 @@
     </div>
 
     <!-- Hero Section -->
-    <section id="home"
-        class="min-h-[60vh] pb-20 flex items-center justify-center text-center px-4 pt-24 md:pt-32 relative overflow-hidden bg-primary">
-        <!-- Hero Background Image (LCP Optimization) -->
-        <img src="/assets/images/hero1.avif" srcset="/assets/images/hero2.avif 800w, /assets/images/hero3.avif 1920w"
-            sizes="100vw" width="1920" height="1080" fetchpriority="high" decoding="async"
-            alt="Police Modern School Building" class="absolute inset-0 w-full h-full object-cover z-0 opacity-40">
+    <section id="home" class="relative min-h-[60vh] flex items-center justify-center text-center bg-primary">
+
+        <img src="/assets/images/hero1.webp" width="1200" height="800" fetchpriority="high" decoding="async"
+            alt="Police Modern School Building" class="absolute inset-0 w-full h-full object-cover z-0">
+
+        <!-- Simple Overlay for Contrast -->
+        <div class="absolute inset-0 bg-black/40 z-0"></div>
 
         <!-- Floating Badge Icons - Alternating System -->
         <img src="/assets/images/admission-badge.png" id="hero-badge-right" width="128" height="128"

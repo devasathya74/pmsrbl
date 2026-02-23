@@ -231,11 +231,6 @@ window.switchTab = function (tabName) {
             btn.classList.add('active');
         }
     });
-
-    // Lazy-load tab data on first switch
-    if (tabName === 'teacher-reports') {
-        loadTeacherReports();
-    }
 };
 
 // Global state for monitoring
@@ -243,6 +238,7 @@ let monitoringData = { students: [] };
 
 // 1. Teacher Reports
 async function loadTeacherReports() {
+    console.log("Loading teacher reports...");
     const tbody = document.getElementById('teacher-reports-body');
     if (!tbody) return;
     tbody.innerHTML = '<tr><td colspan="5" class="px-6 py-4 text-center">Loading...</td></tr>';

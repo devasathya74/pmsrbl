@@ -152,8 +152,6 @@ document.getElementById('admission-form').addEventListener('submit', async funct
             files.photo = photoFile;
         }
 
-        console.log('Files to upload:', Object.keys(files)); // Debug log
-
         // Submit to Firebase
         // Map form data to backend expectations
         const formDataObj = Object.fromEntries(formData.entries());
@@ -228,13 +226,12 @@ document.getElementById('admission-form').addEventListener('submit', async funct
             // Create new admission
             result = await admissionHelper.submitAdmission(cleanData, files);
 
-            // If Admin, immediately approve and create student
-            const urlParams = new URLSearchParams(window.location.search);
-            if (result.success && urlParams.get('source') === 'admin') {
-                console.log('Admin source detected, auto-approving and creating student...');
+            // Auto-approve: fetch, create student, update admission status
+            const { firestoreHelper: fh, storageHelper } = await import('./firebase-config.js');
+            const urlParams2 = new URLSearchParams(window.location.search);
+            if (result.success && urlParams2.get('source') === 'admin') {
                 try {
-                    // Fetch the full admission object we just created to get mapped fields & file URLs
-                    const admResult = await firestoreHelper.getDocument('admissions', result.id);
+                    const admResult = await fh.getDocument('admissions', result.id);
                     if (admResult.success) {
                         const admission = admResult.data;
 
@@ -277,15 +274,13 @@ document.getElementById('admission-form').addEventListener('submit', async funct
                         };
 
                         // Create Student
-                        await firestoreHelper.addDocument('students', newStudentData);
+                        await fh.addDocument('students', newStudentData);
 
                         // Update Admission Status
-                        await firestoreHelper.updateDocument('admissions', result.id, { status: 'approved' });
-                        console.log('Auto-approval complete.');
+                        await fh.updateDocument('admissions', result.id, { status: 'approved' });
                     }
                 } catch (autoApproveError) {
                     console.error('Auto-approval failed:', autoApproveError);
-                    // Don't fail the whole submission, just log it. The admission is still saved as pending.
                 }
             }
 
@@ -345,15 +340,12 @@ window.prevStep = prevStep;
 async function loadStudentData() {
     if (!isEditMode || !editingStudentId) return;
 
-    console.log('Loading student data for ID:', editingStudentId);
-
     try {
         const { firestoreHelper } = await import('./firebase-config.js');
         const result = await firestoreHelper.getDocument('students', editingStudentId);
 
         if (result.success && result.data) {
             const s = result.data;
-            console.log('Student data retrieved:', s);
 
             // Helper function to set field value by name attribute
             const setFieldValue = (name, value) => {
@@ -366,7 +358,6 @@ async function loadStudentData() {
                 }
             };
 
-            // Populate all fields using name attributes
             // Populate all fields using name attributes
             setFieldValue('scholarName', s.studentName);
             setFieldValue('dob', s.dob);
@@ -408,9 +399,7 @@ async function loadStudentData() {
             });
 
             if (missingFields.length > 0) {
-                console.warn('⚠️ Some fields might not have auto-filled correctly or are empty in DB:', missingFields);
-            } else {
-                console.log('✅ All critical fields loaded successfully.');
+                console.warn('Some fields may be empty in DB:', missingFields);
             }
 
 
@@ -441,12 +430,9 @@ async function loadStudentData() {
 
             // Set photo if available
             if (s.photo) {
-                // The photo preview container in admission.html is instantPhotoPreview
                 const photoContainer = document.getElementById('instantPhotoPreview');
-                const photoInput = document.getElementById('studentPhotoInput');
 
                 if (photoContainer) {
-                    // Clear existing content and add image
                     photoContainer.innerHTML = '';
                     const img = document.createElement('img');
                     img.src = s.photo;
@@ -454,20 +440,14 @@ async function loadStudentData() {
                     img.alt = 'Student Photo';
                     photoContainer.appendChild(img);
 
-                    // Add a small text indicating existing photo
                     const label = document.createElement('span');
                     label.className = 'absolute bottom-0 bg-black bg-opacity-50 text-white text-[10px] w-full text-center py-1';
                     label.innerText = 'Current Photo';
                     photoContainer.style.position = 'relative';
                     photoContainer.appendChild(label);
-
-                    console.log('✅ Photo loaded:', s.photo);
-                } else {
-                    console.warn('Photo preview container (instantPhotoPreview) not found');
                 }
             }
 
-            console.log('✅ Student data loaded successfully');
         } else {
             console.error('Failed to load student:', result.error);
         }
@@ -476,13 +456,9 @@ async function loadStudentData() {
     }
 }
 
-// Wait for window to be fully loaded before loading data
+// Wait for window to load before filling student data in edit mode
 if (isEditMode) {
-    console.log('Edit mode detected, will load student data');
-
-    // Use window load event to ensure all scripts and DOM are ready
     window.addEventListener('load', () => {
-        console.log('Window fully loaded, loading student data now');
         loadStudentData();
     });
 }

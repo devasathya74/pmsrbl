@@ -1266,28 +1266,48 @@ function exportCSV(){
   URL.revokeObjectURL(url);toast('CSV exported!');
 }
 
+
 function downloadPDF() {
     const element = document.getElementById("printArea");
     if (!element || !element.innerHTML.trim()) { toast("Nothing to download!"); return; }
 
     toast("Generating PDF... Please wait.");
 
-    // Use html2canvas to take exact screenshot of the full element
-    html2canvas(element, {
+    // Clone element into a fixed full-size container so html2canvas captures EVERYTHING
+    const clone = element.cloneNode(true);
+    const fullW = element.scrollWidth;
+    const fullH = element.scrollHeight;
+
+    Object.assign(clone.style, {
+        position: 'fixed',
+        top: '0',
+        left: '0',
+        width: fullW + 'px',
+        height: fullH + 'px',
+        overflow: 'visible',
+        zIndex: '-9999',
+        background: '#fff',
+        margin: '0',
+        padding: '0'
+    });
+    document.body.appendChild(clone);
+
+    html2canvas(clone, {
         scale: 2,
         useCORS: true,
         allowTaint: true,
         scrollX: 0,
-        scrollY: -window.scrollY,
-        windowWidth: element.scrollWidth,
-        windowHeight: element.scrollHeight,
-        width: element.scrollWidth,
-        height: element.scrollHeight
+        scrollY: 0,
+        width: fullW,
+        height: fullH,
+        windowWidth: fullW,
+        windowHeight: fullH,
+        logging: false
     }).then(canvas => {
+        document.body.removeChild(clone);
+
         const imgData = canvas.toDataURL('image/jpeg', 1.0);
         const { jsPDF } = window.jspdf;
-
-        // Create PDF with exact canvas pixel dimensions
         const pdfW = canvas.width;
         const pdfH = canvas.height;
         const orientation = pdfW > pdfH ? 'landscape' : 'portrait';
@@ -1303,9 +1323,11 @@ function downloadPDF() {
         pdf.save('PMS_Fee_Report.pdf');
         toast('PDF Downloaded!', 'success');
     }).catch(err => {
+        document.body.removeChild(clone);
         toast('PDF Error: ' + err.message);
     });
 }
+
   
 // ===== MODAL =====
 

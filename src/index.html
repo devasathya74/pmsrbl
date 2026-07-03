@@ -1272,32 +1272,36 @@ function downloadPDF() {
 
     toast("Generating PDF... Please wait.");
 
-    html2canvas(element, {
-        scale: 2,
-        useCORS: true,
-        allowTaint: true,
-        scrollX: 0,
-        scrollY: -window.scrollY,
-        windowWidth: element.scrollWidth,
-        windowHeight: element.scrollHeight,
-        width: element.scrollWidth,
-        height: element.scrollHeight
+    const clone = element.cloneNode(true);
+    const fullW = element.scrollWidth;
+    const fullH = element.scrollHeight;
+
+    Object.assign(clone.style, {
+        position: 'fixed', top: '0', left: '0',
+        width: fullW + 'px', height: fullH + 'px',
+        overflow: 'visible', zIndex: '-9999',
+        background: '#fff', margin: '0', padding: '0'
+    });
+    document.body.appendChild(clone);
+
+    html2canvas(clone, {
+        scale: 2, useCORS: true, allowTaint: true,
+        scrollX: 0, scrollY: 0,
+        width: fullW, height: fullH,
+        windowWidth: fullW, windowHeight: fullH, logging: false
     }).then(canvas => {
+        document.body.removeChild(clone);
         const imgData = canvas.toDataURL('image/jpeg', 1.0);
         const { jsPDF } = window.jspdf;
         const pdfW = canvas.width;
         const pdfH = canvas.height;
         const orientation = pdfW > pdfH ? 'landscape' : 'portrait';
-        const pdf = new jsPDF({
-            orientation: orientation,
-            unit: 'px',
-            format: [pdfW, pdfH],
-            hotfixes: ['px_scaling']
-        });
+        const pdf = new jsPDF({ orientation, unit: 'px', format: [pdfW, pdfH], hotfixes: ['px_scaling'] });
         pdf.addImage(imgData, 'JPEG', 0, 0, pdfW, pdfH);
         pdf.save('PMS_Fee_Report.pdf');
         toast('PDF Downloaded!', 'success');
     }).catch(err => {
+        document.body.removeChild(clone);
         toast('PDF Error: ' + err.message);
     });
 }

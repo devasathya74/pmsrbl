@@ -1140,8 +1140,6 @@ function renderPrint(){
           const annualLiability = (monthlyFee * 12) + (String(s.admYear) === String(year) ? ADM_FEE : 0);
           const balance = annualLiability - tot;
           
-          const isLastStudent = (index === students.length - 1);
-          
           const renderRow = (rowMonths, isFirst, isLast) => {
               let row = '<tr style="' + (isFirst ? 'border-top: 2px solid #0d1b3e' : '') + (isLast ? '; border-bottom: 2px solid #0d1b3e' : '') + '">';
               if(isFirst) {
@@ -1151,32 +1149,38 @@ function renderPrint(){
                          '<td class="stu-info" style="text-align:center" rowspan="4">'+(s.cls||'')+'</td>'+
                          '<td class="stu-info" style="text-align:center" rowspan="4">'+(s.bus?'Y':'')+'</td>';
               }
+              
+              let rowTot = 0;
               row += rowMonths.map(i => {
                   const m = SCHOOL_MONTHS[i];
                   const fe = sf.find(f=>f.month===m);
+                  if (fe) {
+                      rowTot += (fe.amount || 0) + (fe.busPaid ? (fe.busAmount || 0) : 0);
+                  }
                   const tc = fe&&fe.amount?'<td class="paid-cell" style="padding:4px;line-height:1.3;text-align:center"><b style="font-size:0.75rem">'+fe.amount+'</b><br><span style="font-family:monospace;font-size:0.65rem;color:#444">'+(fe.receipt||'-')+'</span></td>':'<td class="unpaid-cell">-</td>';
                   const bc = s.bus?(fe&&fe.busPaid?'<td class="bus-paid-cell" style="padding:4px;line-height:1.3;text-align:center"><b style="font-size:0.75rem">'+(fe.busAmount||0)+'</b><br><span style="font-family:monospace;font-size:0.65rem;color:#444">'+(fe.busReceipt||'-')+'</span></td>':'<td class="unpaid-cell">-</td>'):'<td style="background:#f0f0f0">-</td>';
                   return tc + bc;
               }).join('');
+              
               if(isFirst) {
                   row += '<td style="font-weight:700;text-align:right;line-height:1.4" rowspan="4">'+
                          '<div style="font-size:0.8rem;color:#166534">T: '+(tot?'Rs.'+tot:'0')+'</div>'+
                          '<div style="font-size:0.75rem;color:#991b1b;margin-top:4px">B: Rs.'+balance+'</div>'+
                          '</td>';
-                         
-                  if(isLastStudent) {
-                      row += '<td rowspan="4" style="background:#f8fafc;vertical-align:bottom;text-align:center;padding-bottom:12px;font-weight:800;font-size:1.1rem;color:#0d1b3e">Rs. '+gt.toLocaleString('en-IN')+'</td>';
-                  } else {
-                      row += '<td rowspan="4" style="background:#f8fafc"></td>';
-                  }
               }
+              
+              // New column: row total for this specific student and these specific 3 months
+              row += '<td style="background:#f8fafc;vertical-align:middle;text-align:center;font-weight:700;font-size:0.75rem;color:#0d1b3e">' + (rowTot ? 'Rs. '+rowTot : '-') + '</td>';
+              
               row += '</tr>';
               return row;
           };
 
           return renderRow(q1, true, false) + renderRow(q2, false, false) + renderRow(q3, false, false) + renderRow(q4, false, true);
         }).join('')+
-        '</tbody></table></div></div>';  } else if(view==='monthly-report'){
+        '</tbody><tfoot><tr>'+
+        '<td colspan="13" style="background:#0d1b3e;color:#fff;font-weight:800;padding:12px;text-align:right;font-size:1.1rem">Total collected cash from class - Rs. '+gt.toLocaleString('en-IN')+'</td>'+
+        '</tr></tfoot></table></div></div>';  } else if(view==='monthly-report'){
     if(!month){document.getElementById('printArea').innerHTML='<p style="color:var(--muted);padding:20px">Please select a month.</p>';return;}
     const fees=[..._fees].filter(f=>f.month===month&&String(f.year)===String(year));
     const grouped={};fees.forEach(f=>{grouped[f.studentId]=f;});

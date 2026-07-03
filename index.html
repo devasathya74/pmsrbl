@@ -1156,25 +1156,10 @@ function renderPrint(){
 
           return renderRow(q1, true, false) + renderRow(q2, false, false) + renderRow(q3, false, false) + renderRow(q4, false, true);
         }).join('')+
-        '</tbody><tfoot>'+
-        [q1, q2, q3, q4].map((qArr, idx) => {
-            const labels = ['TOTAL (Apr-Jun)', 'TOTAL (Jul-Sep)', 'TOTAL (Oct-Dec)', 'TOTAL (Jan-Mar)'];
-            let row = '<tr><td colspan="5" style="background:#0d1b3e;color:#fff;font-weight:700;padding:6px;text-align:right">'+labels[idx]+'</td>';
-            row += qArr.map(i => {
-                const m = SCHOOL_MONTHS[i];
-                const mf = fees.filter(f=>f.month===m);
-                const tA = mf.reduce((x,f)=>x+(f.amount||0),0);
-                const bA = mf.filter(f=>f.busPaid).reduce((x,f)=>x+(f.busAmount||0),0);
-                return '<td style="background:#0d1b3e;color:#aef;font-weight:700;text-align:center">'+(tA||'-')+'</td>' + 
-                       '<td style="background:#0a3a50;color:#7dd3fc;font-weight:700;text-align:center">'+(bA||'-')+'</td>';
-            }).join('');
-            if(idx === 0) {
-                row += '<td style="background:#0d1b3e;color:#ffd700;font-weight:800;text-align:right" rowspan="4">Rs.'+gt.toLocaleString('en-IN')+'</td>';
-            }
-            row += '</tr>';
-            return row;
-        }).join('') +
-        '</tfoot></table></div></div>';  } else if(view==='monthly-report'){
+        '</tbody><tfoot><tr>'+
+        '<td colspan="11" style="background:#0d1b3e;color:#fff;font-weight:700;padding:8px;text-align:right;font-size:0.85rem">Total Collected Fee + Other (Diary + Fee Card) Charges Total :</td>'+
+        '<td style="background:#0d1b3e;color:#ffd700;font-weight:800;text-align:right;font-size:1rem;padding:8px">Rs.'+gt.toLocaleString('en-IN')+'</td>'+
+        '</tr></tfoot></table></div></div>';  } else if(view==='monthly-report'){
     if(!month){document.getElementById('printArea').innerHTML='<p style="color:var(--muted);padding:20px">Please select a month.</p>';return;}
     const fees=[..._fees].filter(f=>f.month===month&&String(f.year)===String(year));
     const grouped={};fees.forEach(f=>{grouped[f.studentId]=f;});

@@ -213,7 +213,7 @@ tbody td{padding:8px 11px;border-bottom:1px solid var(--border);vertical-align:m
   .print-card{box-shadow:none;border:none;page-break-inside:avoid}
   .pr-table,.reg-table{font-size:7pt}
   .pr-table th,.pr-table td,.reg-table th,.reg-table td{padding:2px 3px}
-  @page{margin:6mm;size:A4 landscape}
+  
   /* Optimization for A4 printing: wrap long text in tables */
   .pr-table td, .reg-table td, .pr-table th, .reg-table th {
     white-space: normal !important;
@@ -1269,16 +1269,19 @@ function exportCSV(){
     const element = document.getElementById('printArea');
     if(!element || !element.innerHTML.trim()) { toast('Nothing to download!'); return; }
     
-    // Some minor styling adjustments right before saving for better PDF rendering
+    // Get actual dimensions to create a full size PDF
+    const width = element.scrollWidth;
+    const height = Math.max(element.scrollHeight, 600);
+    
     const opt = {
-      margin:       5,
+      margin:       10,
       filename:     'PMS_Fee_Report.pdf',
       image:        { type: 'jpeg', quality: 0.98 },
-      html2canvas:  { scale: 2, useCORS: true },
-      jsPDF:        { unit: 'mm', format: 'a4', orientation: 'landscape' }
+      html2canvas:  { scale: 2, useCORS: true, windowWidth: width },
+      jsPDF:        { unit: 'px', format: [width + 20, height + 20], orientation: width > height ? 'landscape' : 'portrait' }
     };
     
-    toast('Generating PDF... Please wait.');
+    toast('Generating Full Size PDF... Please wait.');
     html2pdf().set(opt).from(element).save().then(() => {
         toast('PDF Downloaded!', 'success');
     });

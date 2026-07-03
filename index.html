@@ -1265,7 +1265,27 @@ function exportCSV(){
   URL.revokeObjectURL(url);toast('CSV exported!');
 }
 
+  function downloadPDF() {
+    const element = document.getElementById('printArea');
+    if(!element || !element.innerHTML.trim()) { toast('Nothing to download!'); return; }
+    
+    // Some minor styling adjustments right before saving for better PDF rendering
+    const opt = {
+      margin:       5,
+      filename:     'PMS_Fee_Report.pdf',
+      image:        { type: 'jpeg', quality: 0.98 },
+      html2canvas:  { scale: 2, useCORS: true },
+      jsPDF:        { unit: 'mm', format: 'a4', orientation: 'landscape' }
+    };
+    
+    toast('Generating PDF... Please wait.');
+    html2pdf().set(opt).from(element).save().then(() => {
+        toast('PDF Downloaded!', 'success');
+    });
+  }
+  
 // ===== MODAL =====
+
 function openModal(id){document.getElementById(id).classList.add('open')}
 function closeModal(id){document.getElementById(id).classList.remove('open')}
 document.querySelectorAll('.modal-overlay').forEach(el=>{

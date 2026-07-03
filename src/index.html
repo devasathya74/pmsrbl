@@ -230,7 +230,8 @@ tbody td{padding:8px 11px;border-bottom:1px solid var(--border);vertical-align:m
   .month-grid{grid-template-columns:1fr}
 }
 </style>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
 
@@ -1267,49 +1268,38 @@ function exportCSV(){
 
 function downloadPDF() {
     const element = document.getElementById("printArea");
+    if (!element || !element.innerHTML.trim()) { toast("Nothing to download!"); return; }
 
-    if (!element || !element.innerHTML.trim()) {
-        toast("Nothing to download!");
-        return;
-    }
+    toast("Generating PDF... Please wait.");
 
-    const width = element.scrollWidth;
-    const height = element.scrollHeight;
-
-    toast("Generating Full Size PDF...");
-
-    html2pdf().set({
-        margin: 0,
-        filename: "PMS_Fee_Report.pdf",
-
-        image: {
-            type: "jpeg",
-            quality: 1
-        },
-
-        html2canvas: {
-            scale: 3,
-            useCORS: true,
-            allowTaint: true,
-            scrollX: 0,
-            scrollY: 0,
-            windowWidth: width,
-            windowHeight: height
-        },
-
-        jsPDF: {
-            unit: "px",
-            format: [width, height],
-            orientation: width > height ? "landscape" : "portrait"
-        },
-
-        pagebreak: {
-            mode: []
-        }
-    })
-    .from(element)
-    .save()
-    .then(() => toast("PDF Downloaded!", "success"));
+    html2canvas(element, {
+        scale: 2,
+        useCORS: true,
+        allowTaint: true,
+        scrollX: 0,
+        scrollY: -window.scrollY,
+        windowWidth: element.scrollWidth,
+        windowHeight: element.scrollHeight,
+        width: element.scrollWidth,
+        height: element.scrollHeight
+    }).then(canvas => {
+        const imgData = canvas.toDataURL('image/jpeg', 1.0);
+        const { jsPDF } = window.jspdf;
+        const pdfW = canvas.width;
+        const pdfH = canvas.height;
+        const orientation = pdfW > pdfH ? 'landscape' : 'portrait';
+        const pdf = new jsPDF({
+            orientation: orientation,
+            unit: 'px',
+            format: [pdfW, pdfH],
+            hotfixes: ['px_scaling']
+        });
+        pdf.addImage(imgData, 'JPEG', 0, 0, pdfW, pdfH);
+        pdf.save('PMS_Fee_Report.pdf');
+        toast('PDF Downloaded!', 'success');
+    }).catch(err => {
+        toast('PDF Error: ' + err.message);
+    });
 }
   
 // ===== MODAL =====

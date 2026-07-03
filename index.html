@@ -1114,17 +1114,17 @@ function renderPrint(){
       const fees=[..._fees].filter(f=>String(f.year)===String(year));
       const gt=fees.reduce((s,f)=>s+(f.amount||0)+(f.busPaid?f.busAmount||0:0),0);
       
-      const q1 = [0,1,2];
-      const q2 = [3,4,5];
-      const q3 = [6,7,8];
-      const q4 = [9,10,11];
+      const q1 = [0,4,8];
+      const q2 = [1,5,9];
+      const q3 = [2,6,10];
+      const q4 = [3,7,11];
 
-      document.getElementById('printArea').innerHTML='<div class="print-card">'+
+      document.getElementById('printArea').innerHTML='<style>@media print { .reg-table { width: 100%; max-width: 100%; font-size: 0.72rem !important; } .reg-table th, .reg-table td { padding: 3px !important; } }</style><div class="print-card">'+
         '<div class="pr-hdr">'+hdr+'<h2>MONTHLY FEE REGISTER &ndash; '+year+(cls?' | Class '+cls:'')+'</h2>'+
         '<p>Generated: '+new Date().toLocaleString('en-IN')+' | Students: '+students.length+'</p></div>'+
         '<div class="reg-wrap"><table class="reg-table"><thead>'+
-        '<tr><th rowspan="2">Sr.</th><th rowspan="2">PEN</th><th rowspan="2">Student Name</th><th rowspan="2">Cls</th><th rowspan="2">Bus</th>'+
-        q1.map(i=>'<th colspan="2" style="font-size:0.75rem">'+SCHOOL_MONTHS[i]+' / '+SCHOOL_MONTHS[i+3]+' / '+SCHOOL_MONTHS[i+6]+' / '+SCHOOL_MONTHS[i+9]+'</th>').join('')+'<th rowspan="2">Total</th></tr>'+
+        '<tr><th rowspan="2" style="width:3%">Sr.</th><th rowspan="2" style="width:7%">PEN</th><th rowspan="2" style="width:15%">Student Name</th><th rowspan="2" style="width:5%">Cls</th><th rowspan="2" style="width:3%">Bus</th>'+
+        q1.map(i=>'<th colspan="2" style="font-size:0.72rem;width:20%">'+SCHOOL_MONTHS[i]+' / '+SCHOOL_MONTHS[i+1]+' / '+SCHOOL_MONTHS[i+2]+' / '+SCHOOL_MONTHS[i+3]+'</th>').join('')+'<th rowspan="2" style="width:7%">Total</th></tr>'+
         '<tr>'+q1.map(()=>'<th style="background:#1a3a7c;line-height:1.2;padding:4px">Fee / Rec#</th><th style="background:#0e7490;line-height:1.2;padding:4px">Bus / Rec#</th>').join('')+'</tr>'+
         '</thead><tbody>'+
         students.map(s=>{

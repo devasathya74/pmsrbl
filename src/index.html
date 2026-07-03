@@ -230,6 +230,7 @@ tbody td{padding:8px 11px;border-bottom:1px solid var(--border);vertical-align:m
   .month-grid{grid-template-columns:1fr}
 }
 </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 <body>
 
@@ -454,7 +455,7 @@ tbody td{padding:8px 11px;border-bottom:1px solid var(--border);vertical-align:m
         <option>December</option><option>January</option><option>February</option><option>March</option>
       </select>
       <input type="number" id="prYear" value="2025" style="width:88px" onchange="renderPrint()"/>
-      <button class="btn btn-primary" onclick="window.print()">&#128424; Print (Landscape)</button>
+      <button class="btn btn-primary" onclick="downloadPDF()">&#11015; Download PDF</button>
       <button class="btn btn-gold" onclick="exportCSV()">&#11015; Export CSV</button>
     </div>
     <div id="printArea"></div>
@@ -1127,10 +1128,10 @@ function renderPrint(){
         '<div class="reg-wrap"><table class="reg-table"><thead>'+
         '<tr><th rowspan="2" style="width:3%">Sr.</th><th rowspan="2" style="width:7%">PEN</th><th rowspan="2" style="width:15%">Student Name</th><th rowspan="2" style="width:5%">Cls</th><th rowspan="2" style="width:3%">Bus</th>'+
         q1.map(i=>'<th colspan="2" style="font-size:0.72rem;width:18%">'+SCHOOL_MONTHS[i]+' / '+SCHOOL_MONTHS[i+1]+' / '+SCHOOL_MONTHS[i+2]+' / '+SCHOOL_MONTHS[i+3]+'</th>').join('')+'<th rowspan="2" style="width:7%">Total / Balance</th>'+
-        '<th rowspan="2" style="width:9%;background:#0d1b3e;color:#fff;font-size:0.65rem">Total Collected Fee + Other (Diary + Fee Card) Charges Total :<br><span style="color:#ffd700;font-size:0.9rem">Rs.'+gt.toLocaleString('en-IN')+'</span></th></tr>'+
+        '<th rowspan="2" style="width:9%;background:#0d1b3e;color:#fff;font-size:0.65rem">Total Collected Fee + Other (Diary + Fee Card) Charges Total :</th></tr>'+
         '<tr>'+q1.map(()=>'<th style="background:#1a3a7c;line-height:1.2;padding:4px">Fee / Rec#</th><th style="background:#0e7490;line-height:1.2;padding:4px">Bus / Rec#</th>').join('')+'</tr>'+
         '</thead><tbody>'+
-        students.map(s=>{
+        students.map((s, index)=>{
           const sf=fees.filter(f=>f.studentId===s.id);
           const tot=sf.reduce((x,f)=>x+(f.amount||0)+(f.busPaid?f.busAmount||0:0),0);
           
@@ -1138,6 +1139,8 @@ function renderPrint(){
           const monthlyFee = calcFee(s).net;
           const annualLiability = (monthlyFee * 12) + (String(s.admYear) === String(year) ? ADM_FEE : 0);
           const balance = annualLiability - tot;
+          
+          const isLastStudent = (index === students.length - 1);
           
           const renderRow = (rowMonths, isFirst, isLast) => {
               let row = '<tr style="' + (isFirst ? 'border-top: 2px solid #0d1b3e' : '') + (isLast ? '; border-bottom: 2px solid #0d1b3e' : '') + '">';
@@ -1159,8 +1162,13 @@ function renderPrint(){
                   row += '<td style="font-weight:700;text-align:right;line-height:1.4" rowspan="4">'+
                          '<div style="font-size:0.8rem;color:#166534">T: '+(tot?'Rs.'+tot:'0')+'</div>'+
                          '<div style="font-size:0.75rem;color:#991b1b;margin-top:4px">B: Rs.'+balance+'</div>'+
-                         '</td>'+
-                         '<td rowspan="4" style="background:#f8fafc"></td>';
+                         '</td>';
+                         
+                  if(isLastStudent) {
+                      row += '<td rowspan="4" style="background:#f8fafc;vertical-align:bottom;text-align:center;padding-bottom:12px;font-weight:800;font-size:1.1rem;color:#0d1b3e">Rs. '+gt.toLocaleString('en-IN')+'</td>';
+                  } else {
+                      row += '<td rowspan="4" style="background:#f8fafc"></td>';
+                  }
               }
               row += '</tr>';
               return row;
@@ -1287,7 +1295,7 @@ window.editStudent=editStudent;window.delStudent=delStudent;window.openFeeFor=op
 window.fcFilter=fcFilter;window.selectStudent=selectStudent;window.renderFcStudents=renderFcStudents;
 window.toggleTuition=toggleTuition;window.saveTuition=saveTuition;window.unmarkTuition=unmarkTuition;window.editTuition=editTuition;
 window.toggleBus=toggleBus;window.saveBus=saveBus;window.unmarkBus=unmarkBus;window.editBus=editBus;
-window.renderPrint=renderPrint;window.fmtAadhar=fmtAadhar;window.busToggle=busToggle;
+window.renderPrint=renderPrint;window.downloadPDF=downloadPDF;window.fmtAadhar=fmtAadhar;window.busToggle=busToggle;
 window.updateFeePreview=updateFeePreview;window.resetForm=resetForm;window.clearErr=clearErr;
 window.logout=logout;
 

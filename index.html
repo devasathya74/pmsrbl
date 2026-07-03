@@ -1111,59 +1111,72 @@ function renderPrint(){
         '<td style="text-align:center">'+(s.admYear||'')+'</td></tr>';}).join('')+
       '</tbody></table></div></div>';
   } else if(view==='monthly-register'){
-    const fees=[..._fees].filter(f=>String(f.year)===String(year));
-    const gt=fees.reduce((s,f)=>s+(f.amount||0)+(f.busPaid?f.busAmount||0:0),0);
-    const mIdx = [0,1,2,3,4,5];
-    document.getElementById('printArea').innerHTML='<div class="print-card">'+
-      '<div class="pr-hdr">'+hdr+'<h2>MONTHLY FEE REGISTER – '+year+(cls?' | Class '+cls:'')+'</h2>'+
-      '<p>Generated: '+new Date().toLocaleString('en-IN')+' | Students: '+students.length+'</p></div>'+
-      '<div class="reg-wrap"><table class="reg-table"><thead>'+
-      '<tr><th rowspan="2">Sr.</th><th rowspan="2">PEN</th><th rowspan="2">Student Name</th><th rowspan="2">Cls</th><th rowspan="2">Bus</th>'+
-      mIdx.map(i=>'<th colspan="2" style="font-size:0.75rem">'+SCHOOL_MONTHS[i]+' / '+SCHOOL_MONTHS[i+6]+'</th>').join('')+'<th rowspan="2">Total</th></tr>'+
-      '<tr>'+mIdx.map(()=>'<th style="background:#1a3a7c;line-height:1.2;padding:4px">Tuition<br><span style="font-size:.6rem;font-weight:normal">Rec# & Amt</span></th><th style="background:#0e7490;line-height:1.2;padding:4px">Bus<br><span style="font-size:.6rem;font-weight:normal">Rec# & Amt</span></th>').join('')+'</tr>'+
-      '</thead><tbody>'+
-      students.map(s=>{
-        const sf=fees.filter(f=>f.studentId===s.id);
-        const tot=sf.reduce((x,f)=>x+(f.amount||0)+(f.busPaid?f.busAmount||0:0),0);
-        let row1 = '<tr style="border-top: 2px solid #0d1b3e">'+
-          '<td class="stu-info" style="text-align:center" rowspan="2">'+s.serial+'</td>'+
-          '<td class="stu-info" style="font-family:monospace;font-size:.67rem" rowspan="2">'+(s.pen||'')+'</td>'+
-          '<td class="stu-info" rowspan="2"><b>'+s.name+'</b></td>'+
-          '<td class="stu-info" style="text-align:center" rowspan="2">'+(s.cls||'')+'</td>'+
-          '<td class="stu-info" style="text-align:center" rowspan="2">'+(s.bus?'Y':'')+'</td>'+
+      const fees=[..._fees].filter(f=>String(f.year)===String(year));
+      const gt=fees.reduce((s,f)=>s+(f.amount||0)+(f.busPaid?f.busAmount||0:0),0);
+      const mIdx = [0,1,2,3];
+      document.getElementById('printArea').innerHTML='<div class="print-card">'+
+        '<div class="pr-hdr">'+hdr+'<h2>MONTHLY FEE REGISTER &ndash; '+year+(cls?' | Class '+cls:'')+'</h2>'+
+        '<p>Generated: '+new Date().toLocaleString('en-IN')+' | Students: '+students.length+'</p></div>'+
+        '<div class="reg-wrap"><table class="reg-table"><thead>'+
+        '<tr><th rowspan="3">Sr.</th><th rowspan="3">PEN</th><th rowspan="3">Student Name</th><th rowspan="3">Cls</th><th rowspan="3">Bus</th>'+
+        mIdx.map(i=>'<th colspan="2" style="font-size:0.75rem">'+SCHOOL_MONTHS[i]+' / '+SCHOOL_MONTHS[i+4]+' / '+SCHOOL_MONTHS[i+8]+'</th>').join('')+'<th rowspan="3">Total</th></tr>'+
+        '<tr>'+mIdx.map(()=>'<th style="background:#1a3a7c;line-height:1.2;padding:4px">Tuition<br><span style="font-size:.6rem;font-weight:normal">Rec# & Amt</span></th><th style="background:#0e7490;line-height:1.2;padding:4px">Bus<br><span style="font-size:.6rem;font-weight:normal">Rec# & Amt</span></th>').join('')+'</tr>'+
+        '</thead><tbody>'+
+        students.map(s=>{
+          const sf=fees.filter(f=>f.studentId===s.id);
+          const tot=sf.reduce((x,f)=>x+(f.amount||0)+(f.busPaid?f.busAmount||0:0),0);
+          let row1 = '<tr style="border-top: 2px solid #0d1b3e">'+
+            '<td class="stu-info" style="text-align:center" rowspan="3">'+s.serial+'</td>'+
+            '<td class="stu-info" style="font-family:monospace;font-size:.67rem" rowspan="3">'+(s.pen||'')+'</td>'+
+            '<td class="stu-info" rowspan="3"><b>'+s.name+'</b></td>'+
+            '<td class="stu-info" style="text-align:center" rowspan="3">'+(s.cls||'')+'</td>'+
+            '<td class="stu-info" style="text-align:center" rowspan="3">'+(s.bus?'Y':'')+'</td>'+
+            mIdx.map(i=>{
+              const fe=sf.find(f=>f.month===SCHOOL_MONTHS[i]);
+              const tc=fe&&fe.amount&&fe.receipt?'<td class="paid-cell" style="line-height:1.3;padding:4px">'+fe.receipt+'<br><b style="font-size:0.75rem">'+fe.amount+'</b></td>':'<td class="unpaid-cell">-</td>';
+              const bc=s.bus?(fe&&fe.busPaid?'<td class="bus-paid-cell" style="line-height:1.3;padding:4px">'+fe.busReceipt+'<br><b style="font-size:0.75rem">'+(fe.busAmount||0)+'</b></td>':'<td class="unpaid-cell">-</td>'):'<td style="background:#f0f0f0">-</td>';
+              return tc+bc;
+            }).join('')+
+            '<td style="font-weight:700;text-align:right;font-size:0.8rem" rowspan="3">'+(tot?'Rs.'+tot:'-')+'</td></tr>';
+          let row2 = '<tr>'+
+            mIdx.map(i=>{
+              const fe=sf.find(f=>f.month===SCHOOL_MONTHS[i+4]);
+              const tc=fe&&fe.amount&&fe.receipt?'<td class="paid-cell" style="line-height:1.3;padding:4px">'+fe.receipt+'<br><b style="font-size:0.75rem">'+fe.amount+'</b></td>':'<td class="unpaid-cell">-</td>';
+              const bc=s.bus?(fe&&fe.busPaid?'<td class="bus-paid-cell" style="line-height:1.3;padding:4px">'+fe.busReceipt+'<br><b style="font-size:0.75rem">'+(fe.busAmount||0)+'</b></td>':'<td class="unpaid-cell">-</td>'):'<td style="background:#f0f0f0">-</td>';
+              return tc+bc;
+            }).join('')+'</tr>';
+          let row3 = '<tr style="border-bottom: 2px solid #0d1b3e">'+
+            mIdx.map(i=>{
+              const fe=sf.find(f=>f.month===SCHOOL_MONTHS[i+8]);
+              const tc=fe&&fe.amount&&fe.receipt?'<td class="paid-cell" style="line-height:1.3;padding:4px">'+fe.receipt+'<br><b style="font-size:0.75rem">'+fe.amount+'</b></td>':'<td class="unpaid-cell">-</td>';
+              const bc=s.bus?(fe&&fe.busPaid?'<td class="bus-paid-cell" style="line-height:1.3;padding:4px">'+fe.busReceipt+'<br><b style="font-size:0.75rem">'+(fe.busAmount||0)+'</b></td>':'<td class="unpaid-cell">-</td>'):'<td style="background:#f0f0f0">-</td>';
+              return tc+bc;
+            }).join('')+'</tr>';
+          return row1 + row2 + row3;
+        }).join('')+
+        '</tbody><tfoot><tr>'+
+          '<td colspan="5" style="background:#0d1b3e;color:#fff;font-weight:700;padding:6px;text-align:right">TOTAL (Apr-Jul)</td>'+
           mIdx.map(i=>{
-            const fe=sf.find(f=>f.month===SCHOOL_MONTHS[i]);
-            const tc=fe&&fe.amount&&fe.receipt?'<td class="paid-cell" style="line-height:1.3;padding:4px">'+fe.receipt+'<br><b style="font-size:0.75rem">'+fe.amount+'</b></td>':'<td class="unpaid-cell">-</td>';
-            const bc=s.bus?(fe&&fe.busPaid?'<td class="bus-paid-cell" style="line-height:1.3;padding:4px">'+fe.busReceipt+'<br><b style="font-size:0.75rem">'+(fe.busAmount||0)+'</b></td>':'<td class="unpaid-cell">-</td>'):'<td style="background:#f0f0f0">-</td>';
-            return tc+bc;
+            const mf=fees.filter(f=>f.month===SCHOOL_MONTHS[i]);
+            const tA=mf.reduce((x,f)=>x+(f.amount||0),0),bA=mf.filter(f=>f.busPaid).reduce((x,f)=>x+(f.busAmount||0),0);
+            return '<td style="background:#0d1b3e;color:#aef;font-weight:700;text-align:center">'+(tA||'-')+'</td><td style="background:#0a3a50;color:#7dd3fc;font-weight:700;text-align:center">'+(bA||'-')+'</td>';
           }).join('')+
-          '<td style="font-weight:700;text-align:right;font-size:0.8rem" rowspan="2">'+(tot?'Rs.'+tot:'-')+'</td></tr>';
-        let row2 = '<tr style="border-bottom: 2px solid #0d1b3e">'+
+          '<td style="background:#0d1b3e;color:#ffd700;font-weight:800;text-align:right" rowspan="3">Rs.'+gt.toLocaleString('en-IN')+'</td>'+
+        '</tr><tr>'+
+          '<td colspan="5" style="background:#0d1b3e;color:#fff;font-weight:700;padding:6px;text-align:right">TOTAL (Aug-Nov)</td>'+
           mIdx.map(i=>{
-            const fe=sf.find(f=>f.month===SCHOOL_MONTHS[i+6]);
-            const tc=fe&&fe.amount&&fe.receipt?'<td class="paid-cell" style="line-height:1.3;padding:4px">'+fe.receipt+'<br><b style="font-size:0.75rem">'+fe.amount+'</b></td>':'<td class="unpaid-cell">-</td>';
-            const bc=s.bus?(fe&&fe.busPaid?'<td class="bus-paid-cell" style="line-height:1.3;padding:4px">'+fe.busReceipt+'<br><b style="font-size:0.75rem">'+(fe.busAmount||0)+'</b></td>':'<td class="unpaid-cell">-</td>'):'<td style="background:#f0f0f0">-</td>';
-            return tc+bc;
-          }).join('')+'</tr>';
-        return row1 + row2;
-      }).join('')+
-      '</tbody><tfoot><tr>'+
-        '<td colspan="5" style="background:#0d1b3e;color:#fff;font-weight:700;padding:6px;text-align:right">TOTAL (Apr-Sep)</td>'+
-        mIdx.map(i=>{
-          const mf=fees.filter(f=>f.month===SCHOOL_MONTHS[i]);
-          const tA=mf.reduce((x,f)=>x+(f.amount||0),0),bA=mf.filter(f=>f.busPaid).reduce((x,f)=>x+(f.busAmount||0),0);
-          return '<td style="background:#0d1b3e;color:#aef;font-weight:700;text-align:center">'+(tA||'-')+'</td><td style="background:#0a3a50;color:#7dd3fc;font-weight:700;text-align:center">'+(bA||'-')+'</td>';
-        }).join('')+
-        '<td style="background:#0d1b3e;color:#ffd700;font-weight:800;text-align:right" rowspan="2">Rs.'+gt.toLocaleString('en-IN')+'</td>'+
-      '</tr><tr>'+
-        '<td colspan="5" style="background:#0d1b3e;color:#fff;font-weight:700;padding:6px;text-align:right">TOTAL (Oct-Mar)</td>'+
-        mIdx.map(i=>{
-          const mf=fees.filter(f=>f.month===SCHOOL_MONTHS[i+6]);
-          const tA=mf.reduce((x,f)=>x+(f.amount||0),0),bA=mf.filter(f=>f.busPaid).reduce((x,f)=>x+(f.busAmount||0),0);
-          return '<td style="background:#0d1b3e;color:#aef;font-weight:700;text-align:center">'+(tA||'-')+'</td><td style="background:#0a3a50;color:#7dd3fc;font-weight:700;text-align:center">'+(bA||'-')+'</td>';
-        }).join('')+
-      '</tr></tfoot></table></div></div>';
-  } else if(view==='monthly-report'){
+            const mf=fees.filter(f=>f.month===SCHOOL_MONTHS[i+4]);
+            const tA=mf.reduce((x,f)=>x+(f.amount||0),0),bA=mf.filter(f=>f.busPaid).reduce((x,f)=>x+(f.busAmount||0),0);
+            return '<td style="background:#0d1b3e;color:#aef;font-weight:700;text-align:center">'+(tA||'-')+'</td><td style="background:#0a3a50;color:#7dd3fc;font-weight:700;text-align:center">'+(bA||'-')+'</td>';
+          }).join('')+
+        '</tr><tr>'+
+          '<td colspan="5" style="background:#0d1b3e;color:#fff;font-weight:700;padding:6px;text-align:right">TOTAL (Dec-Mar)</td>'+
+          mIdx.map(i=>{
+            const mf=fees.filter(f=>f.month===SCHOOL_MONTHS[i+8]);
+            const tA=mf.reduce((x,f)=>x+(f.amount||0),0),bA=mf.filter(f=>f.busPaid).reduce((x,f)=>x+(f.busAmount||0),0);
+            return '<td style="background:#0d1b3e;color:#aef;font-weight:700;text-align:center">'+(tA||'-')+'</td><td style="background:#0a3a50;color:#7dd3fc;font-weight:700;text-align:center">'+(bA||'-')+'</td>';
+          }).join('')+
+        '</tr></tfoot></table></div></div>';  } else if(view==='monthly-report'){
     if(!month){document.getElementById('printArea').innerHTML='<p style="color:var(--muted);padding:20px">Please select a month.</p>';return;}
     const fees=[..._fees].filter(f=>f.month===month&&String(f.year)===String(year));
     const grouped={};fees.forEach(f=>{grouped[f.studentId]=f;});

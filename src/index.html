@@ -210,7 +210,7 @@ tbody td{padding:8px 11px;border-bottom:1px solid var(--border);vertical-align:m
   .site-header,.nav-tabs,.print-toolbar,.no-print,.modal-overlay,#appLoader,#saveIndicator,#loginScreen{display:none!important}
   body{background:#fff}.main{max-width:100%;padding:0}
   #panel-print{display:block!important}
-  .print-card{box-shadow:none;border:none;page-break-inside:avoid}
+  .print-card{box-shadow:none;border:none}
   .pr-table,.reg-table{font-size:7pt}
   .pr-table th,.pr-table td,.reg-table th,.reg-table td{padding:2px 3px}
   
@@ -1215,7 +1215,7 @@ function renderPrint(){
       const f=calcFee(s);
       const sf=fees.filter(x=>x.studentId===s.id);
       const tp=sf.reduce((x,fe)=>x+(fe.amount||0)+(fe.busPaid?fe.busAmount||0:0),0);
-      return '<div class="print-card" style="page-break-inside:avoid;margin-bottom:18px">'+hdr+
+      return '<div class="print-card" style="margin-bottom:18px">'+hdr+
         '<div style="display:flex;justify-content:space-between;padding:9px;background:#f8faff;border-radius:6px;margin:8px 0;border:1px solid #e2e8f0">'+
           '<div><div style="font-weight:800;font-size:.98rem">'+s.name+'</div>'+
           '<div style="font-size:.75rem;color:#555;margin-top:2px">PEN: '+s.pen+' | Class: '+(s.cls||'-')+' | Sr: '+s.serial+'</div>'+
@@ -1265,27 +1265,52 @@ function exportCSV(){
   URL.revokeObjectURL(url);toast('CSV exported!');
 }
 
-  function downloadPDF() {
-    const element = document.getElementById('printArea');
-    if(!element || !element.innerHTML.trim()) { toast('Nothing to download!'); return; }
-    
-    // Get actual dimensions to create a full size PDF
+function downloadPDF() {
+    const element = document.getElementById("printArea");
+
+    if (!element || !element.innerHTML.trim()) {
+        toast("Nothing to download!");
+        return;
+    }
+
     const width = element.scrollWidth;
-    const height = Math.max(element.scrollHeight, 600);
-    
-    const opt = {
-      margin:       10,
-      filename:     'PMS_Fee_Report.pdf',
-      image:        { type: 'jpeg', quality: 0.98 },
-      html2canvas:  { scale: 2, useCORS: true, windowWidth: width },
-      jsPDF:        { unit: 'px', format: [width + 20, height + 20], orientation: width > height ? 'landscape' : 'portrait' }
-    };
-    
-    toast('Generating Full Size PDF... Please wait.');
-    html2pdf().set(opt).from(element).save().then(() => {
-        toast('PDF Downloaded!', 'success');
-    });
-  }
+    const height = element.scrollHeight;
+
+    toast("Generating Full Size PDF...");
+
+    html2pdf().set({
+        margin: 0,
+        filename: "PMS_Fee_Report.pdf",
+
+        image: {
+            type: "jpeg",
+            quality: 1
+        },
+
+        html2canvas: {
+            scale: 3,
+            useCORS: true,
+            allowTaint: true,
+            scrollX: 0,
+            scrollY: 0,
+            windowWidth: width,
+            windowHeight: height
+        },
+
+        jsPDF: {
+            unit: "px",
+            format: [width, height],
+            orientation: width > height ? "landscape" : "portrait"
+        },
+
+        pagebreak: {
+            mode: []
+        }
+    })
+    .from(element)
+    .save()
+    .then(() => toast("PDF Downloaded!", "success"));
+}
   
 // ===== MODAL =====
 

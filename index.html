@@ -9,6 +9,16 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;600;700&display=swap"
     rel="stylesheet" />
+  <link rel="icon" href="data:," />
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then(function (registrations) {
+        for (let registration of registrations) {
+          registration.unregister();
+        }
+      });
+    }
+  </script>
   <style>
     *,
     *::before,
@@ -1457,9 +1467,11 @@
       <button onclick="showPanel('students')" id="tab-students">&#128104; Students</button>
       <button onclick="showPanel('add-student')" id="tab-add-student">&#10133; Add Student</button>
       <button onclick="showPanel('fee-collect')" id="tab-fee-collect">&#128176; Mark Fee</button>
+      <button onclick="showPanel('fee-history')" id="tab-fee-history">&#128220; Fee History</button>
       <button onclick="showPanel('print')" id="tab-print">&#128424; View / Print</button>
       <button onclick="showPanel('fee-chart')" id="tab-fee-chart">&#128203; Fee Chart</button>
-      <button onclick="showPanel('trash')" id="tab-trash">&#128465; Recycle Bin (<span id="trashCountNav">0</span>)</button>
+      <button onclick="showPanel('trash')" id="tab-trash">&#128465; Recycle Bin (<span
+          id="trashCountNav">0</span>)</button>
     </nav>
 
     <main class="main">
@@ -1516,7 +1528,9 @@
             <option value="no">Bus: No</option>
           </select>
           <button class="btn btn-gold btn-sm no-print" onclick="exportCSV()">&#11015; Export CSV</button>
-          <button class="btn btn-sm btn-outline no-print" onclick="showPanel('trash')" style="border-color:var(--red);color:var(--red)">&#128465; Recycle Bin (<span id="trashCountStudents">0</span>)</button>
+          <button class="btn btn-sm btn-outline no-print" onclick="showPanel('trash')"
+            style="border-color:var(--red);color:var(--red)">&#128465; Recycle Bin (<span
+              id="trashCountStudents">0</span>)</button>
         </div>
         <div class="tbl-wrap">
           <table>
@@ -1531,6 +1545,7 @@
                 <th>Mobile</th>
                 <th>Bus</th>
                 <th>Monthly Fee</th>
+                <th>Remark</th>
                 <th class="no-print">Actions</th>
               </tr>
             </thead>
@@ -1549,7 +1564,7 @@
               <div class="form-group">
                 <label>PEN Number <span class="req">*</span></label>
                 <input type="text" id="fPen" placeholder="e.g. UP1234567890" oninput="clearErr('fPen')" />
-                <span class="error-msg" id="err-fPen">PEN Number is required.</span>
+                <span class="error-msg" id="err-fPen">PEN Number is required .</span>
               </div>
               <div class="form-group">
                 <label>Student Name <span class="req">*</span></label>
@@ -1607,7 +1622,7 @@
               </div>
               <div class="form-group">
                 <label>Sibling Discount</label>
-                <select id="fSiblingDisc" onchange="updateFeePreview()">
+                <select id="fSiblingDisc" onchange="updateFeePreview(); checkSiblingDisc(this.value)">
                   <option value="0">No Sibling Discount</option>
                   <option value="10">10% (Sibling)</option>
                   <option value="20">20% (Sibling - Max)</option>
@@ -1665,6 +1680,56 @@
           </div>
         </div>
       </section>
+      <!-- FEE HISTORY -->
+      <section id="panel-fee-history" class="panel">
+        <div class="card">
+          <div class="card-title">&#128220; All Fee History</div>
+          <div class="search-bar">
+            <input type="text" id="fhSearch" placeholder="&#128269; Search by Receipt #, Student Name, PEN..."
+              oninput="renderFeeHistory()" />
+            <select id="fhType" onchange="renderFeeHistory()">
+              <option value="">All Types</option>
+              <option value="Tuition">Tuition</option>
+              <option value="Bus Fee">Bus Fee</option>
+              <option value="Admission">Admission</option>
+              <option value="Other">Other</option>
+            </select>
+            <select id="fhMonth" onchange="renderFeeHistory()">
+              <option value="">All Months</option>
+              <option value="April">April</option>
+              <option value="May">May</option>
+              <option value="June">June</option>
+              <option value="July">July</option>
+              <option value="August">August</option>
+              <option value="September">September</option>
+              <option value="October">October</option>
+              <option value="November">November</option>
+              <option value="December">December</option>
+              <option value="January">January</option>
+              <option value="February">February</option>
+              <option value="March">March</option>
+            </select>
+          </div>
+          <div class="tbl-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Date &amp; Time</th>
+                  <th>Receipt #</th>
+                  <th>Type</th>
+                  <th>Student Name</th>
+                  <th>PEN</th>
+                  <th>Class</th>
+                  <th>Month</th>
+                  <th>Year</th>
+                  <th>Amount</th>
+                </tr>
+              </thead>
+              <tbody id="feeHistoryBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
       <!-- VIEW / PRINT -->
       <section id="panel-print" class="panel">
         <div class="print-toolbar no-print">
@@ -1702,7 +1767,19 @@
             <option>February</option>
             <option>March</option>
           </select>
-          <input type="number" id="prYear" value="" style="width:88px" onchange="renderPrint()" oninput="renderPrint()" />
+          <input type="number" id="prYear" value="" style="width:88px" onchange="renderPrint()"
+            oninput="renderPrint()" />
+          <select id="prSortClass" onchange="renderPrint()">
+            <option value="">Sort by Class (Default)</option>
+            <option value="asc">Class (Ascending)</option>
+            <option value="desc">Class (Descending)</option>
+          </select>
+          <select id="prSortName" onchange="renderPrint()">
+            <option value="">Sort by Name (Default)</option>
+            <option value="asc">Name (A-Z)</option>
+            <option value="desc">Name (Z-A)</option>
+          </select>
+          <button class="btn btn-outline" onclick="resetPrintFilters()">&#8634; Reset Filters</button>
           <button class="btn btn-primary" onclick="downloadPDF()">&#11015; Download PDF</button>
           <button class="btn btn-gold" onclick="exportCSV()">&#11015; Export CSV</button>
         </div>
@@ -1767,7 +1844,8 @@
         <div class="card">
           <div class="card-title">&#128465; Recycle Bin (Deleted in last 30 days)</div>
           <p style="font-size:.84rem;color:var(--muted);margin-bottom:16px">
-            * Deleted students remain here for 30 days before permanent deletion. Restoring a student restores their profile and all fee history.
+            * Deleted students remain here for 30 days before permanent deletion. Restoring a student restores their
+            profile and all fee history.
           </p>
           <div class="tbl-wrap">
             <table>
@@ -1797,6 +1875,37 @@
           onclick="closeModal('studentModal')">&#x2715;</button>
       </div>
       <div class="modal-body" id="studentModalBody"></div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="siblingModal">
+    <div class="modal" style="max-width: 600px;">
+      <div class="modal-header">
+        <h3>&#128106; Sibling Verification</h3><button class="modal-close"
+          onclick="closeModal('siblingModal')">&#x2715;</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size:.85rem;color:var(--muted);margin-bottom:10px;">Verify siblings registered under the same
+          Father's Name.</p>
+        <input type="text" id="siblingSearchInput" placeholder="Enter Father's Name..." oninput="renderSiblingList()"
+          style="width: 100%; margin-bottom: 12px; padding: 10px; border-radius: 6px; border: 1.5px solid var(--border);" />
+        <div class="tbl-wrap" style="max-height: 300px; overflow-y: auto;">
+          <table>
+            <thead>
+              <tr>
+                <th>PEN</th>
+                <th>Student Name</th>
+                <th>Class</th>
+                <th>Father Name</th>
+              </tr>
+            </thead>
+            <tbody id="siblingListBody"></tbody>
+          </table>
+        </div>
+        <div class="btn-row" style="margin-top:14px;justify-content:flex-end">
+          <button type="button" class="btn btn-outline" onclick="closeModal('siblingModal')">Close</button>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -1950,6 +2059,7 @@
       if (id === 'dashboard') renderDash();
       if (id === 'students') renderStudents();
       if (id === 'fee-collect') { fcReset(); renderFcStudents(''); }
+      if (id === 'fee-history') renderFeeHistory();
       if (id === 'print') renderPrint();
       if (id === 'fee-chart') renderFeeChart();
       if (id === 'trash') renderTrash();
@@ -1990,7 +2100,7 @@
         else if (io) badgeColor = 'background:#ffedd5;color:#c2410c';
         else if (ia) badgeColor = 'background:#f3e8ff;color:#6b21a8';
         else badgeColor = 'background:#d1fae5;color:#065f46';
-        
+
         return '<tr>' +
           '<td style="white-space:nowrap;font-size:.76rem">' + (r.ts ? new Date(r.ts).toLocaleString('en-IN') : '-') + '</td>' +
           '<td><b>' + (r.receipt || '-') + '</b></td>' +
@@ -2006,6 +2116,83 @@
       document.getElementById('busSummary').innerHTML =
         '<b style="color:var(--teal)">Availing Bus: </b>' + students.filter(s => s.bus).length + ' &nbsp;|&nbsp; <b>Not Availing: </b>' + nb.length +
         (students.filter(s => s.bus).length ? '<br/><b>Bus Students: </b>' + students.filter(s => s.bus).map(s => s.name + ' (' + s.cls + ')').join(', ') : '');
+    }
+
+    // ===== FEE HISTORY =====
+    function renderFeeHistory() {
+      const students = gs(), fees = gf();
+      const items = [];
+      fees.forEach(f => {
+        if (f.ts && f.receipt) items.push({ ts: f.ts, receipt: f.receipt, type: 'Tuition', studentId: f.studentId || f.pen, month: f.month, year: f.year, amount: f.amount || 0 });
+        if (f.busPaid && f.busPaidTs) items.push({ ts: f.busPaidTs, receipt: f.busReceipt, type: 'Bus Fee', studentId: f.studentId || f.pen, month: f.month, year: f.year, amount: f.busAmount || 0 });
+        if (f.otherPaid && f.otherPaidTs) items.push({ ts: f.otherPaidTs, receipt: f.otherReceipt, type: 'Other', studentId: f.studentId || f.pen, month: f.month, year: f.year, amount: f.otherAmount || 0 });
+        if (f.admPaid && f.admPaidTs) items.push({ ts: f.admPaidTs, receipt: f.admReceipt, type: 'Admission', studentId: f.studentId || f.pen, month: f.month, year: f.year, amount: f.admAmount || 0 });
+      });
+      items.sort((a, b) => (b.ts || 0) - (a.ts || 0));
+
+      const q = (document.getElementById('fhSearch')?.value || '').toLowerCase();
+      const typeFilter = document.getElementById('fhType')?.value || '';
+      const monthFilter = document.getElementById('fhMonth')?.value || '';
+
+      const filtered = items.filter(r => {
+        const s = students.find(x => String(x.id) === String(r.studentId) || String(x.pen) === String(r.studentId));
+        const sName = s ? s.name.toLowerCase() : '';
+        const sPen = s ? (s.pen || '').toLowerCase() : '';
+        const rcpt = (r.receipt || '').toLowerCase();
+
+        const mq = !q || sName.includes(q) || sPen.includes(q) || rcpt.includes(q);
+        const mt = !typeFilter || r.type === typeFilter;
+        const mm = !monthFilter || r.month === monthFilter;
+        return mq && mt && mm;
+      });
+
+      document.getElementById('feeHistoryBody').innerHTML = filtered.map(r => {
+        const s = students.find(x => String(x.id) === String(r.studentId) || String(x.pen) === String(r.studentId));
+        const ib = r.type === 'Bus Fee';
+        const io = r.type === 'Other';
+        const ia = r.type === 'Admission';
+        let badgeColor = '';
+        if (ib) badgeColor = 'background:#dbeafe;color:#1e40af';
+        else if (io) badgeColor = 'background:#ffedd5;color:#c2410c';
+        else if (ia) badgeColor = 'background:#f3e8ff;color:#6b21a8';
+        else badgeColor = 'background:#d1fae5;color:#065f46';
+
+        return '<tr>' +
+          '<td style="white-space:nowrap;font-size:.76rem">' + (r.ts ? new Date(r.ts).toLocaleString('en-IN') : '-') + '</td>' +
+          '<td><b>' + (r.receipt || '-') + '</b></td>' +
+          '<td><span style="' + badgeColor + ';padding:2px 7px;border-radius:20px;font-size:.7rem;font-weight:700">' + r.type + '</span></td>' +
+          '<td>' + (s ? '<b>' + s.name + '</b>' : '?') + '</td>' +
+          '<td style="font-family:monospace;font-size:.74rem">' + (s ? s.pen : '') + '</td>' +
+          '<td>' + (s ? '<span class="badge-cls">' + s.cls + '</span>' : '') + '</td>' +
+          '<td>' + r.month + '</td><td>' + r.year + '</td>' +
+          '<td style="font-weight:700;color:' + (ib ? 'var(--teal)' : (io ? '#c2410c' : (ia ? '#6b21a8' : 'var(--green)'))) + '">Rs.' + r.amount + '</td>' +
+          '</tr>';
+      }).join('') || '<tr><td colspan="9" style="text-align:center;color:var(--muted);padding:22px">No fee history found.</td></tr>';
+    }
+
+    // ===== SIBLING VERIFICATION =====
+    function checkSiblingDisc(val) {
+      if (val === '10' || val === '20') {
+        const father = document.getElementById('fFather').value.trim();
+        document.getElementById('siblingSearchInput').value = father;
+        openModal('siblingModal');
+        renderSiblingList();
+      }
+    }
+
+    function renderSiblingList() {
+      const q = (document.getElementById('siblingSearchInput').value || '').toLowerCase();
+      const students = gs();
+      const filtered = students.filter(s => {
+        if (!q) return false;
+        return (s.father || '').toLowerCase().includes(q);
+      });
+      document.getElementById('siblingListBody').innerHTML = filtered.map(s => '<tr>' +
+        '<td style="font-family:monospace;font-size:.76rem">' + (s.pen || '-') + '</td>' +
+        '<td><b>' + s.name + '</b></td>' +
+        '<td><span class="badge-cls">' + (s.cls || '-') + '</span></td>' +
+        '<td>' + (s.father || '-') + '</td>' +
+        '</tr>').join('') || '<tr><td colspan="4" style="text-align:center;color:var(--muted);padding:22px">No siblings found with this Father\'s Name.</td></tr>';
     }
 
     // ===== STUDENTS LIST =====
@@ -2029,13 +2216,26 @@
           '<td>' + (s.mobile || '-') + '</td>' +
           '<td><span class="badge-bus ' + (s.bus ? 'yes' : 'no') + '">' + (s.bus ? 'Yes' : 'No') + '</span></td>' +
           '<td style="font-weight:700;color:var(--green)">Rs.' + f.net + '</td>' +
+          '<td><input type="text" value="' + (s.remark || '').replace(/"/g, '&quot;') + '" onchange="saveRemark(\'' + s.id + '\', this.value)" style="width:100px;padding:3px;font-size:0.75rem;border:1px solid var(--border);border-radius:4px" placeholder="Remark..." /></td>' +
           '<td class="no-print"><div style="display:flex;gap:4px;flex-wrap:wrap">' +
           '<button class="btn btn-sm btn-outline" onclick="viewStudent(\'' + s.id + '\')">View</button>' +
           '<button class="btn btn-sm btn-gold" onclick="openFeeFor(\'' + s.id + '\')">Fee</button>' +
           '<button class="btn btn-sm btn-primary" onclick="editStudent(\'' + s.id + '\')">Edit</button>' +
           '<button class="btn btn-sm btn-danger" onclick="delStudent(\'' + s.id + '\')">Del</button>' +
           '</div></td></tr>';
-      }).join('') || '<tr><td colspan="10" style="text-align:center;color:var(--muted);padding:22px">No students found.</td></tr>';
+      }).join('') || '<tr><td colspan="11" style="text-align:center;color:var(--muted);padding:22px">No students found.</td></tr>';
+    }
+
+    async function saveRemark(id, val) {
+      const idx = _students.findIndex(s => s.id === id);
+      if (idx >= 0) {
+        _students[idx].remark = val;
+        try {
+          await setDoc(doc(db, 'students', id), { remark: val }, { merge: true });
+        } catch (e) {
+          toast('Error saving remark: ' + e.message, 'error');
+        }
+      }
     }
 
     // ===== STUDENT FORM =====
@@ -2129,9 +2329,9 @@
           await setDoc(doc(db, 'students', id), sanitize(student));
           _trashStudents.push(student);
           _students.splice(sIndex, 1);
-          
+
           _fees = _fees.filter(f => f.studentId !== id);
-          
+
           const countNav = document.getElementById('trashCountNav');
           const countStudents = document.getElementById('trashCountStudents');
           if (countNav) countNav.textContent = _trashStudents.length;
@@ -2421,7 +2621,7 @@
       const fees = _fees;
       const ex = fees.find(fe => fe.studentId === fcSelectedId && String(fe.year) === String(fcSelectedYear) && fe.admPaid);
       const paid = !!ex;
-      
+
       let html = '<div class="card' + (paid ? ' paid' : '') + '" style="margin-bottom:16px;border-left:5px solid #1a3a7c;padding:0;overflow:hidden">';
       html += '<div class="month-card-header" onclick="toggleAdmCard()" style="background:#eff6ff;display:flex;justify-content:space-between;padding:12px 16px">' +
         '<div style="display:flex;align-items:center;gap:10px">' +
@@ -2429,7 +2629,7 @@
         '<span style="font-weight:700;color:#1a3a7c;font-size:.95rem">&#127985; Admission Fee for Session ' + fcSelectedYear + '</span>' +
         '</div>' +
         '<span class="bus-status ' + (paid ? 'paid' : 'unpaid') + '">' + (paid ? '&#9989; Paid' : '&#9744; Unpaid') + '</span></div>';
-      
+
       html += '<div class="month-details" id="adm_card_det" style="display:' + (paid ? 'block' : 'none') + ';padding:14px 16px;background:#fff">';
       if (paid) {
         html += '<div class="fee-section bus-sec" style="margin:0;border-left:4px solid #1a3a7c;background:#f0f5ff"><div class="sec-title b" style="color:#1a3a7c">&#127985; Admission Fee Paid</div>' +
@@ -2450,7 +2650,7 @@
           '<div class="form-group"><label>Receipt Number</label><input type="text" id="adm_card_rec" placeholder="Enter receipt no."/></div>' +
           '<div class="form-group" style="grid-column:1/-1"><label>Paid In Month</label>' +
           '<select id="adm_card_month">' +
-            SCHOOL_MONTHS.map(m => '<option' + (m === 'April' ? ' selected' : '') + '>' + m + '</option>').join('') +
+          SCHOOL_MONTHS.map(m => '<option' + (m === 'April' ? ' selected' : '') + '>' + m + '</option>').join('') +
           '</select></div>' +
           '</div>' +
           '<button class="btn btn-success btn-sm" style="width:100%;background:linear-gradient(135deg,#1a3a7c,#0d1b3e)" onclick="saveAdmCard()">&#9989; Save Admission Fee</button></div>';
@@ -2560,7 +2760,7 @@
       const fees = _fees;
       const ex = fees.find(fe => fe.studentId === fcSelectedId && String(fe.year) === String(fcSelectedYear) && fe.otherPaid);
       const paid = !!ex;
-      
+
       let html = '<div class="card' + (paid ? ' paid' : '') + '" style="margin-bottom:16px;border-left:5px solid #c2410c;padding:0;overflow:hidden">';
       html += '<div class="month-card-header" onclick="toggleOtherCard()" style="background:#fff7ed;display:flex;justify-content:space-between;padding:12px 16px">' +
         '<div style="display:flex;align-items:center;gap:10px">' +
@@ -2568,7 +2768,7 @@
         '<span style="font-weight:700;color:#c2410c;font-size:.95rem">&#128212; Other Charges (Diary + Fee Card) for Session ' + fcSelectedYear + '</span>' +
         '</div>' +
         '<span class="bus-status ' + (paid ? 'paid' : 'unpaid') + '">' + (paid ? '&#9989; Paid' : '&#9744; Unpaid') + '</span></div>';
-      
+
       html += '<div class="month-details" id="other_card_det" style="display:' + (paid ? 'block' : 'none') + ';padding:14px 16px;background:#fff">';
       if (paid) {
         html += '<div class="fee-section other-sec" style="margin:0"><div class="sec-title o">&#128212; Other Charges Paid</div>' +
@@ -2589,7 +2789,7 @@
           '<div class="form-group"><label>Receipt Number</label><input type="text" id="other_card_rec" placeholder="Enter receipt no."/></div>' +
           '<div class="form-group" style="grid-column:1/-1"><label>Paid In Month</label>' +
           '<select id="other_card_month">' +
-            SCHOOL_MONTHS.map(m => '<option' + (m === 'April' ? ' selected' : '') + '>' + m + '</option>').join('') +
+          SCHOOL_MONTHS.map(m => '<option' + (m === 'April' ? ' selected' : '') + '>' + m + '</option>').join('') +
           '</select></div>' +
           '</div>' +
           '<button class="btn btn-success btn-sm" style="width:100%;background:linear-gradient(135deg,#c2410c,#9a3412)" onclick="saveOtherCard()">&#9989; Save Other Charges</button></div>';
@@ -2707,11 +2907,42 @@
     }
 
     // ===== PRINT =====
+    function resetPrintFilters() {
+      document.getElementById('prClass').value = '';
+      document.getElementById('prMonth').value = '';
+      if (document.getElementById('prSortClass')) document.getElementById('prSortClass').value = '';
+      if (document.getElementById('prSortName')) document.getElementById('prSortName').value = '';
+      document.getElementById('prView').value = 'register';
+      document.getElementById('prYear').value = new Date().getFullYear();
+      renderPrint();
+    }
     function renderPrint() {
       const view = document.getElementById('prView').value, cls = document.getElementById('prClass').value;
       const month = document.getElementById('prMonth').value, year = document.getElementById('prYear').value;
+      const sortClass = document.getElementById('prSortClass')?.value;
+      const sortName = document.getElementById('prSortName')?.value;
+
       let students = [..._students].sort((a, b) => a.serial - b.serial);
       if (cls) students = students.filter(s => s.cls === cls);
+
+      if (sortClass) {
+        const clsOrder = { 'LKG': 1, 'UKG': 2, '1st': 3, '2nd': 4, '3rd': 5, '4th': 6, '5th': 7, '6th': 8, '7th': 9, '8th': 10 };
+        students.sort((a, b) => {
+          const vA = clsOrder[a.cls] || 99;
+          const vB = clsOrder[b.cls] || 99;
+          if (vA !== vB) return sortClass === 'asc' ? vA - vB : vB - vA;
+          return 0; // fallback to stable sort
+        });
+      }
+      if (sortName) {
+        students.sort((a, b) => {
+          const nameA = (a.name || '').toLowerCase();
+          const nameB = (b.name || '').toLowerCase();
+          if (nameA < nameB) return sortName === 'asc' ? -1 : 1;
+          if (nameA > nameB) return sortName === 'asc' ? 1 : -1;
+          return 0;
+        });
+      }
       const hdr = '<div class="pr-school-head"><img src="logo1.png" class="pr-logo" onerror="this.style.display=\'none\'"/>' +
         '<div style="text-align:center"><div style="font-family:Poppins,sans-serif;font-size:1.2rem;font-weight:800;color:#0d1b3e">POLICE MODERN SCHOOL</div>' +
         '<div style="font-size:.8rem;color:#555;font-weight:600">25th BN P.A.C., Raebareli</div></div></div>';
@@ -2743,10 +2974,10 @@
         const fees = [..._fees].filter(f => String(f.year) === String(year));
         const gt = fees.reduce((s, f) => s + (f.amount || 0) + (f.busPaid ? f.busAmount || 0 : 0), 0);
 
-        const q1 = [0, 4, 8];
-        const q2 = [1, 5, 9];
-        const q3 = [2, 6, 10];
-        const q4 = [3, 7, 11];
+        const q1 = [0, 1, 2];
+        const q2 = [3, 4, 5];
+        const q3 = [6, 7, 8];
+        const q4 = [9, 10, 11];
 
         const ADM_FEE = 2000; // Set admission fee amount here if needed
 
@@ -2755,7 +2986,7 @@
           '<p>Generated: ' + new Date().toLocaleString('en-IN') + ' | Students: ' + students.length + '</p></div>' +
           '<div class="reg-wrap"><table class="reg-table"><thead>' +
           '<tr><th rowspan="2" style="width:2%">Sr.</th><th rowspan="2" style="width:6%">PEN</th><th rowspan="2" style="width:12%">Student Name</th><th rowspan="2" style="width:4%">Cls</th><th rowspan="2" style="width:2%">Bus</th>' +
-          q1.map(i => '<th colspan="2" style="font-size:0.68rem;width:18%">' + SCHOOL_MONTHS[i] + ' / ' + SCHOOL_MONTHS[i + 1] + ' / ' + SCHOOL_MONTHS[i + 2] + ' / ' + SCHOOL_MONTHS[i + 3] + '</th>').join('') + '<th rowspan="2" style="width:10%">Total<br>Paid / Balance</th>' +
+          q1.map(i => '<th colspan="2" style="font-size:0.68rem;width:18%">' + SCHOOL_MONTHS[i] + ' / ' + SCHOOL_MONTHS[i + 3] + ' / ' + SCHOOL_MONTHS[i + 6] + ' / ' + SCHOOL_MONTHS[i + 9] + '</th>').join('') + '<th rowspan="2" style="width:10%">Total<br>Paid / Balance</th>' +
           '<th rowspan="2" style="width:10%;background:#1a3a7c;color:#fff;font-size:0.65rem">Qtr<br>Total</th></tr>' +
           '<tr>' + q1.map(() => '<th style="background:#1a3a7c;line-height:1.2;padding:3px 2px;font-size:0.60rem">Fee / Rec#</th><th style="background:#0e7490;line-height:1.2;padding:3px 2px;font-size:0.60rem">Bus / Rec#</th>').join('') + '</tr>' +
           '</thead><tbody>' +
@@ -2812,7 +3043,7 @@
             return renderRow(q1, true, false) + renderRow(q2, false, false) + renderRow(q3, false, false) + renderRow(q4, false, true);
           }).join('') +
           '</tbody><tfoot><tr>' +
-          '<td colspan="14" style="background:#0d1b3e;color:#fff;font-weight:800;padding:12px;text-align:right;font-size:1.1rem">Total collected cash from class - Rs. ' + gt.toLocaleString('en-IN') + '</td>' +
+          '<td colspan="13" style="background:#0d1b3e;color:#fff;font-weight:800;padding:12px;text-align:right;font-size:1.1rem">Total collected cash from class - Rs. ' + gt.toLocaleString('en-IN') + '</td>' +
           '</tr></tfoot></table></div></div>';
       } else if (view === 'monthly-report') {
         if (!month) { document.getElementById('printArea').innerHTML = '<p style="color:var(--muted);padding:20px">Please select a month.</p>'; return; }
@@ -2925,16 +3156,18 @@
 
       // Place clone TRULY off-screen (not z-index trick which can flash)
       Object.assign(clone.style, {
-        position:   'absolute',
-        top:        '0',
-        left:       '-99999px',
-        width:      element.scrollWidth + 'px',
-        height:     'auto',
-        overflow:   'visible',
+        position: 'absolute',
+        top: '0',
+        left: '-99999px',
+        visibility: 'hidden',
+        opacity: '0',
+        width: element.scrollWidth + 'px',
+        height: 'auto',
+        overflow: 'visible',
         background: '#fff',
-        margin:     '0',
-        padding:    '16px',
-        boxSizing:  'border-box'
+        margin: '0',
+        padding: '16px',
+        boxSizing: 'border-box'
       });
       document.body.appendChild(clone);
 
@@ -2946,16 +3179,16 @@
       // --- Step 3: Allow a small delay so images / fonts finish rendering ---
       setTimeout(() => {
         html2canvas(clone, {
-          scale:        2,        // 2× for crisp text
-          useCORS:      true,
-          allowTaint:   true,
-          scrollX:      0,
-          scrollY:      0,
-          width:        captureW,
-          height:       captureH,
-          windowWidth:  captureW,
+          scale: 2,        // 2× for crisp text
+          useCORS: true,
+          allowTaint: true,
+          scrollX: 0,
+          scrollY: 0,
+          width: captureW,
+          height: captureH,
+          windowWidth: captureW,
           windowHeight: captureH,
-          logging:      false,
+          logging: false,
           backgroundColor: '#ffffff'
         }).then(canvas => {
           // Safe cleanup
@@ -2967,15 +3200,15 @@
           // canvas is scale=2 → divide by 2 to get logical (CSS) pixels for the PDF page
           // × 1.15 → 15% larger page size so all content appears bigger
           const SCALE = 2;
-          const pdfW  = (canvas.width  / SCALE) * 1.15;
-          const pdfH  = (canvas.height / SCALE) * 1.15;
+          const pdfW = (canvas.width / SCALE) * 1.15;
+          const pdfH = (canvas.height / SCALE) * 1.15;
           const orientation = pdfW > pdfH ? 'landscape' : 'portrait';
 
           const pdf = new jsPDF({
             orientation: orientation,
-            unit:        'px',
-            format:      [pdfW, pdfH],
-            hotfixes:    ['px_scaling']
+            unit: 'px',
+            format: [pdfW, pdfH],
+            hotfixes: ['px_scaling']
           });
 
           // addImage uses logical px dimensions (not canvas pixel dimensions)
@@ -3016,7 +3249,7 @@
         const elapsed = now - s.deletedAt;
         const daysLeft = Math.max(0, Math.ceil((thirtyDays - elapsed) / (24 * 60 * 60 * 1000)));
         const delDate = new Date(s.deletedAt).toLocaleDateString('en-IN') + ' ' + new Date(s.deletedAt).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
-        
+
         return '<tr>' +
           '<td>' + (idx + 1) + '</td>' +
           '<td>' + (s.pen || '-') + '</td>' +
@@ -3025,8 +3258,8 @@
           '<td>' + delDate + '</td>' +
           '<td style="color:var(--red);font-weight:600">' + daysLeft + ' days</td>' +
           '<td><div style="display:flex;gap:6px">' +
-            '<button class="btn btn-sm btn-outline" onclick="restoreStudent(\'' + s.id + '\')" style="color:var(--green);border-color:var(--green)">Restore</button>' +
-            '<button class="btn btn-sm btn-danger" onclick="hardDeleteStudent(\'' + s.id + '\')">Delete Permanently</button>' +
+          '<button class="btn btn-sm btn-outline" onclick="restoreStudent(\'' + s.id + '\')" style="color:var(--green);border-color:var(--green)">Restore</button>' +
+          '<button class="btn btn-sm btn-danger" onclick="hardDeleteStudent(\'' + s.id + '\')">Delete Permanently</button>' +
           '</div></td>' +
           '</tr>';
       }).join('') || '<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:22px">Recycle Bin is empty.</td></tr>';
@@ -3109,7 +3342,7 @@
     }
 
     // ===== EXPOSE TO WINDOW (for HTML onclick) =====
-    window.showPanel = showPanel; window.renderStudents = renderStudents; window.exportCSV = exportCSV;
+    window.showPanel = showPanel; window.renderStudents = renderStudents; window.exportCSV = exportCSV; window.renderFeeHistory = renderFeeHistory;
     window.openModal = openModal; window.closeModal = closeModal; window.viewStudent = viewStudent;
     window.editStudent = editStudent; window.delStudent = delStudent; window.openFeeFor = openFeeFor;
     window.fcFilter = fcFilter; window.selectStudent = selectStudent; window.renderFcStudents = renderFcStudents;
@@ -3117,8 +3350,9 @@
     window.toggleBus = toggleBus; window.saveBus = saveBus; window.unmarkBus = unmarkBus; window.editBus = editBus;
     window.renderPrint = renderPrint; window.downloadPDF = downloadPDF; window.fmtAadhar = fmtAadhar; window.busToggle = busToggle;
     window.updateFeePreview = updateFeePreview; window.resetForm = resetForm; window.clearErr = clearErr;
-    window.logout = logout;
-    window.openTrashModal = function() { showPanel('trash'); }; window.renderTrash = renderTrash;
+    window.logout = logout; window.checkSiblingDisc = checkSiblingDisc; window.renderSiblingList = renderSiblingList;
+    window.resetPrintFilters = resetPrintFilters; window.saveRemark = saveRemark;
+    window.openTrashModal = function () { showPanel('trash'); }; window.renderTrash = renderTrash;
     window.restoreStudent = restoreStudent; window.hardDeleteStudent = hardDeleteStudent;
     window.renderOtherChargesCard = renderOtherChargesCard; window.toggleOtherCard = toggleOtherCard; window.saveOtherCard = saveOtherCard; window.unmarkOtherCard = unmarkOtherCard; window.editOtherCard = editOtherCard;
     window.renderAdmFeeCard = renderAdmFeeCard; window.toggleAdmCard = toggleAdmCard; window.saveAdmCard = saveAdmCard; window.unmarkAdmCard = unmarkAdmCard; window.editAdmCard = editAdmCard;

@@ -644,7 +644,8 @@
         tbody td {
             padding: 8px 11px;
             border-bottom: 1px solid var(--border);
-            vertical-align: middle
+            vertical-align: middle;
+            white-space: nowrap
         }
 
         /* BADGES */
@@ -1546,6 +1547,10 @@
                                 <th>Bus</th>
                                 <th>Monthly Fee</th>
                                 <th>Remark</th>
+                                <th>Fee Card Submitted</th>
+                                <th>Total Advance</th>
+                                <th>Due/Short Amount</th>
+                                <th>Sibling</th>
                                 <th class="no-print">Actions</th>
                             </tr>
                         </thead>
@@ -1610,9 +1615,11 @@
                                     oninput="fmtAadhar(this)" /></div>
                             <div class="form-group"><label>Mother Name</label><input type="text" id="fMother"
                                     placeholder="Mother's full name" /></div>
-                            <div class="form-group"><label>Mother Aadhar Number</label><input type="text"
-                                    id="fMotherAadhar" placeholder="XXXX XXXX XXXX" maxlength="14"
-                                    oninput="fmtAadhar(this)" /></div>
+                            <div class="form-group"><label>Mother Aadhar Number</label><input type="text" id="fMotherAadhar"
+                                    placeholder="XXXX XXXX XXXX" maxlength="14" oninput="fmtAadhar(this)" /></div>
+                            <div class="form-group"><label>Sibling (Optional)</label><select id="fSibling">
+                                    <option value="">None / Auto (By Father's Name)</option>
+                                </select></div>
                         </div>
                         <div class="section-sub">&#128652; Services &amp; Discounts</div>
                         <div class="form-grid">
@@ -2208,6 +2215,15 @@
         }
 
         // ===== STUDENTS LIST =====
+        function getSiblingDisplay(s) {
+            let sib = null;
+            if (s.siblingId) {
+                sib = _students.find(x => x.id === s.siblingId);
+            } else if (s.father) {
+                sib = _students.find(x => x.id !== s.id && x.father && x.father.toLowerCase() === s.father.toLowerCase());
+            }
+            return sib ? sib.name + ' (' + sib.cls + ')' : '-';
+        }
         function renderStudents() {
             const students = gs();
             const q = (document.getElementById('searchInput')?.value || '').toLowerCase();
@@ -2221,31 +2237,51 @@
                 const f = calcFee(s);
                 return '<tr>' +
                     '<td style="text-align:center"><b>' + s.serial + '</b></td>' +
-                    '<td style="font-family:monospace;font-size:.76rem">' + (s.pen || '-') + '</td>' +
-                    '<td><b>' + s.name + '</b></td><td>' + (s.father || '-') + '</td>' +
-                    '<td><span class="badge-cls">' + (s.cls || '-') + '</span></td>' +
-                    '<td style="white-space:nowrap">' + (s.dob ? new Date(s.dob).toLocaleDateString('en-IN') : '-') + '</td>' +
-                    '<td>' + (s.mobile || '-') + '</td>' +
-                    '<td><span class="badge-bus ' + (s.bus ? 'yes' : 'no') + '">' + (s.bus ? 'Yes' : 'No') + '</span></td>' +
-                    '<td style="font-weight:700;color:var(--green)">Rs.' + f.net + '</td>' +
-                    '<td><div style="display:flex;gap:4px;align-items:center"><input type="text" id="rem_' + s.id + '" value="' + (s.remark || '').replace(/"/g, '&quot;') + '" onchange="saveRemark(\'' + s.id + '\', this.value)" style="width:85px;padding:3px;font-size:0.75rem;border:1px solid var(--border);border-radius:4px" placeholder="Remark..." /><button class="btn btn-sm btn-outline" style="padding:2px 6px;font-size:0.7rem;line-height:1" onclick="saveRemark(\'' + s.id + '\', document.getElementById(\'rem_' + s.id + '\').value)">Save</button></div></td>' +
-                    '<td class="no-print"><div style="display:flex;gap:4px;flex-wrap:wrap">' +
-                    '<button class="btn btn-sm btn-outline" onclick="viewStudent(\'' + s.id + '\')">View</button>' +
-                    '<button class="btn btn-sm btn-gold" onclick="openFeeFor(\'' + s.id + '\')">Fee</button>' +
-                    '<button class="btn btn-sm btn-primary" onclick="editStudent(\'' + s.id + '\')">Edit</button>' +
-                    '<button class="btn btn-sm btn-danger" onclick="delStudent(\'' + s.id + '\')">Del</button>' +
+                    '<td>' +
+                        '<div style="font-size:1.1em;font-weight:700;color:#000;margin-bottom:4px;">' + s.name + '</div>' +
+                        '<div style="font-family:monospace;font-size:0.85rem;color:#555;">PEN: ' + (s.pen || '-') + ' | DOB: ' + (s.dob ? new Date(s.dob).toLocaleDateString('en-IN') : '-') + '</div>' +
+                    '</td>' +
+                    '<td>' +
+                        '<div style="font-size:1.1em;font-weight:700;color:#000;margin-bottom:4px;">' + (s.father || '-') + '</div>' +
+                        '<div style="font-size:0.85rem;color:#555;">Mob: ' + (s.mobile || '-') + ' | Sib: ' + getSiblingDisplay(s) + '</div>' +
+                    '</td>' +
+                    '<td>' +
+                        '<div style="margin-bottom:6px;"><span class="badge-cls">' + (s.cls || '-') + '</span></div>' +
+                        '<div><span class="badge-bus ' + (s.bus ? 'yes' : 'no') + '">' + (s.bus ? 'Bus: Yes' : 'Bus: No') + '</span></div>' +
+                    '</td>' +
+                    '<td>' +
+                        '<div style="font-weight:700;color:var(--green);margin-bottom:6px;">Monthly Fee: Rs.' + f.net + '</div>' +
+                        '<div style="display:flex;gap:4px;">' +
+                            '<input type="number" value="' + (s.totalAdv || '') + '" onchange="saveField(\'' + s.id + '\', \'totalAdv\', this.value ? Number(this.value) : null)" style="width:75px;padding:4px;font-size:0.9rem;font-weight:bold;color:#0f5132;background-color:#d1e7dd;border:2px solid #198754;border-radius:6px;outline:none;" placeholder="Adv." />' +
+                            '<input type="number" value="' + (s.dueShort || '') + '" onchange="saveField(\'' + s.id + '\', \'dueShort\', this.value ? Number(this.value) : null)" style="width:75px;padding:4px;font-size:0.9rem;font-weight:bold;color:#842029;background-color:#f8d7da;border:2px solid #dc3545;border-radius:6px;outline:none;" placeholder="Due" />' +
+                        '</div>' +
+                    '</td>' +
+                    '<td>' +
+                        '<div style="margin-bottom:6px;display:flex;align-items:center;gap:6px;font-size:0.9rem;font-weight:600;color:#444;">' +
+                            '<input type="checkbox" ' + (s.feeCard ? 'checked' : '') + ' onchange="saveField(\'' + s.id + '\', \'feeCard\', this.checked)" style="width:16px;height:16px;cursor:pointer;" /> <label style="cursor:pointer" onclick="this.previousElementSibling.click()">Fee Card Submitted</label>' +
+                        '</div>' +
+                        '<div style="display:flex;gap:4px;align-items:center;">' +
+                            '<input type="text" id="rem_' + s.id + '" value="' + (s.remark || '').replace(/"/g, '&quot;') + '" onchange="saveField(\'' + s.id + '\', \'remark\', this.value)" style="width:120px;padding:4px;font-size:0.9rem;font-weight:bold;color:#856404;background-color:#fff3cd;border:2px solid #ffc107;border-radius:6px;outline:none;" placeholder="Remark..." />' +
+                            '<button class="btn btn-sm btn-outline" style="padding:4px 8px;font-size:0.75rem;line-height:1" onclick="saveField(\'' + s.id + '\', \'remark\', document.getElementById(\'rem_' + s.id + '\').value)">Save</button>' +
+                        '</div>' +
+                    '</td>' +
+                    '<td class="no-print"><div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;">' +
+                    '<button class="btn btn-sm btn-outline" style="width:65px;" onclick="viewStudent(\'' + s.id + '\')">View</button>' +
+                    '<button class="btn btn-sm btn-gold" style="width:65px;" onclick="openFeeFor(\'' + s.id + '\')">Fee</button>' +
+                    '<button class="btn btn-sm btn-primary" style="width:65px;" onclick="editStudent(\'' + s.id + '\')">Edit</button>' +
+                    '<button class="btn btn-sm btn-danger" style="width:65px;" onclick="delStudent(\'' + s.id + '\')">Del</button>' +
                     '</div></td></tr>';
-            }).join('') || '<tr><td colspan="11" style="text-align:center;color:var(--muted);padding:22px">No students found.</td></tr>';
+            }).join('') || '<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:22px">No students found.</td></tr>';
         }
 
-        async function saveRemark(id, val) {
+        async function saveField(id, field, val) {
             const idx = _students.findIndex(s => s.id === id);
             if (idx >= 0) {
-                _students[idx].remark = val;
+                _students[idx][field] = val;
                 try {
-                    await setDoc(doc(db, 'students', id), { remark: val }, { merge: true });
+                    await setDoc(doc(db, 'students', id), { [field]: val }, { merge: true });
                 } catch (e) {
-                    toast('Error saving remark: ' + e.message, 'error');
+                    toast('Error saving ' + field + ': ' + e.message, 'error');
                 }
             }
         }
@@ -2269,6 +2305,7 @@
                 address: document.getElementById('fAddress').value.trim(), mobile: document.getElementById('fMobile').value.trim(),
                 aadhar: document.getElementById('fAadhar').value.trim(), birthCert: document.getElementById('fBirthCert').value.trim(),
                 fatherAadhar: document.getElementById('fFatherAadhar').value.trim(), motherAadhar: document.getElementById('fMotherAadhar').value.trim(),
+                siblingId: document.getElementById('fSibling').value || null,
                 bus: document.getElementById('fBus').checked,
                 siblingDisc: document.getElementById('fSiblingDisc').value, pacDisc: document.getElementById('fPacDisc').value,
                 admYear: document.getElementById('fAdmYear').value,
@@ -2291,12 +2328,22 @@
 
         function showErr(id) { document.getElementById(id).classList.add('error'); document.getElementById('err-' + id).classList.add('show') }
         function clearErr(id) { document.getElementById(id).classList.remove('error'); document.getElementById('err-' + id).classList.remove('show') }
+        function populateSiblingDropdown(editId) {
+            const sel = document.getElementById('fSibling');
+            sel.innerHTML = '<option value="">None / Auto (By Father\'s Name)</option>';
+            const others = _students.filter(s => s.id !== editId).sort((a,b) => a.name.localeCompare(b.name));
+            others.forEach(s => {
+                sel.innerHTML += '<option value="' + s.id + '">' + s.name + ' (' + s.cls + ')</option>';
+            });
+        }
+
         function resetForm() {
             document.getElementById('studentForm').reset();
             document.getElementById('editId').value = '';
             document.getElementById('formTitle').textContent = 'Add New Student';
             document.getElementById('feePreviewBox').style.display = 'none';
             document.getElementById('busLabel').textContent = 'Not Availing';
+            populateSiblingDropdown('');
         }
         function fmtAadhar(el) {
             let v = el.value.replace(/\D/g, '');
@@ -2327,6 +2374,8 @@
             document.getElementById('fSiblingDisc').value = s.siblingDisc || '0';
             document.getElementById('fPacDisc').value = s.pacDisc || '0';
             document.getElementById('formTitle').textContent = 'Edit: ' + s.name;
+            populateSiblingDropdown(s.id);
+            document.getElementById('fSibling').value = s.siblingId || '';
             updateFeePreview(); showPanel('add-student');
         }
         async function delStudent(id) {
@@ -2937,21 +2986,20 @@
             let students = [..._students].sort((a, b) => a.serial - b.serial);
             if (cls) students = students.filter(s => s.cls === cls);
 
-            if (sortClass) {
+            if (sortClass || sortName) {
                 const clsOrder = { 'LKG': 1, 'UKG': 2, '1st': 3, '2nd': 4, '3rd': 5, '4th': 6, '5th': 7, '6th': 8, '7th': 9, '8th': 10 };
                 students.sort((a, b) => {
-                    const vA = clsOrder[a.cls] || 99;
-                    const vB = clsOrder[b.cls] || 99;
-                    if (vA !== vB) return sortClass === 'asc' ? vA - vB : vB - vA;
-                    return 0; // fallback to stable sort
-                });
-            }
-            if (sortName) {
-                students.sort((a, b) => {
-                    const nameA = (a.name || '').toLowerCase();
-                    const nameB = (b.name || '').toLowerCase();
-                    if (nameA < nameB) return sortName === 'asc' ? -1 : 1;
-                    if (nameA > nameB) return sortName === 'asc' ? 1 : -1;
+                    if (sortClass) {
+                        const vA = clsOrder[a.cls] || 99;
+                        const vB = clsOrder[b.cls] || 99;
+                        if (vA !== vB) return sortClass === 'asc' ? vA - vB : vB - vA;
+                    }
+                    if (sortName) {
+                        const nameA = (a.name || '').toLowerCase();
+                        const nameB = (b.name || '').toLowerCase();
+                        if (nameA < nameB) return sortName === 'asc' ? -1 : 1;
+                        if (nameA > nameB) return sortName === 'asc' ? 1 : -1;
+                    }
                     return 0;
                 });
             }
@@ -2963,23 +3011,31 @@
                     '<div class="pr-hdr">' + hdr + '<h2>STUDENT REGISTER' + (cls ? ' – Class ' + cls : '') + '</h2>' +
                     '<p>Generated: ' + new Date().toLocaleString('en-IN') + ' | Total: ' + students.length + '</p></div>' +
                     '<div style="overflow-x:auto"><table class="pr-table"><thead><tr>' +
-                    '<th>Sr.</th><th>PEN</th><th>Student Name</th><th>Father</th><th>Mother</th><th>DOB</th><th>Class</th>' +
-                    '<th>Address</th><th>Mobile</th><th>Stu.Aadhar</th><th>Birth Cert</th><th>Father Aadhar</th><th>Mother Aadhar</th>' +
-                    '<th>Bus</th><th>Fee/mo</th><th>Adm.Yr</th></tr></thead><tbody>' +
+                    '<th>Sr.</th><th>Student Details</th><th>Family</th><th>Contact & Address</th><th>Docs (Aadhar/Birth)</th><th>Academic</th><th>Fee/mo</th></tr></thead><tbody>' +
                     students.map(s => {
                         const f = calcFee(s); return '<tr>' +
-                            '<td style="text-align:center">' + s.serial + '</td><td style="font-family:monospace;font-size:.68rem">' + (s.pen || '') + '</td>' +
-                            '<td><b>' + s.name + '</b></td><td>' + (s.father || '') + '</td><td>' + (s.mother || '') + '</td>' +
-                            '<td style="white-space:nowrap">' + (s.dob ? new Date(s.dob).toLocaleDateString('en-IN') : '') + '</td>' +
-                            '<td style="text-align:center;font-weight:700">' + (s.cls || '') + '</td>' +
-                            '<td style="font-size:.67rem">' + (s.address || '') + '</td><td>' + (s.mobile || '') + '</td>' +
-                            '<td style="font-family:monospace;font-size:.67rem">' + (s.aadhar || '') + '</td>' +
-                            '<td style="font-family:monospace;font-size:.67rem">' + (s.birthCert || '') + '</td>' +
-                            '<td style="font-family:monospace;font-size:.67rem">' + (s.fatherAadhar || '') + '</td>' +
-                            '<td style="font-family:monospace;font-size:.67rem">' + (s.motherAadhar || '') + '</td>' +
-                            '<td style="text-align:center">' + (s.bus ? 'YES' : 'NO') + '</td>' +
-                            '<td style="text-align:right;font-weight:700">Rs.' + f.net + '</td>' +
-                            '<td style="text-align:center">' + (s.admYear || '') + '</td></tr>';
+                            '<td style="text-align:center">' + s.serial + '</td>' +
+                            '<td>' +
+                                '<div style="font-weight:700;">' + s.name + '</div>' +
+                                '<div style="font-size:0.75rem;color:#555;">PEN: ' + (s.pen || '-') + ' | DOB: ' + (s.dob ? new Date(s.dob).toLocaleDateString('en-IN') : '-') + '</div>' +
+                            '</td>' +
+                            '<td>' +
+                                '<div style="font-weight:700;">' + (s.father || '-') + '</div>' +
+                                '<div style="font-size:0.75rem;color:#555;">Mother: ' + (s.mother || '-') + ' | Sib: ' + getSiblingDisplay(s) + '</div>' +
+                            '</td>' +
+                            '<td>' +
+                                '<div style="font-weight:700;">Mob: ' + (s.mobile || '-') + '</div>' +
+                                '<div style="font-size:0.75rem;color:#555;white-space:normal;max-width:150px;">' + (s.address || '-') + '</div>' +
+                            '</td>' +
+                            '<td>' +
+                                '<div style="font-size:0.75rem;color:#444;">Stu: ' + (s.aadhar || '-') + ' | Birth: ' + (s.birthCert || '-') + '</div>' +
+                                '<div style="font-size:0.75rem;color:#444;">F: ' + (s.fatherAadhar || '-') + ' | M: ' + (s.motherAadhar || '-') + '</div>' +
+                            '</td>' +
+                            '<td style="text-align:center">' +
+                                '<div style="font-weight:700;">Class: ' + (s.cls || '-') + '</div>' +
+                                '<div style="font-size:0.75rem;color:#555;">Bus: ' + (s.bus ? 'YES' : 'NO') + ' | Adm: ' + (s.admYear || '-') + '</div>' +
+                            '</td>' +
+                            '<td style="text-align:right;font-weight:700">Rs.' + f.net + '</td></tr>';
                     }).join('') +
                     '</tbody></table></div></div>';
             } else if (view === 'monthly-register') {
@@ -3363,7 +3419,7 @@
         window.renderPrint = renderPrint; window.downloadPDF = downloadPDF; window.fmtAadhar = fmtAadhar; window.busToggle = busToggle;
         window.updateFeePreview = updateFeePreview; window.resetForm = resetForm; window.clearErr = clearErr;
         window.logout = logout; window.checkSiblingDisc = checkSiblingDisc; window.renderSiblingList = renderSiblingList;
-        window.resetPrintFilters = resetPrintFilters; window.saveRemark = saveRemark;
+        window.resetPrintFilters = resetPrintFilters; window.saveField = saveField; window.saveRemark = (id, val) => saveField(id, 'remark', val);
         window.openTrashModal = function () { showPanel('trash'); }; window.renderTrash = renderTrash;
         window.restoreStudent = restoreStudent; window.hardDeleteStudent = hardDeleteStudent;
         window.renderOtherChargesCard = renderOtherChargesCard; window.toggleOtherCard = toggleOtherCard; window.saveOtherCard = saveOtherCard; window.unmarkOtherCard = unmarkOtherCard; window.editOtherCard = editOtherCard;

@@ -13,7 +13,7 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.1/fireba
     };
 
     const app = initializeApp(firebaseConfig);
-    const db = initializeFirestore(app, { experimentalForceLongPolling: true });
+    const db = initializeFirestore(app, { experimentalAutoDetectLongPolling: true });
     const auth = getAuth(app);
 
     // ===== CONSTANTS =====

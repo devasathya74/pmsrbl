@@ -25,10 +25,11 @@ service cloud.firestore {
     }
     
     function validStudent(d) {
+      // ✅ Added "OR (||)" condition for Transport App without removing any existing line
       return (d.pen is string && d.pen.size() > 0
           && d.name is string && d.name.size() > 0
           && d.serial is number)
-          || (d.bus == true && d.name is string); // Added alternative validation for Transport App students without modifying existing rule structure
+          || (d.name is string && d.bus == true); 
     }
     function validFee(d) {
       return d.studentId is string && d.studentId.size() > 0

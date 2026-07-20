@@ -3,6 +3,6 @@
   "version": "1.0.0",
   "description": "Fee Management Web App",
   "scripts": {
-    "build": "node build.js"
+    "build": "echo 'No build step required'"
   }
 }

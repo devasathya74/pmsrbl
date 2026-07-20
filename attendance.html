@@ -339,7 +339,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
         import { getAuth, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
-        import { getFirestore, doc, getDoc, setDoc, updateDoc, deleteDoc, onSnapshot, collection, query, getDocs } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+        import { initializeFirestore, getFirestore, doc, getDoc, setDoc, updateDoc, deleteDoc, onSnapshot, collection, query, getDocs } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 
         // Global Variable Configuration
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-transport-app';
@@ -357,7 +357,7 @@
         let isFirebaseAvailable = false;
         try {
             app = initializeApp(firebaseConfig);
-            db = getFirestore(app);
+            db = initializeFirestore(app, { experimentalForceLongPolling: true });
             auth = getAuth(app);
             isFirebaseAvailable = true;
         } catch (fbInitError) {

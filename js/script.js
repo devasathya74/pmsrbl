@@ -1,5 +1,5 @@
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js';
-    import { getFirestore, collection, doc, getDocs, setDoc, deleteDoc, writeBatch } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
+    import { initializeFirestore, getFirestore, collection, doc, getDocs, setDoc, deleteDoc, writeBatch } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
     import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js';
 
     // ===== FIREBASE CONFIG =====
@@ -13,7 +13,7 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.1/fireba
     };
 
     const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
+    const db = initializeFirestore(app, { experimentalForceLongPolling: true });
     const auth = getAuth(app);
 
     // ===== CONSTANTS =====

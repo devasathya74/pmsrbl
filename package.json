@@ -1,8 +1,5 @@
 {
   "name": "pms-fee-management",
   "version": "1.0.0",
-  "description": "Fee Management Web App",
-  "scripts": {
-    "build": "echo 'No build step required'"
-  }
+  "description": "Fee Management Web App"
 }

@@ -85,5 +85,20 @@ service cloud.firestore {
     match /settings/{document=**} {
       allow read, write: if request.auth != null;
     }
+
+    // ==========================================
+    // Transport Attendance Collection (Isolated)
+    // ==========================================
+    match /transport_students/{docId} {
+      allow read:   if request.auth != null;
+      allow create: if request.auth != null && validTransportStudent(request.resource.data);
+      allow update: if request.auth != null;
+      allow delete: if request.auth != null;
+    }
+
+    function validTransportStudent(d) {
+      return d.name is string && d.name.size() > 0
+          && d.active is bool;
+    }
   }
 }

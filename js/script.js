@@ -17,10 +17,19 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.1/fireba
     const auth = getAuth(app);
 
     // ===== CONSTANTS =====
-    const FEE_CHART = { LKG: 600, UKG: 600, '1st': 700, '2nd': 700, '3rd': 800, '4th': 800, '5th': 800, '6th': 1000, '7th': 1000, '8th': 1000 };
+    const FEE_CHART = { 'KG-I': 600, 'KG-II': 600, 'LKG': 600, 'UKG': 600, 'KG-1': 600, 'KG-2': 600, '1st': 700, '2nd': 700, '3rd': 800, '4th': 800, '5th': 800, '6th': 1000, '7th': 1000, '8th': 1000 };
     const DAIRY = 120, BUS_FEE = 300;
     const SCHOOL_MONTHS = ['April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December', 'January', 'February', 'March'];
     const ALL_MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+    // ===== AUTO CORRECT CLASS NAMES =====
+    function normalizeClassName(cls) {
+      if (!cls || typeof cls !== 'string') return cls || '';
+      const trimmed = cls.trim();
+      if (/^(l\.?k\.?g\.?|kg-?1|kg-?i)$/i.test(trimmed)) return 'KG-I';
+      if (/^(u\.?k\.?g\.?|kg-?2|kg-?ii)$/i.test(trimmed)) return 'KG-II';
+      return trimmed.replace(/\bLKG\b/gi, 'KG-I').replace(/\bUKG\b/gi, 'KG-II');
+    }
 
     // ===== IN-MEMORY STATE =====
     let _students = [];
@@ -109,7 +118,13 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.1/fireba
     function sanitize(obj) {
       const clean = {};
       for (const [k, v] of Object.entries(obj)) {
-        if (v !== undefined) clean[k] = (v === null ? null : v);
+        if (v !== undefined) {
+          if (k === 'cls' || k === 'class') {
+            clean[k] = normalizeClassName(v);
+          } else {
+            clean[k] = (v === null ? null : v);
+          }
+        }
       }
       return clean;
     }
@@ -308,9 +323,11 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.1/fireba
       const q = (document.getElementById('searchInput')?.value || '').toLowerCase();
       const cls = document.getElementById('filterClass')?.value || '';
       const bus = document.getElementById('filterBus')?.value || '';
+      const normFilterCls = normalizeClassName(cls);
       const filtered = students.filter(s => {
-        const mq = !q || s.name.toLowerCase().includes(q) || (s.pen || '').toLowerCase().includes(q) || (s.cls || '').toLowerCase().includes(q) || (s.father || '').toLowerCase().includes(q);
-        return mq && (!cls || s.cls === cls) && (!bus || (bus === 'yes' ? s.bus : !s.bus));
+        const normSCls = normalizeClassName(s.cls || '');
+        const mq = !q || s.name.toLowerCase().includes(q) || (s.pen || '').toLowerCase().includes(q) || normSCls.toLowerCase().includes(q) || (s.cls || '').toLowerCase().includes(q) || (s.father || '').toLowerCase().includes(q);
+        return mq && (!cls || normSCls === normFilterCls || s.cls === cls) && (!bus || (bus === 'yes' ? s.bus : !s.bus));
       }).sort((a, b) => a.serial - b.serial);
       document.getElementById('studentsBody').innerHTML = filtered.map(s => {
         const f = calcFee(s);
@@ -1040,7 +1057,7 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.1/fireba
     // ===== FEE CHART =====
     function renderFeeChart() {
       document.getElementById('feeChartDisplay').innerHTML = [
-        { l: 'LKG', a: '600/month' }, { l: 'UKG', a: '600/month' },
+        { l: 'KG-I', a: '600/month' }, { l: 'KG-II', a: '600/month' },
         { l: '1st &amp; 2nd', a: '700/month' }, { l: '3rd, 4th &amp; 5th', a: '800/month' },
         { l: '6th, 7th &amp; 8th', a: '1000/month' },
         { l: 'Dairy + Fee Card', a: '100 + 20 = 120/month' }, { l: 'Bus Fee', a: '300/month' },
@@ -1065,10 +1082,13 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.1/fireba
       const sortName = document.getElementById('prSortName')?.value;
 
       let students = [..._students].sort((a, b) => a.serial - b.serial);
-      if (cls) students = students.filter(s => s.cls === cls);
+      if (cls) {
+        const normFilterCls = normalizeClassName(cls);
+        students = students.filter(s => s.cls === cls || normalizeClassName(s.cls) === normFilterCls);
+      }
 
       if (sortClass || sortName) {
-        const clsOrder = { 'LKG': 1, 'UKG': 2, '1st': 3, '2nd': 4, '3rd': 5, '4th': 6, '5th': 7, '6th': 8, '7th': 9, '8th': 10 };
+        const clsOrder = { 'KG-I': 1, 'KG-II': 2, '1st': 3, '2nd': 4, '3rd': 5, '4th': 6, '5th': 7, '6th': 8, '7th': 9, '8th': 10 };
         students.sort((a, b) => {
           if (sortClass) {
             const vA = clsOrder[a.cls] || 99;
@@ -1595,7 +1615,12 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.1/fireba
           getDocs(collection(db, 'fees')),
           getDocs(collection(db, 'gatepasses'))
         ]);
-        const allStu = stuSnap.docs.map(d => ({ ...d.data(), id: d.id }));
+        const allStu = stuSnap.docs.map(d => {
+          const data = d.data();
+          const rawCls = data.cls || data.class || '';
+          const cls = normalizeClassName(rawCls);
+          return { ...data, cls, id: d.id };
+        });
         const allFees = feeSnap.docs.map(d => ({ ...d.data(), id: d.id }));
         _gatepasses = gpSnap ? gpSnap.docs.map(d => ({ ...d.data(), id: d.id })) : [];
 

@@ -98,9 +98,65 @@
         .modal.active>.card {
             transform: scale(1);
         }
+
+        /* Drag & Drop styles */
+        tr.drag-over {
+            background: #e0e7ff !important;
+            border-top: 2px solid #6366f1;
+        }
+        tr[draggable="true"] {
+            cursor: grab;
+        }
+        tr[draggable="true"]:active {
+            cursor: grabbing;
+            opacity: 0.7;
+        }
+        .drag-handle {
+            cursor: grab;
+            color: #94a3b8;
+            font-size: 13px;
+            padding: 0 4px;
+        }
+        .drag-handle:hover { color: #6366f1; }
+        /* Editable Sr. No. input */
+        .sr-input {
+            width: 38px;
+            text-align: center;
+            border: 1px solid transparent;
+            border-radius: 6px;
+            background: transparent;
+            font-size: 13px;
+            font-weight: 600;
+            color: #64748b;
+            padding: 2px 4px;
+            cursor: pointer;
+            transition: all 0.15s;
+            outline: none;
+        }
+        .sr-input:hover {
+            border-color: #c7d2fe;
+            background: #eef2ff;
+            color: #6366f1;
+        }
+        .sr-input:focus {
+            border-color: #6366f1;
+            background: #eef2ff;
+            color: #4338ca;
+            box-shadow: 0 0 0 2px #c7d2fe;
+        }
+        /* Import modal table */
+        .import-table { width:100%; border-collapse:collapse; font-size:13px; }
+        .import-table th { background:#f1f5f9; padding:8px; text-align:left; border-bottom:1px solid #e2e8f0; }
+        .import-table td { padding:8px; border-bottom:1px solid #f1f5f9; }
+        .import-table tr:hover td { background:#f8fafc; }
+        /* Recycle bin table */
+        .rb-table { width:100%; border-collapse:collapse; font-size:13px; }
+        .rb-table th { background:#fef2f2; padding:8px; text-align:left; border-bottom:1px solid #fecaca; }
+        .rb-table td { padding:8px; border-bottom:1px solid #fef2f2; vertical-align:middle; }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
 </head>
 
 <body>
@@ -225,21 +281,36 @@
                 </div>
 
                 <div id="tab-content-list" class="card">
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
                         <div class="card-title" style="margin: 0;">Student List</div>
-                        <button onclick="openAddStudentModal()" class="btn btn-sm btn-success">&#10133; Add
-                            Student</button>
+                        <div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap;">
+                            <button onclick="openImportModal()" class="btn btn-sm btn-outline" title="Main DB से import करें" style="display:flex;align-items:center;gap:4px;">
+                                <i class="fa-solid fa-file-import"></i> Import
+                            </button>
+                            <button onclick="openRecycleBin()" class="btn btn-sm btn-outline" title="Recycle Bin" style="display:flex;align-items:center;gap:4px;color:#dc2626;border-color:#fca5a5;">
+                                <i class="fa-solid fa-trash-can"></i> Recycle Bin
+                            </button>
+                            <button onclick="downloadStudentListPDF()" id="dl-pdf-btn" class="btn btn-sm btn-outline" title="Student List PDF Download" style="display:flex;align-items:center;gap:4px;color:#7c3aed;border-color:#c4b5fd;">
+                                <i class="fa-solid fa-file-pdf"></i> PDF
+                            </button>
+                            <button onclick="openAddStudentModal()" class="btn btn-sm btn-success" style="display:flex;align-items:center;gap:4px;">
+                                <i class="fa-solid fa-plus"></i> Add Student
+                            </button>
+                        </div>
                     </div>
                     <div style="font-size: 13px; color: var(--muted); margin-bottom: 10px;">कुल प्रदर्शित: <span
-                            id="rendered-count" style="font-weight: bold; color: var(--navy);">0</span></div>
+                            id="rendered-count" style="font-weight: bold; color: var(--navy);">0</span>
+                        <span id="transport-source-badge" style="margin-left:8px; font-size:11px; background:#e0e7ff; color:#6366f1; padding:2px 8px; border-radius:20px; font-weight:600;">transport_students</span>
+                    </div>
                     <div class="tbl-wrap">
                         <table>
                             <thead>
                                 <tr>
+                                    <th style="width:30px;"></th>
                                     <th>Sr.</th>
-                                    <th>Student & Father's Name</th>
+                                    <th>Student &amp; Father's Name</th>
                                     <th>Class</th>
+                                    <th>Mobile</th>
                                     <th>Vehicle</th>
                                     <th>Address</th>
                                     <th>Actions</th>
@@ -247,7 +318,7 @@
                             </thead>
                             <tbody id="student-table-body">
                                 <tr>
-                                    <td colspan="6" style="text-align: center; padding: 20px;">Loading...</td>
+                                    <td colspan="8" style="text-align: center; padding: 20px;">Loading...</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -296,6 +367,11 @@
                             style="width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 4px;">
                     </div>
                     <div class="form-group">
+                        <label>Mobile Number</label>
+                        <input type="tel" id="form-mobile" placeholder="10 अंकों का मोबाइल नंबर"
+                            style="width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 4px;">
+                    </div>
+                    <div class="form-group">
                         <label>Vehicle *</label>
                         <select id="form-vehicle" required
                             style="width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 4px;">
@@ -332,6 +408,54 @@
         </div>
     </div>
 
+    <!-- Recycle Bin Modal -->
+    <div id="recycle-bin-modal" class="modal">
+        <div class="card" style="width:100%; max-width:700px; margin:0 20px; max-height:85vh; display:flex; flex-direction:column;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <div style="padding:8px; background:#fef2f2; border-radius:8px; color:#dc2626;"><i class="fa-solid fa-trash-can"></i></div>
+                    <div class="card-title" style="margin:0;">Recycle Bin</div>
+                </div>
+                <button onclick="closeRecycleBin()" style="background:none;border:none;cursor:pointer;font-size:20px;color:#94a3b8;">&#10005;</button>
+            </div>
+            <p style="font-size:12px; color:#64748b; margin-bottom:12px;">यहाँ delete किए गए students हैं। Restore करें या permanently delete करें।</p>
+            <div style="overflow-y:auto; flex:1;">
+                <div id="recycle-bin-body">
+                    <div style="text-align:center; padding:30px; color:#94a3b8;"><i class="fa-solid fa-spinner fa-spin"></i> Loading...</div>
+                </div>
+            </div>
+            <div style="display:flex; justify-content:flex-end; margin-top:15px;">
+                <button onclick="closeRecycleBin()" class="btn btn-outline">बंद करें</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Import from Main DB Modal -->
+    <div id="import-modal" class="modal">
+        <div class="card" style="width:100%; max-width:750px; margin:0 20px; max-height:85vh; display:flex; flex-direction:column;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <div style="padding:8px; background:#e0e7ff; border-radius:8px; color:#6366f1;"><i class="fa-solid fa-file-import"></i></div>
+                    <div class="card-title" style="margin:0;">Main DB से Import करें</div>
+                </div>
+                <button onclick="closeImportModal()" style="background:none;border:none;cursor:pointer;font-size:20px;color:#94a3b8;">&#10005;</button>
+            </div>
+            <p style="font-size:12px; color:#64748b; margin-bottom:12px;">नीचे main <code>students</code> collection के सभी active students हैं। जो पहले से import हो चुके हैं वो <span style="color:#16a34a; font-weight:bold;">✓ Imported</span> दिखेंगे।</p>
+            <div style="overflow-y:auto; flex:1;">
+                <div id="import-modal-body">
+                    <div style="text-align:center; padding:30px; color:#94a3b8;"><i class="fa-solid fa-spinner fa-spin"></i> Loading...</div>
+                </div>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:15px;">
+                <span id="import-status-text" style="font-size:12px; color:#64748b;"></span>
+                <div style="display:flex; gap:8px;">
+                    <button onclick="closeImportModal()" class="btn btn-outline">बंद करें</button>
+                    <button onclick="importSelectedStudents()" id="import-confirm-btn" class="btn btn-primary">&#10133; चयनित Import करें</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div id="print-area"></div>
 
     <!-- Firebase Modular SDK Script Configuration -->
@@ -339,10 +463,13 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
         import { getAuth, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
-        import { initializeFirestore, getFirestore, doc, getDoc, setDoc, updateDoc, deleteDoc, onSnapshot, collection, query, getDocs } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+        import { initializeFirestore, doc, setDoc, updateDoc, deleteDoc, onSnapshot, collection, getDocs, writeBatch } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 
-        // Global Variable Configuration
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-transport-app';
+        // ─── Constants ───────────────────────────────────────────────────────────
+        const TRANSPORT_COL = 'transport_students'; // Isolated transport collection
+        const MAIN_COL      = 'students';           // Main DB — READ ONLY from here
+
+        // ─── Firebase Init ───────────────────────────────────────────────────────
         let firebaseConfig = {
             apiKey: "AIzaSyDsVKuptdW4jRWQ5rLX_h_fn53xuFoYVMI",
             authDomain: "abcreport-27dea.firebaseapp.com",
@@ -352,7 +479,6 @@
             appId: "1:1422972209:web:82fbc39400d75566d8cc10"
         };
 
-        // Initialize Firebase with fallback mechanisms
         let app, db, auth;
         let isFirebaseAvailable = false;
         try {
@@ -361,157 +487,495 @@
             auth = getAuth(app);
             isFirebaseAvailable = true;
         } catch (fbInitError) {
-            console.warn("Firebase initialization failed. Operating in offline/sandboxed execution mode:", fbInitError);
+            console.warn("Firebase initialization failed. Operating in offline/sandboxed mode:", fbInitError);
         }
 
-        // Core App Local States
-        let students = [];
-        let currentVehicleFilter = 'all'; // 'all', 'v1', 'v2'
-        let currentTab = 'list'; // 'list', 'preview'
-        let vehicleNames = {
-            v1: "Vehicle 1",
-            v2: "Vehicle 2"
-        };
+        // ─── App State ───────────────────────────────────────────────────────────
+        let students = [];            // active transport students (sortOrder sorted)
+        let currentVehicleFilter = 'all';
+        let currentTab = 'list';
+        let vehicleNames = { v1: "Vehicle 1", v2: "Vehicle 2" };
         let deleteCandidateId = null;
+        let dragSrcId = null;         // drag-and-drop state
 
-        // Custom Months Mapping
         const monthNamesHindi = [
             "जनवरी", "फरवरी", "मार्च", "अप्रैल", "मई", "जून",
             "जुलाई", "अगस्त", "सितंबर", "अक्टूबर", "नवंबर", "दिसंबर"
         ];
 
-        // Authenticate User & Bind Firestore Listeners
+        // ─── Auto-Correct Class Names ──────────────────────────────────────────────
+        function normalizeClassName(cls) {
+            if (!cls || typeof cls !== 'string') return cls || '';
+            const trimmed = cls.trim();
+            if (/^(l\.?k\.?g\.?|kg-?1|kg-?i)$/i.test(trimmed)) return 'KG-I';
+            if (/^(u\.?k\.?g\.?|kg-?2|kg-?ii)$/i.test(trimmed)) return 'KG-II';
+            return trimmed.replace(/\bLKG\b/gi, 'KG-I').replace(/\bUKG\b/gi, 'KG-II');
+        }
+
+        // ─── Auth Setup ──────────────────────────────────────────────────────────
         async function setupFirebaseAuth() {
-            if (!isFirebaseAvailable) {
-                initSampleOfflineData();
-                return;
-            }
+            if (!isFirebaseAvailable) { initSampleOfflineData(); return; }
             try {
                 if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
                     await signInWithCustomToken(auth, __initial_auth_token);
                 } else {
-                    console.log("No custom token supplied. Initializing default offline state.");
+                    console.log("No custom token. Using offline fallback.");
                     initSampleOfflineData();
                 }
             } catch (authError) {
-                console.warn("Auth initialization failed. Using in-memory fallback:", authError);
+                console.warn("Auth failed. Using offline fallback:", authError);
                 initSampleOfflineData();
             }
         }
 
-        // Initialize Realtime Syncing if authenticated
         if (isFirebaseAvailable) {
             onAuthStateChanged(auth, (user) => {
                 if (user) {
                     syncVehicleNames();
                     syncStudentsData();
                 } else {
-                    console.log("No authenticated user session. Populating local sandbox fallback data.");
-                    if (students.length === 0) {
-                        initSampleOfflineData();
-                    }
+                    if (students.length === 0) initSampleOfflineData();
                 }
             });
         } else {
             initSampleOfflineData();
         }
 
-        // Sync Vehicle Custom Names
+        // ─── Vehicle Names (shared settings) ─────────────────────────────────────
         function syncVehicleNames() {
-            const vehicleDocRef = doc(db, 'settings', 'transport');
-            onSnapshot(vehicleDocRef, (docSnap) => {
-                if (docSnap.exists()) {
-                    const data = docSnap.data();
-                    if (data.v1) vehicleNames.v1 = data.v1;
-                    if (data.v2) vehicleNames.v2 = data.v2;
+            onSnapshot(doc(db, 'settings', 'transport'), (snap) => {
+                if (snap.exists()) {
+                    const d = snap.data();
+                    if (d.v1) vehicleNames.v1 = d.v1;
+                    if (d.v2) vehicleNames.v2 = d.v2;
                     updateVehicleLabelsUI();
                 }
-            }, (error) => {
-                console.error("Error loading vehicle configurations :", error);
             });
         }
 
-        // Sync Students Realtime
-        function syncStudentsData() {
-            const studentColRef = collection(db, 'students');
+        // ─── TRANSPORT COLLECTION SYNC ────────────────────────────────────────────
+        // Step 1: Check if transport_students has data.
+        //         If empty → seed from main 'students' collection.
+        //         Then start realtime listener on transport_students.
+        async function syncStudentsData() {
+            try {
+                const transportSnap = await getDocs(collection(db, TRANSPORT_COL));
+                const hasTransportData = transportSnap.docs.some(d => d.data().active !== false);
 
-            onSnapshot(studentColRef, (snapshot) => {
-                students = [];
-                snapshot.forEach((docSnap) => {
-                    let sData = docSnap.data();
-                    if (sData.bus) {
-                        students.push({
-                            id: docSnap.id,
-                            name: sData.name || '',
-                            fatherName: sData.father || '',
-                            class: sData.cls || '',
-                            address: sData.address || '',
-                            vehicle: sData.vehicle || 'v1',
-                            ...sData
-                        });
-                    }
+                if (!hasTransportData) {
+                    console.log("transport_students is empty. Seeding from main students collection...");
+                    await seedFromMainCollection();
+                }
+
+                // Start realtime listener on transport_students (active only)
+                onSnapshot(collection(db, TRANSPORT_COL), (snapshot) => {
+                    students = [];
+                    snapshot.forEach((docSnap) => {
+                        const d = docSnap.data();
+                        if (d.active !== false) {
+                            students.push({
+                                id: docSnap.id,
+                                name: d.name || '',
+                                fatherName: d.fatherName || '',
+                                class: normalizeClassName(d.class || d.cls || ''),
+                                mobile: d.mobile || '',
+                                address: d.address || '',
+                                vehicle: d.vehicle || 'v1',
+                                sortOrder: typeof d.sortOrder === 'number' ? d.sortOrder : 9999,
+                                sourceId: d.sourceId || null,
+                                active: true
+                            });
+                        }
+                    });
+                    // Always sort by sortOrder
+                    students.sort((a, b) => a.sortOrder - b.sortOrder);
+                    calculateStats();
+                    applyFiltersAndRender();
+                    generatePrintPreview();
+                }, (err) => {
+                    console.error("transport_students listener error:", err);
+                    showCustomDialog("सिस्टम एरर", "Transport डेटाबेस लोड करने में समस्या। कृपया पुनः प्रयास करें।", "error");
                 });
 
-                // Sort students by name in JavaScript memory
-                students.sort((a, b) => a.name.localeCompare(b.name, 'hi'));
-
-                calculateStats();
-                applyFiltersAndRender();
-                generatePrintPreview();
-            }, (error) => {
-                console.error("Error listening to student updates:", error);
-                showCustomDialog("सिस्टम एरर", "फ़ायरस्टोर डेटाबेस लोड करने में समस्या आ रही है। कृपया पुनः प्रयास करें।", "error");
-            });
+            } catch (err) {
+                console.error("syncStudentsData error:", err);
+                initSampleOfflineData();
+            }
         }
 
-        // Firestore Write Operations
+        // ─── SEED: Copy from main 'students' to transport_students (first time) ──
+        async function seedFromMainCollection() {
+            try {
+                const mainSnap = await getDocs(collection(db, MAIN_COL));
+                const batch = writeBatch(db);
+                let idx = 0;
+                mainSnap.forEach((docSnap) => {
+                    const d = docSnap.data();
+                    if (!d.bus) return; // skip inactive
+                    const newDocRef = doc(collection(db, TRANSPORT_COL));
+                    batch.set(newDocRef, {
+                        name: d.name || '',
+                        fatherName: d.father || '',
+                        class: normalizeClassName(d.cls || d.class || ''),
+                        mobile: d.mobile || '',
+                        address: d.address || '',
+                        vehicle: d.vehicle || 'v1',
+                        sortOrder: idx++,
+                        sourceId: docSnap.id,   // link to original
+                        active: true,
+                        createdAt: Date.now(),
+                        updatedAt: Date.now()
+                    });
+                });
+                await batch.commit();
+                console.log(`Seeded ${idx} students into transport_students.`);
+            } catch (err) {
+                console.error("Seed error:", err);
+            }
+        }
+
+        // ─── SAVE (Add / Edit) → transport_students only ─────────────────────────
         window.saveStudentToFirestore = async function (studentData) {
             if (!isFirebaseAvailable || !auth.currentUser) {
-                saveOfflineStudent(studentData);
-                return;
+                saveOfflineStudent(studentData); return;
             }
             try {
-                const docId = studentData.id || crypto.randomUUID();
-                const studentDocRef = doc(db, 'students', docId);
+                let docId = studentData.id;
+                let sortOrder = studentData.sortOrder;
 
-                await setDoc(studentDocRef, {
+                if (!docId) {
+                    // New student — assign sortOrder at end
+                    const maxOrder = students.length > 0 ? Math.max(...students.map(s => s.sortOrder)) : -1;
+                    sortOrder = maxOrder + 1;
+                    docId = doc(collection(db, TRANSPORT_COL)).id;
+                }
+
+                await setDoc(doc(db, TRANSPORT_COL, docId), {
                     name: studentData.name,
-                    father: studentData.fatherName,
-                    cls: studentData.class || '',
+                    fatherName: studentData.fatherName,
+                    class: normalizeClassName(studentData.class || ''),
+                    mobile: studentData.mobile || '',
                     address: studentData.address || '',
                     vehicle: studentData.vehicle,
-                    bus: true,
+                    sortOrder: typeof sortOrder === 'number' ? sortOrder : 9999,
+                    sourceId: studentData.sourceId || null,
+                    active: true,
                     updatedAt: Date.now()
                 }, { merge: true });
 
                 closeStudentModal();
             } catch (err) {
+                console.error("Save error:", err);
                 showCustomDialog("त्रुटि", "छात्र का डेटा सहेजने में विफल।", "error");
             }
         }
 
+        // ─── SOFT DELETE → active:false (goes to Recycle Bin) ────────────────────
         window.deleteStudentFromFirestore = async function (id) {
             if (!isFirebaseAvailable || !auth.currentUser) {
-                deleteOfflineStudent(id);
-                return;
+                deleteOfflineStudent(id); closeDialog(); return;
             }
             try {
-                const studentDocRef = doc(db, 'students', id);
-                await updateDoc(studentDocRef, { bus: false });
+                await updateDoc(doc(db, TRANSPORT_COL, id), {
+                    active: false,
+                    deletedAt: Date.now()
+                });
                 closeDialog();
             } catch (err) {
-                console.error("Firestore Delete Error:", err);
-                showCustomDialog("त्रुटि", "छात्र का विवरण डिलीट करने में विफल।", "error");
+                console.error("Delete error:", err);
+                showCustomDialog("त्रुटि", "छात्र डिलीट करने में विफल।", "error");
             }
         }
 
+        // ─── VEHICLE NAMES (shared settings — same as before) ────────────────────
         window.updateVehicleNamesInFirestore = async function (v1, v2) {
             if (!isFirebaseAvailable || !auth.currentUser) return;
             try {
-                const vehicleDocRef = doc(db, 'settings', 'transport');
-                await setDoc(vehicleDocRef, { v1, v2 }, { merge: true });
+                await setDoc(doc(db, 'settings', 'transport'), { v1, v2 }, { merge: true });
             } catch (err) {
-                console.error("Firestore Config Save Error:", err);
+                console.error("Vehicle names save error:", err);
+            }
+        }
+
+        // ─── REORDER: move student to a specific position (1-based) ─────────────
+        window.moveToPosition = async function (id, newPos) {
+            const currentIdx = students.findIndex(s => s.id === id);
+            if (currentIdx === -1) return;
+
+            // newPos is 1-based from user; clamp to valid range
+            let targetIdx = Math.max(0, Math.min(students.length - 1, newPos - 1));
+            if (targetIdx === currentIdx) return; // no change
+
+            // Rebuild order array
+            const reordered = [...students];
+            const [moved] = reordered.splice(currentIdx, 1);
+            reordered.splice(targetIdx, 0, moved);
+
+            if (isFirebaseAvailable && auth.currentUser) {
+                try {
+                    const batch = writeBatch(db);
+                    reordered.forEach((s, i) => {
+                        batch.update(doc(db, TRANSPORT_COL, s.id), { sortOrder: i });
+                    });
+                    await batch.commit();
+                } catch (err) {
+                    console.error("moveToPosition error:", err);
+                }
+            } else {
+                students = reordered.map((s, i) => ({ ...s, sortOrder: i }));
+                applyFiltersAndRender();
+                generatePrintPreview();
+            }
+        }
+
+        // ─── DRAG AND DROP reorder ────────────────────────────────────────────────
+        window.onDragStart = function (ev, id) {
+            dragSrcId = id;
+            ev.dataTransfer.effectAllowed = 'move';
+        }
+        window.onDragOver = function (ev, rowEl) {
+            ev.preventDefault();
+            ev.dataTransfer.dropEffect = 'move';
+            document.querySelectorAll('#student-table-body tr').forEach(r => r.classList.remove('drag-over'));
+            rowEl.classList.add('drag-over');
+        }
+        window.onDragLeave = function (rowEl) {
+            rowEl.classList.remove('drag-over');
+        }
+        window.onDrop = async function (ev, targetId) {
+            ev.preventDefault();
+            document.querySelectorAll('#student-table-body tr').forEach(r => r.classList.remove('drag-over'));
+            if (!dragSrcId || dragSrcId === targetId) return;
+
+            const srcIdx = students.findIndex(s => s.id === dragSrcId);
+            const tgtIdx = students.findIndex(s => s.id === targetId);
+            if (srcIdx === -1 || tgtIdx === -1) return;
+
+            // Rebuild sortOrder: move src to target position
+            const reordered = [...students];
+            const [moved] = reordered.splice(srcIdx, 1);
+            reordered.splice(tgtIdx, 0, moved);
+
+            if (isFirebaseAvailable && auth.currentUser) {
+                try {
+                    const batch = writeBatch(db);
+                    reordered.forEach((s, i) => {
+                        batch.update(doc(db, TRANSPORT_COL, s.id), { sortOrder: i });
+                    });
+                    await batch.commit();
+                } catch (err) {
+                    console.error("Drag-drop reorder error:", err);
+                }
+            } else {
+                students = reordered.map((s, i) => ({ ...s, sortOrder: i }));
+                applyFiltersAndRender();
+                generatePrintPreview();
+            }
+            dragSrcId = null;
+        }
+
+        // ─── RECYCLE BIN ─────────────────────────────────────────────────────────
+        window.openRecycleBin = async function () {
+            document.getElementById('recycle-bin-modal').classList.add('active');
+            const body = document.getElementById('recycle-bin-body');
+            body.innerHTML = '<div style="text-align:center;padding:30px;color:#94a3b8;"><i class="fa-solid fa-spinner fa-spin"></i> Loading...</div>';
+
+            if (!isFirebaseAvailable || !auth.currentUser) {
+                body.innerHTML = '<div style="text-align:center;padding:30px;color:#94a3b8;">Offline mode — Recycle Bin unavailable.</div>';
+                return;
+            }
+            try {
+                const snap = await getDocs(collection(db, TRANSPORT_COL));
+                const deleted = [];
+                snap.forEach(d => { if (d.data().active === false) deleted.push({ id: d.id, ...d.data() }); });
+
+                if (deleted.length === 0) {
+                    body.innerHTML = '<div style="text-align:center;padding:30px;color:#94a3b8;"><i class="fa-solid fa-trash-can" style="font-size:32px;margin-bottom:10px;"></i><br>Recycle Bin खाली है।</div>';
+                    return;
+                }
+
+                let html = '<table class="rb-table"><thead><tr><th>Student</th><th>Class</th><th>Vehicle</th><th style="text-align:center;">Actions</th></tr></thead><tbody>';
+                deleted.forEach(s => {
+                    const vName = s.vehicle === 'v1' ? vehicleNames.v1 : vehicleNames.v2;
+                    html += `<tr>
+                        <td><div style="font-weight:600;">${s.name}</div><div style="font-size:11px;color:#64748b;">${s.fatherName || ''}</div></td>
+                        <td>${s.class || '-'}</td>
+                        <td>${vName}</td>
+                        <td style="text-align:center;">
+                            <div style="display:flex;gap:6px;justify-content:center;">
+                                <button onclick="restoreStudent('${s.id}')" class="btn btn-sm btn-success" title="Restore" style="padding:4px 10px;font-size:11px;"><i class="fa-solid fa-rotate-left"></i> Restore</button>
+                                <button onclick="permanentDeleteStudent('${s.id}', '${s.name}')" class="btn btn-sm" style="padding:4px 10px;font-size:11px;background:#fef2f2;color:#dc2626;border:1px solid #fca5a5;" title="Permanently Delete"><i class="fa-solid fa-xmark"></i> Delete</button>
+                            </div>
+                        </td>
+                    </tr>`;
+                });
+                html += '</tbody></table>';
+                body.innerHTML = html;
+            } catch (err) {
+                body.innerHTML = '<div style="color:#dc2626;padding:20px;">Error loading recycle bin.</div>';
+            }
+        }
+
+        window.closeRecycleBin = function () {
+            document.getElementById('recycle-bin-modal').classList.remove('active');
+        }
+
+        window.restoreStudent = async function (id) {
+            try {
+                const maxOrder = students.length > 0 ? Math.max(...students.map(s => s.sortOrder)) : -1;
+                await updateDoc(doc(db, TRANSPORT_COL, id), {
+                    active: true,
+                    sortOrder: maxOrder + 1,
+                    deletedAt: null,
+                    updatedAt: Date.now()
+                });
+                openRecycleBin(); // refresh bin
+            } catch (err) {
+                showCustomDialog("त्रुटि", "Restore करने में विफल।", "error");
+            }
+        }
+
+        window.permanentDeleteStudent = async function (id, name) {
+            const actionHtml = `
+                <button onclick="closeDialog()" class="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-lg transition">रद्द करें</button>
+                <button onclick="doPermanentDelete('${id}')" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-xs font-semibold rounded-lg transition">हाँ, हमेशा के लिए Delete करें</button>
+            `;
+            showCustomDialog("Permanent Delete?", `"${name}" को हमेशा के लिए delete करें? यह वापस नहीं आएगा।`, "warning", actionHtml);
+        }
+
+        window.doPermanentDelete = async function (id) {
+            try {
+                await deleteDoc(doc(db, TRANSPORT_COL, id));
+                closeDialog();
+                openRecycleBin();
+            } catch (err) {
+                showCustomDialog("त्रुटि", "Permanent delete विफल।", "error");
+            }
+        }
+
+        // ─── IMPORT FROM MAIN DB ──────────────────────────────────────────────────
+        let importCandidates = []; // [{mainDocId, name, fatherName, class, ...}, ...]
+
+        window.openImportModal = async function () {
+            document.getElementById('import-modal').classList.add('active');
+            const body = document.getElementById('import-modal-body');
+            const statusEl = document.getElementById('import-status-text');
+            body.innerHTML = '<div style="text-align:center;padding:30px;color:#94a3b8;"><i class="fa-solid fa-spinner fa-spin"></i> Loading...</div>';
+            importCandidates = [];
+
+            if (!isFirebaseAvailable || !auth.currentUser) {
+                body.innerHTML = '<div style="text-align:center;padding:30px;color:#94a3b8;">Offline mode — Import unavailable.</div>';
+                return;
+            }
+            try {
+                // Collect already-imported sourceIds
+                const transportSnap = await getDocs(collection(db, TRANSPORT_COL));
+                const importedSourceIds = new Set();
+                transportSnap.forEach(d => { if (d.data().sourceId) importedSourceIds.add(d.data().sourceId); });
+
+                // Fetch main DB
+                const mainSnap = await getDocs(collection(db, MAIN_COL));
+                let html = '<table class="import-table"><thead><tr><th style="width:40px;"></th><th>Student</th><th>Class</th><th>Vehicle</th><th>Address</th><th>Status</th></tr></thead><tbody>';
+                let newCount = 0, alreadyCount = 0;
+
+                mainSnap.forEach((docSnap) => {
+                    const d = docSnap.data();
+                    if (!d.bus) return;
+                    const alreadyImported = importedSourceIds.has(docSnap.id);
+                    const vName = d.vehicle === 'v1' ? vehicleNames.v1 : vehicleNames.v2;
+                    const student = {
+                        mainDocId: docSnap.id,
+                        name: d.name || '',
+                        fatherName: d.father || '',
+                        class: normalizeClassName(d.cls || d.class || ''),
+                        mobile: d.mobile || '',
+                        address: d.address || '',
+                        vehicle: d.vehicle || 'v1'
+                    };
+                    if (!alreadyImported) {
+                        importCandidates.push(student);
+                        newCount++;
+                    } else {
+                        alreadyCount++;
+                    }
+                    html += `<tr>
+                        <td style="text-align:center;">
+                            ${alreadyImported
+                                ? '<i class="fa-solid fa-circle-check" style="color:#16a34a;font-size:16px;" title="Already imported"></i>'
+                                : `<input type="checkbox" class="import-cb" data-id="${docSnap.id}" checked style="width:16px;height:16px;cursor:pointer;">`
+                            }
+                        </td>
+                        <td><div style="font-weight:600;">${student.name}</div><div style="font-size:11px;color:#64748b;">${student.fatherName}</div></td>
+                        <td>${student.class || '-'}</td>
+                        <td>${vName}</td>
+                        <td style="font-size:11px;color:#64748b;">${student.address || '-'}</td>
+                        <td>${alreadyImported
+                            ? '<span style="color:#16a34a;font-size:11px;font-weight:600;">✓ Imported</span>'
+                            : '<span style="color:#f59e0b;font-size:11px;font-weight:600;">New</span>'
+                        }</td>
+                    </tr>`;
+                });
+                html += '</tbody></table>';
+                body.innerHTML = html;
+                statusEl.textContent = `${newCount} new students available, ${alreadyCount} already imported.`;
+
+                if (newCount === 0) {
+                    document.getElementById('import-confirm-btn').disabled = true;
+                    document.getElementById('import-confirm-btn').style.opacity = '0.5';
+                }
+            } catch (err) {
+                console.error("Import load error:", err);
+                body.innerHTML = '<div style="color:#dc2626;padding:20px;">Error loading main DB.</div>';
+            }
+        }
+
+        window.closeImportModal = function () {
+            document.getElementById('import-modal').classList.remove('active');
+            document.getElementById('import-confirm-btn').disabled = false;
+            document.getElementById('import-confirm-btn').style.opacity = '1';
+        }
+
+        window.importSelectedStudents = async function () {
+            const checkboxes = document.querySelectorAll('.import-cb:checked');
+            if (checkboxes.length === 0) {
+                showCustomDialog("चेतावनी", "कोई student select नहीं किया।", "warning"); return;
+            }
+            const selectedIds = new Set([...checkboxes].map(cb => cb.dataset.id));
+            const toImport = importCandidates.filter(s => selectedIds.has(s.mainDocId));
+            if (toImport.length === 0) return;
+
+            const btn = document.getElementById('import-confirm-btn');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Importing...';
+
+            try {
+                const batch = writeBatch(db);
+                const maxOrder = students.length > 0 ? Math.max(...students.map(s => s.sortOrder)) : -1;
+                toImport.forEach((s, i) => {
+                    const newRef = doc(collection(db, TRANSPORT_COL));
+                    batch.set(newRef, {
+                        name: s.name,
+                        fatherName: s.fatherName,
+                        class: s.class || '',
+                        mobile: s.mobile || '',
+                        address: s.address || '',
+                        vehicle: s.vehicle,
+                        sortOrder: maxOrder + 1 + i,
+                        sourceId: s.mainDocId,  // unique link — prevents re-import
+                        active: true,
+                        createdAt: Date.now(),
+                        updatedAt: Date.now()
+                    });
+                });
+                await batch.commit();
+                closeImportModal();
+                showCustomDialog("Import सफल!", `${toImport.length} student(s) transport list में add हो गए।`, "info");
+            } catch (err) {
+                console.error("Import error:", err);
+                showCustomDialog("त्रुटि", "Import विफल।", "error");
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '&#10133; चयनित Import करें';
             }
         }
 
@@ -662,13 +1126,12 @@
             const tableBody = document.getElementById('student-table-body');
             const rCount = document.getElementById('rendered-count');
             if (rCount) rCount.innerText = studentList.length;
-
             if (!tableBody) return;
 
             if (studentList.length === 0) {
                 tableBody.innerHTML = `
                     <tr>
-                        <td colspan="6" class="px-4 py-8 text-center text-slate-400">
+                        <td colspan="8" class="px-4 py-8 text-center text-slate-400">
                             <i class="fa-solid fa-users-slash text-2xl mb-2 text-slate-300"></i>
                             <p>कोई छात्र नहीं मिला। कृपया फ़िल्टर बदलें या नया छात्र जोड़ें।</p>
                         </td>
@@ -680,10 +1143,33 @@
             tableBody.innerHTML = studentList.map((student, index) => {
                 const vName = student.vehicle === 'v1' ? vehicleNames.v1 : vehicleNames.v2;
                 const vBadgeStyle = student.vehicle === 'v1' ? 'bg-indigo-50 text-indigo-700 border-indigo-200' : 'bg-amber-50 text-amber-700 border-amber-200';
+                const srNum = index + 1;
 
                 return `
-                    <tr class="hover:bg-slate-50/80 transition-all">
-                        <td class="px-4 py-3.5 text-center text-slate-500 font-medium">${index + 1}</td>
+                    <tr class="hover:bg-slate-50/80 transition-all"
+                        draggable="true"
+                        ondragstart="onDragStart(event, '${student.id}')"
+                        ondragover="onDragOver(event, this)"
+                        ondragleave="onDragLeave(this)"
+                        ondrop="onDrop(event, '${student.id}')">
+                        <td class="px-2 py-3.5 text-center">
+                            <span class="drag-handle" title="Drag to reorder">&#8942;&#8942;</span>
+                        </td>
+                        <td class="py-3.5 text-center" style="padding:4px;">
+                            <input
+                                type="number"
+                                class="sr-input"
+                                value="${srNum}"
+                                min="1"
+                                max="${studentList.length}"
+                                title="Sr. No. edit करें और Enter दबाएं"
+                                data-student-id="${student.id}"
+                                data-original="${srNum}"
+                                onkeydown="if(event.key==='Enter'){this.blur();}"
+                                onfocus="this.select();"
+                                onblur="handleSrEdit(this)"
+                            />
+                        </td>
                         <td class="px-4 py-3.5">
                             <div class="font-semibold text-slate-900">${student.name}</div>
                             <div class="text-[11px] text-slate-500 flex items-center gap-1">
@@ -692,6 +1178,7 @@
                             </div>
                         </td>
                         <td class="px-4 py-3.5 text-slate-700 font-medium">${student.class || '<span class="text-slate-300">-</span>'}</td>
+                        <td class="px-4 py-3.5 text-slate-600">${student.mobile ? `<a href="tel:${student.mobile}" class="flex items-center gap-1 hover:text-indigo-600 transition" title="Call"><i class="fa-solid fa-phone text-[10px] text-slate-400"></i> ${student.mobile}</a>` : '<span class="text-slate-300">-</span>'}</td>
                         <td class="px-4 py-3.5">
                             <span class="px-2.5 py-1 border rounded-full text-[11px] font-semibold ${vBadgeStyle}">
                                 ${vName}
@@ -703,7 +1190,7 @@
                                 <button onclick="openEditStudentModal('${student.id}')" class="p-1.5 hover:bg-indigo-50 text-indigo-600 hover:text-indigo-800 rounded-lg transition" title="विवरण बदलें">
                                     <i class="fa-solid fa-pen text-sm"></i>
                                 </button>
-                                <button onclick="confirmDeleteStudent('${student.id}', '${student.name}')" class="p-1.5 hover:bg-red-50 text-red-500 hover:text-red-700 rounded-lg transition" title="डिलीट करें">
+                                <button onclick="confirmDeleteStudent('${student.id}', '${student.name}')" class="p-1.5 hover:bg-red-50 text-red-500 hover:text-red-700 rounded-lg transition" title="Recycle Bin में भेजें">
                                     <i class="fa-solid fa-trash text-sm"></i>
                                 </button>
                             </div>
@@ -711,6 +1198,30 @@
                     </tr>
                 `;
             }).join('');
+        }
+
+        // Sr. No. inline edit handler
+        window.handleSrEdit = function (inputEl) {
+            const id       = inputEl.dataset.studentId;
+            const original = parseInt(inputEl.dataset.original, 10);
+            const newPos   = parseInt(inputEl.value, 10);
+
+            // Validate
+            if (isNaN(newPos) || newPos < 1 || newPos > students.length) {
+                inputEl.value = original; // revert
+                return;
+            }
+            if (newPos === original) return; // no change
+
+            // Visual feedback: flash the input
+            inputEl.style.background = '#dcfce7';
+            inputEl.style.borderColor = '#16a34a';
+            setTimeout(() => {
+                inputEl.style.background = '';
+                inputEl.style.borderColor = '';
+            }, 600);
+
+            moveToPosition(id, newPos);
         }
 
         // Navigation Tab Switching
@@ -756,11 +1267,14 @@
             document.getElementById('form-student-name').value = student.name;
             document.getElementById('form-father-name').value = student.fatherName;
             document.getElementById('form-class').value = student.class || '';
+            document.getElementById('form-mobile').value = student.mobile || '';
             document.getElementById('form-vehicle').value = student.vehicle || 'v1';
             document.getElementById('form-address').value = student.address || '';
+            // Preserve sortOrder and sourceId during edit
+            document.getElementById('student-id-field').dataset.sortOrder = student.sortOrder;
+            document.getElementById('student-id-field').dataset.sourceId  = student.sourceId || '';
 
-            const modal = document.getElementById('student-modal');
-            modal.classList.add('active');
+            document.getElementById('student-modal').classList.add('active');
         }
 
         window.closeStudentModal = function () {
@@ -774,6 +1288,7 @@
             const name = document.getElementById('form-student-name').value.trim();
             const fatherName = document.getElementById('form-father-name').value.trim();
             const className = document.getElementById('form-class').value.trim();
+            const mobile = document.getElementById('form-mobile').value.trim();
             const vehicle = document.getElementById('form-vehicle').value;
             const address = document.getElementById('form-address').value.trim();
 
@@ -782,7 +1297,17 @@
                 return;
             }
 
-            const studentData = { id: id || undefined, name, fatherName, class: className, vehicle, address };
+            const idField = document.getElementById('student-id-field');
+            const existingSortOrder = idField.dataset.sortOrder !== undefined && idField.dataset.sortOrder !== '' ? Number(idField.dataset.sortOrder) : undefined;
+            const existingSourceId  = idField.dataset.sourceId || null;
+            const studentData = {
+                id: id || undefined,
+                name, fatherName,
+                class: className,
+                mobile, vehicle, address,
+                sortOrder: existingSortOrder,
+                sourceId: existingSourceId
+            };
             saveStudentToFirestore(studentData);
         }
 
@@ -1072,6 +1597,124 @@
             } finally {
                 printBtn.innerHTML = originalText;
                 printBtn.disabled = false;
+            }
+        }
+
+        // ─── DOWNLOAD STUDENT LIST AS PDF (A4 Portrait, Shrink to Fit) ────────────
+        window.downloadStudentListPDF = function () {
+            if (!window.jspdf) {
+                showCustomDialog("सिस्टम एरर", "PDF library load नहीं हुई। Internet connection जांचें।", "error");
+                return;
+            }
+            if (students.length === 0) {
+                showCustomDialog("चेतावनी", "कोई छात्र नहीं मिला। पहले students add करें।", "warning");
+                return;
+            }
+
+            const btn = document.getElementById('dl-pdf-btn');
+            const origHtml = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> ...';
+            btn.disabled = true;
+
+            try {
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+
+                // ── Header ──────────────────────────────────────────────────────
+                const today = new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+                const vFilterLabel = currentVehicleFilter === 'all'
+                    ? 'All Vehicles'
+                    : (currentVehicleFilter === 'v1' ? vehicleNames.v1 : vehicleNames.v2);
+
+                pdf.setFontSize(13);
+                pdf.setFont('helvetica', 'bold');
+                pdf.text('POLICE MODERN SCHOOL, RAEBARELI', 105, 14, { align: 'center' });
+
+                pdf.setFontSize(9);
+                pdf.setFont('helvetica', 'normal');
+                pdf.text('Transport Student List', 105, 20, { align: 'center' });
+
+                pdf.setFontSize(8);
+                pdf.text(`Vehicle: ${vFilterLabel}   |   Total: ${students.length} Students   |   Date: ${today}`, 105, 25, { align: 'center' });
+
+                // Divider line
+                pdf.setLineWidth(0.4);
+                pdf.setDrawColor(100, 116, 139);
+                pdf.line(10, 27, 200, 27);
+
+                // ── Table Data ──────────────────────────────────────────────────
+                // Apply current filter
+                const printStudents = students.filter(s =>
+                    currentVehicleFilter === 'all' || s.vehicle === currentVehicleFilter
+                );
+
+                const head = [['Sr.', 'Student Name', "Father's Name", 'Class', 'Mobile', 'Vehicle', 'Address']];
+                const body = printStudents.map((s, i) => [
+                    i + 1,
+                    s.name || '-',
+                    s.fatherName || '-',
+                    s.class || '-',
+                    s.mobile || '-',
+                    s.vehicle === 'v1' ? vehicleNames.v1 : vehicleNames.v2,
+                    s.address || '-'
+                ]);
+
+                // ── AutoTable (shrink columns to fit A4 width) ──────────────────
+                pdf.autoTable({
+                    head: head,
+                    body: body,
+                    startY: 30,
+                    margin: { left: 10, right: 10 },
+                    tableWidth: 'auto',   // shrink to fit
+                    styles: {
+                        fontSize: 8,
+                        cellPadding: 2.5,
+                        overflow: 'linebreak',
+                        valign: 'middle',
+                        lineColor: [203, 213, 225],
+                        lineWidth: 0.3
+                    },
+                    headStyles: {
+                        fillColor: [99, 102, 241],
+                        textColor: 255,
+                        fontStyle: 'bold',
+                        fontSize: 8.5
+                    },
+                    alternateRowStyles: {
+                        fillColor: [248, 250, 252]
+                    },
+                    columnStyles: {
+                        0: { halign: 'center', cellWidth: 10 },   // Sr.
+                        1: { cellWidth: 35 },                      // Name
+                        2: { cellWidth: 35 },                      // Father
+                        3: { halign: 'center', cellWidth: 20 },   // Class
+                        4: { halign: 'center', cellWidth: 24 },   // Mobile
+                        5: { halign: 'center', cellWidth: 22 },   // Vehicle
+                        6: { cellWidth: 'auto' }                   // Address (fills remaining)
+                    },
+                    didDrawPage: function (data) {
+                        // Footer on each page
+                        const pageCount = pdf.internal.getNumberOfPages();
+                        pdf.setFontSize(7);
+                        pdf.setTextColor(148, 163, 184);
+                        pdf.text(
+                            `Page ${data.pageNumber} of ${pageCount}   |   transport_students`,
+                            105,
+                            pdf.internal.pageSize.getHeight() - 5,
+                            { align: 'center' }
+                        );
+                        pdf.setTextColor(0);
+                    }
+                });
+
+                pdf.save(`Transport_Student_List_${vFilterLabel.replace(/\s+/g,'_')}.pdf`);
+
+            } catch (err) {
+                console.error('downloadStudentListPDF error:', err);
+                showCustomDialog("त्रुटि", "PDF डाउनलोड विफल।", "error");
+            } finally {
+                btn.innerHTML = origHtml;
+                btn.disabled = false;
             }
         }
 

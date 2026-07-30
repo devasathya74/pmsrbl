@@ -135,7 +135,10 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.1/fireba
 
     // ===== UTILS =====
     function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 7) }
-    function nextSn() { return _students.length ? Math.max(..._students.map(x => x.serial || 0)) + 1 : 1 }
+    function nextSn() {
+      const serials = _students.map(x => (typeof x.serial === 'number' && !isNaN(x.serial) && x.serial > 0 ? x.serial : 0));
+      return serials.length ? Math.max(0, ...serials) + 1 : 1;
+    }
     function calcFee(st) {
       const base = FEE_CHART[st.cls] || 0;
       const bus = st.bus ? BUS_FEE : 0;
@@ -328,11 +331,12 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.1/fireba
         const normSCls = normalizeClassName(s.cls || '');
         const mq = !q || s.name.toLowerCase().includes(q) || (s.pen || '').toLowerCase().includes(q) || normSCls.toLowerCase().includes(q) || (s.cls || '').toLowerCase().includes(q) || (s.father || '').toLowerCase().includes(q);
         return mq && (!cls || normSCls === normFilterCls || s.cls === cls) && (!bus || (bus === 'yes' ? s.bus : !s.bus));
-      }).sort((a, b) => a.serial - b.serial);
-      document.getElementById('studentsBody').innerHTML = filtered.map(s => {
+      }).sort((a, b) => (Number(a.serial) || 0) - (Number(b.serial) || 0));
+      document.getElementById('studentsBody').innerHTML = filtered.map((s, idx) => {
         const f = calcFee(s);
+        const srVal = typeof s.serial === 'number' && s.serial > 0 ? s.serial : (idx + 1);
         return '<tr>' +
-          '<td style="text-align:center"><b>' + s.serial + '</b></td>' +
+          '<td style="text-align:center"><input type="number" value="' + srVal + '" min="1" max="' + students.length + '" style="width:48px;text-align:center;font-weight:bold;padding:3px;border:1px solid #cbd5e1;border-radius:6px;outline:none;" onkeydown="if(event.key===\'Enter\'){this.blur();}" onchange="changeStudentSr(\'' + s.id + '\', this.value)" title="Sr. No. edit करें और Enter दबाएं" /></td>' +
           '<td>' +
           '<div style="font-size:1.1em;font-weight:700;color:#000;margin-bottom:4px;">' + s.name + '</div>' +
           '<div style="font-family:monospace;font-size:0.85rem;color:#555;">PEN: ' + (s.pen || '-') + ' | DOB: ' + (s.dob ? new Date(s.dob).toLocaleDateString('en-IN') : '-') + '</div>' +
@@ -369,6 +373,33 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.1/fireba
           '<button class="btn btn-sm btn-success" style="grid-column:1/-1;" onclick="openGatePassModal(\'' + s.id + '\')">Gate Pass</button>' +
           '</div></td></tr>';
       }).join('') || '<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:22px">No students found.</td></tr>';
+    }
+
+    async function changeStudentSr(id, newSrStr) {
+      const newSr = parseInt(newSrStr, 10);
+      if (isNaN(newSr) || newSr < 1) { renderStudents(); return; }
+      const sIdx = _students.findIndex(s => s.id === id);
+      if (sIdx === -1) return;
+      if (_students[sIdx].serial === newSr) return;
+
+      const targetIdx = Math.max(0, Math.min(_students.length - 1, newSr - 1));
+      const [moved] = _students.splice(sIdx, 1);
+      _students.splice(targetIdx, 0, moved);
+
+      _students.forEach((s, idx) => { s.serial = idx + 1; });
+      renderStudents();
+
+      try {
+        const batch = writeBatch(db);
+        _students.forEach((s) => {
+          batch.set(doc(db, 'students', s.id), { serial: s.serial }, { merge: true });
+        });
+        await batch.commit();
+        toast('Student Sr. No. updated!');
+      } catch (err) {
+        console.error('Error updating serial:', err);
+        toast('Error updating Sr. No.: ' + err.message, 'error');
+      }
     }
 
     async function saveField(id, field, val) {
@@ -1628,6 +1659,38 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.1/fireba
         const now = Date.now();
 
         _students = allStu.filter(s => !s.deleted);
+
+        // Sort students by existing numeric serial, fallback to creation time
+        _students.sort((a, b) => {
+          const sA = typeof a.serial === 'number' && !isNaN(a.serial) && a.serial > 0 ? a.serial : Infinity;
+          const sB = typeof b.serial === 'number' && !isNaN(b.serial) && b.serial > 0 ? b.serial : Infinity;
+          if (sA !== sB) return sA - sB;
+          return (a.createdAt || 0) - (b.createdAt || 0);
+        });
+
+        // Auto-fix missing, invalid, or duplicate serial numbers
+        const usedSerials = new Set();
+        let needsFix = false;
+        for (let s of _students) {
+          if (typeof s.serial !== 'number' || isNaN(s.serial) || s.serial <= 0 || usedSerials.has(s.serial)) {
+            needsFix = true;
+            break;
+          }
+          usedSerials.add(s.serial);
+        }
+
+        if (needsFix && _students.length > 0) {
+          const batch = writeBatch(db);
+          _students.forEach((s, idx) => {
+            const correctSn = idx + 1;
+            if (s.serial !== correctSn) {
+              s.serial = correctSn;
+              batch.set(doc(db, 'students', s.id), { serial: correctSn }, { merge: true });
+            }
+          });
+          batch.commit().catch(e => console.error('Auto serial update error:', e));
+        }
+
         _fees = allFees.filter(f => _students.some(s => s.id === f.studentId));
         _trashStudents = allStu.filter(s => s.deleted && (now - s.deletedAt) <= thirtyDays);
 

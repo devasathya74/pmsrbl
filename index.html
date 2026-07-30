@@ -9,7 +9,6 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;600;700&display=swap"
     rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <link rel="icon" href="data:," />
   <script>
     if ('serviceWorker' in navigator) {
@@ -68,22 +67,23 @@
             <div class="fb-dot" id="fbDot"></div><span id="fbStatus">Connecting...</span>
           </div>
           <button class="btn btn-sm btn-danger" onclick="logout()" id="logoutBtn"
-            style="padding:4px 10px;font-size:.7rem"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+            style="padding:4px 10px;font-size:.7rem">Logout</button>
         </div>
       </div>
     </header>
 
     <nav class="nav-tabs" role="tablist">
-      <button class="active" onclick="showPanel('dashboard')" id="tab-dashboard"><i class="fa-solid fa-chart-line"></i> Dashboard</button>
-      <button onclick="showPanel('students')" id="tab-students"><i class="fa-solid fa-users"></i> Students</button>
-      <button onclick="showPanel('add-student')" id="tab-add-student"><i class="fa-solid fa-user-plus"></i> Add Student</button>
-      <button onclick="showPanel('fee-collect')" id="tab-fee-collect"><i class="fa-solid fa-hand-holding-dollar"></i> Mark Fee</button>
-      <button onclick="showPanel('fee-history')" id="tab-fee-history"><i class="fa-solid fa-receipt"></i> Fee History</button>
-      <button onclick="showPanel('print')" id="tab-print"><i class="fa-solid fa-print"></i> View / Print</button>
-      <button onclick="showPanel('fee-chart')" id="tab-fee-chart"><i class="fa-solid fa-table-list"></i> Fee Chart</button>
-      <button onclick="showPanel('gate-pass')" id="tab-gate-pass"><i class="fa-solid fa-id-card"></i> Gate Pass</button>
-      <button onclick="window.location.href='attendance.html'" id="tab-attendance"><i class="fa-solid fa-bus"></i> Transport / Attendance</button>
-      <button onclick="showPanel('trash')" id="tab-trash"><i class="fa-solid fa-trash-can"></i> Trash (<span
+      <button class="active" onclick="showPanel('dashboard')" id="tab-dashboard">&#128202; Dashboard</button>
+      <button onclick="showPanel('students')" id="tab-students">&#128104; Students</button>
+      <button onclick="showPanel('add-student')" id="tab-add-student">&#10133; Add Student</button>
+      <button onclick="showPanel('fee-collect')" id="tab-fee-collect">&#128176; Mark Fee</button>
+      <button onclick="showPanel('fee-history')" id="tab-fee-history">&#128220; Fee History</button>
+      <button onclick="showPanel('print')" id="tab-print">&#128424; View / Print</button>
+      <button onclick="showPanel('fee-chart')" id="tab-fee-chart">&#128203; Fee Chart</button>
+      <button onclick="showPanel('gate-pass')" id="tab-gate-pass">&#128663; Gate Pass</button>
+      <button onclick="window.location.href='attendance.html'" id="tab-attendance">&#128652; Transport /
+        Attendance</button>
+      <button onclick="showPanel('trash')" id="tab-trash">&#128465; Recycle Bin (<span
           id="trashCountNav">0</span>)</button>
     </nav>
 
@@ -149,13 +149,13 @@
           <table>
             <thead>
               <tr>
-                <th>Sr.</th>
-                <th>Sr.</th>
+                <th style="width:50px;text-align:center">Sr.</th>
                 <th>Student Details</th>
                 <th>Family & Contact</th>
                 <th>Class & Transport</th>
                 <th>Fee Status</th>
                 <th>Remark & Card</th>
+                <th class="no-print" style="text-align:center">Actions</th>
               </tr>
             </thead>
             <tbody id="studentsBody"></tbody>

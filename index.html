@@ -391,10 +391,42 @@
             <option value="asc">Name (A-Z)</option>
             <option value="desc">Name (Z-A)</option>
           </select>
+          <button class="btn btn-outline" id="toggleFieldsBtn" onclick="togglePrintFieldsBox()" style="border-color:#3b82f6;color:#1d4ed8;font-weight:600">&#9745; Print Columns</button>
           <button class="btn btn-outline" onclick="resetPrintFilters()">&#8634; Reset Filters</button>
           <button class="btn btn-primary" onclick="downloadPDF('portrait')">&#11015; Portrait PDF</button>
           <button class="btn btn-primary" onclick="downloadPDF('landscape')">&#11015; Landscape PDF</button>
           <button class="btn btn-gold" onclick="exportCSV()">&#11015; Export CSV</button>
+        </div>
+
+        <!-- CUSTOM PRINT FIELDS SELECTION PANEL -->
+        <div id="printFieldsBox" class="print-fields-box no-print">
+          <div class="pr-field-header">
+            <div class="pr-field-title">&#9745; Choose Print Fields / Columns (PDF में प्रिंट करने के लिए फ़ील्ड्स चुनें)</div>
+            <div class="pr-field-actions">
+              <button class="btn btn-sm btn-outline" onclick="setPrintFields('all')">Select All (सभी)</button>
+              <button class="btn btn-sm btn-outline" onclick="setPrintFields('default')">Default (डिफ़ॉल्ट)</button>
+              <button class="btn btn-sm btn-outline" onclick="setPrintFields('none')">Clear All (साफ़)</button>
+            </div>
+          </div>
+          <div class="pr-field-grid">
+            <label class="pr-field-item"><input type="checkbox" class="pr-field-cb" value="sr" checked onchange="renderPrint()"> Sr. No. (सीरियल)</label>
+            <label class="pr-field-item"><input type="checkbox" class="pr-field-cb" value="name" checked onchange="renderPrint()"> Student Name (नाम)</label>
+            <label class="pr-field-item"><input type="checkbox" class="pr-field-cb" value="father" checked onchange="renderPrint()"> Father Name (पिता)</label>
+            <label class="pr-field-item"><input type="checkbox" class="pr-field-cb" value="mother" onchange="renderPrint()"> Mother Name (माता)</label>
+            <label class="pr-field-item"><input type="checkbox" class="pr-field-cb" value="cls" checked onchange="renderPrint()"> Class (कक्षा)</label>
+            <label class="pr-field-item"><input type="checkbox" class="pr-field-cb" value="mobile" checked onchange="renderPrint()"> Mobile (मोबाइल)</label>
+            <label class="pr-field-item"><input type="checkbox" class="pr-field-cb" value="pen" checked onchange="renderPrint()"> PEN Number (पैन)</label>
+            <label class="pr-field-item"><input type="checkbox" class="pr-field-cb" value="dob" onchange="renderPrint()"> Date of Birth (DOB)</label>
+            <label class="pr-field-item"><input type="checkbox" class="pr-field-cb" value="address" onchange="renderPrint()"> Address (पता)</label>
+            <label class="pr-field-item"><input type="checkbox" class="pr-field-cb" value="bus" onchange="renderPrint()"> Bus Service (बस)</label>
+            <label class="pr-field-item"><input type="checkbox" class="pr-field-cb" value="fee" checked onchange="renderPrint()"> Fee (शुल्क)</label>
+            <label class="pr-field-item"><input type="checkbox" class="pr-field-cb" value="aadhar" onchange="renderPrint()"> Stu. Aadhar (आधार)</label>
+            <label class="pr-field-item"><input type="checkbox" class="pr-field-cb" value="birthCert" onchange="renderPrint()"> Birth Cert (जन्म प्रमाण)</label>
+            <label class="pr-field-item"><input type="checkbox" class="pr-field-cb" value="fatherAadhar" onchange="renderPrint()"> Father Aadhar</label>
+            <label class="pr-field-item"><input type="checkbox" class="pr-field-cb" value="motherAadhar" onchange="renderPrint()"> Mother Aadhar</label>
+            <label class="pr-field-item"><input type="checkbox" class="pr-field-cb" value="admYear" onchange="renderPrint()"> Adm Year (प्रवेश)</label>
+            <label class="pr-field-item"><input type="checkbox" class="pr-field-cb" value="remark" onchange="renderPrint()"> Remark (टिप्पणी)</label>
+          </div>
         </div>
         <div id="printArea"></div>
       </section>

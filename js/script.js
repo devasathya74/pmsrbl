@@ -1097,6 +1097,44 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.1/fireba
     }
 
     // ===== PRINT =====
+    const PRINT_FIELD_DEFS = {
+      sr: { label: 'Sr. No.', align: 'center', getVal: (s, idx) => s.serial || (idx + 1) },
+      pen: { label: 'PEN Number', align: 'left', getVal: (s) => s.pen || '-' },
+      name: { label: 'Student Name', align: 'left', getVal: (s) => '<b>' + (s.name || '-') + '</b>' },
+      father: { label: "Father's Name", align: 'left', getVal: (s) => s.father || '-' },
+      mother: { label: "Mother's Name", align: 'left', getVal: (s) => s.mother || '-' },
+      cls: { label: 'Class', align: 'center', getVal: (s) => s.cls || '-' },
+      mobile: { label: 'Mobile Number', align: 'left', getVal: (s) => s.mobile || '-' },
+      dob: { label: 'Date of Birth', align: 'center', getVal: (s) => (s.dob ? new Date(s.dob).toLocaleDateString('en-IN') : '-') },
+      address: { label: 'Address', align: 'left', getVal: (s) => s.address || '-' },
+      bus: { label: 'Bus Service', align: 'center', getVal: (s) => (s.bus ? 'YES' : 'NO') },
+      fee: { label: 'Monthly Fee', align: 'right', getVal: (s) => 'Rs.' + calcFee(s).net },
+      aadhar: { label: 'Student Aadhar', align: 'center', getVal: (s) => s.aadhar || '-' },
+      birthCert: { label: 'Birth Cert No.', align: 'left', getVal: (s) => s.birthCert || '-' },
+      fatherAadhar: { label: 'Father Aadhar', align: 'center', getVal: (s) => s.fatherAadhar || '-' },
+      motherAadhar: { label: 'Mother Aadhar', align: 'center', getVal: (s) => s.motherAadhar || '-' },
+      admYear: { label: 'Admission Year', align: 'center', getVal: (s) => s.admYear || '-' },
+      remark: { label: 'Remark', align: 'left', getVal: (s) => s.remark || '-' }
+    };
+
+    function togglePrintFieldsBox() {
+      const box = document.getElementById('printFieldsBox');
+      if (box) {
+        box.style.display = box.style.display === 'block' ? 'none' : 'block';
+      }
+    }
+
+    function setPrintFields(mode) {
+      const cbs = document.querySelectorAll('.pr-field-cb');
+      const defaults = ['sr', 'name', 'father', 'cls', 'mobile', 'pen', 'fee'];
+      cbs.forEach(cb => {
+        if (mode === 'all') cb.checked = true;
+        else if (mode === 'none') cb.checked = false;
+        else if (mode === 'default') cb.checked = defaults.includes(cb.value);
+      });
+      renderPrint();
+    }
+
     function resetPrintFilters() {
       document.getElementById('prClass').value = '';
       document.getElementById('prMonth').value = '';
@@ -1104,15 +1142,17 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.1/fireba
       if (document.getElementById('prSortName')) document.getElementById('prSortName').value = '';
       document.getElementById('prView').value = 'register';
       document.getElementById('prYear').value = new Date().getFullYear();
+      setPrintFields('default');
       renderPrint();
     }
+
     function renderPrint() {
       const view = document.getElementById('prView').value, cls = document.getElementById('prClass').value;
       const month = document.getElementById('prMonth').value, year = document.getElementById('prYear').value;
       const sortClass = document.getElementById('prSortClass')?.value;
       const sortName = document.getElementById('prSortName')?.value;
 
-      let students = [..._students].sort((a, b) => a.serial - b.serial);
+      let students = [..._students].sort((a, b) => (Number(a.serial) || 0) - (Number(b.serial) || 0));
       if (cls) {
         const normFilterCls = normalizeClassName(cls);
         students = students.filter(s => s.cls === cls || normalizeClassName(s.cls) === normFilterCls);
@@ -1139,36 +1179,29 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.1/fireba
         '<div style="text-align:center"><div style="font-family:Poppins,sans-serif;font-size:1.2rem;font-weight:800;color:#0d1b3e">POLICE MODERN SCHOOL</div>' +
         '<div style="font-size:.8rem;color:#555;font-weight:600">25th BN P.A.C., Raebareli</div></div></div>';
       if (view === 'register') {
+        const checkedCbs = Array.from(document.querySelectorAll('.pr-field-cb:checked'));
+        const checkedKeys = checkedCbs.map(cb => cb.value);
+
+        let selectedDefs = checkedKeys.map(k => ({ key: k, ...PRINT_FIELD_DEFS[k] })).filter(d => d.label);
+        if (selectedDefs.length === 0) {
+          selectedDefs = ['sr', 'name', 'father', 'cls', 'mobile', 'pen', 'fee'].map(k => ({ key: k, ...PRINT_FIELD_DEFS[k] }));
+        }
+
+        const thsHtml = selectedDefs.map(d => '<th style="text-align:' + d.align + '">' + d.label + '</th>').join('');
+
+        const rowsHtml = students.map((s, idx) => {
+          const tds = selectedDefs.map(d => {
+            const val = d.getVal ? d.getVal(s, idx) : (s[d.key] || '-');
+            return '<td style="text-align:' + d.align + '">' + val + '</td>';
+          }).join('');
+          return '<tr>' + tds + '</tr>';
+        }).join('');
+
         document.getElementById('printArea').innerHTML = '<div class="print-card">' +
-          '<div class="pr-hdr">' + hdr + '<h2>STUDENT REGISTER' + (cls ? ' â€“ Class ' + cls : '') + '</h2>' +
+          '<div class="pr-hdr">' + hdr + '<h2>STUDENT REGISTER' + (cls ? ' – Class ' + cls : '') + '</h2>' +
           '<p>Generated: ' + new Date().toLocaleString('en-IN') + ' | Total: ' + students.length + '</p></div>' +
-          '<div style="overflow-x:auto"><table class="pr-table"><thead><tr>' +
-          '<th>Sr.</th><th>Student Details</th><th>Family</th><th>Contact & Address</th><th>Docs (Aadhar/Birth)</th><th>Academic</th><th>Fee/mo</th></tr></thead><tbody>' +
-          students.map(s => {
-            const f = calcFee(s); return '<tr>' +
-              '<td style="text-align:center">' + s.serial + '</td>' +
-              '<td>' +
-              '<div style="font-weight:700;">' + s.name + '</div>' +
-              '<div style="font-size:0.75rem;color:#555;">PEN: ' + (s.pen || '-') + ' | DOB: ' + (s.dob ? new Date(s.dob).toLocaleDateString('en-IN') : '-') + '</div>' +
-              '</td>' +
-              '<td>' +
-              '<div style="font-weight:700;">' + (s.father || '-') + '</div>' +
-              '<div style="font-size:0.75rem;color:#555;">Mother: ' + (s.mother || '-') + ' | Sib: ' + getSiblingDisplay(s) + '</div>' +
-              '</td>' +
-              '<td>' +
-              '<div style="font-weight:700;">Mob: ' + (s.mobile || '-') + '</div>' +
-              '<div style="font-size:0.75rem;color:#555;white-space:normal;max-width:150px;">' + (s.address || '-') + '</div>' +
-              '</td>' +
-              '<td>' +
-              '<div style="font-size:0.75rem;color:#444;">Stu: ' + (s.aadhar || '-') + ' | Birth: ' + (s.birthCert || '-') + '</div>' +
-              '<div style="font-size:0.75rem;color:#444;">F: ' + (s.fatherAadhar || '-') + ' | M: ' + (s.motherAadhar || '-') + '</div>' +
-              '</td>' +
-              '<td style="text-align:center">' +
-              '<div style="font-weight:700;">Class: ' + (s.cls || '-') + '</div>' +
-              '<div style="font-size:0.75rem;color:#555;">Bus: ' + (s.bus ? 'YES' : 'NO') + ' | Adm: ' + (s.admYear || '-') + '</div>' +
-              '</td>' +
-              '<td style="text-align:right;font-weight:700">Rs.' + f.net + '</td></tr>';
-          }).join('') +
+          '<div style="overflow-x:auto"><table class="pr-table"><thead><tr>' + thsHtml + '</tr></thead><tbody>' +
+          rowsHtml +
           '</tbody></table></div></div>';
       } else if (view === 'monthly-register') {
         const fees = [..._fees].filter(f => String(f.year) === String(year));
@@ -1324,7 +1357,28 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.1/fireba
 
     // ===== EXPORT CSV =====
     function exportCSV() {
-      const students = [..._students].sort((a, b) => a.serial - b.serial), fees = [..._fees];
+      const students = [..._students].sort((a, b) => (Number(a.serial) || 0) - (Number(b.serial) || 0)), fees = [..._fees];
+      const checkedCbs = Array.from(document.querySelectorAll('.pr-field-cb:checked'));
+      const checkedKeys = checkedCbs.map(cb => cb.value);
+
+      if (checkedKeys.length > 0 && checkedKeys.length < 17) {
+        const selectedDefs = checkedKeys.map(k => ({ key: k, ...PRINT_FIELD_DEFS[k] })).filter(d => d.label);
+        const hdr = selectedDefs.map(d => d.label);
+        const rows = students.map((s, idx) => {
+          return selectedDefs.map(d => {
+            let val = d.getVal ? d.getVal(s, idx) : (s[d.key] || '');
+            val = String(val).replace(/<[^>]*>?/gm, '');
+            return '"' + val.replace(/"/g, '""') + '"';
+          }).join(',');
+        });
+        const csv = [hdr.join(','), ...rows].join('\r\n');
+        const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a'); a.href = url; a.download = 'custom_students_' + new Date().toISOString().slice(0, 10) + '.csv'; a.click();
+        URL.revokeObjectURL(url); toast('Custom CSV exported!');
+        return;
+      }
+
       const hdr = ['Sr', 'PEN', 'Name', 'Father', 'Mother', 'DOB', 'Class', 'Address', 'Mobile', 'Stu.Aadhar', 'Birth Cert', 'Father Aadhar', 'Mother Aadhar', 'Bus', 'Fee/mo', 'Adm.Yr', 'Tuition Months', 'Total Tuition', 'Bus Months', 'Total Bus', 'Other Months', 'Total Other', 'Admission Paid', 'Total Admission'];
       const rows = students.map(s => {
         const f = calcFee(s), sf = fees.filter(x => x.studentId === s.id);
@@ -1729,6 +1783,7 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.1/fireba
     window.toggleTuition = toggleTuition; window.saveTuition = saveTuition; window.unmarkTuition = unmarkTuition; window.editTuition = editTuition;
     window.toggleBus = toggleBus; window.saveBus = saveBus; window.unmarkBus = unmarkBus; window.editBus = editBus;
     window.renderPrint = renderPrint; window.downloadPDF = downloadPDF; window.fmtAadhar = fmtAadhar; window.busToggle = busToggle;
+    window.togglePrintFieldsBox = togglePrintFieldsBox; window.setPrintFields = setPrintFields;
     window.updateFeePreview = updateFeePreview; window.resetForm = resetForm; window.clearErr = clearErr;
     window.logout = logout; window.checkSiblingDisc = checkSiblingDisc; window.renderSiblingList = renderSiblingList;
     window.resetPrintFilters = resetPrintFilters; window.saveField = saveField; window.saveRemark = (id, val) => saveField(id, 'remark', val);

@@ -363,12 +363,13 @@
                                     <th>Mobile</th>
                                     <th>Vehicle</th>
                                     <th>Address</th>
+                                    <th>Specific Time</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody id="student-table-body">
                                 <tr>
-                                    <td colspan="8" style="text-align: center; padding: 20px;">Loading...</td>
+                                    <td colspan="9" style="text-align: center; padding: 20px;">Loading...</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -429,9 +430,14 @@
                             <option value="v2" id="form-v2-label">Vehicle 2</option>
                         </select>
                     </div>
-                    <div class="form-group" style="grid-column: span 2;">
+                    <div class="form-group">
                         <label>Address</label>
                         <input type="text" id="form-address"
+                            style="width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 4px;">
+                    </div>
+                    <div class="form-group">
+                        <label>Specific / Stop Time</label>
+                        <input type="text" id="form-specific-time" placeholder="उदा. 07:30 AM या 7:30 AM / 2:00 PM"
                             style="width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 4px;">
                     </div>
                 </div>
@@ -633,6 +639,7 @@
                                 class: d.class || '',
                                 mobile: d.mobile || '',
                                 address: d.address || '',
+                                specificTime: d.specificTime || d.stopTime || d.pickupTime || '',
                                 vehicle: d.vehicle || 'v1',
                                 sortOrder: typeof d.sortOrder === 'number' ? d.sortOrder : 9999,
                                 sourceId: d.sourceId || null,
@@ -672,6 +679,7 @@
                         class: d.cls || '',
                         mobile: d.mobile || '',
                         address: d.address || '',
+                        specificTime: d.specificTime || d.stopTime || d.pickupTime || '',
                         vehicle: d.vehicle || 'v1',
                         sortOrder: idx++,
                         sourceId: docSnap.id,   // link to original
@@ -709,6 +717,7 @@
                     class: studentData.class || '',
                     mobile: studentData.mobile || '',
                     address: studentData.address || '',
+                    specificTime: studentData.specificTime || '',
                     vehicle: studentData.vehicle,
                     sortOrder: typeof sortOrder === 'number' ? sortOrder : 9999,
                     sourceId: studentData.sourceId || null,
@@ -943,6 +952,7 @@
                         class: d.cls || '',
                         mobile: d.mobile || '',
                         address: d.address || '',
+                        specificTime: d.specificTime || d.stopTime || d.pickupTime || '',
                         vehicle: d.vehicle || 'v1'
                     };
                     if (!alreadyImported) {
@@ -1012,6 +1022,7 @@
                         class: s.class || '',
                         mobile: s.mobile || '',
                         address: s.address || '',
+                        specificTime: s.specificTime || '',
                         vehicle: s.vehicle,
                         sortOrder: maxOrder + 1 + i,
                         sourceId: s.mainDocId,  // unique link — prevents re-import
@@ -1039,11 +1050,11 @@
             updateVehicleLabelsUI();
 
             students = [
-                { id: "1", name: "राहुल शर्मा", fatherName: "श्री विजय शर्मा", class: "कक्षा 8", address: "सिविल लाइंस, बाराबंकी", vehicle: "v1" },
-                { id: "2", name: "अमित वर्मा", fatherName: "श्री रमेश वर्मा", class: "कक्षा 5", address: "पटेल चौराहा, बाराबंकी", vehicle: "v1" },
-                { id: "3", name: "प्रिया गुप्ता", fatherName: "श्री अरुण गुप्ता", class: "कक्षा 10", address: "लखपेड़ाबाग, बाराबंकी", vehicle: "v2" },
-                { id: "4", name: "किरण यादव", fatherName: "श्री लालजी यादव", class: "कक्षा 6", address: "मुंशीगंज, बाराबंकी", vehicle: "v2" },
-                { id: "5", name: "सुमित दीक्षित", fatherName: "श्री आलोक दीक्षित", class: "कक्षा 12", address: "छाया चौराहा, बाराबंकी", vehicle: "v1" }
+                { id: "1", name: "राहुल शर्मा", fatherName: "श्री विजय शर्मा", class: "कक्षा 8", address: "सिविल लाइंस, बाराबंकी", specificTime: "07:30 AM", vehicle: "v1" },
+                { id: "2", name: "अमित वर्मा", fatherName: "श्री रमेश वर्मा", class: "कक्षा 5", address: "पटेल चौराहा, बाराबंकी", specificTime: "07:40 AM", vehicle: "v1" },
+                { id: "3", name: "प्रिया गुप्ता", fatherName: "श्री अरुण गुप्ता", class: "कक्षा 10", address: "लखपेड़ाबाग, बाराबंकी", specificTime: "07:15 AM", vehicle: "v2" },
+                { id: "4", name: "किरण यादव", fatherName: "श्री लालजी यादव", class: "कक्षा 6", address: "मुंशीगंज, बाराबंकी", specificTime: "07:25 AM", vehicle: "v2" },
+                { id: "5", name: "सुमित दीक्षित", fatherName: "श्री आलोक दीक्षित", class: "कक्षा 12", address: "छाया चौराहा, बाराबंकी", specificTime: "07:50 AM", vehicle: "v1" }
             ];
             calculateStats();
             applyFiltersAndRender();
@@ -1184,7 +1195,7 @@
             if (studentList.length === 0) {
                 tableBody.innerHTML = `
                     <tr>
-                        <td colspan="8" class="px-4 py-8 text-center text-slate-400">
+                        <td colspan="9" class="px-4 py-8 text-center text-slate-400">
                             <i class="fa-solid fa-users-slash text-2xl mb-2 text-slate-300"></i>
                             <p>कोई छात्र नहीं मिला। कृपया फ़िल्टर बदलें या नया छात्र जोड़ें।</p>
                         </td>
@@ -1238,6 +1249,9 @@
                             </span>
                         </td>
                         <td class="px-4 py-3.5 text-slate-500 max-w-xs truncate" title="${student.address || ''}">${student.address || '<span class="text-slate-300">-</span>'}</td>
+                        <td class="px-4 py-3.5">
+                            ${student.specificTime ? `<span class="px-2.5 py-1 border rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-700 border-emerald-200 flex items-center gap-1 w-fit"><i class="fa-regular fa-clock text-[10px]"></i> ${student.specificTime}</span>` : '<span class="text-slate-300">-</span>'}
+                        </td>
                         <td class="px-4 py-3.5 text-center">
                             <div class="flex justify-center items-center gap-1.5">
                                 <button onclick="openEditStudentModal('${student.id}')" class="p-1.5 hover:bg-indigo-50 text-indigo-600 hover:text-indigo-800 rounded-lg transition" title="विवरण बदलें">
@@ -1304,6 +1318,7 @@
             document.getElementById('modal-title').innerText = "नया छात्र जोड़े";
             document.getElementById('form-submit-text').innerText = "सुरक्षित करें";
             document.getElementById('student-id-field').value = "";
+            document.getElementById('form-specific-time').value = "";
             document.getElementById('student-form').reset();
 
             const modal = document.getElementById('student-modal');
@@ -1323,6 +1338,7 @@
             document.getElementById('form-mobile').value = student.mobile || '';
             document.getElementById('form-vehicle').value = student.vehicle || 'v1';
             document.getElementById('form-address').value = student.address || '';
+            document.getElementById('form-specific-time').value = student.specificTime || '';
             // Preserve sortOrder and sourceId during edit
             document.getElementById('student-id-field').dataset.sortOrder = student.sortOrder;
             document.getElementById('student-id-field').dataset.sourceId = student.sourceId || '';
@@ -1344,6 +1360,7 @@
             const mobile = document.getElementById('form-mobile').value.trim();
             const vehicle = document.getElementById('form-vehicle').value;
             const address = document.getElementById('form-address').value.trim();
+            const specificTime = document.getElementById('form-specific-time').value.trim();
 
             if (!name || !fatherName) {
                 showCustomDialog("चेतावनी", "कृपया छात्र का नाम और पिता का नाम अवश्य भरें।", "warning");
@@ -1357,7 +1374,7 @@
                 id: id || undefined,
                 name, fatherName,
                 class: className,
-                mobile, vehicle, address,
+                mobile, vehicle, address, specificTime,
                 sortOrder: existingSortOrder,
                 sourceId: existingSourceId
             };
@@ -1420,11 +1437,11 @@
 
             document.getElementById('confirm-sample-btn').onclick = async () => {
                 const sampleStudents = [
-                    { name: "अभिषेक सिंह", fatherName: "श्री वीर प्रताप सिंह", class: "कक्षा 9", address: "नगरकोट, बाराबंकी", vehicle: "v1" },
-                    { name: "काव्या मिश्रा", fatherName: "श्री संतोष मिश्रा", class: "कक्षा 4", address: "वसंत कुंज, बाराबंकी", vehicle: "v2" },
-                    { name: "रोहन रस्तोगी", fatherName: "श्री प्रकाश रस्तोगी", class: "कक्षा 7", address: "नेहरू रोड, बाराबंकी", vehicle: "v1" },
-                    { name: "दीक्षा सिंह", fatherName: "श्री राज बहादुर सिंह", class: "कक्षा 12", address: "सदर बाजार, बाराबंकी", vehicle: "v2" },
-                    { name: "मनीष शुक्ला", fatherName: "श्री ओम प्रकाश शुक्ला", class: "कक्षा 11", address: "गांधी चौक, बाराबंकी", vehicle: "v1" }
+                    { name: "अभिषेक सिंह", fatherName: "श्री वीर प्रताप सिंह", class: "कक्षा 9", address: "नगरकोट, बाराबंकी", specificTime: "07:30 AM", vehicle: "v1" },
+                    { name: "काव्या मिश्रा", fatherName: "श्री संतोष मिश्रा", class: "कक्षा 4", address: "वसंत कुंज, बाराबंकी", specificTime: "07:45 AM", vehicle: "v2" },
+                    { name: "रोहन रस्तोगी", fatherName: "श्री प्रकाश रस्तोगी", class: "कक्षा 7", address: "नेहरू रोड, बाराबंकी", specificTime: "07:50 AM", vehicle: "v1" },
+                    { name: "दीक्षा सिंह", fatherName: "श्री राज बहादुर सिंह", class: "कक्षा 12", address: "सदर बाजार, बाराबंकी", specificTime: "07:20 AM", vehicle: "v2" },
+                    { name: "मनीष शुक्ला", fatherName: "श्री ओम प्रकाश शुक्ला", class: "कक्षा 11", address: "गांधी चौक, बाराबंकी", specificTime: "07:40 AM", vehicle: "v1" }
                 ];
 
                 for (const student of sampleStudents) {
@@ -1512,7 +1529,7 @@
                         const vName = student.vehicle === 'v1' ? vehicleNames.v1 : vehicleNames.v2;
                         html += '<tr style="height: 28px;">';
                         html += '<td style="border: 1px solid black; padding: 2px 4px; text-align: center;">' + globalIndex + '</td>';
-                        html += '<td style="border: 1px solid black; padding: 2px 4px;"><div style="font-weight:bold; font-size:11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">' + student.name + '</div><div style="font-size:8px; color: #475569; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Father: ' + student.fatherName + '</div></td>';
+                        html += '<td style="border: 1px solid black; padding: 2px 4px;"><div style="font-weight:bold; font-size:11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">' + student.name + '</div><div style="font-size:8px; color: #475569; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Father: ' + student.fatherName + (student.specificTime ? ' | Time: ' + student.specificTime : '') + '</div></td>';
                         html += '<td style="border: 1px solid black; padding: 2px 4px; text-align: center;">' + (student.class || '-') + '</td>';
                         html += '<td style="border: 1px solid black; padding: 2px 4px; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">' + vName + '</td>';
                         for (let i = startDay; i <= endDay; i++) {
@@ -1701,7 +1718,7 @@
                     currentVehicleFilter === 'all' || s.vehicle === currentVehicleFilter
                 );
 
-                const head = [['Sr.', 'Student Name', "Father's Name", 'Class', 'Mobile', 'Vehicle', 'Address']];
+                const head = [['Sr.', 'Student Name', "Father's Name", 'Class', 'Mobile', 'Vehicle', 'Address', 'Specific Time']];
                 const body = printStudents.map((s, i) => [
                     i + 1,
                     s.name || '-',
@@ -1709,7 +1726,8 @@
                     s.class || '-',
                     s.mobile || '-',
                     s.vehicle === 'v1' ? vehicleNames.v1 : vehicleNames.v2,
-                    s.address || '-'
+                    s.address || '-',
+                    s.specificTime || '-'
                 ]);
 
                 // ── AutoTable (shrink columns to fit A4 width) ──────────────────
@@ -1737,13 +1755,14 @@
                         fillColor: [248, 250, 252]
                     },
                     columnStyles: {
-                        0: { halign: 'center', cellWidth: 10 },   // Sr.
-                        1: { cellWidth: 35 },                      // Name
-                        2: { cellWidth: 35 },                      // Father
-                        3: { halign: 'center', cellWidth: 20 },   // Class
-                        4: { halign: 'center', cellWidth: 24 },   // Mobile
-                        5: { halign: 'center', cellWidth: 22 },   // Vehicle
-                        6: { cellWidth: 'auto' }                   // Address (fills remaining)
+                        0: { halign: 'center', cellWidth: 8 },   // Sr.
+                        1: { cellWidth: 32 },                      // Name
+                        2: { cellWidth: 30 },                      // Father
+                        3: { halign: 'center', cellWidth: 16 },   // Class
+                        4: { halign: 'center', cellWidth: 22 },   // Mobile
+                        5: { halign: 'center', cellWidth: 18 },   // Vehicle
+                        6: { cellWidth: 'auto' },                  // Address (fills remaining)
+                        7: { halign: 'center', cellWidth: 22 }    // Specific Time
                     },
                     didDrawPage: function (data) {
                         // Footer on each page

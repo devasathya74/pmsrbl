@@ -4,19 +4,958 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>छात्र वाहन उपस्थिति पत्रक | Transport Attendance Manager</title>
+    <title>छात्र वाहन प्रबंधन एवं उपस्थिति | Transport Attendance Manager</title>
     <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts: Inter & Noto Sans Devanagari -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Fonts: Plus Jakarta Sans, Inter & Noto Sans Devanagari -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700;800&display=swap"
         rel="stylesheet">
 
-    <link rel="stylesheet" href="css/style.css" />
+    <!-- External PDF Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+
     <style>
-        /* Specific styles for printing A4 Landscape */
+        :root {
+            --primary: #4f46e5;
+            --primary-light: #eef2ff;
+            --primary-dark: #3730a3;
+            --secondary: #0284c7;
+            --accent: #f59e0b;
+            --accent-light: #fef3c7;
+            --success: #10b981;
+            --success-light: #d1fae5;
+            --danger: #ef4444;
+            --danger-light: #fee2e2;
+            --slate-50: #f8fafc;
+            --slate-100: #f1f5f9;
+            --slate-200: #e2e8f0;
+            --slate-300: #cbd5e1;
+            --slate-400: #94a3b8;
+            --slate-500: #64748b;
+            --slate-600: #475569;
+            --slate-700: #334155;
+            --slate-800: #1e293b;
+            --slate-900: #0f172a;
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.08), 0 4px 6px -4px rgb(0 0 0 / 0.04);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.04);
+            --glass-bg: rgba(255, 255, 255, 0.88);
+            --glass-border: rgba(226, 232, 240, 0.8);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', 'Noto Sans Devanagari', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            background: #f8fafc;
+            color: var(--slate-800);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* ─── Top App Header ─────────────────────────────────────────────── */
+        .app-header {
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #312e81 100%);
+            color: #ffffff;
+            padding: 18px 28px;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            box-shadow: 0 4px 20px rgba(15, 23, 42, 0.25);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .header-container {
+            max-width: 1560px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .brand-section {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .school-logo-wrap {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.35);
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .school-logo-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .brand-text h1 {
+            font-size: 1.25rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #ffffff;
+        }
+
+        .brand-text p {
+            font-size: 0.8rem;
+            color: #cbd5e1;
+            font-weight: 500;
+            margin-top: 2px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .nav-pill-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            cursor: pointer;
+            backdrop-filter: blur(8px);
+            transition: all 0.2s ease;
+        }
+
+        .nav-pill-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-1px);
+        }
+
+        .nav-pill-btn.active {
+            background: #ffffff;
+            color: #1e1b4b;
+            font-weight: 700;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .session-badge {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(217, 119, 6, 0.3));
+            border: 1px solid rgba(245, 158, 11, 0.5);
+            color: #fde68a;
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.03em;
+        }
+
+        /* ─── Main Workspace Layout ───────────────────────────────────────── */
+        .workspace {
+            max-width: 1560px;
+            margin: 24px auto;
+            padding: 0 24px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        /* ─── Hero Stat Cards Grid ────────────────────────────────────────── */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+        }
+
+        .stat-card {
+            background: #ffffff;
+            border-radius: var(--radius-lg);
+            padding: 18px 20px;
+            border: 1px solid var(--slate-200);
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--slate-300);
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+        }
+
+        .stat-card.c-indigo::before { background: linear-gradient(90deg, #6366f1, #4f46e5); }
+        .stat-card.c-amber::before { background: linear-gradient(90deg, #f59e0b, #d97706); }
+        .stat-card.c-blue::before { background: linear-gradient(90deg, #0284c7, #2563eb); }
+        .stat-card.c-emerald::before { background: linear-gradient(90deg, #10b981, #059669); }
+
+        .stat-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .stat-title {
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--slate-500);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .stat-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+        }
+
+        .stat-body {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+        }
+
+        .stat-value {
+            font-size: 1.85rem;
+            font-weight: 800;
+            color: var(--slate-900);
+            line-height: 1;
+        }
+
+        .stat-subtext {
+            font-size: 0.78rem;
+            color: var(--slate-500);
+            font-weight: 500;
+            margin-top: 6px;
+        }
+
+        .stat-chips {
+            display: flex;
+            gap: 6px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+
+        .stat-chip {
+            font-size: 0.74rem;
+            font-weight: 600;
+            padding: 3px 9px;
+            border-radius: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* ─── Control Toolbar & Quick Filters ────────────────────────────── */
+        .toolbar-card {
+            background: #ffffff;
+            border-radius: var(--radius-lg);
+            padding: 16px 20px;
+            border: 1px solid var(--slate-200);
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .toolbar-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .search-box-wrap {
+            position: relative;
+            flex: 1;
+            min-width: 260px;
+            max-width: 480px;
+        }
+
+        .search-box-wrap i {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--slate-400);
+            font-size: 14px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 10px 14px 10px 38px;
+            background: var(--slate-50);
+            border: 1px solid var(--slate-200);
+            border-radius: var(--radius-md);
+            font-size: 0.85rem;
+            color: var(--slate-800);
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        .search-input:focus {
+            background: #ffffff;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
+        }
+
+        .btn-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 9px 16px;
+            border-radius: var(--radius-md);
+            font-size: 0.82rem;
+            font-weight: 600;
+            border: 1px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            text-decoration: none;
+            line-height: 1.2;
+            white-space: nowrap;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%);
+            color: #ffffff;
+            box-shadow: 0 2px 8px rgba(79, 70, 229, 0.28);
+        }
+        .btn-primary:hover {
+            box-shadow: 0 4px 14px rgba(79, 70, 229, 0.4);
+            background: linear-gradient(135deg, #4338ca 0%, #3730a3 100%);
+        }
+
+        .btn-amber {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: #ffffff;
+            box-shadow: 0 2px 8px rgba(245, 158, 11, 0.28);
+        }
+        .btn-amber:hover {
+            box-shadow: 0 4px 14px rgba(245, 158, 11, 0.4);
+        }
+
+        .btn-outline {
+            background: #ffffff;
+            color: var(--slate-700);
+            border-color: var(--slate-200);
+        }
+        .btn-outline:hover {
+            background: var(--slate-50);
+            border-color: var(--slate-300);
+            color: var(--slate-900);
+        }
+
+        .btn-danger-outline {
+            background: #ffffff;
+            color: var(--danger);
+            border-color: #fecaca;
+        }
+        .btn-danger-outline:hover {
+            background: var(--danger-light);
+            border-color: var(--danger);
+        }
+
+        .btn-violet {
+            background: #ffffff;
+            color: #7c3aed;
+            border-color: #ddd6fe;
+        }
+        .btn-violet:hover {
+            background: #f5f3ff;
+            border-color: #c4b5fd;
+        }
+
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 0.76rem;
+            border-radius: var(--radius-sm);
+        }
+
+        /* Filter Pills Row */
+        .filter-ribbon {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+            padding-top: 12px;
+            border-top: 1px solid var(--slate-100);
+        }
+
+        .segmented-filters {
+            display: flex;
+            align-items: center;
+            background: var(--slate-100);
+            padding: 4px;
+            border-radius: var(--radius-md);
+            gap: 2px;
+            flex-wrap: wrap;
+        }
+
+        .seg-btn {
+            background: transparent;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--slate-600);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .seg-btn:hover {
+            color: var(--slate-900);
+        }
+
+        .seg-btn.active {
+            background: #ffffff;
+            color: var(--primary);
+            box-shadow: var(--shadow-sm);
+            font-weight: 700;
+        }
+
+        .filter-select {
+            padding: 7px 12px;
+            background: var(--slate-50);
+            border: 1px solid var(--slate-200);
+            border-radius: var(--radius-md);
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--slate-700);
+            outline: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .filter-select:focus {
+            border-color: var(--primary);
+            background: #ffffff;
+        }
+
+        /* ─── Main Content Tabs ──────────────────────────────────────────── */
+        .view-tabs {
+            display: flex;
+            gap: 10px;
+            border-bottom: 2px solid var(--slate-200);
+            padding-bottom: 0;
+            margin-bottom: -4px;
+        }
+
+        .view-tab-btn {
+            background: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            padding: 12px 20px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--slate-500);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+            position: relative;
+            top: 2px;
+        }
+
+        .view-tab-btn:hover {
+            color: var(--slate-800);
+        }
+
+        .view-tab-btn.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        /* ─── Table Container & Card ─────────────────────────────────────── */
+        .table-card {
+            background: #ffffff;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--slate-200);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+        }
+
+        .table-card-header {
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #ffffff;
+            border-bottom: 1px solid var(--slate-100);
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .table-title {
+            font-size: 0.95rem;
+            font-weight: 800;
+            color: var(--slate-900);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .count-pill {
+            background: var(--slate-100);
+            color: var(--slate-700);
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.76rem;
+            font-weight: 700;
+        }
+
+        .tbl-responsive {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        table.modern-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            font-size: 0.83rem;
+            text-align: left;
+        }
+
+        table.modern-table th {
+            background: var(--slate-50);
+            color: var(--slate-600);
+            font-weight: 700;
+            font-size: 0.74rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--slate-200);
+            white-space: nowrap;
+        }
+
+        table.modern-table td {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--slate-100);
+            color: var(--slate-700);
+            vertical-align: middle;
+            transition: background-color 0.15s ease;
+        }
+
+        table.modern-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        table.modern-table tbody tr:hover td {
+            background-color: #f8fafc;
+        }
+
+        /* Drag & Drop row hover */
+        tr.drag-over td {
+            background: #e0e7ff !important;
+            border-top: 2px solid var(--primary);
+        }
+
+        tr[draggable="true"] {
+            cursor: grab;
+        }
+
+        tr[draggable="true"]:active {
+            cursor: grabbing;
+            opacity: 0.65;
+        }
+
+        .drag-handle {
+            cursor: grab;
+            color: var(--slate-400);
+            font-size: 13px;
+            padding: 4px;
+            border-radius: 4px;
+            transition: color 0.15s;
+        }
+
+        .drag-handle:hover {
+            color: var(--primary);
+        }
+
+        /* Editable Sr. Input */
+        .sr-input {
+            width: 36px;
+            height: 28px;
+            text-align: center;
+            border: 1px solid transparent;
+            border-radius: 6px;
+            background: transparent;
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: var(--slate-600);
+            padding: 0;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            outline: none;
+        }
+
+        .sr-input:hover {
+            border-color: #c7d2fe;
+            background: #eef2ff;
+            color: var(--primary);
+        }
+
+        .sr-input:focus {
+            border-color: var(--primary);
+            background: #eef2ff;
+            color: var(--primary-dark);
+            box-shadow: 0 0 0 2px #c7d2fe;
+        }
+
+        /* Student Name Avatar Cell */
+        .student-cell {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .avatar-initial {
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #e0e7ff, #c7d2fe);
+            color: #3730a3;
+            font-weight: 800;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .student-info-name {
+            font-weight: 700;
+            color: var(--slate-900);
+            line-height: 1.25;
+        }
+
+        .student-info-father {
+            font-size: 0.72rem;
+            color: var(--slate-500);
+            margin-top: 2px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* Shift Badges */
+        .shift-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 3px 9px;
+            border-radius: 20px;
+            font-size: 0.74rem;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .shift-badge.v1 {
+            background: #eef2ff;
+            color: #4338ca;
+            border: 1px solid #c7d2fe;
+        }
+
+        .shift-badge.v2 {
+            background: #fef3c7;
+            color: #92400e;
+            border: 1px solid #fde68a;
+        }
+
+        .shift-badge.kg-return {
+            background: #fff7ed;
+            color: #c2410c;
+            border: 1px solid #fed7aa;
+        }
+
+        .shift-badge.prm-return {
+            background: #f0fdf4;
+            color: #15803d;
+            border: 1px solid #bbf7d0;
+        }
+
+        /* Action Buttons Cell */
+        .action-btns {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            justify-content: flex-end;
+        }
+
+        .icon-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            border: 1px solid transparent;
+            background: transparent;
+            color: var(--slate-500);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            font-size: 13px;
+        }
+
+        .icon-btn.edit:hover {
+            background: #eef2ff;
+            color: var(--primary);
+            border-color: #c7d2fe;
+        }
+
+        .icon-btn.delete:hover {
+            background: #fee2e2;
+            color: var(--danger);
+            border-color: #fca5a5;
+        }
+
+        /* ─── Modals ─────────────────────────────────────────────────────── */
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.65);
+            backdrop-filter: blur(6px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            opacity: 0;
+            transition: opacity 0.25s ease;
+        }
+
+        .modal.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-card {
+            background: #ffffff;
+            border-radius: var(--radius-xl);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            border: 1px solid var(--slate-200);
+            width: 100%;
+            max-width: 600px;
+            overflow: hidden;
+            transform: scale(0.95);
+            transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            flex-direction: column;
+            max-height: 90vh;
+        }
+
+        .modal.active .modal-card {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            padding: 18px 24px;
+            background: var(--slate-50);
+            border-bottom: 1px solid var(--slate-200);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .modal-title {
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: var(--slate-900);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .modal-close-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            border: none;
+            background: transparent;
+            color: var(--slate-400);
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .modal-close-btn:hover {
+            background: var(--slate-200);
+            color: var(--slate-700);
+        }
+
+        .modal-body {
+            padding: 24px;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .modal-footer {
+            padding: 16px 24px;
+            background: var(--slate-50);
+            border-top: 1px solid var(--slate-200);
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        /* Form Controls */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-group.col-span-2 {
+            grid-column: span 2;
+        }
+
+        .form-label {
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: var(--slate-700);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .form-input, .form-select {
+            width: 100%;
+            padding: 9px 12px;
+            background: #ffffff;
+            border: 1px solid var(--slate-200);
+            border-radius: var(--radius-md);
+            font-size: 0.83rem;
+            color: var(--slate-800);
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        .form-input:focus, .form-select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
+        }
+
+        /* Route Stop List in KG Modal */
+        .route-stop-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 8px;
+        }
+
+        .route-stop-card {
+            background: #ffffff;
+            border: 1px solid #fef08a;
+            border-radius: var(--radius-md);
+            padding: 8px 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.78rem;
+        }
+
+        .route-stop-card .time {
+            font-weight: 800;
+            color: #b45309;
+            background: #fef3c7;
+            padding: 2px 7px;
+            border-radius: 6px;
+        }
+
+        .route-stop-card .name {
+            font-weight: 600;
+            color: var(--slate-800);
+        }
+
+        .hidden { display: none !important; }
+
+        /* ─── Print Sheet Specifics (A4 Landscape) ───────────────────────── */
         @media print {
             body {
                 background: white !important;
@@ -46,18 +985,11 @@
                 border-collapse: collapse !important;
             }
 
-            th,
-            td {
+            th, td {
                 border: 1px solid #1e293b !important;
                 padding: 1px 2px !important;
                 font-size: 8px !important;
                 height: 24px !important;
-            }
-
-            .print-header-bg {
-                background-color: #f1f5f9 !important;
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
             }
 
             * {
@@ -69,465 +1001,509 @@
         #print-area {
             display: none;
         }
-
-        .hidden {
-            display: none !important;
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(4px);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-        }
-
-        .modal.active {
-            display: flex;
-        }
-
-        .modal>.card {
-            transform: scale(0.95);
-            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .modal.active>.card {
-            transform: scale(1);
-        }
-
-        /* Drag & Drop styles */
-        tr.drag-over {
-            background: #e0e7ff !important;
-            border-top: 2px solid #6366f1;
-        }
-
-        tr[draggable="true"] {
-            cursor: grab;
-        }
-
-        tr[draggable="true"]:active {
-            cursor: grabbing;
-            opacity: 0.7;
-        }
-
-        .drag-handle {
-            cursor: grab;
-            color: #94a3b8;
-            font-size: 13px;
-            padding: 0 4px;
-        }
-
-        .drag-handle:hover {
-            color: #6366f1;
-        }
-
-        /* Editable Sr. No. input */
-        .sr-input {
-            width: 38px;
-            text-align: center;
-            border: 1px solid transparent;
-            border-radius: 6px;
-            background: transparent;
-            font-size: 13px;
-            font-weight: 600;
-            color: #64748b;
-            padding: 2px 4px;
-            cursor: pointer;
-            transition: all 0.15s;
-            outline: none;
-        }
-
-        .sr-input:hover {
-            border-color: #c7d2fe;
-            background: #eef2ff;
-            color: #6366f1;
-        }
-
-        .sr-input:focus {
-            border-color: #6366f1;
-            background: #eef2ff;
-            color: #4338ca;
-            box-shadow: 0 0 0 2px #c7d2fe;
-        }
-
-        /* Import modal table */
-        .import-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 13px;
-        }
-
-        .import-table th {
-            background: #f1f5f9;
-            padding: 8px;
-            text-align: left;
-            border-bottom: 1px solid #e2e8f0;
-        }
-
-        .import-table td {
-            padding: 8px;
-            border-bottom: 1px solid #f1f5f9;
-        }
-
-        .import-table tr:hover td {
-            background: #f8fafc;
-        }
-
-        /* Recycle bin table */
-        .rb-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 13px;
-        }
-
-        .rb-table th {
-            background: #fef2f2;
-            padding: 8px;
-            text-align: left;
-            border-bottom: 1px solid #fecaca;
-        }
-
-        .rb-table td {
-            padding: 8px;
-            border-bottom: 1px solid #fef2f2;
-            vertical-align: middle;
-        }
     </style>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
 </head>
 
 <body>
 
     <div id="appWrapper">
-        <!-- Top Navigation Header -->
-        <header class="site-header">
-            <div class="logo-wrap"><img src="logo1.png" alt="School Logo" onerror="this.style.display='none'" /></div>
-            <div class="hd-text">
-                <h1>&#127979; Police Modern School</h1>
-                <p>25th BN P.A.C., Raebareli &nbsp;|&nbsp; Transport Attendance Manager</p>
-            </div>
-            <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end">
-                <span class="badge">Session 2025&#8211;26</span>
+        <!-- ─── Top Brand Header ─────────────────────────────────────────── -->
+        <header class="app-header">
+            <div class="header-container">
+                <div class="brand-section">
+                    <div class="school-logo-wrap">
+                        <img src="logo1.png" alt="Logo" onerror="this.innerHTML='<i class=\'fa-solid fa-school text-white\'></i>'" />
+                    </div>
+                    <div class="brand-text">
+                        <h1>POLICE MODERN SCHOOL</h1>
+                        <p><i class="fa-solid fa-shield-halved"></i> 25th BN P.A.C., Raebareli &nbsp;&bull;&nbsp; Transport Attendance Manager</p>
+                    </div>
+                </div>
+
+                <div class="header-actions">
+                    <span class="session-badge"><i class="fa-regular fa-calendar-check"></i> Session 2025–26</span>
+                    <a href="index.html" class="nav-pill-btn"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
+                    <button class="nav-pill-btn active"><i class="fa-solid fa-van-shuttle"></i> Transport &amp; Attendance</button>
+                </div>
             </div>
         </header>
 
-        <nav class="nav-tabs" role="tablist">
-            <button onclick="window.location.href='index.html'" id="tab-dashboard">&#128202; Dashboard</button>
-            <button class="active" id="tab-attendance">&#128652; Transport / Attendance</button>
-        </nav>
+        <!-- ─── Main Content Workspace ──────────────────────────────────── -->
+        <main class="workspace">
 
-        <main class="main" style="display: flex; gap: 20px; align-items: flex-start; flex-wrap: wrap;">
-
-            <!-- Left Column (Stats & Filters) -->
-            <div style="flex: 1; min-width: 300px; max-width: 400px; display: flex; flex-direction: column; gap: 20px;">
-
-                <div class="card">
-                    <div class="card-title">&#128652; Vehicle Stats</div>
-                    <div style="font-weight: bold; margin-bottom: 15px; color: var(--navy);" id="total-student-badge">
-                        कुल: 0 छात्र</div>
-
-                    <div style="margin-bottom: 15px;">
-                        <label style="font-size: 12px; font-weight: bold; color: var(--muted);">Vehicle 1 Name</label>
-                        <input type="text" id="v1-name-input" value="Vehicle 1" onchange="updateVehicleNames()"
-                            style="width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 4px; margin-top: 5px;">
-                        <div style="margin-top: 5px; font-size: 14px;">Students: <b id="v1-count"
-                                style="color: var(--blue);">0</b></div>
+            <!-- Hero Stats Grid -->
+            <section class="stats-grid">
+                <!-- Stat Card: Total -->
+                <div class="stat-card c-indigo">
+                    <div class="stat-header">
+                        <span class="stat-title"><i class="fa-solid fa-users"></i> कुल पंजीकृत छात्र</span>
+                        <div class="stat-icon" style="background:#eef2ff; color:#4f46e5;"><i class="fa-solid fa-bus-simple"></i></div>
                     </div>
-
-                    <div>
-                        <label style="font-size: 12px; font-weight: bold; color: var(--muted);">Vehicle 2 Name</label>
-                        <input type="text" id="v2-name-input" value="Vehicle 2" onchange="updateVehicleNames()"
-                            style="width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 4px; margin-top: 5px;">
-                        <div style="margin-top: 5px; font-size: 14px;">Students: <b id="v2-count"
-                                style="color: var(--gold);">0</b></div>
+                    <div class="stat-body">
+                        <div class="stat-value" id="total-student-badge">0</div>
+                    </div>
+                    <div class="stat-subtext">सक्रिय वाहन सेवा ले रहे विद्यार्थी</div>
+                    <div class="stat-chips">
+                        <span class="stat-chip" style="background:#e0e7ff; color:#4338ca;"><i class="fa-solid fa-database"></i> transport_students</span>
                     </div>
                 </div>
 
-                <div class="card">
-                    <div class="card-title">&#128269; Filters & Search</div>
-                    <div style="display: flex; gap: 5px; margin-bottom: 15px;">
-                        <button class="btn btn-sm btn-primary" onclick="setFilter('all')"
-                            id="filter-btn-all">All</button>
-                        <button class="btn btn-sm btn-outline" onclick="setFilter('v1')" id="filter-btn-v1">V1</button>
-                        <button class="btn btn-sm btn-outline" onclick="setFilter('v2')" id="filter-btn-v2">V2</button>
+                <!-- Stat Card: Morning Shift -->
+                <div class="stat-card c-blue">
+                    <div class="stat-header">
+                        <span class="stat-title"><i class="fa-solid fa-sun" style="color:#f59e0b;"></i> सुबह पिकअप (Morning)</span>
+                        <div class="stat-icon" style="background:#e0f2fe; color:#0284c7;"><i class="fa-solid fa-road"></i></div>
                     </div>
-                    <input type="text" id="search-input" oninput="applyFiltersAndRender()"
-                        placeholder="Search by name or father..."
-                        style="width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 4px;">
+                    <div class="stat-body" style="gap:14px; flex-wrap:wrap;">
+                        <div>
+                            <span style="font-size:0.72rem; color:var(--slate-500); font-weight:700;" id="v1-title-label">Vehicle 1:</span>
+                            <div class="stat-value" style="font-size:1.4rem; color:#0284c7;" id="v1-count">0</div>
+                        </div>
+                        <div>
+                            <span style="font-size:0.72rem; color:var(--slate-500); font-weight:700;" id="v2-title-label">Vehicle 2:</span>
+                            <div class="stat-value" style="font-size:1.4rem; color:#d97706;" id="v2-count">0</div>
+                        </div>
+                    </div>
+                    <div class="stat-subtext">सुबह दोनों गाड़ियां निर्धारित स्टॉप्स पर पहुंचेंगी</div>
+                    <div class="stat-chips">
+                        <button onclick="openVehicleRenameModal()" class="btn btn-sm btn-outline" style="padding:2px 8px; font-size:0.72rem;"><i class="fa-solid fa-pen"></i> वाहन नाम बदलें</button>
+                    </div>
                 </div>
 
-                <div class="card">
-                    <div class="card-title">&#128424; Print Setup</div>
-                    <div class="form-group">
-                        <label>Sheet Title</label>
-                        <input type="text" id="print-sheet-title"
-                            value="POLICE MODERN SCHOOL, RAEBARELI - ATTENDANCE SHEET"
-                            style="width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 4px;">
+                <!-- Stat Card: 12:30 PM KG Return -->
+                <div class="stat-card c-amber">
+                    <div class="stat-header">
+                        <span class="stat-title"><i class="fa-solid fa-clock-rotate-left" style="color:#d97706;"></i> 12:30 PM वापसी (KG-I &amp; KG-II)</span>
+                        <div class="stat-icon" style="background:#fef3c7; color:#d97706;"><i class="fa-solid fa-children"></i></div>
                     </div>
-                    <div style="display: flex; gap: 10px; margin-top: 10px;">
-                        <div class="form-group" style="flex: 1;">
-                            <label>Month</label>
-                            <select id="print-month" onchange="generatePrintPreview()"
-                                style="width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 4px;">
-                                <option value="0">January</option>
-                                <option value="1">February</option>
-                                <option value="2">March</option>
-                                <option value="3">April</option>
-                                <option value="4">May</option>
-                                <option value="5">June</option>
-                                <option value="6">July</option>
-                                <option value="7">August</option>
-                                <option value="8" selected>September</option>
-                                <option value="9">October</option>
-                                <option value="10">November</option>
-                                <option value="11">December</option>
-                            </select>
-                        </div>
-                        <div class="form-group" style="flex: 1;">
-                            <label>Year</label>
-                            <select id="print-year" onchange="generatePrintPreview()"
-                                style="width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 4px;">
-                                <option value="2026" selected>2026</option>
-                                <option value="2027">2027</option>
-                                <option value="2028">2028</option>
-                            </select>
+                    <div class="stat-body">
+                        <div class="stat-value" style="color:#d97706;" id="ret-kg-count">0 छात्र</div>
+                    </div>
+                    <div class="stat-subtext">वाहन: <b><span id="ret-kg-vname">Vehicle 2</span></b> (स्टॉप-वार ड्रॉप)</div>
+                    <div class="stat-chips">
+                        <button onclick="openKGScheduleModal()" class="btn btn-sm btn-amber" style="padding:2px 8px; font-size:0.72rem;"><i class="fa-solid fa-route"></i> 14 स्टॉप्स शेड्यूल देखें</button>
+                    </div>
+                </div>
+
+                <!-- Stat Card: 01:30 PM Return (1-8) -->
+                <div class="stat-card c-emerald">
+                    <div class="stat-header">
+                        <span class="stat-title"><i class="fa-solid fa-clock" style="color:#059669;"></i> 01:30 PM (13:30) वापसी</span>
+                        <div class="stat-icon" style="background:#d1fae5; color:#059669;"><i class="fa-solid fa-graduation-cap"></i></div>
+                    </div>
+                    <div class="stat-body">
+                        <div class="stat-value" style="color:#059669;" id="ret-prm-count">0 छात्र</div>
+                    </div>
+                    <div class="stat-subtext">वाहन: <b><span id="ret-prm-vname">Vehicle 1</span></b> (Class 1 से 8)</div>
+                    <div class="stat-chips">
+                        <span class="stat-chip" style="background:#dcfce7; color:#15803d;"><i class="fa-solid fa-check-circle"></i> Class 1st - 8th</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Control & Filter Hub -->
+            <section class="toolbar-card">
+                <div class="toolbar-top">
+                    <div class="search-box-wrap">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="search-input" oninput="applyFiltersAndRender()" class="search-input"
+                            placeholder="छात्र, पिता का नाम, कक्षा, स्टॉप या फोन नंबर खोजें...">
+                    </div>
+
+                    <div class="btn-group">
+                        <button onclick="openKGScheduleModal()" class="btn btn-amber" title="12:30 PM KG स्टॉप-वार समय सारणी">
+                            <i class="fa-solid fa-clock-rotate-left"></i> 12:30 PM KG रूट
+                        </button>
+                        <button onclick="openImportModal()" class="btn btn-outline" title="Main Database से आयात करें">
+                            <i class="fa-solid fa-file-import"></i> Import
+                        </button>
+                        <button onclick="openRecycleBin()" class="btn btn-danger-outline" title="डिलीट किए गए छात्र">
+                            <i class="fa-solid fa-trash-can"></i> Recycle Bin
+                        </button>
+                        <button onclick="downloadStudentListPDF()" id="dl-pdf-btn" class="btn btn-violet" title="Student List PDF Download">
+                            <i class="fa-solid fa-file-pdf"></i> PDF सूची
+                        </button>
+                        <button onclick="openAddStudentModal()" class="btn btn-primary">
+                            <i class="fa-solid fa-plus"></i> + नया छात्र जोड़ें
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Secondary Filter Ribbon -->
+                <div class="filter-ribbon">
+                    <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+                        <span style="font-size:0.75rem; font-weight:700; color:var(--slate-500); text-transform:uppercase;">वाहन एवं शिफ्ट फ़िल्टर:</span>
+                        <div class="segmented-filters">
+                            <button class="seg-btn active" onclick="setFilter('all')" id="filter-btn-all">All (सभी)</button>
+                            <button class="seg-btn" onclick="setFilter('v1')" id="filter-btn-v1">Morning V1</button>
+                            <button class="seg-btn" onclick="setFilter('v2')" id="filter-btn-v2">Morning V2</button>
+                            <button class="seg-btn" onclick="setFilter('ret-kg')" id="filter-btn-ret-kg" title="12:30 PM Drop (KG-I, KG-II by Vehicle 2)">12:30 PM KG (V2)</button>
+                            <button class="seg-btn" onclick="setFilter('ret-prm')" id="filter-btn-ret-prm" title="01:30 PM Drop (Class 1-8 by Vehicle 1)">01:30 PM Primary (V1)</button>
                         </div>
                     </div>
-                    <div class="form-group" style="margin-top: 10px;">
-                        <label>Print Filter</label>
-                        <select id="print-vehicle-filter" onchange="generatePrintPreview()"
-                            style="width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 4px;">
-                            <option value="all">All Students</option>
-                            <option value="v1" id="print-filter-v1-label">Vehicle 1 Only</option>
-                            <option value="v2" id="print-filter-v2-label">Vehicle 2 Only</option>
+
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <span style="font-size:0.75rem; font-weight:700; color:var(--slate-500); text-transform:uppercase;">कक्षा:</span>
+                        <select id="filter-class" onchange="applyFiltersAndRender()" class="filter-select">
+                            <option value="">All Classes (सभी कक्षाएं)</option>
+                            <option value="KG-I">KG-I</option>
+                            <option value="KG-II">KG-II</option>
+                            <option value="1st">Class 1st</option>
+                            <option value="2nd">Class 2nd</option>
+                            <option value="3rd">Class 3rd</option>
+                            <option value="4th">Class 4th</option>
+                            <option value="5th">Class 5th</option>
+                            <option value="6th">Class 6th</option>
+                            <option value="7th">Class 7th</option>
+                            <option value="8th">Class 8th</option>
                         </select>
                     </div>
-                    <button onclick="triggerPrint()" class="btn btn-gold" style="width: 100%; margin-top: 15px;"><i
-                            class="fa-solid fa-print"></i> Print A4 Landscape</button>
+                </div>
+            </section>
+
+            <!-- Navigation Views (Student List & Live Print Preview) -->
+            <div class="view-tabs">
+                <button onclick="switchTab('list')" id="tab-btn-list" class="view-tab-btn active">
+                    <i class="fa-solid fa-users"></i> छात्र प्रबंधन सूची (Manage Students)
+                </button>
+                <button onclick="switchTab('preview')" id="tab-btn-preview" class="view-tab-btn">
+                    <i class="fa-solid fa-print"></i> A4 उपस्थिति पत्रक लाइव प्रीव्यू (Live Print Sheet)
+                </button>
+            </div>
+
+            <!-- TAB 1: Student List Table -->
+            <div id="tab-content-list" class="table-card">
+                <div class="table-card-header">
+                    <div class="table-title">
+                        <i class="fa-solid fa-table-list text-primary"></i>
+                        <span>पंजीकृत छात्र सूची</span>
+                        <span class="count-pill" id="rendered-count">0</span>
+                    </div>
+
+                    <div style="display:flex; align-items:center; gap:8px; font-size:0.75rem; color:var(--slate-500);">
+                        <i class="fa-solid fa-arrow-down-short-wide"></i> क्रम बदलने हेतु <b>Drag</b> करें या <b>Sr. No.</b> बदलें
+                    </div>
+                </div>
+
+                <div class="tbl-responsive">
+                    <table class="modern-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 36px; text-align: center;"></th>
+                                <th style="width: 50px; text-align: center;">क्र.</th>
+                                <th>छात्र एवं पिता का नाम</th>
+                                <th style="text-align: center;">कक्षा</th>
+                                <th>मोबाइल नंबर</th>
+                                <th>सुबह लाते समय (Pickup)</th>
+                                <th>दोपहर वापसी (Return Drop)</th>
+                                <th>पता / निर्धारित स्टॉप</th>
+                                <th style="text-align: right; width: 90px;">कार्य</th>
+                            </tr>
+                        </thead>
+                        <tbody id="student-table-body">
+                            <tr>
+                                <td colspan="9" style="text-align: center; padding: 40px; color: var(--slate-400);">
+                                    <i class="fa-solid fa-spinner fa-spin" style="font-size: 24px; margin-bottom: 8px;"></i>
+                                    <p>डेटा लोड हो रहा है...</p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
 
-            <!-- Right Column (List & Preview) -->
-            <div style="flex: 2; min-width: 400px; display: flex; flex-direction: column; gap: 20px;">
+            <!-- TAB 2: Live Print Preview & Print Controls -->
+            <div id="tab-content-preview" class="hidden" style="display:flex; flex-direction:column; gap:16px;">
+                <div class="toolbar-card" style="background: #ffffff;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+                        <div>
+                            <div style="font-size:1.05rem; font-weight:800; color:var(--slate-900);">A4 Landscape उपस्थिति पत्रक प्रिंट सेटअप</div>
+                            <div style="font-size:0.78rem; color:var(--slate-500);">माह, वर्ष और वाहन अनुसार उपस्थिति पत्रक प्रिंट करें या PDF डाउनलोड करें।</div>
+                        </div>
 
-                <div style="display: flex; gap: 10px;">
-                    <button onclick="switchTab('list')" id="tab-btn-list" class="btn btn-primary"
-                        style="flex: 1;">&#128104; Manage Students</button>
-                    <button onclick="switchTab('preview')" id="tab-btn-preview" class="btn btn-outline"
-                        style="flex: 1;">&#128424; Live Print Preview</button>
-                </div>
+                        <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+                            <div style="display:flex; align-items:center; gap:6px;">
+                                <label style="font-size:0.78rem; font-weight:700;">माह:</label>
+                                <select id="print-month" onchange="generatePrintPreview()" class="filter-select">
+                                    <option value="0">January</option>
+                                    <option value="1">February</option>
+                                    <option value="2">March</option>
+                                    <option value="3">April</option>
+                                    <option value="4">May</option>
+                                    <option value="5">June</option>
+                                    <option value="6">July</option>
+                                    <option value="7">August</option>
+                                    <option value="8" selected>September</option>
+                                    <option value="9">October</option>
+                                    <option value="10">November</option>
+                                    <option value="11">December</option>
+                                </select>
+                            </div>
 
-                <div id="tab-content-list" class="card">
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                        <div class="card-title" style="margin: 0;">Student List</div>
-                        <div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap;">
-                            <button onclick="openImportModal()" class="btn btn-sm btn-outline"
-                                title="Main DB से import करें" style="display:flex;align-items:center;gap:4px;">
-                                <i class="fa-solid fa-file-import"></i> Import
-                            </button>
-                            <button onclick="openRecycleBin()" class="btn btn-sm btn-outline" title="Recycle Bin"
-                                style="display:flex;align-items:center;gap:4px;color:#dc2626;border-color:#fca5a5;">
-                                <i class="fa-solid fa-trash-can"></i> Recycle Bin
-                            </button>
-                            <button onclick="downloadStudentListPDF()" id="dl-pdf-btn" class="btn btn-sm btn-outline"
-                                title="Student List PDF Download"
-                                style="display:flex;align-items:center;gap:4px;color:#7c3aed;border-color:#c4b5fd;">
-                                <i class="fa-solid fa-file-pdf"></i> PDF
-                            </button>
-                            <button onclick="openAddStudentModal()" class="btn btn-sm btn-success"
-                                style="display:flex;align-items:center;gap:4px;">
-                                <i class="fa-solid fa-plus"></i> Add Student
+                            <div style="display:flex; align-items:center; gap:6px;">
+                                <label style="font-size:0.78rem; font-weight:700;">वर्ष:</label>
+                                <select id="print-year" onchange="generatePrintPreview()" class="filter-select">
+                                    <option value="2026" selected>2026</option>
+                                    <option value="2027">2027</option>
+                                    <option value="2028">2028</option>
+                                </select>
+                            </div>
+
+                            <div style="display:flex; align-items:center; gap:6px;">
+                                <label style="font-size:0.78rem; font-weight:700;">फ़िल्टर:</label>
+                                <select id="print-vehicle-filter" onchange="generatePrintPreview()" class="filter-select">
+                                    <option value="all">All Students (सभी छात्र)</option>
+                                    <option value="v1" id="print-filter-v1-label">Morning: Vehicle 1 Only</option>
+                                    <option value="v2" id="print-filter-v2-label">Morning: Vehicle 2 Only</option>
+                                    <option value="ret-kg" id="print-filter-ret-kg-label">Return: 12:30 PM (KG-I &amp; KG-II by Vehicle 2)</option>
+                                    <option value="ret-prm" id="print-filter-ret-prm-label">Return: 01:30 PM (Class 1-8 by Vehicle 1)</option>
+                                    <option value="cls-KG-I">Class: KG-I Only</option>
+                                    <option value="cls-KG-II">Class: KG-II Only</option>
+                                    <option value="cls-1st">Class: 1st Only</option>
+                                    <option value="cls-2nd">Class: 2nd Only</option>
+                                    <option value="cls-3rd">Class: 3rd Only</option>
+                                    <option value="cls-4th">Class: 4th Only</option>
+                                    <option value="cls-5th">Class: 5th Only</option>
+                                    <option value="cls-6th">Class: 6th Only</option>
+                                    <option value="cls-7th">Class: 7th Only</option>
+                                    <option value="cls-8th">Class: 8th Only</option>
+                                </select>
+                            </div>
+
+                            <input type="hidden" id="print-sheet-title" value="POLICE MODERN SCHOOL, RAEBARELI - ATTENDANCE SHEET">
+
+                            <button onclick="triggerPrint()" class="btn btn-amber">
+                                <i class="fa-solid fa-print"></i> A4 Landscape PDF डाउनलोड
                             </button>
                         </div>
                     </div>
-                    <div style="font-size: 13px; color: var(--muted); margin-bottom: 10px;">कुल प्रदर्शित: <span
-                            id="rendered-count" style="font-weight: bold; color: var(--navy);">0</span>
-                        <span id="transport-source-badge"
-                            style="margin-left:8px; font-size:11px; background:#e0e7ff; color:#6366f1; padding:2px 8px; border-radius:20px; font-weight:600;">transport_students</span>
-                    </div>
-                    <div class="tbl-wrap">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th style="width:30px;"></th>
-                                    <th>Sr.</th>
-                                    <th>Student &amp; Father's Name</th>
-                                    <th>Class</th>
-                                    <th>Mobile</th>
-                                    <th>Vehicle</th>
-                                    <th>Address</th>
-                                    <th>Specific Time</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="student-table-body">
-                                <tr>
-                                    <td colspan="9" style="text-align: center; padding: 20px;">Loading...</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
                 </div>
 
-                <div id="tab-content-preview" class="hidden card">
-                    <div class="card-title">Live Preview</div>
-                    <div
-                        style="padding: 10px; background: #fff8e1; border: 1px solid #ffe082; color: #f57f17; font-size: 12px; margin-bottom: 15px;">
-                        <b>सटीक प्रिंट लेआउट गाइड:</b> यह लाइव प्रीव्यू है कि आपकी उपस्थिति शीट ए4 पेपर (A4 Paper) में
-                        लैंडस्केप ओरिएंटेशन (Landscape Orientation) में कैसी दिखेगी। प्रत्येक दिन के खाने को दो भागों
-                        में विभाजित किया गया है: बायां आधा हिस्सा सुबह और दायां आधा हिस्सा शाम की उपस्थिति के लिए है।
-                    </div>
-                    <div style="overflow-x: auto;">
-                        <div id="live-preview-container"
-                            style="min-width: 1000px; border: 1px solid var(--border); padding: 10px;"></div>
-                    </div>
+                <div class="table-card" style="padding: 20px; overflow-x: auto; background:#f1f5f9;">
+                    <div id="live-preview-container" style="display:flex; justify-content:center;"></div>
                 </div>
-
             </div>
-        </main>
 
+        </main>
     </div>
 
-    <!-- Add Student Modal -->
+    <!-- ─── Modals ──────────────────────────────────────────────────────── -->
+
+    <!-- Add / Edit Student Modal -->
     <div id="student-modal" class="modal">
-        <div class="card" style="width: 100%; max-width: 500px; margin: 0 20px;">
-            <div class="card-title" id="modal-title">Add/Edit Student</div>
-            <form id="student-form" onsubmit="handleFormSubmit(event)">
+        <div class="modal-card">
+            <div class="modal-header">
+                <div class="modal-title" id="modal-title"><i class="fa-solid fa-user-plus text-primary"></i> छात्र विवरण</div>
+                <button onclick="closeStudentModal()" class="modal-close-btn">&times;</button>
+            </div>
+            <form id="student-form" onsubmit="handleFormSubmit(event)" style="display:flex; flex-direction:column; flex:1; overflow:hidden;">
                 <input type="hidden" id="student-id-field">
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label>Student Name *</label>
-                        <input type="text" id="form-student-name" required
-                            style="width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 4px;">
-                    </div>
-                    <div class="form-group">
-                        <label>Father's Name *</label>
-                        <input type="text" id="form-father-name" required
-                            style="width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 4px;">
-                    </div>
-                    <div class="form-group">
-                        <label>Class</label>
-                        <input type="text" id="form-class"
-                            style="width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 4px;">
-                    </div>
-                    <div class="form-group">
-                        <label>Mobile Number</label>
-                        <input type="tel" id="form-mobile" placeholder="10 अंकों का मोबाइल नंबर"
-                            style="width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 4px;">
-                    </div>
-                    <div class="form-group">
-                        <label>Vehicle *</label>
-                        <select id="form-vehicle" required
-                            style="width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 4px;">
-                            <option value="v1" id="form-v1-label">Vehicle 1</option>
-                            <option value="v2" id="form-v2-label">Vehicle 2</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Address</label>
-                        <input type="text" id="form-address"
-                            style="width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 4px;">
-                    </div>
-                    <div class="form-group">
-                        <label>Specific / Stop Time</label>
-                        <input type="text" id="form-specific-time" placeholder="उदा. 07:30 AM या 7:30 AM / 2:00 PM"
-                            style="width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 4px;">
+                <div class="modal-body">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">छात्र का नाम *</label>
+                            <input type="text" id="form-student-name" class="form-input" required placeholder="पूरा नाम दर्ज करें">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">पिता का नाम *</label>
+                            <input type="text" id="form-father-name" class="form-input" required placeholder="पिता का नाम दर्ज करें">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">कक्षा (Class) *</label>
+                            <input type="text" id="form-class" list="classListOptions" class="form-input" placeholder="उदा. KG-I, KG-II, 1st..." oninput="updateModalSchedulePreview()" required>
+                            <datalist id="classListOptions">
+                                <option value="KG-I"></option>
+                                <option value="KG-II"></option>
+                                <option value="1st"></option>
+                                <option value="2nd"></option>
+                                <option value="3rd"></option>
+                                <option value="4th"></option>
+                                <option value="5th"></option>
+                                <option value="6th"></option>
+                                <option value="7th"></option>
+                                <option value="8th"></option>
+                            </datalist>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">मोबाइल नंबर</label>
+                            <input type="tel" id="form-mobile" class="form-input" placeholder="10 अंकों का मोबाइल नंबर">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">सुबह की गाड़ी (Pickup Vehicle) *</label>
+                            <select id="form-vehicle" class="form-select" required>
+                                <option value="v1" id="form-v1-label">Vehicle 1</option>
+                                <option value="v2" id="form-v2-label">Vehicle 2</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">सुबह पिकअप समय</label>
+                            <input type="text" id="form-specific-time" class="form-input" placeholder="उदा. 07:30 AM">
+                        </div>
+
+                        <div class="form-group col-span-2">
+                            <label class="form-label">पता / स्टॉप का नाम</label>
+                            <input type="text" id="form-address" class="form-input" placeholder="उदा. सम्राट नगर, किशुन का पुरवा, बेहटा...">
+                        </div>
+
+                        <!-- Dynamic Shift Hint Box -->
+                        <div id="modal-schedule-hint" class="form-group col-span-2" style="padding: 12px; border-radius: var(--radius-md); font-size: 0.8rem; background: #e0e7ff; color: #3730a3; border: 1px solid #c7d2fe; line-height:1.5;">
+                            <i class="fa-solid fa-circle-info"></i> <b>वापसी नियम:</b> KG-1 व KG-2 के बच्चे <b>दोपहर 12:30 बजे Vehicle 2</b> से जाएंगे तथा कक्षा 1 से 8 के बच्चे <b>दोपहर 01:30 बजे (13:30) Vehicle 1</b> से जाएंगे।
+                        </div>
                     </div>
                 </div>
-                <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
-                    <button type="button" class="btn btn-outline" onclick="closeStudentModal()">Cancel</button>
-                    <button type="submit" class="btn btn-success" id="form-submit-text">Save</button>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" onclick="closeStudentModal()">रद्द करें</button>
+                    <button type="submit" class="btn btn-primary" id="form-submit-text">सुरक्षित करें</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- Alert Modal -->
-    <div id="dialog-modal" class="modal">
-        <div class="card" style="width: 100%; max-width: 400px; margin: 0 20px;">
-            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
-                <div id="dialog-icon"></div>
-                <div class="card-title" id="dialog-title" style="margin: 0;">Alert</div>
+    <!-- 12:30 PM KG Route & Schedule Modal -->
+    <div id="kg-schedule-modal" class="modal">
+        <div class="modal-card" style="max-width: 820px;">
+            <div class="modal-header" style="background:#fffbeb; border-bottom: 1px solid #fef08a;">
+                <div class="modal-title" style="color:#92400e;">
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+                    <span>दोपहर 12:30 बजे (KG-I व KG-II) वाहन 2 स्टॉप समय-सारणी</span>
+                </div>
+                <button onclick="closeKGScheduleModal()" class="modal-close-btn">&times;</button>
             </div>
-            <p id="dialog-message" style="margin-bottom: 20px; font-size: 14px; color: var(--slate-600);">Message
-                details</p>
-            <div id="dialog-actions" style="display: flex; justify-content: flex-end; gap: 10px;">
-                <button class="btn btn-outline" onclick="closeDialog()">OK</button>
+
+            <div class="modal-body" style="display:flex; flex-direction:column; gap:18px;">
+                <!-- Route Timetable Grid -->
+                <div style="background:#fefce8; border:1px solid #fde047; border-radius:var(--radius-lg); padding:14px;">
+                    <div style="font-size:0.82rem; font-weight:800; color:#854d0e; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center;">
+                        <span><i class="fa-solid fa-route"></i> स्टॉप-वार वापसी संभावित समय सारणी (Vehicle 2)</span>
+                        <span style="font-size:0.72rem; background:#eab308; color:#fff; padding:2px 8px; border-radius:12px;">14 स्टॉप्स रूट</span>
+                    </div>
+                    <div class="route-stop-grid">
+                        <div class="route-stop-card"><span class="name">स्कूल प्रस्थान</span><span class="time">12:30 PM</span></div>
+                        <div class="route-stop-card"><span class="name">वैष्णव नगर</span><span class="time">12:40 PM</span></div>
+                        <div class="route-stop-card"><span class="name">सम्राट नगर</span><span class="time">12:45 PM</span></div>
+                        <div class="route-stop-card"><span class="name">पुरे मेहरबान</span><span class="time">12:55 PM</span></div>
+                        <div class="route-stop-card"><span class="name">किशुन का पुरवा</span><span class="time">01:00 PM</span></div>
+                        <div class="route-stop-card"><span class="name">बेहटा</span><span class="time">01:10 PM</span></div>
+                        <div class="route-stop-card"><span class="name">जगदीशपुर</span><span class="time">01:15 PM</span></div>
+                        <div class="route-stop-card"><span class="name">पूरे कराइन</span><span class="time">01:25 PM</span></div>
+                        <div class="route-stop-card"><span class="name">भुएमऊ</span><span class="time">01:30 PM</span></div>
+                        <div class="route-stop-card"><span class="name">जरौला</span><span class="time">01:35 PM</span></div>
+                        <div class="route-stop-card"><span class="name">कैथन का पुरवा</span><span class="time">01:40 PM</span></div>
+                        <div class="route-stop-card"><span class="name">बैरागीपुर</span><span class="time">01:45 PM</span></div>
+                        <div class="route-stop-card"><span class="name">हनुमानगंज</span><span class="time">01:50 PM</span></div>
+                        <div class="route-stop-card"><span class="name">बबुरिहा / गोंदवारा</span><span class="time">01:55 PM</span></div>
+                    </div>
+                </div>
+
+                <!-- Live KG Students Schedule List -->
+                <div>
+                    <div style="font-size:0.85rem; font-weight:800; color:var(--slate-900); margin-bottom:10px; display:flex; justify-content:space-between; align-items:center;">
+                        <span><i class="fa-solid fa-users text-primary"></i> 12:30 PM जाने वाले पंजीकृत KG छात्र</span>
+                        <span id="kg-modal-count-badge" class="count-pill">0 छात्र</span>
+                    </div>
+                    <div id="kg-schedule-body">
+                        <!-- Populated dynamically -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button onclick="closeKGScheduleModal()" class="btn btn-outline">बंद करें</button>
             </div>
         </div>
     </div>
 
-    <!-- Recycle Bin Modal -->
-    <div id="recycle-bin-modal" class="modal">
-        <div class="card"
-            style="width:100%; max-width:700px; margin:0 20px; max-height:85vh; display:flex; flex-direction:column;">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
-                <div style="display:flex; align-items:center; gap:10px;">
-                    <div style="padding:8px; background:#fef2f2; border-radius:8px; color:#dc2626;"><i
-                            class="fa-solid fa-trash-can"></i></div>
-                    <div class="card-title" style="margin:0;">Recycle Bin</div>
-                </div>
-                <button onclick="closeRecycleBin()"
-                    style="background:none;border:none;cursor:pointer;font-size:20px;color:#94a3b8;">&#10005;</button>
+    <!-- Rename Vehicle Modal -->
+    <div id="vehicle-rename-modal" class="modal">
+        <div class="modal-card" style="max-width: 440px;">
+            <div class="modal-header">
+                <div class="modal-title"><i class="fa-solid fa-van-shuttle text-primary"></i> वाहन नाम सेटिंग्स</div>
+                <button onclick="closeVehicleRenameModal()" class="modal-close-btn">&times;</button>
             </div>
-            <p style="font-size:12px; color:#64748b; margin-bottom:12px;">यहाँ delete किए गए students हैं। Restore करें
-                या permanently delete करें।</p>
-            <div style="overflow-y:auto; flex:1;">
-                <div id="recycle-bin-body">
-                    <div style="text-align:center; padding:30px; color:#94a3b8;"><i
-                            class="fa-solid fa-spinner fa-spin"></i> Loading...</div>
+            <div class="modal-body" style="display:flex; flex-direction:column; gap:14px;">
+                <div class="form-group">
+                    <label class="form-label">Vehicle 1 का नाम:</label>
+                    <input type="text" id="v1-name-input" class="form-input" value="Vehicle 1">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Vehicle 2 का नाम:</label>
+                    <input type="text" id="v2-name-input" class="form-input" value="Vehicle 2">
                 </div>
             </div>
-            <div style="display:flex; justify-content:flex-end; margin-top:15px;">
-                <button onclick="closeRecycleBin()" class="btn btn-outline">बंद करें</button>
+            <div class="modal-footer">
+                <button onclick="closeVehicleRenameModal()" class="btn btn-outline">रद्द करें</button>
+                <button onclick="saveVehicleNamesFromModal()" class="btn btn-primary">सुरक्षित करें</button>
             </div>
         </div>
     </div>
 
     <!-- Import from Main DB Modal -->
     <div id="import-modal" class="modal">
-        <div class="card"
-            style="width:100%; max-width:750px; margin:0 20px; max-height:85vh; display:flex; flex-direction:column;">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
-                <div style="display:flex; align-items:center; gap:10px;">
-                    <div style="padding:8px; background:#e0e7ff; border-radius:8px; color:#6366f1;"><i
-                            class="fa-solid fa-file-import"></i></div>
-                    <div class="card-title" style="margin:0;">Main DB से Import करें</div>
-                </div>
-                <button onclick="closeImportModal()"
-                    style="background:none;border:none;cursor:pointer;font-size:20px;color:#94a3b8;">&#10005;</button>
+        <div class="modal-card" style="max-width: 760px;">
+            <div class="modal-header">
+                <div class="modal-title"><i class="fa-solid fa-file-import text-primary"></i> Main Database से Import करें</div>
+                <button onclick="closeImportModal()" class="modal-close-btn">&times;</button>
             </div>
-            <p style="font-size:12px; color:#64748b; margin-bottom:12px;">नीचे main <code>students</code> collection के
-                सभी active students हैं। जो पहले से import हो चुके हैं वो <span
-                    style="color:#16a34a; font-weight:bold;">✓ Imported</span> दिखेंगे।</p>
-            <div style="overflow-y:auto; flex:1;">
-                <div id="import-modal-body">
-                    <div style="text-align:center; padding:30px; color:#94a3b8;"><i
-                            class="fa-solid fa-spinner fa-spin"></i> Loading...</div>
+            <div class="modal-body" style="display:flex; flex-direction:column; gap:12px;">
+                <p style="font-size:0.8rem; color:var(--slate-500);">
+                    नीचे मुख्य <code>students</code> संग्रह के सभी सक्रिय छात्र हैं। जो छात्र पहले से import हो चुके हैं वे <span style="color:var(--success); font-weight:bold;">✓ Imported</span> दिखेंगे।
+                </p>
+                <div id="import-modal-body" style="overflow-y:auto; max-height:400px; border:1px solid var(--slate-200); border-radius:var(--radius-md);">
+                    <div style="text-align:center; padding:30px; color:var(--slate-400);"><i class="fa-solid fa-spinner fa-spin"></i> Loading...</div>
                 </div>
             </div>
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:15px;">
-                <span id="import-status-text" style="font-size:12px; color:#64748b;"></span>
+            <div class="modal-footer" style="justify-content:space-between;">
+                <span id="import-status-text" style="font-size:0.78rem; color:var(--slate-500);"></span>
                 <div style="display:flex; gap:8px;">
-                    <button onclick="closeImportModal()" class="btn btn-outline">बंद करें</button>
-                    <button onclick="importSelectedStudents()" id="import-confirm-btn" class="btn btn-primary">&#10133;
-                        चयनित Import करें</button>
+                    <button onclick="closeImportModal()" class="btn btn-outline">रद्द करें</button>
+                    <button onclick="importSelectedStudents()" id="import-confirm-btn" class="btn btn-primary">&#10133; चयनित Import करें</button>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recycle Bin Modal -->
+    <div id="recycle-bin-modal" class="modal">
+        <div class="modal-card" style="max-width: 720px;">
+            <div class="modal-header" style="background:#fef2f2; border-bottom:1px solid #fee2e2;">
+                <div class="modal-title" style="color:var(--danger);"><i class="fa-solid fa-trash-can"></i> Recycle Bin</div>
+                <button onclick="closeRecycleBin()" class="modal-close-btn">&times;</button>
+            </div>
+            <div class="modal-body" style="display:flex; flex-direction:column; gap:12px;">
+                <p style="font-size:0.8rem; color:var(--slate-500);">यहाँ हटाये गए छात्र सुरक्षित हैं। आप उन्हें पुनः Restore कर सकते हैं या स्थायी रूप से हटा सकते हैं।</p>
+                <div id="recycle-bin-body" style="overflow-y:auto; max-height:380px;">
+                    <div style="text-align:center; padding:30px; color:var(--slate-400);"><i class="fa-solid fa-spinner fa-spin"></i> Loading...</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button onclick="closeRecycleBin()" class="btn btn-outline">बंद करें</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Alert / Dialog Modal -->
+    <div id="dialog-modal" class="modal">
+        <div class="modal-card" style="max-width: 420px;">
+            <div class="modal-body" style="padding: 24px; text-align:center;">
+                <div id="dialog-icon" style="width:48px; height:48px; border-radius:50%; margin:0 auto 16px; display:flex; align-items:center; justify-content:center; font-size:22px;"></div>
+                <div id="dialog-title" style="font-size:1.1rem; font-weight:800; color:var(--slate-900); margin-bottom:8px;">सूचना</div>
+                <div id="dialog-message" style="font-size:0.83rem; color:var(--slate-600); line-height:1.5;"></div>
+            </div>
+            <div id="dialog-actions" class="modal-footer" style="justify-content:center;">
+                <button class="btn btn-outline" onclick="closeDialog()">ठीक है</button>
             </div>
         </div>
     </div>
 
     <div id="print-area"></div>
 
-    <!-- Firebase Modular SDK Script Configuration -->
-
+    <!-- ─── Firebase Modular SDK Script ──────────────────────────────── -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
         import { getAuth, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
@@ -612,10 +1588,113 @@
             });
         }
 
+        // ─── CLASS NORMALIZATION & SORT ORDER ──────────────────────────────────
+        const CLASS_SORT_ORDER = {
+            'KG-I': 1,
+            'KG-II': 2,
+            '1st': 3,
+            '2nd': 4,
+            '3rd': 5,
+            '4th': 6,
+            '5th': 7,
+            '6th': 8,
+            '7th': 9,
+            '8th': 10
+        };
+
+        function normalizeClassName(cls) {
+            if (!cls || typeof cls !== 'string') return cls ? String(cls).trim() : '';
+            const trimmed = cls.trim();
+            // KG-I variants (LKG, KG-1, Nursery, Pre-KG, etc.)
+            if (/^(l\.?k\.?g\.?|kg-?1|kg-?i|kg\s*1|kg\s*i|nur|nursery|pre-?kg|pre-?primary|pg)$/i.test(trimmed)) return 'KG-I';
+            // KG-II variants (UKG, KG-2, etc.)
+            if (/^(u\.?k\.?g\.?|kg-?2|kg-?ii|kg\s*2|kg\s*ii|sr\.?\s*kg)$/i.test(trimmed)) return 'KG-II';
+            // 1st to 8th variants with Hindi, Roman numerals, Class prefix
+            if (/^(1|1st|1\s*st|ist|i|class\s*1|class\s*i|कक्षा\s*1|कक्षा\s*एक)$/i.test(trimmed)) return '1st';
+            if (/^(2|2nd|2\s*nd|iind|ii|class\s*2|class\s*ii|कक्षा\s*2|कक्षा\s*दो)$/i.test(trimmed)) return '2nd';
+            if (/^(3|3rd|3\s*rd|iiird|iii|class\s*3|class\s*iii|कक्षा\s*3|कक्षा\s*तीन)$/i.test(trimmed)) return '3rd';
+            if (/^(4|4th|4\s*th|ivth|iv|class\s*4|class\s*iv|कक्षा\s*4|कक्षा\s*चार)$/i.test(trimmed)) return '4th';
+            if (/^(5|5th|5\s*th|vth|v|class\s*5|class\s*v|कक्षा\s*5|कक्षा\s*पांच)$/i.test(trimmed)) return '5th';
+            if (/^(6|6th|6\s*th|vith|vi|class\s*6|class\s*vi|कक्षा\s*6|कक्षा\s*छह)$/i.test(trimmed)) return '6th';
+            if (/^(7|7th|7\s*th|viith|vii|class\s*7|class\s*vii|कक्षा\s*7|कक्षा\s*सात)$/i.test(trimmed)) return '7th';
+            if (/^(8|8th|8\s*th|viiith|viii|class\s*8|class\s*viii|कक्षा\s*8|कक्षा\s*आठ)$/i.test(trimmed)) return '8th';
+
+            return trimmed.replace(/\bLKG\b/gi, 'KG-I').replace(/\bUKG\b/gi, 'KG-II');
+        }
+
+        function getClassWeight(cls) {
+            const norm = normalizeClassName(cls);
+            return CLASS_SORT_ORDER[norm] || 99;
+        }
+
+        // ─── HELPER: Check if student belongs to KG-I / KG-II ───────────────────
+        function isKGStudent(cls) {
+            if (!cls) return false;
+            const norm = normalizeClassName(cls).toUpperCase();
+            return norm === 'KG-I' || norm === 'KG-II' ||
+                   /^(KG|KG-I|KG-II|KG1|KG2|KG 1|KG 2|LKG|UKG|NUR|NURSERY|PRE-KG|PRE-PRIMARY)/i.test(cls.toString().trim()) ||
+                   cls.toString().toUpperCase().includes('KG') || cls.toString().toUpperCase().includes('NUR');
+        }
+
+        // ─── 12:30 PM KG RETURN STOPS & TIMINGS ────────────────────────────────
+        const KG_RETURN_STOPS = [
+            { stop: "पुलिस मॉडर्न स्कूल (प्रस्थान)", time: "12:30 PM", match: ["school", "स्कूल", "परिसर"] },
+            { stop: "वैष्णव नगर (Vaishno Nagar)", time: "12:40 PM", match: ["vaishno", "वैष्णव", "vaishnav"] },
+            { stop: "सम्राट नगर (Samratnagar)", time: "12:45 PM", match: ["samrat", "सम्राट"] },
+            { stop: "पुरे मेहरबान (Pure Mehban)", time: "12:55 PM", match: ["mehban", "meharban", "मेहरबान"] },
+            { stop: "किशुन का पुरवा (Kishun Ka Purwa)", time: "01:00 PM", match: ["kishun", "किशुन"] },
+            { stop: "बेहटा (Behta)", time: "01:10 PM", match: ["behta", "बेहटा"] },
+            { stop: "जगदीशपुर (Jagdishpur)", time: "01:15 PM", match: ["jagdish", "जगदीश"] },
+            { stop: "पूरे कराइन (Pure Karain)", time: "01:25 PM", match: ["karain", "कराइन", "kurain"] },
+            { stop: "भुएमऊ (Bhuemau)", time: "01:30 PM", match: ["bhuemau", "भुएमऊ", "bhumau"] },
+            { stop: "जरौला (Jaraula)", time: "01:35 PM", match: ["jaraula", "जरौला"] },
+            { stop: "कैथन का पुरवा (Kaithan Ka Purwa)", time: "01:40 PM", match: ["kaithan", "कैथन"] },
+            { stop: "बैरागीपुर (Bairagipur)", time: "01:45 PM", match: ["bairagi", "बैरागी"] },
+            { stop: "हनुमानगंज (Hanumanganj)", time: "01:50 PM", match: ["hanuman", "हनुमान"] },
+            { stop: "बबुरिहा (Baburiha) / गोंदवारा", time: "01:55 PM", match: ["baburiha", "बबुरिहा", "gondwara", "गोंदवारा"] }
+        ];
+
+        function getKGReturnEstimatedTime(student) {
+            const text = ((student.address || '') + ' ' + (student.name || '')).toLowerCase();
+            for (const s of KG_RETURN_STOPS) {
+                if (s.match.some(m => text.includes(m))) {
+                    return { time: s.time, stopName: s.stop };
+                }
+            }
+            return { time: "12:30 PM - 01:15 PM", stopName: student.address || "निर्धारित स्टॉप" };
+        }
+
+        // ─── HELPER: Get Student Transport & Shift Schedule ─────────────────────
+        function getStudentSchedule(student) {
+            const isKG = isKGStudent(student.class);
+            const morningVehicle = student.vehicle || 'v1';
+            const morningVehicleName = morningVehicle === 'v1' ? vehicleNames.v1 : vehicleNames.v2;
+            const morningTime = student.specificTime || '07:30 AM';
+
+            // Return schedule rules:
+            // KG1 & KG2 leave at 12:30 PM by Vehicle 2 with stop-wise drop time
+            // Class 1 to 8 leave at 01:30 PM (13:30) by Vehicle 1
+            const returnVehicle = isKG ? 'v2' : 'v1';
+            const returnVehicleName = returnVehicle === 'v1' ? vehicleNames.v1 : vehicleNames.v2;
+            const kgStopInfo = isKG ? getKGReturnEstimatedTime(student) : null;
+            const returnTime = isKG ? (kgStopInfo.time || '12:30 PM') : '01:30 PM (13:30)';
+            const returnShiftLabel = isKG ? '12:30 PM (KG-I, KG-II)' : '01:30 PM (Class 1-8)';
+            const returnStopName = isKG ? kgStopInfo.stopName : (student.address || 'स्टॉप');
+
+            return {
+                isKG,
+                morningVehicle,
+                morningVehicleName,
+                morningTime,
+                returnVehicle,
+                returnVehicleName,
+                returnTime,
+                returnShiftLabel,
+                returnStopName
+            };
+        }
+
         // ─── TRANSPORT COLLECTION SYNC ────────────────────────────────────────────
-        // Step 1: Check if transport_students has data.
-        //         If empty → seed from main 'students' collection.
-        //         Then start realtime listener on transport_students.
         async function syncStudentsData() {
             try {
                 const transportSnap = await getDocs(collection(db, TRANSPORT_COL));
@@ -635,8 +1714,8 @@
                             students.push({
                                 id: docSnap.id,
                                 name: d.name || '',
-                                fatherName: d.fatherName || '',
-                                class: d.class || '',
+                                fatherName: d.fatherName || d.father || '',
+                                class: normalizeClassName(d.class || d.cls || ''),
                                 mobile: d.mobile || '',
                                 address: d.address || '',
                                 specificTime: d.specificTime || d.stopTime || d.pickupTime || '',
@@ -647,8 +1726,18 @@
                             });
                         }
                     });
-                    // Always sort by sortOrder
-                    students.sort((a, b) => a.sortOrder - b.sortOrder);
+                    // Sort by sortOrder first; for ties/unassigned, sort class-wise then by name
+                    students.sort((a, b) => {
+                        const hasA = typeof a.sortOrder === 'number' && a.sortOrder !== 9999;
+                        const hasB = typeof b.sortOrder === 'number' && b.sortOrder !== 9999;
+                        if (hasA && hasB) return a.sortOrder - b.sortOrder;
+                        if (hasA) return -1;
+                        if (hasB) return 1;
+                        const wA = getClassWeight(a.class);
+                        const wB = getClassWeight(b.class);
+                        if (wA !== wB) return wA - wB;
+                        return (a.name || '').localeCompare(b.name || '', 'hi');
+                    });
                     calculateStats();
                     applyFiltersAndRender();
                     generatePrintPreview();
@@ -667,29 +1756,51 @@
         async function seedFromMainCollection() {
             try {
                 const mainSnap = await getDocs(collection(db, MAIN_COL));
-                const batch = writeBatch(db);
-                let idx = 0;
+                const candidates = [];
                 mainSnap.forEach((docSnap) => {
                     const d = docSnap.data();
-                    if (!d.bus) return; // skip inactive
-                    const newDocRef = doc(collection(db, TRANSPORT_COL));
-                    batch.set(newDocRef, {
+                    const isBus = d.bus === true || d.bus === 'yes' || d.bus === 1 || d.bus === 'true' || d.busAvailing === true;
+                    if (!isBus) return;
+                    candidates.push({
+                        mainDocId: docSnap.id,
                         name: d.name || '',
-                        fatherName: d.father || '',
-                        class: d.cls || '',
+                        fatherName: d.father || d.fatherName || '',
+                        class: normalizeClassName(d.cls || d.class || ''),
                         mobile: d.mobile || '',
                         address: d.address || '',
                         specificTime: d.specificTime || d.stopTime || d.pickupTime || '',
-                        vehicle: d.vehicle || 'v1',
-                        sortOrder: idx++,
-                        sourceId: docSnap.id,   // link to original
+                        vehicle: d.vehicle || 'v1'
+                    });
+                });
+
+                // Sort candidates class-wise
+                candidates.sort((a, b) => {
+                    const wA = getClassWeight(a.class);
+                    const wB = getClassWeight(b.class);
+                    if (wA !== wB) return wA - wB;
+                    return (a.name || '').localeCompare(b.name || '', 'hi');
+                });
+
+                const batch = writeBatch(db);
+                candidates.forEach((cand, idx) => {
+                    const newDocRef = doc(collection(db, TRANSPORT_COL));
+                    batch.set(newDocRef, {
+                        name: cand.name,
+                        fatherName: cand.fatherName,
+                        class: cand.class,
+                        mobile: cand.mobile,
+                        address: cand.address,
+                        specificTime: cand.specificTime,
+                        vehicle: cand.vehicle,
+                        sortOrder: idx,
+                        sourceId: cand.mainDocId,
                         active: true,
                         createdAt: Date.now(),
                         updatedAt: Date.now()
                     });
                 });
                 await batch.commit();
-                console.log(`Seeded ${idx} students into transport_students.`);
+                console.log(`Seeded ${candidates.length} students into transport_students.`);
             } catch (err) {
                 console.error("Seed error:", err);
             }
@@ -705,7 +1816,6 @@
                 let sortOrder = studentData.sortOrder;
 
                 if (!docId) {
-                    // New student — assign sortOrder at end
                     const maxOrder = students.length > 0 ? Math.max(...students.map(s => s.sortOrder)) : -1;
                     sortOrder = maxOrder + 1;
                     docId = doc(collection(db, TRANSPORT_COL)).id;
@@ -714,7 +1824,7 @@
                 await setDoc(doc(db, TRANSPORT_COL, docId), {
                     name: studentData.name,
                     fatherName: studentData.fatherName,
-                    class: studentData.class || '',
+                    class: normalizeClassName(studentData.class || ''),
                     mobile: studentData.mobile || '',
                     address: studentData.address || '',
                     specificTime: studentData.specificTime || '',
@@ -749,7 +1859,7 @@
             }
         }
 
-        // ─── VEHICLE NAMES (shared settings — same as before) ────────────────────
+        // ─── VEHICLE NAMES (shared settings) ────────────────────────────────────
         window.updateVehicleNamesInFirestore = async function (v1, v2) {
             if (!isFirebaseAvailable || !auth.currentUser) return;
             try {
@@ -764,11 +1874,9 @@
             const currentIdx = students.findIndex(s => s.id === id);
             if (currentIdx === -1) return;
 
-            // newPos is 1-based from user; clamp to valid range
             let targetIdx = Math.max(0, Math.min(students.length - 1, newPos - 1));
-            if (targetIdx === currentIdx) return; // no change
+            if (targetIdx === currentIdx) return;
 
-            // Rebuild order array
             const reordered = [...students];
             const [moved] = reordered.splice(currentIdx, 1);
             reordered.splice(targetIdx, 0, moved);
@@ -813,7 +1921,6 @@
             const tgtIdx = students.findIndex(s => s.id === targetId);
             if (srcIdx === -1 || tgtIdx === -1) return;
 
-            // Rebuild sortOrder: move src to target position
             const reordered = [...students];
             const [moved] = reordered.splice(srcIdx, 1);
             reordered.splice(tgtIdx, 0, moved);
@@ -840,10 +1947,10 @@
         window.openRecycleBin = async function () {
             document.getElementById('recycle-bin-modal').classList.add('active');
             const body = document.getElementById('recycle-bin-body');
-            body.innerHTML = '<div style="text-align:center;padding:30px;color:#94a3b8;"><i class="fa-solid fa-spinner fa-spin"></i> Loading...</div>';
+            body.innerHTML = '<div style="text-align:center;padding:30px;color:var(--slate-400);"><i class="fa-solid fa-spinner fa-spin"></i> Loading...</div>';
 
             if (!isFirebaseAvailable || !auth.currentUser) {
-                body.innerHTML = '<div style="text-align:center;padding:30px;color:#94a3b8;">Offline mode — Recycle Bin unavailable.</div>';
+                body.innerHTML = '<div style="text-align:center;padding:30px;color:var(--slate-400);">Offline mode — Recycle Bin unavailable.</div>';
                 return;
             }
             try {
@@ -852,21 +1959,21 @@
                 snap.forEach(d => { if (d.data().active === false) deleted.push({ id: d.id, ...d.data() }); });
 
                 if (deleted.length === 0) {
-                    body.innerHTML = '<div style="text-align:center;padding:30px;color:#94a3b8;"><i class="fa-solid fa-trash-can" style="font-size:32px;margin-bottom:10px;"></i><br>Recycle Bin खाली है।</div>';
+                    body.innerHTML = '<div style="text-align:center;padding:30px;color:var(--slate-400);"><i class="fa-solid fa-trash-can" style="font-size:32px;margin-bottom:10px;"></i><br>Recycle Bin खाली है।</div>';
                     return;
                 }
 
-                let html = '<table class="rb-table"><thead><tr><th>Student</th><th>Class</th><th>Vehicle</th><th style="text-align:center;">Actions</th></tr></thead><tbody>';
+                let html = '<table class="modern-table" style="font-size:0.8rem;"><thead><tr><th>छात्र का नाम</th><th>कक्षा</th><th>वाहन</th><th style="text-align:center;">कार्रवाई</th></tr></thead><tbody>';
                 deleted.forEach(s => {
                     const vName = s.vehicle === 'v1' ? vehicleNames.v1 : vehicleNames.v2;
                     html += `<tr>
-                        <td><div style="font-weight:600;">${s.name}</div><div style="font-size:11px;color:#64748b;">${s.fatherName || ''}</div></td>
-                        <td>${s.class || '-'}</td>
+                        <td><div style="font-weight:700; color:var(--slate-900);">${s.name}</div><div style="font-size:0.72rem;color:var(--slate-500);">${s.fatherName || ''}</div></td>
+                        <td>${normalizeClassName(s.class || '') || '-'}</td>
                         <td>${vName}</td>
                         <td style="text-align:center;">
                             <div style="display:flex;gap:6px;justify-content:center;">
-                                <button onclick="restoreStudent('${s.id}')" class="btn btn-sm btn-success" title="Restore" style="padding:4px 10px;font-size:11px;"><i class="fa-solid fa-rotate-left"></i> Restore</button>
-                                <button onclick="permanentDeleteStudent('${s.id}', '${s.name}')" class="btn btn-sm" style="padding:4px 10px;font-size:11px;background:#fef2f2;color:#dc2626;border:1px solid #fca5a5;" title="Permanently Delete"><i class="fa-solid fa-xmark"></i> Delete</button>
+                                <button onclick="restoreStudent('${s.id}')" class="btn btn-sm btn-primary" style="padding:4px 10px;" title="Restore"><i class="fa-solid fa-rotate-left"></i> Restore</button>
+                                <button onclick="permanentDeleteStudent('${s.id}', '${s.name}')" class="btn btn-sm btn-danger-outline" style="padding:4px 10px;" title="Permanently Delete"><i class="fa-solid fa-xmark"></i> Delete</button>
                             </div>
                         </td>
                     </tr>`;
@@ -874,7 +1981,7 @@
                 html += '</tbody></table>';
                 body.innerHTML = html;
             } catch (err) {
-                body.innerHTML = '<div style="color:#dc2626;padding:20px;">Error loading recycle bin.</div>';
+                body.innerHTML = '<div style="color:var(--danger);padding:20px;">Error loading recycle bin.</div>';
             }
         }
 
@@ -891,7 +1998,7 @@
                     deletedAt: null,
                     updatedAt: Date.now()
                 });
-                openRecycleBin(); // refresh bin
+                openRecycleBin();
             } catch (err) {
                 showCustomDialog("त्रुटि", "Restore करने में विफल।", "error");
             }
@@ -899,8 +2006,8 @@
 
         window.permanentDeleteStudent = async function (id, name) {
             const actionHtml = `
-                <button onclick="closeDialog()" class="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-lg transition">रद्द करें</button>
-                <button onclick="doPermanentDelete('${id}')" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-xs font-semibold rounded-lg transition">हाँ, हमेशा के लिए Delete करें</button>
+                <button onclick="closeDialog()" class="btn btn-outline">रद्द करें</button>
+                <button onclick="doPermanentDelete('${id}')" class="btn btn-primary" style="background:var(--danger);">हाँ, हमेशा के लिए Delete करें</button>
             `;
             showCustomDialog("Permanent Delete?", `"${name}" को हमेशा के लिए delete करें? यह वापस नहीं आएगा।`, "warning", actionHtml);
         }
@@ -916,71 +2023,85 @@
         }
 
         // ─── IMPORT FROM MAIN DB ──────────────────────────────────────────────────
-        let importCandidates = []; // [{mainDocId, name, fatherName, class, ...}, ...]
+        let importCandidates = [];
 
         window.openImportModal = async function () {
             document.getElementById('import-modal').classList.add('active');
             const body = document.getElementById('import-modal-body');
             const statusEl = document.getElementById('import-status-text');
-            body.innerHTML = '<div style="text-align:center;padding:30px;color:#94a3b8;"><i class="fa-solid fa-spinner fa-spin"></i> Loading...</div>';
+            body.innerHTML = '<div style="text-align:center;padding:30px;color:var(--slate-400);"><i class="fa-solid fa-spinner fa-spin"></i> Loading...</div>';
             importCandidates = [];
 
             if (!isFirebaseAvailable || !auth.currentUser) {
-                body.innerHTML = '<div style="text-align:center;padding:30px;color:#94a3b8;">Offline mode — Import unavailable.</div>';
+                body.innerHTML = '<div style="text-align:center;padding:30px;color:var(--slate-400);">Offline mode — Import unavailable.</div>';
                 return;
             }
             try {
-                // Collect already-imported sourceIds
                 const transportSnap = await getDocs(collection(db, TRANSPORT_COL));
                 const importedSourceIds = new Set();
                 transportSnap.forEach(d => { if (d.data().sourceId) importedSourceIds.add(d.data().sourceId); });
 
-                // Fetch main DB
                 const mainSnap = await getDocs(collection(db, MAIN_COL));
-                let html = '<table class="import-table"><thead><tr><th style="width:40px;"></th><th>Student</th><th>Class</th><th>Vehicle</th><th>Address</th><th>Status</th></tr></thead><tbody>';
                 let newCount = 0, alreadyCount = 0;
+                const rawCandidates = [];
 
                 mainSnap.forEach((docSnap) => {
                     const d = docSnap.data();
-                    if (!d.bus) return;
+                    const isBus = d.bus === true || d.bus === 'yes' || d.bus === 1 || d.bus === 'true' || d.busAvailing === true;
+                    if (!isBus) return;
                     const alreadyImported = importedSourceIds.has(docSnap.id);
                     const vName = d.vehicle === 'v1' ? vehicleNames.v1 : vehicleNames.v2;
                     const student = {
                         mainDocId: docSnap.id,
                         name: d.name || '',
-                        fatherName: d.father || '',
-                        class: d.cls || '',
+                        fatherName: d.father || d.fatherName || '',
+                        class: normalizeClassName(d.cls || d.class || ''),
                         mobile: d.mobile || '',
                         address: d.address || '',
                         specificTime: d.specificTime || d.stopTime || d.pickupTime || '',
-                        vehicle: d.vehicle || 'v1'
+                        vehicle: d.vehicle || 'v1',
+                        alreadyImported,
+                        vName
                     };
                     if (!alreadyImported) {
-                        importCandidates.push(student);
                         newCount++;
                     } else {
                         alreadyCount++;
                     }
+                    rawCandidates.push(student);
+                });
+
+                rawCandidates.sort((a, b) => {
+                    const wA = getClassWeight(a.class);
+                    const wB = getClassWeight(b.class);
+                    if (wA !== wB) return wA - wB;
+                    return (a.name || '').localeCompare(b.name || '', 'hi');
+                });
+
+                importCandidates = rawCandidates.filter(s => !s.alreadyImported);
+
+                let html = '<table class="modern-table" style="font-size:0.8rem;"><thead><tr><th style="width:40px; text-align:center;"></th><th>छात्र का नाम</th><th>कक्षा</th><th>वाहन</th><th>पता</th><th>स्थिति</th></tr></thead><tbody>';
+                rawCandidates.forEach(student => {
                     html += `<tr>
                         <td style="text-align:center;">
-                            ${alreadyImported
-                            ? '<i class="fa-solid fa-circle-check" style="color:#16a34a;font-size:16px;" title="Already imported"></i>'
-                            : `<input type="checkbox" class="import-cb" data-id="${docSnap.id}" checked style="width:16px;height:16px;cursor:pointer;">`
+                            ${student.alreadyImported
+                            ? '<i class="fa-solid fa-circle-check" style="color:var(--success);font-size:16px;" title="Already imported"></i>'
+                            : `<input type="checkbox" class="import-cb" data-id="${student.mainDocId}" checked style="width:16px;height:16px;cursor:pointer;">`
                         }
                         </td>
-                        <td><div style="font-weight:600;">${student.name}</div><div style="font-size:11px;color:#64748b;">${student.fatherName}</div></td>
-                        <td>${student.class || '-'}</td>
-                        <td>${vName}</td>
-                        <td style="font-size:11px;color:#64748b;">${student.address || '-'}</td>
-                        <td>${alreadyImported
-                            ? '<span style="color:#16a34a;font-size:11px;font-weight:600;">✓ Imported</span>'
-                            : '<span style="color:#f59e0b;font-size:11px;font-weight:600;">New</span>'
+                        <td><div style="font-weight:700; color:var(--slate-900);">${student.name}</div><div style="font-size:0.72rem;color:var(--slate-500);">${student.fatherName}</div></td>
+                        <td><span style="font-weight:700; color:var(--slate-700);">${student.class || '-'}</span></td>
+                        <td>${student.vName}</td>
+                        <td style="font-size:0.74rem;color:var(--slate-500);">${student.address || '-'}</td>
+                        <td>${student.alreadyImported
+                            ? '<span style="color:var(--success);font-size:0.75rem;font-weight:700;">✓ Imported</span>'
+                            : '<span style="color:var(--accent);font-size:0.75rem;font-weight:700;">New</span>'
                         }</td>
                     </tr>`;
                 });
                 html += '</tbody></table>';
                 body.innerHTML = html;
-                statusEl.textContent = `${newCount} new students available, ${alreadyCount} already imported.`;
+                statusEl.textContent = `${newCount} नए छात्र उपलब्ध, ${alreadyCount} पहले से आयातित।`;
 
                 if (newCount === 0) {
                     document.getElementById('import-confirm-btn').disabled = true;
@@ -988,7 +2109,7 @@
                 }
             } catch (err) {
                 console.error("Import load error:", err);
-                body.innerHTML = '<div style="color:#dc2626;padding:20px;">Error loading main DB.</div>';
+                body.innerHTML = '<div style="color:var(--danger);padding:20px;">Error loading main DB.</div>';
             }
         }
 
@@ -1019,13 +2140,13 @@
                     batch.set(newRef, {
                         name: s.name,
                         fatherName: s.fatherName,
-                        class: s.class || '',
+                        class: normalizeClassName(s.class || ''),
                         mobile: s.mobile || '',
                         address: s.address || '',
                         specificTime: s.specificTime || '',
                         vehicle: s.vehicle,
                         sortOrder: maxOrder + 1 + i,
-                        sourceId: s.mainDocId,  // unique link — prevents re-import
+                        sourceId: s.mainDocId,
                         active: true,
                         createdAt: Date.now(),
                         updatedAt: Date.now()
@@ -1033,7 +2154,7 @@
                 });
                 await batch.commit();
                 closeImportModal();
-                showCustomDialog("Import सफल!", `${toImport.length} student(s) transport list में add हो गए।`, "info");
+                showCustomDialog("Import सफल!", `${toImport.length} छात्र परिवहन सूची में शामिल हो गए।`, "info");
             } catch (err) {
                 console.error("Import error:", err);
                 showCustomDialog("त्रुटि", "Import विफल।", "error");
@@ -1043,18 +2164,104 @@
             }
         }
 
-        // Offline Fallback Implementations
+        // ─── 12:30 PM KG STOP-WISE SCHEDULE MODAL ────────────────────────────────
+        window.openKGScheduleModal = function () {
+            const modal = document.getElementById('kg-schedule-modal');
+            if (!modal) return;
+            modal.classList.add('active');
+
+            const body = document.getElementById('kg-schedule-body');
+            const countBadge = document.getElementById('kg-modal-count-badge');
+            const kgStudents = students.filter(s => isKGStudent(s.class));
+
+            if (countBadge) countBadge.innerText = `${kgStudents.length} छात्र (${vehicleNames.v2})`;
+
+            if (kgStudents.length === 0) {
+                body.innerHTML = '<div style="text-align:center; padding:30px; color:var(--slate-400);"><i class="fa-solid fa-users-slash text-2xl mb-2"></i><p>वर्तमान में कोई KG-I या KG-II छात्र पंजीकृत नहीं है।</p></div>';
+                return;
+            }
+
+            let html = '<div class="tbl-responsive" style="max-height:300px;"><table class="modern-table" style="font-size:0.8rem;">';
+            html += '<thead><tr>';
+            html += '<th style="width:36px; text-align:center;">क्र.</th>';
+            html += '<th>छात्र एवं पिता का नाम</th>';
+            html += '<th style="text-align:center;">कक्षा</th>';
+            html += '<th>सुबह पिकअप</th>';
+            html += '<th style="background:#fef3c7; color:#92400e;">12:30 PM वापसी स्टॉप एवं समय</th>';
+            html += '<th>पता / संपर्क</th>';
+            html += '</tr></thead><tbody>';
+
+            kgStudents.forEach((student, idx) => {
+                const sched = getStudentSchedule(student);
+                html += `<tr>
+                    <td style="text-align:center; font-weight:700;">${idx + 1}</td>
+                    <td>
+                        <div style="font-weight:700; color:var(--slate-900);">${student.name}</div>
+                        <div style="font-size:0.72rem; color:var(--slate-500);">पिता: ${student.fatherName || '-'}</div>
+                    </td>
+                    <td style="text-align:center;"><span class="shift-badge v2">${student.class}</span></td>
+                    <td>
+                        <span class="shift-badge v1">${sched.morningVehicleName}</span>
+                        ${student.specificTime ? `<div style="font-size:0.72rem; color:var(--slate-500); margin-top:2px;"><i class="fa-regular fa-clock"></i> ${student.specificTime}</div>` : ''}
+                    </td>
+                    <td style="background:#fefce8;">
+                        <div style="font-weight:800; color:#b45309; display:flex; align-items:center; gap:4px;">
+                            <i class="fa-solid fa-clock"></i> ${sched.returnTime}
+                        </div>
+                        <div style="font-size:0.74rem; color:#854d0e; margin-top:2px;">
+                            <i class="fa-solid fa-location-dot"></i> ${sched.returnStopName}
+                        </div>
+                    </td>
+                    <td>
+                        <div style="font-size:0.74rem; color:var(--slate-600);">${student.address || '-'}</div>
+                        ${student.mobile ? `<div style="font-size:0.72rem; color:var(--primary); margin-top:2px;"><i class="fa-solid fa-phone"></i> ${student.mobile}</div>` : ''}
+                    </td>
+                </tr>`;
+            });
+
+            html += '</tbody></table></div>';
+            body.innerHTML = html;
+        };
+
+        window.closeKGScheduleModal = function () {
+            const modal = document.getElementById('kg-schedule-modal');
+            if (modal) modal.classList.remove('active');
+        };
+
+        // ─── VEHICLE RENAME MODAL ───────────────────────────────────────────────
+        window.openVehicleRenameModal = function () {
+            document.getElementById('v1-name-input').value = vehicleNames.v1;
+            document.getElementById('v2-name-input').value = vehicleNames.v2;
+            document.getElementById('vehicle-rename-modal').classList.add('active');
+        };
+
+        window.closeVehicleRenameModal = function () {
+            document.getElementById('vehicle-rename-modal').classList.remove('active');
+        };
+
+        window.saveVehicleNamesFromModal = function () {
+            const v1 = document.getElementById('v1-name-input').value.trim() || "Vehicle 1";
+            const v2 = document.getElementById('v2-name-input').value.trim() || "Vehicle 2";
+            vehicleNames.v1 = v1;
+            vehicleNames.v2 = v2;
+            updateVehicleLabelsUI();
+            updateVehicleNamesInFirestore(v1, v2);
+            closeVehicleRenameModal();
+            generatePrintPreview();
+        };
+
+        // Offline Fallback
         function initSampleOfflineData() {
             vehicleNames.v1 = "Vehicle 1";
             vehicleNames.v2 = "Vehicle 2";
             updateVehicleLabelsUI();
 
             students = [
-                { id: "1", name: "राहुल शर्मा", fatherName: "श्री विजय शर्मा", class: "कक्षा 8", address: "सिविल लाइंस, बाराबंकी", specificTime: "07:30 AM", vehicle: "v1" },
-                { id: "2", name: "अमित वर्मा", fatherName: "श्री रमेश वर्मा", class: "कक्षा 5", address: "पटेल चौराहा, बाराबंकी", specificTime: "07:40 AM", vehicle: "v1" },
-                { id: "3", name: "प्रिया गुप्ता", fatherName: "श्री अरुण गुप्ता", class: "कक्षा 10", address: "लखपेड़ाबाग, बाराबंकी", specificTime: "07:15 AM", vehicle: "v2" },
-                { id: "4", name: "किरण यादव", fatherName: "श्री लालजी यादव", class: "कक्षा 6", address: "मुंशीगंज, बाराबंकी", specificTime: "07:25 AM", vehicle: "v2" },
-                { id: "5", name: "सुमित दीक्षित", fatherName: "श्री आलोक दीक्षित", class: "कक्षा 12", address: "छाया चौराहा, बाराबंकी", specificTime: "07:50 AM", vehicle: "v1" }
+                { id: "1", name: "राहुल शर्मा", fatherName: "श्री विजय शर्मा", class: "8th", address: "सिविल लाइंस, बाराबंकी", specificTime: "07:30 AM", vehicle: "v1", sortOrder: 0 },
+                { id: "2", name: "अमित वर्मा", fatherName: "श्री रमेश वर्मा", class: "5th", address: "पटेल चौराहा, बाराबंकी", specificTime: "07:40 AM", vehicle: "v1", sortOrder: 1 },
+                { id: "3", name: "प्रिया गुप्ता", fatherName: "श्री अरुण गुप्ता", class: "KG-I", address: "लखपेड़ाबाग, बाराबंकी", specificTime: "07:15 AM", vehicle: "v2", sortOrder: 2 },
+                { id: "4", name: "किरण यादव", fatherName: "श्री लालजी यादव", class: "KG-II", address: "मुंशीगंज, बाराबंकी", specificTime: "07:25 AM", vehicle: "v2", sortOrder: 3 },
+                { id: "5", name: "सुमित दीक्षित", fatherName: "श्री आलोक दीक्षित", class: "1st", address: "छाया चौराहा, बाराबंकी", specificTime: "07:50 AM", vehicle: "v1", sortOrder: 4 }
             ];
             calculateStats();
             applyFiltersAndRender();
@@ -1067,6 +2274,7 @@
                 if (index !== -1) students[index] = studentData;
             } else {
                 studentData.id = crypto.randomUUID();
+                studentData.sortOrder = students.length;
                 students.push(studentData);
             }
             calculateStats();
@@ -1083,121 +2291,154 @@
             closeDialog();
         }
 
-        // Initialize Setup on Window Load
         window.addEventListener('load', () => {
             setupFirebaseAuth();
             updateVehicleLabelsUI();
         });
 
-
-        // =========================================================
-        // Application Business Logic & Interactions
-        // =========================================================
-
-        // Calculate Statistics
+        // ─── Stats Calculation ───────────────────────────────────────────────────
         function calculateStats() {
             const total = students.length;
             const v1Count = students.filter(s => s.vehicle === 'v1').length;
             const v2Count = students.filter(s => s.vehicle === 'v2').length;
+            const retKgCount = students.filter(s => isKGStudent(s.class)).length;
+            const retPrmCount = students.filter(s => !isKGStudent(s.class)).length;
 
             const badge = document.getElementById('total-student-badge');
-            if (badge) badge.innerText = `कुल: ${total} छात्र`;
+            if (badge) badge.innerText = total;
 
             const v1El = document.getElementById('v1-count');
-            if (v1El) v1El.innerText = v1Count;
+            if (v1El) v1El.innerText = `${v1Count} छात्र`;
 
             const v2El = document.getElementById('v2-count');
-            if (v2El) v2El.innerText = v2Count;
+            if (v2El) v2El.innerText = `${v2Count} छात्र`;
+
+            const retKgEl = document.getElementById('ret-kg-count');
+            if (retKgEl) retKgEl.innerText = `${retKgCount} छात्र`;
+
+            const retPrmEl = document.getElementById('ret-prm-count');
+            if (retPrmEl) retPrmEl.innerText = `${retPrmCount} छात्र`;
         }
 
-        // Update customized Vehicle Names across dynamic UI elements
         function updateVehicleLabelsUI() {
             const v1Input = document.getElementById('v1-name-input');
             const v2Input = document.getElementById('v2-name-input');
             if (v1Input) v1Input.value = vehicleNames.v1;
             if (v2Input) v2Input.value = vehicleNames.v2;
 
+            const v1Label = document.getElementById('v1-title-label');
+            const v2Label = document.getElementById('v2-title-label');
+            if (v1Label) v1Label.innerText = `${vehicleNames.v1}:`;
+            if (v2Label) v2Label.innerText = `${vehicleNames.v2}:`;
+
             const fv1 = document.getElementById('filter-btn-v1');
             const fv2 = document.getElementById('filter-btn-v2');
-            if (fv1) fv1.innerText = vehicleNames.v1;
-            if (fv2) fv2.innerText = vehicleNames.v2;
+            if (fv1) fv1.innerText = `Morning ${vehicleNames.v1}`;
+            if (fv2) fv2.innerText = `Morning ${vehicleNames.v2}`;
+
+            const retKgVName = document.getElementById('ret-kg-vname');
+            const retPrmVName = document.getElementById('ret-prm-vname');
+            if (retKgVName) retKgVName.innerText = vehicleNames.v2;
+            if (retPrmVName) retPrmVName.innerText = vehicleNames.v1;
 
             const pv1 = document.getElementById('print-filter-v1-label');
             const pv2 = document.getElementById('print-filter-v2-label');
-            if (pv1) pv1.innerText = `केवल ${vehicleNames.v1} के छात्र`;
-            if (pv2) pv2.innerText = `केवल ${vehicleNames.v2} के छात्र`;
+            const pRetKg = document.getElementById('print-filter-ret-kg-label');
+            const pRetPrm = document.getElementById('print-filter-ret-prm-label');
+            if (pv1) pv1.innerText = `Morning: केवल ${vehicleNames.v1}`;
+            if (pv2) pv2.innerText = `Morning: केवल ${vehicleNames.v2}`;
+            if (pRetKg) pRetKg.innerText = `Return: 12:30 PM (KG-I & KG-II by ${vehicleNames.v2})`;
+            if (pRetPrm) pRetPrm.innerText = `Return: 01:30 PM (Class 1-8 by ${vehicleNames.v1})`;
 
             const formv1 = document.getElementById('form-v1-label');
             const formv2 = document.getElementById('form-v2-label');
             if (formv1) formv1.innerText = vehicleNames.v1;
             if (formv2) formv2.innerText = vehicleNames.v2;
+
+            updateModalSchedulePreview();
         }
 
-        window.updateVehicleNames = function () {
-            const v1 = document.getElementById('v1-name-input').value.trim() || "Vehicle 1";
-            const v2 = document.getElementById('v2-name-input').value.trim() || "Vehicle 2";
+        window.updateModalSchedulePreview = function () {
+            const clsInput = document.getElementById('form-class');
+            const hintBox = document.getElementById('modal-schedule-hint');
+            if (!hintBox) return;
 
-            vehicleNames.v1 = v1;
-            vehicleNames.v2 = v2;
-            updateVehicleLabelsUI();
+            const cls = clsInput ? clsInput.value.trim() : '';
+            if (isKGStudent(cls)) {
+                hintBox.style.background = '#fef3c7';
+                hintBox.style.color = '#92400e';
+                hintBox.style.borderColor = '#fde68a';
+                hintBox.innerHTML = `<i class="fa-solid fa-clock-rotate-left"></i> <b>KG वापसी शेड्यूल:</b> यह छात्र <b>दोपहर 12:30 बजे ${vehicleNames.v2}</b> से घर जाएगा।`;
+            } else {
+                hintBox.style.background = '#e0e7ff';
+                hintBox.style.color = '#3730a3';
+                hintBox.style.borderColor = '#c7d2fe';
+                hintBox.innerHTML = `<i class="fa-solid fa-clock-rotate-left"></i> <b>कक्षा 1-8 वापसी शेड्यूल:</b> यह छात्र <b>दोपहर 01:30 बजे (13:30) ${vehicleNames.v1}</b> से घर जाएगा।`;
+            }
+        };
 
-            updateVehicleNamesInFirestore(v1, v2);
-            generatePrintPreview();
-        }
-
-        // Filter and Search
+        // ─── Filter & Search Handlers ────────────────────────────────────────────
         window.setFilter = function (filterVal) {
             currentVehicleFilter = filterVal;
 
-            ['all', 'v1', 'v2'].forEach(v => {
+            ['all', 'v1', 'v2', 'ret-kg', 'ret-prm'].forEach(v => {
                 const btn = document.getElementById(`filter-btn-${v}`);
                 if (btn) {
                     if (v === filterVal) {
-                        btn.className = "btn btn-sm btn-primary";
+                        btn.classList.add('active');
                     } else {
-                        btn.className = "btn btn-sm btn-outline";
+                        btn.classList.remove('active');
                     }
                 }
             });
 
             applyFiltersAndRender();
-        }
+        };
 
-        // Filter student list based on Search query & selected vehicle
         window.applyFiltersAndRender = function () {
             const searchInput = document.getElementById('search-input');
             const searchQuery = searchInput ? searchInput.value.toLowerCase().trim() : '';
+            const classFilterEl = document.getElementById('filter-class');
+            const classFilter = classFilterEl ? classFilterEl.value.trim() : '';
 
             const filtered = students.filter(student => {
-                // Vehicle Filter Check
-                if (currentVehicleFilter !== 'all' && student.vehicle !== currentVehicleFilter) {
-                    return false;
-                }
-                // Search Query Check
+                const normStudentCls = normalizeClassName(student.class);
+
+                if (classFilter && normStudentCls !== normalizeClassName(classFilter)) return false;
+
+                if (currentVehicleFilter === 'v1' && student.vehicle !== 'v1') return false;
+                if (currentVehicleFilter === 'v2' && student.vehicle !== 'v2') return false;
+                if (currentVehicleFilter === 'ret-kg' && !isKGStudent(student.class)) return false;
+                if (currentVehicleFilter === 'ret-prm' && isKGStudent(student.class)) return false;
+
                 if (searchQuery) {
                     const matchName = (student.name || '').toLowerCase().includes(searchQuery);
                     const matchFather = (student.fatherName || '').toLowerCase().includes(searchQuery);
-                    return matchName || matchFather;
+                    const matchClass = (student.class || '').toLowerCase().includes(searchQuery) || normStudentCls.toLowerCase().includes(searchQuery);
+                    const matchAddress = (student.address || '').toLowerCase().includes(searchQuery);
+                    const matchPhone = (student.mobile || '').includes(searchQuery);
+                    return matchName || matchFather || matchClass || matchAddress || matchPhone;
                 }
                 return true;
             });
 
             renderStudentTable(filtered);
-        }
+        };
 
-        // Render Student UI list
+        // ─── Render Table ────────────────────────────────────────────────────────
         function renderStudentTable(studentList) {
             const tableBody = document.getElementById('student-table-body');
             const rCount = document.getElementById('rendered-count');
-            if (rCount) rCount.innerText = studentList.length;
+            if (rCount) rCount.innerText = `${studentList.length} छात्र`;
             if (!tableBody) return;
 
             if (studentList.length === 0) {
                 tableBody.innerHTML = `
                     <tr>
-                        <td colspan="9" class="px-4 py-8 text-center text-slate-400">
-                            <i class="fa-solid fa-users-slash text-2xl mb-2 text-slate-300"></i>
-                            <p>कोई छात्र नहीं मिला। कृपया फ़िल्टर बदलें या नया छात्र जोड़ें।</p>
+                        <td colspan="9" style="text-align:center; padding:50px 20px; color:var(--slate-400);">
+                            <i class="fa-solid fa-users-slash" style="font-size:32px; margin-bottom:12px; color:var(--slate-300);"></i>
+                            <p style="font-weight:600; font-size:0.9rem; color:var(--slate-600);">कोई छात्र नहीं मिला</p>
+                            <p style="font-size:0.78rem; margin-top:4px;">कृपया फ़िल्टर बदलें या नया छात्र जोड़ें।</p>
                         </td>
                     </tr>
                 `;
@@ -1205,21 +2446,27 @@
             }
 
             tableBody.innerHTML = studentList.map((student, index) => {
-                const vName = student.vehicle === 'v1' ? vehicleNames.v1 : vehicleNames.v2;
-                const vBadgeStyle = student.vehicle === 'v1' ? 'bg-indigo-50 text-indigo-700 border-indigo-200' : 'bg-amber-50 text-amber-700 border-amber-200';
+                const sched = getStudentSchedule(student);
                 const srNum = index + 1;
+                const initial = student.name ? student.name.charAt(0).toUpperCase() : 'S';
+
+                const mBadgeClass = sched.morningVehicle === 'v1' ? 'v1' : 'v2';
+                const rBadgeClass = sched.isKG ? 'kg-return' : 'prm-return';
+
+                const classBadge = sched.isKG
+                    ? `<span class="shift-badge v2">${student.class || '-'}</span>`
+                    : `<span style="font-weight:700; color:var(--slate-800);">${student.class || '-'}</span>`;
 
                 return `
-                    <tr class="hover:bg-slate-50/80 transition-all"
-                        draggable="true"
+                    <tr draggable="true"
                         ondragstart="onDragStart(event, '${student.id}')"
                         ondragover="onDragOver(event, this)"
                         ondragleave="onDragLeave(this)"
                         ondrop="onDrop(event, '${student.id}')">
-                        <td class="px-2 py-3.5 text-center">
-                            <span class="drag-handle" title="Drag to reorder">&#8942;&#8942;</span>
+                        <td style="text-align: center;">
+                            <span class="drag-handle" title="क्रम बदलने हेतु Drag करें"><i class="fa-solid fa-grip-vertical"></i></span>
                         </td>
-                        <td class="py-3.5 text-center" style="padding:4px;">
+                        <td style="text-align: center; padding: 4px;">
                             <input
                                 type="number"
                                 class="sr-input"
@@ -1234,31 +2481,53 @@
                                 onblur="handleSrEdit(this)"
                             />
                         </td>
-                        <td class="px-4 py-3.5">
-                            <div class="font-semibold text-slate-900">${student.name}</div>
-                            <div class="text-[11px] text-slate-500 flex items-center gap-1">
-                                <span class="bg-slate-100 text-slate-600 px-1.5 py-0.2 rounded text-[10px]">पिता</span>
-                                ${student.fatherName}
+                        <td>
+                            <div class="student-cell">
+                                <div class="avatar-initial">${initial}</div>
+                                <div>
+                                    <div class="student-info-name">${student.name}</div>
+                                    <div class="student-info-father"><span style="background:var(--slate-100); padding:1px 4px; border-radius:3px;">पिता</span> ${student.fatherName}</div>
+                                </div>
                             </div>
                         </td>
-                        <td class="px-4 py-3.5 text-slate-700 font-medium">${student.class || '<span class="text-slate-300">-</span>'}</td>
-                        <td class="px-4 py-3.5 text-slate-600">${student.mobile ? `<a href="tel:${student.mobile}" class="flex items-center gap-1 hover:text-indigo-600 transition" title="Call"><i class="fa-solid fa-phone text-[10px] text-slate-400"></i> ${student.mobile}</a>` : '<span class="text-slate-300">-</span>'}</td>
-                        <td class="px-4 py-3.5">
-                            <span class="px-2.5 py-1 border rounded-full text-[11px] font-semibold ${vBadgeStyle}">
-                                ${vName}
-                            </span>
+                        <td style="text-align: center;">${classBadge}</td>
+                        <td>
+                            ${student.mobile 
+                                ? `<a href="tel:${student.mobile}" style="color:var(--slate-700); text-decoration:none; display:inline-flex; align-items:center; gap:4px; font-weight:600;" title="कॉल करें"><i class="fa-solid fa-phone" style="font-size:10px; color:var(--primary);"></i> ${student.mobile}</a>`
+                                : '<span style="color:var(--slate-300);">-</span>'
+                            }
                         </td>
-                        <td class="px-4 py-3.5 text-slate-500 max-w-xs truncate" title="${student.address || ''}">${student.address || '<span class="text-slate-300">-</span>'}</td>
-                        <td class="px-4 py-3.5">
-                            ${student.specificTime ? `<span class="px-2.5 py-1 border rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-700 border-emerald-200 flex items-center gap-1 w-fit"><i class="fa-regular fa-clock text-[10px]"></i> ${student.specificTime}</span>` : '<span class="text-slate-300">-</span>'}
+                        <td>
+                            <div style="display:flex; flex-direction:column; gap:2px;">
+                                <span class="shift-badge ${mBadgeClass}">
+                                    <i class="fa-solid fa-van-shuttle" style="font-size:10px;"></i> ${sched.morningVehicleName}
+                                </span>
+                                ${student.specificTime ? `<span style="font-size:0.72rem; color:var(--slate-500); display:flex; align-items:center; gap:3px;"><i class="fa-regular fa-clock" style="font-size:9px;"></i> ${student.specificTime}</span>` : ''}
+                            </div>
                         </td>
-                        <td class="px-4 py-3.5 text-center">
-                            <div class="flex justify-center items-center gap-1.5">
-                                <button onclick="openEditStudentModal('${student.id}')" class="p-1.5 hover:bg-indigo-50 text-indigo-600 hover:text-indigo-800 rounded-lg transition" title="विवरण बदलें">
-                                    <i class="fa-solid fa-pen text-sm"></i>
+                        <td>
+                            <div style="display:flex; flex-direction:column; gap:2px;">
+                                <span class="shift-badge ${rBadgeClass}">
+                                    <i class="fa-solid fa-clock-rotate-left" style="font-size:10px;"></i> ${sched.returnVehicleName} &bull; ${sched.returnTime}
+                                </span>
+                                ${sched.isKG 
+                                    ? `<span style="font-size:0.72rem; color:#c2410c; font-weight:700; display:flex; align-items:center; gap:3px;" title="${sched.returnStopName}"><i class="fa-solid fa-location-dot" style="font-size:9px;"></i> ${sched.returnStopName}</span>` 
+                                    : `<span style="font-size:0.72rem; color:#15803d; font-weight:700;">★ 01:30 PM (Class 1-8)</span>`
+                                }
+                            </div>
+                        </td>
+                        <td>
+                            <div style="font-size:0.78rem; color:var(--slate-600); max-width:200px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="${student.address || ''}">
+                                ${student.address || '<span style="color:var(--slate-300);">-</span>'}
+                            </div>
+                        </td>
+                        <td>
+                            <div class="action-btns">
+                                <button onclick="openEditStudentModal('${student.id}')" class="icon-btn edit" title="विवरण बदलें">
+                                    <i class="fa-solid fa-pen-to-square"></i>
                                 </button>
-                                <button onclick="confirmDeleteStudent('${student.id}', '${student.name}')" class="p-1.5 hover:bg-red-50 text-red-500 hover:text-red-700 rounded-lg transition" title="Recycle Bin में भेजें">
-                                    <i class="fa-solid fa-trash text-sm"></i>
+                                <button onclick="confirmDeleteStudent('${student.id}', '${student.name}')" class="icon-btn delete" title="Recycle Bin में भेजें">
+                                    <i class="fa-solid fa-trash-can"></i>
                                 </button>
                             </div>
                         </td>
@@ -1273,14 +2542,12 @@
             const original = parseInt(inputEl.dataset.original, 10);
             const newPos = parseInt(inputEl.value, 10);
 
-            // Validate
             if (isNaN(newPos) || newPos < 1 || newPos > students.length) {
-                inputEl.value = original; // revert
+                inputEl.value = original;
                 return;
             }
-            if (newPos === original) return; // no change
+            if (newPos === original) return;
 
-            // Visual feedback: flash the input
             inputEl.style.background = '#dcfce7';
             inputEl.style.borderColor = '#16a34a';
             setTimeout(() => {
@@ -1289,7 +2556,7 @@
             }, 600);
 
             moveToPosition(id, newPos);
-        }
+        };
 
         // Navigation Tab Switching
         window.switchTab = function (tabName) {
@@ -1300,36 +2567,36 @@
             const contentPreview = document.getElementById('tab-content-preview');
 
             if (tabName === 'list') {
-                if (tabList) tabList.className = "flex-1 py-2.5 text-xs sm:text-sm font-semibold rounded-lg text-center transition-all bg-indigo-50 text-indigo-700";
-                if (tabPreview) tabPreview.className = "flex-1 py-2.5 text-xs sm:text-sm font-semibold rounded-lg text-center transition-all text-slate-600 hover:text-slate-900 hover:bg-slate-50";
+                if (tabList) tabList.classList.add('active');
+                if (tabPreview) tabPreview.classList.remove('active');
                 if (contentList) contentList.classList.remove('hidden');
                 if (contentPreview) contentPreview.classList.add('hidden');
             } else {
-                if (tabPreview) tabPreview.className = "flex-1 py-2.5 text-xs sm:text-sm font-semibold rounded-lg text-center transition-all bg-indigo-50 text-indigo-700";
-                if (tabList) tabList.className = "flex-1 py-2.5 text-xs sm:text-sm font-semibold rounded-lg text-center transition-all text-slate-600 hover:text-slate-900 hover:bg-slate-50";
+                if (tabPreview) tabPreview.classList.add('active');
+                if (tabList) tabList.classList.remove('active');
                 if (contentPreview) contentPreview.classList.remove('hidden');
                 if (contentList) contentList.classList.add('hidden');
                 generatePrintPreview();
             }
-        }
+        };
 
         // Student Modal Handlers
         window.openAddStudentModal = function () {
-            document.getElementById('modal-title').innerText = "नया छात्र जोड़े";
+            document.getElementById('modal-title').innerHTML = `<i class="fa-solid fa-user-plus text-primary"></i> नया छात्र जोड़ें`;
             document.getElementById('form-submit-text').innerText = "सुरक्षित करें";
             document.getElementById('student-id-field').value = "";
             document.getElementById('form-specific-time').value = "";
             document.getElementById('student-form').reset();
+            updateModalSchedulePreview();
 
-            const modal = document.getElementById('student-modal');
-            modal.classList.add('active');
-        }
+            document.getElementById('student-modal').classList.add('active');
+        };
 
         window.openEditStudentModal = function (id) {
             const student = students.find(s => s.id === id);
             if (!student) return;
 
-            document.getElementById('modal-title').innerText = "छात्र विवरण संपादित करें";
+            document.getElementById('modal-title').innerHTML = `<i class="fa-solid fa-pen-to-square text-primary"></i> छात्र विवरण संपादित करें`;
             document.getElementById('form-submit-text').innerText = "अपडेट करें";
             document.getElementById('student-id-field').value = student.id;
             document.getElementById('form-student-name').value = student.name;
@@ -1339,17 +2606,17 @@
             document.getElementById('form-vehicle').value = student.vehicle || 'v1';
             document.getElementById('form-address').value = student.address || '';
             document.getElementById('form-specific-time').value = student.specificTime || '';
-            // Preserve sortOrder and sourceId during edit
+
             document.getElementById('student-id-field').dataset.sortOrder = student.sortOrder;
             document.getElementById('student-id-field').dataset.sourceId = student.sourceId || '';
 
+            updateModalSchedulePreview();
             document.getElementById('student-modal').classList.add('active');
-        }
+        };
 
         window.closeStudentModal = function () {
-            const modal = document.getElementById('student-modal');
-            modal.classList.remove('active');
-        }
+            document.getElementById('student-modal').classList.remove('active');
+        };
 
         window.handleFormSubmit = function (event) {
             event.preventDefault();
@@ -1379,9 +2646,9 @@
                 sourceId: existingSourceId
             };
             saveStudentToFirestore(studentData);
-        }
+        };
 
-        // Custom Dialog Modal Controllers
+        // Custom Dialog Modal
         window.showCustomDialog = function (title, message, type = 'info', actionHtml = '') {
             const modal = document.getElementById('dialog-modal');
             const titleEl = document.getElementById('dialog-title');
@@ -1392,73 +2659,48 @@
             titleEl.innerText = title;
             messageEl.innerText = message;
 
-            // Configure Icon based on Type
             if (type === 'error') {
-                iconEl.className = "p-2 bg-red-100 text-red-600 rounded-full";
-                iconEl.innerHTML = `<i class="fa-solid fa-circle-exclamation text-lg"></i>`;
+                iconEl.style.background = 'var(--danger-light)';
+                iconEl.style.color = 'var(--danger)';
+                iconEl.innerHTML = `<i class="fa-solid fa-circle-exclamation"></i>`;
             } else if (type === 'warning') {
-                iconEl.className = "p-2 bg-amber-100 text-amber-600 rounded-full";
-                iconEl.innerHTML = `<i class="fa-solid fa-triangle-exclamation text-lg"></i>`;
+                iconEl.style.background = 'var(--accent-light)';
+                iconEl.style.color = 'var(--accent)';
+                iconEl.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i>`;
             } else {
-                iconEl.className = "p-2 bg-indigo-100 text-indigo-600 rounded-full";
-                iconEl.innerHTML = `<i class="fa-solid fa-info text-lg"></i>`;
+                iconEl.style.background = 'var(--primary-light)';
+                iconEl.style.color = 'var(--primary)';
+                iconEl.innerHTML = `<i class="fa-solid fa-info"></i>`;
             }
 
             if (actionHtml) {
                 actionsEl.innerHTML = actionHtml;
             } else {
-                actionsEl.innerHTML = `<button onclick="closeDialog()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold rounded-lg transition">ठीक है</button>`;
+                actionsEl.innerHTML = `<button onclick="closeDialog()" class="btn btn-primary">ठीक है</button>`;
             }
 
             modal.classList.add('active');
-        }
+        };
 
         window.closeDialog = function () {
             document.getElementById('dialog-modal').classList.remove('active');
             deleteCandidateId = null;
-        }
+        };
 
         window.confirmDeleteStudent = function (id, name) {
             deleteCandidateId = id;
             const actionHtml = `
-                <button onclick="closeDialog()" class="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-lg transition">रद्द करें</button>
-                <button onclick="deleteStudentFromFirestore('${id}')" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-xs font-semibold rounded-lg transition">डिलीट करें</button>
+                <button onclick="closeDialog()" class="btn btn-outline">रद्द करें</button>
+                <button onclick="deleteStudentFromFirestore('${id}')" class="btn btn-primary" style="background:var(--danger);">डिलीट करें</button>
             `;
             showCustomDialog("छात्र डिलीट करें?", `क्या आप सचमुच छात्र "${name}" का विवरण हटाना चाहते हैं?`, "warning", actionHtml);
-        }
+        };
 
-        // Load Mock Sandbox Data on request
-        window.loadSampleData = function () {
-            const actionHtml = `
-                <button onclick="closeDialog()" class="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-lg transition">रद्द करें</button>
-                <button id="confirm-sample-btn" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold rounded-lg transition">हाँ, लोड करें</button>
-            `;
-            showCustomDialog("डेमो डेटा लोड करें?", "इससे आपके सिस्टम में कुछ सैंपल छात्र डेटा जुड़ जायेंगे ताकि आप उपस्थिति प्रिंट लेआउट देख सकें।", "info", actionHtml);
-
-            document.getElementById('confirm-sample-btn').onclick = async () => {
-                const sampleStudents = [
-                    { name: "अभिषेक सिंह", fatherName: "श्री वीर प्रताप सिंह", class: "कक्षा 9", address: "नगरकोट, बाराबंकी", specificTime: "07:30 AM", vehicle: "v1" },
-                    { name: "काव्या मिश्रा", fatherName: "श्री संतोष मिश्रा", class: "कक्षा 4", address: "वसंत कुंज, बाराबंकी", specificTime: "07:45 AM", vehicle: "v2" },
-                    { name: "रोहन रस्तोगी", fatherName: "श्री प्रकाश रस्तोगी", class: "कक्षा 7", address: "नेहरू रोड, बाराबंकी", specificTime: "07:50 AM", vehicle: "v1" },
-                    { name: "दीक्षा सिंह", fatherName: "श्री राज बहादुर सिंह", class: "कक्षा 12", address: "सदर बाजार, बाराबंकी", specificTime: "07:20 AM", vehicle: "v2" },
-                    { name: "मनीष शुक्ला", fatherName: "श्री ओम प्रकाश शुक्ला", class: "कक्षा 11", address: "गांधी चौक, बाराबंकी", specificTime: "07:40 AM", vehicle: "v1" }
-                ];
-
-                for (const student of sampleStudents) {
-                    await window.saveStudentToFirestore(student);
-                }
-                closeDialog();
-            }
-        }
-
-
-        // =========================================================
-        // Days generator based on Month and Year
+        // ─── A4 Print Layout Builder ─────────────────────────────────────────────
         function getDaysInMonth(month, year) {
             return new Date(year, parseInt(month) + 1, 0).getDate();
         }
 
-        // Generate printable chunk-paginated layout content
         function buildAttendanceHTML(isForPrintOnly = false) {
             const selectedMonthIndex = document.getElementById('print-month').value;
             const selectedYear = document.getElementById('print-year').value;
@@ -1470,16 +2712,30 @@
 
             const printStudents = students.filter(student => {
                 if (printFilter === 'all') return true;
-                return student.vehicle === printFilter;
+                if (printFilter === 'v1') return student.vehicle === 'v1';
+                if (printFilter === 'v2') return student.vehicle === 'v2';
+                if (printFilter === 'ret-kg') return isKGStudent(student.class);
+                if (printFilter === 'ret-prm') return !isKGStudent(student.class);
+                if (printFilter.startsWith('cls-')) {
+                    const targetCls = printFilter.replace('cls-', '');
+                    return normalizeClassName(student.class) === normalizeClassName(targetCls);
+                }
+                return true;
             });
 
             if (printStudents.length === 0) {
-                return '<div style="text-align:center; padding:50px; color: #64748b; font-weight: bold;">No students found for this filter!</div>';
+                return '<div style="text-align:center; padding:50px; color: var(--slate-500); font-weight: bold;">इस फ़िल्टर के लिए कोई छात्र उपलब्ध नहीं है।</div>';
             }
+
+            let filterTitleDesc = 'All Students (सभी छात्र)';
+            if (printFilter === 'v1') filterTitleDesc = `Morning: ${vehicleNames.v1} Only`;
+            else if (printFilter === 'v2') filterTitleDesc = `Morning: ${vehicleNames.v2} Only`;
+            else if (printFilter === 'ret-kg') filterTitleDesc = `Return 12:30 PM: KG-I & KG-II by ${vehicleNames.v2}`;
+            else if (printFilter === 'ret-prm') filterTitleDesc = `Return 01:30 PM: Class 1-8 by ${vehicleNames.v1}`;
+            else if (printFilter.startsWith('cls-')) filterTitleDesc = `Class: ${printFilter.replace('cls-', '')} Only`;
 
             let html = '<div style="display: flex; flex-direction: column; gap: 30px; align-items: center; background: #f1f5f9; padding: 20px; border-radius: 8px;">';
 
-            // Chunk settings (Days and Students bounds) to fit exact A4 Canvas dimensions perfectly
             const dayChunkSize = 15;
             const studentChunkSize = 15;
 
@@ -1490,14 +2746,14 @@
                     let endStud = Math.min(startStud + studentChunkSize, printStudents.length);
                     const chunkedStudents = printStudents.slice(startStud, endStud);
 
-                    // Exact A4 Landscape dimensions at 96 DPI: 1122px width x 793px height
-                    html += '<div class="print-page-chunk" style="width:1122px; height:793px; background:white; color:black; padding: 40px; font-family: sans-serif; box-sizing: border-box; border: 1px solid #cbd5e1; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); page-break-after: always; display: flex; flex-direction: column; overflow: hidden; flex-shrink: 0; position: relative;">';
+                    html += '<div class="print-page-chunk" style="width:1122px; height:793px; background:white; color:black; padding: 36px; font-family: sans-serif; box-sizing: border-box; border: 1px solid #cbd5e1; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); page-break-after: always; display: flex; flex-direction: column; overflow: hidden; flex-shrink: 0; position: relative;">';
 
                     // Fixed Height Header Area
-                    html += '<div style="flex: 0 0 auto; display:flex; justify-content:space-between; align-items:flex-end; border-bottom: 2px solid black; padding-bottom: 10px; margin-bottom: 15px;">';
+                    html += '<div style="flex: 0 0 auto; display:flex; justify-content:space-between; align-items:flex-end; border-bottom: 2px solid black; padding-bottom: 8px; margin-bottom: 12px;">';
                     html += '<div>';
-                    html += '<h1 style="margin:0; font-size: 18px; text-transform: uppercase; font-weight: bold;">' + titleText + '</h1>';
-                    html += '<p style="margin:5px 0 0 0; font-size: 12px; font-weight: bold; color: #334155;">Month: ' + monthName + ' ' + selectedYear + ' | Days: ' + startDay + '-' + endDay + ' | Vehicle: ' + (printFilter === 'all' ? 'All' : (printFilter === 'v1' ? vehicleNames.v1 : vehicleNames.v2)) + '</p>';
+                    html += '<h1 style="margin:0; font-size: 17px; text-transform: uppercase; font-weight: bold; letter-spacing: 0.5px;">' + titleText + '</h1>';
+                    html += '<p style="margin:4px 0 0 0; font-size: 11px; font-weight: bold; color: #1e293b;">Month: ' + monthName + ' ' + selectedYear + ' | Days: ' + startDay + '-' + endDay + ' | Filter: ' + filterTitleDesc + '</p>';
+                    html += '<p style="margin:2px 0 0 0; font-size: 9.5px; color: #475569;"><b>Return Schedule:</b> KG1 &amp; KG2 Drop @ 12:30 PM by ' + vehicleNames.v2 + ' &nbsp;|&nbsp; Class 1-8 Drop @ 01:30 PM (13:30) by ' + vehicleNames.v1 + '</p>';
                     html += '</div>';
                     html += '<div style="text-align: right; font-size: 11px; font-weight: bold;">';
                     html += '<span>Page Students: ' + (startStud + 1) + ' to ' + endStud + ' of ' + printStudents.length + '</span><br>';
@@ -1508,16 +2764,16 @@
                     html += '<div style="flex: 1 1 auto; display: flex; flex-direction: column; min-height: 0;">';
                     html += '<table style="width: 100%; height: 100%; border-collapse: collapse; font-size: 10px; table-layout: fixed;">';
                     html += '<thead>';
-                    html += '<tr style="height: 25px; background: var(--bg);">';
+                    html += '<tr style="height: 24px; background: #f8fafc;">';
                     html += '<th rowspan="2" style="border: 1px solid black; padding: 2px; width: 4%; text-align: center;">Sr.</th>';
-                    html += '<th rowspan="2" style="border: 1px solid black; padding: 2px; width: 22%; text-align: left;">Student & Father Name</th>';
+                    html += '<th rowspan="2" style="border: 1px solid black; padding: 2px; width: 23%; text-align: left;">Student &amp; Father Name</th>';
                     html += '<th rowspan="2" style="border: 1px solid black; padding: 2px; width: 6%; text-align: center;">Class</th>';
-                    html += '<th rowspan="2" style="border: 1px solid black; padding: 2px; width: 8%; text-align: center;">Vehicle</th>';
+                    html += '<th rowspan="2" style="border: 1px solid black; padding: 2px; width: 9%; text-align: center;">Shift &bull; Veh</th>';
 
                     for (let i = startDay; i <= endDay; i++) {
                         html += '<th colspan="2" style="border: 1px solid black; padding: 2px; text-align: center; font-weight: bold;">' + i + '</th>';
                     }
-                    html += '</tr><tr style="height: 18px; background: var(--bg);">';
+                    html += '</tr><tr style="height: 18px; background: #f8fafc;">';
                     for (let i = startDay; i <= endDay; i++) {
                         html += '<th style="border: 1px solid black; padding: 1px; font-size: 8px; text-align: center;">M</th>';
                         html += '<th style="border: 1px solid black; padding: 1px; font-size: 8px; text-align: center;">E</th>';
@@ -1526,12 +2782,16 @@
 
                     chunkedStudents.forEach((student, index) => {
                         const globalIndex = startStud + index + 1;
-                        const vName = student.vehicle === 'v1' ? vehicleNames.v1 : vehicleNames.v2;
+                        const sched = getStudentSchedule(student);
+                        const mShort = sched.morningVehicle === 'v1' ? 'V1' : 'V2';
+                        const rShort = sched.returnVehicle === 'v1' ? 'V1' : 'V2';
+                        const rTimeShort = sched.isKG ? '12:30' : '1:30';
+
                         html += '<tr style="height: 28px;">';
                         html += '<td style="border: 1px solid black; padding: 2px 4px; text-align: center;">' + globalIndex + '</td>';
-                        html += '<td style="border: 1px solid black; padding: 2px 4px;"><div style="font-weight:bold; font-size:11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">' + student.name + '</div><div style="font-size:8px; color: #475569; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Father: ' + student.fatherName + (student.specificTime ? ' | Time: ' + student.specificTime : '') + '</div></td>';
-                        html += '<td style="border: 1px solid black; padding: 2px 4px; text-align: center;">' + (student.class || '-') + '</td>';
-                        html += '<td style="border: 1px solid black; padding: 2px 4px; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">' + vName + '</td>';
+                        html += '<td style="border: 1px solid black; padding: 2px 4px;"><div style="font-weight:bold; font-size:11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">' + student.name + '</div><div style="font-size:8px; color: #475569; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">F: ' + student.fatherName + (student.specificTime ? ' | Pick: ' + student.specificTime : '') + ' | Drop: ' + (sched.isKG ? '12:30 PM (V2)' : '01:30 PM (V1)') + '</div></td>';
+                        html += '<td style="border: 1px solid black; padding: 2px 4px; text-align: center; font-weight:bold;">' + (student.class || '-') + '</td>';
+                        html += '<td style="border: 1px solid black; padding: 2px 4px; text-align: center; font-size:9px; line-height:1.2;"><div>M: <b>' + mShort + '</b></div><div style="color:' + (sched.isKG ? '#c2410c' : '#1d4ed8') + ';">R: <b>' + rShort + '</b> (' + rTimeShort + ')</div></td>';
                         for (let i = startDay; i <= endDay; i++) {
                             html += '<td style="border: 1px solid black; padding: 1px;"></td>';
                             html += '<td style="border: 1px solid black; padding: 1px;"></td>';
@@ -1539,7 +2799,6 @@
                         html += '</tr>';
                     });
 
-                    // Add empty row placeholders to keep page structure completely consistent
                     const emptyRowsCount = studentChunkSize - chunkedStudents.length;
                     for (let r = 0; r < emptyRowsCount; r++) {
                         html += '<tr style="height: 28px; background: #fafafa;">';
@@ -1558,11 +2817,11 @@
                     html += '</div>';
 
                     // Fixed Height Signature Block
-                    html += '<div style="flex: 0 0 auto; display:flex; justify-content:space-between; margin-top: 15px; font-size: 11px; font-weight: bold;">';
-                    html += '<div style="border-top: 1px solid black; padding-top: 6px; text-align: center; width: 22%;">Driver Signature</div>';
-                    html += '<div style="border-top: 1px solid black; padding-top: 6px; text-align: center; width: 22%;">Transport In-charge</div>';
-                    html += '<div style="border-top: 1px solid black; padding-top: 6px; text-align: center; width: 22%;">Principal Signature</div>';
-                    html += '<div style="border-top: 1px solid black; padding-top: 6px; text-align: center; width: 22%;">Date & Seal</div>';
+                    html += '<div style="flex: 0 0 auto; display:flex; justify-content:space-between; margin-top: 14px; font-size: 11px; font-weight: bold;">';
+                    html += '<div style="border-top: 1px solid black; padding-top: 5px; text-align: center; width: 22%;">Driver Signature</div>';
+                    html += '<div style="border-top: 1px solid black; padding-top: 5px; text-align: center; width: 22%;">Transport In-charge</div>';
+                    html += '<div style="border-top: 1px solid black; padding-top: 5px; text-align: center; width: 22%;">Principal Signature</div>';
+                    html += '<div style="border-top: 1px solid black; padding-top: 5px; text-align: center; width: 22%;">Date &amp; Seal</div>';
                     html += '</div></div>';
                 }
             }
@@ -1581,7 +2840,7 @@
             if (printArea) {
                 printArea.innerHTML = htmlContent;
             }
-        }
+        };
 
         window.triggerPrint = async function () {
             if (!window.jspdf || !window.html2canvas) {
@@ -1594,10 +2853,7 @@
             printBtn.innerHTML = "<i class='fa-solid fa-spinner fa-spin'></i> Generating PDF...";
             printBtn.disabled = true;
 
-            // Shift active views so the html2canvas renderer accurately measures elements
             switchTab('preview');
-
-            // Wait a brief moment for dynamic layout painting
             await new Promise(resolve => setTimeout(resolve, 150));
 
             try {
@@ -1626,9 +2882,8 @@
                     const imgData = canvas.toDataURL('image/png');
                     if (imgData === "data:,") continue;
 
-                    const pdfWidth = 297;  // A4 standard dimension in Landscape mode (mm)
-                    const pdfHeight = 210; // A4 standard dimension in Landscape mode (mm)
-
+                    const pdfWidth = 297;
+                    const pdfHeight = 210;
                     const imgRatio = canvas.width / canvas.height;
 
                     let finalW = pdfWidth;
@@ -1656,21 +2911,21 @@
                 }
 
                 if (pdf) {
-                    pdf.save('Attendance_Sheet.pdf');
+                    pdf.save('PMS_Transport_Attendance_Sheet.pdf');
                 } else {
                     throw new Error("Unable to capture pages into PDF document context.");
                 }
 
             } catch (e) {
                 console.error("PDF generation failure details:", e);
-                showCustomDialog("त्रुटि", "PDF दस्तावेज़ तैयार करने में समस्या आई। विस्तृत जानकारी कंसोल में उपलब्ध है।", "error");
+                showCustomDialog("त्रुटि", "PDF दस्तावेज़ तैयार करने में समस्या आई।", "error");
             } finally {
                 printBtn.innerHTML = originalText;
                 printBtn.disabled = false;
             }
-        }
+        };
 
-        // ─── DOWNLOAD STUDENT LIST AS PDF (A4 Portrait, Shrink to Fit) ────────────
+        // ─── DOWNLOAD STUDENT LIST AS PDF ─────────────────────────────────────────
         window.downloadStudentListPDF = function () {
             if (!window.jspdf) {
                 showCustomDialog("सिस्टम एरर", "PDF library load नहीं हुई। Internet connection जांचें।", "error");
@@ -1690,96 +2945,113 @@
                 const { jsPDF } = window.jspdf;
                 const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
 
-                // ── Header ──────────────────────────────────────────────────────
                 const today = new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
-                const vFilterLabel = currentVehicleFilter === 'all'
-                    ? 'All Vehicles'
-                    : (currentVehicleFilter === 'v1' ? vehicleNames.v1 : vehicleNames.v2);
+                const classFilterEl = document.getElementById('filter-class');
+                const classFilter = classFilterEl ? classFilterEl.value.trim() : '';
+
+                let vFilterLabel = 'All Students';
+                if (currentVehicleFilter === 'v1') vFilterLabel = `Morning: ${vehicleNames.v1}`;
+                else if (currentVehicleFilter === 'v2') vFilterLabel = `Morning: ${vehicleNames.v2}`;
+                else if (currentVehicleFilter === 'ret-kg') vFilterLabel = `Return 12:30 PM (KG-I, KG-II by ${vehicleNames.v2})`;
+                else if (currentVehicleFilter === 'ret-prm') vFilterLabel = `Return 01:30 PM (Class 1-8 by ${vehicleNames.v1})`;
+
+                if (classFilter) {
+                    vFilterLabel += ` | Class: ${classFilter}`;
+                }
+
+                const printStudents = students.filter(s => {
+                    if (classFilter && normalizeClassName(s.class) !== normalizeClassName(classFilter)) return false;
+                    if (currentVehicleFilter === 'all') return true;
+                    if (currentVehicleFilter === 'v1') return s.vehicle === 'v1';
+                    if (currentVehicleFilter === 'v2') return s.vehicle === 'v2';
+                    if (currentVehicleFilter === 'ret-kg') return isKGStudent(s.class);
+                    if (currentVehicleFilter === 'ret-prm') return !isKGStudent(s.class);
+                    return true;
+                });
+
+                const kgCount = printStudents.filter(s => isKGStudent(s.class)).length;
+                const prmCount = printStudents.filter(s => !isKGStudent(s.class)).length;
+                const countStr = printStudents.length === students.length ? `${students.length}` : `${printStudents.length} of ${students.length}`;
 
                 pdf.setFontSize(13);
                 pdf.setFont('helvetica', 'bold');
-                pdf.text('POLICE MODERN SCHOOL, RAEBARELI', 105, 14, { align: 'center' });
+                pdf.text('POLICE MODERN SCHOOL, RAEBARELI', 105, 12, { align: 'center' });
 
-                pdf.setFontSize(9);
+                pdf.setFontSize(9.5);
+                pdf.setFont('helvetica', 'bold');
+                pdf.text('Transport Student List & Shift Schedule', 105, 17, { align: 'center' });
+
+                pdf.setFontSize(7.5);
                 pdf.setFont('helvetica', 'normal');
-                pdf.text('Transport Student List', 105, 20, { align: 'center' });
+                pdf.text(`Filter: ${vFilterLabel}   |   Students: ${countStr} (KG @ 12:30 PM: ${kgCount}, Class 1-8 @ 01:30 PM: ${prmCount})   |   Date: ${today}`, 105, 22, { align: 'center' });
 
-                pdf.setFontSize(8);
-                pdf.text(`Vehicle: ${vFilterLabel}   |   Total: ${students.length} Students   |   Date: ${today}`, 105, 25, { align: 'center' });
-
-                // Divider line
                 pdf.setLineWidth(0.4);
                 pdf.setDrawColor(100, 116, 139);
-                pdf.line(10, 27, 200, 27);
+                pdf.line(10, 24, 200, 24);
 
-                // ── Table Data ──────────────────────────────────────────────────
-                // Apply current filter
-                const printStudents = students.filter(s =>
-                    currentVehicleFilter === 'all' || s.vehicle === currentVehicleFilter
-                );
+                const head = [['Sr.', 'Student Name', "Father's Name", 'Class', 'Mobile', 'Morning (Pickup)', 'Return (Drop)', 'Address']];
+                const body = printStudents.map((s, i) => {
+                    const sched = getStudentSchedule(s);
+                    return [
+                        i + 1,
+                        s.name || '-',
+                        s.fatherName || '-',
+                        s.class || '-',
+                        s.mobile || '-',
+                        `${sched.morningVehicleName}${s.specificTime ? ' (' + s.specificTime + ')' : ''}`,
+                        `${sched.returnVehicleName} @ ${sched.returnTime}${sched.isKG ? ' (' + sched.returnStopName + ')' : ''}`,
+                        s.address || '-'
+                    ];
+                });
 
-                const head = [['Sr.', 'Student Name', "Father's Name", 'Class', 'Mobile', 'Vehicle', 'Address', 'Specific Time']];
-                const body = printStudents.map((s, i) => [
-                    i + 1,
-                    s.name || '-',
-                    s.fatherName || '-',
-                    s.class || '-',
-                    s.mobile || '-',
-                    s.vehicle === 'v1' ? vehicleNames.v1 : vehicleNames.v2,
-                    s.address || '-',
-                    s.specificTime || '-'
-                ]);
-
-                // ── AutoTable (shrink columns to fit A4 width) ──────────────────
                 pdf.autoTable({
                     head: head,
                     body: body,
-                    startY: 30,
+                    startY: 27,
                     margin: { left: 10, right: 10 },
-                    tableWidth: 'auto',   // shrink to fit
+                    tableWidth: 'auto',
                     styles: {
-                        fontSize: 8,
-                        cellPadding: 2.5,
+                        fontSize: 7.5,
+                        cellPadding: 2,
                         overflow: 'linebreak',
                         valign: 'middle',
                         lineColor: [203, 213, 225],
                         lineWidth: 0.3
                     },
                     headStyles: {
-                        fillColor: [99, 102, 241],
+                        fillColor: [79, 70, 229],
                         textColor: 255,
                         fontStyle: 'bold',
-                        fontSize: 8.5
+                        fontSize: 8
                     },
                     alternateRowStyles: {
                         fillColor: [248, 250, 252]
                     },
                     columnStyles: {
-                        0: { halign: 'center', cellWidth: 8 },   // Sr.
-                        1: { cellWidth: 32 },                      // Name
-                        2: { cellWidth: 30 },                      // Father
-                        3: { halign: 'center', cellWidth: 16 },   // Class
-                        4: { halign: 'center', cellWidth: 22 },   // Mobile
-                        5: { halign: 'center', cellWidth: 18 },   // Vehicle
-                        6: { cellWidth: 'auto' },                  // Address (fills remaining)
-                        7: { halign: 'center', cellWidth: 22 }    // Specific Time
+                        0: { halign: 'center', cellWidth: 7 },
+                        1: { cellWidth: 28 },
+                        2: { cellWidth: 26 },
+                        3: { halign: 'center', cellWidth: 14 },
+                        4: { halign: 'center', cellWidth: 20 },
+                        5: { halign: 'center', cellWidth: 26 },
+                        6: { halign: 'center', cellWidth: 30 },
+                        7: { cellWidth: 'auto' }
                     },
                     didDrawPage: function (data) {
-                        // Footer on each page
                         const pageCount = pdf.internal.getNumberOfPages();
                         pdf.setFontSize(7);
                         pdf.setTextColor(148, 163, 184);
                         pdf.text(
-                            `Page ${data.pageNumber} of ${pageCount}   |   transport_students`,
+                            `Page ${data.pageNumber} of ${pageCount}   |   transport_students   |   Return Rules: KG1 & KG2 @ 12:30 PM (${vehicleNames.v2}), Class 1-8 @ 01:30 PM (${vehicleNames.v1})`,
                             105,
-                            pdf.internal.pageSize.getHeight() - 5,
+                            pdf.internal.pageSize.getHeight() - 4,
                             { align: 'center' }
                         );
                         pdf.setTextColor(0);
                     }
                 });
 
-                pdf.save(`Transport_Student_List_${vFilterLabel.replace(/\s+/g, '_')}.pdf`);
+                pdf.save(`Transport_Student_List_${vFilterLabel.replace(/[^a-zA-Z0-9]/g, '_')}.pdf`);
 
             } catch (err) {
                 console.error('downloadStudentListPDF error:', err);
@@ -1788,7 +3060,7 @@
                 btn.innerHTML = origHtml;
                 btn.disabled = false;
             }
-        }
+        };
 
     </script>
 </body>

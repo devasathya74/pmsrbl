@@ -21,6 +21,7 @@
 
   <!-- Curriculum Databases for All Subjects -->
   <script src="sst-chapters-data.js"></script>
+  <script src="english-chapters-data.js"></script>
   <script src="science-chapters-data.js"></script>
   <script src="evs-chapters-data.js"></script>
 
@@ -1113,7 +1114,7 @@
             <i data-feather="layers" class="w-3.5 h-3.5 text-amber-400"></i>
             <span>1. विषय चुनें (Select Subject):</span>
           </label>
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
             <!-- SST -->
             <label class="cursor-pointer border-2 rounded-xl p-3 flex flex-col justify-between transition relative bg-slate-950 border-amber-500 text-white shadow-md" id="subLabel-sst">
               <input type="radio" name="bookSubject" value="sst" checked onchange="updateBookSubjectSelection(this.value)" class="sr-only">
@@ -1128,6 +1129,22 @@
               <div class="mt-2.5 pt-1.5 border-t border-slate-800 flex items-center justify-between text-[10px] text-amber-300 font-bold">
                 <span>14 अध्याय (Complete)</span>
                 <span class="text-[9px] bg-amber-500/20 px-1.5 py-0.5 rounded text-amber-400 font-black">वर्तमान</span>
+              </div>
+            </label>
+
+            <!-- English -->
+            <label class="cursor-pointer border-2 rounded-xl p-3 flex flex-col justify-between transition relative bg-slate-800/80 border-slate-700 text-slate-300 hover:border-slate-500 hover:bg-slate-800" id="subLabel-english">
+              <input type="radio" name="bookSubject" value="english" onchange="updateBookSubjectSelection(this.value)" class="sr-only">
+              <div>
+                <div class="flex items-center justify-between">
+                  <span class="font-black text-slate-200 font-heading text-xs">ENGLISH (पूर्वी / Poorvi)</span>
+                  <span class="w-4 h-4 rounded-full border border-slate-600 flex items-center justify-center text-[10px]" id="subCheck-english"></span>
+                </div>
+                <div class="text-[11px] text-slate-300 mt-1 font-semibold">कक्षा 6 English (Poorvi)</div>
+                <div class="text-[10px] text-slate-400 mt-0.5">Literature, Grammar & Glossary</div>
+              </div>
+              <div class="mt-2.5 pt-1.5 border-t border-slate-700 flex items-center justify-between text-[10px] text-slate-400 font-bold">
+                <span>16 अध्याय (Complete)</span>
               </div>
             </label>
 
@@ -1632,7 +1649,7 @@
 
     function updateBookSubjectSelection(sub) {
       selectedBookSubject = sub;
-      ['sst', 'science', 'evs'].forEach(s => {
+      ['sst', 'english', 'science', 'evs'].forEach(s => {
         const label = document.getElementById(`subLabel-${s}`);
         const check = document.getElementById(`subCheck-${s}`);
         const input = document.querySelector(`input[name="bookSubject"][value="${s}"]`);
@@ -2214,6 +2231,279 @@
       `;
     }
 
+    // Generate Full HTML for an English Chapter
+    function generateEnglishChapterHtml(ch, isBookMode = true, chapterIndex = 1, totalChapters = 16) {
+      const todayDate = new Date().toLocaleDateString('en-GB');
+
+      // Section A: Long Answers
+      let secAHtml = '';
+      if (ch.sectionA && ch.sectionA.length > 0) {
+        ch.sectionA.forEach((item, idx) => {
+          secAHtml += `
+            <article class="qa-card" id="qa-eng-long-${ch.id}-${idx+1}">
+              <div class="flex items-start justify-between gap-2">
+                <div class="q-title">
+                  <span class="q-num-badge">Q${idx+1}</span>
+                  <span>${item.q}</span>
+                </div>
+                <button onclick="speakText(this, '${escapeForTTS(item.q + ' ' + (item.ans || ''))}')"
+                  class="no-print text-slate-400 hover:text-indigo-600 p-1 rounded hover:bg-slate-100 transition" title="Read Aloud">
+                  <i data-feather="volume-2" class="w-3.5 h-3.5"></i>
+                </button>
+              </div>
+              <div class="ans-content">
+                <span class="ans-badge">Answer:</span>
+                ${item.ans}
+              </div>
+              <div class="practice-lines">
+                <div class="practice-line"></div>
+                <div class="practice-line"></div>
+                <div class="practice-line"></div>
+                <div class="practice-line"></div>
+              </div>
+            </article>
+          `;
+        });
+      }
+
+      // Section B: Short Answers
+      let secBHtml = '';
+      if (ch.sectionB && ch.sectionB.length > 0) {
+        ch.sectionB.forEach((item, idx) => {
+          secBHtml += `
+            <article class="qa-card" id="qa-eng-short-${ch.id}-${idx+1}">
+              <div class="flex items-start justify-between gap-2">
+                <div class="q-title">
+                  <span class="q-num-badge">Q${idx+1}</span>
+                  <span>${item.q}</span>
+                </div>
+                <button onclick="speakText(this, '${escapeForTTS(item.q + ' Answer: ' + item.ans)}')"
+                  class="no-print text-slate-400 hover:text-indigo-600 p-1 rounded hover:bg-slate-100 transition" title="Read Aloud">
+                  <i data-feather="volume-2" class="w-3.5 h-3.5"></i>
+                </button>
+              </div>
+              <div class="ans-content">
+                <span class="ans-badge">Answer:</span>
+                ${item.ans}
+              </div>
+              <div class="practice-lines">
+                <div class="practice-line"></div>
+                <div class="practice-line"></div>
+              </div>
+            </article>
+          `;
+        });
+      }
+
+      // Section C: Glossary
+      let glossaryRows = '';
+      if (ch.sectionC && ch.sectionC.glossary) {
+        ch.sectionC.glossary.forEach(g => {
+          glossaryRows += `
+            <tr>
+              <td class="glossary-word">${g.word}</td>
+              <td class="font-hindi text-slate-800 font-semibold">${g.hindi || ''}</td>
+              <td class="text-slate-700">${g.meaning || ''}</td>
+              <td class="text-slate-600 italic">${g.sentence || ''}</td>
+            </tr>
+          `;
+        });
+      }
+
+      // Section D: Fill in the blanks
+      let secDHtml = '';
+      if (ch.sectionD && ch.sectionD.length > 0) {
+        ch.sectionD.forEach((item, idx) => {
+          secDHtml += `
+            <div class="qa-card py-2">
+              <div class="q-title text-xs">
+                <span class="q-num-badge text-[10px]">${idx+1}</span>
+                <span>${item.q || (item.before || '') + '<strong class="blank-answer-text text-indigo-900 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-200 underline decoration-indigo-500">' + (item.ans || '') + '</strong>' + (item.after || '')}</span>
+              </div>
+            </div>
+          `;
+        });
+      }
+
+      // Section E: True or False
+      let secEHtml = '';
+      if (ch.sectionE && ch.sectionE.length > 0) {
+        ch.sectionE.forEach((item, idx) => {
+          const isTrue = (item.ans || '').toLowerCase() === 'true';
+          secEHtml += `
+            <div class="qa-card py-2">
+              <div class="flex items-start justify-between">
+                <div class="q-title text-xs">
+                  <span class="q-num-badge text-[10px]">${idx+1}</span>
+                  <span>${item.q}</span>
+                </div>
+                <div class="true-false-ans">
+                  <span class="${isTrue ? 'bg-emerald-100 text-emerald-800 border-emerald-300' : 'bg-rose-100 text-rose-800 border-rose-300'} font-extrabold text-xs px-2 py-0.5 rounded border">${isTrue ? 'TRUE' : 'FALSE'}</span>
+                </div>
+                <div class="true-false-box">
+                  <span class="tf-circle">[ &nbsp; ] True</span>
+                  <span class="tf-circle">[ &nbsp; ] False</span>
+                </div>
+              </div>
+              ${item.reason ? `<div class="ans-content text-xs pt-1 text-slate-600"><em>Reason:</em> ${item.reason}</div>` : ''}
+            </div>
+          `;
+        });
+      }
+
+      // Section F: 10 Golden Points
+      let focusPointsHtml = '';
+      if (ch.sectionF && ch.sectionF.length > 0) {
+        ch.sectionF.forEach((pt, idx) => {
+          focusPointsHtml += `
+            <div class="focus-point">
+              <span class="focus-num bg-indigo-700">${idx+1}</span>
+              <div>${pt}</div>
+            </div>
+          `;
+        });
+      }
+
+      return `
+        <article id="sheetDocument-eng-${ch.id}" class="a4-document book-chapter">
+          <!-- Book Mode English Chapter Hero Header -->
+          <header class="chapter-hero-banner pb-2 mb-2 border-b-2 border-slate-900">
+            <div class="flex items-center justify-between gap-3 text-[10px] text-slate-600 pb-1.5 border-b border-slate-200">
+              <div class="flex items-center gap-1.5">
+                <img src="pms-logo.png" width="22" height="22" alt="PMS" class="w-5 h-5 object-contain" onerror="this.style.display='none'">
+                <span class="font-extrabold uppercase tracking-widest text-indigo-950 font-heading">POLICE MODERN SCHOOL, RAEBARELI</span>
+                <span class="text-slate-400">|</span>
+                <span class="font-hindi text-slate-700 font-semibold">25वीं वाहिनी पीएसी • शैक्षणिक सत्र 2026-27</span>
+              </div>
+              <div class="flex items-center gap-2 font-heading font-bold">
+                <span class="text-indigo-900 uppercase">CLASS 6 ENGLISH (POORVI)</span>
+                <span class="bg-indigo-950 text-white px-2 py-0.5 rounded text-[9.5px] font-black uppercase">
+                  CHAPTER ${ch.id} / ${totalChapters}
+                </span>
+              </div>
+            </div>
+
+            <div class="mt-2 p-2.5 bg-gradient-to-r from-indigo-950 via-slate-900 to-indigo-950 text-white rounded-lg shadow-sm border-l-4 border-amber-400 flex flex-wrap items-center justify-between gap-2">
+              <div class="flex-1 min-w-[200px]">
+                <div class="flex items-center gap-2 mb-1">
+                  <span class="bg-amber-400 text-slate-950 px-2 py-0.5 rounded text-[9.5px] font-black uppercase tracking-wider font-heading">
+                    ${ch.unit || 'POORVI'}
+                  </span>
+                  <span class="text-[9.5px] text-indigo-200 font-medium">
+                    Genre: ${ch.genre || 'Prose / Poem'}
+                  </span>
+                </div>
+                <h2 class="text-base sm:text-lg font-black font-heading tracking-wide text-white leading-tight">
+                  “${ch.title.toUpperCase()}”
+                </h2>
+              </div>
+              <div class="text-right flex-shrink-0 bg-white/10 border border-white/15 px-2.5 py-1 rounded">
+                <div class="text-[9px] uppercase tracking-widest text-amber-300 font-heading font-black">NCERT POORVI</div>
+                <div class="text-xs font-black text-white">Literature & Grammar</div>
+                <div class="text-[8.5px] text-slate-300">${ch.author ? ch.author : 'Class 6 English'}</div>
+              </div>
+            </div>
+          </header>
+
+          <!-- English & Hindi Summaries -->
+          <div class="mt-2.5 bg-indigo-50/70 border-l-4 border-indigo-700 p-2.5 rounded-r-md text-xs text-indigo-950 space-y-1">
+            <p class="leading-relaxed"><strong>English Summary:</strong> ${ch.summary || ''}</p>
+            ${ch.hindiSummary ? `<p class="font-hindi border-t border-indigo-200/60 pt-1 leading-relaxed text-slate-800"><strong>हिंदी सारांश:</strong> ${ch.hindiSummary}</p>` : ''}
+            ${ch.moralTheme ? `<p class="text-[11px] text-amber-800 font-bold border-t border-indigo-200/60 pt-1"><strong>Moral / Central Theme:</strong> ${ch.moralTheme}</p>` : ''}
+          </div>
+
+          ${secAHtml ? `
+            <section class="mt-3.5">
+              <div class="section-ribbon">
+                <i data-feather="file-text" class="w-4 h-4 text-amber-400"></i>
+                <span class="section-ribbon-title">A. Literary Comprehension & Long Answer Questions</span>
+              </div>
+              ${secAHtml}
+            </section>
+          ` : ''}
+
+          ${secBHtml ? `
+            <section class="mt-3.5">
+              <div class="section-ribbon">
+                <i data-feather="check-circle" class="w-4 h-4 text-amber-400"></i>
+                <span class="section-ribbon-title">B. Short Answer Questions</span>
+              </div>
+              <div class="space-y-2">${secBHtml}</div>
+            </section>
+          ` : ''}
+
+          ${glossaryRows ? `
+            <section class="mt-3.5">
+              <div class="section-ribbon">
+                <i data-feather="book" class="w-4 h-4 text-amber-400"></i>
+                <span class="section-ribbon-title">C. Chapter Vocabulary & Glossary</span>
+              </div>
+              <table class="glossary-table mt-2">
+                <thead>
+                  <tr>
+                    <th style="width: 22%;">Word</th>
+                    <th style="width: 20%;">हिंदी अर्थ</th>
+                    <th style="width: 30%;">Contextual Meaning</th>
+                    <th style="width: 28%;">Example Sentence</th>
+                  </tr>
+                </thead>
+                <tbody>${glossaryRows}</tbody>
+              </table>
+            </section>
+          ` : ''}
+
+          ${secDHtml ? `
+            <section class="mt-3.5">
+              <div class="section-ribbon">
+                <i data-feather="edit" class="w-4 h-4 text-amber-400"></i>
+                <span class="section-ribbon-title">D. Fill in the Blanks</span>
+              </div>
+              <div class="sec-compact-grid">${secDHtml}</div>
+            </section>
+          ` : ''}
+
+          ${secEHtml ? `
+            <section class="mt-3.5">
+              <div class="section-ribbon">
+                <i data-feather="check-square" class="w-4 h-4 text-amber-400"></i>
+                <span class="section-ribbon-title">E. True or False with Justifications</span>
+              </div>
+              <div class="space-y-1.5">${secEHtml}</div>
+            </section>
+          ` : ''}
+
+          ${focusPointsHtml ? `
+            <section class="mt-3.5">
+              <div class="focus-card">
+                <h3 class="font-heading font-black text-amber-950 text-xs tracking-wide uppercase mb-1.5">⭐ EXAM FOCUS: 10 GOLDEN REVISION POINTS (CH ${ch.id})</h3>
+                <div class="focus-grid">${focusPointsHtml}</div>
+              </div>
+            </section>
+          ` : ''}
+
+          <div class="chapter-end-wrap mt-3">
+            <footer class="pt-2 border-t-2 border-slate-900 flex justify-between items-end text-xs">
+              <div>
+                <p class="font-bold text-slate-800 text-[10.5px]">Teacher's Remarks / Evaluation:</p>
+                <div contenteditable="true" class="w-52 border-b border-dashed border-slate-400 mt-0.5 text-slate-700 text-[10px]">Good command of vocabulary and grammar.</div>
+              </div>
+              <div class="text-center">
+                <div class="w-36 border-b border-slate-800 mb-1"></div>
+                <p class="font-bold text-slate-900 font-hindi text-[10.5px]">अंग्रेजी शिक्षक हस्ताक्षर</p>
+                <p class="text-[9px] text-slate-500">Subject Teacher (English)</p>
+              </div>
+            </footer>
+
+            <div class="book-running-footer">
+              <span>पुलिस मॉडर्न स्कूल, 25वीं वाहिनी पीएसी, रायबरेली</span>
+              <span class="font-bold">कक्षा 6 अंग्रेजी (Poorvi) • सम्पूर्ण अध्ययन पुस्तक</span>
+              <span>अध्याय ${ch.id} / ${totalChapters}</span>
+            </div>
+          </div>
+        </article>
+      `;
+    }
+
     // Generate Full HTML for a Science Chapter
     function generateScienceChapterHtml(ch, isBookMode = true, chapterIndex = 1, totalChapters = 12) {
       let diagramQHtml = '';
@@ -2575,6 +2865,201 @@
             <div class="flex items-center justify-between gap-3 text-[10px] text-slate-600 pb-1.5 border-b border-slate-200">
               <div class="flex items-center gap-1.5">
                 <img src="pms-logo.png" width="22" height="22" alt="PMS" class="w-5 h-5 object-contain" onerror="this.style.display='none'">
+            ${ch.summary}
+          </div>
+
+          ${ch.diagram ? `
+            <div class="mt-3 border border-slate-300 rounded-lg p-2.5 bg-white text-center">
+              <h4 class="font-bold text-xs uppercase text-slate-800 mb-1.5">${ch.diagram.title}</h4>
+              ${ch.diagram.svg}
+              <p class="text-[10px] text-slate-500 italic mt-1.5">${ch.diagram.caption}</p>
+              ${diagramQHtml}
+            </div>
+          ` : ''}
+
+          ${secAHtml ? `
+            <section class="mt-3.5">
+              <div class="section-ribbon">
+                <i data-feather="help-circle" class="w-4 h-4 text-amber-400"></i>
+                <span class="section-ribbon-title">A. Long Answer Questions</span>
+              </div>
+              ${secAHtml}
+            </section>
+          ` : ''}
+
+          ${secBHtml ? `
+            <section class="mt-3.5">
+              <div class="section-ribbon">
+                <i data-feather="check-square" class="w-4 h-4 text-amber-400"></i>
+                <span class="section-ribbon-title">B. Short Answer Questions</span>
+              </div>
+              <div class="space-y-2">${secBHtml}</div>
+            </section>
+          ` : ''}
+
+          ${secCHtml ? `
+            <section class="mt-3.5">
+              <div class="section-ribbon">
+                <i data-feather="check-circle" class="w-4 h-4 text-amber-400"></i>
+                <span class="section-ribbon-title">C. True or False with Scientific Reasons</span>
+              </div>
+              <div class="space-y-1.5">${secCHtml}</div>
+            </section>
+          ` : ''}
+
+          ${glossaryRows ? `
+            <section class="mt-3.5">
+              <div class="section-ribbon">
+                <i data-feather="book" class="w-4 h-4 text-amber-400"></i>
+                <span class="section-ribbon-title">D. Scientific Terms & Glossary</span>
+              </div>
+              <table class="glossary-table mt-2">
+                <thead><tr><th style="width: 25%;">Term</th><th>Definition</th></tr></thead>
+                <tbody>${glossaryRows}</tbody>
+              </table>
+            </section>
+          ` : ''}
+
+          ${focusPointsHtml ? `
+            <section class="mt-3.5">
+              <div class="focus-card">
+                <h3 class="font-heading font-black text-amber-950 text-xs tracking-wide uppercase mb-1.5">⭐ EXAM FOCUS: 10 GOLDEN POINTS (CH ${ch.id})</h3>
+                <div class="focus-grid">${focusPointsHtml}</div>
+              </div>
+            </section>
+          ` : ''}
+
+          ${mcqHtml ? `
+            <section class="mt-3.5">
+              <div class="section-ribbon bg-emerald-950 border-l-4 border-emerald-500">
+                <i data-feather="list" class="w-4 h-4 text-emerald-400"></i>
+                <span class="section-ribbon-title">Bonus: Exam MCQs with Answer Key</span>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-2">${mcqHtml}</div>
+            </section>
+          ` : ''}
+
+          <div class="chapter-end-wrap mt-3">
+            <footer class="pt-2 border-t-2 border-slate-900 flex justify-between items-end text-xs">
+              <div>
+                <p class="font-bold text-slate-800 text-[10.5px]">Teacher's Remarks / Evaluation:</p>
+                <div contenteditable="true" class="w-52 border-b border-dashed border-slate-400 mt-0.5 text-slate-700 text-[10px]">Satisfactory grasp of scientific concepts.</div>
+              </div>
+              <div class="text-center">
+                <div class="w-36 border-b border-slate-800 mb-1"></div>
+                <p class="font-bold text-slate-900 font-hindi text-[10.5px]">विज्ञान शिक्षक हस्ताक्षर</p>
+                <p class="text-[9px] text-slate-500">Subject Teacher (Science)</p>
+              </div>
+            </footer>
+
+            <div class="book-running-footer">
+              <span>पुलिस मॉडर्न स्कूल, 25वीं वाहिनी पीएसी, रायबरेली</span>
+              <span class="font-bold">कक्षा 6 विज्ञान (Science Curiosity) • सम्पूर्ण अध्ययन पुस्तक</span>
+              <span>अध्याय ${ch.id} / ${totalChapters}</span>
+            </div>
+          </div>
+        </article>
+      `;
+    }
+
+    // Generate Full HTML for an EVS Chapter
+    function generateEvsChapterHtml(ch, isBookMode = true, chapterIndex = 1, totalChapters = 17) {
+      let tfHtml = '';
+      if (ch.trueFalse) {
+        ch.trueFalse.forEach((item, idx) => {
+          const isTrue = (item.ans || '').toLowerCase() === 'true';
+          tfHtml += `
+            <div class="qa-card py-2">
+              <div class="flex items-start justify-between">
+                <div class="q-title text-xs">
+                  <span class="q-num-badge text-[10px]">${idx+1}</span>
+                  <span>${item.q}</span>
+                </div>
+                <div class="true-false-ans">
+                  <span class="${isTrue ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'} font-extrabold text-xs px-2 py-0.5 rounded border">${item.ans}</span>
+                </div>
+                <div class="true-false-box">
+                  <span class="tf-circle">[ &nbsp; ] True</span>
+                  <span class="tf-circle">[ &nbsp; ] False</span>
+                </div>
+              </div>
+              <div class="ans-content text-xs pt-1 text-slate-600"><em>Reason:</em> ${item.reason || ''}</div>
+            </div>
+          `;
+        });
+      }
+
+      let oneWordHtml = '';
+      if (ch.oneWord) {
+        ch.oneWord.forEach((item, idx) => {
+          oneWordHtml += `
+            <div class="qa-card mb-0">
+              <div class="q-title text-xs">
+                <span class="q-num-badge text-[10px] min-w-[22px]">Q${idx+1}</span>
+                <span>${item.q}</span>
+              </div>
+              <div class="ans-content text-xs pt-1">
+                <span class="ans-badge">Ans:</span>
+                <span class="font-extrabold text-blue-900 bg-blue-100 px-2 py-0.5 rounded border border-blue-200">${item.ans}</span>
+              </div>
+              <div class="practice-lines"><div class="practice-line"></div></div>
+            </div>
+          `;
+        });
+      }
+
+      let blanksHtml = '';
+      if (ch.fillInBlanks) {
+        ch.fillInBlanks.forEach((item, idx) => {
+          blanksHtml += `
+            <div class="qa-card py-2">
+              <div class="q-title text-xs">
+                <span class="q-num-badge text-[10px]">${idx+1}</span>
+                <span>${item.before || ''}<strong class="blank-answer-text text-blue-800 bg-blue-50 px-2 py-0.5 rounded border border-blue-200 underline decoration-amber-500">${item.ans}</strong><span class="blank-underline"></span>${item.after || ''}</span>
+              </div>
+            </div>
+          `;
+        });
+      }
+
+      let shortHtml = '';
+      if (ch.shortAnswers) {
+        ch.shortAnswers.forEach((item, idx) => {
+          shortHtml += `
+            <article class="qa-card">
+              <div class="q-title text-xs">
+                <span class="q-num-badge text-[10px]">Q${idx+1}</span>
+                <span>${item.q}</span>
+              </div>
+              <div class="ans-content text-xs">
+                <span class="ans-badge">Ans:</span>
+                ${item.ans}
+              </div>
+              <div class="practice-lines"><div class="practice-line"></div></div>
+            </article>
+          `;
+        });
+      }
+
+      let focusHtml = '';
+      if (ch.focusPoints) {
+        ch.focusPoints.forEach((pt, idx) => {
+          focusHtml += `
+            <div class="focus-point">
+              <span class="focus-num">${idx+1}</span>
+              <div>${pt}</div>
+            </div>
+          `;
+        });
+      }
+
+      return `
+        <article id="sheetDocument-evs-${ch.id}" class="a4-document book-chapter">
+          <!-- Book Mode EVS Chapter Hero Header -->
+          <header class="chapter-hero-banner pb-2 mb-2 border-b-2 border-slate-900">
+            <div class="flex items-center justify-between gap-3 text-[10px] text-slate-600 pb-1.5 border-b border-slate-200">
+              <div class="flex items-center gap-1.5">
+                <img src="pms-logo.png" width="22" height="22" alt="PMS" class="w-5 h-5 object-contain" onerror="this.style.display='none'">
                 <span class="font-extrabold uppercase tracking-widest text-emerald-950 font-heading">POLICE MODERN SCHOOL, RAEBARELI</span>
                 <span class="text-slate-400">|</span>
                 <span class="font-hindi text-slate-700 font-semibold">25वीं वाहिनी पीएसी • शैक्षणिक सत्र 2026-27</span>
@@ -2679,8 +3164,257 @@
       `;
     }
 
+    // Generate Full HTML for an English Chapter (Poorvi Class 6)
+    function generateEnglishChapterHtml(ch, isBookMode = true, chapterIndex = 1, totalChapters = 16) {
+      let secAHtml = '';
+      if (ch.sectionA) {
+        ch.sectionA.forEach((item, idx) => {
+          secAHtml += `
+            <article class="qa-card">
+              <div class="q-title text-xs font-bold text-slate-900">
+                <span class="q-num-badge">Q${idx+1}</span>
+                <span>${item.q}</span>
+              </div>
+              <div class="ans-content text-xs pt-1.5 leading-relaxed text-slate-800">
+                <span class="ans-badge">Ans:</span>
+                ${item.ans}
+              </div>
+              <div class="practice-lines">
+                <div class="practice-line"></div>
+                <div class="practice-line"></div>
+                <div class="practice-line"></div>
+              </div>
+            </article>
+          `;
+        });
+      }
+
+      let secBHtml = '';
+      if (ch.sectionB) {
+        ch.sectionB.forEach((item, idx) => {
+          secBHtml += `
+            <article class="qa-card py-2">
+              <div class="q-title text-xs">
+                <span class="q-num-badge text-[10px]">Q${idx+1}</span>
+                <span>${item.q}</span>
+              </div>
+              <div class="ans-content text-xs pt-1">
+                <span class="ans-badge">Ans:</span>
+                ${item.ans}
+              </div>
+              <div class="practice-lines">
+                <div class="practice-line"></div>
+                <div class="practice-line"></div>
+              </div>
+            </article>
+          `;
+        });
+      }
+
+      let glossaryRows = '';
+      const glossaryList = ch.sectionC || ch.glossary || [];
+      if (glossaryList.length > 0) {
+        glossaryList.forEach(g => {
+          glossaryRows += `
+            <tr>
+              <td class="glossary-word">${g.word}</td>
+              <td class="text-slate-800">${g.meaning || g.meaningHindi || ''}</td>
+              <td class="text-slate-600 italic text-[10px]">${g.context || g.synonym || 'NCERT Context'}</td>
+            </tr>
+          `;
+        });
+      }
+
+      let secDHtml = '';
+      if (ch.sectionD) {
+        ch.sectionD.forEach((item, idx) => {
+          secDHtml += `
+            <div class="qa-card py-2">
+              <div class="q-title text-xs">
+                <span class="q-num-badge text-[10px]">${idx+1}</span>
+                <span>${item.before || ''}<strong class="blank-answer-text text-indigo-900 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-200 underline decoration-amber-500">${item.ans}</strong><span class="blank-underline"></span>${item.after || ''}</span>
+              </div>
+            </div>
+          `;
+        });
+      }
+
+      let secEHtml = '';
+      if (ch.sectionE) {
+        ch.sectionE.forEach((item, idx) => {
+          const isTrue = (item.ans || '').toString().toLowerCase() === 'true';
+          secEHtml += `
+            <div class="qa-card py-2">
+              <div class="flex items-start justify-between gap-2">
+                <div class="q-title text-xs">
+                  <span class="q-num-badge text-[10px]">${idx+1}</span>
+                  <span>${item.q}</span>
+                </div>
+                <div class="true-false-ans">
+                  <span class="${isTrue ? 'bg-emerald-100 text-emerald-800 border-emerald-300' : 'bg-rose-100 text-rose-800 border-rose-300'} font-extrabold text-xs px-2 py-0.5 rounded border">${item.ans}</span>
+                </div>
+                <div class="true-false-box">
+                  <span class="tf-circle">[ &nbsp; ] True</span>
+                  <span class="tf-circle">[ &nbsp; ] False</span>
+                </div>
+              </div>
+              ${item.reason ? `<div class="ans-content text-xs pt-1 text-slate-600"><em>Explanation:</em> ${item.reason}</div>` : ''}
+            </div>
+          `;
+        });
+      }
+
+      let focusPointsHtml = '';
+      if (ch.sectionF) {
+        ch.sectionF.forEach((pt, idx) => {
+          focusPointsHtml += `
+            <div class="focus-point">
+              <span class="focus-num">${idx+1}</span>
+              <div>${pt}</div>
+            </div>
+          `;
+        });
+      }
+
+      return `
+        <article id="sheetDocument-eng-${ch.id}" class="a4-document book-chapter">
+          <!-- Book Mode English Chapter Hero Header -->
+          <header class="chapter-hero-banner pb-2 mb-2 border-b-2 border-slate-900">
+            <div class="flex items-center justify-between gap-3 text-[10px] text-slate-600 pb-1.5 border-b border-slate-200">
+              <div class="flex items-center gap-1.5">
+                <img src="pms-logo.png" width="22" height="22" alt="PMS" class="w-5 h-5 object-contain" onerror="this.style.display='none'">
+                <span class="font-extrabold uppercase tracking-widest text-indigo-950 font-heading">POLICE MODERN SCHOOL, RAEBARELI</span>
+                <span class="text-slate-400">|</span>
+                <span class="font-hindi text-slate-700 font-semibold">25वीं वाहिनी पीएसी • शैक्षणिक सत्र 2026-27</span>
+              </div>
+              <div class="flex items-center gap-2 font-heading font-bold">
+                <span class="text-indigo-900 uppercase">CLASS 6 ENGLISH (POORVI)</span>
+                <span class="bg-indigo-900 text-white px-2 py-0.5 rounded text-[9.5px] font-black uppercase">
+                  CHAPTER ${ch.id} / ${totalChapters}
+                </span>
+              </div>
+            </div>
+
+            <div class="mt-2 p-2.5 bg-gradient-to-r from-indigo-950 via-slate-900 to-indigo-950 text-white rounded-lg shadow-sm border-l-4 border-amber-400 flex flex-wrap items-center justify-between gap-2">
+              <div class="flex-1 min-w-[200px]">
+                <div class="flex items-center gap-2 mb-1">
+                  <span class="bg-amber-400 text-slate-950 px-2 py-0.5 rounded text-[9.5px] font-black uppercase tracking-wider font-heading">
+                    ${ch.unit || 'UNIT'}
+                  </span>
+                  ${ch.genre ? `<span class="bg-indigo-800 text-indigo-200 px-2 py-0.5 rounded text-[9px] font-semibold">${ch.genre}</span>` : ''}
+                  ${ch.author ? `<span class="text-[9.5px] text-slate-300">By: <strong class="text-amber-200">${ch.author}</strong></span>` : ''}
+                </div>
+                <h2 class="text-base sm:text-lg font-black font-heading tracking-wide text-white leading-tight">
+                  “${ch.title.toUpperCase()}”
+                </h2>
+              </div>
+              <div class="text-right flex-shrink-0 bg-white/10 border border-white/15 px-2.5 py-1 rounded">
+                <div class="text-[9px] uppercase tracking-widest text-amber-300 font-heading font-black">POORVI CURRICULUM</div>
+                <div class="text-xs font-black text-white">Literature & Language</div>
+                <div class="text-[8.5px] text-slate-300">Complete Q&A Bank</div>
+              </div>
+            </div>
+          </header>
+
+          <div class="mt-2.5 bg-indigo-50/80 border-l-4 border-indigo-600 p-2.5 rounded-r-md text-xs text-indigo-950 space-y-1">
+            <div><strong class="font-bold text-indigo-900">Summary (English):</strong> ${ch.summary || ''}</div>
+            ${ch.hindiSummary ? `<div class="text-slate-700 font-hindi pt-0.5"><strong class="font-bold text-indigo-900">भावार्थ / सारांश:</strong> ${ch.hindiSummary}</div>` : ''}
+            ${ch.moralTheme ? `<div class="text-amber-900 text-[11px] font-semibold pt-0.5"><span class="bg-amber-100 text-amber-900 px-1.5 py-0.5 rounded text-[10px] font-bold mr-1">💡 Moral / Core Message:</span> ${ch.moralTheme}</div>` : ''}
+          </div>
+
+          ${secAHtml ? `
+            <section class="mt-3.5">
+              <div class="section-ribbon bg-indigo-950 border-l-4 border-amber-400">
+                <i data-feather="help-circle" class="w-4 h-4 text-amber-400"></i>
+                <span class="section-ribbon-title">A. Long Answer & Detailed Comprehension Questions</span>
+              </div>
+              <div class="space-y-2.5 mt-2">${secAHtml}</div>
+            </section>
+          ` : ''}
+
+          ${secBHtml ? `
+            <section class="mt-3.5">
+              <div class="section-ribbon bg-indigo-950 border-l-4 border-amber-400">
+                <i data-feather="check-square" class="w-4 h-4 text-amber-400"></i>
+                <span class="section-ribbon-title">B. Short Answer Textual Questions</span>
+              </div>
+              <div class="space-y-2 mt-2">${secBHtml}</div>
+            </section>
+          ` : ''}
+
+          ${glossaryRows ? `
+            <section class="mt-3.5">
+              <div class="section-ribbon bg-indigo-950 border-l-4 border-amber-400">
+                <i data-feather="book-open" class="w-4 h-4 text-amber-400"></i>
+                <span class="section-ribbon-title">C. Words, Meanings (English - Hindi) & Glossary</span>
+              </div>
+              <table class="glossary-table mt-2 w-full text-xs">
+                <thead>
+                  <tr class="bg-indigo-950 text-white">
+                    <th style="width: 25%;" class="p-1.5 text-left">Word</th>
+                    <th class="p-1.5 text-left">Meaning (English / Hindi)</th>
+                    <th style="width: 25%;" class="p-1.5 text-left">Context / Usage</th>
+                  </tr>
+                </thead>
+                <tbody>${glossaryRows}</tbody>
+              </table>
+            </section>
+          ` : ''}
+
+          ${secDHtml ? `
+            <section class="mt-3.5">
+              <div class="section-ribbon bg-indigo-950 border-l-4 border-amber-400">
+                <i data-feather="edit-3" class="w-4 h-4 text-amber-400"></i>
+                <span class="section-ribbon-title">D. Fill in the Blanks / Textual Sentences</span>
+              </div>
+              <div class="space-y-1.5 mt-2">${secDHtml}</div>
+            </section>
+          ` : ''}
+
+          ${secEHtml ? `
+            <section class="mt-3.5">
+              <div class="section-ribbon bg-indigo-950 border-l-4 border-amber-400">
+                <i data-feather="check-circle" class="w-4 h-4 text-amber-400"></i>
+                <span class="section-ribbon-title">E. True or False Statements</span>
+              </div>
+              <div class="space-y-1.5 mt-2">${secEHtml}</div>
+            </section>
+          ` : ''}
+
+          ${focusPointsHtml ? `
+            <section class="mt-3.5">
+              <div class="focus-card">
+                <h3 class="font-heading font-black text-amber-950 text-xs tracking-wide uppercase mb-1.5">⭐ KEY TAKEAWAYS & EXAM FOCUS: 10 GOLDEN POINTS (CH ${ch.id})</h3>
+                <div class="focus-grid">${focusPointsHtml}</div>
+              </div>
+            </section>
+          ` : ''}
+
+          <div class="chapter-end-wrap mt-3">
+            <footer class="pt-2 border-t-2 border-slate-900 flex justify-between items-end text-xs">
+              <div>
+                <p class="font-bold text-slate-800 text-[10.5px]">Teacher's Remarks / Assessment:</p>
+                <div contenteditable="true" class="w-52 border-b border-dashed border-slate-400 mt-0.5 text-slate-700 text-[10px]">Good understanding of literary themes & vocabulary!</div>
+              </div>
+              <div class="text-center">
+                <div class="w-36 border-b border-slate-800 mb-1"></div>
+                <p class="font-bold text-slate-900 font-hindi text-[10.5px]">अंग्रेजी शिक्षक हस्ताक्षर</p>
+                <p class="text-[9px] text-slate-500">Subject Teacher (English Poorvi)</p>
+              </div>
+            </footer>
+
+            <div class="book-running-footer">
+              <span>पुलिस मॉडर्न स्कूल, 25वीं वाहिनी पीएसी, रायबरेली</span>
+              <span class="font-bold">कक्षा 6 अंग्रेजी (Poorvi) • सम्पूर्ण अध्ययन पुस्तक</span>
+              <span>अध्याय ${ch.id} / ${totalChapters}</span>
+            </div>
+          </div>
+        </article>
+      `;
+    }
+
     // Generate Front Cover Page HTML (Budgeted for exactly 1 A4 page)
-function generateCoverPageHtml(subjectKey = 'sst') {
+    function generateCoverPageHtml(subjectKey = 'sst') {
       let subTitleEn = 'CLASS 6 SOCIAL SCIENCE (SST)';
       let subTitleHi = 'कक्षा 6 सामाजिक विज्ञान';
       let subBranch = 'इतिहास (History) • नागरिक शास्त्र (Civics) • भूगोल (Geography)';
@@ -2717,6 +3451,24 @@ function generateCoverPageHtml(subjectKey = 'sst') {
         feature1Desc = 'सरल व बाल-हितैषी सचित्र लघु व दीर्घ प्रश्न';
         feature5 = 'पर्यावरण जागरूकता व अच्छी आदतें';
         feature5Desc = 'दैनिक आचरण हेतु उपयोगी अच्छी आदतें';
+      } else if (subjectKey === 'english') {
+        subTitleEn = 'CLASS 6 ENGLISH (POORVI)';
+        subTitleHi = 'कक्षा 6 अंग्रेजी (पूर्वी - POORVI)';
+        subBranch = 'Fables & Tales • Friendship • Nature • Sports • Culture & Tradition';
+        totalChs = '16 CHAPTERS COMPLETE MASTER BANK';
+        classLevel = 'CLASS 6';
+        feature1 = 'Long Answer & Literary Analysis (Sec A)';
+        feature1Desc = 'Critical appreciation, theme, & structured answers';
+        feature2 = 'Short Answer Questions (Sec B)';
+        feature2Desc = 'Direct textual comprehension & character insights';
+        feature3 = 'Vocabulary & Glossary Bank (Sec C)';
+        feature3Desc = 'English-to-Hindi meanings with context analysis';
+        feature4 = 'Grammar & Text Fill-ins (Sec D & E)';
+        feature4Desc = 'Fill in blanks and factual statement verification';
+        feature5 = '10 Golden Takeaways & Quotes (Sec F)';
+        feature5Desc = 'Moral lessons, poetic devices & chapter summary';
+        feature6 = 'MCQs & Objective Practice (Sec G)';
+        feature6Desc = 'High-yield exam prep objective questions';
       }
 
       return `
@@ -2915,170 +3667,28 @@ function generateCoverPageHtml(subjectKey = 'sst') {
       `;
     }
 
-        // Generate Table of Contents HTML (Budgeted for exactly 1 A4 page)
+    // Generate Table of Contents HTML (Budgeted for exactly 1 A4 page)
     function generateTableOfContentsHtml(subjectKey = 'sst') {
       let rowsHtml = '';
       let subName = 'कक्षा 6 सामाजिक विज्ञान (SST)';
       let totalCount = 14;
 
-      if (subjectKey === 'science' && (typeof SCIENCE_CHAPTERS_DATA !== 'undefined' && SCIENCE_CHAPTERS_DATA)) {
-        subName = 'कक्षा 6 विज्ञान (Science Curiosity)';
-        totalCount = SCIENCE_CHAPTERS_DATA.length;
-        SCIENCE_CHAPTERS_DATA.forEach((ch, idx) => {
+      if (subjectKey === 'english' && (typeof ENGLISH_CHAPTERS_DATA !== 'undefined' && ENGLISH_CHAPTERS_DATA)) {
+        subName = 'कक्षा 6 अंग्रेजी (Poorvi)';
+        totalCount = ENGLISH_CHAPTERS_DATA.length;
+        ENGLISH_CHAPTERS_DATA.forEach((ch, idx) => {
           rowsHtml += `
             <tr class="${idx % 2 === 1 ? 'bg-slate-50' : 'bg-white'} border-b border-slate-200">
               <td class="p-1.5 text-center font-bold text-slate-900 border-r border-slate-200">
-                <span class="inline-block w-5 h-5 rounded-full bg-blue-900 text-white font-bold text-[10px] leading-5 text-center">${ch.id}</span>
+                <span class="inline-block w-5 h-5 rounded-full bg-indigo-950 text-white font-bold text-[10px] leading-5 text-center">${ch.id}</span>
               </td>
-              <td class="p-1.5 font-bold text-blue-950 border-r border-slate-200 text-xs">${ch.title}</td>
-              <td class="p-1.5 text-slate-700 border-r border-slate-200 text-[11px]">${ch.unit || 'Science'}</td>
-              <td class="p-1.5 text-center text-slate-700 border-r border-slate-200 text-[10px] font-semibold">${ch.diagram ? 'Diagram + ' : ''}Theory & Q&A Bank</td>
+              <td class="p-1.5 font-bold text-indigo-950 border-r border-slate-200 text-xs">${ch.title}</td>
+              <td class="p-1.5 text-slate-700 border-r border-slate-200 text-[11px]">${ch.unit || 'Poorvi'}</td>
+              <td class="p-1.5 text-center text-slate-700 border-r border-slate-200 text-[10px] font-semibold">Lit + Vocab + Grammar Bank</td>
               <td class="p-1.5 text-center text-slate-400 font-mono text-xs">[ &nbsp; ]</td>
             </tr>
           `;
         });
-      } else if (subjectKey === 'evs' && (typeof EVS_CHAPTERS_DATA !== 'undefined' && EVS_CHAPTERS_DATA)) {
-        subName = 'कक्षा 2 पर्यावरण अध्ययन (EVS)';
-        totalCount = EVS_CHAPTERS_DATA.length;
-        EVS_CHAPTERS_DATA.forEach((ch, idx) => {
-          rowsHtml += `
-            <tr class="${idx % 2 === 1 ? 'bg-slate-50' : 'bg-white'} border-b border-slate-200">
-              <td class="p-1 text-center font-bold text-slate-900 border-r border-slate-200">
-                <span class="inline-block w-4 h-4 rounded-full bg-emerald-800 text-white font-bold text-[9px] leading-4 text-center">${ch.id}</span>
-              </td>
-              <td class="p-1 font-bold text-emerald-950 border-r border-slate-200 text-[11.5px]">${ch.title}</td>
-              <td class="p-1 text-slate-700 border-r border-slate-200 text-[10.5px]">${ch.theme || 'EVS'}</td>
-              <td class="p-1 text-center text-slate-700 border-r border-slate-200 text-[10px] font-semibold">Q&A + Blanks + Activities</td>
-              <td class="p-1 text-center text-slate-400 font-mono text-xs">[ &nbsp; ]</td>
-            </tr>
-          `;
-        });
-      } else {
-        CHAPTERS_DATA.forEach((ch, idx) => {
-          rowsHtml += `
-            <tr class="${idx % 2 === 1 ? 'bg-slate-50' : 'bg-white'} border-b border-slate-200">
-              <td class="p-1.5 text-center font-bold text-slate-900 border-r border-slate-200">
-                <span class="inline-block w-5 h-5 rounded-full bg-blue-900 text-white font-bold text-[10px] leading-5 text-center">${ch.id}</span>
-              </td>
-              <td class="p-1.5 font-bold text-blue-950 border-r border-slate-200 text-xs">${ch.title}</td>
-              <td class="p-1.5 text-slate-700 border-r border-slate-200 text-[11px] font-hindi">${ch.theme}</td>
-              <td class="p-1.5 text-center text-slate-700 border-r border-slate-200 font-semibold text-[10px]">
-                Sec A-G (40 Qs + 10 Pts)
-              </td>
-              <td class="p-1.5 text-center text-slate-400 font-mono text-xs">[ &nbsp; ]</td>
-            </tr>
-          `;
-        });
-      }
-
-      return `
-        <article id="sheetDocument-toc" class="a4-document book-toc-page flex flex-col justify-between" style="page-break-before: always; break-before: page; page-break-inside: avoid; break-inside: avoid; page-break-after: always; break-after: page;">
-          <div>
-            <div class="pb-2 border-b-2 border-slate-900 flex items-center justify-between">
-              <div class="flex items-center gap-2">
-                <img src="pms-logo.png" width="32" height="32" alt="PMS Logo" class="w-8 h-8 object-contain" onerror="this.style.display='none'">
-                <div>
-                  <h2 class="text-base sm:text-lg font-black font-hindi text-slate-950 leading-tight">विषय-सूची एवं पाठ्यक्रम अनुक्रमणिका (TABLE OF CONTENTS)</h2>
-                  <p class="text-[10px] text-slate-600 font-heading uppercase tracking-wider">${subName} • सम्पूर्ण पाठ्यक्रम</p>
-                </div>
-              </div>
-              <div class="text-right">
-                <span class="text-xs font-bold bg-amber-100 text-amber-900 border border-amber-300 px-2.5 py-0.5 rounded font-heading">
-                  सम्पूर्ण ${totalCount} अध्याय
-                </span>
-              </div>
-            </div>
-
-            <table class="w-full mt-2 text-xs border-collapse border border-slate-300 rounded-lg overflow-hidden">
-              <thead>
-                <tr class="bg-slate-900 text-white font-heading text-[11px]">
-                  <th class="p-1.5 border border-slate-300 text-center w-10">क्र.सं.</th>
-                  <th class="p-1.5 border border-slate-300 text-left">अध्याय शीर्षक (Chapter Title)</th>
-                  <th class="p-1.5 border border-slate-300 text-left w-52">थीम / शाखा (Theme)</th>
-                  <th class="p-1.5 border border-slate-300 text-center w-36">प्रश्नोत्तर कवरेज</th>
-                  <th class="p-1.5 border border-slate-300 text-center w-12">पूर्ण</th>
-                </tr>
-              </thead>
-              <tbody>
-                ${rowsHtml}
-              </tbody>
-            </table>
-          </div>
-
-          <div class="book-running-footer">
-            <span>पुलिस मॉडर्न स्कूल, 25वीं वाहिनी पीएसी, रायबरेली</span>
-            <span class="font-bold">${subName} • अनुक्रमणिका</span>
-            <span>Page 2</span>
-          </div>
-        </article>
-      `;
-    }
-
-    // Generate Final Assessment & Progress Sheet HTML (Budgeted for exactly 1 A4 page)
-    function generateFinalAssessmentHtml(subjectKey = 'sst') {
-      let subName = 'Class 6 Social Science';
-      if (subjectKey === 'science') subName = 'Class 6 Science';
-      else if (subjectKey === 'evs') subName = 'Class 2 EVS';
-
-      return `
-        <article id="sheetDocument-assessment" class="a4-document book-final-page flex flex-col justify-between" style="page-break-before: always; break-before: page; page-break-inside: avoid; break-inside: avoid; page-break-after: avoid; break-after: avoid;">
-          <div>
-            <div class="pb-2 border-b-2 border-slate-900 flex items-center justify-between">
-              <div>
-                <h2 class="text-lg font-black font-hindi text-slate-950">सत्र प्रगति एवं मूल्यांकन पत्र (Progress Tracker)</h2>
-                <p class="text-[10px] text-slate-600 font-heading uppercase tracking-wider">ANNUAL ASSESSMENT & RECORD OF WORK • SESSION 2026–2027</p>
-              </div>
-              <div class="text-right">
-                <span class="text-xs font-bold bg-blue-100 text-blue-900 border border-blue-300 px-2.5 py-0.5 rounded">
-                  ${subName}
-                </span>
-              </div>
-            </div>
-
-            <!-- Periodic Assessment Grid -->
-            <div class="mt-4">
-              <h4 class="font-bold text-xs uppercase tracking-wider text-slate-800 mb-1.5">
-                1. आवधिक परीक्षा एवं मूल्यांकन तालिका (Periodic Examination Record):
-              </h4>
-              <table class="w-full text-xs border-collapse border border-slate-300">
-                <thead>
-                  <tr class="bg-slate-900 text-white font-heading text-[11px]">
-                    <th class="p-1.5 border border-slate-300 text-center w-12">क्र.सं.</th>
-                    <th class="p-1.5 border border-slate-300 text-left">मूल्यांकन प्रकार (Assessment Type)</th>
-                    <th class="p-1.5 border border-slate-300 text-center w-24">पूर्णांक (Max)</th>
-                    <th class="p-1.5 border border-slate-300 text-center w-24">प्राप्तांक</th>
-                    <th class="p-1.5 border border-slate-300 text-center w-20">ग्रेड</th>
-                    <th class="p-1.5 border border-slate-300 text-center w-36">अध्यापक हस्ताक्षर</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr class="border-b border-slate-200">
-                    <td class="p-1.5 text-center font-bold">1</td>
-                    <td class="p-1.5 font-bold">Periodic Test – I (आवधिक परीक्षा 1)</td>
-                    <td class="p-1.5 text-center">20</td>
-                    <td class="p-1.5 text-center border-b border-dashed" contenteditable="true">___</td>
-                    <td class="p-1.5 text-center border-b border-dashed" contenteditable="true">___</td>
-                    <td class="p-1.5 text-center border-b border-dashed" contenteditable="true">___________</td>
-                  </tr>
-                  <tr class="border-b border-slate-200 bg-slate-50">
-                    <td class="p-1.5 text-center font-bold">2</td>
-                    <td class="p-1.5 font-bold">Half Yearly Examination (अर्धवार्षिक परीक्षा)</td>
-                    <td class="p-1.5 text-center">80</td>
-                    <td class="p-1.5 text-center border-b border-dashed" contenteditable="true">___</td>
-                    <td class="p-1.5 text-center border-b border-dashed" contenteditable="true">___</td>
-                    <td class="p-1.5 text-center border-b border-dashed" contenteditable="true">___________</td>
-                  </tr>
-                  <tr class="border-b border-slate-200">
-                    <td class="p-1.5 text-center font-bold">3</td>
-                    <td class="p-1.5 font-bold">Periodic Test – II (आवधिक परीक्षा 2)</td>
-                    <td class="p-1.5 text-center">20</td>
-                    <td class="p-1.5 text-center border-b border-dashed" contenteditable="true">___</td>
-                    <td class="p-1.5 text-center border-b border-dashed" contenteditable="true">___</td>
-                    <td class="p-1.5 text-center border-b border-dashed" contenteditable="true">___________</td>
-                  </tr>
-                  <tr class="border-b border-slate-200 bg-slate-50">
-                    <td class="p-1.5 text-center font-bold">4</td>
-                    <td class="p-1.5 font-bold">Notebook & Subject Enrichment (गृहकार्य / नोटबुक)</td>
                     <td class="p-1.5 text-center">10</td>
                     <td class="p-1.5 text-center border-b border-dashed" contenteditable="true">___</td>
                     <td class="p-1.5 text-center border-b border-dashed" contenteditable="true">___</td>
@@ -3255,9 +3865,10 @@ function generateCoverPageHtml(subjectKey = 'sst') {
         quickJumpOptions += '<option value="sheetDocument-toc">📋 विषय-सूची (Table of Contents)</option>';
       }
 
-      const idPrefix = (selectedBookSubject === 'science') ? 'sheetDocument-sci-' : (selectedBookSubject === 'evs') ? 'sheetDocument-evs-' : 'sheetDocument-';
+      const idPrefix = (selectedBookSubject === 'science') ? 'sheetDocument-sci-' : (selectedBookSubject === 'evs') ? 'sheetDocument-evs-' : (selectedBookSubject === 'english') ? 'sheetDocument-eng-' : 'sheetDocument-';
       const subjectData = (selectedBookSubject === 'science') ? (typeof SCIENCE_CHAPTERS_DATA !== 'undefined' ? SCIENCE_CHAPTERS_DATA : [])
                         : (selectedBookSubject === 'evs') ? (typeof EVS_CHAPTERS_DATA !== 'undefined' ? EVS_CHAPTERS_DATA : [])
+                        : (selectedBookSubject === 'english') ? (typeof ENGLISH_CHAPTERS_DATA !== 'undefined' ? ENGLISH_CHAPTERS_DATA : [])
                         : (typeof CHAPTERS_DATA !== 'undefined' ? CHAPTERS_DATA : []);
 
       if (targetScope === 'single') {

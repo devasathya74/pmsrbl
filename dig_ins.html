@@ -1,0 +1,3827 @@
+<!DOCTYPE html>
+<html lang="hi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>भ्रमण/निरीक्षण पुलिस मॉडर्न स्कूल - 10X Document Studio & Editor</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Mukta:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=Noto+Serif+Devanagari:wght@400;600;700&family=Tiro+Devanagari+Hindi:ital@0;1&family=Roboto+Mono:wght@400;500;600&display=swap"
+        rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-canvas: #090d16;
+            --bg-sidebar: #0f172a;
+            --bg-panel: #1e293b;
+            --bg-hover: #334155;
+            --border-ui: #334155;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #0284c7;
+            --accent-glow: rgba(2, 132, 199, 0.4);
+            --accent-hover: #0369a1;
+            --paper-color: #ffffff;
+            --paper-text: #000000;
+            --paper-border: #000000;
+            --danger: #ef4444;
+            --success: #10b981;
+            --warning: #f59e0b;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-canvas);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            user-select: none;
+        }
+
+        /* Top Header & Ribbon Bar */
+        .app-header {
+            background: #0b1120;
+            border-bottom: 1px solid var(--border-ui);
+            display: flex;
+            flex-direction: column;
+            z-index: 1000;
+            flex-shrink: 0;
+        }
+
+        .header-top-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 6px 16px;
+            border-bottom: 1px solid rgba(51, 65, 85, 0.6);
+            gap: 12px;
+        }
+
+        .doc-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .brand-badge {
+            width: 30px;
+            height: 30px;
+            background: linear-gradient(135deg, #0284c7, #2563eb);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            color: white;
+            box-shadow: 0 0 10px var(--accent-glow);
+        }
+
+        .doc-title-input {
+            background: transparent;
+            border: 1px solid transparent;
+            color: white;
+            font-size: 0.95rem;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 4px;
+            outline: none;
+            width: 340px;
+        }
+
+        .doc-title-input:hover,
+        .doc-title-input:focus {
+            background: #1e293b;
+            border-color: #475569;
+        }
+
+        .header-center-tools {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .save-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.775rem;
+            padding: 3px 10px;
+            border-radius: 20px;
+            background: rgba(16, 185, 129, 0.15);
+            color: #34d399;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            cursor: pointer;
+        }
+
+        .header-right-tools {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Ribbon Toolbar */
+        .ribbon-toolbar {
+            background: #0f172a;
+            padding: 4px 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .ribbon-group {
+            display: inline-flex;
+            align-items: center;
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 6px;
+            padding: 2px;
+            gap: 2px;
+        }
+
+        .r-btn {
+            background: transparent;
+            border: none;
+            color: #e2e8f0;
+            padding: 5px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            height: 28px;
+            min-width: 28px;
+            transition: all 0.15s ease;
+            font-family: inherit;
+        }
+
+        .r-btn:hover {
+            background: #334155;
+            color: #38bdf8;
+        }
+
+        .r-btn.active {
+            background: #0284c7;
+            color: white;
+        }
+
+        .r-select {
+            background: #1e293b;
+            border: 1px solid #334155;
+            color: #f8fafc;
+            padding: 3px 6px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            outline: none;
+            cursor: pointer;
+            height: 28px;
+            font-family: inherit;
+        }
+
+        .r-select option {
+            background: #0f172a;
+            color: white;
+        }
+
+        .font-size-box {
+            display: flex;
+            align-items: center;
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 4px;
+            height: 28px;
+            padding: 0 2px;
+        }
+
+        .font-size-input {
+            width: 32px;
+            background: transparent;
+            border: none;
+            color: white;
+            text-align: center;
+            font-size: 0.825rem;
+            font-weight: 600;
+            outline: none;
+        }
+
+        .fs-btn {
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            cursor: pointer;
+            padding: 0 4px;
+            font-size: 0.75rem;
+        }
+
+        .fs-btn:hover {
+            color: white;
+        }
+
+        .color-picker-btn {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            gap: 2px;
+        }
+
+        .color-picker-input {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            left: 0;
+            top: 0;
+            cursor: pointer;
+        }
+
+        /* App Workspace Layout (3 Column Studio) */
+        .app-workspace {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Left Sidebar: Pages & Outline */
+        .sidebar-left {
+            width: 250px;
+            background: var(--bg-sidebar);
+            border-right: 1px solid var(--border-ui);
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+            z-index: 100;
+            transition: width 0.2s ease;
+        }
+
+        .sidebar-left.collapsed {
+            width: 0;
+            overflow: hidden;
+            border-right: none;
+        }
+
+        .sidebar-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border-ui);
+            background: #0b1120;
+        }
+
+        .sidebar-tab {
+            flex: 1;
+            padding: 8px;
+            text-align: center;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.15s;
+        }
+
+        .sidebar-tab.active {
+            color: #38bdf8;
+            border-bottom-color: #38bdf8;
+            background: #0f172a;
+        }
+
+        .sidebar-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        /* Page Thumbnails */
+        .page-thumb-card {
+            background: #1e293b;
+            border: 2px solid transparent;
+            border-radius: 6px;
+            padding: 8px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            position: relative;
+        }
+
+        .page-thumb-card:hover {
+            border-color: #0284c7;
+            background: #243047;
+        }
+
+        .page-thumb-card.active {
+            border-color: #38bdf8;
+            box-shadow: 0 0 12px var(--accent-glow);
+            background: #243047;
+        }
+
+        .thumb-preview {
+            background: white;
+            color: black;
+            height: 95px;
+            border-radius: 3px;
+            overflow: hidden;
+            font-size: 4px;
+            line-height: 1.2;
+            padding: 4px;
+            pointer-events: none;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .thumb-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 6px;
+            font-size: 0.75rem;
+            color: #94a3b8;
+        }
+
+        .thumb-actions {
+            display: flex;
+            gap: 4px;
+            opacity: 0;
+            transition: opacity 0.15s;
+        }
+
+        .page-thumb-card:hover .thumb-actions {
+            opacity: 1;
+        }
+
+        .th-btn {
+            background: #0f172a;
+            border: 1px solid #334155;
+            color: #cbd5e1;
+            width: 20px;
+            height: 20px;
+            border-radius: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.65rem;
+            cursor: pointer;
+        }
+
+        .th-btn:hover {
+            background: #0284c7;
+            color: white;
+        }
+
+        /* Outline Tree */
+        .outline-item {
+            padding: 6px 8px;
+            border-radius: 4px;
+            color: #cbd5e1;
+            font-size: 0.8rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .outline-item:hover {
+            background: #1e293b;
+            color: #38bdf8;
+        }
+
+        /* Center Canvas Workspace */
+        .canvas-area {
+            flex: 1;
+            background: var(--bg-canvas);
+            overflow-y: auto;
+            overflow-x: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px 100px;
+            position: relative;
+            user-select: text;
+        }
+
+        .canvas-zoom-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 35px;
+            transform-origin: top center;
+            transition: transform 0.15s ease;
+        }
+
+        /* A4 Landscape Paper Page Component */
+        .doc-page {
+            background-color: var(--paper-color);
+            color: var(--paper-text);
+            width: 297mm;
+            min-height: 210mm;
+            padding: 14mm 20mm;
+            box-sizing: border-box;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.75);
+            border-radius: 3px;
+            position: relative;
+            line-height: 1.5;
+            font-family: 'Tiro Devanagari Hindi', 'Mukta', sans-serif;
+            font-size: 15px;
+        }
+
+        .page-badge-label {
+            position: absolute;
+            top: -26px;
+            left: 0;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #64748b;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* In-Place Contenteditable */
+        [contenteditable="true"] {
+            outline: none;
+            cursor: text;
+            min-height: 1.2em;
+            border-radius: 2px;
+            transition: background-color 0.12s ease, box-shadow 0.12s ease;
+        }
+
+        [contenteditable="true"]:hover {
+            background-color: rgba(2, 132, 199, 0.08) !important;
+        }
+
+        [contenteditable="true"]:focus {
+            background-color: rgba(254, 240, 138, 0.45) !important;
+            box-shadow: inset 0 0 0 1.5px #0284c7;
+        }
+
+        /* Document Elements Structure */
+        .cover-page-border {
+            border: 3px solid black;
+            min-height: 180mm;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        .cover-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 24px;
+        }
+
+        .cover-by {
+            font-size: 24px;
+            margin-bottom: 24px;
+        }
+
+        .cover-name {
+            font-size: 30px;
+            font-weight: 700;
+            margin-bottom: 24px;
+        }
+
+        .cover-designation {
+            font-size: 26px;
+            margin-bottom: 24px;
+        }
+
+        .cover-location {
+            font-size: 26px;
+            margin-bottom: 36px;
+        }
+
+        .cover-date-row {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            font-size: 26px;
+            font-weight: 700;
+        }
+
+        .section-header-wrap {
+            text-align: center;
+            margin-bottom: 12px;
+        }
+
+        .section-header {
+            text-align: center;
+            font-size: 22px;
+            margin-bottom: 14px;
+            font-weight: 700;
+            border-bottom: 2px solid #000000;
+            padding-bottom: 4px;
+            display: inline-block;
+        }
+
+        .bold-text {
+            font-weight: 700;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .justify-text {
+            text-align: justify;
+            margin-bottom: 12px;
+            font-size: 16px;
+            line-height: 1.6;
+            text-indent: 30px;
+        }
+
+        .sub-point {
+            margin-bottom: 12px;
+            text-align: justify;
+            font-size: 16px;
+            line-height: 1.55;
+            position: relative;
+        }
+
+        .sub-point-title {
+            font-weight: 700;
+        }
+
+        /* Tables & Resizable Elements */
+        .table-container {
+            position: relative;
+            margin: 14px 0;
+            overflow: visible;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 15.5px;
+            color: #000000;
+            table-layout: auto;
+        }
+
+        tbody tr {
+            position: relative;
+            transition: background-color 0.12s ease;
+        }
+
+        tbody tr:hover {
+            background-color: rgba(2, 132, 199, 0.06);
+        }
+
+        tbody tr:hover .row-hover-popup,
+        tbody tr:hover .row-del-btn {
+            opacity: 1 !important;
+            visibility: visible !important;
+            pointer-events: auto !important;
+            transform: translateY(-50%) scale(1) !important;
+        }
+
+        /* Hover Action Popup for Table Rows */
+        .row-hover-popup {
+            position: absolute;
+            right: 4px;
+            top: 50%;
+            transform: translateY(-50%) scale(0.92);
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 6px;
+            padding: 2px 4px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 100;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
+            user-select: none;
+        }
+
+        .row-popup-btn {
+            border: none;
+            border-radius: 4px;
+            padding: 3px 8px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            transition: all 0.12s ease;
+            white-space: nowrap;
+            line-height: 1.25;
+            color: #ffffff;
+        }
+
+        .row-popup-btn.add-btn {
+            background: #0284c7;
+            border: 1px solid #0369a1;
+        }
+
+        .row-popup-btn.add-btn:hover {
+            background: #0ea5e9;
+            transform: scale(1.05);
+        }
+
+        .row-popup-btn.del-btn {
+            background: #ef4444;
+            border: 1px solid #dc2626;
+        }
+
+        .row-popup-btn.del-btn:hover {
+            background: #b91c1c;
+            transform: scale(1.05);
+        }
+
+        .row-del-btn {
+            position: absolute;
+            right: 2px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #ef4444;
+            color: white;
+            border: 1px solid #dc2626;
+            border-radius: 4px;
+            padding: 3px 6px;
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 600;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: all 0.15s ease;
+            z-index: 100;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+        }
+
+        .row-del-btn:hover {
+            background: #b91c1c;
+            transform: translateY(-50%) scale(1.08);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border-spacing: 0;
+            border: 2px solid #000000;
+            font-size: 15.5px;
+            color: #000000;
+            table-layout: auto;
+        }
+
+        th,
+        td {
+            border: 1.5px solid #000000;
+            padding: 7px 10px;
+            text-align: left;
+            vertical-align: middle;
+            line-height: 1.35;
+            position: relative;
+        }
+
+        th {
+            background-color: #f1f5f9;
+            font-weight: 700;
+            border: 1.5px solid #000000;
+            border-bottom: 2px solid #000000;
+        }
+
+        .center-table th,
+        .center-table td {
+            text-align: center;
+        }
+
+        /* Floating Cell Actions Bar */
+        .table-cell-actions {
+            position: absolute;
+            top: -34px;
+            left: 0;
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 6px;
+            padding: 2px 6px;
+            display: none;
+            align-items: center;
+            gap: 4px;
+            z-index: 50;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .table-container:hover .table-cell-actions {
+            display: flex;
+        }
+
+        /* Floating Selection Formatting Bar */
+        .floating-selection-bar {
+            position: fixed;
+            background: #1e293b;
+            border: 1px solid #475569;
+            border-radius: 8px;
+            padding: 4px;
+            display: none;
+            align-items: center;
+            gap: 3px;
+            z-index: 2000;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+            animation: floatFadeIn 0.15s ease-out;
+        }
+
+        .floating-selection-bar.show {
+            display: flex;
+        }
+
+        @keyframes floatFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(6px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Right Sidebar: Context Properties Panel */
+        .sidebar-right {
+            width: 280px;
+            background: var(--bg-sidebar);
+            border-left: 1px solid var(--border-ui);
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+            z-index: 100;
+            transition: width 0.2s ease;
+        }
+
+        .sidebar-right.collapsed {
+            width: 0;
+            overflow: hidden;
+            border-left: none;
+        }
+
+        .panel-header {
+            padding: 10px 14px;
+            background: #0b1120;
+            border-bottom: 1px solid var(--border-ui);
+            font-weight: 700;
+            color: #38bdf8;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .panel-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .prop-section {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .prop-title {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+        }
+
+        .prop-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        .prop-label {
+            font-size: 0.8rem;
+            color: #cbd5e1;
+        }
+
+        .prop-input {
+            background: #1e293b;
+            border: 1px solid #334155;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            width: 110px;
+            outline: none;
+        }
+
+        .prop-input:focus {
+            border-color: #38bdf8;
+        }
+
+        /* Signature Block Component */
+        .signature-block {
+            margin-top: 40px;
+            display: flex;
+            justify-content: flex-end;
+            padding-right: 40px;
+            position: relative;
+        }
+
+        .signature-content {
+            text-align: center;
+            min-width: 280px;
+            font-size: 18px;
+            line-height: 1.4;
+        }
+
+        /* Bottom Status & Zoom Bar */
+        .app-footer {
+            background: #0b1120;
+            border-top: 1px solid var(--border-ui);
+            padding: 4px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.775rem;
+            color: var(--text-muted);
+            z-index: 1000;
+            flex-shrink: 0;
+        }
+
+        .footer-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .footer-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .zoom-slider-box {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Modals & Dialogs */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 3000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+        }
+
+        .modal-overlay.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-card {
+            background: #1e293b;
+            border: 1px solid #475569;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 480px;
+            padding: 20px;
+            color: white;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
+        }
+
+        .modal-card h3 {
+            margin: 0 0 14px;
+            font-size: 1.1rem;
+            color: #38bdf8;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .m-form-row {
+            margin-bottom: 12px;
+        }
+
+        .m-form-row label {
+            display: block;
+            font-size: 0.8rem;
+            color: #94a3b8;
+            margin-bottom: 4px;
+            font-weight: 600;
+        }
+
+        .m-form-input {
+            width: 100%;
+            background: #0f172a;
+            border: 1px solid #334155;
+            padding: 8px 10px;
+            border-radius: 6px;
+            color: white;
+            font-size: 0.85rem;
+            outline: none;
+        }
+
+        .m-form-input:focus {
+            border-color: #38bdf8;
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+            margin-top: 18px;
+        }
+
+        /* Right-Click Table Context Menu */
+        .context-menu {
+            position: fixed;
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 6px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+            z-index: 4000;
+            display: none;
+            min-width: 200px;
+        }
+
+        .context-menu.show {
+            display: block;
+        }
+
+        .context-item {
+            padding: 6px 12px;
+            color: #f8fafc;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.825rem;
+            transition: background 0.12s;
+        }
+
+        .context-item:hover {
+            background: #0284c7;
+            color: white;
+        }
+
+        .context-item.danger:hover {
+            background: #ef4444;
+        }
+
+        .context-divider {
+            height: 1px;
+            background: #334155;
+            margin: 4px 0;
+        }
+
+        /* Toast Popup */
+        .toast-popup {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #0f172a;
+            color: #f8fafc;
+            border: 1px solid #38bdf8;
+            padding: 10px 18px;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            z-index: 5000;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .toast-popup.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* 100% Pure White Print Clean Engine for A4 Landscape */
+        @page {
+            size: A4 landscape;
+            margin: 0;
+        }
+
+        @media print {
+
+            *,
+            *::before,
+            *::after {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+                box-shadow: none !important;
+                text-shadow: none !important;
+            }
+
+            :root {
+                --bg-canvas: #ffffff !important;
+                --bg-sidebar: #ffffff !important;
+                --bg-panel: #ffffff !important;
+                --paper-color: #ffffff !important;
+                --paper-text: #000000 !important;
+                --paper-border: #000000 !important;
+            }
+
+            html,
+            body {
+                background: #ffffff !important;
+                background-color: #ffffff !important;
+                color: #000000 !important;
+                width: 100% !important;
+                height: auto !important;
+                min-height: 0 !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                overflow: visible !important;
+                display: block !important;
+                -webkit-font-smoothing: antialiased;
+            }
+
+            .app-header,
+            .ribbon-toolbar,
+            .sidebar-left,
+            .sidebar-right,
+            .app-footer,
+            .floating-selection-bar,
+            .page-badge-label,
+            .block-handle,
+            .table-cell-actions,
+            .row-del-btn,
+            .col-resizer,
+            .context-menu,
+            .modal-overlay,
+            .toast-popup,
+            .no-print {
+                display: none !important;
+                visibility: hidden !important;
+                opacity: 0 !important;
+                height: 0 !important;
+                width: 0 !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+
+            .app-workspace,
+            .canvas-area,
+            .canvas-zoom-wrapper {
+                background: #ffffff !important;
+                background-color: #ffffff !important;
+                color: #000000 !important;
+                display: block !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                overflow: visible !important;
+                transform: none !important;
+                width: 100% !important;
+                height: auto !important;
+                min-height: 0 !important;
+                box-shadow: none !important;
+                border: none !important;
+            }
+
+            .doc-page {
+                background: #ffffff !important;
+                background-color: #ffffff !important;
+                color: #000000 !important;
+                box-shadow: none !important;
+                border: none !important;
+                border-radius: 0 !important;
+                width: 297mm !important;
+                max-width: 297mm !important;
+                min-height: 210mm !important;
+                height: auto !important;
+                padding: 12mm 16mm !important;
+                margin: 0 auto !important;
+                page-break-after: always !important;
+                break-after: page !important;
+                page-break-inside: avoid !important;
+                break-inside: avoid !important;
+                box-sizing: border-box !important;
+            }
+
+            .cover-page-border {
+                border: 3px solid #000000 !important;
+                min-height: 185mm !important;
+                background: #ffffff !important;
+                background-color: #ffffff !important;
+                box-sizing: border-box !important;
+            }
+
+            .table-container {
+                position: relative !important;
+                margin: 10px 0 !important;
+                padding: 0 !important;
+                overflow: visible !important;
+                page-break-inside: auto !important;
+                break-inside: auto !important;
+            }
+
+            table,
+            table * {
+                border-color: #000000 !important;
+            }
+
+            table {
+                width: 100% !important;
+                border-collapse: collapse !important;
+                border-spacing: 0 !important;
+                border: 2px solid #000000 !important;
+                outline: 2px solid #000000 !important;
+                color: #000000 !important;
+                background: #ffffff !important;
+                background-color: #ffffff !important;
+                margin: 8px 0 !important;
+                table-layout: auto !important;
+            }
+
+            thead {
+                display: table-header-group !important;
+            }
+
+            thead tr {
+                border-bottom: 2.5px solid #000000 !important;
+            }
+
+            tbody tr {
+                border-bottom: 1.5px solid #000000 !important;
+                page-break-inside: avoid !important;
+                break-inside: avoid !important;
+            }
+
+            th,
+            td {
+                border: 1.5px solid #000000 !important;
+                border-top: 1.5px solid #000000 !important;
+                border-bottom: 1.5px solid #000000 !important;
+                border-left: 1.5px solid #000000 !important;
+                border-right: 1.5px solid #000000 !important;
+                border-color: #000000 !important;
+                color: #000000 !important;
+                padding: 6px 9px !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+                box-sizing: border-box !important;
+            }
+
+            th {
+                background: #f1f5f9 !important;
+                background-color: #f1f5f9 !important;
+                font-weight: 700 !important;
+                border: 1.5px solid #000000 !important;
+                border-bottom: 2.5px solid #000000 !important;
+            }
+
+            td {
+                background: #ffffff !important;
+                background-color: #ffffff !important;
+            }
+
+            [contenteditable="true"] {
+                background: transparent !important;
+                background-color: transparent !important;
+                box-shadow: none !important;
+                color: #000000 !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- 1. Top Master Application Header -->
+    <header class="app-header no-print">
+        <div class="header-top-row">
+            <div class="doc-brand">
+                <div class="brand-badge"><i class="fa-solid fa-file-invoice"></i></div>
+                <input type="text" id="doc-title" class="doc-title-input" value="भ्रमण/निरीक्षण पुलिस माडर्न स्कूल 2025"
+                    title="दस्तावेज़ का नाम बदलें">
+            </div>
+
+            <div class="header-center-tools">
+                <button class="r-btn" onclick="execUndo()" title="पूर्ववत करें (Ctrl+Z)"><i
+                        class="fa-solid fa-rotate-left"></i></button>
+                <button class="r-btn" onclick="execRedo()" title="पुनः करें (Ctrl+Y)"><i
+                        class="fa-solid fa-rotate-right"></i></button>
+                <div id="save-status-pill" class="save-indicator" onclick="manualSaveDraft()"
+                    title="लोकल स्टोरेज स्थिति">
+                    <i class="fa-solid fa-circle-check"></i> <span id="save-status-text">सुरक्षित</span>
+                </div>
+                <div id="cloud-status-pill" class="save-indicator" onclick="window.saveToFirestore(true)"
+                    style="background: rgba(14, 165, 233, 0.15); border-color: rgba(56, 189, 248, 0.4); color: #38bdf8; cursor: pointer;"
+                    title="Firestore क्लाउड स्थिति (क्लिक कर तुरंत सेव करें)">
+                    <i class="fa-solid fa-cloud"></i> <span id="cloud-status-text">क्लाउड कनेक्टिंग...</span>
+                </div>
+            </div>
+
+            <div class="header-right-tools">
+                <button class="r-btn" style="background: #0284c7; color: white;" onclick="window.saveToFirestore(true)"
+                    title="Firestore क्लाउड में सेव करें"><i class="fa-solid fa-cloud-arrow-up"></i> क्लाउड सेव</button>
+                <button class="r-btn" style="background: #1e293b; border: 1px solid #38bdf8; color: #38bdf8;"
+                    onclick="window.openCloudReportsModal()" title="Firestore क्लाउड से लोड करें"><i
+                        class="fa-solid fa-cloud-arrow-down"></i> क्लाउड लोड</button>
+                <button class="r-btn" onclick="toggleSidebar('left')" title="पेज साइडबार"><i
+                        class="fa-solid fa-table-cells-large"></i> पेज</button>
+                <button class="r-btn" onclick="openFindReplaceModal()" title="खोजें और बदलें (Ctrl+F)"><i
+                        class="fa-solid fa-magnifying-glass"></i> खोजें</button>
+                <button class="r-btn" onclick="exportJSONBackup()" title="JSON बैकअप डाउनलोड करें"><i
+                        class="fa-solid fa-download"></i> बैकअप</button>
+                <label class="r-btn" style="cursor: pointer; margin: 0;" title="JSON से रिस्टोर करें">
+                    <i class="fa-solid fa-upload"></i> रिस्टोर
+                    <input type="file" id="input-json-restore" accept=".json" style="display: none;"
+                        onchange="importJSONBackup(event)">
+                </label>
+                <button class="r-btn" onclick="exportCleanHTML()" title="HTML फ़ाइल डाउनलोड करें"><i
+                        class="fa-brands fa-html5"></i> HTML</button>
+                <button class="r-btn" style="background: #059669; color: white;" onclick="printDoc()"
+                    title="A4 Landscape प्रिंट या PDF बनाएं"><i class="fa-solid fa-print"></i> प्रिंट / PDF</button>
+                <button class="r-btn" style="color: #f87171;" onclick="resetToDefaultTemplate()"
+                    title="डिफ़ॉल्ट पर रीसेट करें"><i class="fa-solid fa-arrows-rotate"></i> रीसेट</button>
+                <button class="r-btn" onclick="toggleSidebar('right')" title="फॉर्मेट पैनल"><i
+                        class="fa-solid fa-sliders"></i></button>
+            </div>
+        </div>
+
+        <!-- 2. Rich Formatting Ribbon Bar -->
+        <div class="ribbon-toolbar">
+            <!-- Font Selection -->
+            <select id="ribbon-font" class="r-select" style="width: 160px;" onchange="applyFontFamily(this.value)">
+                <option value="'Tiro Devanagari Hindi', sans-serif">Tiro Devanagari Hindi</option>
+                <option value="'Mukta', sans-serif">Mukta</option>
+                <option value="'Noto Sans Devanagari', sans-serif">Noto Sans Devanagari</option>
+                <option value="'Noto Serif Devanagari', serif">Noto Serif Devanagari</option>
+                <option value="'Inter', sans-serif">Inter (Modern)</option>
+                <option value="'Arial Unicode MS', sans-serif">Arial Unicode</option>
+            </select>
+
+            <!-- Font Size -->
+            <div class="font-size-box">
+                <button class="fs-btn" onclick="stepFontSize(-1)"><i class="fa-solid fa-minus"></i></button>
+                <input type="text" id="ribbon-fontsize" class="font-size-input" value="16"
+                    onchange="applyFontSize(this.value)">
+                <button class="fs-btn" onclick="stepFontSize(1)"><i class="fa-solid fa-plus"></i></button>
+            </div>
+
+            <!-- Styles B / I / U / S -->
+            <div class="ribbon-group">
+                <button class="r-btn" onclick="execCmd('bold')" title="बोल्ड (Ctrl+B)"><i
+                        class="fa-solid fa-bold"></i></button>
+                <button class="r-btn" onclick="execCmd('italic')" title="इटैलिक (Ctrl+I)"><i
+                        class="fa-solid fa-italic"></i></button>
+                <button class="r-btn" onclick="execCmd('underline')" title="अंडरलाइन (Ctrl+U)"><i
+                        class="fa-solid fa-underline"></i></button>
+                <button class="r-btn" onclick="execCmd('strikeThrough')" title="स्ट्राइक"><i
+                        class="fa-solid fa-strikethrough"></i></button>
+            </div>
+
+            <!-- Text & Highlight Color -->
+            <div class="ribbon-group">
+                <button class="r-btn color-picker-btn" title="टेक्स्ट रंग">
+                    <i class="fa-solid fa-font"></i>
+                    <input type="color" class="color-picker-input" onchange="execCmd('foreColor', this.value)">
+                </button>
+                <button class="r-btn color-picker-btn" title="हाइलाइट रंग">
+                    <i class="fa-solid fa-highlighter"></i>
+                    <input type="color" class="color-picker-input" value="#fef08a"
+                        onchange="execCmd('hiliteColor', this.value)">
+                </button>
+            </div>
+
+            <!-- Alignment -->
+            <div class="ribbon-group">
+                <button class="r-btn" onclick="execCmd('justifyLeft')" title="बायाँ"><i
+                        class="fa-solid fa-align-left"></i></button>
+                <button class="r-btn" onclick="execCmd('justifyCenter')" title="मध्य"><i
+                        class="fa-solid fa-align-center"></i></button>
+                <button class="r-btn" onclick="execCmd('justifyRight')" title="दायाँ"><i
+                        class="fa-solid fa-align-right"></i></button>
+                <button class="r-btn" onclick="execCmd('justifyFull')" title="जस्टिफाई"><i
+                        class="fa-solid fa-align-justify"></i></button>
+            </div>
+
+            <!-- Lists & Indent -->
+            <div class="ribbon-group">
+                <button class="r-btn" onclick="execCmd('insertUnorderedList')" title="बुलेट सूची"><i
+                        class="fa-solid fa-list-ul"></i></button>
+                <button class="r-btn" onclick="execCmd('insertOrderedList')" title="क्रमांक सूची"><i
+                        class="fa-solid fa-list-ol"></i></button>
+                <button class="r-btn" onclick="execCmd('outdent')" title="इंडेन्ट घटाएं"><i
+                        class="fa-solid fa-outdent"></i></button>
+                <button class="r-btn" onclick="execCmd('indent')" title="इंडेन्ट बढ़ाएं"><i
+                        class="fa-solid fa-indent"></i></button>
+            </div>
+
+            <!-- Insert Components Dropdown -->
+            <div class="ribbon-group">
+                <button class="r-btn" onclick="openInsertTableModal()" title="टेबल जोड़ें"><i
+                        class="fa-solid fa-table"></i> टेबल</button>
+                <button class="r-btn" onclick="insertNewHeading()" title="हेडिंग जोड़ें"><i
+                        class="fa-solid fa-heading"></i> हेडिंग</button>
+                <button class="r-btn" onclick="insertNewParagraph()" title="पैराग्राफ जोड़ें"><i
+                        class="fa-solid fa-paragraph"></i> पैरा</button>
+                <button class="r-btn" onclick="insertNewSubPoint()" title="सब-पॉइंट जोड़ें"><i
+                        class="fa-solid fa-list-check"></i> बिन्दु</button>
+                <button class="r-btn" onclick="insertNewSignature()" title="हस्ताक्षर ब्लॉक जोड़ें"><i
+                        class="fa-solid fa-signature"></i> हस्ताक्षर</button>
+            </div>
+
+            <!-- Clear formatting -->
+            <button class="r-btn" onclick="execCmd('removeFormat')" title="फॉर्मेटिंग हटाएं"><i
+                    class="fa-solid fa-text-slash"></i></button>
+        </div>
+    </header>
+
+    <!-- 3. App Workspace (3 Columns) -->
+    <div class="app-workspace">
+
+        <!-- Left Sidebar: Pages & Outline -->
+        <aside id="sidebar-left" class="sidebar-left no-print">
+            <div class="sidebar-tabs">
+                <div class="sidebar-tab active" onclick="switchLeftTab('pages', this)"><i
+                        class="fa-solid fa-file-lines mr-1"></i> पृष्ठ</div>
+                <div class="sidebar-tab" onclick="switchLeftTab('outline', this)"><i
+                        class="fa-solid fa-bars-staggered mr-1"></i>
+                    अनुक्रमणिका</div>
+            </div>
+
+            <div id="tab-pages-content" class="sidebar-content">
+                <!-- Dynamically populated page thumbnails -->
+                <div id="pages-thumbs-list" style="display: flex; flex-direction: column; gap: 10px;"></div>
+                <button class="r-btn"
+                    style="background: #1e293b; border: 1px dashed #475569; width: 100%; justify-content: center; padding: 10px;"
+                    onclick="openAddPageModal()">
+                    <i class="fa-solid fa-plus"></i> नया पृष्ठ जोड़ें
+                </button>
+            </div>
+
+            <div id="tab-outline-content" class="sidebar-content" style="display: none;">
+                <div id="outline-tree-list" style="display: flex; flex-direction: column; gap: 4px;"></div>
+            </div>
+        </aside>
+
+        <!-- Center Document Canvas Area -->
+        <main class="canvas-area" id="canvas-area" onclick="handleCanvasClick(event)">
+            <div class="canvas-zoom-wrapper" id="canvas-zoom-wrapper">
+
+                <!-- ================= PAGE 1 ================= -->
+                <div class="doc-page" id="page-1" data-page-num="1" contenteditable="true">
+                    <div class="page-badge-label no-print"><i class="fa-solid fa-file"></i> पृष्ठ 1 / 6 (कवर पेज)</div>
+                    <div class="cover-page-border">
+                        <div class="cover-title">भ्रमण/निरीक्षण पुलिस माडर्न स्कूल</div>
+                        <div class="cover-by">द्वारा</div>
+                        <div class="cover-name">श्री अरूण कुमार श्रीवास्तव</div>
+                        <div class="cover-designation">पुलिस उप महानिरीक्षक पीएसी अयोध्या अनुभाग अयोध्या</div>
+                        <div class="cover-location">उत्तर प्रदेश – लखनऊ</div>
+                        <div class="cover-date-row">
+                            <span>दिनांक</span>
+                            <span>09.07.2025</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ================= PAGE 2 ================= -->
+                <div class="doc-page" id="page-2" data-page-num="2" contenteditable="true">
+                    <div class="page-badge-label no-print"><i class="fa-solid fa-file-lines"></i> पृष्ठ 2 / 6
+                        (अनुक्रमणिका)</div>
+                    <div class="section-header-wrap">
+                        <div class="section-header">अनुक्रमणिका</div>
+                    </div>
+
+                    <div class="table-container">
+                        <div class="table-cell-actions no-print">
+                            <button class="r-btn" onclick="addTableRow(this)" title="नई पंक्ति जोड़ें"><i
+                                    class="fa-solid fa-plus"></i> पंक्ति जोड़ें</button>
+                            <button class="r-btn" style="color: #fca5a5;" onclick="deleteLastTableRow(this)"
+                                title="अंतिम पंक्ति हटाएं"><i class="fa-solid fa-minus"></i> अंतिम पंक्ति</button>
+                            <button class="r-btn" onclick="getTableColCount(this); addTableColumn(this);"
+                                title="नया कॉलम जोड़ें"><i class="fa-solid fa-plus"></i> कॉलम जोड़ें</button>
+                            <button class="r-btn" style="color: #fca5a5;" onclick="deleteLastTableColumn(this)"
+                                title="अंतिम कॉलम हटाएं"><i class="fa-solid fa-minus"></i> अंतिम कॉलम</button>
+                            <button class="r-btn" style="color: #f87171;" onclick="deleteActiveTable(this)"
+                                title="पूरी टेबल हटाएं"><i class="fa-solid fa-trash"></i> टेबल हटाएं</button>
+                        </div>
+                        <table class="center-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 10%;">क्रम</th>
+                                    <th style="width: 25%;">स्टेटमेण्ट नम्बर</th>
+                                    <th style="width: 45%;">विवरण</th>
+                                    <th style="width: 20%;">अन्य विवरण</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>01</td>
+                                    <td>स्टेटमेण्ट नम्बर 01</td>
+                                    <td style="text-align: left;">स्कूल में उपलब्ध स्टाफ</td>
+                                    <td></td>
+                                    <button class="row-del-btn no-print" contenteditable="false"
+                                        onclick="deleteThisRow(this)" title="यह पंक्ति हटाएं"><i
+                                            class="fa-solid fa-trash"></i> हटाएं</button>
+                                </tr>
+                                <tr>
+                                    <td>02</td>
+                                    <td>स्टेटमेण्ट नम्बर 02</td>
+                                    <td style="text-align: left;">विद्यालय में क्लास रूम, कम्प्यूटर कक्ष, कार्यालय,
+                                        संगीत कक्ष, स्टोर, शौचालय</td>
+                                    <td></td>
+                                    <button class="row-del-btn no-print" contenteditable="false"
+                                        onclick="deleteThisRow(this)" title="यह पंक्ति हटाएं"><i
+                                            class="fa-solid fa-trash"></i> हटाएं</button>
+                                </tr>
+                                <tr>
+                                    <td>03</td>
+                                    <td>स्टेटमेण्ट नम्बर 03</td>
+                                    <td style="text-align: left;">विद्यालय में बच्चों की संख्या</td>
+                                    <td></td>
+                                    <button class="row-del-btn no-print" contenteditable="false"
+                                        onclick="deleteThisRow(this)" title="यह पंक्ति हटाएं"><i
+                                            class="fa-solid fa-trash"></i> हटाएं</button>
+                                </tr>
+                                <tr>
+                                    <td>04</td>
+                                    <td>स्टेटमेण्ट नम्बर 04</td>
+                                    <td style="text-align: left;">अभिलेखों का निरीक्षण</td>
+                                    <td></td>
+                                    <button class="row-del-btn no-print" contenteditable="false"
+                                        onclick="deleteThisRow(this)" title="यह पंक्ति हटाएं"><i
+                                            class="fa-solid fa-trash"></i> हटाएं</button>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- ================= PAGE 3 ================= -->
+                <div class="doc-page" id="page-3" data-page-num="3" contenteditable="true">
+                    <div class="page-badge-label no-print"><i class="fa-solid fa-file-lines"></i> पृष्ठ 3 / 6
+                        (स्टेटमेण्ट 01)</div>
+                    <div class="section-header-wrap">
+                        <div class="section-header">स्टेटमेण्ट नम्बर 01</div>
+                    </div>
+                    <div class="bold-text">1. स्कूल में उपलब्ध स्टाफ :-</div>
+                    <div class="justify-text">पुलिस माडर्न स्कूल में प्र०प्रधानाचार्या 01, सहायक अध्यापक / अध्यापिकायें
+                        09, तथा 01 आया की नियुक्ति है। जिनके नाम व पदवार विवरण निम्नवत् है-</div>
+
+                    <div class="table-container">
+                        <div class="table-cell-actions no-print">
+                            <button class="r-btn" onclick="addTableRow(this)" title="नई पंक्ति जोड़ें"><i
+                                    class="fa-solid fa-plus"></i> पंक्ति जोड़ें</button>
+                            <button class="r-btn" style="color: #fca5a5;" onclick="deleteLastTableRow(this)"
+                                title="अंतिम पंक्ति हटाएं"><i class="fa-solid fa-minus"></i> अंतिम पंक्ति</button>
+                            <button class="r-btn" onclick="getTableColCount(this); addTableColumn(this);"
+                                title="नया कॉलम जोड़ें"><i class="fa-solid fa-plus"></i> कॉलम जोड़ें</button>
+                            <button class="r-btn" style="color: #fca5a5;" onclick="deleteLastTableColumn(this)"
+                                title="अंतिम कॉलम हटाएं"><i class="fa-solid fa-minus"></i> अंतिम कॉलम</button>
+                            <button class="r-btn" style="color: #f87171;" onclick="deleteActiveTable(this)"
+                                title="पूरी टेबल हटाएं"><i class="fa-solid fa-trash"></i> टेबल हटाएं</button>
+                        </div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="width: 8%;">क्रमांक</th>
+                                    <th style="width: 25%;">नाम</th>
+                                    <th style="width: 25%;">पद</th>
+                                    <th style="width: 25%;">शैक्षिक योग्यता</th>
+                                    <th style="width: 17%;">नियुक्ति का वर्ष</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1.</td>
+                                    <td>श्रीमती अनुपम वाष्र्णेय</td>
+                                    <td>प्रभारी प्रधानाचार्या</td>
+                                    <td>एम०ए०, बी०एड०</td>
+                                    <td>2009</td>
+                                    <button class="row-del-btn no-print" contenteditable="false"
+                                        onclick="deleteThisRow(this)" title="यह पंक्ति हटाएं"><i
+                                            class="fa-solid fa-trash"></i> हटाएं</button>
+                                </tr>
+                                <tr>
+                                    <td>2.</td>
+                                    <td>श्रीमती सरोज बाजपेयी</td>
+                                    <td>सहा० अध्यापिका</td>
+                                    <td>एम०ए०, एल०टी०</td>
+                                    <td>1999</td>
+                                    <button class="row-del-btn no-print" contenteditable="false"
+                                        onclick="deleteThisRow(this)" title="यह पंक्ति हटाएं"><i
+                                            class="fa-solid fa-trash"></i> हटाएं</button>
+                                </tr>
+                                <tr>
+                                    <td>3.</td>
+                                    <td>श्रीमती आरती शुक्ला</td>
+                                    <td>सहा० अध्यापिका</td>
+                                    <td>डबल एम०ए०, बी०एड०</td>
+                                    <td>2013</td>
+                                    <button class="row-del-btn no-print" contenteditable="false"
+                                        onclick="deleteThisRow(this)" title="यह पंक्ति हटाएं"><i
+                                            class="fa-solid fa-trash"></i> हटाएं</button>
+                                </tr>
+                                <tr>
+                                    <td>4.</td>
+                                    <td>श्रीमती श्वेता सिंह</td>
+                                    <td>सहा० अध्यापिका</td>
+                                    <td>एमए० बी०एड०</td>
+                                    <td>2017</td>
+                                    <button class="row-del-btn no-print" contenteditable="false"
+                                        onclick="deleteThisRow(this)" title="यह पंक्ति हटाएं"><i
+                                            class="fa-solid fa-trash"></i> हटाएं</button>
+                                </tr>
+                                <tr>
+                                    <td>5.</td>
+                                    <td>कु०शशिलता</td>
+                                    <td>सहा० अध्यापिका</td>
+                                    <td>बी०एस०सी०, डी०एल०एड०</td>
+                                    <td>2023</td>
+                                    <button class="row-del-btn no-print" contenteditable="false"
+                                        onclick="deleteThisRow(this)" title="यह पंक्ति हटाएं"><i
+                                            class="fa-solid fa-trash"></i> हटाएं</button>
+                                </tr>
+                                <tr>
+                                    <td>6.</td>
+                                    <td>कु०अम्रता सिहं</td>
+                                    <td>सहा० अध्यापिका</td>
+                                    <td>बी०ए०, एन०टी०टी०</td>
+                                    <td>2019</td>
+                                    <button class="row-del-btn no-print" contenteditable="false"
+                                        onclick="deleteThisRow(this)" title="यह पंक्ति हटाएं"><i
+                                            class="fa-solid fa-trash"></i> हटाएं</button>
+                                </tr>
+                                <tr>
+                                    <td>7.</td>
+                                    <td>कु० रागिनी</td>
+                                    <td>सहा० अध्यापिका</td>
+                                    <td>एमए०, बी०एड०</td>
+                                    <td>2022</td>
+                                    <button class="row-del-btn no-print" contenteditable="false"
+                                        onclick="deleteThisRow(this)" title="यह पंक्ति हटाएं"><i
+                                            class="fa-solid fa-trash"></i> हटाएं</button>
+                                </tr>
+                                <tr>
+                                    <td>8.</td>
+                                    <td>कु० सुलेखा कश्यप</td>
+                                    <td>सहा० अध्यापिका</td>
+                                    <td>बी०एस०सी०</td>
+                                    <td>2023</td>
+                                    <button class="row-del-btn no-print" contenteditable="false"
+                                        onclick="deleteThisRow(this)" title="यह पंक्ति हटाएं"><i
+                                            class="fa-solid fa-trash"></i> हटाएं</button>
+                                </tr>
+                                <tr>
+                                    <td>9.</td>
+                                    <td>कु० खुशी तिवारी</td>
+                                    <td>सहा० अध्यापिका</td>
+                                    <td>बी०ए०, ओ लेवल</td>
+                                    <td>2024</td>
+                                    <button class="row-del-btn no-print" contenteditable="false"
+                                        onclick="deleteThisRow(this)" title="यह पंक्ति हटाएं"><i
+                                            class="fa-solid fa-trash"></i> हटाएं</button>
+                                </tr>
+                                <tr>
+                                    <td>10.</td>
+                                    <td>श्रीमती सविता सिंह</td>
+                                    <td>सहा० अध्यापिका</td>
+                                    <td>एमए०, बी०एड०</td>
+                                    <td>2024</td>
+                                    <button class="row-del-btn no-print" contenteditable="false"
+                                        onclick="deleteThisRow(this)" title="यह पंक्ति हटाएं"><i
+                                            class="fa-solid fa-trash"></i> हटाएं</button>
+                                </tr>
+                                <tr>
+                                    <td>11.</td>
+                                    <td>अशोक कुमारी</td>
+                                    <td>आया</td>
+                                    <td>---</td>
+                                    <td>---</td>
+                                    <button class="row-del-btn no-print" contenteditable="false"
+                                        onclick="deleteThisRow(this)" title="यह पंक्ति हटाएं"><i
+                                            class="fa-solid fa-trash"></i> हटाएं</button>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div style="margin-top: 24px;">
+                        <div class="bold-text">पूर्व निरीक्षण:- वर्ष 2025–2026 में नीचे अंकित अधिकारियों द्वारा
+                            /अर्द्धवार्षिक /त्रैमासिक/मासिक/आकस्मिक निरीक्षण किया गया है, जिसका विवरण निम्नवत् है-</div>
+
+                        <div class="table-container">
+                            <div class="table-cell-actions no-print">
+                                <button class="r-btn" onclick="addTableRow(this)" title="नई पंक्ति जोड़ें"><i
+                                        class="fa-solid fa-plus"></i> पंक्ति जोड़ें</button>
+                                <button class="r-btn" style="color: #fca5a5;" onclick="deleteLastTableRow(this)"
+                                    title="अंतिम पंक्ति हटाएं"><i class="fa-solid fa-minus"></i> अंतिम पंक्ति</button>
+                                <button class="r-btn" onclick="getTableColCount(this); addTableColumn(this);"
+                                    title="नया कॉलम जोड़ें"><i class="fa-solid fa-plus"></i> कॉलम जोड़ें</button>
+                                <button class="r-btn" style="color: #fca5a5;" onclick="deleteLastTableColumn(this)"
+                                    title="अंतिम कॉलम हटाएं"><i class="fa-solid fa-minus"></i> अंतिम कॉलम</button>
+                                <button class="r-btn" style="color: #f87171;" onclick="deleteActiveTable(this)"
+                                    title="पूरी टेबल हटाएं"><i class="fa-solid fa-trash"></i> टेबल हटाएं</button>
+                            </div>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th style="width: 7%; text-align: center;">क्र०सं०</th>
+                                        <th style="width: 33%;">निरीक्षणकर्ता अधिकारी</th>
+                                        <th style="width: 32%;">पद</th>
+                                        <th style="width: 14%; text-align: center;">निरीक्षण का प्रकार</th>
+                                        <th style="width: 14%; text-align: center;">निरीक्षण दिनांक</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td style="text-align: center;">1</td>
+                                        <td>श्री लाल भरत कुमार पाल</td>
+                                        <td>सेनानायक</td>
+                                        <td style="text-align: center;">मासिक</td>
+                                        <td style="text-align: center;">28.04.2025</td>
+                                        <button class="row-del-btn no-print" contenteditable="false"
+                                            onclick="deleteThisRow(this)" title="यह पंक्ति हटाएं"><i
+                                                class="fa-solid fa-trash"></i> हटाएं</button>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: center;">2</td>
+                                        <td>श्री अरूण कुमार श्रीवास्तव</td>
+                                        <td>उपमहानिरीक्षक, अयोध्या अनुभाग अयोध्या</td>
+                                        <td style="text-align: center;">वार्षिक</td>
+                                        <td style="text-align: center;">08.07.2025</td>
+                                        <button class="row-del-btn no-print" contenteditable="false"
+                                            onclick="deleteThisRow(this)" title="यह पंक्ति हटाएं"><i
+                                                class="fa-solid fa-trash"></i> हटाएं</button>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: center;">3</td>
+                                        <td>श्री अजय कुमार यादव</td>
+                                        <td>सहा० सेनानायक</td>
+                                        <td style="text-align: center;">आकस्मिक</td>
+                                        <td style="text-align: center;">24.07.2025</td>
+                                        <button class="row-del-btn no-print" contenteditable="false"
+                                            onclick="deleteThisRow(this)" title="यह पंक्ति हटाएं"><i
+                                                class="fa-solid fa-trash"></i> हटाएं</button>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: center;">4</td>
+                                        <td>श्री लाल भरत कुमार पाल</td>
+                                        <td>सेनानायक</td>
+                                        <td style="text-align: center;">आकस्मिक</td>
+                                        <td style="text-align: center;">07.08.2025</td>
+                                        <button class="row-del-btn no-print" contenteditable="false"
+                                            onclick="deleteThisRow(this)" title="यह पंक्ति हटाएं"><i
+                                                class="fa-solid fa-trash"></i> हटाएं</button>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: center;">5</td>
+                                        <td>श्री अरूण कुमार श्रीवास्तव</td>
+                                        <td>उपमहानिरीक्षक, अयोध्या अनुभाग अयोध्या</td>
+                                        <td style="text-align: center;">वार्षिक</td>
+                                        <td style="text-align: center;">08.08.2025</td>
+                                        <button class="row-del-btn no-print" contenteditable="false"
+                                            onclick="deleteThisRow(this)" title="यह पंक्ति हटाएं"><i
+                                                class="fa-solid fa-trash"></i> हटाएं</button>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: center;">6</td>
+                                        <td>श्री रामकृष्ण स्वर्णकार</td>
+                                        <td>अपर पुलिस महानिदेशक पीएसी लखनऊ</td>
+                                        <td style="text-align: center;">आकस्मिक</td>
+                                        <td style="text-align: center;">23.08.2025</td>
+                                        <button class="row-del-btn no-print" contenteditable="false"
+                                            onclick="deleteThisRow(this)" title="यह पंक्ति हटाएं"><i
+                                                class="fa-solid fa-trash"></i> हटाएं</button>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: center;">7</td>
+                                        <td>श्री अजय कुमार यादव</td>
+                                        <td>सहा० सेनानायक</td>
+                                        <td style="text-align: center;">मासिक</td>
+                                        <td style="text-align: center;">18.09.2025</td>
+                                        <button class="row-del-btn no-print" contenteditable="false"
+                                            onclick="deleteThisRow(this)" title="यह पंक्ति हटाएं"><i
+                                                class="fa-solid fa-trash"></i> हटाएं</button>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: center;">8</td>
+                                        <td>श्री लाल भरत कुमार पाल</td>
+                                        <td>सेनानायक</td>
+                                        <td style="text-align: center;">आकस्मिक</td>
+                                        <td style="text-align: center;">04.10.2025</td>
+                                        <button class="row-del-btn no-print" contenteditable="false"
+                                            onclick="deleteThisRow(this)" title="यह पंक्ति हटाएं"><i
+                                                class="fa-solid fa-trash"></i> हटाएं</button>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: center;">9</td>
+                                        <td>श्री अजय कुमार यादव</td>
+                                        <td>सहा० सेनानायक</td>
+                                        <td style="text-align: center;">मासिक</td>
+                                        <td style="text-align: center;">07.11.2025</td>
+                                        <button class="row-del-btn no-print" contenteditable="false"
+                                            onclick="deleteThisRow(this)" title="यह पंक्ति हटाएं"><i
+                                                class="fa-solid fa-trash"></i> हटाएं</button>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: center;">10</td>
+                                        <td>श्री लाल भरत कुमार पाल</td>
+                                        <td>सेनानायक</td>
+                                        <td style="text-align: center;">मासिक</td>
+                                        <td style="text-align: center;">08.12.2025</td>
+                                        <button class="row-del-btn no-print" contenteditable="false"
+                                            onclick="deleteThisRow(this)" title="यह पंक्ति हटाएं"><i
+                                                class="fa-solid fa-trash"></i> हटाएं</button>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: center;">11</td>
+                                        <td>श्री आनन्द कुमार</td>
+                                        <td>सहायक सेनानायक ।।</td>
+                                        <td style="text-align: center;">मासिक</td>
+                                        <td style="text-align: center;">08.01.2026</td>
+                                        <button class="row-del-btn no-print" contenteditable="false"
+                                            onclick="deleteThisRow(this)" title="यह पंक्ति हटाएं"><i
+                                                class="fa-solid fa-trash"></i> हटाएं</button>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: center;">12</td>
+                                        <td>श्री अजय कुमार यादव</td>
+                                        <td>सहा० सेनानायक</td>
+                                        <td style="text-align: center;">मासिक</td>
+                                        <td style="text-align: center;">25.02.2026</td>
+                                        <button class="row-del-btn no-print" contenteditable="false"
+                                            onclick="deleteThisRow(this)" title="यह पंक्ति हटाएं"><i
+                                                class="fa-solid fa-trash"></i> हटाएं</button>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: center;">13</td>
+                                        <td>श्री लाल भरत कुमार पाल</td>
+                                        <td>सेनानायक</td>
+                                        <td style="text-align: center;">आकस्मिक</td>
+                                        <td style="text-align: center;">06.03.2026</td>
+                                        <button class="row-del-btn no-print" contenteditable="false"
+                                            onclick="deleteThisRow(this)" title="यह पंक्ति हटाएं"><i
+                                                class="fa-solid fa-trash"></i> हटाएं</button>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: center;">14</td>
+                                        <td>श्री अजय कुमार यादव</td>
+                                        <td>सहा० सेनानायक</td>
+                                        <td style="text-align: center;">मासिक</td>
+                                        <td style="text-align: center;">28.04.2026</td>
+                                        <button class="row-del-btn no-print" contenteditable="false"
+                                            onclick="deleteThisRow(this)" title="यह पंक्ति हटाएं"><i
+                                                class="fa-solid fa-trash"></i> हटाएं</button>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: center;">15</td>
+                                        <td>श्री आनन्द कुमार</td>
+                                        <td>सहायक सेनानायक ।।</td>
+                                        <td style="text-align: center;">मासिक</td>
+                                        <td style="text-align: center;">13.05.2026</td>
+                                        <button class="row-del-btn no-print" contenteditable="false"
+                                            onclick="deleteThisRow(this)" title="यह पंक्ति हटाएं"><i
+                                                class="fa-solid fa-trash"></i> हटाएं</button>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: center;">16</td>
+                                        <td>श्री लाल भरत कुमार पाल</td>
+                                        <td>सेनानायक</td>
+                                        <td style="text-align: center;">आकस्मिक</td>
+                                        <td style="text-align: center;">09.06.2026</td>
+                                        <button class="row-del-btn no-print" contenteditable="false"
+                                            onclick="deleteThisRow(this)" title="यह पंक्ति हटाएं"><i
+                                                class="fa-solid fa-trash"></i> हटाएं</button>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: center;">17</td>
+                                        <td>श्री डा० धर्मेन्द्र कुमार यादव</td>
+                                        <td>उपसेनानायक</td>
+                                        <td style="text-align: center;">आकस्मिक</td>
+                                        <td style="text-align: center;">03.07.2026</td>
+                                        <button class="row-del-btn no-print" contenteditable="false"
+                                            onclick="deleteThisRow(this)" title="यह पंक्ति हटाएं"><i
+                                                class="fa-solid fa-trash"></i> हटाएं</button>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: center;">18</td>
+                                        <td>श्री अजय कुमार यादव</td>
+                                        <td>सहा० सेनानायक</td>
+                                        <td style="text-align: center;">मासिक</td>
+                                        <td style="text-align: center;">11.07.2026</td>
+                                        <button class="row-del-btn no-print" contenteditable="false"
+                                            onclick="deleteThisRow(this)" title="यह पंक्ति हटाएं"><i
+                                                class="fa-solid fa-trash"></i> हटाएं</button>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: center;">19</td>
+                                        <td>श्री लाल भरत कुमार पाल</td>
+                                        <td>सेनानायक</td>
+                                        <td style="text-align: center;">आकस्मिक</td>
+                                        <td style="text-align: center;">09.06.2026</td>
+                                        <button class="row-del-btn no-print" contenteditable="false"
+                                            onclick="deleteThisRow(this)" title="यह पंक्ति हटाएं"><i
+                                                class="fa-solid fa-trash"></i> हटाएं</button>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ================= PAGE 4 ================= -->
+                <div class="doc-page" id="page-4" data-page-num="4" contenteditable="true">
+                    <div class="page-badge-label no-print"><i class="fa-solid fa-file-lines"></i> पृष्ठ 4 / 6
+                        (स्टेटमेण्ट
+                        02)</div>
+                    <div class="section-header-wrap">
+                        <div class="section-header">स्टेटमेण्ट नम्बर 02</div>
+                    </div>
+                    <div class="bold-text">2-विद्यालय में क्लास रूम, कम्प्यूटर कक्ष, कार्यालय, संगीत कक्ष, स्टोर,
+                        शौचालय</div>
+
+                    <div class="sub-point">
+                        <span class="sub-point-title">क. क्लास रूमः- </span>
+                        पुलिस माडर्न स्कूल 25 वीं वाहिनी पीएसी रायबरेली में कक्षा के०जी० प्रथम से कक्षा 08 तक के लिए 10
+                        क्लास रूम उपलब्ध हैं। कक्षाओं में प्रकाश की उचित व्यवस्था है। कक्षाओं की खिड़कियों में जाली लगी
+                        हुई है एवं बच्चों के बैठने हेतु पर्याप्त फर्नीचर उपलब्ध है। प्रधानाचार्या को निर्देशित किया गया
+                        है कि स्कूल के कमरों व परिसर की सफाई सफाइकर्मी के माध्यम से नियमित करायी जाय।
+                    </div>
+
+                    <div class="sub-point">
+                        <span class="sub-point-title">ख. कम्प्यूटर कक्ष :- </span>
+                        पुलिस माडर्न स्कूल 25वीं वाहिनी पीएसी रायबरेली में कार्यालय के एक कमरे को कम्प्यूटर कक्ष बनाया
+                        गया
+                        है। कम्प्यूटर कक्ष में लगी जाली सही दषा में है। कम्प्यूटर कक्ष में 16 अदद कम्प्यूटर उपलब्ध हैं।
+                        प्रधानाचार्या द्वारा बताया गया कि बच्चो को कम्प्यूटर षिक्षा कु० अम्रता सिंह द्वारा दी जा रही है।
+                        प्रधानाचार्या को निर्देषित किया गया कि बच्चों को कम्प्यूटर की सही ढंग से जानकारी दी जाय जिससे
+                        बच्चों को कम्प्यूटर की अच्छी जानकारी हो सके।
+                    </div>
+
+                    <div class="sub-point">
+                        <span class="sub-point-title">ग. कार्यालय :- </span>
+                        कार्यालय दो कक्षो में है एक कक्ष में प्रधानाचार्या एवं एक कक्ष में सहायक कक्ष व्यवस्थित है।
+                        कार्यालय की साफ सफाई अच्छी है एवं रख रखाव संतोशजनक है।
+                    </div>
+
+                    <div class="sub-point">
+                        <span class="sub-point-title">घ. संगीत कक्ष :- </span>
+                        पुलिस माडर्न स्कूल में प्रधनाचार्या कक्ष के बगल में संगीत कक्ष बनाया गया है। संगीत कक्ष में
+                        ढोलक, मंजीरा, हारमोनियम, कैषियो, गिटार, तबला सही दषा में उपलब्ध है। प्रधानाचार्या द्वारा बताया
+                        गया कि अध्यापिका श्रीमती अनुपम वार्णेय द्वारा बच्चों को संगीत की षिक्षा प्रदान की जा रही है।
+                        प्रधानाचार्या को निर्देषित किया गया कि उपलब्ध संगीत उपकरणों को सही ढंग से रखा जाये अपनी निगरानी
+                        में बच्चो को संगीत सिखाया जाय चूंकि बच्चे छोटे है जिससे बच्चों द्वारा संगीत उपकरणो को खराब न
+                        किया
+                        जायें।
+                    </div>
+
+                    <div class="sub-point">
+                        <span class="sub-point-title">ड.स्टोर :- </span>
+                        कार्यालय के बगल में एक स्टोर बनाया गया है जिसमें बच्चों के खेलने की वस्तुएं, बड़ा बक्सा एवं अन्य
+                        उपयोगी वस्तुओं को व्यवस्थित ढंग से रखा गया है।
+                    </div>
+
+                    <div class="sub-point">
+                        <span class="sub-point-title">च. षौचालय :- </span>
+                        पुलिस माडर्न स्कूल 25वीं वाहिनी पीएसी रायबरेली में छात्र/छात्राओं एवं स्टाफ के अलग-अलग षौचालयों
+                        की व्यवस्था है जिनकी सफाई फिनॉयल/तेजाब से की जाती है। षौचालयों में पानी की प्र्याप्त व्यवस्था
+                        हेतु पानी की टंकी रखी गयी है। स्कूल में छोटे-छोटे बच्चे पढते हैं जो षौचालयों को ज्यादा गंदा करते
+                        हैं। प्रधानाचार्या षिविरपाल षाखा के माध्यम से षौचालयों की विधिवत् सफाई कराना सुनिष्चित करे जिससे
+                        षौचालय साफ सुथरा रहे।
+                    </div>
+                </div>
+
+                <!-- ================= PAGE 5 ================= -->
+                <div class="doc-page" id="page-5" data-page-num="5" contenteditable="true">
+                    <div class="page-badge-label no-print"><i class="fa-solid fa-file-lines"></i> पृष्ठ 5 / 6
+                        (स्टेटमेण्ट
+                        03)</div>
+                    <div class="section-header-wrap">
+                        <div class="section-header">स्टेटमेण्ट नम्बर 03</div>
+                    </div>
+                    <div class="bold-text">3-विद्यालय में बच्चों की संख्या :-</div>
+                    <div class="justify-text">निरीक्षण में पाया गया कि पुलिस माडर्न स्कूल के कुल बच्चो की संख्या 47 है ।
+                    </div>
+
+                    <div class="table-container">
+                        <div class="table-cell-actions no-print">
+                            <button class="r-btn" onclick="addTableRow(this)" title="नई पंक्ति जोड़ें"><i
+                                    class="fa-solid fa-plus"></i> पंक्ति जोड़ें</button>
+                            <button class="r-btn" style="color: #fca5a5;" onclick="deleteLastTableRow(this)"
+                                title="अंतिम पंक्ति हटाएं"><i class="fa-solid fa-minus"></i> अंतिम पंक्ति</button>
+                            <button class="r-btn" onclick="getTableColCount(this); addTableColumn(this);"
+                                title="नया कॉलम जोड़ें"><i class="fa-solid fa-plus"></i> कॉलम जोड़ें</button>
+                            <button class="r-btn" style="color: #fca5a5;" onclick="deleteLastTableColumn(this)"
+                                title="अंतिम कॉलम हटाएं"><i class="fa-solid fa-minus"></i> अंतिम कॉलम</button>
+                            <button class="r-btn" style="color: #f87171;" onclick="deleteActiveTable(this)"
+                                title="पूरी टेबल हटाएं"><i class="fa-solid fa-trash"></i> टेबल हटाएं</button>
+                        </div>
+                        <table class="center-table">
+                            <thead>
+                                <tr>
+                                    <th>कक्षा</th>
+                                    <th>बच्चों की संख्या</th>
+                                    <th>कक्षा</th>
+                                    <th>बच्चों की संख्या</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>के०जी० प्रथम</td>
+                                    <td></td>
+                                    <td>कक्षा 6</td>
+                                    <td></td>
+                                    <button class="row-del-btn no-print" contenteditable="false"
+                                        onclick="deleteThisRow(this)" title="यह पंक्ति हटाएं"><i
+                                            class="fa-solid fa-trash"></i> हटाएं</button>
+                                </tr>
+                                <tr>
+                                    <td>के०जी० द्वितीय</td>
+                                    <td></td>
+                                    <td>कक्षा 7</td>
+                                    <td></td>
+                                    <button class="row-del-btn no-print" contenteditable="false"
+                                        onclick="deleteThisRow(this)" title="यह पंक्ति हटाएं"><i
+                                            class="fa-solid fa-trash"></i> हटाएं</button>
+                                </tr>
+                                <tr>
+                                    <td>कक्षा 1</td>
+                                    <td></td>
+                                    <td>कक्षा 8</td>
+                                    <td></td>
+                                    <button class="row-del-btn no-print" contenteditable="false"
+                                        onclick="deleteThisRow(this)" title="यह पंक्ति हटाएं"><i
+                                            class="fa-solid fa-trash"></i> हटाएं</button>
+                                </tr>
+                                <tr>
+                                    <td>कक्षा 2</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <button class="row-del-btn no-print" contenteditable="false"
+                                        onclick="deleteThisRow(this)" title="यह पंक्ति हटाएं"><i
+                                            class="fa-solid fa-trash"></i> हटाएं</button>
+                                </tr>
+                                <tr>
+                                    <td>कक्षा 3</td>
+                                    <td></td>
+                                    <td>कुल</td>
+                                    <td>47</td>
+                                    <button class="row-del-btn no-print" contenteditable="false"
+                                        onclick="deleteThisRow(this)" title="यह पंक्ति हटाएं"><i
+                                            class="fa-solid fa-trash"></i> हटाएं</button>
+                                </tr>
+                                <tr>
+                                    <td>कक्षा 4</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <button class="row-del-btn no-print" contenteditable="false"
+                                        onclick="deleteThisRow(this)" title="यह पंक्ति हटाएं"><i
+                                            class="fa-solid fa-trash"></i> हटाएं</button>
+                                </tr>
+                                <tr>
+                                    <td>कक्षा 5</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <button class="row-del-btn no-print" contenteditable="false"
+                                        onclick="deleteThisRow(this)" title="यह पंक्ति हटाएं"><i
+                                            class="fa-solid fa-trash"></i> हटाएं</button>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="justify-text">
+                        उपरोक्त विवरण से स्पष्ट है कि विद्यालय में छात्रों की संख्या बहुत कम है। पूर्व में यह संख्या
+                        110 के करीब थी। मौके पर गोष्ठी कर निर्देषित किया गया कि आसपास के गाँवों में जाकर व्यापक
+                        प्रचार-प्रसार करें। यह स्थिति चिन्ता जनक है। विद्यालय में छात्रों की वृद्धि की तरफ ध्यान देने की
+                        आवश्यकता है। इसके लिए प्रधानाचार्या को निर्देशित किया गया है कि आगामी सत्र हेतु व्यापक
+                        प्रचार-प्रसार कर छात्रों की संख्या में वृद्धि हेतु सार्थक प्रयास करें।
+                    </div>
+                    <div class="justify-text">
+                        प्रधानाचार्या अपने स्टाफ सहित विचार-विमर्श कर स्कूल में बच्चों को बढ़ाने हेतु आस-पास के
+                        क्षेत्रों
+                        में पोस्टर व पम्पलेट छपवाकर प्रचार-प्रसार करावे तथा अपने स्टाफ सहित स्वयं जनसंपर्क करें और लोगो
+                        को स्कूल की विशेषताओं से अवगत करावें। वाहिनी परिसर में स्थित कर्मचारियो घर जाकर उन्हें बच्चों के
+                        स्कूल भेजने हेतु प्रेरित करें। जिससे स्कूल में बच्चों की संख्या बढ़ सके। विद्यालय में छात्रों की
+                        संख्या बढ़ाने की दिशा में ठोस / सार्थक प्रयास किये जाने की आवश्यकता है।
+                    </div>
+                </div>
+
+                <!-- ================= PAGE 6 ================= -->
+                <div class="doc-page" id="page-6" data-page-num="6" contenteditable="true">
+                    <div class="page-badge-label no-print"><i class="fa-solid fa-file-lines"></i> पृष्ठ 6 / 6
+                        (स्टेटमेण्ट
+                        04 व हस्ताक्षर)</div>
+                    <div class="section-header-wrap">
+                        <div class="section-header">स्टेटमेण्ट नम्बर 04</div>
+                    </div>
+                    <div class="bold-text">4. अभिलेखों का निरीक्षण :-</div>
+
+                    <div class="sub-point">
+                        <span class="sub-point-title">1. कैश बुकः- </span>
+                        कैष बुक रजिस्टर का अवलोकन किया गया तो पाया गया कि यह नये रजिस्टर सत्र 04, फरवरी, 2018 से प्रचलित
+                        है। शुल्क रजिस्टर में बच्चों से प्राप्त फीस एवं अन्य मदों से प्राप्त फीस का विवरण अंकित किया
+                        गया है। आंकिक शाखा के रजिस्टर के अनुसार पी०एम०एस० फण्ड की मई माह के अन्त में शेष धनराषि रू0
+                        1095716.62 है। प्रधानाचार्या यह सुनिश्चित कराये कि कैश बुक साफ-सुथरी लिखी जाये।
+                    </div>
+
+                    <div class="sub-point">
+                        <span class="sub-point-title">2. राजकीय सम्पत्ति स्टाक बुकः- </span>
+                        यह रजिस्टर सत्र 2013-2014 से प्रचलित है इसमें पुराने स्टाक बुक से उपलब्ध वस्तुओं को अंकित किया
+                        गया है एवं सत्र 2024-2025 तथा वर्ष 2024 में क्रय की गयी या प्राप्त की गयी सभी सम्पत्तियों /
+                        सामानों का विवरण अंकित किया गया है ।
+                    </div>
+
+                    <div class="sub-point">
+                        <span class="sub-point-title">सामान्यः- </span>
+                        पुलिस माडर्न स्कूल के प्रांगण, पार्क एवं आस पास की साफ सफाई सन्तोषजनक है। अभिलेखों तथा उपकरणों
+                        का रख-रखाव संतोषजनक है। पुलिस माडर्न स्कूल 25वीं वाहिनी पीएसी रायबरेली के स्टाफ से वार्ता करने
+                        पर किसी भी शिक्षक / शिक्षिकाओं द्वारा कोई समस्या नहीं बतायी गयी । शिक्षक / शिक्षिकाओं द्वारा
+                        पम्पलेट के माध्यम से स्कूल का प्रचार-प्रसार किया जा रहा है। पुलिस माडर्न स्कूल के०जी० प्रथम से
+                        कक्षा 5 तक है। कक्षा के०जी० प्रथम से 05 की कक्षाएं सुचारू से संचालित हो रही है। प्रधानाचार्या को
+                        निर्देषित किया कि कोविड को ध्यान में रखते हुए सभी छात्र छात्राओं के स्वास्थ्य एवं स्वच्छता पर
+                        विशेष ध्यान दिया जाये। सभी छात्र-छात्राओं द्वारा मास्क का प्रयोग अनिवार्य रूप से किया जाये।
+                    </div>
+
+                    <!-- Signature Block -->
+                    <div class="signature-block">
+                        <div class="signature-content">
+                            <div>(श्री लाल भरत कुमार पाल)</div>
+                            <div style="font-weight: 700;">सेनानायक</div>
+                            <div>25वीं वाहिनी पीएसी</div>
+                            <div>रायबरेली।</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+
+        <!-- Right Sidebar: Context-Sensitive Format Properties Panel -->
+        <aside id="sidebar-right" class="sidebar-right no-print">
+            <div class="panel-header">
+                <span><i class="fa-solid fa-sliders mr-1"></i> प्रॉपर्टीज पैनल</span>
+                <button class="r-btn" onclick="toggleSidebar('right')" style="padding: 2px 4px;"><i
+                        class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <div class="panel-content">
+                <!-- Text Properties -->
+                <div class="prop-section">
+                    <div class="prop-title">टेक्स्ट व फॉन्ट</div>
+                    <div class="prop-row">
+                        <span class="prop-label">फॉन्ट साइज़</span>
+                        <input type="number" id="prop-font-size" class="prop-input" value="16" min="8" max="72"
+                            onchange="applyFontSize(this.value)">
+                    </div>
+                    <div class="prop-row">
+                        <span class="prop-label">लाइन स्पेसिंग</span>
+                        <select id="prop-line-height" class="prop-input" onchange="applyLineHeight(this.value)">
+                            <option value="1.2">1.2 (Compact)</option>
+                            <option value="1.4">1.4 (Standard)</option>
+                            <option value="1.6" selected>1.6 (Normal)</option>
+                            <option value="1.8">1.8 (Spaced)</option>
+                            <option value="2.0">2.0 (Double)</option>
+                        </select>
+                    </div>
+                    <div class="prop-row">
+                        <span class="prop-label">टेक्स्ट अलाइन</span>
+                        <div class="ribbon-group" style="background: #0f172a;">
+                            <button class="r-btn" onclick="execCmd('justifyLeft')"><i
+                                    class="fa-solid fa-align-left"></i></button>
+                            <button class="r-btn" onclick="execCmd('justifyCenter')"><i
+                                    class="fa-solid fa-align-center"></i></button>
+                            <button class="r-btn" onclick="execCmd('justifyRight')"><i
+                                    class="fa-solid fa-align-right"></i></button>
+                            <button class="r-btn" onclick="execCmd('justifyFull')"><i
+                                    class="fa-solid fa-align-justify"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Table Properties -->
+                <div class="prop-section" id="panel-table-section">
+                    <div class="prop-title">टेबल ऑपरेशन्स</div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
+                        <button class="r-btn" style="background: #0f172a; border: 1px solid #334155;"
+                            onclick="ctxInsertRowAbove()"><i class="fa-solid fa-arrow-up"></i> पंक्ति ऊपर</button>
+                        <button class="r-btn" style="background: #0f172a; border: 1px solid #334155;"
+                            onclick="ctxInsertRowBelow()"><i class="fa-solid fa-arrow-down"></i> पंक्ति नीचे</button>
+                        <button class="r-btn" style="background: #0f172a; border: 1px solid #334155;"
+                            onclick="ctxInsertColLeft()"><i class="fa-solid fa-arrow-left"></i> कॉलम बाएँ</button>
+                        <button class="r-btn" style="background: #0f172a; border: 1px solid #334155;"
+                            onclick="ctxInsertColRight()"><i class="fa-solid fa-arrow-right"></i> कॉलम दाएँ</button>
+                    </div>
+                    <div class="prop-row" style="margin-top: 6px;">
+                        <button class="r-btn"
+                            style="background: #7f1d1d; color: #fca5a5; width: 100%; justify-content: center;"
+                            onclick="ctxDeleteRow()"><i class="fa-solid fa-trash"></i> चयनित पंक्ति हटाएं</button>
+                    </div>
+                    <div class="prop-row">
+                        <button class="r-btn"
+                            style="background: #7f1d1d; color: #fca5a5; width: 100%; justify-content: center;"
+                            onclick="ctxDeleteCol()"><i class="fa-solid fa-trash"></i> चयनित कॉलम हटाएं</button>
+                    </div>
+                </div>
+
+                <!-- Page Properties -->
+                <div class="prop-section">
+                    <div class="prop-title">पृष्ठ नियंत्रण</div>
+                    <button class="r-btn"
+                        style="background: #0284c7; color: white; width: 100%; justify-content: center;"
+                        onclick="openAddPageModal()"><i class="fa-solid fa-plus"></i> नया पृष्ठ जोड़ें</button>
+                    <button class="r-btn"
+                        style="background: #1e293b; border: 1px solid #334155; width: 100%; justify-content: center;"
+                        onclick="duplicateActivePage()"><i class="fa-solid fa-copy"></i> वर्तमान पृष्ठ
+                        डुप्लीकेट</button>
+                    <button class="r-btn"
+                        style="background: #7f1d1d; color: #fca5a5; width: 100%; justify-content: center;"
+                        onclick="deleteActivePage()"><i class="fa-solid fa-trash"></i> वर्तमान पृष्ठ हटाएं</button>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <!-- 4. Floating Selection Toolbar (Medium Style) -->
+    <div id="floating-selection-bar" class="floating-selection-bar no-print">
+        <button class="r-btn" onclick="execCmd('bold')"><i class="fa-solid fa-bold"></i></button>
+        <button class="r-btn" onclick="execCmd('italic')"><i class="fa-solid fa-italic"></i></button>
+        <button class="r-btn" onclick="execCmd('underline')"><i class="fa-solid fa-underline"></i></button>
+        <div style="width: 1px; height: 16px; background: #475569;"></div>
+        <button class="r-btn" onclick="stepFontSize(-1)"><i class="fa-solid fa-minus"></i></button>
+        <button class="r-btn" onclick="stepFontSize(1)"><i class="fa-solid fa-plus"></i></button>
+        <div style="width: 1px; height: 16px; background: #475569;"></div>
+        <button class="r-btn color-picker-btn">
+            <i class="fa-solid fa-font"></i>
+            <input type="color" class="color-picker-input" onchange="execCmd('foreColor', this.value)">
+        </button>
+        <button class="r-btn color-picker-btn">
+            <i class="fa-solid fa-highlighter"></i>
+            <input type="color" class="color-picker-input" value="#fef08a"
+                onchange="execCmd('hiliteColor', this.value)">
+        </button>
+        <div style="width: 1px; height: 16px; background: #475569;"></div>
+        <button class="r-btn" onclick="execCmd('justifyLeft')"><i class="fa-solid fa-align-left"></i></button>
+        <button class="r-btn" onclick="execCmd('justifyCenter')"><i class="fa-solid fa-align-center"></i></button>
+        <button class="r-btn" onclick="execCmd('removeFormat')"><i class="fa-solid fa-text-slash"></i></button>
+    </div>
+
+    <!-- 5. App Footer & Status Bar -->
+    <footer class="app-footer no-print">
+        <div class="footer-left">
+            <span id="stat-page-count"><i class="fa-solid fa-file-lines mr-1"></i> पृष्ठ 1 / 6</span>
+            <span id="stat-word-count"><i class="fa-solid fa-font mr-1"></i> 0 शब्द</span>
+            <span><i class="fa-solid fa-expand mr-1"></i> A4 Landscape (297 × 210 mm)</span>
+        </div>
+        <div class="footer-right">
+            <div class="zoom-slider-box">
+                <button class="r-btn" onclick="setZoom(currentZoom - 10)" style="padding: 2px 6px;"><i
+                        class="fa-solid fa-minus"></i></button>
+                <span id="zoom-val-text" style="width: 45px; text-align: center; font-weight: 600;">85%</span>
+                <button class="r-btn" onclick="setZoom(currentZoom + 10)" style="padding: 2px 6px;"><i
+                        class="fa-solid fa-plus"></i></button>
+                <button class="r-btn" onclick="setZoom(85)" style="font-size: 0.75rem;">रीसेट</button>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 6. Modals & Dialogs -->
+
+    <!-- Insert Table Modal -->
+    <div id="modal-table" class="modal-overlay">
+        <div class="modal-card">
+            <h3><i class="fa-solid fa-table"></i> नई टेबल जोड़ें</h3>
+            <div class="m-form-row">
+                <label>पंक्तियों की संख्या (Rows)</label>
+                <input type="number" id="tbl-m-rows" class="m-form-input" value="4" min="1" max="50">
+            </div>
+            <div class="m-form-row">
+                <label>कॉलम की संख्या (Columns)</label>
+                <input type="number" id="tbl-m-cols" class="m-form-input" value="4" min="1" max="15">
+            </div>
+            <div class="modal-actions">
+                <button class="r-btn" onclick="closeModal('modal-table')">रद्द करें</button>
+                <button class="r-btn" style="background: #0284c7; color: white;" onclick="confirmInsertTable()">टेबल
+                    बनाएं</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Page Modal -->
+    <div id="modal-page" class="modal-overlay">
+        <div class="modal-card">
+            <h3><i class="fa-solid fa-file-circle-plus"></i> नया पृष्ठ जोड़ें</h3>
+            <div class="m-form-row">
+                <label>पृष्ठ टेम्पलेट चुनें</label>
+                <select id="new-page-template" class="m-form-input">
+                    <option value="statement">स्टेटमेंट विवरण पृष्ठ (Statement Template)</option>
+                    <option value="table">आंकड़े व सारणी पृष्ठ (Table Report Template)</option>
+                    <option value="blank">कोरा पृष्ठ (Blank Page)</option>
+                </select>
+            </div>
+            <div class="m-form-row">
+                <label>स्टेटमेंट शीर्षक (यदि लागू हो)</label>
+                <input type="text" id="new-page-title-input" class="m-form-input" value="स्टेटमेण्ट नम्बर 05">
+            </div>
+            <div class="modal-actions">
+                <button class="r-btn" onclick="closeModal('modal-page')">रद्द करें</button>
+                <button class="r-btn" style="background: #0284c7; color: white;" onclick="confirmAddPage()">पेज
+                    बनाएं</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Find & Replace Modal -->
+    <div id="modal-find" class="modal-overlay">
+        <div class="modal-card">
+            <h3><i class="fa-solid fa-magnifying-glass"></i> खोजें और बदलें (Find & Replace)</h3>
+            <div class="m-form-row">
+                <label>खोजें (Find Text)</label>
+                <input type="text" id="find-query" class="m-form-input" placeholder="शब्द दर्ज करें...">
+            </div>
+            <div class="m-form-row">
+                <label>बदलें (Replace With)</label>
+                <input type="text" id="replace-query" class="m-form-input" placeholder="नया शब्द...">
+            </div>
+            <div class="modal-actions">
+                <button class="r-btn" onclick="closeModal('modal-find')">बंद करें</button>
+                <button class="r-btn" style="background: #0284c7; color: white;" onclick="performReplaceAll()">सभी
+                    बदलें</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cloud Firestore Reports Modal -->
+    <div id="modal-cloud-reports" class="modal-overlay">
+        <div class="modal-card" style="max-width: 640px; width: 95%;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                <h3 style="margin: 0;"><i class="fa-solid fa-cloud text-sky-400"></i> Firestore क्लाउड फ़ाइल लाइब्रेरी
+                </h3>
+                <button class="r-btn" style="background: #0284c7; color: white;" onclick="window.saveToFirestore(true)"
+                    title="वर्तमान दस्तावेज़ को नई फ़ाइल के रूप में सेव करें">
+                    <i class="fa-solid fa-plus"></i> नई फ़ाइल सेव करें
+                </button>
+            </div>
+            <p style="font-size: 0.8rem; color: #94a3b8; margin-top: 0; margin-bottom: 12px;">
+                प्रत्येक बार सेव करने पर एक नई फ़ाइल बनती है • आप किसी भी फ़ाइल को लोड या डिलीट कर सकते हैं।
+            </p>
+
+            <div id="cloud-reports-list"
+                style="background: #020617; border: 1px solid #334155; border-radius: 8px; padding: 14px; max-height: 380px; overflow-y: auto; margin-bottom: 14px;">
+                <div style="color: #38bdf8; font-weight: 600;"><i class="fa-solid fa-spinner fa-spin mr-1"></i> क्लाउड
+                    फ़ाइलें लोड हो रही हैं...</div>
+            </div>
+
+            <div class="modal-actions" style="justify-content: space-between;">
+                <button class="r-btn" onclick="window.loadCloudReportsList()"><i class="fa-solid fa-rotate-right"></i>
+                    रीफ्रेश सूची</button>
+                <button class="r-btn" onclick="closeModal('modal-cloud-reports')">बंद करें</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right-Click Table Context Menu -->
+    <div id="table-context-menu" class="context-menu no-print">
+        <div class="context-item" onclick="ctxInsertRowAbove()"><i class="fa-solid fa-arrow-up"></i> ऊपर पंक्ति जोड़ें
+        </div>
+        <div class="context-item" onclick="ctxInsertRowBelow()"><i class="fa-solid fa-arrow-down"></i> नीचे पंक्ति
+            जोड़ें</div>
+        <div class="context-item danger" onclick="ctxDeleteRow()"><i class="fa-solid fa-trash"></i> यह पंक्ति हटाएं
+        </div>
+        <div class="context-divider"></div>
+        <div class="context-item" onclick="ctxInsertColLeft()"><i class="fa-solid fa-arrow-left"></i> बाएँ कॉलम जोड़ें
+        </div>
+        <div class="context-item" onclick="ctxInsertColRight()"><i class="fa-solid fa-arrow-right"></i> दाएँ कॉलम
+            जोड़ें</div>
+        <div class="context-item danger" onclick="ctxDeleteCol()"><i class="fa-solid fa-trash"></i> यह कॉलम हटाएं</div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast-popup" class="toast-popup">
+        <i class="fa-solid fa-circle-check" style="color: #38bdf8; font-size: 1.1rem;"></i>
+        <span id="toast-msg-text">ड्राफ्ट सुरक्षित</span>
+    </div>
+
+    <!-- 7. Comprehensive 10X Studio Core Script -->
+    <script>
+        const STORAGE_KEY = "pms_dig_ins_studio_v6";
+        let currentZoom = 85;
+        let activeContextMenuCell = null;
+        let activeFocusedElement = null;
+        let activePageElement = null;
+        let undoStack = [];
+        let redoStack = [];
+        let autoSaveTimer = null;
+
+        // ================= DOCUMENT SELECTION & EXEC COMMANDS =================
+        function execCmd(command, value = null) {
+            pushHistorySnapshot();
+            document.execCommand(command, false, value);
+            triggerAutoSave();
+            updateStats();
+        }
+
+        function applyFontFamily(font) {
+            execCmd('fontName', font);
+            const sel = window.getSelection();
+            if (sel.rangeCount > 0) {
+                const parent = sel.anchorNode.parentElement;
+                if (parent && parent.closest('[contenteditable="true"]')) {
+                    parent.style.fontFamily = font;
+                }
+            }
+        }
+
+        function applyFontSize(size) {
+            pushHistorySnapshot();
+            document.getElementById('ribbon-fontsize').value = size;
+            document.getElementById('prop-font-size').value = size;
+            const sel = window.getSelection();
+            if (sel.rangeCount > 0 && !sel.isCollapsed) {
+                document.execCommand('fontSize', false, "7");
+                const fontElements = document.getElementsByTagName("font");
+                for (let i = 0; i < fontElements.length; i++) {
+                    if (fontElements[i].size === "7") {
+                        fontElements[i].removeAttribute("size");
+                        fontElements[i].style.fontSize = `${size}px`;
+                    }
+                }
+            } else if (activeFocusedElement) {
+                activeFocusedElement.style.fontSize = `${size}px`;
+            }
+            triggerAutoSave();
+        }
+
+        function stepFontSize(step) {
+            const input = document.getElementById('ribbon-fontsize');
+            let current = parseInt(input.value) || 16;
+            current = Math.max(8, Math.min(72, current + step));
+            applyFontSize(current);
+        }
+
+        function applyLineHeight(lh) {
+            pushHistorySnapshot();
+            const sel = window.getSelection();
+            if (sel.rangeCount > 0) {
+                const parent = sel.anchorNode.parentElement.closest('div, p, td');
+                if (parent) parent.style.lineHeight = lh;
+            }
+            triggerAutoSave();
+        }
+
+        // ================= FLOATING SELECTION TOOLBAR =================
+        document.addEventListener('selectionchange', () => {
+            const sel = window.getSelection();
+            const bar = document.getElementById('floating-selection-bar');
+            if (!sel.isCollapsed && sel.rangeCount > 0) {
+                const range = sel.getRangeAt(0);
+                const rect = range.getBoundingClientRect();
+                if (rect.width > 0 && rect.height > 0) {
+                    bar.style.top = `${Math.max(10, rect.top - 48)}px`;
+                    bar.style.left = `${Math.max(10, rect.left + (rect.width / 2) - 150)}px`;
+                    bar.classList.add('show');
+                    return;
+                }
+            }
+            bar.classList.remove('show');
+        });
+
+        // ================= UNDO / REDO HISTORY ENGINE =================
+        function pushHistorySnapshot() {
+            const canvas = document.getElementById('canvas-zoom-wrapper');
+            if (!canvas) return;
+            if (undoStack.length >= 30) undoStack.shift();
+            undoStack.push(canvas.innerHTML);
+            redoStack = [];
+        }
+
+        function execUndo() {
+            if (undoStack.length === 0) {
+                showToast("कोई पूर्ववत इतिहास नहीं है");
+                return;
+            }
+            const canvas = document.getElementById('canvas-zoom-wrapper');
+            redoStack.push(canvas.innerHTML);
+            canvas.innerHTML = undoStack.pop();
+            attachRowDeleteButtonsToAllTables();
+            updatePageThumbnails();
+            updateStats();
+            showToast("पूर्ववत किया गया (Undo)");
+        }
+
+        function execRedo() {
+            if (redoStack.length === 0) {
+                showToast("कोई पुनः इतिहास नहीं है");
+                return;
+            }
+            const canvas = document.getElementById('canvas-zoom-wrapper');
+            undoStack.push(canvas.innerHTML);
+            canvas.innerHTML = redoStack.pop();
+            attachRowDeleteButtonsToAllTables();
+            updatePageThumbnails();
+            updateStats();
+            showToast("पुनः किया गया (Redo)");
+        }
+
+        // ================= TABLE TAB NAVIGATION ENGINE =================
+        function handleTableTabNavigation(e) {
+            if (e.key !== 'Tab') return false;
+
+            let currentCell = null;
+            if (e.target && e.target.closest) {
+                currentCell = e.target.closest('td, th');
+            }
+            if (!currentCell) {
+                const sel = window.getSelection();
+                if (sel && sel.anchorNode) {
+                    const node = sel.anchorNode.nodeType === 1 ? sel.anchorNode : sel.anchorNode.parentElement;
+                    if (node) currentCell = node.closest('td, th');
+                }
+            }
+
+            if (!currentCell) return false;
+            const table = currentCell.closest('table');
+            if (!table) return false;
+
+            e.preventDefault();
+
+            // Collect all table cells in reading order
+            const rows = Array.from(table.querySelectorAll('tr'));
+            const cells = [];
+            rows.forEach(r => {
+                Array.from(r.children).forEach(c => {
+                    if (c.tagName === 'TD' || c.tagName === 'TH') {
+                        cells.push(c);
+                    }
+                });
+            });
+
+            const currentIndex = cells.indexOf(currentCell);
+            if (currentIndex === -1) return true;
+
+            if (!e.shiftKey) {
+                // Forward Tab: Next Column / Next Row First Cell
+                if (currentIndex < cells.length - 1) {
+                    focusTableCell(cells[currentIndex + 1]);
+                } else {
+                    // At last cell of table: automatically append new row & focus its first cell (Word/Excel behavior)
+                    pushHistorySnapshot();
+                    const tbody = table.querySelector('tbody') || table;
+                    const headerRow = table.querySelector('thead tr, tr');
+                    const colsCount = Array.from(headerRow.children).filter(el => el.tagName === 'TH' || el.tagName === 'TD').length;
+
+                    const newRow = document.createElement('tr');
+                    newRow.style.position = 'relative';
+                    for (let i = 0; i < colsCount; i++) {
+                        const td = document.createElement('td');
+                        newRow.appendChild(td);
+                    }
+
+                    const lastCell = newRow.children[colsCount - 1];
+                    if (lastCell) {
+                        lastCell.style.position = 'relative';
+                        lastCell.appendChild(createRowHoverPopup());
+                    }
+
+                    tbody.appendChild(newRow);
+                    triggerAutoSave();
+                    focusTableCell(newRow.children[0]);
+                    showToast("नई पंक्ति जोड़ी गई (Tab)");
+                }
+            } else {
+                // Backward Shift+Tab: Previous Column / Previous Row Last Cell
+                if (currentIndex > 0) {
+                    focusTableCell(cells[currentIndex - 1]);
+                }
+            }
+            return true;
+        }
+
+        function focusTableCell(cell) {
+            if (!cell) return;
+            cell.focus();
+            try {
+                const range = document.createRange();
+                range.selectNodeContents(cell);
+                const sel = window.getSelection();
+                sel.removeAllRanges();
+                sel.addRange(range);
+            } catch (err) { }
+            cell.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        // Keyboard Shortcuts
+        document.addEventListener('keydown', (e) => {
+            // 1. Table Tab Navigation (Tab / Shift+Tab)
+            if (e.key === 'Tab') {
+                if (handleTableTabNavigation(e)) {
+                    return;
+                }
+            }
+
+            // 2. Control Shortcuts
+            if (e.ctrlKey || e.metaKey) {
+                if (e.key === 'z' || e.key === 'Z') {
+                    if (e.shiftKey) {
+                        e.preventDefault();
+                        execRedo();
+                    } else {
+                        e.preventDefault();
+                        execUndo();
+                    }
+                } else if (e.key === 'y' || e.key === 'Y') {
+                    e.preventDefault();
+                    execRedo();
+                } else if (e.key === 's' || e.key === 'S') {
+                    e.preventDefault();
+                    manualSaveDraft();
+                } else if (e.key === 'f' || e.key === 'F') {
+                    e.preventDefault();
+                    openFindReplaceModal();
+                }
+            }
+        });
+
+        // ================= PAGE MANAGEMENT & THUMBNAILS =================
+        function updatePageThumbnails() {
+            const pages = document.querySelectorAll('.doc-page');
+            const list = document.getElementById('pages-thumbs-list');
+            const outlineList = document.getElementById('outline-tree-list');
+            if (!list) return;
+
+            list.innerHTML = '';
+            if (outlineList) outlineList.innerHTML = '';
+            const total = pages.length;
+
+            pages.forEach((page, idx) => {
+                const pageNum = idx + 1;
+                page.setAttribute('data-page-num', pageNum);
+                page.id = `page-${pageNum}`;
+
+                // Update page badge label
+                const label = page.querySelector('.page-badge-label');
+                if (label) {
+                    const sec = page.querySelector('.section-header');
+                    const secTitle = sec ? ` (${sec.innerText.trim()})` : (pageNum === 1 ? ' (कवर पेज)' : '');
+                    label.innerHTML = `<i class="fa-solid fa-file-lines"></i> पृष्ठ ${pageNum} / ${total}${secTitle}`;
+                }
+
+                // Create Thumbnail
+                const card = document.createElement('div');
+                card.className = `page-thumb-card ${pageNum === 1 ? 'active' : ''}`;
+                card.setAttribute('data-target-page', pageNum);
+                card.onclick = () => scrollToPage(pageNum);
+
+                const secHeader = page.querySelector('.section-header');
+                const titleText = secHeader ? secHeader.innerText.trim() : (pageNum === 1 ? 'कवर पेज' : `पृष्ठ ${pageNum}`);
+
+                card.innerHTML = `
+                    <div class="thumb-preview">
+                        <strong style="font-size: 7px; margin-bottom: 2px;">${titleText}</strong>
+                        <div style="font-size: 5px; color: #64748b;">(A4 Landscape)</div>
+                    </div>
+                    <div class="thumb-footer">
+                        <span>पृष्ठ ${pageNum}</span>
+                        <div class="thumb-actions no-print">
+                            <button class="th-btn" onclick="event.stopPropagation(); movePage(${pageNum}, -1)" title="ऊपर"><i class="fa-solid fa-arrow-up"></i></button>
+                            <button class="th-btn" onclick="event.stopPropagation(); movePage(${pageNum}, 1)" title="नीचे"><i class="fa-solid fa-arrow-down"></i></button>
+                            <button class="th-btn" onclick="event.stopPropagation(); duplicatePageByNum(${pageNum})" title="डुप्लीकेट"><i class="fa-solid fa-copy"></i></button>
+                            <button class="th-btn" style="color: #f87171;" onclick="event.stopPropagation(); deletePageByNum(${pageNum})" title="हटाएं"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                    </div>
+                `;
+                list.appendChild(card);
+
+                // Add to Outline
+                if (outlineList) {
+                    const item = document.createElement('div');
+                    item.className = 'outline-item';
+                    item.innerHTML = `<i class="fa-solid fa-bookmark text-sky-400"></i> <span>${pageNum}. ${titleText}</span>`;
+                    item.onclick = () => scrollToPage(pageNum);
+                    outlineList.appendChild(item);
+                }
+            });
+
+            document.getElementById('stat-page-count').innerHTML = `<i class="fa-solid fa-file-lines mr-1"></i> कुल पृष्ठ: ${total}`;
+        }
+
+        function scrollToPage(pageNum) {
+            const page = document.getElementById(`page-${pageNum}`);
+            if (page) {
+                page.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                document.querySelectorAll('.page-thumb-card').forEach(c => c.classList.remove('active'));
+                const card = document.querySelector(`.page-thumb-card[data-target-page="${pageNum}"]`);
+                if (card) card.classList.add('active');
+            }
+        }
+
+        function movePage(pageNum, dir) {
+            pushHistorySnapshot();
+            const page = document.getElementById(`page-${pageNum}`);
+            if (!page) return;
+            if (dir === -1 && page.previousElementSibling) {
+                page.parentNode.insertBefore(page, page.previousElementSibling);
+            } else if (dir === 1 && page.nextElementSibling) {
+                page.parentNode.insertBefore(page.nextElementSibling, page);
+            }
+            updatePageThumbnails();
+            triggerAutoSave();
+            showToast("पृष्ठ क्रम बदला गया");
+        }
+
+        function duplicatePageByNum(pageNum) {
+            pushHistorySnapshot();
+            const page = document.getElementById(`page-${pageNum}`);
+            if (!page) return;
+            const clone = page.cloneNode(true);
+            page.parentNode.insertBefore(clone, page.nextSibling);
+            attachRowDeleteButtonsToAllTables();
+            updatePageThumbnails();
+            triggerAutoSave();
+            showToast("पृष्ठ डुप्लीकेट किया गया");
+        }
+
+        function deletePageByNum(pageNum) {
+            const pages = document.querySelectorAll('.doc-page');
+            if (pages.length <= 1) {
+                alert("दस्तावेज़ में कम से कम 1 पृष्ठ होना आवश्यक है।");
+                return;
+            }
+            if (confirm(`क्या आप पृष्ठ ${pageNum} को हटाना चाहते हैं?`)) {
+                pushHistorySnapshot();
+                const page = document.getElementById(`page-${pageNum}`);
+                if (page) page.remove();
+                updatePageThumbnails();
+                triggerAutoSave();
+                showToast("पृष्ठ हटा दिया गया");
+            }
+        }
+
+        function openAddPageModal() {
+            document.getElementById('modal-page').classList.add('show');
+        }
+
+        function confirmAddPage() {
+            pushHistorySnapshot();
+            const template = document.getElementById('new-page-template').value;
+            const title = document.getElementById('new-page-title-input').value || "स्टेटमेण्ट";
+            const wrapper = document.getElementById('canvas-zoom-wrapper');
+
+            const newPage = document.createElement('div');
+            newPage.className = 'doc-page';
+            newPage.setAttribute('contenteditable', 'true');
+
+            if (template === 'blank') {
+                newPage.innerHTML = `
+                    <div class="page-badge-label no-print"><i class="fa-solid fa-file-lines"></i> नया पृष्ठ</div>
+                    <div class="section-header-wrap"><div class="section-header">${title}</div></div>
+                    <div class="bold-text">शीर्षक / विवरण :-</div>
+                    <div class="justify-text">यहाँ पर विवरण अंकित करें...</div>
+                `;
+            } else if (template === 'table') {
+                newPage.innerHTML = `
+                    <div class="page-badge-label no-print"><i class="fa-solid fa-file-lines"></i> नया टेबल पृष्ठ</div>
+                    <div class="section-header-wrap"><div class="section-header">${title}</div></div>
+                    <div class="bold-text">विवरण तालिका :-</div>
+                    <div class="table-container">
+                        <div class="table-cell-actions no-print">
+                            <button class="r-btn" onclick="addTableRow(this)"><i class="fa-solid fa-plus"></i> पंक्ति जोड़ें</button>
+                            <button class="r-btn" onclick="getTableColCount(this); addTableColumn(this);"><i class="fa-solid fa-plus"></i> कॉलम जोड़ें</button>
+                            <button class="r-btn" style="color: #fca5a5;" onclick="deleteLastTableRow(this)"><i class="fa-solid fa-minus"></i> अंतिम पंक्ति हटाएं</button>
+                            <button class="r-btn" style="color: #f87171;" onclick="deleteActiveTable(this)"><i class="fa-solid fa-trash"></i> टेबल हटाएं</button>
+                        </div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="width: 10%;">क्र०</th>
+                                    <th style="width: 35%;">विवरण</th>
+                                    <th style="width: 35%;">मानक स्थिति</th>
+                                    <th style="width: 20%;">टिप्पणी</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>1.</td><td></td><td></td><td></td></tr>
+                                <tr><td>2.</td><td></td><td></td><td></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+            } else {
+                newPage.innerHTML = `
+                    <div class="page-badge-label no-print"><i class="fa-solid fa-file-lines"></i> नया स्टेटमेंट पृष्ठ</div>
+                    <div class="section-header-wrap"><div class="section-header">${title}</div></div>
+                    <div class="bold-text">मुख्य विषय व आख्या :-</div>
+                    <div class="sub-point"><span class="sub-point-title">क. बिंदु विवरण :- </span>यहाँ अपना विवरण दर्ज करें...</div>
+                    <div class="sub-point"><span class="sub-point-title">ख. निर्देश :- </span>यहाँ निर्देश अंकित करें...</div>
+                `;
+            }
+
+            wrapper.appendChild(newPage);
+            closeModal('modal-page');
+            attachRowDeleteButtonsToAllTables();
+            updatePageThumbnails();
+            triggerAutoSave();
+            showToast("नया पृष्ठ जोड़ा गया!");
+            newPage.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // ================= COMPONENT INSERTION =================
+        function getActiveTargetPage() {
+            return activePageElement || document.querySelector('.doc-page:last-child');
+        }
+
+        function insertNewHeading() {
+            pushHistorySnapshot();
+            const page = getActiveTargetPage();
+            const el = document.createElement('div');
+            el.className = 'bold-text';
+            el.innerHTML = 'नया शीर्षक :-';
+            page.appendChild(el);
+            triggerAutoSave();
+            el.focus();
+        }
+
+        function insertNewParagraph() {
+            pushHistorySnapshot();
+            const page = getActiveTargetPage();
+            const el = document.createElement('div');
+            el.className = 'justify-text';
+            el.innerHTML = 'यहाँ नया पैराग्राफ टेक्स्ट अंकित करें...';
+            page.appendChild(el);
+            triggerAutoSave();
+            el.focus();
+        }
+
+        function insertNewSubPoint() {
+            pushHistorySnapshot();
+            const page = getActiveTargetPage();
+            const el = document.createElement('div');
+            el.className = 'sub-point';
+            el.innerHTML = '<span class="sub-point-title">क. नवीन बिंदु :- </span> विवरण यहाँ लिखें...';
+            page.appendChild(el);
+            triggerAutoSave();
+            el.focus();
+        }
+
+        function insertNewSignature() {
+            pushHistorySnapshot();
+            const page = getActiveTargetPage();
+            const el = document.createElement('div');
+            el.className = 'signature-block';
+            el.innerHTML = `
+                <div class="signature-content">
+                    <div>(श्री लाल भरत कुमार पाल)</div>
+                    <div style="font-weight: 700;">सेनानायक</div>
+                    <div>25वीं वाहिनी पीएसी</div>
+                    <div>रायबरेली।</div>
+                </div>
+            `;
+            page.appendChild(el);
+            triggerAutoSave();
+            showToast("हस्ताक्षर ब्लॉक जोड़ा गया");
+        }
+
+        // ================= ADVANCED TABLE ENGINE (ROWS, COLS, CONTEXT MENU) =================
+        function openInsertTableModal() {
+            document.getElementById('modal-table').classList.add('show');
+        }
+
+        function confirmInsertTable() {
+            pushHistorySnapshot();
+            const rows = parseInt(document.getElementById('tbl-m-rows').value) || 3;
+            const cols = parseInt(document.getElementById('tbl-m-cols').value) || 3;
+            const page = getActiveTargetPage();
+
+            const container = document.createElement('div');
+            container.className = 'table-container';
+            container.innerHTML = `
+                <div class="table-cell-actions no-print">
+                    <button class="r-btn" onclick="addTableRow(this)"><i class="fa-solid fa-plus"></i> पंक्ति जोड़ें</button>
+                    <button class="r-btn" onclick="getTableColCount(this); addTableColumn(this);"><i class="fa-solid fa-plus"></i> कॉलम जोड़ें</button>
+                    <button class="r-btn" style="color: #fca5a5;" onclick="deleteLastTableRow(this)"><i class="fa-solid fa-minus"></i> अंतिम पंक्ति हटाएं</button>
+                    <button class="r-btn" style="color: #f87171;" onclick="deleteActiveTable(this)"><i class="fa-solid fa-trash"></i> टेबल हटाएं</button>
+                </div>
+                <table>
+                    <thead>
+                        <tr>${Array(cols).fill(0).map((_, i) => `<th>हेडर ${i + 1}</th>`).join('')}</tr>
+                    </thead>
+                    <tbody>
+                        ${Array(rows).fill(0).map(() => `<tr>${Array(cols).fill(0).map(() => `<td></td>`).join('')}</tr>`).join('')}
+                    </tbody>
+                </table>
+            `;
+            page.appendChild(container);
+            closeModal('modal-table');
+            attachRowDeleteButtonsToAllTables();
+            triggerAutoSave();
+            showToast(`${rows}x${cols} टेबल जोड़ी गई`);
+        }
+
+        // Create modern hover action popup for table rows
+        function createRowHoverPopup() {
+            const popup = document.createElement('div');
+            popup.className = 'row-hover-popup no-print';
+            popup.setAttribute('contenteditable', 'false');
+            popup.innerHTML = `
+                <button class="row-popup-btn add-btn" title="इसके नीचे नई पंक्ति जोड़ें" onclick="event.stopPropagation(); addRowBelow(this);">
+                    <i class="fa-solid fa-plus"></i> पंक्ति जोड़ें
+                </button>
+                <button class="row-popup-btn del-btn" title="यह पंक्ति हटाएं" onclick="event.stopPropagation(); deleteThisRow(this);">
+                    <i class="fa-solid fa-trash"></i> हटाएं
+                </button>
+            `;
+            return popup;
+        }
+
+        function addTableRow(btn) {
+            pushHistorySnapshot();
+            const container = btn.closest('.table-container');
+            const table = container.querySelector('table');
+            const tbody = table.querySelector('tbody') || table;
+            const headerRow = table.querySelector('thead tr, tr');
+            const colsCount = Array.from(headerRow.children).filter(el => (el.tagName === 'TH' || el.tagName === 'TD') && !el.classList.contains('row-del-btn') && !el.classList.contains('row-hover-popup')).length;
+
+            const tr = document.createElement('tr');
+            tr.style.position = 'relative';
+            for (let i = 0; i < colsCount; i++) {
+                const td = document.createElement('td');
+                tr.appendChild(td);
+            }
+
+            const lastCell = tr.children[colsCount - 1];
+            if (lastCell) {
+                lastCell.style.position = 'relative';
+                lastCell.appendChild(createRowHoverPopup());
+            }
+
+            tbody.appendChild(tr);
+            triggerAutoSave();
+            showToast("पंक्ति जोड़ी गई");
+            const firstCell = tr.querySelector('td');
+            if (firstCell) firstCell.focus();
+        }
+
+        function addRowBelow(btn) {
+            pushHistorySnapshot();
+            const tr = btn.closest('tr');
+            if (!tr) return;
+            const table = tr.closest('table');
+            const headerRow = table.querySelector('thead tr, tr');
+            const colsCount = Array.from(headerRow.children).filter(el => (el.tagName === 'TH' || el.tagName === 'TD') && !el.classList.contains('row-del-btn') && !el.classList.contains('row-hover-popup')).length;
+
+            const newRow = document.createElement('tr');
+            newRow.style.position = 'relative';
+            for (let i = 0; i < colsCount; i++) {
+                const td = document.createElement('td');
+                newRow.appendChild(td);
+            }
+
+            const lastCell = newRow.children[colsCount - 1];
+            if (lastCell) {
+                lastCell.style.position = 'relative';
+                lastCell.appendChild(createRowHoverPopup());
+            }
+
+            tr.parentNode.insertBefore(newRow, tr.nextSibling);
+
+            triggerAutoSave();
+            showToast("नई पंक्ति जोड़ी गई!");
+            const firstCell = newRow.querySelector('td');
+            if (firstCell) firstCell.focus();
+        }
+
+        function addRowAbove(btn) {
+            pushHistorySnapshot();
+            const tr = btn.closest('tr');
+            if (!tr) return;
+            const table = tr.closest('table');
+            const headerRow = table.querySelector('thead tr, tr');
+            const colsCount = Array.from(headerRow.children).filter(el => (el.tagName === 'TH' || el.tagName === 'TD') && !el.classList.contains('row-del-btn') && !el.classList.contains('row-hover-popup')).length;
+
+            const newRow = document.createElement('tr');
+            newRow.style.position = 'relative';
+            for (let i = 0; i < colsCount; i++) {
+                const td = document.createElement('td');
+                newRow.appendChild(td);
+            }
+
+            const lastCell = newRow.children[colsCount - 1];
+            if (lastCell) {
+                lastCell.style.position = 'relative';
+                lastCell.appendChild(createRowHoverPopup());
+            }
+
+            tr.parentNode.insertBefore(newRow, tr);
+
+            triggerAutoSave();
+            showToast("ऊपर नई पंक्ति जोड़ी गई!");
+            const firstCell = newRow.querySelector('td');
+            if (firstCell) firstCell.focus();
+        }
+
+        function deleteThisRow(btn) {
+            pushHistorySnapshot();
+            const tr = btn.closest('tr');
+            if (!tr) return;
+            const table = tr.closest('table');
+            const tbody = tr.parentElement;
+            const allRows = tbody ? tbody.querySelectorAll('tr') : (table ? table.querySelectorAll('tbody tr, tr') : []);
+            if (allRows.length <= 1) {
+                alert("टेबल में कम से कम एक पंक्ति होनी चाहिए।");
+                return;
+            }
+            tr.remove();
+            triggerAutoSave();
+            showToast("पंक्ति हटा दी गई!");
+        }
+
+        function deleteLastTableRow(btn) {
+            pushHistorySnapshot();
+            const table = btn.closest('.table-container').querySelector('table');
+            const tbody = table.querySelector('tbody');
+            const rows = tbody ? tbody.querySelectorAll('tr') : table.querySelectorAll('tr');
+            if (rows.length > 1) {
+                rows[rows.length - 1].remove();
+                triggerAutoSave();
+                showToast("अंतिम पंक्ति हटाई गई");
+            } else {
+                alert("टेबल में कम से कम एक पंक्ति होनी चाहिए।");
+            }
+        }
+
+        function addTableColumn(btn) {
+            pushHistorySnapshot();
+            const container = btn.closest('.table-container');
+            const table = container.querySelector('table');
+            const rows = table.querySelectorAll('tr');
+
+            rows.forEach((row, idx) => {
+                const isHeader = row.parentElement.tagName === 'THEAD' || idx === 0;
+                const cell = document.createElement(isHeader ? 'th' : 'td');
+                if (isHeader) cell.textContent = "कॉलम";
+                const popup = row.querySelector('.row-hover-popup, .row-del-btn');
+                if (popup) {
+                    row.insertBefore(cell, popup);
+                } else {
+                    row.appendChild(cell);
+                }
+            });
+            attachRowDeleteButtonsToAllTables();
+            triggerAutoSave();
+            showToast("कॉलम जोड़ा गया");
+        }
+
+        function deleteLastTableColumn(btn) {
+            pushHistorySnapshot();
+            const container = btn.closest('.table-container');
+            const table = container.querySelector('table');
+            const rows = table.querySelectorAll('tr');
+            if (rows.length === 0) return;
+            const firstRowCells = Array.from(rows[0].children).filter(el => el.tagName === 'TH' || el.tagName === 'TD');
+            if (firstRowCells.length <= 1) {
+                alert("टेबल में कम से कम 1 कॉलम होना चाहिए।");
+                return;
+            }
+            rows.forEach(row => {
+                const cells = Array.from(row.children).filter(el => el.tagName === 'TH' || el.tagName === 'TD');
+                if (cells.length > 1) {
+                    cells[cells.length - 1].remove();
+                }
+            });
+            attachRowDeleteButtonsToAllTables();
+            triggerAutoSave();
+            showToast("अंतिम कॉलम हटाया गया");
+        }
+
+        function deleteActiveTable(btn) {
+            if (confirm("क्या आप इस पूरी टेबल को हटाना चाहते हैं?")) {
+                pushHistorySnapshot();
+                btn.closest('.table-container').remove();
+                triggerAutoSave();
+                showToast("टेबल हटाई गई");
+            }
+        }
+
+        // Attach Row Hover Action Popup to every row
+        function attachRowDeleteButtonsToAllTables() {
+            const tables = document.querySelectorAll('table');
+            tables.forEach(table => {
+                const rows = table.querySelectorAll('tbody tr');
+                rows.forEach(tr => {
+                    tr.style.position = 'relative';
+                    // Clean up legacy standalone del buttons
+                    tr.querySelectorAll('.row-del-btn').forEach(d => d.remove());
+                    tr.querySelectorAll(':scope > .row-hover-popup').forEach(p => p.remove());
+
+                    const cells = tr.querySelectorAll('td');
+                    if (cells.length > 0) {
+                        const lastCell = cells[cells.length - 1];
+                        lastCell.style.position = 'relative';
+                        let popup = lastCell.querySelector(':scope > .row-hover-popup');
+                        if (!popup) {
+                            popup = createRowHoverPopup();
+                            lastCell.appendChild(popup);
+                        }
+                    }
+                });
+            });
+        }
+        window.attachRowActionsToAllTables = attachRowDeleteButtonsToAllTables;
+        window.addRowBelow = addRowBelow;
+        window.addRowAbove = addRowAbove;
+        window.deleteThisRow = deleteThisRow;
+
+        // Context menu table actions
+        function ctxInsertRowAbove() {
+            if (!activeContextMenuCell) return;
+            const tr = activeContextMenuCell.closest('tr');
+            if (tr) {
+                const btn = { closest: () => tr };
+                addRowAbove(btn);
+            }
+            closeContextMenu();
+        }
+
+        function ctxInsertRowBelow() {
+            if (!activeContextMenuCell) return;
+            const tr = activeContextMenuCell.closest('tr');
+            if (tr) {
+                const btn = { closest: () => tr };
+                addRowBelow(btn);
+            }
+            closeContextMenu();
+        }
+
+        function ctxDeleteRow() {
+            if (!activeContextMenuCell) return;
+            const tr = activeContextMenuCell.closest('tr');
+            if (tr) {
+                const btn = { closest: () => tr };
+                deleteThisRow(btn);
+            }
+            closeContextMenu();
+        }
+
+        function ctxInsertColLeft() {
+            if (!activeContextMenuCell) return;
+            pushHistorySnapshot();
+            const table = activeContextMenuCell.closest('table');
+            const colIndex = activeContextMenuCell.cellIndex;
+            const rows = table.querySelectorAll('tr');
+
+            rows.forEach((row, idx) => {
+                const isHeader = row.parentElement.tagName === 'THEAD' || idx === 0;
+                const cell = document.createElement(isHeader ? 'th' : 'td');
+                if (isHeader) cell.textContent = "कॉलम";
+                const targetCell = row.children[colIndex];
+                if (targetCell) {
+                    row.insertBefore(cell, targetCell);
+                } else {
+                    row.appendChild(cell);
+                }
+            });
+            attachRowDeleteButtonsToAllTables();
+            triggerAutoSave();
+            closeContextMenu();
+            showToast("बायाँ कॉलम जोड़ा गया");
+        }
+
+        function ctxInsertColRight() {
+            if (!activeContextMenuCell) return;
+            pushHistorySnapshot();
+            const table = activeContextMenuCell.closest('table');
+            const colIndex = activeContextMenuCell.cellIndex;
+            const rows = table.querySelectorAll('tr');
+
+            rows.forEach((row, idx) => {
+                const isHeader = row.parentElement.tagName === 'THEAD' || idx === 0;
+                const cell = document.createElement(isHeader ? 'th' : 'td');
+                if (isHeader) cell.textContent = "कॉलम";
+                const targetCell = row.children[colIndex + 1];
+                if (targetCell) {
+                    row.insertBefore(cell, targetCell);
+                } else {
+                    const popup = row.querySelector('.row-hover-popup');
+                    if (popup) {
+                        row.insertBefore(cell, popup);
+                    } else {
+                        row.appendChild(cell);
+                    }
+                }
+            });
+            attachRowDeleteButtonsToAllTables();
+            triggerAutoSave();
+            closeContextMenu();
+            showToast("दायाँ कॉलम जोड़ा गया");
+        }
+
+        function ctxDeleteCol() {
+            if (!activeContextMenuCell) return;
+            pushHistorySnapshot();
+            const table = activeContextMenuCell.closest('table');
+            const colIndex = activeContextMenuCell.cellIndex;
+            const rows = table.querySelectorAll('tr');
+            if (rows.length === 0) return;
+
+            const firstRowCells = Array.from(rows[0].children).filter(el => el.tagName === 'TH' || el.tagName === 'TD');
+            if (firstRowCells.length <= 1) {
+                alert("टेबल में कम से कम 1 कॉलम होना चाहिए।");
+                closeContextMenu();
+                return;
+            }
+
+            rows.forEach(row => {
+                const cell = row.children[colIndex];
+                if (cell) cell.remove();
+            });
+            attachRowDeleteButtonsToAllTables();
+            triggerAutoSave();
+            closeContextMenu();
+            showToast("कॉलम हटाया गया");
+        }
+
+        function closeContextMenu() {
+            const menu = document.getElementById('table-context-menu');
+            if (menu) menu.classList.remove('show');
+            activeContextMenuCell = null;
+        }
+
+        // ================= ZOOM & UI UTILITIES =================
+        function setZoom(val) {
+            currentZoom = Math.max(30, Math.min(200, val));
+            const wrapper = document.getElementById('canvas-zoom-wrapper');
+            if (wrapper) {
+                wrapper.style.transform = `scale(${currentZoom / 100})`;
+                wrapper.style.transformOrigin = 'top center';
+            }
+            const zoomText = document.getElementById('zoom-val-text');
+            if (zoomText) zoomText.textContent = `${currentZoom}%`;
+        }
+
+        function toggleSidebar(side) {
+            const el = document.getElementById(`sidebar-${side}`);
+            if (el) el.classList.toggle('collapsed');
+        }
+
+        function switchLeftTab(tabName) {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.tab-content-panel').forEach(p => p.classList.remove('active'));
+            const btn = document.querySelector(`.tab-btn[onclick*="${tabName}"]`);
+            if (btn) btn.classList.add('active');
+            const panel = document.getElementById(`tab-panel-${tabName}`);
+            if (panel) panel.classList.add('active');
+        }
+
+        function closeModal(id) {
+            const modal = document.getElementById(id);
+            if (modal) modal.classList.remove('show');
+        }
+
+        function openFindReplaceModal() {
+            document.getElementById('modal-find').classList.add('show');
+            document.getElementById('find-query').focus();
+        }
+
+        function performReplaceAll() {
+            const find = document.getElementById('find-query').value;
+            const replace = document.getElementById('replace-query').value;
+            if (!find) return;
+
+            pushHistorySnapshot();
+            const canvas = document.getElementById('canvas-zoom-wrapper');
+            const regex = new RegExp(find.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g');
+            let count = 0;
+
+            function replaceInNodes(node) {
+                if (node.nodeType === 3) {
+                    const matches = node.nodeValue.match(regex);
+                    if (matches) count += matches.length;
+                    node.nodeValue = node.nodeValue.replace(regex, replace);
+                } else if (node.nodeType === 1 && !node.classList.contains('no-print')) {
+                    node.childNodes.forEach(replaceInNodes);
+                }
+            }
+
+            replaceInNodes(canvas);
+            closeModal('modal-find');
+            triggerAutoSave();
+            showToast(`${count} स्थान पर शब्द बदला गया`);
+        }
+
+        // ================= PRINT & EXPORT UTILITIES =================
+        function printDoc() {
+            window.print();
+        }
+
+        function exportCleanHTML() {
+            const canvas = document.getElementById('canvas-zoom-wrapper');
+            const clone = canvas.cloneNode(true);
+            clone.querySelectorAll('.no-print, .row-hover-popup, .table-cell-actions').forEach(el => el.remove());
+            const title = document.getElementById('doc-title').value.trim() || "निरीक्षण_रिपोर्ट";
+
+            const html = `<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <title>${title}</title>
+    <style>
+        @page { size: A4 landscape; margin: 0; }
+        body { font-family: 'Tiro Devanagari Hindi', 'Mukta', sans-serif; margin: 0; padding: 0; background: #fff; color: #000; }
+        .doc-page { width: 297mm; min-height: 210mm; padding: 18mm 20mm; box-sizing: border-box; page-break-after: always; position: relative; }
+        table { width: 100%; border-collapse: collapse; border: 2px solid #000; margin: 12px 0; }
+        th, td { border: 1.5px solid #000; padding: 7px 10px; color: #000; text-align: left; }
+        th { background: #f1f5f9; font-weight: 700; border-bottom: 2.5px solid #000; }
+        .section-header-wrap { text-align: center; }
+        .section-header { font-size: 22px; font-weight: 700; border-bottom: 2px solid #000; display: inline-block; padding-bottom: 4px; }
+        .bold-text { font-weight: 700; font-size: 18px; margin-bottom: 10px; }
+        .justify-text { text-align: justify; font-size: 16px; line-height: 1.6; text-indent: 30px; }
+        .sub-point { margin-bottom: 12px; text-align: justify; font-size: 16px; line-height: 1.55; }
+        .signature-block { margin-top: 40px; display: flex; justify-content: flex-end; padding-right: 40px; }
+        .signature-content { text-align: center; min-width: 280px; font-size: 18px; line-height: 1.4; }
+    </style>
+</head>
+<body>
+    ${clone.innerHTML}
+</body>
+</html>`;
+
+            const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+            downloadBlob(blob, `${title}.html`);
+            showToast("HTML फ़ाइल डाउनलोड हो गई!");
+        }
+
+        function exportJSONBackup() {
+            const canvas = document.getElementById('canvas-zoom-wrapper');
+            const title = document.getElementById('doc-title').value.trim();
+            const data = {
+                title: title,
+                html: canvas.innerHTML,
+                savedAt: new Date().toISOString(),
+                version: "6.0"
+            };
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            downloadBlob(blob, `${title || 'inspection_report'}_backup.json`);
+            showToast("JSON बैकअप डाउनलोड हो गया!");
+        }
+
+        function importJSONBackup(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    if (data.html) {
+                        pushHistorySnapshot();
+                        document.getElementById('canvas-zoom-wrapper').innerHTML = data.html;
+                        if (data.title) document.getElementById('doc-title').value = data.title;
+                        attachRowDeleteButtonsToAllTables();
+                        updatePageThumbnails();
+                        updateStats();
+                        saveToLocalStorage(false);
+                        showToast("बैकअप सफलतापूर्वक लोड हुआ!");
+                    }
+                } catch (err) {
+                    alert("अमान्य JSON फ़ाइल: " + err.message);
+                }
+            };
+            reader.readAsText(file);
+            event.target.value = '';
+        }
+
+        function downloadBlob(blob, filename) {
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // ================= LOCALSTORAGE ENGINE =================
+        function saveToLocalStorage(notify = false) {
+            try {
+                const canvas = document.getElementById('canvas-zoom-wrapper');
+                const title = document.getElementById('doc-title').value;
+                if (!canvas) return;
+
+                const data = {
+                    title: title,
+                    html: canvas.innerHTML,
+                    timestamp: new Date().toISOString()
+                };
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+                setSaveStatus('सुरक्षित', '#10b981', 'fa-circle-check');
+                if (notify) showToast("लोकल स्टोरेज में सुरक्षित!");
+            } catch (e) {
+                console.warn("LocalStorage save issue:", e);
+                setSaveStatus('त्रुटि', '#ef4444', 'fa-triangle-exclamation');
+            }
+        }
+
+        function loadFromLocalStorage() {
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                if (raw) {
+                    const data = JSON.parse(raw);
+                    if (data.html && data.html.trim().length > 50) {
+                        document.getElementById('canvas-zoom-wrapper').innerHTML = data.html;
+                        if (data.title) document.getElementById('doc-title').value = data.title;
+                        setSaveStatus('लोड हुआ', '#38bdf8', 'fa-circle-check');
+                    }
+                }
+            } catch (e) {
+                console.warn("LocalStorage load issue:", e);
+            }
+        }
+
+        function manualSaveDraft() {
+            saveToLocalStorage(true);
+        }
+
+        function triggerAutoSave() {
+            setSaveStatus('सेव हो रहा है...', '#f59e0b', 'fa-spinner fa-spin');
+            clearTimeout(autoSaveTimer);
+            autoSaveTimer = setTimeout(() => {
+                saveToLocalStorage(false);
+            }, 600);
+        }
+
+        function resetToDefaultTemplate() {
+            if (confirm("क्या आप वाकई डिफ़ॉल्ट टेम्पलेट पर रीसेट करना चाहते हैं?\n(वर्तमान परिवर्तन हट जाएंगे)")) {
+                localStorage.removeItem(STORAGE_KEY);
+                window.location.reload();
+            }
+        }
+
+        function setSaveStatus(text, color, icon) {
+            const pill = document.getElementById('save-status-pill');
+            const span = document.getElementById('save-status-text');
+            if (pill && span) {
+                pill.style.color = color;
+                pill.style.borderColor = color;
+                span.textContent = text;
+                const iconEl = pill.querySelector('i');
+                if (iconEl) iconEl.className = `fa-solid ${icon}`;
+            }
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast-popup');
+            const text = document.getElementById('toast-msg-text');
+            if (toast && text) {
+                text.textContent = msg;
+                toast.classList.add('show');
+                setTimeout(() => toast.classList.remove('show'), 2500);
+            }
+        }
+
+        function updateStats() {
+            const text = document.getElementById('canvas-zoom-wrapper').innerText || "";
+            const words = text.trim().split(/\s+/).filter(w => w.length > 0).length;
+            document.getElementById('stat-word-count').innerHTML = `<i class="fa-solid fa-font mr-1"></i> ${words} शब्द`;
+        }
+
+        // ================= CONTEXT MENU & CANVAS LISTENERS =================
+        document.addEventListener('contextmenu', (e) => {
+            const cell = e.target.closest('td, th');
+            if (cell) {
+                e.preventDefault();
+                activeContextMenuCell = cell;
+                const menu = document.getElementById('table-context-menu');
+                menu.style.top = `${Math.min(window.innerHeight - 250, e.clientY)}px`;
+                menu.style.left = `${Math.min(window.innerWidth - 220, e.clientX)}px`;
+                menu.classList.add('show');
+            } else {
+                closeContextMenu();
+            }
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('#table-context-menu')) {
+                closeContextMenu();
+            }
+            const page = e.target.closest('.doc-page');
+            if (page) {
+                activePageElement = page;
+                const pageNum = page.getAttribute('data-page-num');
+                document.querySelectorAll('.page-thumb-card').forEach(c => c.classList.remove('active'));
+                const card = document.querySelector(`.page-thumb-card[data-target-page="${pageNum}"]`);
+                if (card) card.classList.add('active');
+            }
+            if (e.target.closest('[contenteditable="true"]')) {
+                activeFocusedElement = e.target;
+            }
+        });
+
+        // ================= INITIALIZATION & LIFECYCLE LISTENERS =================
+        window.addEventListener('DOMContentLoaded', () => {
+            // 1. Load from localStorage if present
+            loadFromLocalStorage();
+
+            // 2. Ensure row delete buttons exist on all tables
+            attachRowDeleteButtonsToAllTables();
+
+            // 3. Populate thumbnails and outline
+            updatePageThumbnails();
+            setZoom(85);
+            updateStats();
+
+            // 4. Register Title Input Listeners
+            const docTitleEl = document.getElementById('doc-title');
+            if (docTitleEl) {
+                docTitleEl.addEventListener('input', () => triggerAutoSave());
+                docTitleEl.addEventListener('change', () => saveToLocalStorage(false));
+            }
+
+            // 5. Register Canvas Editing Listeners for Real-Time Auto-Save
+            document.addEventListener('input', (e) => {
+                if (e.target.closest('[contenteditable="true"]')) {
+                    triggerAutoSave();
+                    updateStats();
+                }
+            });
+
+            document.addEventListener('blur', (e) => {
+                if (e.target.closest('[contenteditable="true"]')) {
+                    saveToLocalStorage(false);
+                }
+            }, true);
+
+            document.addEventListener('paste', (e) => {
+                if (e.target.closest('[contenteditable="true"]')) {
+                    setTimeout(() => {
+                        triggerAutoSave();
+                        updateStats();
+                    }, 50);
+                }
+            });
+
+            // 6. Background Periodic Auto-Save Heartbeat (every 10 seconds)
+            setInterval(() => {
+                saveToLocalStorage(false);
+            }, 10000);
+
+            // 7. Instant Save before tab close / page refresh
+            window.addEventListener('beforeunload', () => {
+                saveToLocalStorage(false);
+            });
+        });
+    </script>
+
+    <!-- 8. Firebase Firestore Cloud Synchronization Engine (Multi-File Architecture) -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { initializeFirestore, getFirestore, doc, getDoc, setDoc, deleteDoc, collection, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDsVKuptdW4jRWQ5rLX_h_fn53xuFoYVMI",
+            authDomain: "abcreport-27dea.firebaseapp.com",
+            projectId: "abcreport-27dea",
+            storageBucket: "abcreport-27dea.firebasestorage.app",
+            messagingSenderId: "1422972209",
+            appId: "1:1422972209:web:82fbc39400d75566d8cc10"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        let db;
+        try {
+            db = initializeFirestore(app, {
+                experimentalForceLongPolling: true,
+                useFetchStreams: false
+            });
+        } catch (e) {
+            try {
+                db = initializeFirestore(app, {
+                    experimentalAutoDetectLongPolling: true
+                });
+            } catch (err) {
+                db = getFirestore(app);
+            }
+        }
+
+        // Firestore storage collection path under settings rule: match /settings/{document=**}
+        const VAULT_COLLECTION_PATH = ["settings", "dig_ins_library", "documents"];
+        const DEFAULT_EMAIL = "sathyauppolice74@gmail.com";
+        const DEFAULT_PASS = "123456";
+
+        let isCloudAuthReady = false;
+        let isSyncing = false;
+
+        function updateCloudPill(status, text, color) {
+            const pill = document.getElementById('cloud-status-pill');
+            if (pill) {
+                if (color) pill.style.color = color;
+                if (status === 'syncing') {
+                    pill.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> <span id="cloud-status-text">${text}</span>`;
+                } else if (status === 'ready') {
+                    pill.innerHTML = `<i class="fa-solid fa-cloud-arrow-up"></i> <span id="cloud-status-text">${text}</span>`;
+                } else if (status === 'error') {
+                    pill.innerHTML = `<i class="fa-solid fa-cloud-bolt"></i> <span id="cloud-status-text">${text}</span>`;
+                }
+            }
+        }
+
+        async function ensureAuthenticated() {
+            if (auth.currentUser) return auth.currentUser;
+            try {
+                const userCredential = await signInWithEmailAndPassword(auth, DEFAULT_EMAIL, DEFAULT_PASS);
+                isCloudAuthReady = true;
+                return userCredential.user;
+            } catch (err) {
+                if (err.code === 'auth/invalid-credential' || err.code === 'auth/user-not-found') {
+                    try {
+                        const newCred = await createUserWithEmailAndPassword(auth, DEFAULT_EMAIL, DEFAULT_PASS);
+                        isCloudAuthReady = true;
+                        return newCred.user;
+                    } catch (regErr) {
+                        console.warn("Firebase auto-registration notice:", regErr.message);
+                    }
+                }
+                console.warn("Firebase Auth Notice:", err.message);
+                return null;
+            }
+        }
+
+        // ALWAYS creates a BRAND NEW independent document file in Firestore on every single save
+        async function saveToFirestore(isManual = false) {
+            if (isSyncing) return;
+            isSyncing = true;
+            updateCloudPill('syncing', 'नई फ़ाइल सेव हो रही है...');
+
+            try {
+                await ensureAuthenticated();
+                const canvas = document.getElementById('canvas-zoom-wrapper');
+                const titleInput = document.getElementById('doc-title');
+                if (!canvas) return;
+
+                const docTitle = titleInput ? titleInput.value.trim() : "भ्रमण/निरीक्षण पुलिस माडर्न स्कूल";
+                const pageCount = document.querySelectorAll('.doc-page').length;
+                const wordCount = (canvas.innerText || "").trim().split(/\s+/).filter(w => w.length > 0).length;
+                const now = new Date();
+                const isoDate = now.toISOString();
+
+                // Unique file identifier generated using high-res timestamp & cryptographic random nonce
+                // Guaranteed to create a new separate document every time user clicks save
+                const uniqueFileId = "doc_" + Date.now() + "_" + Math.random().toString(36).substring(2, 8);
+
+                const docData = {
+                    id: uniqueFileId,
+                    title: docTitle,
+                    htmlContent: canvas.innerHTML,
+                    pageCount: pageCount,
+                    wordCount: wordCount,
+                    createdAt: isoDate,
+                    updatedAt: isoDate,
+                    timestamp: serverTimestamp(),
+                    author: auth.currentUser ? auth.currentUser.email : DEFAULT_EMAIL
+                };
+
+                // Create a completely NEW independent document in Firestore library
+                const newDocRef = doc(db, VAULT_COLLECTION_PATH[0], VAULT_COLLECTION_PATH[1], VAULT_COLLECTION_PATH[2], uniqueFileId);
+                await setDoc(newDocRef, docData);
+
+                updateCloudPill('ready', 'क्लाउड सुरक्षित', '#38bdf8');
+                if (isManual) {
+                    showToast(`☁️ नई फ़ाइल सुरक्षित हुई: "${docTitle}"`);
+                    // If modal is open, refresh the file list
+                    const modal = document.getElementById('modal-cloud-reports');
+                    if (modal && modal.classList.contains('show')) {
+                        loadCloudReportsList();
+                    }
+                }
+            } catch (err) {
+                console.error("Firestore save error:", err);
+                updateCloudPill('error', 'क्लाउड त्रुटि', '#f87171');
+                if (isManual) {
+                    alert("क्लाउड पर नई फ़ाइल सेव करने में त्रुटि: " + err.message);
+                }
+            } finally {
+                isSyncing = false;
+                setTimeout(() => {
+                    updateCloudPill('ready', 'क्लाउड कनेक्टेड', '#38bdf8');
+                }, 3000);
+            }
+        }
+
+        async function loadCloudReportsList() {
+            const listContainer = document.getElementById('cloud-reports-list');
+            if (!listContainer) return;
+            listContainer.innerHTML = '<div style="color: #38bdf8; text-align: center; padding: 25px;"><i class="fa-solid fa-spinner fa-spin mr-1"></i> सभी क्लाउड फाइलें लोड हो रही हैं...</div>';
+
+            try {
+                await ensureAuthenticated();
+                const collRef = collection(db, VAULT_COLLECTION_PATH[0], VAULT_COLLECTION_PATH[1], VAULT_COLLECTION_PATH[2]);
+                const snapshot = await getDocs(collRef);
+
+                let files = [];
+                snapshot.forEach(docSnap => {
+                    files.push({ id: docSnap.id, ...docSnap.data() });
+                });
+
+                // Also check legacy collection if any
+                if (files.length === 0) {
+                    try {
+                        const legacySnap = await getDocs(collection(db, "settings", "dig_ins_files", "reports"));
+                        legacySnap.forEach(d => files.push({ id: d.id, ...d.data() }));
+                    } catch (e) { }
+                }
+
+                // Sort files descending by creation date (newest first)
+                files.sort((a, b) => new Date(b.createdAt || b.updatedAt || 0) - new Date(a.createdAt || a.updatedAt || 0));
+
+                if (files.length === 0) {
+                    listContainer.innerHTML = `
+                        <div style="text-align: center; padding: 30px 10px; color: #94a3b8;">
+                            <i class="fa-solid fa-cloud-moon" style="font-size: 2.5rem; color: #475569; margin-bottom: 12px;"></i>
+                            <div style="font-weight: 600; color: #cbd5e1; font-size: 0.95rem; margin-bottom: 4px;">कोई क्लाउड फ़ाइल उपलब्ध नहीं है</div>
+                            <p style="font-size: 0.8rem; margin: 0 0 14px 0;">आप जितनी बार भी 'नई फ़ाइल सेव करें' दबाएंगे, उतनी नई अलग-अलग फाइलें यहाँ सुरक्षित होंगी।</p>
+                            <button class="r-btn" style="background: #0284c7; color: white; margin: 0 auto;" onclick="window.saveToFirestore(true)">
+                                <i class="fa-solid fa-cloud-arrow-up"></i> वर्तमान दस्तावेज़ की पहली फ़ाइल बनाएं
+                            </button>
+                        </div>
+                    `;
+                    return;
+                }
+
+                let html = `
+                    <div style="font-size: 0.78rem; color: #94a3b8; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
+                        <span>कुल सुरक्षित फाइलें: <strong style="color: #38bdf8;">${files.length}</strong></span>
+                        <span style="color: #64748b;">(नवीनतम फ़ाइल सबसे ऊपर)</span>
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 8px;">
+                `;
+
+                files.forEach((f, idx) => {
+                    const dateObj = new Date(f.createdAt || f.updatedAt || Date.now());
+                    const dateStr = dateObj.toLocaleDateString('hi-IN', { day: '2-digit', month: '2-digit', year: 'numeric' });
+                    const timeStr = dateObj.toLocaleTimeString('hi-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
+
+                    html += `
+                        <div class="cloud-file-card" style="background: #0b1120; border: 1px solid ${idx === 0 ? '#0284c7' : '#334155'}; border-radius: 8px; padding: 10px 14px; display: flex; justify-content: space-between; align-items: center; gap: 12px; transition: all 0.15s ease;">
+                            <div style="flex: 1; min-width: 0;">
+                                <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 4px;">
+                                    <i class="fa-solid fa-file-invoice text-sky-400"></i>
+                                    <strong style="color: #f8fafc; font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${f.title || 'निरीक्षण रिपोर्ट'}">
+                                        ${f.title || "निरीक्षण रिपोर्ट"}
+                                    </strong>
+                                    ${idx === 0 ? '<span style="background: rgba(14, 165, 233, 0.2); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); font-size: 0.68rem; padding: 1px 6px; border-radius: 3px; font-weight: 700;">ताज़ा फ़ाइल</span>' : ''}
+                                </div>
+                                <div style="color: #94a3b8; font-size: 0.75rem; display: flex; gap: 12px; flex-wrap: wrap;">
+                                    <span><i class="fa-regular fa-calendar mr-1"></i> ${dateStr} ${timeStr}</span>
+                                    <span><i class="fa-solid fa-file-lines mr-1"></i> ${f.pageCount || 1} पृष्ठ</span>
+                                    <span><i class="fa-solid fa-font mr-1"></i> ${f.wordCount || 0} शब्द</span>
+                                </div>
+                            </div>
+                            <div style="display: flex; gap: 6px; flex-shrink: 0;">
+                                <button class="r-btn" style="background: #059669; color: white; padding: 5px 12px; font-size: 0.78rem;" onclick="window.loadSpecificCloudFile('${f.id}')" title="इस फ़ाइल को एडिटर में लोड करें">
+                                    <i class="fa-solid fa-download"></i> लोड करें
+                                </button>
+                                <button class="r-btn" style="background: #7f1d1d; color: #fca5a5; padding: 5px 10px; font-size: 0.78rem;" onclick="window.deleteSpecificCloudFile('${f.id}')" title="यह फ़ाइल हमेशा के लिए हटाएं">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                html += `</div>`;
+                listContainer.innerHTML = html;
+            } catch (err) {
+                console.error("Error listing cloud files:", err);
+                listContainer.innerHTML = `<div style="color: #f87171; padding: 16px;">फ़ाइल सूची लोड करने में त्रुटि: ${err.message}</div>`;
+            }
+        }
+
+        async function loadSpecificCloudFile(fileId) {
+            if (!confirm("क्या आप इस फ़ाइल को एडिटर में लोड करना चाहते हैं?\n(वर्तमान असहेजा गया कार्य बदल जाएगा)")) return;
+
+            try {
+                await ensureAuthenticated();
+                let snap = await getDoc(doc(db, VAULT_COLLECTION_PATH[0], VAULT_COLLECTION_PATH[1], VAULT_COLLECTION_PATH[2], fileId));
+                if (!snap.exists()) {
+                    // Try legacy path fallback
+                    snap = await getDoc(doc(db, "settings", "dig_ins_files", "reports", fileId));
+                }
+
+                if (!snap.exists()) {
+                    alert("क्लाउड फ़ाइल नहीं मिली।");
+                    return;
+                }
+
+                const data = snap.data();
+                if (data.htmlContent) {
+                    pushHistorySnapshot();
+                    const canvas = document.getElementById('canvas-zoom-wrapper');
+                    const titleInput = document.getElementById('doc-title');
+
+                    if (titleInput && data.title) {
+                        titleInput.value = data.title;
+                    }
+                    if (canvas) {
+                        canvas.innerHTML = data.htmlContent;
+                    }
+
+                    attachRowDeleteButtonsToAllTables();
+                    updatePageThumbnails();
+                    updateStats();
+                    saveToLocalStorage(false);
+                    closeModal('modal-cloud-reports');
+                    showToast(`📂 फ़ाइल "${data.title}" लोड हो गई!`);
+                    updateCloudPill('ready', 'क्लाउड सुरक्षित', '#38bdf8');
+                }
+            } catch (err) {
+                alert("फ़ाइल लोड करने में समस्या: " + err.message);
+            }
+        }
+
+        async function deleteSpecificCloudFile(fileId) {
+            if (!confirm("क्या आप वाकई इस क्लाउड फ़ाइल को हटाना चाहते हैं?")) return;
+
+            try {
+                await ensureAuthenticated();
+                await deleteDoc(doc(db, VAULT_COLLECTION_PATH[0], VAULT_COLLECTION_PATH[1], VAULT_COLLECTION_PATH[2], fileId));
+                try {
+                    await deleteDoc(doc(db, "settings", "dig_ins_files", "reports", fileId));
+                } catch (e) { }
+                showToast("फ़ाइल हटा दी गई!");
+                loadCloudReportsList();
+            } catch (err) {
+                alert("फ़ाइल हटाने में त्रुटि: " + err.message);
+            }
+        }
+
+        function openCloudReportsModal() {
+            const modal = document.getElementById('modal-cloud-reports');
+            if (modal) modal.classList.add('show');
+            loadCloudReportsList();
+        }
+
+        // Attach to global window object
+        window.saveToFirestore = saveToFirestore;
+        window.loadCloudReportsList = loadCloudReportsList;
+        window.loadSpecificCloudFile = loadSpecificCloudFile;
+        window.deleteSpecificCloudFile = deleteSpecificCloudFile;
+        window.openCloudReportsModal = openCloudReportsModal;
+
+        // Auto authenticate on page startup
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                isCloudAuthReady = true;
+                updateCloudPill('ready', 'क्लाउड कनेक्टेड', '#38bdf8');
+            } else {
+                ensureAuthenticated();
+            }
+        });
+    </script>
+    <script src="js/pms_nav_search.js"></script>
+</body>
+
+</html>

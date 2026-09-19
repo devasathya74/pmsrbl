@@ -88,6 +88,10 @@
       <button onclick="showPanel('fee-chart')" id="tab-fee-chart">&#128203; Fee Chart</button>
       <button onclick="showPanel('gate-pass')" id="tab-gate-pass">&#128663; Gate Pass</button>
       <button onclick="window.location.href='fee_data/index.html'" id="tab-fee-data" style="background:linear-gradient(135deg, #4f46e5, #4338ca);color:#fff;font-weight:700;">💼 Fee Portal 2026-27 (fee_data)</button>
+      <button onclick="window.location.href='dig_ins.html'" id="tab-dig-ins" style="background:#0284c7;color:#fff;font-weight:700;">🏛️ निरीक्षण स्टूडियो (DIG)</button>
+      <button onclick="window.location.href='admission_fee_july.html'" id="tab-admission-order" style="background:#7c3aed;color:#fff;font-weight:700;">📜 शुल्क छूट आदेश</button>
+      <button onclick="window.location.href='charge_list.html'" id="tab-charge-list" style="background:#059669;color:#fff;">📋 प्रभार सूची</button>
+      <button onclick="window.location.href='class_cover_labels.html'" id="tab-labels" style="background:#d97706;color:#fff;">🏷️ कवर लेबल्स</button>
       <button onclick="window.location.href='attendance.html'" id="tab-attendance" style="background:#0284c7;color:#fff;">&#128652; Transport / Attendance</button>
       <button onclick="window.location.href='medicine_stock_register.html'" id="tab-medicine" style="background:#e11d48;color:#fff;">💊 औषधि रजिस्टर</button>
       <button onclick="window.location.href='staff_salary.html'" id="tab-salary" style="background:#0d9488;color:#fff;">💵 स्टाफ वेतन</button>
@@ -149,7 +153,7 @@
               </div>
             </div>
 
-            <!-- SCHOOL REGISTERS -->
+            <!-- SCHOOL REGISTERS & INVENTORY -->
             <div style="background:#fff;border:1px solid #bbf7d0;border-radius:10px;padding:12px;box-shadow:0 2px 6px rgba(0,0,0,0.04);">
               <div style="font-weight:800;font-size:.9rem;color:#166534;margin-bottom:8px;border-bottom:1px solid #dcfce7;padding-bottom:4px;display:flex;align-items:center;justify-content:space-between;">
                 <span><i class="fa-solid fa-book-bookmark"></i> विद्यालय प्रबंधन व पंजिकाएं</span>
@@ -160,6 +164,14 @@
                   <span>🚌 छात्र दैनिक उपस्थिति व वाहन पंजिका</span>
                   <i class="fa-solid fa-arrow-right text-xs"></i>
                 </a>
+                <a href="charge_list.html" style="text-decoration:none;padding:6px 10px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:6px;font-size:.82rem;font-weight:700;color:#166534;display:flex;justify-content:space-between;align-items:center;">
+                  <span>📋 प्रभार सूची एवं स्टॉक हस्तांतरण पंजिका</span>
+                  <i class="fa-solid fa-arrow-right text-xs"></i>
+                </a>
+                <a href="class_cover_labels.html" style="text-decoration:none;padding:6px 10px;background:#fffbeb;border:1px solid #fde68a;border-radius:6px;font-size:.82rem;font-weight:700;color:#92400e;display:flex;justify-content:space-between;align-items:center;">
+                  <span>🏷️ कक्षा पंजिका व फाइल कवर लेबल्स</span>
+                  <i class="fa-solid fa-arrow-right text-xs"></i>
+                </a>
                 <a href="medicine_stock_register.html" style="text-decoration:none;padding:6px 10px;background:#fff1f2;border:1px solid #fecdd3;border-radius:6px;font-size:.82rem;font-weight:700;color:#9f1239;display:flex;justify-content:space-between;align-items:center;">
                   <span>💊 PMS औषधि व प्राथमिक उपचार स्टॉक</span>
                   <i class="fa-solid fa-arrow-right text-xs"></i>
@@ -168,20 +180,24 @@
                   <span>💵 स्टाफ वेतन व मानदेय बिल पंजिका</span>
                   <i class="fa-solid fa-arrow-right text-xs"></i>
                 </a>
-                <a href="class6_science_question_bank.html" style="text-decoration:none;padding:6px 10px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;font-size:.82rem;font-weight:600;color:#334155;display:flex;justify-content:space-between;align-items:center;">
-                  <span>🔬 कक्षा 6 विज्ञान प्रश्न बैंक</span>
-                  <i class="fa-solid fa-arrow-right text-xs"></i>
-                </a>
               </div>
             </div>
 
-            <!-- OFFICIAL CORRESPONDENCE -->
+            <!-- OFFICIAL CORRESPONDENCE & INSPECTION -->
             <div style="background:#fff;border:1px solid #fed7aa;border-radius:10px;padding:12px;box-shadow:0 2px 6px rgba(0,0,0,0.04);">
               <div style="font-weight:800;font-size:.9rem;color:#9a3412;margin-bottom:8px;border-bottom:1px solid #ffedd5;padding-bottom:4px;display:flex;align-items:center;justify-content:space-between;">
-                <span><i class="fa-solid fa-file-pen"></i> आधिकारिक पत्राचार व जनरेटर</span>
+                <span><i class="fa-solid fa-file-pen"></i> आधिकारिक आदेश व निरीक्षण</span>
                 <span style="font-size:0.7rem;background:#ea580c;color:#fff;padding:1px 6px;border-radius:4px;">Official</span>
               </div>
               <div style="display:flex;flex-direction:column;gap:6px;">
+                <a href="dig_ins.html" style="text-decoration:none;padding:6px 10px;background:#f0f9ff;border:1px solid #bae6fd;border-radius:6px;font-size:.82rem;font-weight:700;color:#0369a1;display:flex;justify-content:space-between;align-items:center;">
+                  <span>🏛️ भ्रमण/निरीक्षण 10X Document Studio</span>
+                  <i class="fa-solid fa-arrow-right text-xs"></i>
+                </a>
+                <a href="admission_fee_july.html" style="text-decoration:none;padding:6px 10px;background:#faf5ff;border:1px solid #e9d5ff;border-radius:6px;font-size:.82rem;font-weight:700;color:#6b21a8;display:flex;justify-content:space-between;align-items:center;">
+                  <span>📜 प्रवेश एवं शिक्षण शुल्क छूट सम्बन्धी आदेश</span>
+                  <i class="fa-solid fa-arrow-right text-xs"></i>
+                </a>
                 <a href="pms_letter_generator.html" style="text-decoration:none;padding:6px 10px;background:#fff7ed;border-radius:6px;font-size:.82rem;font-weight:700;color:#9a3412;display:flex;justify-content:space-between;align-items:center;">
                   <span>📝 पत्र व प्रार्थना पत्र जनरेटर</span>
                   <i class="fa-solid fa-arrow-right text-xs"></i>

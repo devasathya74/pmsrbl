@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="hi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Police Modern School - Class Register & File Cover Labels</title>
+    <link rel="icon" type="image/png" href="assets/images/logo/logo.png">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Inter:wght@400;500;600;700;800;900&family=Kalam:wght@700&family=Montserrat:wght@600;700;800;900&family=Outfit:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS for UI controls -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --primary-dark: #0f172a;
+            --accent: #2563eb;
+            --border-color: #000000;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f1f5f9;
+            color: #1e293b;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Typography Presets for Labels */
+        .font-handwriting {
+            font-family: 'Caveat', 'Kalam', cursive;
+        }
+
+        .font-classic {
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .font-modern {
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .font-standard {
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Label Card Base Styles */
+        .label-card {
+            background: #ffffff;
+            position: relative;
+            box-sizing: border-box;
+            transition: all 0.2s ease;
+            page-break-inside: avoid;
+            break-inside: avoid;
+        }
+
+        /* Outline & Cut Guides */
+        .cut-guide {
+            border: 1.5px dashed #94a3b8;
+            position: relative;
+        }
+
+        .cut-guide::after {
+            content: '✂';
+            position: absolute;
+            top: -11px;
+            right: 15px;
+            font-size: 14px;
+            color: #94a3b8;
+            background: #ffffff;
+            padding: 0 4px;
+            line-height: 1;
+        }
+
+        /* Themes */
+        /* 1. Exact Match to Photo (Clean Box with handwritten/bold markers) */
+        .theme-photo-exact {
+            border: 2.5px solid #1e293b;
+            border-radius: 4px;
+            padding: 24px 28px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.04);
+            background: #ffffff;
+        }
+
+        .theme-photo-exact .field-row {
+            margin-bottom: 14px;
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+        }
+
+        .theme-photo-exact .field-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .theme-photo-exact .field-title {
+            font-weight: 800;
+            font-size: 1.25rem;
+            letter-spacing: 0.04em;
+            color: #0f172a;
+            white-space: nowrap;
+        }
+
+        .theme-photo-exact .field-value {
+            font-weight: 700;
+            font-size: 1.35rem;
+            color: #1e3a8a;
+            flex-grow: 1;
+            border-bottom: 1.5px solid transparent;
+            outline: none;
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        .theme-photo-exact .field-value:focus {
+            background: #eff6ff;
+            border-bottom: 1.5px solid #2563eb;
+        }
+
+        /* 2. Official Border Style */
+        .theme-official-border {
+            border: 3px double #1e3a8a;
+            border-radius: 8px;
+            padding: 20px 24px;
+            background: #ffffff;
+            position: relative;
+        }
+
+        .theme-official-border::before {
+            content: '';
+            position: absolute;
+            inset: 3px;
+            border: 1px solid #93c5fd;
+            border-radius: 5px;
+            pointer-events: none;
+        }
+
+        /* 3. Badge Header Style */
+        .theme-badge-header {
+            border: 2px solid #1e3a8a;
+            border-radius: 10px;
+            overflow: hidden;
+            background: #ffffff;
+        }
+
+        .theme-badge-header .card-header-bar {
+            background: linear-gradient(135deg, #1e3a8a, #1d4ed8);
+            color: white;
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .theme-badge-header .card-body {
+            padding: 18px 22px;
+        }
+
+        /* 4. Elegant Minimal */
+        .theme-elegant-minimal {
+            border: 1.5px solid #334155;
+            border-radius: 6px;
+            padding: 22px 26px;
+            background: #ffffff;
+        }
+
+        /* Grid Sizes for A4 Screen & Print */
+        /* 2 Per Page (Large Register Cover) */
+        .grid-layout-2 {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+        }
+        .grid-layout-2 .label-card {
+            min-height: 125mm;
+            padding: 35px 40px;
+        }
+        .grid-layout-2 .field-title {
+            font-size: 1.6rem !important;
+        }
+        .grid-layout-2 .field-value {
+            font-size: 1.75rem !important;
+        }
+
+        /* 4 Per Page (Standard Medium 2x2) */
+        .grid-layout-4 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+        .grid-layout-4 .label-card {
+            min-height: 86mm;
+            padding: 22px 24px;
+        }
+        .grid-layout-4 .field-title {
+            font-size: 1.18rem !important;
+        }
+        .grid-layout-4 .field-value {
+            font-size: 1.28rem !important;
+        }
+
+        /* 6 Per Page (Compact 2x3) */
+        .grid-layout-6 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+        }
+        .grid-layout-6 .label-card {
+            min-height: 58mm;
+            padding: 14px 18px;
+        }
+        .grid-layout-6 .field-title {
+            font-size: 0.98rem !important;
+        }
+        .grid-layout-6 .field-value {
+            font-size: 1.05rem !important;
+        }
+
+        /* PRINT MEDIA STYLES - CRITICAL FOR CLEAN OUTPUT */
+        @media print {
+            @page {
+                size: A4 portrait;
+                margin: 8mm;
+            }
+
+            body {
+                background: transparent !important;
+                color: #000000 !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+
+            .no-print {
+                display: none !important;
+            }
+
+            .print-container {
+                padding: 0 !important;
+                margin: 0 !important;
+                width: 100% !important;
+                max-width: 100% !important;
+            }
+
+            /* A4 Page Break Containers */
+            .print-page {
+                page-break-after: always;
+                break-after: page;
+                margin-bottom: 0 !important;
+                padding: 0 !important;
+                min-height: 275mm;
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
+            }
+
+            .print-page:last-child {
+                page-break-after: auto;
+                break-after: auto;
+            }
+
+            .label-card {
+                box-shadow: none !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+
+            /* Ensure cut lines are visible on print */
+            .cut-guide {
+                border: 1.5px dashed #64748b !important;
+            }
+
+            .cut-guide::after {
+                background: #ffffff !important;
+            }
+        }
+    </style>
+</head>
+
+<body class="min-h-screen flex flex-col antialiased">
+
+    <!-- TOP HEADER / CONTROLS (Hidden when printing) -->
+    <header class="no-print bg-slate-900 text-white border-b border-slate-800 sticky top-0 z-50 shadow-xl">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <!-- Brand Title -->
+                <div class="flex items-center gap-3">
+                    <img src="assets/images/logo/logo.png" alt="PMS Logo" class="w-11 h-11 object-contain bg-white rounded-lg p-1 shadow-md" onerror="this.style.display='none'">
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-0.5 text-xs font-bold uppercase tracking-wider bg-blue-600 rounded text-white">PMS RAEBARELI</span>
+                            <span class="text-xs text-slate-400">25th BN PAC</span>
+                        </div>
+                        <h1 class="text-xl sm:text-2xl font-black tracking-tight text-white flex items-center gap-2">
+                            Class Register & File Cover Labels
+                        </h1>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex items-center flex-wrap gap-2.5">
+                    <button onclick="window.print()" class="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-bold text-sm rounded-xl shadow-lg shadow-blue-600/30 transition transform active:scale-95 cursor-pointer">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
+                        </svg>
+                        <span>Print / Save PDF</span>
+                    </button>
+                    
+                    <button onclick="addNewCard()" class="inline-flex items-center gap-1.5 px-3.5 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white font-semibold text-sm rounded-xl border border-slate-700 transition cursor-pointer">
+                        <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"></path>
+                        </svg>
+                        <span>Add Custom Slip</span>
+                    </button>
+
+                    <button onclick="resetToDefault()" class="inline-flex items-center gap-1.5 px-3 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-slate-200 text-xs font-semibold rounded-xl border border-slate-700 transition cursor-pointer" title="Reset to original list">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                        </svg>
+                        <span>Reset</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Toolbar Filters / Design Switcher -->
+            <div class="mt-4 pt-4 border-t border-slate-800 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+                <!-- Design Theme -->
+                <div>
+                    <label class="block text-xs font-semibold text-slate-400 mb-1">Design Style</label>
+                    <select id="themeSelect" onchange="updateTheme(this.value)" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-slate-200 font-medium focus:ring-2 focus:ring-blue-500 focus:outline-none cursor-pointer">
+                        <option value="theme-photo-exact">Exact Photo Match (Classic)</option>
+                        <option value="theme-official-border">Official Double Border</option>
+                        <option value="theme-badge-header">Modern Header Badge</option>
+                        <option value="theme-elegant-minimal">Clean Minimal Box</option>
+                    </select>
+                </div>
+
+                <!-- Font Style -->
+                <div>
+                    <label class="block text-xs font-semibold text-slate-400 mb-1">Font Family</label>
+                    <select id="fontSelect" onchange="updateFont(this.value)" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-slate-200 font-medium focus:ring-2 focus:ring-blue-500 focus:outline-none cursor-pointer">
+                        <option value="font-classic">Montserrat / Neat Bold</option>
+                        <option value="font-modern">Outfit / Modern Display</option>
+                        <option value="font-standard">Inter / Clean System</option>
+                        <option value="font-handwriting">Handwritten / Casual Pen</option>
+                    </select>
+                </div>
+
+                <!-- Layout / Grid Size -->
+                <div>
+                    <label class="block text-xs font-semibold text-slate-400 mb-1">A4 Page Grid</label>
+                    <select id="gridSelect" onchange="updateGridLayout(this.value)" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-slate-200 font-medium focus:ring-2 focus:ring-blue-500 focus:outline-none cursor-pointer">
+                        <option value="grid-layout-4" selected>4 Per Page (2x2 Standard)</option>
+                        <option value="grid-layout-2">2 Per Page (Large Register)</option>
+                        <option value="grid-layout-6">6 Per Page (2x3 Notebooks)</option>
+                    </select>
+                </div>
+
+                <!-- Case Option -->
+                <div>
+                    <label class="block text-xs font-semibold text-slate-400 mb-1">School Name Format</label>
+                    <select id="schoolFormatSelect" onchange="updateSchoolFormat(this.value)" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-slate-200 font-medium focus:ring-2 focus:ring-blue-500 focus:outline-none cursor-pointer">
+                        <option value="POLICE MODERN SCHOOL">POLICE MODERN SCHOOL</option>
+                        <option value="POLICE MODERN SCHOOL, 25TH BN PAC RAEBARELI">PMS, 25TH BN PAC RAEBARELI</option>
+                        <option value="Police Modern School">Police Modern School</option>
+                    </select>
+                </div>
+
+                <!-- Show/Hide Options -->
+                <div>
+                    <label class="block text-xs font-semibold text-slate-400 mb-1">Display Options</label>
+                    <div class="flex items-center gap-3 pt-1">
+                        <label class="inline-flex items-center gap-1.5 text-xs text-slate-300 cursor-pointer">
+                            <input type="checkbox" id="showLogoCheckbox" onchange="toggleLogo(this.checked)" class="rounded bg-slate-800 border-slate-700 text-blue-600 focus:ring-0">
+                            <span>Logo</span>
+                        </label>
+                        <label class="inline-flex items-center gap-1.5 text-xs text-slate-300 cursor-pointer">
+                            <input type="checkbox" id="showCutGuidesCheckbox" checked onchange="toggleCutGuides(this.checked)" class="rounded bg-slate-800 border-slate-700 text-blue-600 focus:ring-0">
+                            <span>Cut ✂</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Quick Section Batch -->
+                <div>
+                    <label class="block text-xs font-semibold text-slate-400 mb-1">Batch Set Section</label>
+                    <div class="flex items-center gap-1">
+                        <input type="text" id="batchSectionInput" value="A" maxlength="5" class="w-14 bg-slate-800 border border-slate-700 rounded-lg px-2 py-1 text-xs text-slate-200 text-center font-bold uppercase focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                        <button onclick="applyBatchSection()" class="px-2 py-1 bg-slate-700 hover:bg-slate-600 text-white rounded-lg text-xs font-semibold transition cursor-pointer">Apply</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- LIVE EDIT INSTRUCTION BANNER (No Print) -->
+    <div class="no-print bg-blue-50 border-b border-blue-200 py-2.5 px-4">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between text-xs text-blue-900 gap-2 font-medium">
+            <div class="flex items-center gap-2">
+                <span class="inline-flex items-center justify-center w-5 h-5 bg-blue-600 text-white rounded-full text-[10px] font-black">💡</span>
+                <span><b>Live Editable:</b> Aap kisi bhi card par click karke <b>Class, Teacher's Name, Section</b> ya <b>School Name</b> ko direct edit kar sakte hain! Print karne par exact fit aayega.</span>
+            </div>
+            <div class="flex items-center gap-3 text-blue-700 font-semibold">
+                <span>Classes included: <b>KG-1, KG-2, 1st, 2nd, 3rd, 4th, 5th, 6th</b></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN CONTAINER -->
+    <main class="flex-grow p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto w-full print-container">
+
+        <!-- CARDS CONTAINER (Dynamic Render & Paged) -->
+        <div id="labelsContainer" class="grid-layout-4 font-classic theme-photo-exact">
+            <!-- Dynamically populated via Javascript -->
+        </div>
+
+    </main>
+
+    <!-- FOOTER (No Print) -->
+    <footer class="no-print bg-white border-t border-slate-200 py-6 text-center text-xs text-slate-500 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <p>Police Modern School, 25th Bn PAC Raebareli — Class Cover Slip Generator</p>
+            <div class="flex items-center gap-4 font-semibold text-slate-600">
+                <a href="index.html" class="hover:text-blue-600 transition">Main Portal</a>
+                <span>•</span>
+                <a href="charge_list.html" class="hover:text-blue-600 transition">Charge List</a>
+                <span>•</span>
+                <a href="school_timetable.html" class="hover:text-blue-600 transition">Time Table</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- LOGIC SCRIPT -->
+    <script>
+        // Initial Dataset as requested: KG-1, KG-2, 1, 2, 3, 4, 5, 6
+        const DEFAULT_CARDS = [
+            {
+                id: 'card-kg1',
+                classVal: 'KG-1',
+                teacherName: 'Mrs. Vandana Bajpai',
+                schoolName: 'POLICE MODERN SCHOOL',
+                section: 'A',
+                badgeText: 'Pre-Primary'
+            },
+            {
+                id: 'card-kg2',
+                classVal: 'KG-2',
+                teacherName: 'Mrs. Neelam Srivastava',
+                schoolName: 'POLICE MODERN SCHOOL',
+                section: 'A',
+                badgeText: 'Pre-Primary'
+            },
+            {
+                id: 'card-1',
+                classVal: '1st',
+                teacherName: 'Mrs. Shweta Singh',
+                schoolName: 'POLICE MODERN SCHOOL',
+                section: 'A',
+                badgeText: 'Primary'
+            },
+            {
+                id: 'card-2',
+                classVal: '2nd',
+                teacherName: 'Ms. Pooja Verma',
+                schoolName: 'POLICE MODERN SCHOOL',
+                section: 'A',
+                badgeText: 'Primary'
+            },
+            {
+                id: 'card-3',
+                classVal: '3rd',
+                teacherName: 'Mrs. Sarita Maurya',
+                schoolName: 'POLICE MODERN SCHOOL',
+                section: 'A',
+                badgeText: 'Primary'
+            },
+            {
+                id: 'card-4',
+                classVal: '4th',
+                teacherName: 'Mr. Shailendra Kumar',
+                schoolName: 'POLICE MODERN SCHOOL',
+                section: 'A',
+                badgeText: 'Primary'
+            },
+            {
+                id: 'card-5',
+                classVal: '5th',
+                teacherName: 'Mr. Rajesh Yadav',
+                schoolName: 'POLICE MODERN SCHOOL',
+                section: 'A',
+                badgeText: 'Primary'
+            },
+            {
+                id: 'card-6',
+                classVal: '6th',
+                teacherName: 'Mr. Manoj Tripathi',
+                schoolName: 'POLICE MODERN SCHOOL',
+                section: 'A',
+                badgeText: 'Middle'
+            }
+        ];
+
+        let cardsData = JSON.parse(localStorage.getItem('pms_cover_labels')) || JSON.parse(JSON.stringify(DEFAULT_CARDS));
+        let currentTheme = 'theme-photo-exact';
+        let currentFont = 'font-classic';
+        let currentGrid = 'grid-layout-4';
+        let showLogo = false;
+        let showCutGuides = true;
+
+        // Render Cards
+        function renderCards() {
+            const container = document.getElementById('labelsContainer');
+            container.className = `${currentGrid} ${currentFont} ${currentTheme}`;
+            
+            container.innerHTML = cardsData.map((card, index) => {
+                const cutClass = showCutGuides ? 'cut-guide' : '';
+                return `
+                    <div class="label-card ${cutClass} rounded-lg flex flex-col justify-between" id="card-wrapper-${index}">
+                        <!-- Card Header / Top Line -->
+                        <div>
+                            ${currentTheme === 'theme-badge-header' ? `
+                                <div class="card-header-bar -mx-6 -mt-6 mb-4">
+                                    <span class="font-bold text-sm tracking-wider uppercase">${card.schoolName}</span>
+                                    <span class="text-xs bg-white/20 px-2 py-0.5 rounded font-mono">${card.badgeText || 'Class Slip'}</span>
+                                </div>
+                            ` : ''}
+
+                            <!-- Optional School Logo Header -->
+                            ${showLogo ? `
+                                <div class="flex items-center justify-between pb-3 mb-3 border-b border-slate-200">
+                                    <div class="flex items-center gap-2">
+                                        <img src="assets/images/logo/logo.png" alt="PMS" class="w-8 h-8 object-contain">
+                                        <div>
+                                            <div class="text-[11px] font-black uppercase text-blue-900 tracking-wider">Police Modern School</div>
+                                            <div class="text-[9px] text-slate-500 font-semibold">25th BN PAC Raebareli</div>
+                                        </div>
+                                    </div>
+                                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Session 2025-26</span>
+                                </div>
+                            ` : ''}
+
+                            <!-- Card Fields matching the exact photo -->
+                            <div class="space-y-3.5 sm:space-y-4">
+                                <!-- FIELD: CLASS -->
+                                <div class="field-row">
+                                    <span class="field-title font-extrabold uppercase">CLASS :-</span>
+                                    <span class="field-value outline-none cursor-text" contenteditable="true" onblur="updateCardField(${index}, 'classVal', this.innerText)">${escapeHtml(card.classVal)}</span>
+                                </div>
+
+                                <!-- FIELD: TEACHER'S NAME -->
+                                <div class="field-row">
+                                    <span class="field-title font-extrabold uppercase">TEACHER'S NAME -</span>
+                                    <span class="field-value outline-none cursor-text font-bold" contenteditable="true" onblur="updateCardField(${index}, 'teacherName', this.innerText)">${escapeHtml(card.teacherName)}</span>
+                                </div>
+
+                                <!-- FIELD: SCHOOL'S NAME -->
+                                <div class="field-row">
+                                    <span class="field-title font-extrabold uppercase">SCHOOL'S NAME -</span>
+                                    <span class="field-value outline-none cursor-text" contenteditable="true" onblur="updateCardField(${index}, 'schoolName', this.innerText)">${escapeHtml(card.schoolName)}</span>
+                                </div>
+
+                                <!-- FIELD: SECTION -->
+                                <div class="field-row">
+                                    <span class="field-title font-extrabold uppercase">SECTION -</span>
+                                    <span class="field-value outline-none cursor-text font-extrabold text-blue-700" contenteditable="true" onblur="updateCardField(${index}, 'section', this.innerText)">${escapeHtml(card.section)}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card Actions (No Print) -->
+                        <div class="no-print mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-400">
+                            <span class="font-medium text-slate-500">Card #${index + 1} • ${card.classVal}</span>
+                            <div class="flex items-center gap-2">
+                                <button onclick="duplicateCard(${index})" class="hover:text-blue-600 transition font-semibold" title="Duplicate">Copy</button>
+                                <span>•</span>
+                                <button onclick="deleteCard(${index})" class="hover:text-red-600 transition font-semibold" title="Delete">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            saveCardsToStorage();
+        }
+
+        // Field Update
+        function updateCardField(index, key, value) {
+            if (cardsData[index]) {
+                cardsData[index][key] = value.trim();
+                saveCardsToStorage();
+            }
+        }
+
+        // Add New Card
+        function addNewCard() {
+            const newIndex = cardsData.length + 1;
+            cardsData.push({
+                id: 'card-' + Date.now(),
+                classVal: 'Class ' + newIndex,
+                teacherName: 'Teacher Name',
+                schoolName: document.getElementById('schoolFormatSelect').value || 'POLICE MODERN SCHOOL',
+                section: document.getElementById('batchSectionInput').value || 'A',
+                badgeText: 'Primary'
+            });
+            renderCards();
+            
+            // Scroll to the new card
+            const lastCard = document.getElementById(`card-wrapper-${cardsData.length - 1}`);
+            if (lastCard) {
+                lastCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+
+        // Duplicate Card
+        function duplicateCard(index) {
+            const source = cardsData[index];
+            const clone = JSON.parse(JSON.stringify(source));
+            clone.id = 'card-' + Date.now();
+            cardsData.splice(index + 1, 0, clone);
+            renderCards();
+        }
+
+        // Delete Card
+        function deleteCard(index) {
+            if (cardsData.length <= 1) {
+                alert('At least one label card must be kept.');
+                return;
+            }
+            if (confirm(`Delete label for ${cardsData[index].classVal}?`)) {
+                cardsData.splice(index, 1);
+                renderCards();
+            }
+        }
+
+        // Reset to Default
+        function resetToDefault() {
+            if (confirm('Kya aap sabhi labels ko default list (KG-1 se Class 6th) par reset karna chahte hain?')) {
+                cardsData = JSON.parse(JSON.stringify(DEFAULT_CARDS));
+                renderCards();
+            }
+        }
+
+        // Batch Apply Section
+        function applyBatchSection() {
+            const sec = document.getElementById('batchSectionInput').value.trim().toUpperCase() || 'A';
+            cardsData.forEach(card => card.section = sec);
+            renderCards();
+        }
+
+        // Update School Name Format across all
+        function updateSchoolFormat(val) {
+            cardsData.forEach(card => card.schoolName = val);
+            renderCards();
+        }
+
+        // Theme Switcher
+        function updateTheme(theme) {
+            currentTheme = theme;
+            renderCards();
+        }
+
+        // Font Switcher
+        function updateFont(font) {
+            currentFont = font;
+            renderCards();
+        }
+
+        // Grid Layout Switcher
+        function updateGridLayout(grid) {
+            currentGrid = grid;
+            renderCards();
+        }
+
+        // Logo Toggle
+        function toggleLogo(checked) {
+            showLogo = checked;
+            renderCards();
+        }
+
+        // Cut Guides Toggle
+        function toggleCutGuides(checked) {
+            showCutGuides = checked;
+            renderCards();
+        }
+
+        // Local Storage Helper
+        function saveCardsToStorage() {
+            localStorage.setItem('pms_cover_labels', JSON.stringify(cardsData));
+        }
+
+        // Escape HTML
+        function escapeHtml(text) {
+            if (!text) return '';
+            return text
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        // Initial Boot
+        document.addEventListener('DOMContentLoaded', () => {
+            renderCards();
+        });
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <script src="js/pms_nav_search.js"></script>
+</body>
+
+</html>

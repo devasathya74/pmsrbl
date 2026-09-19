@@ -1,0 +1,1135 @@
+<!DOCTYPE html>
+<html lang="hi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Item Sheet Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --brand: #2563eb;
+            --brand-dark: #1d4ed8;
+            --surface: #ffffff;
+            --bg: #f5f7fb;
+            --line: #e5e7eb;
+            --text: #111827;
+            --muted: #6b7280;
+            --success: #16a34a;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            color: var(--text);
+            background: var(--bg);
+            font-family: Inter, 'Noto Sans Devanagari', sans-serif;
+        }
+
+        .hindi-text {
+            font-family: 'Noto Sans Devanagari', sans-serif;
+        }
+
+        button,
+        input {
+            font: inherit;
+        }
+
+        button {
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .app-shell {
+            max-width: 1500px;
+            margin: auto;
+            padding: 24px;
+        }
+
+        .topbar {
+            background: linear-gradient(135deg, #0f172a, #1e3a8a);
+            color: white;
+            border-radius: 20px;
+            padding: 24px 28px;
+            box-shadow: 0 12px 30px rgba(15, 23, 42, .14);
+        }
+
+        .topbar-grid {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .eyebrow {
+            font-size: 12px;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            opacity: .7;
+            font-weight: 700;
+        }
+
+        .title {
+            margin: 4px 0 0;
+            font-size: 30px;
+            font-weight: 800;
+            letter-spacing: -.03em;
+        }
+
+        .subtitle {
+            margin: 6px 0 0;
+            color: #cbd5e1;
+            font-size: 14px;
+        }
+
+        .header-badge {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            padding: 10px 14px;
+            border: 1px solid rgba(255, 255, 255, .16);
+            background: rgba(255, 255, 255, .08);
+            border-radius: 999px;
+            font-size: 13px;
+            white-space: nowrap;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #4ade80;
+            box-shadow: 0 0 0 4px rgba(74, 222, 128, .15);
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-top: 18px;
+        }
+
+        .stat-card {
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            padding: 16px 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .stat-label {
+            color: var(--muted);
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .stat-value {
+            font-size: 25px;
+            font-weight: 800;
+            margin-top: 2px;
+        }
+
+        .stat-accent {
+            color: var(--brand);
+        }
+
+        .workspace {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 360px;
+            gap: 18px;
+            margin-top: 18px;
+            align-items: start;
+        }
+
+        .panel {
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            box-shadow: 0 6px 20px rgba(15, 23, 42, .05);
+        }
+
+        .panel-head {
+            padding: 18px 20px;
+            border-bottom: 1px solid var(--line);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .panel-title {
+            font-size: 16px;
+            font-weight: 800;
+        }
+
+        .panel-subtitle {
+            color: var(--muted);
+            font-size: 12px;
+            margin-top: 3px;
+        }
+
+        .toolbar {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            border: 1px solid var(--line);
+            background: white;
+            color: #374151;
+            border-radius: 10px;
+            padding: 9px 12px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: .18s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+            border-color: #cbd5e1;
+            background: #f8fafc;
+        }
+
+        .btn-primary {
+            background: var(--brand);
+            color: white;
+            border-color: var(--brand);
+        }
+
+        .btn-primary:hover {
+            background: var(--brand-dark);
+            border-color: var(--brand-dark);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+            border-color: var(--success);
+        }
+
+        .btn-danger {
+            color: #b91c1c;
+        }
+
+        .search-wrap {
+            padding: 14px 20px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .search {
+            width: 100%;
+            border: 1px solid #d1d5db;
+            border-radius: 11px;
+            padding: 11px 14px 11px 40px;
+            outline: none;
+            background: #f9fafb;
+            transition: .18s;
+        }
+
+        .search:focus {
+            background: white;
+            border-color: #93c5fd;
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, .1);
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 13px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+        }
+
+        .table-wrap {
+            max-height: 610px;
+            overflow: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        thead th {
+            position: sticky;
+            top: 0;
+            z-index: 2;
+            background: #f8fafc;
+            color: #475569;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: .04em;
+            font-weight: 800;
+            padding: 12px;
+            border-bottom: 1px solid var(--line);
+            white-space: nowrap;
+        }
+
+        tbody td {
+            padding: 7px 10px;
+            border-bottom: 1px solid #eef2f7;
+        }
+
+        tbody tr {
+            transition: .12s;
+        }
+
+        tbody tr:hover {
+            background: #f8fbff;
+        }
+
+        tbody tr.selected-row {
+            background: #eff6ff;
+        }
+
+        .row-no {
+            color: #94a3b8;
+            font-size: 11px;
+            text-align: center;
+            width: 42px;
+        }
+
+        .check {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--brand);
+            cursor: pointer;
+        }
+
+        .cell-input {
+            width: 100%;
+            border: 1px solid transparent;
+            background: transparent;
+            border-radius: 8px;
+            padding: 8px;
+            outline: none;
+            color: #334155;
+        }
+
+        .cell-input:hover {
+            border-color: #e2e8f0;
+            background: white;
+        }
+
+        .cell-input:focus {
+            border-color: #93c5fd;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, .08);
+        }
+
+        .name-input {
+            font-weight: 600;
+            color: #111827;
+        }
+
+        .empty-state {
+            padding: 42px 20px;
+            text-align: center;
+            color: var(--muted);
+        }
+
+        .table-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 20px;
+            background: #fafafa;
+            border-top: 1px solid var(--line);
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        .count-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 9px;
+            border-radius: 999px;
+            background: #dbeafe;
+            color: #1d4ed8;
+            font-weight: 800;
+        }
+
+        .settings {
+            padding: 18px;
+        }
+
+        .setting-group {
+            padding: 16px;
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            background: #fbfcfe;
+            margin-bottom: 12px;
+        }
+
+        .setting-label {
+            display: block;
+            font-size: 11px;
+            font-weight: 800;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: .06em;
+            margin-bottom: 7px;
+        }
+
+        .setting-input {
+            width: 100%;
+            padding: 10px 11px;
+            border: 1px solid #d1d5db;
+            border-radius: 10px;
+            outline: none;
+            background: white;
+        }
+
+        .setting-input:focus {
+            border-color: #93c5fd;
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, .08);
+        }
+
+        .action-card {
+            position: sticky;
+            top: 18px;
+            padding: 18px;
+            background: white;
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            box-shadow: 0 8px 25px rgba(15, 23, 42, .06);
+        }
+
+        .help {
+            padding: 12px 13px;
+            border-radius: 12px;
+            background: #eff6ff;
+            color: #1e40af;
+            font-size: 12px;
+            line-height: 1.6;
+            margin-bottom: 14px;
+        }
+
+        .print-btn {
+            width: 100%;
+            padding: 14px;
+            border: 0;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 800;
+            color: white;
+            background: linear-gradient(135deg, #16a34a, #15803d);
+            box-shadow: 0 8px 18px rgba(22, 163, 74, .18);
+        }
+
+        .print-btn:hover {
+            filter: brightness(.96);
+            transform: translateY(-1px);
+        }
+
+        .preview-section {
+            margin-top: 22px;
+        }
+
+        .preview-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .preview-note {
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        #preview-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .a4-preview {
+            width: 297mm;
+            height: 210mm;
+            background: white;
+            margin: 10px auto 24px;
+            padding: 15mm;
+            box-shadow: 0 14px 40px rgba(15, 23, 42, .16);
+            border: 1px solid #dbe1ea;
+            transform: scale(.55);
+            transform-origin: top center;
+            margin-bottom: -70mm;
+        }
+
+        .page-separator {
+            color: #94a3b8;
+            font-size: 12px;
+            margin: 0 0 16px;
+        }
+
+        .item-name-box {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 4px solid #000;
+            margin-bottom: 20px;
+        }
+
+        .item-name-text {
+            font-size: 6rem;
+            font-weight: 700;
+            text-align: center;
+            word-break: break-word;
+            line-height: 1.2;
+        }
+
+        .status-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            border: 2px solid #000;
+            min-height: 180px;
+        }
+
+        .status-col {
+            border-right: 2px solid #000;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .status-col:last-child {
+            border-right: none;
+        }
+
+        .status-header {
+            padding: 15px 10px;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 600;
+            border-bottom: 2px solid #000;
+            background: #f8f8f8;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .status-body {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            font-weight: bold;
+            color: #111;
+        }
+
+        .no-results {
+            padding: 30px;
+            text-align: center;
+            color: #94a3b8;
+        }
+
+        @media (max-width:1000px) {
+            .workspace {
+                grid-template-columns: 1fr;
+            }
+
+            .action-card {
+                position: static;
+            }
+        }
+
+        @media (max-width:700px) {
+            .app-shell {
+                padding: 12px;
+            }
+
+            .topbar {
+                padding: 18px;
+                border-radius: 16px;
+            }
+
+            .topbar-grid {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .panel-head {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .table-wrap {
+                max-height: 520px;
+            }
+        }
+
+        @media print {
+            body {
+                background: white;
+            }
+
+            .no-print {
+                display: none !important;
+            }
+
+            @page {
+                size: A4 landscape;
+                margin: 0;
+            }
+
+            .a4-page {
+                width: 297mm;
+                height: 210mm;
+                page-break-after: always;
+                break-after: page;
+                margin: 0;
+                padding: 15mm;
+                box-sizing: border-box;
+                display: flex;
+                flex-direction: column;
+                position: relative;
+            }
+
+            .a4-page:last-child {
+                page-break-after: auto;
+                break-after: auto;
+            }
+
+            .sheet-content {
+                flex-grow: 1;
+                display: flex;
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="no-print app-shell">
+        <header class="topbar">
+            <div class="topbar-grid">
+                <div>
+                    <div class="eyebrow">Inventory • Print Utility</div>
+                    <h1 class="title">Item Sheet Generator</h1>
+                    <p class="subtitle hindi-text">वस्तुओं की सूची से A4 landscape प्रिंट शीट तैयार करें</p>
+                </div>
+                <div class="header-badge"><span class="dot"></span><span>Live Preview Enabled</span></div>
+            </div>
+        </header>
+
+        <section class="stats">
+            <div class="stat-card">
+                <div>
+                    <div class="stat-label">कुल वस्तुएँ</div>
+                    <div id="total-count" class="stat-value">0</div>
+                </div>
+                <div>📦</div>
+            </div>
+            <div class="stat-card">
+                <div>
+                    <div class="stat-label">प्रिंट के लिए चुनी गई</div>
+                    <div id="selected-count" class="stat-value stat-accent">0</div>
+                </div>
+                <div>✓</div>
+            </div>
+            <div class="stat-card">
+                <div>
+                    <div class="stat-label">दिखाई दे रही rows</div>
+                    <div id="visible-count" class="stat-value">0</div>
+                </div>
+                <div>⌕</div>
+            </div>
+        </section>
+
+        <main class="workspace">
+            <section class="panel">
+                <div class="panel-head">
+                    <div>
+                        <div class="panel-title">वस्तुओं की सूची</div>
+                        <div class="panel-subtitle">Checkbox से शीट चुनें, फिर cells पर click करके data edit करें</div>
+                    </div>
+                    <div class="toolbar">
+                        <button id="select-all-btn" class="btn btn-primary">✓ सभी चुनें</button>
+                        <button id="deselect-all-btn" class="btn">सभी हटाएँ</button>
+                        <button id="reset-data-btn" class="btn btn-danger" title="डिफ़ॉल्ट डेटा रीसेट करें">↺ रीसेट</button>
+                    </div>
+                </div>
+
+                <div class="search-wrap">
+                    <div class="search-box">
+                        <span class="search-icon">⌕</span>
+                        <input id="search-input" class="search hindi-text search" type="search"
+                            placeholder="वस्तु का नाम खोजें...">
+                    </div>
+                </div>
+
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width:44px">#</th>
+                                <th style="width:45px">चुनें</th>
+                                <th>नाम वस्तु</th>
+                                <th id="th-col1">दल के भार पर</th>
+                                <th id="th-col2">दल के साथ</th>
+                                <th id="th-col3">स्टोर में</th>
+                            </tr>
+                        </thead>
+                        <tbody id="item-table-body"></tbody>
+                    </table>
+                    <div id="no-results" class="no-results" style="display:none">कोई वस्तु नहीं मिली।</div>
+                </div>
+
+                <div class="table-footer">
+                    <span><span class="count-pill"><span id="selected-count-footer">0</span> selected</span></span>
+                    <span id="selection-hint">कम से कम 1 वस्तु चुनें</span>
+                </div>
+            </section>
+
+            <aside class="action-card">
+                <div class="panel-title">Sheet Settings</div>
+                <div class="panel-subtitle" style="margin-bottom:14px">प्रिंट शीट के column headings बदलें</div>
+
+                <div class="settings" style="padding:0">
+                    <div class="setting-group">
+                        <label class="setting-label" for="col1-title">Column 1</label>
+                        <input id="col1-title" class="setting-input hindi-text" value="दल के भार पर">
+                    </div>
+                    <div class="setting-group">
+                        <label class="setting-label" for="col2-title">Column 2</label>
+                        <input id="col2-title" class="setting-input hindi-text" value="दल के साथ">
+                    </div>
+                    <div class="setting-group">
+                        <label class="setting-label" for="col3-title">Column 3</label>
+                        <input id="col3-title" class="setting-input hindi-text" value="स्टोर में">
+                    </div>
+                </div>
+
+                <div class="help hindi-text">
+                    <strong>Quick tip:</strong> Search से item ढूँढें, checkbox चुनें और नीचे preview में तुरंत sheet
+                    देखें। Print करने पर केवल selected sheets निकलेंगी।
+                </div>
+
+                <button id="print-btn" class="print-btn">🖨 चयनित शीट प्रिंट करें <span
+                        id="print-count">(0)</span></button>
+            </aside>
+        </main>
+
+        <section class="preview-section">
+            <div id="preview-heading" class="preview-head" style="display:none">
+                <div>
+                    <div class="panel-title">Live Preview</div>
+                    <div class="preview-note">पहली 3 selected sheets preview में दिखाई जाएँगी</div>
+                </div>
+            </div>
+            <div id="preview-container"></div>
+        </section>
+    </div>
+
+    <div class="print-only" id="print-container"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const rawData = `आलमारी लकड़ी | 1 | | 01
+रैंक स्टील बड़ा | 2 | | 
+रैंक स्टील छोटा | 2 | | 
+किट बाक्स | | | 52
+एक्सटेशन बोर्ड | 57 | | 5
+टी.बी मय बाक्स | 1 | | 01
+फास्टेड बाक्स | 1/3 | | 1/00
+एम्यु. बाक्स बड़ा | 5 | | 4
+एम्यु. बाक्स छोटा | 11 | | 11
+रायफल रेक बड़ा | 3 | | 3
+रायफल रैक छोटा | 2 | | 2
+आफिस चेयर लकड़ी | 3 | 1 | 2
+कुर्सी स्टील | 1 | | 1
+कुर्सी प्लास्टीक गद्देदार | 19 | 06 | 13/2
+मेज दराज सनमाईक | 1 | | 1
+मेज प्लास्टिक बड़ी | 2 | | 
+छोटी प्लास्टिक मेज | 1 | | 1
+टेबुल प्लेन लकड़ी | 2 | | 1
+टेबुल प्लेन लकड़ी मय दराब | 1 | | 
+लकड़ी तख्ता | 2 | | 2
+लोहा फ्रेम तस्ता | 1 | | 1
+सब्बल | 1 | | 
+रायफल चैन | 04 | | 4
+बेल्वा | 1 | | A
+वाशिंग मशीन | 1 | | 
+एम्यु. बोर्ड | 1 | | 
+कार्टिज ड्रिल | 45 | | 45
+इमी ग्रेनेड | 61 | | 
+एक्सटेक्शनल ग्रेनेड | 2 | | 61
+पर्दा दरवाजा | 1 | | 1
+पर्दा खिडकी | 1 | | 
+आर. ओ. बोतल | 2 | 2 | 
+मेजर पट्टा/अरोक स्तम्भ | 1/1 | | 55
+एन.टी. राईट हेलमेट | 116 | | 61
+एन.टी. राइट वाईजर | 06 | 24 | 
+एस. टी. राइट लाठी | 63 | 140 | 
+पाली कार्बोनेट शील्ड | 30 | | 
+एल्बो गार्ड | 56 | 76 | 
+सीन गार्ड | 110 | 162 | 
+बाँडी प्रोटेक्शन किए | 32 | 21 | 
+सेन्थेटिक वेव एक्यूमेट | | 14 | 
+सेन्थेटिक बेल्ट | | 14 | 
+सेन्थेटिक खोस्टा | | 14 | 
+आक्सीमीटर | 1/1 | 02/02 | 
+थर्मामीटर | 3 | | 3
+कैरम बोर्ड | 1 | | 
+हैवेल्स मिक्सर | 1 | | 
+छोटी तौलिया सफेद | | | 
+बाक्स लकड़ी ग्रेनेड | 1 | | 1
+साईकल | 1 | | 
+सोनी कैमरा | 1 | | 
+लाउड हेलर | 2 | | 
+दरी 20x20 | 1 | | 
+वाहिनी कलर झण्डा | 1 | | 
+राष्ट्रीय ध्वज | 171 | | 
+बालीबाल/ नेट | | | 
+चेस्टर रायफल | 2 | | 2
+कुलर सनफन्नी/ स्टैण्ड | 1 | | 
+ब्लैक बोर्ड लकड़ी | | | 
+कीप / मग | | | 
+फायर स्ट्रगुसर | 2 | | 2
+गैस कनेक्शन रसीद | 2 | | 2
+डाग चैन | 20 | | 
+मेज फोल्डिंग मय लोहा फ्रेम | 2 | | 
+पैडस्टज फैन | 6 | | 
+सिलिंग फैन | 29 | | 29
+लैपटाप सय बैग | | | 
+प्रिन्टर | 1 | | 
+कूलर प्लास्टिक / लोहा | | 1/4 | 
+आयरन बेड | 06 | | 
+मशीन | 1 | 6 | 
+ड्रैगन लाइट | 3 | 3 | 1
+सब्जी कैरेट | 10 | 5 | 5
+वाटर डिस्पेंसर | 1 | | 
+रूम हीटर | 1 | | 
+मेज धोबी | 4 | 4 | 1
+भगोना बड़ा मय ढक्कन | 4/4 | 4/4 | 
+भगोना एल्म - छोटा | 3/3 | 3/3 | 
+कड़ाही लोहा बड़ी | 5/5 | 4/4 | 
+कड़ाही लोहा छोरी | 1 | 1 | 
+परात एल्मोनियम बड़ी | 3 | 3 | 
+परात एस्मोनियम मध्यम | 1 | 1 | 
+तावा लोहा बड़ा | 5 | 4 | 
+तावा लोहा मध्यम | 1 | | 
+बाल्टी स्टील | 5 | 4 | 
+पल्टा लोहा बड़ा | 11 | | 
+जग स्टील | 3 | 1 | 
+टंकी मय ढक्कन स्टील | 4 | 3 | 
+छनौटा लोहा | 5 | 4/4 | 
+कलद्दल स्टील | 2 | 2 | 
+टिपिन कैरियर 5 खाना | 8 | 9 | 
+कैश रोल स्टील | 1 | 1 | 
+हार कैश | 1 | 1 | 
+कैश रोल (१०) | 9 | 8 | 
+प्रेसर कुकर 10 | | | 
+प्रेसर कुकर 12 ली. | 2 | 2 | 
+तिपाई लोहा सेट | 3 | 3 | 
+बीम स्केल 100kg | 3 | 2 | 
+पल्टा लोहा छोटा | 1 | | 
+टेस्टिंग थाली | 1 | | 
+चम्मचा पीपल घोटा | 3 | 3 | 
+चकला बेलन सेट | 1 | 1 | 
+गैसभट्टी मय रेगुलेटर | 1 | | 
+प्रेसर कुकर ११ ली. | 6/6 | 4/4 | 
+चिमटा लोहा | 07 | 4 | 
+कल्कुल पीतल छोटी | 2 | | 
+गैस सिलेण्डर इण्डेन | 2 | 9 | 
+पल्टा लोहा मध्यम | 12 | 12 | 
+छनौटा लोहा मध्यम | 2 | 2 | 
+स्टैन्डिंग भट्टी | 1 | | 
+कन्टेनर स्टील मय ढक्कन | 4/4 | 1 | 
+च्वापिंग बोर्ड | 3 | |`;
+
+            let itemsData = [];
+            let searchTerm = '';
+
+            const tableBody = document.getElementById('item-table-body');
+            const totalCountEl = document.getElementById('total-count');
+            const selectedCountEl = document.getElementById('selected-count');
+            const selectedFooterEl = document.getElementById('selected-count-footer');
+            const visibleCountEl = document.getElementById('visible-count');
+            const printCountEl = document.getElementById('print-count');
+            const selectionHint = document.getElementById('selection-hint');
+            const noResults = document.getElementById('no-results');
+
+            const printBtn = document.getElementById('print-btn');
+            const selectAllBtn = document.getElementById('select-all-btn');
+            const deselectAllBtn = document.getElementById('deselect-all-btn');
+            const resetBtn = document.getElementById('reset-data-btn');
+            const searchInput = document.getElementById('search-input');
+
+            const previewContainer = document.getElementById('preview-container');
+            const printContainer = document.getElementById('print-container');
+            const previewHeading = document.getElementById('preview-heading');
+
+            const col1Input = document.getElementById('col1-title');
+            const col2Input = document.getElementById('col2-title');
+            const col3Input = document.getElementById('col3-title');
+
+            const STORAGE_KEY_ITEMS = 'CHARGE_LIST_ITEMS_DATA';
+            const STORAGE_KEY_SETTINGS = 'CHARGE_LIST_SETTINGS';
+
+            function saveToLocalStorage() {
+                try {
+                    localStorage.setItem(STORAGE_KEY_ITEMS, JSON.stringify(itemsData));
+                    localStorage.setItem(STORAGE_KEY_SETTINGS, JSON.stringify({
+                        col1: col1Input.value || 'दल के भार पर',
+                        col2: col2Input.value || 'दल के साथ',
+                        col3: col3Input.value || 'स्टोर में'
+                    }));
+                } catch (e) {
+                    console.error('Error saving to localStorage', e);
+                }
+            }
+
+            function parseData(forceReset = false) {
+                let loadedItems = null;
+                let loadedSettings = null;
+
+                if (!forceReset) {
+                    try {
+                        const savedData = localStorage.getItem(STORAGE_KEY_ITEMS);
+                        const savedSettings = localStorage.getItem(STORAGE_KEY_SETTINGS);
+                        if (savedData) loadedItems = JSON.parse(savedData);
+                        if (savedSettings) loadedSettings = JSON.parse(savedSettings);
+                    } catch (e) {
+                        console.error('Error reading localStorage', e);
+                    }
+                }
+
+                if (loadedSettings) {
+                    col1Input.value = loadedSettings.col1 || 'दल के भार पर';
+                    col2Input.value = loadedSettings.col2 || 'दल के साथ';
+                    col3Input.value = loadedSettings.col3 || 'स्टोर में';
+                    document.getElementById('th-col1').textContent = col1Input.value;
+                    document.getElementById('th-col2').textContent = col2Input.value;
+                    document.getElementById('th-col3').textContent = col3Input.value;
+                }
+
+                if (loadedItems && Array.isArray(loadedItems) && loadedItems.length > 0) {
+                    itemsData = loadedItems;
+                } else {
+                    itemsData = rawData.split('\n')
+                        .map(item => item.trim())
+                        .filter(Boolean)
+                        .map((item, index) => {
+                            const parts = item.split('|').map(p => p.trim());
+                            return {
+                                id: index, selected: index < 3,
+                                name: parts[0] || '', col1: parts[1] || '', col2: parts[2] || '', col3: parts[3] || ''
+                            };
+                        });
+                    saveToLocalStorage();
+                }
+
+                totalCountEl.textContent = itemsData.length;
+                renderTable();
+                updateCountsAndGenerateSheets();
+            }
+
+            function filteredItems() {
+                const q = searchTerm.trim().toLowerCase();
+                return q ? itemsData.filter(i => i.name.toLowerCase().includes(q)) : itemsData;
+            }
+
+            function renderTable() {
+                const visible = filteredItems();
+                visibleCountEl.textContent = visible.length;
+                tableBody.innerHTML = '';
+
+                visible.forEach((item, index) => {
+                    const tr = document.createElement('tr');
+                    if (item.selected) tr.classList.add('selected-row');
+                    tr.innerHTML = `
+        <td class="row-no">${index + 1}</td>
+        <td style="text-align:center">
+          <input type="checkbox" class="item-checkbox check" data-id="${item.id}" ${item.selected ? 'checked' : ''} aria-label="Select item">
+        </td>
+        <td><input type="text" class="cell-input name-input hindi-text" data-id="${item.id}" data-field="name" value="${escapeHtml(item.name)}"></td>
+        <td><input type="text" class="cell-input hindi-text" data-id="${item.id}" data-field="col1" value="${escapeHtml(item.col1)}"></td>
+        <td><input type="text" class="cell-input hindi-text" data-id="${item.id}" data-field="col2" value="${escapeHtml(item.col2)}"></td>
+        <td><input type="text" class="cell-input hindi-text" data-id="${item.id}" data-field="col3" value="${escapeHtml(item.col3)}"></td>
+      `;
+                    tableBody.appendChild(tr);
+                });
+
+                noResults.style.display = visible.length ? 'none' : 'block';
+                attachListeners();
+            }
+
+            function escapeHtml(value) {
+                return String(value)
+                    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+            }
+
+            function attachListeners() {
+                document.querySelectorAll('.item-checkbox').forEach(box => {
+                    box.addEventListener('change', e => {
+                        const id = Number(e.target.dataset.id);
+                        const item = itemsData.find(i => i.id === id);
+                        if (!item) return;
+                        item.selected = e.target.checked;
+                        e.target.closest('tr').classList.toggle('selected-row', item.selected);
+                        saveToLocalStorage();
+                        updateCountsAndGenerateSheets();
+                    });
+                });
+
+                document.querySelectorAll('.cell-input').forEach(input => {
+                    input.addEventListener('input', e => {
+                        const item = itemsData.find(i => i.id === Number(e.target.dataset.id));
+                        if (!item) return;
+                        item[e.target.dataset.field] = e.target.value;
+                        saveToLocalStorage();
+                        if (item.selected) generateSheets();
+                    });
+                });
+            }
+
+            function updateCountsAndGenerateSheets() {
+                const selected = itemsData.filter(i => i.selected).length;
+                selectedCountEl.textContent = selected;
+                selectedFooterEl.textContent = selected;
+                printCountEl.textContent = `(${selected})`;
+                selectionHint.textContent = selected ? `${selected} sheet${selected === 1 ? '' : 's'} ready to print` : 'कम से कम 1 वस्तु चुनें';
+                generateSheets();
+            }
+
+            function createSheetHTML(itemObj, isPreview = false) {
+                const col1Title = col1Input.value || 'दल के भार पर';
+                const col2Title = col2Input.value || 'दल के साथ';
+                const col3Title = col3Input.value || 'स्टोर में';
+                const pageClass = isPreview ? 'a4-preview' : 'a4-page';
+
+                return `
+      <div class="${pageClass}">
+        <div class="sheet-content">
+          <div class="item-name-box">
+            <div class="item-name-text hindi-text">${escapeHtml(itemObj.name)}</div>
+          </div>
+          <div class="status-row">
+            <div class="status-col">
+              <div class="status-header hindi-text">${escapeHtml(col1Title)}</div>
+              <div class="status-body hindi-text">${escapeHtml(itemObj.col1)}</div>
+            </div>
+            <div class="status-col">
+              <div class="status-header hindi-text">${escapeHtml(col2Title)}</div>
+              <div class="status-body hindi-text">${escapeHtml(itemObj.col2)}</div>
+            </div>
+            <div class="status-col">
+              <div class="status-header hindi-text">${escapeHtml(col3Title)}</div>
+              <div class="status-body hindi-text">${escapeHtml(itemObj.col3)}</div>
+            </div>
+          </div>
+        </div>
+      </div>`;
+            }
+
+            function generateSheets() {
+                const selected = itemsData.filter(i => i.selected);
+                previewContainer.innerHTML = '';
+                printContainer.innerHTML = '';
+
+                if (!selected.length) {
+                    previewHeading.style.display = 'none';
+                    previewContainer.innerHTML = '<div class="empty-state">कोई item selected नहीं है। ऊपर से items चुनें।</div>';
+                    return;
+                }
+
+                previewHeading.style.display = 'flex';
+                const limit = Math.min(selected.length, 3);
+
+                for (let i = 0; i < limit; i++) {
+                    previewContainer.insertAdjacentHTML('beforeend', createSheetHTML(selected[i], true));
+                    if (i < limit - 1) previewContainer.insertAdjacentHTML('beforeend', '<div class="page-separator">Page ${i+1} / ${limit}</div>');
+                }
+
+                if (selected.length > limit) {
+                    previewContainer.insertAdjacentHTML('beforeend',
+                        `<div class="page-separator">+ ${selected.length - limit} और sheets selected हैं। Print करने पर सभी ${selected.length} pages निकलेंगे।</div>`);
+                }
+
+                printContainer.innerHTML = selected.map(i => createSheetHTML(i, false)).join('');
+            }
+
+            searchInput.addEventListener('input', e => {
+                searchTerm = e.target.value;
+                renderTable();
+            });
+
+            [col1Input, col2Input, col3Input].forEach((input, idx) => {
+                input.addEventListener('input', () => {
+                    document.getElementById(['th-col1', 'th-col2', 'th-col3'][idx]).textContent = input.value || ['दल के भार पर', 'दल के साथ', 'स्टोर में'][idx];
+                    saveToLocalStorage();
+                    generateSheets();
+                });
+            });
+
+            selectAllBtn.addEventListener('click', () => {
+                itemsData.forEach(i => i.selected = true);
+                saveToLocalStorage();
+                renderTable();
+                updateCountsAndGenerateSheets();
+            });
+
+            deselectAllBtn.addEventListener('click', () => {
+                itemsData.forEach(i => i.selected = false);
+                saveToLocalStorage();
+                renderTable();
+                updateCountsAndGenerateSheets();
+            });
+
+            if (resetBtn) {
+                resetBtn.addEventListener('click', () => {
+                    if (confirm('क्या आप सभी डेटा को डिफ़ॉल्ट मूल स्थिति में रीसेट करना चाहते हैं?')) {
+                        localStorage.removeItem(STORAGE_KEY_ITEMS);
+                        localStorage.removeItem(STORAGE_KEY_SETTINGS);
+                        parseData(true);
+                    }
+                });
+            }
+
+            printBtn.addEventListener('click', () => {
+                const selected = itemsData.filter(i => i.selected);
+                if (!selected.length) {
+                    alert('पहले कम से कम एक item select करें।');
+                    return;
+                }
+                generateSheets();
+                setTimeout(() => window.print(), 150);
+            });
+
+            parseData();
+        });
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <script src="js/pms_nav_search.js"></script>
+</body>
+
+</html>

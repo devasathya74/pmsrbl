@@ -226,6 +226,48 @@
       icon: "fa-solid fa-shield-halved",
       badge: "साइनबोर्ड",
       keywords: "pac front signboard gate board layout"
+    },
+
+    // --- Inspection & Document Studios ---
+    {
+      id: "dig_inspection_studio",
+      title: "भ्रमण/निरीक्षण पुलिस मॉडर्न स्कूल - 10X Document Studio & Editor",
+      category: "आधिकारिक पत्राचार",
+      desc: "डीआईजी/उच्चाधिकारियों के निरीक्षण हेतु सम्पूर्ण डॉक्यूमेंट व रिपोर्ट स्टूडियो",
+      url: "dig_ins.html",
+      icon: "fa-solid fa-building-columns",
+      badge: "10X Studio",
+      keywords: "dig ins inspection document studio nirikshan bhraman pms report"
+    },
+    {
+      id: "admission_fee_order",
+      title: "कार्यालय आदेश - प्रवेश एवं शिक्षण शुल्क छूट सम्बन्धी दिशा-निर्देश",
+      category: "आधिकारिक पत्राचार",
+      desc: "सेनानायक महोदय का आदेश - गरीब व जुलाई पश्चात प्रवेशित छात्रों को शुल्क छूट",
+      url: "admission_fee_july.html",
+      icon: "fa-solid fa-file-invoice-dollar",
+      badge: "कार्यालय आदेश",
+      keywords: "admission fee july exemption order shulk chhoot aadesh pravesh"
+    },
+    {
+      id: "charge_list_generator",
+      title: "प्रभार सूची एवं स्टॉक हस्तांतरण पंजिका (Charge List)",
+      category: "विद्यालय प्रबंधन",
+      desc: "प्रभार ग्रहण/हस्तांतरण सूची, अलमारी, पंखे, कुर्सियां व स्टॉक सामान पंजिका",
+      url: "charge_list.html",
+      icon: "fa-solid fa-boxes-stacked",
+      badge: "स्टॉक पंजिका",
+      keywords: "charge list prabhar suchi stock hastantaran item sheet generator"
+    },
+    {
+      id: "class_cover_labels",
+      title: "कक्षा पंजिका व फाइल कवर लेबल्स जनरेटर (Class Register Labels)",
+      category: "विद्यालय प्रबंधन",
+      desc: "कक्षा 1 से 8 व बालवाटिका पंजिकाओं हेतु प्रिंट-रेडी A4 लेबल्स",
+      url: "class_cover_labels.html",
+      icon: "fa-solid fa-tags",
+      badge: "कवर लेबल्स",
+      keywords: "class cover labels register sticker tags file cover print"
     }
   ];
 

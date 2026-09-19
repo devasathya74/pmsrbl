@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>पुलिस मॉडर्न स्कूल - समीक्षात्मक विवरण पत्र (VC समीक्षा बैठक हेतु)</title>
+  <meta name="description" content="पुलिस मॉडर्न स्कूल - वीडियो कॉन्फ्रेंस समीक्षा विवरण (प्रत्येक फ़ील्ड संपादन योग्य एवं क्लाउड डेटाबेस सुरक्षित)">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;500;600;700;800&family=Tiro+Devanagari+Hindi:ital@0;1&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Firebase Compat SDK (App, Auth, Firestore) -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+  <style>
+    /* Global Reset & Base Setup */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Mukta', 'Tiro Devanagari Hindi', 'Arial Unicode MS', sans-serif;
+      background-color: #f8fafc;
+      color: #0f172a;
+      line-height: 1.45;
+      padding: 16px 12px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Screen Top Toolbar (Hidden on Print) */
+    .no-print-toolbar {
+      max-width: 860px;
+      margin: 0 auto 12px auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #ffffff;
+      padding: 10px 16px;
+      border-radius: 8px;
+      border: 1px solid #cbd5e1;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.06);
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .toolbar-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .toolbar-title {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: #1e3a8a;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .sync-status {
+      font-size: 0.76rem;
+      padding: 3px 8px;
+      border-radius: 4px;
+      background: #f1f5f9;
+      color: #475569;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .sync-status.online { background: #dcfce7; color: #15803d; }
+    .sync-status.saving { background: #fef3c7; color: #b45309; }
+    .sync-status.local { background: #e0f2fe; color: #0369a1; }
+
+    .toolbar-buttons {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 6px 12px;
+      font-family: inherit;
+      font-size: 0.85rem;
+      font-weight: 600;
+      border-radius: 6px;
+      cursor: pointer;
+      border: 1px solid transparent;
+      text-decoration: none;
+      transition: all 0.15s ease;
+    }
+
+    .btn-save { background-color: #059669; color: #ffffff; }
+    .btn-save:hover { background-color: #047857; }
+
+    .btn-reset { background-color: #f1f5f9; color: #475569; border-color: #cbd5e1; }
+    .btn-reset:hover { background-color: #e2e8f0; color: #0f172a; }
+
+    .btn-print { background-color: #1e3a8a; color: #ffffff; }
+    .btn-print:hover { background-color: #172554; }
+
+    .btn-back { background-color: #ffffff; color: #475569; border-color: #cbd5e1; }
+    .btn-back:hover { background-color: #f8fafc; color: #0f172a; }
+
+    /* Editing Instructions Banner */
+    .edit-hint-banner {
+      max-width: 860px;
+      margin: 0 auto 12px auto;
+      background: #eff6ff;
+      border: 1px dashed #3b82f6;
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      color: #1e40af;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* Toast Notification */
+    #toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #0f172a;
+      color: #ffffff;
+      padding: 10px 18px;
+      border-radius: 6px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s ease;
+      z-index: 9999;
+    }
+    #toast.show { transform: translateY(0); opacity: 1; }
+    #toast.success { background: #059669; }
+    #toast.error { background: #dc2626; }
+    #toast.info { background: #0284c7; }
+
+    /* Official A4 Sheet Container */
+    .a4-sheet {
+      max-width: 860px;
+      margin: 0 auto;
+      background: #ffffff;
+      padding: 28px 34px;
+      border: 1px solid #cbd5e1;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+      position: relative;
+    }
+
+    /* Inner Double Border */
+    .official-border {
+      border: 2px double #1e293b;
+      padding: 20px 22px;
+    }
+
+    /* UNIVERSAL EDITABLE FIELD STYLING */
+    [contenteditable="true"] {
+      cursor: text;
+      transition: background-color 0.2s, outline 0.2s;
+      min-width: 12px;
+      display: inline-block;
+      border-radius: 3px;
+      padding: 1px 3px;
+    }
+
+    [contenteditable="true"]:hover {
+      background-color: #fef3c7;
+      outline: 1px dashed #f59e0b;
+    }
+
+    [contenteditable="true"]:focus {
+      background-color: #fffbeb;
+      outline: 2px solid #2563eb;
+      box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+    }
+
+    td[contenteditable="true"], th[contenteditable="true"] {
+      display: table-cell;
+    }
+
+    /* Header Styling */
+    .official-header {
+      text-align: center;
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #1e293b;
+      position: relative;
+    }
+
+    .header-logo-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 4px;
+    }
+
+    .header-logo-row img {
+      width: 55px;
+      height: 55px;
+      object-fit: contain;
+    }
+
+    .logo-fallback-badge {
+      width: 50px;
+      height: 50px;
+      background: #1e3a8a;
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 1rem;
+      border: 2px solid #d97706;
+    }
+
+    .main-org-title {
+      font-size: 1.45rem;
+      font-weight: 800;
+      color: #0f172a;
+      letter-spacing: 0.5px;
+      line-height: 1.2;
+    }
+
+    .sub-org-title {
+      font-size: 0.98rem;
+      font-weight: 600;
+      color: #334155;
+      margin-top: 2px;
+    }
+
+    .statement-title-box {
+      display: inline-block;
+      margin: 6px auto 2px auto;
+      padding: 3px 14px;
+      border: 1px solid #1e293b;
+      background: #f8fafc;
+      border-radius: 4px;
+    }
+
+    .statement-title {
+      font-size: 1.08rem;
+      font-weight: 800;
+      color: #0f172a;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    /* Reference & Meta Row */
+    .meta-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 8px 0 12px 0;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #1e293b;
+      padding-bottom: 5px;
+      border-bottom: 1px dashed #94a3b8;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    /* Section Headings */
+    .section-heading {
+      font-size: 0.98rem;
+      font-weight: 700;
+      color: #0f172a;
+      margin: 12px 0 6px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .section-heading span.number-badge {
+      display: inline-block;
+      margin-right: 4px;
+    }
+
+    /* Clean Official Tables */
+    table.official-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 10px;
+      font-size: 0.88rem;
+    }
+
+    table.official-table th, 
+    table.official-table td {
+      border: 1px solid #1e293b;
+      padding: 5px 8px;
+      vertical-align: middle;
+    }
+
+    table.official-table th {
+      background-color: #f1f5f9;
+      color: #0f172a;
+      font-weight: 700;
+      text-align: center;
+      font-size: 0.88rem;
+    }
+
+    table.official-table td.center { text-align: center; }
+    table.official-table td.right { text-align: right; }
+
+    /* Action delete button in staff rows */
+    .action-col {
+      width: 32px;
+      text-align: center;
+    }
+
+    .btn-row-del {
+      background: transparent;
+      color: #ef4444;
+      border: 1px solid transparent;
+      border-radius: 4px;
+      padding: 1px 4px;
+      cursor: pointer;
+      font-size: 0.72rem;
+      font-weight: 700;
+      line-height: 1;
+      opacity: 0.6;
+      transition: all 0.15s ease;
+    }
+    .btn-row-del:hover {
+      background: #fee2e2;
+      border-color: #fca5a5;
+      opacity: 1;
+    }
+
+    .add-row-bar {
+      margin-bottom: 8px;
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn-add-mini {
+      background: #eff6ff;
+      color: #1d4ed8;
+      border: 1px dashed #60a5fa;
+      padding: 3px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+    .btn-add-mini:hover {
+      background: #2563eb;
+      color: #ffffff;
+      border-color: #2563eb;
+    }
+
+    /* Financial Section Box */
+    .financial-box {
+      border: 1px solid #1e293b;
+      background: #f8fafc;
+      padding: 8px 12px;
+      margin: 10px 0 14px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .financial-title {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .financial-amount-wrap {
+      display: flex;
+      align-items: center;
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: #0f172a;
+      gap: 3px;
+    }
+
+    .financial-words {
+      font-size: 0.83rem;
+      color: #334155;
+      font-weight: 500;
+      margin-top: 2px;
+    }
+
+    /* Signatory Section */
+    .sign-section {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 36px;
+      padding-top: 8px;
+    }
+
+    .sign-col {
+      text-align: center;
+      min-width: 150px;
+    }
+
+    .sign-space {
+      height: 36px;
+    }
+
+    .sign-title {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #0f172a;
+      border-top: 1px solid #475569;
+      padding-top: 4px;
+      display: inline-block;
+      min-width: 130px;
+    }
+
+    .sign-subtitle {
+      font-size: 0.78rem;
+      color: #475569;
+      margin-top: 1px;
+    }
+
+    /* PRINT RULES */
+    @media print {
+      body {
+        background: transparent !important;
+        padding: 0 !important;
+        color: #000000 !important;
+      }
+
+      .no-print-toolbar, .edit-hint-banner, #toast, .action-col, .add-row-bar, .btn-row-del {
+        display: none !important;
+      }
+
+      .a4-sheet {
+        max-width: 100% !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+      }
+
+      .official-border {
+        border: 1.5px solid #000000 !important;
+        padding: 12px 16px !important;
+      }
+
+      table.official-table th {
+        background-color: #e5e7eb !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .financial-box {
+        background-color: #f3f4f6 !important;
+        border: 1px solid #000000 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      [contenteditable="true"] {
+        outline: none !important;
+        background: transparent !important;
+        padding: 0 !important;
+      }
+
+      @page {
+        size: A4 portrait;
+        margin: 10mm 12mm;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Screen Top Bar (Hidden on Print) -->
+  <div class="no-print-toolbar">
+    <div class="toolbar-left">
+      <div class="toolbar-title">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        <span>VC समीक्षात्मक विवरण (100% Editable)</span>
+      </div>
+      <span class="sync-status online" id="syncStatus">
+        <span style="width:7px; height:7px; border-radius:50%; background:#059669; display:inline-block;"></span>
+        डेटाबेस कनेक्टेड
+      </span>
+    </div>
+
+    <div class="toolbar-buttons">
+      <button onclick="saveToDatabase()" class="btn btn-save" id="btnSave" title="क्लाउड डेटाबेस में सुरक्षित करें">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+        डेटाबेस में सेव करें
+      </button>
+
+      <button onclick="convertCashToWords()" class="btn btn-reset" title="कैश बुक अंकों को स्वतः हिंदी शब्दों में बदलें">
+        🔢 शब्दों में बदलें
+      </button>
+
+      <button onclick="resetDefaultConfirm()" class="btn btn-reset" title="डिफ़ॉल्ट डेटा वापस लाएं">
+        🔄 रीसेट
+      </button>
+
+      <button onclick="window.print()" class="btn btn-print" title="A4 साइज में प्रिंट करें">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        प्रिंट (A4)
+      </button>
+
+      <a href="../index.html" class="btn btn-back">
+        ← पोर्टल
+      </a>
+    </div>
+  </div>
+
+  <div class="edit-hint-banner">
+    <span>💡 <strong>प्रत्येक फ़ील्ड संपादन योग्य है:</strong> किसी भी नाम, संख्या, शीर्षक या विवरण पर क्लिक करके सीधे टाइप करें और <strong>"डेटाबेस में सेव करें"</strong> बटन दबाएं।</span>
+    <span style="font-weight: 600; color: #1e3a8a;">सत्र 2026-27</span>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast">डेटा सुरक्षित हो गया!</div>
+
+  <!-- Main Official A4 Sheet -->
+  <div class="a4-sheet">
+    <div class="official-border">
+      
+      <!-- Institutional Header -->
+      <div class="official-header">
+        <div class="header-logo-row">
+          <img src="../logo1.png" alt="Police Modern School" onerror="this.outerHTML='<div class=\'logo-fallback-badge\'>PMS</div>'">
+          <div>
+            <h1 class="main-org-title" id="docSchoolName" contenteditable="true">पुलिस मॉडर्न स्कूल (POLICE MODERN SCHOOL)</h1>
+            <div class="sub-org-title" id="docSchoolSub" contenteditable="true">प्राथमिक एवं उच्च प्राथमिक विद्यालय</div>
+          </div>
+        </div>
+
+        <div class="statement-title-box">
+          <div class="statement-title" id="docStatementTitle" contenteditable="true">समीक्षात्मक विवरण पत्र (वीडियो कॉन्फ्रेंसिंग / समीक्षा बैठक)</div>
+        </div>
+      </div>
+
+      <!-- Reference & Metadata Strip -->
+      <div class="meta-row">
+        <div><strong id="docSubmittedByLabel" contenteditable="true">प्रस्तुतकर्ता:</strong> <span id="docSubmittedBy" contenteditable="true">प्रभारी प्रधानाचार्या, पुलिस मॉडर्न स्कूल</span></div>
+        <div><strong id="docReviewOfficerLabel" contenteditable="true">समीक्षा अधिकारी:</strong> <span id="docReviewOfficer" contenteditable="true">क्षेत्राधिकारी / C.O. महोदय</span></div>
+        <div><strong id="docAcademicSessionLabel" contenteditable="true">सत्र:</strong> <span id="docAcademicSession" contenteditable="true">2026-2027</span></div>
+        <div><strong id="docDateLabel" contenteditable="true">दिनांक:</strong> <span id="docDate" contenteditable="true">25.08.2026</span></div>
+      </div>
+
+      <!-- 1. Staff Details Table -->
+      <div class="section-heading">
+        <div><span class="number-badge" id="sec1Num" contenteditable="true">1.</span> <strong id="sec1Title" contenteditable="true">शिक्षक एवं शिक्षणेत्तर कर्मचारी विवरण:</strong></div>
+        <div style="font-size: 0.85rem; font-weight: 600; color: #475569;" id="staffCountLabel" contenteditable="true">(कुल कार्मिक: 07)</div>
+      </div>
+
+      <table class="official-table" id="staffTable">
+        <thead>
+          <tr>
+            <th style="width: 8%;" id="th_sr" contenteditable="true">क्रमांक</th>
+            <th style="width: 32%;" id="th_name" contenteditable="true">नाम</th>
+            <th style="width: 24%;" id="th_post" contenteditable="true">पद</th>
+            <th style="width: 20%;" id="th_qual" contenteditable="true">शैक्षिक योग्यता</th>
+            <th style="width: 16%;" id="th_year" contenteditable="true">नियुक्ति का वर्ष</th>
+            <th class="action-col">हटाएं</th>
+          </tr>
+        </thead>
+        <tbody id="staffTableBody">
+          <!-- Populated by JS -->
+        </tbody>
+      </table>
+
+      <div class="add-row-bar">
+        <button type="button" class="btn-add-mini" onclick="addStaffRow()">+ नया कार्मिक पंक्ति जोड़ें</button>
+      </div>
+
+      <!-- 2. Student Count by Class Table -->
+      <div class="section-heading" style="margin-top: 8px;">
+        <div><span class="number-badge" id="sec2Num" contenteditable="true">2.</span> <strong id="sec2Title" contenteditable="true">कक्षावार नामांकित बच्चों की संख्या विवरण:</strong></div>
+        <div style="font-size: 0.85rem; font-weight: 600; color: #475569;" id="studentTotalLabel" contenteditable="true">(कुल छात्र संख्या: 94)</div>
+      </div>
+
+      <table class="official-table" id="classTable">
+        <thead>
+          <tr>
+            <th style="width: 30%;" id="th_cls1" contenteditable="true">कक्षा</th>
+            <th style="width: 20%;" id="th_cnt1" contenteditable="true">बच्चों की संख्या</th>
+            <th style="width: 30%;" id="th_cls2" contenteditable="true">कक्षा</th>
+            <th style="width: 20%;" id="th_cnt2" contenteditable="true">बच्चों की संख्या</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td id="lbl_kg1" contenteditable="true">के.जी. प्रथम</td>
+            <td class="center" style="font-weight: 700;" id="cls_kg1" oninput="recalcStudentTotal()" contenteditable="true">34</td>
+            <td id="lbl_c6" contenteditable="true">कक्षा 6</td>
+            <td class="center" style="font-weight: 700;" id="cls_c6" oninput="recalcStudentTotal()" contenteditable="true">3</td>
+          </tr>
+          <tr>
+            <td id="lbl_kg2" contenteditable="true">के.जी. द्वितीय</td>
+            <td class="center" style="font-weight: 700;" id="cls_kg2" oninput="recalcStudentTotal()" contenteditable="true">17</td>
+            <td id="lbl_c7" contenteditable="true">कक्षा 7</td>
+            <td class="center" id="cls_c7" oninput="recalcStudentTotal()" contenteditable="true">&mdash;</td>
+          </tr>
+          <tr>
+            <td id="lbl_c1" contenteditable="true">कक्षा 1</td>
+            <td class="center" style="font-weight: 700;" id="cls_c1" oninput="recalcStudentTotal()" contenteditable="true">15</td>
+            <td id="lbl_c8" contenteditable="true">कक्षा 8</td>
+            <td class="center" id="cls_c8" oninput="recalcStudentTotal()" contenteditable="true">&mdash;</td>
+          </tr>
+          <tr>
+            <td id="lbl_c2" contenteditable="true">कक्षा 2</td>
+            <td class="center" style="font-weight: 700;" id="cls_c2" oninput="recalcStudentTotal()" contenteditable="true">5</td>
+            <td colspan="2" rowspan="3" style="background-color: #fafafa; text-align: center; vertical-align: middle; padding: 4px;" id="cls_mid_note" contenteditable="true">
+              <span style="font-size: 0.85rem; color: #4b5563;">सत्र 2026-27 में कुल नामांकन</span>
+            </td>
+          </tr>
+          <tr>
+            <td id="lbl_c3" contenteditable="true">कक्षा 3</td>
+            <td class="center" style="font-weight: 700;" id="cls_c3" oninput="recalcStudentTotal()" contenteditable="true">10</td>
+          </tr>
+          <tr>
+            <td id="lbl_c4" contenteditable="true">कक्षा 4</td>
+            <td class="center" style="font-weight: 700;" id="cls_c4" oninput="recalcStudentTotal()" contenteditable="true">7</td>
+          </tr>
+          <tr>
+            <td id="lbl_c5" contenteditable="true">कक्षा 5</td>
+            <td class="center" style="font-weight: 700;" id="cls_c5" oninput="recalcStudentTotal()" contenteditable="true">3</td>
+            <td colspan="2" class="center" style="font-weight: 800; background-color: #f1f5f9; font-size: 0.95rem;">
+              <span id="grandTotalLabel" contenteditable="true">कुल (Grand Total) :</span> <span id="grandTotalDisplay" contenteditable="true">94</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- 3. Cash Book Balance Section -->
+      <div class="section-heading" style="margin-top: 8px;">
+        <div><span class="number-badge" id="sec3Num" contenteditable="true">3.</span> <strong id="sec3Title" contenteditable="true">रोकड़ बही (कैश बुक) वित्तीय स्थिति:</strong></div>
+      </div>
+
+      <div class="financial-box">
+        <div>
+          <div class="financial-title" id="cashTitleLabel" contenteditable="true">कैश बुक - शेष धनराशि (Closing Balance):</div>
+          <div class="financial-words">
+            (<span id="cashWordsPrefix" contenteditable="true">अक्षरे:</span> <strong id="cashInWords" contenteditable="true">दस लाख पैंतीस हजार दो सौ छियानवे रुपये पैंतालीस पैसे मात्र</strong>)
+          </div>
+        </div>
+        <div class="financial-amount-wrap">
+          <span id="cashCurrencySymbol" contenteditable="true">₹</span>
+          <span id="cashBalanceVal" contenteditable="true" oninput="autoUpdateCashWords()">10,35,296.45</span>
+        </div>
+      </div>
+
+      <!-- Signatures Row -->
+      <div class="sign-section">
+        <div class="sign-col">
+          <div class="sign-space"></div>
+          <div class="sign-title" id="signTitle1" contenteditable="true">हस्ताक्षर प्रभारी प्रधानाचार्या</div>
+          <div class="sign-subtitle" id="signSub1" contenteditable="true">पुलिस मॉडर्न स्कूल</div>
+        </div>
+
+        <div class="sign-col">
+          <div class="sign-space"></div>
+          <div class="sign-title" id="signTitle2" contenteditable="true">हस्ताक्षर लेखाकार / लिपिक</div>
+          <div class="sign-subtitle" id="signSub2" contenteditable="true">पुलिस मॉडर्न स्कूल</div>
+        </div>
+
+        <div class="sign-col">
+          <div class="sign-space"></div>
+          <div class="sign-title" id="signTitle3" contenteditable="true">हस्ताक्षर समीक्षा अधिकारी</div>
+          <div class="sign-subtitle" id="signSub3" contenteditable="true">क्षेत्राधिकारी महोदय (C.O. Sir)</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    // Initial Default Data
+    const DEFAULT_DATA = {
+      schoolName: "पुलिस मॉडर्न स्कूल (POLICE MODERN SCHOOL)",
+      schoolSub: "प्राथमिक एवं उच्च प्राथमिक विद्यालय",
+      statementTitle: "समीक्षात्मक विवरण पत्र (वीडियो कॉन्फ्रेंसिंग / समीक्षा बैठक)",
+      submittedByLabel: "प्रस्तुतकर्ता:",
+      submittedBy: "प्रभारी प्रधानाचार्या, पुलिस मॉडर्न स्कूल",
+      reviewOfficerLabel: "समीक्षा अधिकारी:",
+      reviewOfficer: "क्षेत्राधिकारी / C.O. महोदय",
+      sessionLabel: "सत्र:",
+      session: "2026-2027",
+      dateLabel: "दिनांक:",
+      date: "25.08.2026",
+      sec1Num: "1.",
+      sec1Title: "शिक्षक एवं शिक्षणेत्तर कर्मचारी विवरण:",
+      sec2Num: "2.",
+      sec2Title: "कक्षावार नामांकित बच्चों की संख्या विवरण:",
+      sec3Num: "3.",
+      sec3Title: "रोकड़ बही (कैश बुक) वित्तीय स्थिति:",
+      th_sr: "क्रमांक",
+      th_name: "नाम",
+      th_post: "पद",
+      th_qual: "शैक्षिक योग्यता",
+      th_year: "नियुक्ति का वर्ष",
+      th_cls1: "कक्षा",
+      th_cnt1: "बच्चों की संख्या",
+      th_cls2: "कक्षा",
+      th_cnt2: "बच्चों की संख्या",
+      staff: [
+        { sr: "1", name: "श्रीमती सविता सिंह", role: "प्रभारी प्रधानाचार्या", qual: "एम.ए., बी.एड.", year: "2024" },
+        { sr: "2", name: "कु. वैष्णवी शर्मा", role: "सहा. अध्यापिका", qual: "स्नातक", year: "2026" },
+        { sr: "3", name: "कु. आंचल यादव", role: "सहा. अध्यापिका", qual: "स्नातक", year: "2026" },
+        { sr: "4", name: "श्रीमती अनीता", role: "सहा. अध्यापिका", qual: "स्नातक", year: "2026" },
+        { sr: "5", name: "कु. संध्या निर्मल", role: "सहा. अध्यापिका", qual: "स्नातक", year: "2026" },
+        { sr: "6", name: "श्रीमती अंजली यादव", role: "सहा. अध्यापिका", qual: "स्नातक", year: "2026" },
+        { sr: "7", name: "अनीता", role: "आया", qual: "-", year: "2026" }
+      ],
+      classes: {
+        lbl_kg1: "के.जी. प्रथम", cls_kg1: "34",
+        lbl_kg2: "के.जी. द्वितीय", cls_kg2: "17",
+        lbl_c1: "कक्षा 1", cls_c1: "15",
+        lbl_c2: "कक्षा 2", cls_c2: "5",
+        lbl_c3: "कक्षा 3", cls_c3: "10",
+        lbl_c4: "कक्षा 4", cls_c4: "7",
+        lbl_c5: "कक्षा 5", cls_c5: "3",
+        lbl_c6: "कक्षा 6", cls_c6: "3",
+        lbl_c7: "कक्षा 7", cls_c7: "—",
+        lbl_c8: "कक्षा 8", cls_c8: "—",
+        cls_mid_note: "सत्र 2026-27 में कुल नामांकन",
+        grandTotalLabel: "कुल (Grand Total) :",
+        grandTotal: "94"
+      },
+      cashTitleLabel: "कैश बुक - शेष धनराशि (Closing Balance):",
+      cashWordsPrefix: "अक्षरे:",
+      cashBalance: "10,35,296.45",
+      cashCurrencySymbol: "₹",
+      cashWords: "दस लाख पैंतीस हजार दो सौ छियानवे रुपये पैंतालीस पैसे मात्र",
+      sign1: { title: "हस्ताक्षर प्रभारी प्रधानाचार्या", sub: "पुलिस मॉडर्न स्कूल" },
+      sign2: { title: "हस्ताक्षर लेखाकार / लिपिक", sub: "पुलिस मॉडर्न स्कूल" },
+      sign3: { title: "हस्ताक्षर समीक्षा अधिकारी", sub: "क्षेत्राधिकारी महोदय (C.O. Sir)" }
+    };
+
+    let db = null;
+    let auth = null;
+    let currentUser = null;
+    const STORAGE_KEY = "pms_vc_statement_full_editable_v3";
+    const PRIMARY_DOC = "class_overrides/vc_review_statement";
+    const FALLBACK_DOC = "vc_statements/latest_review_statement";
+
+    // Firebase Auth & Firestore Initialization
+    async function initFirebase() {
+      try {
+        const firebaseConfig = {
+          apiKey: "AIzaSyDsVKuptdW4jRWQ5rLX_h_fn53xuFoYVMI",
+          authDomain: "abcreport-27dea.firebaseapp.com",
+          projectId: "abcreport-27dea",
+          storageBucket: "abcreport-27dea.firebasestorage.app",
+          messagingSenderId: "1422972209",
+          appId: "1:1422972209:web:82fbc39400d75566d8cc10"
+        };
+        
+        if (!firebase.apps.length) {
+          firebase.initializeApp(firebaseConfig);
+        }
+        db = firebase.firestore();
+        auth = firebase.auth();
+
+        // Authenticate with system credentials
+        auth.onAuthStateChanged(async (user) => {
+          if (user) {
+            currentUser = user;
+            updateSyncStatus("online", "क्लाउड डेटाबेस कनेक्टेड (प्रमाणित)");
+          } else {
+            try {
+              const cred = await auth.signInWithEmailAndPassword("sathyauppolice74@gmail.com", "123456");
+              currentUser = cred.user;
+              updateSyncStatus("online", "क्लाउड डेटाबेस कनेक्टेड (प्रमाणित)");
+            } catch (authErr) {
+              console.warn("Auto-login error:", authErr.message);
+              updateSyncStatus("local", "लोकल स्टोरेज मोड");
+            }
+          }
+        });
+      } catch (err) {
+        console.warn("Firestore offline, local cache enabled:", err);
+        updateSyncStatus("local", "लोकल स्टोरेज मोड (ऑफलाइन)");
+      }
+    }
+
+    function updateSyncStatus(type, msg) {
+      const el = document.getElementById("syncStatus");
+      if (!el) return;
+      el.className = `sync-status ${type}`;
+      el.innerHTML = `<span style="width:7px; height:7px; border-radius:50%; background:${type === 'online' ? '#059669' : type === 'saving' ? '#d97706' : '#0284c7'}; display:inline-block;"></span> ${msg}`;
+    }
+
+    // Load Data
+    async function loadData() {
+      let data = null;
+
+      // 1. Try local storage first for instant load
+      const localStr = localStorage.getItem(STORAGE_KEY);
+      if (localStr) {
+        try { data = JSON.parse(localStr); } catch (e) {}
+      }
+
+      // 2. Try Firestore authenticated load
+      if (db) {
+        try {
+          let doc = await db.doc(PRIMARY_DOC).get();
+          if (!doc.exists) {
+            doc = await db.doc(FALLBACK_DOC).get();
+          }
+          if (doc && doc.exists) {
+            data = doc.data();
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+          }
+        } catch (err) {
+          console.warn("Could not fetch from Firestore directly, using local cache:", err.message);
+        }
+      }
+
+      renderData(data || DEFAULT_DATA);
+    }
+
+    // Render Data to UI
+    function renderData(d) {
+      const setTxt = (id, val, def) => {
+        const el = document.getElementById(id);
+        if (el) el.innerText = (val !== undefined && val !== null) ? val : (def || '');
+      };
+
+      setTxt('docSchoolName', d.schoolName, DEFAULT_DATA.schoolName);
+      setTxt('docSchoolSub', d.schoolSub, DEFAULT_DATA.schoolSub);
+      setTxt('docStatementTitle', d.statementTitle, DEFAULT_DATA.statementTitle);
+
+      setTxt('docSubmittedByLabel', d.submittedByLabel, DEFAULT_DATA.submittedByLabel);
+      setTxt('docSubmittedBy', d.submittedBy, DEFAULT_DATA.submittedBy);
+      setTxt('docReviewOfficerLabel', d.reviewOfficerLabel, DEFAULT_DATA.reviewOfficerLabel);
+      setTxt('docReviewOfficer', d.reviewOfficer, DEFAULT_DATA.reviewOfficer);
+      setTxt('docAcademicSessionLabel', d.sessionLabel, DEFAULT_DATA.sessionLabel);
+      setTxt('docAcademicSession', d.session, DEFAULT_DATA.session);
+      setTxt('docDateLabel', d.dateLabel, DEFAULT_DATA.dateLabel);
+      setTxt('docDate', d.date, DEFAULT_DATA.date);
+
+      setTxt('sec1Num', d.sec1Num, DEFAULT_DATA.sec1Num);
+      setTxt('sec1Title', d.sec1Title, DEFAULT_DATA.sec1Title);
+      setTxt('sec2Num', d.sec2Num, DEFAULT_DATA.sec2Num);
+      setTxt('sec2Title', d.sec2Title, DEFAULT_DATA.sec2Title);
+      setTxt('sec3Num', d.sec3Num, DEFAULT_DATA.sec3Num);
+      setTxt('sec3Title', d.sec3Title, DEFAULT_DATA.sec3Title);
+
+      setTxt('th_sr', d.th_sr, DEFAULT_DATA.th_sr);
+      setTxt('th_name', d.th_name, DEFAULT_DATA.th_name);
+      setTxt('th_post', d.th_post, DEFAULT_DATA.th_post);
+      setTxt('th_qual', d.th_qual, DEFAULT_DATA.th_qual);
+      setTxt('th_year', d.th_year, DEFAULT_DATA.th_year);
+
+      setTxt('th_cls1', d.th_cls1, DEFAULT_DATA.th_cls1);
+      setTxt('th_cnt1', d.th_cnt1, DEFAULT_DATA.th_cnt1);
+      setTxt('th_cls2', d.th_cls2, DEFAULT_DATA.th_cls2);
+      setTxt('th_cnt2', d.th_cnt2, DEFAULT_DATA.th_cnt2);
+
+      // Render Staff Table
+      renderStaffTable(d.staff || DEFAULT_DATA.staff);
+
+      // Render Classes
+      const cls = d.classes || DEFAULT_DATA.classes;
+      setTxt('lbl_kg1', cls.lbl_kg1, DEFAULT_DATA.classes.lbl_kg1);
+      setTxt('cls_kg1', cls.cls_kg1, DEFAULT_DATA.classes.cls_kg1);
+      setTxt('lbl_kg2', cls.lbl_kg2, DEFAULT_DATA.classes.lbl_kg2);
+      setTxt('cls_kg2', cls.cls_kg2, DEFAULT_DATA.classes.cls_kg2);
+      setTxt('lbl_c1', cls.lbl_c1, DEFAULT_DATA.classes.lbl_c1);
+      setTxt('cls_c1', cls.cls_c1, DEFAULT_DATA.classes.cls_c1);
+      setTxt('lbl_c2', cls.lbl_c2, DEFAULT_DATA.classes.lbl_c2);
+      setTxt('cls_c2', cls.cls_c2, DEFAULT_DATA.classes.cls_c2);
+      setTxt('lbl_c3', cls.lbl_c3, DEFAULT_DATA.classes.lbl_c3);
+      setTxt('cls_c3', cls.cls_c3, DEFAULT_DATA.classes.cls_c3);
+      setTxt('lbl_c4', cls.lbl_c4, DEFAULT_DATA.classes.lbl_c4);
+      setTxt('cls_c4', cls.cls_c4, DEFAULT_DATA.classes.cls_c4);
+      setTxt('lbl_c5', cls.lbl_c5, DEFAULT_DATA.classes.lbl_c5);
+      setTxt('cls_c5', cls.cls_c5, DEFAULT_DATA.classes.cls_c5);
+      setTxt('lbl_c6', cls.lbl_c6, DEFAULT_DATA.classes.lbl_c6);
+      setTxt('cls_c6', cls.cls_c6, DEFAULT_DATA.classes.cls_c6);
+      setTxt('lbl_c7', cls.lbl_c7, DEFAULT_DATA.classes.lbl_c7);
+      setTxt('cls_c7', cls.cls_c7, DEFAULT_DATA.classes.cls_c7);
+      setTxt('lbl_c8', cls.lbl_c8, DEFAULT_DATA.classes.lbl_c8);
+      setTxt('cls_c8', cls.cls_c8, DEFAULT_DATA.classes.cls_c8);
+      setTxt('cls_mid_note', cls.cls_mid_note, DEFAULT_DATA.classes.cls_mid_note);
+      setTxt('grandTotalLabel', cls.grandTotalLabel, DEFAULT_DATA.classes.grandTotalLabel);
+      recalcStudentTotal();
+
+      // Render Cash
+      setTxt('cashTitleLabel', d.cashTitleLabel, DEFAULT_DATA.cashTitleLabel);
+      setTxt('cashWordsPrefix', d.cashWordsPrefix, DEFAULT_DATA.cashWordsPrefix);
+      setTxt('cashBalanceVal', d.cashBalance, DEFAULT_DATA.cashBalance);
+      setTxt('cashCurrencySymbol', d.cashCurrencySymbol, DEFAULT_DATA.cashCurrencySymbol);
+      setTxt('cashInWords', d.cashWords, DEFAULT_DATA.cashWords);
+
+      // Signatures
+      if (d.sign1) {
+        setTxt('signTitle1', d.sign1.title, DEFAULT_DATA.sign1.title);
+        setTxt('signSub1', d.sign1.sub, DEFAULT_DATA.sign1.sub);
+      }
+      if (d.sign2) {
+        setTxt('signTitle2', d.sign2.title, DEFAULT_DATA.sign2.title);
+        setTxt('signSub2', d.sign2.sub, DEFAULT_DATA.sign2.sub);
+      }
+      if (d.sign3) {
+        setTxt('signTitle3', d.sign3.title, DEFAULT_DATA.sign3.title);
+        setTxt('signSub3', d.sign3.sub, DEFAULT_DATA.sign3.sub);
+      }
+    }
+
+    function renderStaffTable(staffList) {
+      const tbody = document.getElementById('staffTableBody');
+      tbody.innerHTML = '';
+      staffList.forEach((item, index) => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td class="center" contenteditable="true">${item.sr || (index + 1)}</td>
+          <td contenteditable="true"><strong>${item.name || ''}</strong></td>
+          <td contenteditable="true">${item.role || ''}</td>
+          <td contenteditable="true">${item.qual || ''}</td>
+          <td class="center" contenteditable="true">${item.year || ''}</td>
+          <td class="action-col">
+            <button class="btn-row-del" onclick="deleteStaffRow(this)" title="हटाएं">✕</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+      document.getElementById('staffCountLabel').innerText = `(कुल कार्मिक: ${String(staffList.length).padStart(2, '0')})`;
+    }
+
+    function addStaffRow() {
+      const tbody = document.getElementById('staffTableBody');
+      const count = tbody.querySelectorAll('tr').length + 1;
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td class="center" contenteditable="true">${count}</td>
+        <td contenteditable="true"><strong>नया कार्मिक</strong></td>
+        <td contenteditable="true">सहा. अध्यापिका</td>
+        <td contenteditable="true">स्नातक</td>
+        <td class="center" contenteditable="true">2026</td>
+        <td class="action-col">
+          <button class="btn-row-del" onclick="deleteStaffRow(this)" title="हटाएं">✕</button>
+        </td>
+      `;
+      tbody.appendChild(tr);
+      updateStaffRowNumbers();
+    }
+
+    function deleteStaffRow(btn) {
+      const tr = btn.closest('tr');
+      if (tr) {
+        tr.remove();
+        updateStaffRowNumbers();
+      }
+    }
+
+    function updateStaffRowNumbers() {
+      const rows = document.querySelectorAll('#staffTableBody tr');
+      rows.forEach((row, i) => {
+        const cell = row.querySelector('td');
+        if (cell && !cell.innerText.trim()) {
+          cell.innerText = i + 1;
+        }
+      });
+      document.getElementById('staffCountLabel').innerText = `(कुल कार्मिक: ${String(rows.length).padStart(2, '0')})`;
+    }
+
+    // Calculate Student Total
+    function recalcStudentTotal() {
+      const parseVal = (id) => {
+        const el = document.getElementById(id);
+        if (!el) return 0;
+        const text = el.innerText.trim();
+        const num = parseInt(text.replace(/[^0-9]/g, ''), 10);
+        return isNaN(num) ? 0 : num;
+      };
+
+      const ids = ['cls_kg1', 'cls_kg2', 'cls_c1', 'cls_c2', 'cls_c3', 'cls_c4', 'cls_c5', 'cls_c6', 'cls_c7', 'cls_c8'];
+      let total = 0;
+      ids.forEach(id => total += parseVal(id));
+
+      const display = document.getElementById('grandTotalDisplay');
+      if (display) display.innerText = total;
+      const totalLabel = document.getElementById('studentTotalLabel');
+      if (totalLabel) totalLabel.innerText = `(कुल छात्र संख्या: ${total})`;
+    }
+
+    // Extract Complete Document State
+    function getDocumentState() {
+      const getTxt = (id) => {
+        const el = document.getElementById(id);
+        return el ? el.innerText.trim() : '';
+      };
+
+      const staff = [];
+      document.querySelectorAll('#staffTableBody tr').forEach((row, idx) => {
+        const cols = row.querySelectorAll('td');
+        if (cols.length >= 5) {
+          staff.push({
+            sr: cols[0].innerText.trim() || String(idx + 1),
+            name: cols[1].innerText.trim(),
+            role: cols[2].innerText.trim(),
+            qual: cols[3].innerText.trim(),
+            year: cols[4].innerText.trim()
+          });
+        }
+      });
+
+      return {
+        schoolName: getTxt('docSchoolName'),
+        schoolSub: getTxt('docSchoolSub'),
+        statementTitle: getTxt('docStatementTitle'),
+        submittedByLabel: getTxt('docSubmittedByLabel'),
+        submittedBy: getTxt('docSubmittedBy'),
+        reviewOfficerLabel: getTxt('docReviewOfficerLabel'),
+        reviewOfficer: getTxt('docReviewOfficer'),
+        sessionLabel: getTxt('docAcademicSessionLabel'),
+        session: getTxt('docAcademicSession'),
+        dateLabel: getTxt('docDateLabel'),
+        date: getTxt('docDate'),
+        sec1Num: getTxt('sec1Num'),
+        sec1Title: getTxt('sec1Title'),
+        sec2Num: getTxt('sec2Num'),
+        sec2Title: getTxt('sec2Title'),
+        sec3Num: getTxt('sec3Num'),
+        sec3Title: getTxt('sec3Title'),
+        th_sr: getTxt('th_sr'),
+        th_name: getTxt('th_name'),
+        th_post: getTxt('th_post'),
+        th_qual: getTxt('th_qual'),
+        th_year: getTxt('th_year'),
+        th_cls1: getTxt('th_cls1'),
+        th_cnt1: getTxt('th_cnt1'),
+        th_cls2: getTxt('th_cls2'),
+        th_cnt2: getTxt('th_cnt2'),
+        staff: staff,
+        classes: {
+          lbl_kg1: getTxt('lbl_kg1'), cls_kg1: getTxt('cls_kg1'),
+          lbl_kg2: getTxt('lbl_kg2'), cls_kg2: getTxt('cls_kg2'),
+          lbl_c1: getTxt('lbl_c1'), cls_c1: getTxt('cls_c1'),
+          lbl_c2: getTxt('lbl_c2'), cls_c2: getTxt('cls_c2'),
+          lbl_c3: getTxt('lbl_c3'), cls_c3: getTxt('cls_c3'),
+          lbl_c4: getTxt('lbl_c4'), cls_c4: getTxt('cls_c4'),
+          lbl_c5: getTxt('lbl_c5'), cls_c5: getTxt('cls_c5'),
+          lbl_c6: getTxt('lbl_c6'), cls_c6: getTxt('cls_c6'),
+          lbl_c7: getTxt('lbl_c7'), cls_c7: getTxt('cls_c7'),
+          lbl_c8: getTxt('lbl_c8'), cls_c8: getTxt('cls_c8'),
+          cls_mid_note: getTxt('cls_mid_note'),
+          grandTotalLabel: getTxt('grandTotalLabel'),
+          grandTotal: getTxt('grandTotalDisplay')
+        },
+        cashTitleLabel: getTxt('cashTitleLabel'),
+        cashWordsPrefix: getTxt('cashWordsPrefix'),
+        cashBalance: getTxt('cashBalanceVal'),
+        cashCurrencySymbol: getTxt('cashCurrencySymbol'),
+        cashWords: getTxt('cashInWords'),
+        sign1: {
+          title: getTxt('signTitle1'),
+          sub: getTxt('signSub1')
+        },
+        sign2: {
+          title: getTxt('signTitle2'),
+          sub: getTxt('signSub2')
+        },
+        sign3: {
+          title: getTxt('signTitle3'),
+          sub: getTxt('signSub3')
+        },
+        updatedAt: new Date().toISOString()
+      };
+    }
+
+    // Save to Database (Firestore with Auto-Auth + LocalStorage)
+    async function saveToDatabase() {
+      const data = getDocumentState();
+      updateSyncStatus("saving", "सेव हो रहा है...");
+
+      // 1. Instant LocalStorage backup
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+
+      // 2. Ensure authentication before Firestore save
+      let firestoreSaved = false;
+      if (db) {
+        try {
+          if (!auth.currentUser) {
+            try {
+              await auth.signInWithEmailAndPassword("sathyauppolice74@gmail.com", "123456");
+            } catch (loginErr) {
+              console.warn("Auth retry warning:", loginErr);
+            }
+          }
+
+          // Try saving to class_overrides collection (guaranteed access rule)
+          await db.doc(PRIMARY_DOC).set(data, { merge: true });
+          firestoreSaved = true;
+        } catch (err) {
+          console.warn("Primary save attempt failed, trying fallback:", err.message);
+          try {
+            await db.doc(FALLBACK_DOC).set(data, { merge: true });
+            firestoreSaved = true;
+          } catch (fbErr) {
+            console.error("Firestore final save error:", fbErr.message);
+          }
+        }
+      }
+
+      if (firestoreSaved) {
+        updateSyncStatus("online", "क्लाउड डेटाबेस सिंक सफल");
+        showToast("✅ प्रत्येक फ़ील्ड का डेटा क्लाउड डेटाबेस में सुरक्षित हो गया!", "success");
+      } else {
+        updateSyncStatus("local", "लोकल स्टोरेज में सुरक्षित");
+        showToast("✅ विवरण लोकल स्टोरेज में सुरक्षित हो गया!", "success");
+      }
+    }
+
+    function showToast(msg, type = "success") {
+      const toast = document.getElementById('toast');
+      toast.innerText = msg;
+      toast.className = `show ${type}`;
+      setTimeout(() => {
+        toast.className = '';
+      }, 3500);
+    }
+
+    function resetDefaultConfirm() {
+      if (confirm("क्या आप वाकई सभी फ़ील्ड्स को मूल डिफ़ॉल्ट डेटा में रीसेट करना चाहते हैं?")) {
+        renderData(DEFAULT_DATA);
+        saveToDatabase();
+        showToast("मूल डिफ़ॉल्ट डेटा बहाल कर दिया गया!", "success");
+      }
+    }
+
+    // Convert Hindi / English numbers to Indian Words
+    function convertCashToWords() {
+      const valStr = document.getElementById('cashBalanceVal').innerText.replace(/,/g, '').trim();
+      const num = parseFloat(valStr);
+      if (isNaN(num)) {
+        showToast("कृपया वैध धनराशि दर्ज करें", "error");
+        return;
+      }
+
+      const hindiWords = numberToHindiWords(num);
+      document.getElementById('cashInWords').innerText = hindiWords;
+      showToast("अंकों को हिंदी शब्दों में बदल दिया गया!", "success");
+    }
+
+    function autoUpdateCashWords() {
+      // Automatic trigger if desired
+    }
+
+    // Helper: Number to Hindi Words (Indian Currency Standard)
+    function numberToHindiWords(num) {
+      const ones = ['', 'एक', 'दो', 'तीन', 'चार', 'पांच', 'छह', 'सात', 'आठ', 'नौ', 'दस',
+        'ग्यारह', 'बारह', 'तेरह', 'चौदह', 'पंद्रह', 'सोलह', 'सत्रह', 'अठारह', 'उन्नीस', 'बीस',
+        'इक्कीस', 'बाईस', 'तेईस', 'चौबीस', 'पच्चीस', 'छब्बीस', 'सत्ताईस', 'अट्ठाईस', 'उनतीस', 'तीस',
+        'इकतीस', 'बत्तीस', 'तैंतीस', 'चौंतीस', 'पैंतीस', 'छत्तीस', 'सैंतीस', 'अड़तीस', 'उनतालीस', 'चालीस',
+        'इकतालीस', 'बयालीस', 'तैंतालीस', 'चवालीस', 'पैंतालीस', 'छियालीस', 'सैंतालीस', 'अड़तालीस', 'उनचास', 'पचास',
+        'इक्यावन', 'बावन', 'तिरेपन', 'चौवन', 'पचपन', 'छप्पन', 'सत्तावन', 'अट्ठावन', 'उनसठ', 'साठ',
+        'इकसठ', 'बासठ', 'तिरेसठ', 'चौंसठ', 'पैंसठ', 'छियासठ', 'सड़सठ', 'अड़सठ', 'उनहत्तर', 'सत्तर',
+        'इकहत्तर', 'बहत्तर', 'तिहत्तर', 'चौहत्तर', 'पचहत्तर', 'छिहत्तर', 'सतहत्तर', 'अठहत्तर', 'उनासी', 'अस्सी',
+        'इक्यासी', 'बयासी', 'तिरासी', 'चौरासी', 'पचासी', 'छियासी', 'सत्तासी', 'अट्ठासी', 'नवासी', 'नब्बे',
+        'इक्यानवे', 'बानवे', 'तिरानवे', 'चौरानवे', 'पंचानवे', 'छियानवे', 'सत्तानवे', 'अट्ठानवे', 'निन्यानवे'];
+
+      const parts = num.toFixed(2).split('.');
+      let n = parseInt(parts[0], 10);
+      const paise = parseInt(parts[1], 10);
+
+      if (n === 0 && paise === 0) return 'शून्य रुपये मात्र';
+
+      let out = '';
+
+      const crore = Math.floor(n / 10000000);
+      n %= 10000000;
+      const lakh = Math.floor(n / 100000);
+      n %= 100000;
+      const thousand = Math.floor(n / 1000);
+      n %= 1000;
+      const hundred = Math.floor(n / 100);
+      const rem = n % 100;
+
+      if (crore > 0) out += ones[crore] + ' करोड़ ';
+      if (lakh > 0) out += ones[lakh] + ' लाख ';
+      if (thousand > 0) out += ones[thousand] + ' हजार ';
+      if (hundred > 0) out += ones[hundred] + ' सौ ';
+      if (rem > 0) out += ones[rem] + ' ';
+
+      out = out.trim() + ' रुपये';
+
+      if (paise > 0) {
+        out += ' ' + ones[paise] + ' पैसे';
+      }
+
+      out += ' मात्र';
+      return out;
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+      initFirebase();
+      loadData();
+    });
+  </script>
+</body>
+</html>

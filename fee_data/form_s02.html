@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FORM S02 / UDISE+ Student Addition Portal - Cloud Firestore</title>
+  <meta name="description" content="Format to ADD Student for Class-2 to Class-12 missing in UDISE+ SDMS with Realtime Cloud Firestore sync and official PDF print generation.">
+  
+  <!-- CSS Stylesheets -->
+  <link rel="stylesheet" href="css/form_s02.css">
+  
+  <!-- SheetJS for Excel Export -->
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  
+  <!-- html2canvas and jsPDF for Direct Multi-Page PDF Download -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  
+  <!-- Firebase Compat SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+</head>
+<body>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-box"></div>
+
+  <!-- APP NAVBAR -->
+  <header class="app-navbar no-print">
+    <div class="brand-block">
+      <img src="logo1.png" class="brand-logo-img" alt="School Logo" onerror="this.outerHTML='<div class=\'brand-badge-icon\'>S02</div>'">
+      <div class="brand-text">
+        <h1>
+          FORM S02 / UDISE+ Studio
+          <span id="firebase-status-badge" class="badge-tag badge-primary">Connecting Cloud...</span>
+        </h1>
+        <p id="school-info-subtitle">Police Modern School, 3rd Bn PAC, Raebareli | UDISE: 09291100315 | Session: 2025-2026</p>
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <a href="index.html" class="btn btn-secondary btn-sm" title="Back to Main Fee Management Portal">
+        🏠 Fee Dashboard
+      </a>
+      <button class="btn btn-secondary btn-sm" onclick="FormS02App.openSettingsModal()" title="Edit School & UDISE Metadata">
+        ⚙️ Settings
+      </button>
+      <button class="btn btn-primary btn-sm" onclick="FormS02App.printAllStudents()" title="Print All Students (1 to N) into 1 complete PDF">
+        🖨️ Print All (1 to N)
+      </button>
+      <button class="btn btn-success btn-sm" onclick="FormS02App.downloadCombinedPdf()" title="Download Single Combined Multi-Page PDF">
+        📥 1 Combined PDF
+      </button>
+    </div>
+  </header>
+
+  <!-- MAIN STUDIO CONTAINER -->
+  <main class="studio-container no-print" id="studio-view-section">
+    
+    <!-- TOP STATS RIBBON -->
+    <section class="stats-grid" aria-label="Summary Statistics">
+      <div class="stat-card">
+        <div class="stat-info">
+          <div class="stat-label">Eligible Students (Cl. 1-8)</div>
+          <div class="stat-val" id="stat-total-students">0</div>
+        </div>
+        <div class="stat-icon">👥</div>
+      </div>
+
+      <div class="stat-card stat-green">
+        <div class="stat-info">
+          <div class="stat-label">Saved in Cloud (form_s02_udise)</div>
+          <div class="stat-val" id="stat-saved-cloud">0</div>
+        </div>
+        <div class="stat-icon">☁️</div>
+      </div>
+
+      <div class="stat-card stat-amber">
+        <div class="stat-info">
+          <div class="stat-label">Draft / Pending Details</div>
+          <div class="stat-val" id="stat-pending-cloud">0</div>
+        </div>
+        <div class="stat-icon">📝</div>
+      </div>
+
+      <div class="stat-card stat-purple">
+        <div class="stat-info">
+          <div class="stat-label">Selected for Batch Print/Save</div>
+          <div class="stat-val" id="stat-selected-count">0</div>
+        </div>
+        <div class="stat-icon">✅</div>
+      </div>
+    </section>
+
+    <!-- CONTROL HUB & FILTER TOOLBAR -->
+    <section class="control-hub" aria-label="Controls and Filters">
+      
+      <!-- View Nav & Mode Switcher -->
+      <div class="view-nav">
+        <div class="nav-tabs">
+          <button type="button" class="tab-btn active" data-tab="studio" onclick="FormS02App.switchTab('studio')">
+            📋 Management Studio
+          </button>
+          <button type="button" class="tab-btn" data-tab="print" onclick="FormS02App.switchTab('print')">
+            📄 Official A4 Print Preview
+          </button>
+        </div>
+
+        <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+          <button type="button" class="btn btn-secondary btn-sm" onclick="FormS02App.selectAllAllStudents()">
+            Select All
+          </button>
+          <button type="button" class="btn btn-secondary btn-sm" onclick="FormS02App.clearSelection()">
+            Deselect All
+          </button>
+          <button type="button" class="btn btn-secondary btn-sm" onclick="FormS02App.autoFillMissingData()" title="Auto-fill mother names and standard defaults">
+            ✨ Auto-Fill Missing
+          </button>
+          <button type="button" class="btn btn-secondary btn-sm" onclick="FormS02App.exportToExcel()" title="Download Excel Format">
+            📊 Export Excel
+          </button>
+          <button type="button" class="btn btn-success btn-sm" onclick="FormS02App.batchSaveSelectedStudents()" title="Batch Save to Firestore">
+            ☁️ Batch Save to Cloud
+          </button>
+        </div>
+      </div>
+
+      <!-- Search & Filters -->
+      <div class="toolbar-top">
+        <div class="search-box">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="search-input" placeholder="Search by student name, father name, PEN, Adm No, mobile..." oninput="FormS02App.activeSearchQuery = this.value; FormS02App.renderStudioTable(); FormS02App.renderPrintPages();">
+        </div>
+
+        <div class="filter-group">
+          <select id="filter-class" class="select-control" onchange="FormS02App.activeFilterClass = this.value; FormS02App.renderStudioTable(); FormS02App.renderPrintPages();">
+            <option value="ALL">All Classes (Class 1 to 8)</option>
+            <option value="Class 1">Class 1</option>
+            <option value="Class 2">Class 2</option>
+            <option value="Class 3">Class 3</option>
+            <option value="Class 4">Class 4</option>
+            <option value="Class 5">Class 5</option>
+            <option value="Class 6">Class 6</option>
+            <option value="Class 7">Class 7</option>
+            <option value="Class 8">Class 8</option>
+          </select>
+
+          <select id="filter-status" class="select-control" onchange="FormS02App.activeFilterStatus = this.value; FormS02App.renderStudioTable(); FormS02App.renderPrintPages();">
+            <option value="ALL">All Status</option>
+            <option value="SAVED">Saved in Cloud (form_s02_udise)</option>
+            <option value="PENDING">Pending / Draft Only</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <!-- STUDENTS DATA TABLE -->
+    <section class="table-card" aria-label="Students List">
+      <div class="table-responsive">
+        <table class="data-table" id="main-students-table">
+          <thead>
+            <tr>
+              <th style="width:40px; text-align:center;">
+                <input type="checkbox" id="select-all-checkbox" onchange="FormS02App.toggleSelectAll(this.checked)" title="Select all on this page">
+              </th>
+              <th style="width:50px; text-align:center;">#</th>
+              <th>Student & Basic Info</th>
+              <th>Class & Sec</th>
+              <th>Parents / Guardian</th>
+              <th>Contact & Aadhaar</th>
+              <th>Firestore Status</th>
+              <th style="text-align:right;">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="students-tbody">
+            <tr>
+              <td colspan="8" style="text-align:center; padding:3rem; color:var(--text-muted);">
+                <div class="live-pulse" style="margin-bottom:0.75rem;"></div>
+                <div>Connecting to Cloud Firestore & Loading Students...</div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <!-- OFFICIAL FORM S02 A4 PRINT PREVIEW (EXACT REPLICA OF FORM_S02 (1).PDF) -->
+  <div id="print-preview-container" class="print-preview-container">
+    <!-- JS Populates 3-Student A4 Sheets with Official Headers & Authority Footers -->
+  </div>
+
+  <!-- FLOATING PRINT BAR (FOR EASY PRINTING ON PREVIEW) -->
+  <div class="no-print" style="position:fixed; bottom:1.5rem; right:1.5rem; z-index:900; display:flex; gap:0.5rem;">
+    <button class="btn btn-secondary" onclick="FormS02App.switchTab('studio')" style="box-shadow:var(--shadow-md);">
+      📋 Management Studio
+    </button>
+    <button class="btn btn-success" onclick="FormS02App.downloadCombinedPdf()" style="box-shadow:0 8px 24px rgba(16,185,129,0.4);">
+      📥 1 Combined PDF
+    </button>
+    <button class="btn btn-primary" onclick="FormS02App.printAllStudents()" style="box-shadow:0 8px 24px rgba(37,99,235,0.4);">
+      🖨️ Print All (1 to N)
+    </button>
+  </div>
+
+  <!-- EDIT STUDENT MODAL -->
+  <div class="modal-overlay" id="student-modal-overlay">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3>✏️ Edit Form S02 Student Details</h3>
+        <button type="button" class="btn btn-secondary btn-icon" onclick="FormS02App.closeEditModal()">✕</button>
+      </div>
+
+      <form id="student-edit-form" onsubmit="FormS02App.handleModalFormSubmit(event)">
+        <div class="modal-body">
+          <input type="hidden" id="modal-student-id">
+          <input type="hidden" id="modal-doc-id">
+
+          <!-- Section 1: Basic Details -->
+          <div class="form-section-title">1. Basic Details (UDISE+ Standard)</div>
+          <div class="form-grid-3">
+            <div class="form-group">
+              <label for="edit-name">Student Full Name *</label>
+              <input type="text" id="edit-name" required>
+            </div>
+            <div class="form-group">
+              <label for="edit-gender">Gender *</label>
+              <select id="edit-gender">
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Transgender">Transgender</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="edit-dob">Date of Birth (DD/MM/YYYY) *</label>
+              <input type="text" id="edit-dob" placeholder="DD/MM/YYYY" required>
+            </div>
+          </div>
+
+          <div class="form-grid-3">
+            <div class="form-group">
+              <label for="edit-is-cwsn">Is CWSN (Special Needs) *</label>
+              <select id="edit-is-cwsn">
+                <option value="No">No</option>
+                <option value="Yes - Blindness">Yes - Blindness</option>
+                <option value="Yes - Low Vision">Yes - Low Vision</option>
+                <option value="Yes - Hearing Impairment">Yes - Hearing Impairment</option>
+                <option value="Yes - Locomotor Disability">Yes - Locomotor Disability</option>
+                <option value="Yes - Other">Yes - Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="edit-class">Class (Class 1 to 8) *</label>
+              <select id="edit-class">
+                <option value="Class 1">Class 1</option>
+                <option value="Class 2">Class 2</option>
+                <option value="Class 3">Class 3</option>
+                <option value="Class 4">Class 4</option>
+                <option value="Class 5">Class 5</option>
+                <option value="Class 6">Class 6</option>
+                <option value="Class 7">Class 7</option>
+                <option value="Class 8">Class 8</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="edit-section">Section</label>
+              <input type="text" id="edit-section" placeholder="A, B, etc.">
+            </div>
+          </div>
+
+          <!-- Section 2: Admission Details -->
+          <div class="form-section-title">2. Admission Details</div>
+          <div class="form-grid-3">
+            <div class="form-group">
+              <label for="edit-adm-date">Admission Date (DD/MM/YYYY)</label>
+              <input type="text" id="edit-adm-date" placeholder="DD/MM/YYYY">
+            </div>
+            <div class="form-group">
+              <label for="edit-adm-no">Admission / Registration No</label>
+              <input type="text" id="edit-adm-no">
+            </div>
+            <div class="form-group">
+              <label for="edit-pen">Permanent Education Number (PEN)</label>
+              <input type="text" id="edit-pen" placeholder="If available">
+            </div>
+          </div>
+
+          <!-- Section 3: Parents & Guardian -->
+          <div class="form-section-title">3. Parents / Guardian Details</div>
+          <div class="form-grid-3">
+            <div class="form-group">
+              <label for="edit-mother">Mother's Name *</label>
+              <input type="text" id="edit-mother" placeholder="Mother's Full Name" required>
+            </div>
+            <div class="form-group">
+              <label for="edit-father">Father's Name *</label>
+              <input type="text" id="edit-father" placeholder="Father's Full Name" required>
+            </div>
+            <div class="form-group">
+              <label for="edit-guardian">Guardian's Name</label>
+              <input type="text" id="edit-guardian" placeholder="Guardian's Name">
+            </div>
+          </div>
+
+          <!-- Section 4: Contact Details & Aadhaar -->
+          <div class="form-section-title">4. Contact & Aadhaar Details</div>
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label for="edit-mobile">Mobile Number (10 Digits) *</label>
+              <input type="text" id="edit-mobile" placeholder="Mobile Number" required>
+            </div>
+            <div class="form-group">
+              <label for="edit-alt-mobile">Alternate Contact Number</label>
+              <input type="text" id="edit-alt-mobile" placeholder="Alternate Number">
+            </div>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label for="edit-aadhaar-no">Student's AADHAAR Number</label>
+              <input type="text" id="edit-aadhaar-no" placeholder="12 Digit Aadhaar Number">
+            </div>
+            <div class="form-group">
+              <label for="edit-aadhaar-name">Name as per AADHAAR</label>
+              <input type="text" id="edit-aadhaar-name" placeholder="Exact Name on Aadhaar">
+            </div>
+          </div>
+
+          <!-- Section 5: Reason for Addition -->
+          <div class="form-section-title">5. Why was this student not added in Previous Academic Year? *</div>
+          <div class="form-group">
+            <label for="edit-reason">Reason / Justification for Form S02</label>
+            <input type="text" id="edit-reason" list="reason-suggestions" placeholder="Enter reason or choose from suggestions" required>
+            <datalist id="reason-suggestions">
+              <option value="Direct Admission in current session from other board/school">
+              <option value="Transferred from unrecognised school during session">
+              <option value="Inter-district / Inter-state transfer without PEN">
+              <option value="Admitted after closure of UDISE+ SDMS portal">
+              <option value="Data entry missed in previous academic year">
+              <option value="Student profile was not created/missing in UDISE+ SDMS">
+            </datalist>
+          </div>
+
+          <div class="form-group">
+            <label for="edit-remarks">Additional Remarks (Optional)</label>
+            <textarea id="edit-remarks" rows="2" placeholder="Any internal notes or verification details..."></textarea>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="FormS02App.closeEditModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary">💾 Save & Sync to Cloud</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- SCHOOL & UDISE SETTINGS MODAL -->
+  <div class="modal-overlay" id="settings-modal-overlay">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3>⚙️ School, UDISE & Authority Settings</h3>
+        <button type="button" class="btn btn-secondary btn-icon" onclick="FormS02App.closeSettingsModal()">✕</button>
+      </div>
+
+      <form id="settings-form" onsubmit="FormS02App.handleSettingsSubmit(event)">
+        <div class="modal-body">
+          <div class="form-section-title">Official School Header Information</div>
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label for="set-school-name">School Name *</label>
+              <input type="text" id="set-school-name" required>
+            </div>
+            <div class="form-group">
+              <label for="set-udise-code">UDISE Code *</label>
+              <input type="text" id="set-udise-code" required>
+            </div>
+          </div>
+
+          <div class="form-grid-3">
+            <div class="form-group">
+              <label for="set-session">Academic Year *</label>
+              <input type="text" id="set-session" placeholder="2025-2026" required>
+            </div>
+            <div class="form-group">
+              <label for="set-state">UDISE State *</label>
+              <input type="text" id="set-state" required>
+            </div>
+            <div class="form-group">
+              <label for="set-district">District *</label>
+              <input type="text" id="set-district" required>
+            </div>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label for="set-block">Block *</label>
+              <input type="text" id="set-block" required>
+            </div>
+            <div class="form-group">
+              <label for="set-contact">School Contact Number *</label>
+              <input type="text" id="set-contact" required>
+            </div>
+          </div>
+
+          <div class="form-section-title">Signatures & Seals (Footer Information)</div>
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label for="set-head-name">Head of School Name</label>
+              <input type="text" id="set-head-name">
+            </div>
+            <div class="form-group">
+              <label for="set-head-desig">Head Designation</label>
+              <input type="text" id="set-head-desig">
+            </div>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label for="set-officer-name">Education Officer Name</label>
+              <input type="text" id="set-officer-name">
+            </div>
+            <div class="form-group">
+              <label for="set-officer-desig">Officer Designation</label>
+              <input type="text" id="set-officer-desig">
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="FormS02App.closeSettingsModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary">💾 Update Settings</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- App Core JS Script -->
+  <script src="js/form_s02.js"></script>
+</body>
+</html>

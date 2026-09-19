@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="hi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>25वीं वाहिनी पीएसी, रायबरेली - 3D LED Signboard Architectural Preview</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;600;700;800;900&family=Poppins:wght@400;600;700;800&family=Yatra+One&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --board-width: 18ft 10.5in;
+            --board-height: 7ft 8in;
+            --led-color: #ffbe3b;
+            --led-glow: rgba(255, 190, 59, 0.75);
+            --acp-color: #0b192c;
+            --gold-letter: linear-gradient(135deg, #fff3b0 0%, #ffd700 30%, #cca01d 70%, #855806 100%);
+        }
+
+        body {
+            font-family: 'Poppins', 'Mukta', sans-serif;
+            background-color: #080c14;
+            color: #f1f5f9;
+            overflow-x: hidden;
+            transition: background 0.5s ease;
+        }
+
+        /* Day vs Night mode backgrounds */
+        body.mode-day {
+            background-color: #e2e8f0;
+            color: #0f172a;
+        }
+
+        /* 3D Signboard Frame Container */
+        .signboard-canvas-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 1180px;
+            aspect-ratio: 226.5 / 92; /* Exact 18'10.5" (226.5in) x 7'8" (92in) ratio = 2.462 */
+            margin: 0 auto;
+            perspective: 1200px;
+        }
+
+        .signboard-panel {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(145deg, #071326, #0d213f, #050d1a);
+            border: 12px solid #b8860b;
+            border-image: linear-gradient(135deg, #ffe066, #b8860b, #734d04, #ffd700) 1;
+            box-shadow: 
+                0 30px 60px rgba(0, 0, 0, 0.8),
+                inset 0 0 40px rgba(0, 0, 0, 0.7);
+            border-radius: 4px;
+            display: flex;
+            padding: 2.5% 3.5%;
+            gap: 3%;
+            align-items: center;
+            overflow: hidden;
+            transition: all 0.5s ease;
+        }
+
+        /* ACP Sheet Grid Joints simulation */
+        .signboard-panel::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+            background-size: 25% 50%;
+            pointer-events: none;
+        }
+
+        /* 3D Embossed Golden & Backlit Acrylic Letters */
+        .text-3d-gold {
+            font-family: 'Mukta', 'Yatra One', sans-serif;
+            font-weight: 900;
+            background: var(--gold-letter);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+            display: inline-block;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.9));
+            transition: all 0.4s ease;
+        }
+
+        /* Realistic Night Backlit Halo Glow */
+        body.mode-night .text-3d-gold {
+            text-shadow: 
+                0 0 10px var(--led-glow),
+                0 0 25px var(--led-glow),
+                0 0 50px var(--led-glow),
+                0 0 80px var(--led-glow);
+            filter: drop-shadow(0 0 15px var(--led-glow)) drop-shadow(0 8px 12px rgba(0,0,0,0.9));
+        }
+
+        /* Ashoka Lion 4-Headed Emblem 3D Badge */
+        .lion-emblem-badge {
+            width: 22%;
+            height: 88%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background: radial-gradient(circle, rgba(255, 215, 0, 0.12) 0%, transparent 70%);
+            border-radius: 12px;
+            padding: 10px;
+            flex-shrink: 0;
+        }
+
+        .lion-emblem-img {
+            max-height: 82%;
+            max-width: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.8)) drop-shadow(0 0 20px rgba(255, 215, 0, 0.4));
+            transition: transform 0.3s ease, filter 0.4s ease;
+        }
+
+        body.mode-night .lion-emblem-img {
+            filter: drop-shadow(0 0 25px rgba(255, 215, 0, 0.8)) drop-shadow(0 0 50px rgba(255, 190, 59, 0.5));
+        }
+
+        /* Dimension arrows styling */
+        .dimension-bar-h {
+            position: absolute;
+            top: -38px;
+            left: 0;
+            right: 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: #38bdf8;
+            font-size: 0.85rem;
+            font-weight: 800;
+        }
+        .dimension-bar-h::before, .dimension-bar-h::after {
+            content: "◀";
+            font-size: 0.75rem;
+        }
+        .dimension-bar-h::after {
+            content: "▶";
+        }
+        .dim-line-h {
+            flex: 1;
+            height: 2px;
+            background: #38bdf8;
+            margin: 0 10px;
+        }
+
+        .dimension-bar-v {
+            position: absolute;
+            left: -48px;
+            top: 0;
+            bottom: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            color: #38bdf8;
+            font-size: 0.85rem;
+            font-weight: 800;
+        }
+        .dimension-bar-v::before {
+            content: "▲";
+            font-size: 0.75rem;
+        }
+        .dimension-bar-v::after {
+            content: "▼";
+        }
+        .dim-line-v {
+            flex: 1;
+            width: 2px;
+            background: #38bdf8;
+            margin: 10px 0;
+        }
+
+        /* Day mode adjustments */
+        body.mode-day .signboard-panel {
+            background: linear-gradient(145deg, #0b1f3a, #163761, #08182e);
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.25);
+        }
+        body.mode-day .text-3d-gold {
+            text-shadow: 0 2px 4px rgba(0,0,0,0.6);
+            filter: drop-shadow(0 6px 10px rgba(0,0,0,0.5));
+        }
+
+        /* Light intensity slider & controls */
+        .glass-card {
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        body.mode-day .glass-card {
+            background: rgba(255, 255, 255, 0.88);
+            border-color: #cbd5e1;
+        }
+
+        @keyframes subtlePulse {
+            0%, 100% { opacity: 0.9; }
+            50% { opacity: 1; }
+        }
+        body.mode-night .signboard-panel {
+            animation: subtlePulse 4s infinite ease-in-out;
+        }
+    </style>
+</head>
+
+<body class="mode-night min-h-screen pb-16">
+
+    <!-- Top Header -->
+    <header class="border-b border-slate-800 bg-slate-900/60 backdrop-blur-md px-6 py-4 sticky top-0 z-50 flex flex-wrap justify-between items-center gap-4">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-400 font-black">
+                <i class="fas fa-monument"></i>
+            </div>
+            <div>
+                <h1 class="text-lg md:text-xl font-black text-white flex items-center gap-2">
+                    25वीं वाहिनी पीएसी, रायबरेली
+                    <span class="text-xs px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30">3D LED Architectural Signboard</span>
+                </h1>
+                <p class="text-xs text-slate-400">आयाम (Dimensions): <strong>18' 10.5" × 7' 8"</strong> (226.5" × 92") | परेड ग्राउंड प्रवेश द्वार मुख्य पट्ट</p>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-3">
+            <button id="toggle-day-night" onclick="toggleLightingMode()" class="px-4 py-2 rounded-xl text-xs font-bold bg-amber-500 hover:bg-amber-600 text-slate-950 flex items-center gap-2 shadow-lg transition">
+                <i class="fas fa-sun" id="mode-icon"></i> <span id="mode-text">डे / डेलाइट मोड देखें</span>
+            </button>
+            <button onclick="window.print()" class="px-4 py-2 rounded-xl text-xs font-bold bg-slate-800 hover:bg-slate-700 text-white border border-slate-700 flex items-center gap-2 transition">
+                <i class="fas fa-print"></i> ब्लूप्रिंट प्रिंट
+            </button>
+            <a href="index.html" class="px-4 py-2 rounded-xl text-xs font-bold bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition">
+                ← पोर्टल
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Visualizer Area -->
+    <main class="max-w-7xl mx-auto px-4 pt-12">
+
+        <!-- Visual Signboard Display Area -->
+        <div class="mb-14 relative pt-10 px-8">
+            <div class="signboard-canvas-wrapper" id="signboard-wrapper">
+
+                <!-- Horizontal Dimension Line -->
+                <div class="dimension-bar-h">
+                    <span class="bg-slate-900/90 px-3 py-1 rounded-md border border-sky-500/40">कुल चौड़ाई: 18 फीट 10.5 इंच (226.5 इंच / 5.75 मीटर)</span>
+                    <div class="dim-line-h"></div>
+                </div>
+
+                <!-- Vertical Dimension Line -->
+                <div class="dimension-bar-v">
+                    <span class="bg-slate-900/90 px-2 py-1 rounded-md border border-sky-500/40 [writing-mode:vertical-rl] rotate-180">ऊंचाई: 7' 8" (92" / 2.34m)</span>
+                    <div class="dim-line-v"></div>
+                </div>
+
+                <!-- Physical Board Structure -->
+                <div class="signboard-panel" id="main-board-panel">
+                    
+                    <!-- Left: 4-Directional Ashok Lion Emblem -->
+                    <div class="lion-emblem-badge">
+                        <!-- High detail SVG/Image of Ashok Lion Stambh -->
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Emblem_of_India.svg/800px-Emblem_of_India.svg.png" 
+                             alt="4-Directional Lion Capital / Ashoka Stambh" 
+                             class="lion-emblem-img"
+                             onerror="this.src='logo1.png'">
+                        <div class="text-[0.65rem] font-bold text-amber-200 mt-1 tracking-widest text-center uppercase">
+                            सत्यमेव जयते
+                        </div>
+                    </div>
+
+                    <!-- Right / Main Content Area: 3D Embossed Glowing Lettering -->
+                    <div class="flex-1 h-full flex flex-col justify-between py-1 relative z-10">
+                        
+                        <!-- Top Main Line -->
+                        <div class="flex items-center">
+                            <h2 class="text-3d-gold text-[2.8vw] leading-none tracking-tight">
+                                25वीं वाहिनी पीएसी
+                            </h2>
+                        </div>
+
+                        <!-- Middle / Second Line: Raebareli -->
+                        <div class="flex items-center">
+                            <h3 class="text-3d-gold text-[2.4vw] leading-none font-black text-amber-300">
+                                रायबरेली
+                            </h3>
+                        </div>
+
+                        <!-- Bottom Line with Slogan (Right aligned in same visual field) -->
+                        <div class="flex items-end justify-between border-t border-amber-500/30 pt-2 mt-1">
+                            <div class="text-[0.8vw] font-semibold text-slate-400 flex items-center gap-2">
+                                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+                                <span>परेड ग्राउंड मुख्य द्वार • 25th BN PAC HQ</span>
+                            </div>
+
+                            <!-- Right End Slogan: पीएसी बल सर्वोत्तम बल -->
+                            <div class="text-3d-gold text-[1.4vw] font-black tracking-wide text-amber-300">
+                                ❝ पीएसी बल सर्वोत्तम बल ❞
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Interactive Customization & Lighting Controls Studio -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-12">
+            
+            <!-- Card 1: LED Lighting Simulation Controls -->
+            <div class="glass-card rounded-2xl p-6 shadow-xl">
+                <h3 class="text-sm font-bold text-amber-400 uppercase tracking-wider mb-4 flex items-center gap-2">
+                    <i class="fas fa-lightbulb"></i> LED लाइटिंग कंट्रोलर (Night Halo Simulator)
+                </h3>
+
+                <div class="space-y-4 text-xs">
+                    <div>
+                        <label class="block font-semibold mb-1 text-slate-300">LED बैकलाइट का रंग (Backlit Glow Color):</label>
+                        <div class="grid grid-cols-4 gap-2">
+                            <button onclick="setLedColor('#ffbe3b', 'rgba(255, 190, 59, 0.85)')" class="p-2 rounded-lg bg-amber-500/20 border border-amber-400 text-amber-300 font-bold text-center">
+                                वार्म गोल्ड
+                            </button>
+                            <button onclick="setLedColor('#ffffff', 'rgba(255, 255, 255, 0.9)')" class="p-2 rounded-lg bg-slate-700 border border-slate-400 text-white font-bold text-center">
+                                प्योर व्हाइट
+                            </button>
+                            <button onclick="setLedColor('#38bdf8', 'rgba(56, 189, 248, 0.85)')" class="p-2 rounded-lg bg-sky-500/20 border border-sky-400 text-sky-300 font-bold text-center">
+                                आइस ब्लू
+                            </button>
+                            <button onclick="setLedColor('#ef4444', 'rgba(239, 68, 68, 0.85)')" class="p-2 rounded-lg bg-red-500/20 border border-red-400 text-red-300 font-bold text-center">
+                                पीएसी रेड
+                            </button>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block font-semibold mb-1 text-slate-300">चमक तीव्रता (LED Brightness / Glow Intensity):</label>
+                        <input type="range" id="glow-slider" min="5" max="60" value="30" oninput="updateGlowIntensity(this.value)" class="w-full accent-amber-500 cursor-pointer">
+                    </div>
+
+                    <div class="pt-2 border-t border-slate-700/50 flex justify-between items-center text-slate-400">
+                        <span>वर्तमान मोड:</span>
+                        <span id="current-mode-status" class="font-bold text-amber-400">🌙 नाइट LED ग्लो मोड (Active)</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 2: Material & Lettering Technical Specifications -->
+            <div class="glass-card rounded-2xl p-6 shadow-xl">
+                <h3 class="text-sm font-bold text-sky-400 uppercase tracking-wider mb-4 flex items-center gap-2">
+                    <i class="fas fa-layer-group"></i> मटेरियल एवं 3D स्पेसिफिकेशन
+                </h3>
+
+                <ul class="space-y-2.5 text-xs text-slate-300">
+                    <li class="flex items-start gap-2">
+                        <i class="fas fa-check-circle text-emerald-400 mt-0.5"></i>
+                        <span><strong>बैकग्राउंड पैनल:</strong> 4mm Heavy-Duty Exterior ACP Sheet (Metallic Royal Navy Blue).</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <i class="fas fa-check-circle text-emerald-400 mt-0.5"></i>
+                        <span><strong>3D अक्षर:</strong> 3mm Mirror Gold Acrylic + 25mm High-Density Cast Acrylic Letter Returns.</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <i class="fas fa-check-circle text-emerald-400 mt-0.5"></i>
+                        <span><strong>इंटरनल लाइटिंग:</strong> IP67 Waterproof Samsung / Osram 12V Warm Gold SMD LED Modules.</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <i class="fas fa-check-circle text-emerald-400 mt-0.5"></i>
+                        <span><strong>अशोक स्तम्भ प्रतीक:</strong> 3D Embossed Fiber/Brass Finish 4-Directional Lion Capital (30" Height).</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <i class="fas fa-check-circle text-emerald-400 mt-0.5"></i>
+                        <span><strong>फ्रेमिंग:</strong> 1.5" × 1.5" 16-Gauge MS Box Section Inner Support Substructure.</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Card 3: Exact Measurement & Fabrication Blueprint -->
+            <div class="glass-card rounded-2xl p-6 shadow-xl">
+                <h3 class="text-sm font-bold text-emerald-400 uppercase tracking-wider mb-4 flex items-center gap-2">
+                    <i class="fas fa-ruler-combined"></i> सटीक नाप एवं क्षेत्रफल (Dimensions)
+                </h3>
+
+                <div class="space-y-3 text-xs">
+                    <div class="flex justify-between p-2 rounded-lg bg-slate-800/60 border border-slate-700">
+                        <span class="text-slate-400">कुल चौड़ाई (Width):</span>
+                        <strong class="text-white">18 Feet 10.5 Inches (226.5'')</strong>
+                    </div>
+                    <div class="flex justify-between p-2 rounded-lg bg-slate-800/60 border border-slate-700">
+                        <span class="text-slate-400">कुल ऊंचाई (Height):</span>
+                        <strong class="text-white">7 Feet 8 Inches (92.0'')</strong>
+                    </div>
+                    <div class="flex justify-between p-2 rounded-lg bg-slate-800/60 border border-slate-700">
+                        <span class="text-slate-400">कुल क्षेत्रफल (Total Area):</span>
+                        <strong class="text-amber-300">144.82 Sq. Feet (13.45 Sq. Mtr.)</strong>
+                    </div>
+                    <div class="flex justify-between p-2 rounded-lg bg-slate-800/60 border border-slate-700">
+                        <span class="text-slate-400">मुख्य अक्षर ऊंचाई ('25वीं वाहिनी पीएसी'):</span>
+                        <strong class="text-white">18 Inches (1.5 Feet)</strong>
+                    </div>
+                    <div class="flex justify-between p-2 rounded-lg bg-slate-800/60 border border-slate-700">
+                        <span class="text-slate-400">शहर नाम ऊंचाई ('रायबरेली'):</span>
+                        <strong class="text-white">15 Inches (1.25 Feet)</strong>
+                    </div>
+                    <div class="flex justify-between p-2 rounded-lg bg-slate-800/60 border border-slate-700">
+                        <span class="text-slate-400">स्लोगन ऊंचाई ('पीएसी बल सर्वोत्तम बल'):</span>
+                        <strong class="text-white">8 Inches (0.66 Feet)</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        let isNightMode = true;
+
+        function toggleLightingMode() {
+            isNightMode = !isNightMode;
+            const body = document.body;
+            const btnText = document.getElementById("mode-text");
+            const btnIcon = document.getElementById("mode-icon");
+            const status = document.getElementById("current-mode-status");
+
+            if (isNightMode) {
+                body.className = "mode-night min-h-screen pb-16";
+                btnText.textContent = "डे / डेलाइट मोड देखें";
+                btnIcon.className = "fas fa-sun";
+                status.textContent = "🌙 नाइट LED ग्लो मोड (Active)";
+                status.className = "font-bold text-amber-400";
+            } else {
+                body.className = "mode-day min-h-screen pb-16";
+                btnText.textContent = "नाइट / 3D LED ग्लो मोड देखें";
+                btnIcon.className = "fas fa-moon";
+                status.textContent = "☀️ डेलाइट / ब्रास 3D रिफ्लेक्शन मोड";
+                status.className = "font-bold text-sky-600";
+            }
+        }
+
+        function setLedColor(hex, glow) {
+            document.documentElement.style.setProperty('--led-color', hex);
+            document.documentElement.style.setProperty('--led-glow', glow);
+        }
+
+        function updateGlowIntensity(val) {
+            const glow = `rgba(255, 190, 59, ${val / 40})`;
+            document.documentElement.style.setProperty('--led-glow', glow);
+        }
+    </script>
+    <script src="js/pms_nav_search.js"></script>
+</body>
+</html>

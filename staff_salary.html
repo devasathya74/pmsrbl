@@ -1,0 +1,1338 @@
+<!DOCTYPE html>
+<html lang="hi" class="h-full bg-slate-900">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>पुलिस मॉडर्न स्कूल - स्टाफ वेतनमान प्रबंधन एवं प्रिंट प्रणाली</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Martel:wght@400;600;700;800;900&family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=Noto+Serif+Devanagari:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Feather Icons -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.js"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f0f7ff',
+              100: '#e0effe',
+              500: '#0284c7',
+              600: '#0369a1',
+              700: '#075985',
+              800: '#0c4a6e',
+              900: '#00264d',
+              950: '#001a35'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            devanagari: ['Noto Sans Devanagari', 'sans-serif'],
+            serifdev: ['Noto Serif Devanagari', 'serif'],
+            martel: ['Martel', 'serif']
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Noto Sans Devanagari', 'Inter', -apple-system, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Custom Scrollbars */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0f172a;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #475569;
+    }
+
+    /* A4 Physical Paper Specifications */
+    .a4-page {
+      width: 210mm;
+      min-height: 297mm;
+      background: #ffffff;
+      color: #111827;
+      margin: 0 auto;
+      padding: 16mm 20mm 16mm 20mm;
+      position: relative;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.45);
+      border-radius: 2px;
+      font-family: 'Noto Sans Devanagari', 'Arial', sans-serif;
+      box-sizing: border-box;
+    }
+
+    .doc-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      margin-bottom: 12px;
+      font-size: 13px;
+    }
+
+    .doc-table th, 
+    .doc-table td {
+      border: 1px solid #1e293b;
+      padding: 6px 7px;
+      text-align: center;
+      vertical-align: middle;
+    }
+
+    .doc-table th {
+      background-color: #f1f5f9;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .editable-inline {
+      outline: none;
+      transition: background-color 0.15s, box-shadow 0.15s;
+      border-radius: 2px;
+      padding: 1px 3px;
+    }
+    .editable-inline:hover {
+      background-color: #fef08a;
+      box-shadow: 0 0 0 1px #eab308;
+    }
+    .editable-inline:focus {
+      background-color: #fef9c3;
+      box-shadow: 0 0 0 2px #ca8a04;
+    }
+
+    /* Print Styles */
+    @media print {
+      @page {
+        size: A4 portrait;
+        margin: 0;
+      }
+
+      html, body {
+        background: #ffffff !important;
+        color: #000000 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+        height: auto !important;
+        overflow: visible !important;
+      }
+
+      .no-print, 
+      #appHeader, 
+      #sidebarControls, 
+      #savedDrawer, 
+      #toastContainer,
+      .action-buttons {
+        display: none !important;
+      }
+
+      .a4-page {
+        box-shadow: none !important;
+        border: none !important;
+        width: 100% !important;
+        min-height: 297mm !important;
+        max-height: 297mm !important;
+        margin: 0 !important;
+        padding: 12mm 15mm 12mm 15mm !important;
+        display: block !important;
+        page-break-after: avoid !important;
+        page-break-inside: avoid !important;
+      }
+
+      .doc-table th, 
+      .doc-table td {
+        border: 1px solid #000000 !important;
+        color: #000000 !important;
+      }
+
+      .doc-table th {
+        background-color: #f3f4f6 !important;
+      }
+
+      * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        color-adjust: exact !important;
+      }
+    }
+  </style>
+</head>
+
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans selection:bg-sky-500 selection:text-white">
+
+  <!-- ================= TOP NAVIGATION BAR ================= -->
+  <header id="appHeader" class="bg-slate-900 border-b border-slate-800 sticky top-0 z-40 backdrop-blur-md bg-opacity-95 shadow-lg">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        
+        <!-- Left Brand -->
+        <div class="flex items-center space-x-3">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-sky-600 to-indigo-600 p-0.5 shadow-md shadow-sky-500/20 flex items-center justify-center">
+            <img src="pms-logo.png" alt="PMS Logo" class="w-9 h-9 object-contain rounded-lg" onerror="this.src='pms_round_logo.png'">
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <h1 class="text-base sm:text-lg font-bold text-white tracking-wide font-martel">पुलिस मॉडर्न स्कूल</h1>
+              <span class="text-xs bg-sky-500/20 border border-sky-400/30 text-sky-300 font-medium px-2 py-0.5 rounded-full">वेतनमान 25वीं वाहिनी</span>
+            </div>
+            <p class="text-xs text-slate-400 hidden sm:block">25वीं वाहिनी पीएसी, रायबरेली • स्टाफ सैलरी & क्लाउड बैकअप सिस्टम</p>
+          </div>
+        </div>
+
+        <!-- Middle Cloud Status Badge -->
+        <div class="hidden md:flex items-center space-x-2">
+          <div id="cloudStatusBadge" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-800 border border-slate-700 text-slate-300 text-xs font-medium transition-all shadow-inner">
+            <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+            <span id="cloudStatusText">क्लाउड से जुड़ रहा है...</span>
+          </div>
+          <span id="lastSavedIndicator" class="text-xs text-slate-400"></span>
+        </div>
+
+        <!-- Right Quick Actions -->
+        <div class="flex items-center space-x-2 sm:space-x-3">
+          
+          <!-- History / Saved Drawer Trigger -->
+          <button onclick="toggleSavedDrawer(true)" class="inline-flex items-center gap-1.5 px-3 py-2 text-xs sm:text-sm font-medium rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 transition-all hover:border-slate-600 shadow-sm active:scale-95" title="सुरक्षित वेतन रिकॉर्ड सूची">
+            <i data-feather="database" class="w-4 h-4 text-sky-400"></i>
+            <span class="hidden sm:inline">सुरक्षित रिकॉर्ड्स</span>
+            <span id="savedCountBadge" class="ml-1 bg-sky-600 text-white text-[11px] font-bold px-1.5 py-0.2 rounded-full">0</span>
+          </button>
+
+          <!-- Save to Cloud Button -->
+          <button id="btnSaveCloud" onclick="saveCurrentSheetToCloud()" class="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs sm:text-sm font-semibold rounded-lg bg-gradient-to-r from-sky-600 to-blue-600 hover:from-sky-500 hover:to-blue-500 text-white shadow-md shadow-sky-600/30 transition-all active:scale-95 hover:shadow-sky-500/40">
+            <i data-feather="cloud" class="w-4 h-4"></i>
+            <span>क्लाउड सेव</span>
+          </button>
+
+          <!-- Print / PDF Button -->
+          <button onclick="triggerPrintPDF()" class="inline-flex items-center gap-1.5 px-4 py-2 text-xs sm:text-sm font-semibold rounded-lg bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white shadow-md shadow-emerald-600/30 transition-all active:scale-95 hover:shadow-emerald-500/40">
+            <i data-feather="printer" class="w-4 h-4"></i>
+            <span>A4 प्रिंट / PDF</span>
+          </button>
+
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= MAIN WORKSPACE CONTAINER ================= -->
+  <main class="flex-1 max-w-7xl w-full mx-auto p-3 sm:p-5 lg:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+    <!-- LEFT COLUMN: CONTROLS & STAFF DATA EDITOR (5 Cols on LG) -->
+    <section class="lg:col-span-5 flex flex-col space-y-5 no-print">
+
+      <!-- Action Card 1: Letter Setup & Month Selection -->
+      <div class="bg-slate-900/90 rounded-2xl border border-slate-800 p-4 sm:p-5 shadow-xl relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-32 h-32 bg-sky-500/5 rounded-full blur-2xl pointer-events-none"></div>
+
+        <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-800">
+          <div class="flex items-center gap-2">
+            <div class="p-2 rounded-lg bg-sky-500/10 text-sky-400">
+              <i data-feather="file-text" class="w-4 h-4"></i>
+            </div>
+            <h2 class="text-sm font-bold text-slate-200 tracking-wide uppercase">वेतन पत्र विवरण</h2>
+          </div>
+          
+          <div class="flex items-center gap-1">
+            <button onclick="createNewSalarySheet()" class="text-xs bg-slate-800 hover:bg-slate-700 text-sky-400 hover:text-sky-300 font-medium px-2.5 py-1.5 rounded-lg border border-slate-700 flex items-center gap-1 transition" title="नया वेतन बिल बनाएं">
+              <i data-feather="plus-circle" class="w-3.5 h-3.5"></i>
+              <span>नया बिल</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 text-xs">
+          
+          <!-- Month & Year -->
+          <div>
+            <label class="block font-medium text-slate-400 mb-1">वेतन माह एवं वर्ष <span class="text-rose-400">*</span></label>
+            <div class="grid grid-cols-2 gap-1.5">
+              <select id="inputMonth" onchange="onMetadataChange()" class="bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-2 text-slate-100 text-xs focus:ring-2 focus:ring-sky-500 focus:border-transparent outline-none">
+                <option value="जनवरी">जनवरी</option>
+                <option value="फ़रवरी">फ़रवरी</option>
+                <option value="मार्च">मार्च</option>
+                <option value="अप्रैल">अप्रैल</option>
+                <option value="मई">मई</option>
+                <option value="जून" selected>जून</option>
+                <option value="जुलाई">जुलाई</option>
+                <option value="अगस्त">अगस्त</option>
+                <option value="सितम्बर">सितम्बर</option>
+                <option value="अक्टूबर">अक्टूबर</option>
+                <option value="नवम्बर">नवम्बर</option>
+                <option value="दिसम्बर">दिसम्बर</option>
+              </select>
+              <input type="number" id="inputYear" value="2026" onchange="onMetadataChange()" class="bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-2 text-slate-100 text-xs focus:ring-2 focus:ring-sky-500 outline-none">
+            </div>
+          </div>
+
+          <!-- Dispatch Ref No -->
+          <div>
+            <label class="block font-medium text-slate-400 mb-1">पत्रांक संख्या (Dispatch No.)</label>
+            <input type="text" id="inputPatrank" value="पीएमएस / 2026" oninput="onMetadataChange()" placeholder="उदा. पीएमएस / 2026" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-2 text-slate-100 text-xs focus:ring-2 focus:ring-sky-500 outline-none">
+          </div>
+
+          <!-- Letter Issue Date -->
+          <div>
+            <label class="block font-medium text-slate-400 mb-1">पत्र जारी दिनांक (Issue Date)</label>
+            <input type="text" id="inputDate" value="अगस्त , 2026" oninput="onMetadataChange()" placeholder="उदा. 15 अगस्त, 2026" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-2 text-slate-100 text-xs focus:ring-2 focus:ring-sky-500 outline-none">
+          </div>
+
+          <!-- Email / Contact -->
+          <div>
+            <label class="block font-medium text-slate-400 mb-1">ई-मेल आईडी</label>
+            <input type="text" id="inputEmail" value="policemodernschoolbmpacrb@gmail.com" oninput="onMetadataChange()" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-2 text-slate-100 text-xs focus:ring-2 focus:ring-sky-500 outline-none">
+          </div>
+
+          <!-- Signatory Designation -->
+          <div class="sm:col-span-2">
+            <label class="block font-medium text-slate-400 mb-1">हस्ताक्षरकर्ता पद (Signatory Designation)</label>
+            <select id="inputSignatory" onchange="onMetadataChange()" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-2 text-slate-100 text-xs focus:ring-2 focus:ring-sky-500 outline-none">
+              <option value="प्रभारी प्रधानाचार्या" selected>प्रभारी प्रधानाचार्या (Officiating Principal)</option>
+              <option value="कार्यवाहक प्रधानाचार्या">कार्यवाहक प्रधानाचार्या (Acting Principal)</option>
+              <option value="प्रधानाचार्या">प्रधानाचार्या (Principal)</option>
+              <option value="प्रधानाध्यापक">प्रधानाध्यापक (Headmaster)</option>
+            </select>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Action Card 2: Staff Table Data Grid Editor -->
+      <div class="bg-slate-900/90 rounded-2xl border border-slate-800 p-4 sm:p-5 shadow-xl flex flex-col flex-1">
+        
+        <div class="flex items-center justify-between mb-3 pb-2 border-b border-slate-800">
+          <div class="flex items-center gap-2">
+            <div class="p-2 rounded-lg bg-emerald-500/10 text-emerald-400">
+              <i data-feather="users" class="w-4 h-4"></i>
+            </div>
+            <div>
+              <h2 class="text-sm font-bold text-slate-200 tracking-wide uppercase">स्टाफ सूची एवं वेतन प्रविष्टि</h2>
+              <p class="text-[11px] text-slate-400"><span id="staffCountLabel">0</span> कर्मचारी शामिल</p>
+            </div>
+          </div>
+
+          <!-- Add Staff Button -->
+          <div class="flex items-center gap-1.5">
+            <!-- Preset Quick Add Dropdown -->
+            <button onclick="openPresetStaffModal()" class="text-xs bg-slate-800 hover:bg-slate-700 text-amber-400 hover:text-amber-300 font-medium px-2.5 py-1.5 rounded-lg border border-slate-700 flex items-center gap-1 transition" title="पुराने स्टाफ से त्वरित जोड़ें">
+              <i data-feather="user-check" class="w-3.5 h-3.5"></i>
+              <span>स्टाफ डायरेक्टरी</span>
+            </button>
+            <button onclick="addNewStaffRow()" class="text-xs bg-emerald-600 hover:bg-emerald-500 text-white font-semibold px-2.5 py-1.5 rounded-lg shadow-sm flex items-center gap-1 transition active:scale-95">
+              <i data-feather="plus" class="w-3.5 h-3.5"></i>
+              <span>पंक्ति जोड़ें</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Scrollable Staff Item Cards -->
+        <div id="staffListEditor" class="space-y-3 max-h-[460px] overflow-y-auto pr-1">
+          <!-- Dynamically Rendered via JS -->
+        </div>
+
+        <!-- Total Calculation Footer inside Editor -->
+        <div class="mt-4 pt-3 border-t border-slate-800 bg-slate-950/60 -mx-4 -mb-4 p-4 rounded-b-2xl flex items-center justify-between">
+          <div>
+            <div class="text-[11px] text-slate-400 uppercase tracking-wider font-semibold">कुल देय धनराशि (Total Payable)</div>
+            <div id="editorTotalAmount" class="text-lg font-extrabold text-emerald-400 font-martel">₹0.00</div>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="calculateAllFullPay()" class="text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-2.5 py-1.5 rounded-lg border border-slate-700 transition" title="सभी का देय वेतन मूल वेतनमान के बराबर करें">
+              ⚡ 100% पूरा वेतन
+            </button>
+            <button onclick="clearAllStaff()" class="text-[11px] bg-rose-950/40 hover:bg-rose-900/60 text-rose-300 border border-rose-800/40 px-2.5 py-1.5 rounded-lg transition" title="सभी पंक्तियाँ हटाएं">
+              🗑️ खाली करें
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Quick Template Loaders -->
+      <div class="bg-slate-900/60 rounded-xl border border-slate-800/80 p-3.5 flex items-center justify-between text-xs">
+        <div class="flex items-center gap-2 text-slate-300">
+          <i data-feather="bookmark" class="w-4 h-4 text-sky-400"></i>
+          <span class="font-medium">मूलभूत टेम्पलेट्स (Default Samples):</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <button onclick="loadSampleMonth('june')" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium border border-slate-700 transition">
+            जून 2026
+          </button>
+          <button onclick="loadSampleMonth('july')" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium border border-slate-700 transition">
+            जुलाई 2026
+          </button>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- RIGHT COLUMN: OFFICIAL A4 DOCUMENT REAL-TIME PREVIEW (7 Cols on LG) -->
+    <section class="lg:col-span-7 flex flex-col items-center">
+      
+      <!-- Preview Header Toolbar -->
+      <div class="w-full max-w-[210mm] flex items-center justify-between mb-3 px-2 text-xs text-slate-400 no-print">
+        <div class="flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+          <span class="font-semibold text-slate-200">A4 ओरिजिनल प्रिंट पूर्वावलोकन (Live Document)</span>
+        </div>
+        <div class="flex items-center gap-3">
+          <span class="text-[11px] text-slate-400 hidden sm:inline">💡 सीधे प्रिंट के लिए Ctrl + P दबाएं</span>
+          <button onclick="triggerPrintPDF()" class="text-xs text-emerald-400 hover:text-emerald-300 font-semibold flex items-center gap-1">
+            <i data-feather="printer" class="w-3.5 h-3.5"></i>
+            प्रिंट
+          </button>
+        </div>
+      </div>
+
+      <!-- The Real A4 Sheet for Display & Printing -->
+      <div id="salaryDocumentPage" class="a4-page">
+        
+        <!-- Header Title -->
+        <div class="text-center font-bold text-[19px] sm:text-[21px] text-black mb-4 font-martel tracking-wide border-b border-transparent pb-1">
+          कार्यालय पुलिस माडर्न स्कूल 25वीं वाहिनी पीएसी रायबरेली
+        </div>
+
+        <!-- Sub Header: Dispatch No & Email/Date -->
+        <div class="flex justify-between items-start text-[13px] text-black mb-4 leading-tight">
+          <div class="font-medium">
+            पत्रांक संख्या-<span id="docPatrank" class="font-semibold">पीएमएस / 2026</span>
+          </div>
+          <div class="text-right">
+            ई-मेल - <span id="docEmail">policemodernschoolbmpacrb@gmail.com</span><br>
+            दिनांक- <span id="docDate" class="font-semibold">अगस्त , 2026</span>
+          </div>
+        </div>
+
+        <!-- Address To Authority -->
+        <div class="text-[13px] text-black mb-3 leading-relaxed">
+          सेवा में,<br>
+          श्रीमान सेनानायक महोदय<br>
+          25वीं वाहिनी पीएसी<br>
+          रायबरेली।
+        </div>
+
+        <!-- Subject Line -->
+        <div class="text-[13px] text-black mb-3.5 text-justify leading-relaxed indent-8">
+          सादर अनुरोध है कि पुलिस माडर्न स्कूल 25वीं वाहिनी पीएसी रायबरेली के स्टाफ का <strong id="docMonthSubject" class="font-bold">जून माह-2026</strong> का वेतनमान निम्नप्रकार है-
+        </div>
+
+        <!-- Staff Salary Table -->
+        <table class="doc-table">
+          <thead>
+            <tr>
+              <th style="width: 7%;">कम सं०</th>
+              <th style="width: 26%;">नाम</th>
+              <th style="width: 22%;">पद</th>
+              <th style="width: 20%;">खाता सं०</th>
+              <th style="width: 14%;">IFSC</th>
+              <th style="width: 11%;">वेतनमान</th>
+              <th style="width: 12%;">देय वेतन</th>
+            </tr>
+          </thead>
+          <tbody id="docTableBody">
+            <!-- Populated Dynamically -->
+          </tbody>
+          <tfoot>
+            <tr style="font-weight: bold; background-color: #fafafa;">
+              <td colspan="6" style="text-align: right; padding-right: 18px; font-size: 13px;">योग-</td>
+              <td id="docTotalCell" style="text-align: center; font-size: 13px; font-weight: 800;">₹0.00</td>
+            </tr>
+          </tfoot>
+        </table>
+
+        <!-- Conclusion & Cheque Request Paragraph -->
+        <div class="text-[13px] text-black mb-10 text-justify leading-relaxed indent-8 mt-4">
+          अतः महोदय से अनुरोध है कि उपरोक्त धन <strong id="docConclusionAmount" class="font-bold">रू0.00 (शून्य रुपये मात्र)</strong> पुलिस माडर्न स्कूल फण्ड से निर्गत करने की कृपा करें।
+        </div>
+
+        <!-- Official Signatures Block -->
+        <div class="flex justify-between items-end mt-12 text-[13px] text-black">
+          <div class="font-semibold">
+            सधन्यवाद
+          </div>
+          <div class="text-center leading-snug">
+            <div id="docSignatoryTitle" class="font-bold">प्रभारी प्रधानाचार्या</div>
+            <div>पुलिस माडर्न स्कूल</div>
+            <div>25वीं वाहिनी पीएसी</div>
+            <div>रायबरेली।</div>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- ================= SAVED RECORDS CLOUD DRAWER / MODAL ================= -->
+  <div id="savedDrawer" class="fixed inset-0 z-50 overflow-hidden hidden" aria-labelledby="slide-over-title" role="dialog" aria-modal="true">
+    <div class="absolute inset-0 bg-slate-950/80 backdrop-blur-sm transition-opacity" onclick="toggleSavedDrawer(false)"></div>
+
+    <div class="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
+      <div class="pointer-events-auto w-screen max-w-md bg-slate-900 border-l border-slate-800 shadow-2xl flex flex-col">
+        
+        <!-- Drawer Header -->
+        <div class="p-5 border-b border-slate-800 flex items-center justify-between bg-slate-900/80">
+          <div class="flex items-center gap-2.5">
+            <div class="p-2 rounded-lg bg-sky-500/10 text-sky-400">
+              <i data-feather="cloud" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <h3 class="text-base font-bold text-white">क्लाउड बैकअप एवं सुरक्षित रिकॉर्ड्स</h3>
+              <p class="text-xs text-slate-400">Firestore Cloud Database Records</p>
+            </div>
+          </div>
+          <button onclick="toggleSavedDrawer(false)" class="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition">
+            <i data-feather="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+
+        <!-- Drawer Search & Controls -->
+        <div class="p-4 border-b border-slate-800 bg-slate-950/40 space-y-2.5">
+          <div class="relative">
+            <i data-feather="search" class="w-4 h-4 text-slate-500 absolute left-3 top-3"></i>
+            <input type="text" id="drawerSearchInput" oninput="filterSavedDrawerList()" placeholder="माह या वर्ष से खोजें..." class="w-full bg-slate-900 border border-slate-700 rounded-lg pl-9 pr-3 py-2 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-sky-500">
+          </div>
+          <div class="flex items-center justify-between text-xs">
+            <span class="text-slate-400"><span id="drawerTotalCount">0</span> रिकॉर्ड सुरक्षित हैं</span>
+            <div class="flex items-center gap-2">
+              <button onclick="exportAllAsJSON()" class="text-[11px] text-sky-400 hover:underline flex items-center gap-1" title="JSON बैकअप डाउनलोड करें">
+                <i data-feather="download" class="w-3 h-3"></i> बैकअप फाइल
+              </button>
+              <label class="text-[11px] text-emerald-400 hover:underline cursor-pointer flex items-center gap-1" title="JSON बैकअप से पुनर्स्थापित करें">
+                <i data-feather="upload" class="w-3 h-3"></i> रीस्टोर
+                <input type="file" id="jsonImportInput" accept=".json" class="hidden" onchange="importFromJSONFile(event)">
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Drawer Records List -->
+        <div id="drawerRecordsContainer" class="flex-1 overflow-y-auto p-4 space-y-3">
+          <!-- Dynamically Rendered via JS -->
+        </div>
+
+        <!-- Drawer Footer -->
+        <div class="p-4 border-t border-slate-800 bg-slate-950/60 flex items-center justify-between text-xs text-slate-400">
+          <div class="flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+            <span>ऑटो-लोकल बैकअप सक्रिय</span>
+          </div>
+          <button onclick="syncAllFromCloud()" class="text-sky-400 hover:text-sky-300 font-semibold flex items-center gap-1">
+            <i data-feather="refresh-cw" class="w-3.5 h-3.5"></i>
+            रिफ्रेश
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= STAFF DIRECTORY PRESETS MODAL ================= -->
+  <div id="presetStaffModal" class="fixed inset-0 z-50 overflow-hidden hidden" role="dialog" aria-modal="true">
+    <div class="absolute inset-0 bg-slate-950/80 backdrop-blur-sm" onclick="closePresetStaffModal()"></div>
+    <div class="fixed inset-0 flex items-center justify-center p-4">
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-lg w-full p-5 shadow-2xl relative">
+        <div class="flex items-center justify-between mb-4 pb-2 border-b border-slate-800">
+          <div class="flex items-center gap-2">
+            <i data-feather="book-open" class="w-5 h-5 text-amber-400"></i>
+            <h3 class="text-sm font-bold text-white">स्टाफ डायरेक्टरी (PMS Staff Directory)</h3>
+          </div>
+          <button onclick="closePresetStaffModal()" class="text-slate-400 hover:text-white">
+            <i data-feather="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+
+        <p class="text-xs text-slate-400 mb-3">किसी भी नियमित स्टाफ को क्लिक करके तुरंत बिल में जोड़ें:</p>
+
+        <div id="presetStaffList" class="space-y-2 max-h-72 overflow-y-auto pr-1">
+          <!-- Populated dynamically from known staff master -->
+        </div>
+
+        <div class="mt-4 pt-3 border-t border-slate-800 flex justify-end">
+          <button onclick="closePresetStaffModal()" class="px-4 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-lg">
+            बंद करें
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= FLOATING TOAST NOTIFICATION CONTAINER ================= -->
+  <div id="toastContainer" class="fixed bottom-5 right-5 z-50 space-y-2 pointer-events-none"></div>
+
+  <!-- ================= FIREBASE INITIALIZATION & APPLICATION LOGIC ================= -->
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js';
+    import { 
+      initializeFirestore, 
+      collection, 
+      doc, 
+      setDoc, 
+      getDocs, 
+      deleteDoc 
+    } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
+
+    // Firebase Configuration from PMS Environment
+    const firebaseConfig = {
+      apiKey: "AIzaSyDsVKuptdW4jRWQ5rLX_h_fn53xuFoYVMI",
+      authDomain: "abcreport-27dea.firebaseapp.com",
+      projectId: "abcreport-27dea",
+      storageBucket: "abcreport-27dea.firebasestorage.app",
+      messagingSenderId: "1422972209",
+      appId: "1:1422972209:web:82fbc39400d75566d8cc10"
+    };
+
+    const COLLECTION_NAME = 'pms_staff_salary';
+    let app = null;
+    let db = null;
+    let isCloudConnected = false;
+
+    // Staff Master Preset Directory
+    const STAFF_MASTER = [
+      { name: "श्रीमती सविता सिंह", designation: "कार्यवाहक प्रधानाचार्या", accountNo: "09760100040248", ifsc: "BARB0MALIKM", baseScale: 6000.00 },
+      { name: "श्रीमती अनीता", designation: "सहायक अध्यापिका", accountNo: "110246228888", ifsc: "CNRB0000267", baseScale: 5250.00 },
+      { name: "श्रीमती अंजलि यादव", designation: "सहायक अध्यापिका", accountNo: "50550100022457", ifsc: "BARB0BUPGBX", baseScale: 5250.00 },
+      { name: "कु० अंचल यादव", designation: "सहायक अध्यापिका", accountNo: "44236642681", ifsc: "SBIN0001218", baseScale: 5250.00 },
+      { name: "कु० वैष्णवी शर्मा", designation: "सहायक अध्यापिका", accountNo: "58400100006436", ifsc: "BARB0BUPGBX", baseScale: 5250.00 },
+      { name: "कु० संध्या", designation: "सहायक अध्यापिका", accountNo: "00520100029181", ifsc: "BARB0RAEBAR", baseScale: 5250.00 },
+      { name: "कु० अनीता निर्मल", designation: "आया", accountNo: "58400100001740", ifsc: "BARB0BUPGBX", baseScale: 4000.00 }
+    ];
+
+    // Initial Default Datasets for June 2026 & July 2026
+    const DEFAULT_DATASETS = {
+      "june_2026": {
+        id: "salary_june_2026",
+        month: "जून",
+        year: 2026,
+        patrank: "पीएमएस / 2026",
+        issueDate: "अगस्त , 2026",
+        email: "policemodernschoolbmpacrb@gmail.com",
+        signatory: "प्रभारी प्रधानाचार्या",
+        staff: [
+          { name: "कु० अंचल यादव", designation: "सहायक अध्यापिका", accountNo: "44236642681", ifsc: "SBIN0001218", baseScale: 5250.00, payable: 875.00 },
+          { name: "कु० वैष्णवी शर्मा", designation: "सहायक अध्यापिका", accountNo: "58400100006436", ifsc: "BARB0BUPGBX", baseScale: 5250.00, payable: 875.00 }
+        ],
+        updatedAt: new Date().toISOString()
+      },
+      "july_2026": {
+        id: "salary_july_2026",
+        month: "जुलाई",
+        year: 2026,
+        patrank: "पीएमएस / 2026",
+        issueDate: "अगस्त , 2026",
+        email: "policemodernschoolbmpacrb@gmail.com",
+        signatory: "प्रभारी प्रधानाचार्या",
+        staff: [
+          { name: "श्रीमती सविता सिंह", designation: "कार्यवाहक प्रधानाचार्या", accountNo: "09760100040248", ifsc: "BARB0MALIKM", baseScale: 6000.00, payable: 6000.00 },
+          { name: "श्रीमती अनीता", designation: "सहायक अध्यापिका", accountNo: "110246228888", ifsc: "CNRB0000267", baseScale: 5250.00, payable: 4375.00 },
+          { name: "श्रीमती अंजलि यादव", designation: "सहायक अध्यापिका", accountNo: "50550100022457", ifsc: "BARB0BUPGBX", baseScale: 5250.00, payable: 3150.00 },
+          { name: "कु० अंचल यादव", designation: "सहायक अध्यापिका", accountNo: "44236642681", ifsc: "SBIN0001218", baseScale: 5250.00, payable: 5250.00 },
+          { name: "कु० वैष्णवी शर्मा", designation: "सहायक अध्यापिका", accountNo: "58400100006436", ifsc: "BARB0BUPGBX", baseScale: 5250.00, payable: 5250.00 },
+          { name: "कु० संध्या", designation: "सहायक अध्यापिका", accountNo: "00520100029181", ifsc: "BARB0RAEBAR", baseScale: 5250.00, payable: 3150.00 },
+          { name: "कु० अनीता निर्मल", designation: "आया", accountNo: "58400100001740", ifsc: "BARB0BUPGBX", baseScale: 4000.00, payable: 3333.33 }
+        ],
+        updatedAt: new Date().toISOString()
+      }
+    };
+
+    // Current Working State
+    window.currentSheet = {
+      id: null,
+      month: "जुलाई",
+      year: 2026,
+      patrank: "पीएमएस / 2026",
+      issueDate: "अगस्त , 2026",
+      email: "policemodernschoolbmpacrb@gmail.com",
+      signatory: "प्रभारी प्रधानाचार्या",
+      staff: JSON.parse(JSON.stringify(DEFAULT_DATASETS["july_2026"].staff))
+    };
+
+    window.savedRecordsCache = [];
+
+    // Initialize Firebase
+    try {
+      app = initializeApp(firebaseConfig);
+      db = initializeFirestore(app, { experimentalAutoDetectLongPolling: true });
+      isCloudConnected = true;
+      updateCloudStatusUI(true);
+    } catch (err) {
+      console.warn("Firestore Init Error in staff_salary:", err);
+      isCloudConnected = false;
+      updateCloudStatusUI(false);
+    }
+
+    function updateCloudStatusUI(connected) {
+      const badge = document.getElementById('cloudStatusBadge');
+      const text = document.getElementById('cloudStatusText');
+      if (!badge || !text) return;
+
+      if (connected) {
+        badge.className = "inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-950/80 border border-emerald-700/60 text-emerald-300 text-xs font-medium shadow-inner";
+        badge.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span><span>क्लाउड सक्रिय (Firestore)</span>`;
+      } else {
+        badge.className = "inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-950/80 border border-rose-700/60 text-rose-300 text-xs font-medium shadow-inner";
+        badge.innerHTML = `<span class="w-2 h-2 rounded-full bg-rose-400"></span><span>ऑफलाइन बैकअप</span>`;
+      }
+    }
+
+    // Number to Hindi Words for Currency (Indian System)
+    window.numberToHindiWords = function(num) {
+      if (isNaN(num) || num === 0) return "शून्य रुपये मात्र";
+      
+      const ones = ["", "एक", "दो", "तीन", "चार", "पाँच", "छह", "सात", "आठ", "नौ", "दस",
+        "ग्यारह", "बारह", "तेरह", "चौदह", "पन्द्रह", "सोलह", "सत्रह", "अट्ठारह", "उन्नीस", "बीस",
+        "इक्कीस", "बाईस", "तेईस", "चौबीस", "पच्चीस", "छब्बीस", "सत्ताईस", "अट्ठाईस", "उनतीस", "तीस",
+        "इकतीस", "बत्तीस", "तैंतीस", "चौंतीस", "पैंतीस", "छत्तीस", "सैंतीस", "अड़तीस", "उनतालीस", "चालीस",
+        "इकतालीस", "बयालीस", "तैंतालीस", "चवालीस", "पैंतालीस", "छियालीस", "सैंतालीस", "अड़तालीस", "उनचास", "पचास",
+        "इक्यावन", "बावन", "तिरेपन", "चौवन", "पचपन", "छप्पन", "सत्तावन", "अट्ठावन", "उनसठ", "साठ",
+        "इकसठ", "बासठ", "तिरेसठ", "चौंसठ", "पैंसठ", "छियासठ", "सरसठ", "अड़सठ", "उनहत्तर", "सत्तर",
+        "इकहत्तर", "बहत्तर", "तिहत्तर", "चौहत्तर", "पचहत्तर", "छिहत्तर", "सतहत्तर", "अठहत्तर", "उन्नासी", "अस्सी",
+        "इक्यासी", "बयासी", "तिरासी", "चौरासी", "पचासी", "छियासी", "सत्तासी", "अट्ठासी", "नवासी", "नब्बे",
+        "इक्यानवे", "बानवे", "तिरानवे", "चौरानवे", "पंचानवे", "छियानवे", "सत्तानवे", "अट्ठानवे", "निन्यानवे"];
+
+      function convertBelowThousand(n) {
+        let str = "";
+        if (n >= 100) {
+          str += ones[Math.floor(n / 100)] + " सौ ";
+          n %= 100;
+        }
+        if (n > 0) {
+          str += ones[n] + " ";
+        }
+        return str.trim();
+      }
+
+      const totalParts = num.toFixed(2).split(".");
+      let rupees = parseInt(totalParts[0], 10);
+      let paise = parseInt(totalParts[1], 10);
+
+      let words = "";
+
+      // Crores
+      if (rupees >= 10000000) {
+        let cr = Math.floor(rupees / 10000000);
+        words += convertBelowThousand(cr) + " करोड़ ";
+        rupees %= 10000000;
+      }
+      // Lakhs
+      if (rupees >= 100000) {
+        let lk = Math.floor(rupees / 100000);
+        words += convertBelowThousand(lk) + " लाख ";
+        rupees %= 100000;
+      }
+      // Thousands
+      if (rupees >= 1000) {
+        let th = Math.floor(rupees / 1000);
+        words += convertBelowThousand(th) + " हजार ";
+        rupees %= 1000;
+      }
+      // Remaining under 1000
+      if (rupees > 0) {
+        words += convertBelowThousand(rupees) + " ";
+      }
+
+      words = words.trim();
+      if (words === "") words = "शून्य";
+      words += " रुपये";
+
+      if (paise > 0) {
+        words += " " + convertBelowThousand(paise) + " पैसे";
+      }
+
+      words += " मात्र";
+      return words.replace(/\s+/g, ' ');
+    };
+
+    // Show Toast Notification
+    window.showToast = function(message, type = 'info') {
+      const container = document.getElementById('toastContainer');
+      if (!container) return;
+
+      const toast = document.createElement('div');
+      const colors = {
+        success: 'bg-emerald-600 text-white border-emerald-500 shadow-emerald-500/20',
+        error: 'bg-rose-600 text-white border-rose-500 shadow-rose-500/20',
+        info: 'bg-sky-600 text-white border-sky-500 shadow-sky-500/20',
+        warning: 'bg-amber-600 text-white border-amber-500 shadow-amber-500/20'
+      };
+
+      toast.className = `px-4 py-2.5 rounded-xl border shadow-xl text-xs font-semibold flex items-center gap-2 transform transition-all duration-300 translate-y-2 opacity-0 pointer-events-auto ${colors[type] || colors.info}`;
+      toast.innerHTML = `<span>${message}</span>`;
+      container.appendChild(toast);
+
+      requestAnimationFrame(() => {
+        toast.classList.remove('translate-y-2', 'opacity-0');
+      });
+
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'translate-y-2');
+        setTimeout(() => toast.remove(), 300);
+      }, 3500);
+    };
+
+    // Render Editor & Document Preview
+    window.renderAll = function() {
+      // 1. Sync Input Controls
+      document.getElementById('inputMonth').value = window.currentSheet.month || 'जुलाई';
+      document.getElementById('inputYear').value = window.currentSheet.year || 2026;
+      document.getElementById('inputPatrank').value = window.currentSheet.patrank || 'पीएमएस / 2026';
+      document.getElementById('inputDate').value = window.currentSheet.issueDate || 'अगस्त , 2026';
+      document.getElementById('inputEmail').value = window.currentSheet.email || 'policemodernschoolbmpacrb@gmail.com';
+      document.getElementById('inputSignatory').value = window.currentSheet.signatory || 'प्रभारी प्रधानाचार्या';
+
+      // 2. Render Left Editor Staff Cards
+      const editorList = document.getElementById('staffListEditor');
+      editorList.innerHTML = '';
+      
+      let totalPayable = 0;
+      window.currentSheet.staff.forEach((st, idx) => {
+        const pay = parseFloat(st.payable || 0);
+        totalPayable += pay;
+
+        const card = document.createElement('div');
+        card.className = "bg-slate-950/80 border border-slate-800 rounded-xl p-3 text-xs hover:border-slate-700 transition relative group";
+        card.innerHTML = `
+          <div class="flex items-center justify-between mb-2 pb-1.5 border-b border-slate-800/80">
+            <div class="flex items-center gap-2">
+              <span class="w-5 h-5 rounded-full bg-slate-800 text-sky-400 font-bold flex items-center justify-center text-[11px]">${idx + 1}</span>
+              <span class="font-bold text-slate-200">${st.name || 'कर्मचारी का नाम'}</span>
+              <span class="text-[10px] text-slate-400 bg-slate-900 px-1.5 py-0.5 rounded border border-slate-800">${st.designation || 'पद'}</span>
+            </div>
+            <div class="flex items-center gap-1">
+              <button onclick="moveStaffRow(${idx}, -1)" ${idx === 0 ? 'disabled class="opacity-30 p-1 text-slate-500"' : 'class="p-1 text-slate-400 hover:text-white"'} title="ऊपर करें">
+                <i data-feather="chevron-up" class="w-3.5 h-3.5"></i>
+              </button>
+              <button onclick="moveStaffRow(${idx}, 1)" ${idx === window.currentSheet.staff.length - 1 ? 'disabled class="opacity-30 p-1 text-slate-500"' : 'class="p-1 text-slate-400 hover:text-white"'} title="नीचे करें">
+                <i data-feather="chevron-down" class="w-3.5 h-3.5"></i>
+              </button>
+              <button onclick="deleteStaffRow(${idx})" class="p-1 text-rose-400 hover:text-rose-300 hover:bg-rose-950/40 rounded transition" title="हटाएं">
+                <i data-feather="trash-2" class="w-3.5 h-3.5"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+            <div>
+              <label class="text-[10px] text-slate-500 block mb-0.5">कर्मचारी का नाम</label>
+              <input type="text" value="${st.name || ''}" oninput="updateStaffField(${idx}, 'name', this.value)" class="w-full bg-slate-900 border border-slate-700/80 rounded px-2 py-1 text-slate-100 text-xs focus:ring-1 focus:ring-sky-500 outline-none">
+            </div>
+            <div>
+              <label class="text-[10px] text-slate-500 block mb-0.5">पद / पदनाम</label>
+              <input type="text" value="${st.designation || ''}" oninput="updateStaffField(${idx}, 'designation', this.value)" class="w-full bg-slate-900 border border-slate-700/80 rounded px-2 py-1 text-slate-100 text-xs focus:ring-1 focus:ring-sky-500 outline-none">
+            </div>
+            <div>
+              <label class="text-[10px] text-slate-500 block mb-0.5">बैंक खाता सं०</label>
+              <input type="text" value="${st.accountNo || ''}" oninput="updateStaffField(${idx}, 'accountNo', this.value)" class="w-full bg-slate-900 border border-slate-700/80 rounded px-2 py-1 text-slate-100 text-xs focus:ring-1 focus:ring-sky-500 outline-none font-mono">
+            </div>
+            <div>
+              <label class="text-[10px] text-slate-500 block mb-0.5">बैंक IFSC कोड</label>
+              <input type="text" value="${st.ifsc || ''}" oninput="updateStaffField(${idx}, 'ifsc', this.value)" class="w-full bg-slate-900 border border-slate-700/80 rounded px-2 py-1 text-slate-100 text-xs focus:ring-1 focus:ring-sky-500 outline-none font-mono uppercase">
+            </div>
+            <div>
+              <label class="text-[10px] text-slate-500 block mb-0.5">मूल वेतनमान (₹)</label>
+              <input type="number" step="0.01" value="${st.baseScale || 0}" oninput="updateStaffField(${idx}, 'baseScale', this.value)" class="w-full bg-slate-900 border border-slate-700/80 rounded px-2 py-1 text-slate-100 text-xs focus:ring-1 focus:ring-sky-500 outline-none font-mono">
+            </div>
+            <div>
+              <label class="text-[10px] text-emerald-400 font-semibold block mb-0.5">देय वेतन (₹)</label>
+              <input type="number" step="0.01" value="${st.payable || 0}" oninput="updateStaffField(${idx}, 'payable', this.value)" class="w-full bg-slate-900 border border-emerald-600/70 rounded px-2 py-1 text-emerald-300 font-bold text-xs focus:ring-1 focus:ring-emerald-400 outline-none font-mono">
+            </div>
+          </div>
+        `;
+        editorList.appendChild(card);
+      });
+
+      document.getElementById('staffCountLabel').innerText = window.currentSheet.staff.length;
+      document.getElementById('editorTotalAmount').innerText = '₹' + totalPayable.toFixed(2);
+
+      // 3. Render Right A4 Official Sheet
+      document.getElementById('docPatrank').innerText = window.currentSheet.patrank || 'पीएमएस / 2026';
+      document.getElementById('docEmail').innerText = window.currentSheet.email || 'policemodernschoolbmpacrb@gmail.com';
+      document.getElementById('docDate').innerText = window.currentSheet.issueDate || 'अगस्त , 2026';
+      document.getElementById('docMonthSubject').innerText = `${window.currentSheet.month || 'जुलाई'} माह-${window.currentSheet.year || '2026'}`;
+      document.getElementById('docSignatoryTitle').innerText = window.currentSheet.signatory || 'प्रभारी प्रधानाचार्या';
+
+      const docTbody = document.getElementById('docTableBody');
+      docTbody.innerHTML = '';
+
+      if (window.currentSheet.staff.length === 0) {
+        docTbody.innerHTML = `<tr><td colspan="7" class="text-slate-400 italic py-4">कोई स्टाफ प्रविष्टि नहीं है। कृपया बाईं ओर से स्टाफ जोड़ें।</td></tr>`;
+      } else {
+        window.currentSheet.staff.forEach((st, i) => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td style="font-weight: 600;">${i + 1}.</td>
+            <td style="text-align: left; padding-left: 8px; font-weight: 600;">${st.name || ''}</td>
+            <td style="text-align: left; padding-left: 8px;">${st.designation || ''}</td>
+            <td style="font-family: monospace; letter-spacing: 0.5px;">${st.accountNo || ''}</td>
+            <td style="font-family: monospace; letter-spacing: 0.5px;">${st.ifsc || ''}</td>
+            <td>₹${parseFloat(st.baseScale || 0).toFixed(2)}</td>
+            <td style="font-weight: 700;">₹${parseFloat(st.payable || 0).toFixed(2)}</td>
+          `;
+          docTbody.appendChild(row);
+        });
+      }
+
+      document.getElementById('docTotalCell').innerText = '₹' + totalPayable.toFixed(2);
+      
+      // Hindi Words for amount in conclusion
+      const hindiAmountWords = window.numberToHindiWords(totalPayable);
+      document.getElementById('docConclusionAmount').innerText = `रू${totalPayable.toFixed(2)} (${hindiAmountWords})`;
+
+      // Refresh feather icons
+      if (window.feather) feather.replace();
+    };
+
+    // Events & Mutation handlers
+    window.onMetadataChange = function() {
+      window.currentSheet.month = document.getElementById('inputMonth').value;
+      window.currentSheet.year = parseInt(document.getElementById('inputYear').value, 10) || 2026;
+      window.currentSheet.patrank = document.getElementById('inputPatrank').value;
+      window.currentSheet.issueDate = document.getElementById('inputDate').value;
+      window.currentSheet.email = document.getElementById('inputEmail').value;
+      window.currentSheet.signatory = document.getElementById('inputSignatory').value;
+      renderAll();
+      saveToLocalStorage();
+    };
+
+    window.updateStaffField = function(index, field, value) {
+      if (!window.currentSheet.staff[index]) return;
+      if (field === 'baseScale' || field === 'payable') {
+        window.currentSheet.staff[index][field] = parseFloat(value) || 0;
+      } else {
+        window.currentSheet.staff[index][field] = value;
+      }
+      renderAll();
+      saveToLocalStorage();
+    };
+
+    window.addNewStaffRow = function(preset = null) {
+      const newStaff = preset ? { ...preset } : {
+        name: "नया कर्मचारी",
+        designation: "सहायक अध्यापिका",
+        accountNo: "",
+        ifsc: "BARB0BUPGBX",
+        baseScale: 5250.00,
+        payable: 5250.00
+      };
+      window.currentSheet.staff.push(newStaff);
+      renderAll();
+      saveToLocalStorage();
+      showToast(`${newStaff.name} को सूची में जोड़ा गया`, 'success');
+    };
+
+    window.deleteStaffRow = function(index) {
+      if (confirm(`क्या आप इस पंक्ति को हटाना चाहते हैं?`)) {
+        window.currentSheet.staff.splice(index, 1);
+        renderAll();
+        saveToLocalStorage();
+        showToast("पंक्ति हटाई गई", 'info');
+      }
+    };
+
+    window.moveStaffRow = function(index, direction) {
+      const newIdx = index + direction;
+      if (newIdx < 0 || newIdx >= window.currentSheet.staff.length) return;
+      const item = window.currentSheet.staff.splice(index, 1)[0];
+      window.currentSheet.staff.splice(newIdx, 0, item);
+      renderAll();
+      saveToLocalStorage();
+    };
+
+    window.calculateAllFullPay = function() {
+      window.currentSheet.staff.forEach(s => {
+        s.payable = parseFloat(s.baseScale) || 0;
+      });
+      renderAll();
+      saveToLocalStorage();
+      showToast("सभी कर्मचारियों का देय वेतन पूर्ण वेतनमान पर सेट किया गया", 'success');
+    };
+
+    window.clearAllStaff = function() {
+      if (confirm("क्या आप सभी स्टाफ प्रविष्टियाँ खाली करना चाहते हैं?")) {
+        window.currentSheet.staff = [];
+        renderAll();
+        saveToLocalStorage();
+        showToast("सभी पंक्तियाँ खाली की गईं", 'warning');
+      }
+    };
+
+    window.createNewSalarySheet = function() {
+      if (confirm("नया वेतन बिल बनाएं? (वर्तमान परिवर्तन क्लाउड में सुरक्षित होना सुनिश्चित करें)")) {
+        window.currentSheet = {
+          id: null,
+          month: "अगस्त",
+          year: 2026,
+          patrank: "पीएमएस / 2026",
+          issueDate: new Date().toLocaleDateString('hi-IN', { month: 'long', year: 'numeric' }),
+          email: "policemodernschoolbmpacrb@gmail.com",
+          signatory: "प्रभारी प्रधानाचार्या",
+          staff: JSON.parse(JSON.stringify(STAFF_MASTER))
+        };
+        renderAll();
+        showToast("नया वेतन बिल तैयार है", 'info');
+      }
+    };
+
+    window.loadSampleMonth = function(monthKey) {
+      if (DEFAULT_DATASETS[`${monthKey}_2026`]) {
+        window.currentSheet = JSON.parse(JSON.stringify(DEFAULT_DATASETS[`${monthKey}_2026`]));
+        renderAll();
+        saveToLocalStorage();
+        showToast(`${window.currentSheet.month} ${window.currentSheet.year} का प्रारूप लोड किया गया`, 'success');
+      }
+    };
+
+    // ================= FIRESTORE CLOUD STORAGE METHODS =================
+    window.saveCurrentSheetToCloud = async function() {
+      const btn = document.getElementById('btnSaveCloud');
+      const originalHtml = btn.innerHTML;
+      btn.innerHTML = `<span class="animate-spin mr-1">⏳</span> <span>सेव हो रहा है...</span>`;
+      btn.disabled = true;
+
+      // Prepare Record Object
+      const docId = window.currentSheet.id || `salary_${window.currentSheet.month}_${window.currentSheet.year}_${Date.now()}`;
+      window.currentSheet.id = docId;
+      window.currentSheet.updatedAt = new Date().toISOString();
+
+      let totalPayable = window.currentSheet.staff.reduce((sum, s) => sum + (parseFloat(s.payable) || 0), 0);
+      window.currentSheet.totalAmount = totalPayable;
+      window.currentSheet.staffCount = window.currentSheet.staff.length;
+
+      // Save locally
+      saveToLocalStorage();
+
+      if (isCloudConnected && db) {
+        try {
+          const docRef = doc(db, COLLECTION_NAME, docId);
+          await setDoc(docRef, window.currentSheet, { merge: true });
+          showToast(`क्लाउड पर सुरक्षित: ${window.currentSheet.month} ${window.currentSheet.year}`, 'success');
+          document.getElementById('lastSavedIndicator').innerText = `अंतिम सेव: ${new Date().toLocaleTimeString('hi-IN')}`;
+          await syncAllFromCloud();
+        } catch (err) {
+          console.error("Cloud Save Failed:", err);
+          showToast("क्लाउड एरर! डेटा लोकल स्टोरेज में सुरक्षित है।", 'warning');
+        }
+      } else {
+        showToast("ऑफलाइन मोड: लोकल डेटा सुरक्षित किया गया", 'info');
+      }
+
+      btn.innerHTML = originalHtml;
+      btn.disabled = false;
+      if (window.feather) feather.replace();
+    };
+
+    window.syncAllFromCloud = async function() {
+      let records = [];
+
+      // 1. Fetch from Firestore if connected
+      if (isCloudConnected && db) {
+        try {
+          const querySnapshot = await getDocs(collection(db, COLLECTION_NAME));
+          querySnapshot.forEach((d) => {
+            records.push({ id: d.id, ...d.data() });
+          });
+        } catch (err) {
+          console.warn("Firestore Read Failed, falling back to local:", err);
+        }
+      }
+
+      // 2. If no cloud records, populate default samples & local cache
+      if (records.length === 0) {
+        const localSaved = localStorage.getItem('pms_staff_salary_records');
+        if (localSaved) {
+          try {
+            records = JSON.parse(localSaved);
+          } catch(e) {}
+        }
+      }
+
+      // Ensure June and July are included in records if empty
+      if (records.length === 0) {
+        records = [DEFAULT_DATASETS["july_2026"], DEFAULT_DATASETS["june_2026"]];
+        // Auto seed to Firestore if cloud available
+        if (isCloudConnected && db) {
+          try {
+            await setDoc(doc(db, COLLECTION_NAME, DEFAULT_DATASETS["june_2026"].id), DEFAULT_DATASETS["june_2026"]);
+            await setDoc(doc(db, COLLECTION_NAME, DEFAULT_DATASETS["july_2026"].id), DEFAULT_DATASETS["july_2026"]);
+          } catch(e) {}
+        }
+      }
+
+      // Sort by Year & Month descending
+      records.sort((a, b) => new Date(b.updatedAt || 0) - new Date(a.updatedAt || 0));
+      window.savedRecordsCache = records;
+      localStorage.setItem('pms_staff_salary_records', JSON.stringify(records));
+
+      document.getElementById('savedCountBadge').innerText = records.length;
+      renderSavedDrawerList(records);
+    };
+
+    // Render Saved Drawer Records
+    window.renderSavedDrawerList = function(records) {
+      const container = document.getElementById('drawerRecordsContainer');
+      const totalCount = document.getElementById('drawerTotalCount');
+      if (!container) return;
+
+      totalCount.innerText = records.length;
+      container.innerHTML = '';
+
+      if (records.length === 0) {
+        container.innerHTML = `
+          <div class="text-center py-10 text-slate-500 text-xs">
+            <i data-feather="folder" class="w-8 h-8 mx-auto mb-2 text-slate-600"></i>
+            कोई सुरक्षित रिकॉर्ड नहीं मिला।
+          </div>
+        `;
+        if (window.feather) feather.replace();
+        return;
+      }
+
+      records.forEach(rec => {
+        const isCurrent = window.currentSheet.id === rec.id;
+        const total = (rec.staff || []).reduce((s, x) => s + (parseFloat(x.payable) || 0), 0);
+        const card = document.createElement('div');
+        card.className = `p-3.5 rounded-xl border transition ${isCurrent ? 'bg-sky-950/40 border-sky-500/60 ring-1 ring-sky-500/30' : 'bg-slate-950/60 border-slate-800 hover:border-slate-700'}`;
+        
+        card.innerHTML = `
+          <div class="flex items-start justify-between mb-2">
+            <div>
+              <div class="flex items-center gap-2">
+                <h4 class="text-sm font-bold text-white font-martel">${rec.month || 'वेतन'} ${rec.year || ''}</h4>
+                ${isCurrent ? '<span class="text-[10px] bg-sky-500 text-white font-bold px-1.5 py-0.5 rounded">सक्रिय</span>' : ''}
+              </div>
+              <p class="text-[11px] text-slate-400 mt-0.5">पत्रांक: ${rec.patrank || 'पीएमएस'}</p>
+            </div>
+            <div class="text-right">
+              <span class="text-sm font-extrabold text-emerald-400 font-martel">₹${total.toFixed(2)}</span>
+              <div class="text-[10px] text-slate-500">${(rec.staff || []).length} कर्मचारी</div>
+            </div>
+          </div>
+
+          <div class="pt-2 border-t border-slate-800/80 flex items-center justify-between text-xs">
+            <span class="text-[10px] text-slate-500">${rec.updatedAt ? new Date(rec.updatedAt).toLocaleDateString('hi-IN') : 'पूर्व सुरक्षित'}</span>
+            <div class="flex items-center gap-1.5">
+              <button onclick="loadSavedRecord('${rec.id}')" class="px-2.5 py-1 bg-sky-600/20 hover:bg-sky-600 text-sky-300 hover:text-white rounded border border-sky-500/30 text-xs font-medium transition flex items-center gap-1" title="इस रिकॉर्ड को लोड करें">
+                <i data-feather="arrow-up-right" class="w-3 h-3"></i> लोड करें
+              </button>
+              <button onclick="quickPrintRecord('${rec.id}')" class="p-1 text-slate-400 hover:text-emerald-400 hover:bg-slate-800 rounded transition" title="सीधा A4 प्रिंट करें">
+                <i data-feather="printer" class="w-3.5 h-3.5"></i>
+              </button>
+              <button onclick="deleteSavedRecord('${rec.id}')" class="p-1 text-slate-400 hover:text-rose-400 hover:bg-slate-800 rounded transition" title="डिलीट करें">
+                <i data-feather="trash-2" class="w-3.5 h-3.5"></i>
+              </button>
+            </div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+
+      if (window.feather) feather.replace();
+    };
+
+    window.filterSavedDrawerList = function() {
+      const q = document.getElementById('drawerSearchInput').value.toLowerCase().trim();
+      if (!q) {
+        renderSavedDrawerList(window.savedRecordsCache);
+        return;
+      }
+      const filtered = window.savedRecordsCache.filter(r => {
+        return (r.month && r.month.toLowerCase().includes(q)) || 
+               (r.year && r.year.toString().includes(q)) ||
+               (r.patrank && r.patrank.toLowerCase().includes(q));
+      });
+      renderSavedDrawerList(filtered);
+    };
+
+    window.loadSavedRecord = function(recordId) {
+      const target = window.savedRecordsCache.find(r => r.id === recordId);
+      if (target) {
+        window.currentSheet = JSON.parse(JSON.stringify(target));
+        renderAll();
+        saveToLocalStorage();
+        toggleSavedDrawer(false);
+        showToast(`${target.month} ${target.year} का रिकॉर्ड लोड किया गया`, 'success');
+      }
+    };
+
+    window.quickPrintRecord = function(recordId) {
+      window.loadSavedRecord(recordId);
+      setTimeout(() => {
+        window.triggerPrintPDF();
+      }, 300);
+    };
+
+    window.deleteSavedRecord = async function(recordId) {
+      if (!confirm("क्या आप वाकई इस रिकॉर्ड को हमेशा के लिए हटाना चाहते हैं?")) return;
+      
+      // Delete from Firestore
+      if (isCloudConnected && db) {
+        try {
+          await deleteDoc(doc(db, COLLECTION_NAME, recordId));
+        } catch(e) {
+          console.error("Cloud delete error:", e);
+        }
+      }
+
+      window.savedRecordsCache = window.savedRecordsCache.filter(r => r.id !== recordId);
+      localStorage.setItem('pms_staff_salary_records', JSON.stringify(window.savedRecordsCache));
+      renderSavedDrawerList(window.savedRecordsCache);
+      document.getElementById('savedCountBadge').innerText = window.savedRecordsCache.length;
+      showToast("रिकॉर्ड हटाया गया", 'info');
+    };
+
+    // Export / Import
+    window.exportAllAsJSON = function() {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(window.savedRecordsCache, null, 2));
+      const downloadAnchor = document.createElement('a');
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", `PMS_Salary_Backup_${new Date().toISOString().slice(0, 10)}.json`);
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+      showToast("बैकअप फाइल डाउनलोड हो गई", 'success');
+    };
+
+    window.importFromJSONFile = function(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = async function(e) {
+        try {
+          const imported = JSON.parse(e.target.result);
+          if (Array.isArray(imported)) {
+            for (const rec of imported) {
+              if (rec.id) {
+                if (isCloudConnected && db) {
+                  await setDoc(doc(db, COLLECTION_NAME, rec.id), rec, { merge: true });
+                }
+              }
+            }
+            await syncAllFromCloud();
+            showToast(`${imported.length} रिकॉर्ड्स सफलता से रीस्टोर किए गए`, 'success');
+          } else {
+            showToast("अमान्य JSON फाइल प्रारूप", 'error');
+          }
+        } catch (err) {
+          showToast("फाइल पढ़ने में त्रुटि", 'error');
+        }
+      };
+      reader.readAsText(file);
+    };
+
+    // Preset Staff Directory Modal
+    window.openPresetStaffModal = function() {
+      const container = document.getElementById('presetStaffList');
+      container.innerHTML = '';
+
+      STAFF_MASTER.forEach(staff => {
+        const item = document.createElement('div');
+        item.className = "flex items-center justify-between p-2.5 rounded-lg bg-slate-950/70 border border-slate-800 hover:border-sky-500/50 hover:bg-sky-950/20 transition cursor-pointer";
+        item.onclick = () => {
+          addNewStaffRow(staff);
+          closePresetStaffModal();
+        };
+        item.innerHTML = `
+          <div>
+            <div class="font-bold text-white text-xs">${staff.name}</div>
+            <div class="text-[11px] text-slate-400">${staff.designation} • खाता: ${staff.accountNo}</div>
+          </div>
+          <div class="text-right">
+            <span class="text-xs font-bold text-emerald-400">₹${staff.baseScale.toFixed(2)}</span>
+            <span class="block text-[10px] text-sky-400">+ जोड़ें</span>
+          </div>
+        `;
+        container.appendChild(item);
+      });
+
+      document.getElementById('presetStaffModal').classList.remove('hidden');
+    };
+
+    window.closePresetStaffModal = function() {
+      document.getElementById('presetStaffModal').classList.add('hidden');
+    };
+
+    // Drawer Visibility
+    window.toggleSavedDrawer = function(show) {
+      const drawer = document.getElementById('savedDrawer');
+      if (show) {
+        drawer.classList.remove('hidden');
+        syncAllFromCloud();
+      } else {
+        drawer.classList.add('hidden');
+      }
+    };
+
+    // Print & PDF Export Handler
+    window.triggerPrintPDF = function() {
+      const origTitle = document.title;
+      const monthStr = window.currentSheet.month || 'वेतन';
+      const yearStr = window.currentSheet.year || '2026';
+      document.title = `PMS_Vetan_${monthStr}_${yearStr}_25Bn_PAC_Raebareli`;
+      
+      window.print();
+
+      setTimeout(() => {
+        document.title = origTitle;
+      }, 1000);
+    };
+
+    // Local Storage Utilities
+    function saveToLocalStorage() {
+      localStorage.setItem('pms_staff_salary_current', JSON.stringify(window.currentSheet));
+    }
+
+    function loadFromLocalStorage() {
+      const saved = localStorage.getItem('pms_staff_salary_current');
+      if (saved) {
+        try {
+          window.currentSheet = JSON.parse(saved);
+        } catch(e) {}
+      }
+    }
+
+    // Keyboard Shortcuts
+    document.addEventListener('keydown', (e) => {
+      // Ctrl + S: Save to Cloud
+      if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+        e.preventDefault();
+        saveCurrentSheetToCloud();
+      }
+    });
+
+    // On Page Load Initialization
+    window.addEventListener('DOMContentLoaded', async () => {
+      loadFromLocalStorage();
+      renderAll();
+      await syncAllFromCloud();
+      if (window.feather) feather.replace();
+    });
+
+  </script>
+  <script src="js/pms_nav_search.js"></script>
+</body>
+</html>

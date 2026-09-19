@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="hi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>25वीं वाहिनी पीएसी, रायबरेली - फ्रंट फेसिंग 3D LED साइनबोर्ड (18'10.5'' X 7'8'')</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts for Bold Devanagari & Modern Display -->
+    <link href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;600;700;800;900&family=Poppins:wght@400;600;700;800;900&family=Yatra+One&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --glow-color: rgba(255, 195, 60, 0.85);
+            --glow-radius: 28px;
+            --led-bright: 1;
+            --font-gold: linear-gradient(180deg, #fff9db 0%, #ffd700 25%, #d4af37 60%, #996515 100%);
+        }
+
+        body {
+            font-family: 'Poppins', 'Mukta', sans-serif;
+            background-color: #090e17;
+            color: #f8fafc;
+            transition: all 0.5s ease;
+        }
+
+        /* ---------------- VIEW MODES ---------------- */
+        body.mode-day {
+            background-color: #f1f5f9;
+            color: #0f172a;
+        }
+
+        body.mode-dusk {
+            background-color: #1e1b4b;
+            color: #f8fafc;
+        }
+
+        /* Front-Facing Real Wall Canvas Stage */
+        .wall-stage-container {
+            position: relative;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7);
+            background: #000;
+        }
+
+        /* Background Wall Image Layer */
+        .wall-bg-image {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: cover;
+            filter: brightness(0.4) contrast(1.1);
+            transition: filter 0.5s ease;
+        }
+
+        body.mode-day .wall-bg-image {
+            filter: brightness(1) contrast(1);
+        }
+
+        body.mode-dusk .wall-bg-image {
+            filter: brightness(0.65) saturate(1.2) contrast(1.1);
+        }
+
+        /* Signboard Box Overlay Mounted Directly on Wall Center */
+        .signboard-overlay-box {
+            position: absolute;
+            top: 24.5%;
+            left: 13.8%;
+            width: 65.5%; /* Matches the 18'10.5" ratio on the wall */
+            height: 46.2%; /* Matches 7'8" height */
+            background: linear-gradient(135deg, #091a33 0%, #102a52 50%, #061224 100%);
+            border: 5px solid #d4af37;
+            box-shadow: 
+                0 0 0 2px #593e03,
+                0 15px 35px rgba(0, 0, 0, 0.8),
+                inset 0 0 25px rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            padding: 1.8% 2.8%;
+            gap: 3.5%;
+            z-index: 10;
+            transition: all 0.4s ease;
+        }
+
+        /* ACP Sheet Seam Lines */
+        .signboard-overlay-box::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 33.33% 50%;
+            pointer-events: none;
+        }
+
+        /* Ambient Wall Spill Glow from Backlit LEDs at Night */
+        .wall-ambient-glow {
+            position: absolute;
+            inset: -40px;
+            background: radial-gradient(circle at 45% 45%, var(--glow-color) 0%, transparent 68%);
+            opacity: 0.7;
+            filter: blur(35px);
+            pointer-events: none;
+            z-index: 5;
+            transition: opacity 0.5s ease;
+        }
+
+        body.mode-day .wall-ambient-glow {
+            opacity: 0;
+        }
+
+        /* 3D Extruded Acrylic Letter Styling */
+        .char-3d {
+            font-family: 'Mukta', 'Yatra One', sans-serif;
+            font-weight: 900;
+            background: var(--font-gold);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+            line-height: 1.1;
+            filter: 
+                drop-shadow(0 1px 0 #b38728)
+                drop-shadow(0 2px 0 #946d1f)
+                drop-shadow(0 3px 0 #735416)
+                drop-shadow(0 4px 0 #523b0d)
+                drop-shadow(0 6px 8px rgba(0, 0, 0, 0.85));
+            transition: all 0.35s ease;
+        }
+
+        /* Night LED Halo Glow on 3D Text */
+        body.mode-night .char-3d,
+        body.mode-dusk .char-3d {
+            text-shadow: 
+                0 0 10px var(--glow-color),
+                0 0 25px var(--glow-color),
+                0 0 45px var(--glow-color);
+            filter: 
+                drop-shadow(0 0 16px var(--glow-color))
+                drop-shadow(0 2px 0 #ffd700)
+                drop-shadow(0 4px 6px rgba(0, 0, 0, 0.9));
+        }
+
+        /* 4-Directional Lion Emblem (Ashoka Stambh Monument) */
+        .lion-monument-wrap {
+            width: 26%;
+            height: 94%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            position: relative;
+        }
+
+        .lion-monument-img {
+            max-height: 82%;
+            max-width: 100%;
+            object-fit: contain;
+            filter: 
+                drop-shadow(0 4px 8px rgba(0, 0, 0, 0.8))
+                drop-shadow(0 0 15px rgba(255, 215, 0, 0.6));
+            transition: filter 0.4s ease;
+        }
+
+        body.mode-night .lion-monument-img {
+            filter: 
+                drop-shadow(0 0 20px var(--glow-color))
+                drop-shadow(0 0 35px var(--glow-color));
+        }
+
+        /* Dimension Indicator Markers */
+        .dim-tag-horizontal {
+            position: absolute;
+            top: -36px;
+            left: 0;
+            right: 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: #38bdf8;
+            font-size: 0.8rem;
+            font-weight: 800;
+            z-index: 20;
+        }
+
+        .dim-tag-vertical {
+            position: absolute;
+            left: -44px;
+            top: 0;
+            bottom: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            color: #38bdf8;
+            font-size: 0.8rem;
+            font-weight: 800;
+            z-index: 20;
+        }
+
+        /* UI Control Glass Panel */
+        .ctrl-panel {
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        body.mode-day .ctrl-panel {
+            background: rgba(255, 255, 255, 0.9);
+            border-color: #cbd5e1;
+        }
+
+        /* Pulsing Glow Animation */
+        @keyframes ledBreathing {
+            0%, 100% { opacity: 0.9; }
+            50% { opacity: 1; }
+        }
+
+        body.mode-night .signboard-overlay-box {
+            animation: ledBreathing 3.5s infinite ease-in-out;
+        }
+    </style>
+</head>
+
+<body class="mode-night min-h-screen">
+
+    <!-- Top Navigation Header -->
+    <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur-md px-6 py-4 sticky top-0 z-50 flex flex-wrap justify-between items-center gap-4">
+        <div class="flex items-center gap-3">
+            <img src="logo1.png" alt="Logo" class="w-10 h-10 object-contain rounded-lg bg-white p-0.5">
+            <div>
+                <h1 class="text-lg md:text-xl font-black text-white flex items-center gap-2">
+                    25वीं वाहिनी पीएसी, रायबरेली
+                    <span class="text-xs px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30">फ्रंट फेसिंग 3D LED साइनबोर्ड</span>
+                </h1>
+                <p class="text-xs text-slate-400">आयाम: <strong>18 फीट 10.5 इंच × 7 फीट 8 इंच</strong> (परेड ग्राउंड मुख्य बाउंड्री वॉल)</p>
+            </div>
+        </div>
+
+        <!-- Mode Buttons -->
+        <div class="flex items-center gap-2 flex-wrap">
+            <button onclick="setLightingMode('day')" class="mode-btn px-3.5 py-1.5 rounded-xl text-xs font-bold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 flex items-center gap-1.5 transition">
+                <i class="fas fa-sun text-amber-400"></i> डेलाइट मोड
+            </button>
+            <button onclick="setLightingMode('dusk')" class="mode-btn px-3.5 py-1.5 rounded-xl text-xs font-bold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 flex items-center gap-1.5 transition">
+                <i class="fas fa-cloud-sun text-indigo-400"></i> गोधूलि (शाम)
+            </button>
+            <button onclick="setLightingMode('night')" class="mode-btn px-3.5 py-1.5 rounded-xl text-xs font-bold bg-amber-500 text-slate-950 flex items-center gap-1.5 shadow-lg transition">
+                <i class="fas fa-moon"></i> नाइट LED ग्लो
+            </button>
+            <button onclick="window.print()" class="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-slate-800 hover:bg-slate-700 text-white border border-slate-700 flex items-center gap-1.5 transition ml-2">
+                <i class="fas fa-print"></i> प्रिंट
+            </button>
+            <a href="index.html" class="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition">
+                ← पोर्टल
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Visual Stage -->
+    <main class="max-w-7xl mx-auto px-4 py-8">
+
+        <!-- Stage Notice / Mode Indicator -->
+        <div class="flex justify-between items-center mb-4 px-2">
+            <div class="text-xs text-slate-400 flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span>वास्तविक दीवार पर सीधे फ्रंट-फेसिंग 3D लेआउट (Site Perspective: <strong>/3d_text</strong>)</span>
+            </div>
+            <div id="live-mode-text" class="text-xs font-bold text-amber-400">
+                🌙 नाइट बैकलाइट LED मोड सक्रिय (Halo Glow 3000K)
+            </div>
+        </div>
+
+        <!-- Front Facing Real Wall Photo Canvas Stage -->
+        <div class="wall-stage-container mb-10">
+
+            <!-- Real Background Wall Photo from /3d_text/image copy 6.png -->
+            <img src="3d_text/image copy 6.png" 
+                 alt="PAC Raebareli Wall Front" 
+                 class="wall-bg-image"
+                 onerror="this.src='pac_wall_front_3d.jpg'">
+
+            <!-- Ambient Night Light Spread Spill -->
+            <div class="wall-ambient-glow" id="ambient-glow"></div>
+
+            <!-- Signboard Box Overlay Mounted Directly On Wall -->
+            <div class="signboard-overlay-box" id="signboard-box">
+
+                <!-- Horizontal Dimension Line -->
+                <div class="dim-tag-horizontal">
+                    <span class="bg-slate-900/90 px-2.5 py-0.5 rounded border border-sky-400/40 text-[0.7rem]">◀ 18 फीट 10.5 इंच (226.5") ▶</span>
+                    <div class="flex-1 h-[2px] bg-sky-400 mx-2 shadow-[0_0_8px_#38bdf8]"></div>
+                </div>
+
+                <!-- Vertical Dimension Line -->
+                <div class="dim-tag-vertical">
+                    <span class="bg-slate-900/90 px-1.5 py-0.5 rounded border border-sky-400/40 text-[0.65rem] [writing-mode:vertical-rl] rotate-180">7' 8" (92")</span>
+                    <div class="w-[2px] flex-1 bg-sky-400 my-2 shadow-[0_0_8px_#38bdf8]"></div>
+                </div>
+
+                <!-- Left Column: 4-Directional Lion Monument / Emblem -->
+                <div class="lion-monument-wrap">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Emblem_of_India.svg/800px-Emblem_of_India.svg.png" 
+                         alt="4-Directional Lion Capital" 
+                         class="lion-monument-img"
+                         onerror="this.src='logo1.png'">
+                    <div class="text-[0.55vw] font-bold text-amber-200 mt-1 tracking-widest text-center uppercase drop-shadow">
+                        सत्यमेव जयते
+                    </div>
+                </div>
+
+                <!-- Right Column: 3D Golden Lettering -->
+                <div class="flex-1 h-full flex flex-col justify-between py-1 relative z-10">
+                    
+                    <!-- Line 1: 25वीं वाहिनी पीएसी -->
+                    <div>
+                        <div class="char-3d text-[2.6vw] font-black tracking-tight leading-none">
+                            25वीं वाहिनी पीएसी
+                        </div>
+                    </div>
+
+                    <!-- Line 2: रायबरेली -->
+                    <div>
+                        <div class="char-3d text-[2.2vw] font-black text-amber-300 leading-none">
+                            रायबरेली
+                        </div>
+                    </div>
+
+                    <!-- Line 3 / Bottom Footer: Slogan -->
+                    <div class="flex items-end justify-between border-t border-amber-500/30 pt-1.5 mt-0.5">
+                        <div class="text-[0.65vw] font-semibold text-slate-300 flex items-center gap-1.5">
+                            <i class="fas fa-shield-halved text-amber-400"></i>
+                            <span>उत्तर प्रदेश पीएसी • 25th BN PAC</span>
+                        </div>
+
+                        <!-- Right End: पीएसी बल सर्वोत्तम बल -->
+                        <div class="char-3d text-[1.25vw] font-black text-amber-300">
+                            ❝ पीएसी बल सर्वोत्तम बल ❞
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Studio Control Deck & Detailed Engineering Specs -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+            <!-- Control 1: LED Color & Dimmer Studio -->
+            <div class="ctrl-panel rounded-2xl p-6 shadow-xl">
+                <h3 class="text-sm font-bold text-amber-400 uppercase tracking-wider mb-4 flex items-center gap-2">
+                    <i class="fas fa-sliders"></i> LED लाइटिंग कंट्रोलर (Night Backlight)
+                </h3>
+
+                <div class="space-y-4 text-xs">
+                    <div>
+                        <label class="block font-semibold mb-1.5 text-slate-300">LED लाइट का शेड (Halo Glow Color):</label>
+                        <div class="grid grid-cols-3 gap-2">
+                            <button onclick="setLedGlow('rgba(255, 195, 60, 0.85)', '#ffd700')" class="p-2 rounded-lg bg-amber-500/20 border border-amber-400 text-amber-300 font-bold text-center">
+                                वार्म गोल्ड
+                            </button>
+                            <button onclick="setLedGlow('rgba(255, 255, 255, 0.9)', '#ffffff')" class="p-2 rounded-lg bg-slate-700 border border-slate-400 text-white font-bold text-center">
+                                प्योर व्हाइट
+                            </button>
+                            <button onclick="setLedGlow('rgba(56, 189, 248, 0.85)', '#38bdf8')" class="p-2 rounded-lg bg-sky-500/20 border border-sky-400 text-sky-300 font-bold text-center">
+                                आइस ब्लू
+                            </button>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block font-semibold mb-1.5 text-slate-300">चमक तीव्रता (LED Glow Intensity):</label>
+                        <input type="range" min="10" max="50" value="28" oninput="setGlowIntensity(this.value)" class="w-full accent-amber-500 cursor-pointer">
+                    </div>
+
+                    <div class="p-2.5 rounded-xl bg-slate-800/60 border border-slate-700/60 text-slate-300">
+                        <i class="fas fa-info-circle text-sky-400 mr-1"></i>
+                        रात में अक्षरों के पीछे से निकलने वाला हेलो बैकलाइट ग्लो दूर से अत्यंत भव्य और प्रभावशाली दृश्य प्रस्तुत करता है।
+                    </div>
+                </div>
+            </div>
+
+            <!-- Control 2: Architectural Dimensions & Sizes -->
+            <div class="ctrl-panel rounded-2xl p-6 shadow-xl">
+                <h3 class="text-sm font-bold text-sky-400 uppercase tracking-wider mb-4 flex items-center gap-2">
+                    <i class="fas fa-ruler-combined"></i> सटीक नाप एवं क्षेत्रफल (Dimensions)
+                </h3>
+
+                <div class="space-y-2.5 text-xs">
+                    <div class="flex justify-between p-2 rounded-lg bg-slate-800/60 border border-slate-700/60">
+                        <span class="text-slate-400">बोर्ड चौड़ाई (Width):</span>
+                        <strong class="text-white">18 Feet 10.5 Inches (226.5'')</strong>
+                    </div>
+                    <div class="flex justify-between p-2 rounded-lg bg-slate-800/60 border border-slate-700/60">
+                        <span class="text-slate-400">बोर्ड ऊँचाई (Height):</span>
+                        <strong class="text-white">7 Feet 8 Inches (92.0'')</strong>
+                    </div>
+                    <div class="flex justify-between p-2 rounded-lg bg-slate-800/60 border border-slate-700/60">
+                        <span class="text-slate-400">कुल क्षेत्रफल (Total Area):</span>
+                        <strong class="text-amber-300">144.82 Sq. Feet (13.45 m²)</strong>
+                    </div>
+                    <div class="flex justify-between p-2 rounded-lg bg-slate-800/60 border border-slate-700/60">
+                        <span class="text-slate-400">मुख्य पंक्ति अक्षर ऊँचाई:</span>
+                        <strong class="text-white">18 Inches (1.5 Feet)</strong>
+                    </div>
+                    <div class="flex justify-between p-2 rounded-lg bg-slate-800/60 border border-slate-700/60">
+                        <span class="text-slate-400">शहर नाम 'रायबरेली':</span>
+                        <strong class="text-white">15 Inches (1.25 Feet)</strong>
+                    </div>
+                    <div class="flex justify-between p-2 rounded-lg bg-slate-800/60 border border-slate-700/60">
+                        <span class="text-slate-400">स्लोगन 'पीएसी बल सर्वोत्तम बल':</span>
+                        <strong class="text-white">8 Inches (0.66 Feet)</strong>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Control 3: Materials & Fabrication Specifications -->
+            <div class="ctrl-panel rounded-2xl p-6 shadow-xl">
+                <h3 class="text-sm font-bold text-emerald-400 uppercase tracking-wider mb-4 flex items-center gap-2">
+                    <i class="fas fa-layer-group"></i> फैब्रिकेशन सामग्री (Vendor Specs)
+                </h3>
+
+                <ul class="space-y-2 text-xs text-slate-300">
+                    <li class="flex items-start gap-2">
+                        <i class="fas fa-check-circle text-emerald-400 mt-0.5"></i>
+                        <span><strong>बैकग्राउंड क्लैडिंग:</strong> 4mm Royal Navy Blue Metallic ACP Exterior Grade Sheets.</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <i class="fas fa-check-circle text-emerald-400 mt-0.5"></i>
+                        <span><strong>3D अक्षर:</strong> 3mm Mirror Gold Acrylic Face + 25mm Solid Acrylic Backlit Returns.</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <i class="fas fa-check-circle text-emerald-400 mt-0.5"></i>
+                        <span><strong>अशोक स्तम्भ शेर:</strong> 30" 3D Embossed Cast Emblem with Golden Brass Finish.</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <i class="fas fa-check-circle text-emerald-400 mt-0.5"></i>
+                        <span><strong>LED मॉड्यूल:</strong> 12V IP67 Waterproof Samsung SMD LEDs (Backlit Halo Glow).</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <i class="fas fa-check-circle text-emerald-400 mt-0.5"></i>
+                        <span><strong>स्ट्रक्चरल फ्रेम:</strong> 1.5" × 1.5" Heavy 16-Gauge MS Square Pipe Sub-frame.</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Interactive JS Script -->
+    <script>
+        function setLightingMode(mode) {
+            const body = document.body;
+            const statusText = document.getElementById("live-mode-text");
+
+            body.classList.remove("mode-day", "mode-dusk", "mode-night");
+            body.classList.add("mode-" + mode);
+
+            if (mode === 'day') {
+                statusText.textContent = "☀️ डेलाइट मोड (3D ब्रास / गोल्ड रिफ्लेक्शन)";
+                statusText.className = "text-xs font-bold text-amber-500";
+            } else if (mode === 'dusk') {
+                statusText.textContent = "🌆 गोधूलि / शाम मोड (हल्का LED बैकलाइट)";
+                statusText.className = "text-xs font-bold text-indigo-300";
+            } else {
+                statusText.textContent = "🌙 नाइट बैकलाइट LED मोड सक्रिय (Halo Glow 3000K)";
+                statusText.className = "text-xs font-bold text-amber-400";
+            }
+        }
+
+        function setLedGlow(rgba, hex) {
+            document.documentElement.style.setProperty('--glow-color', rgba);
+            const ambient = document.getElementById("ambient-glow");
+            if (ambient) {
+                ambient.style.background = `radial-gradient(circle at 45% 45%, ${rgba} 0%, transparent 68%)`;
+            }
+        }
+
+        function setGlowIntensity(val) {
+            document.documentElement.style.setProperty('--glow-radius', val + 'px');
+            const ambient = document.getElementById("ambient-glow");
+            if (ambient) {
+                ambient.style.opacity = (val / 40);
+            }
+        }
+    </script>
+    <script src="js/pms_nav_search.js"></script>
+</body>
+
+</html>

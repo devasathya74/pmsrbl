@@ -1,0 +1,1843 @@
+<!DOCTYPE html>
+<html lang="hi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>पुलिस मॉडर्न स्कूल - पत्र एवं प्रार्थना पत्र जनरेटर (Official Letter Generator)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Martel:wght@400;600;700;800;900&family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=Tiro+Devanagari+Hindi:ital@0;1&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #1e293b;
+      color: #0f172a;
+      margin: 0;
+      padding: 0;
+    }
+
+    .hindi-heading {
+      font-family: 'Martel', 'Noto Sans Devanagari', serif;
+    }
+
+    .hindi-body {
+      font-family: 'Noto Sans Devanagari', 'Tiro Devanagari Hindi', sans-serif;
+    }
+
+    /* Strict A4 Document Specifications */
+    .a4-document {
+      width: 210mm;
+      min-height: 297mm;
+      max-height: 297mm;
+      background: #ffffff;
+      padding: 15mm 20mm 15mm 20mm;
+      position: relative;
+      box-shadow: 0 10px 35px rgba(0, 0, 0, 0.45);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      color: #000000;
+      line-height: 1.6;
+    }
+
+    [contenteditable="true"] {
+      outline: none;
+      transition: background-color 0.15s ease, box-shadow 0.15s ease;
+      border-radius: 2px;
+      padding: 0 2px;
+    }
+
+    body.highlight-editable [contenteditable="true"]:hover {
+      background-color: #fef08a !important;
+      box-shadow: 0 0 0 1px #ca8a04;
+    }
+
+    body.highlight-editable [contenteditable="true"]:focus {
+      background-color: #fde047 !important;
+      box-shadow: 0 0 0 1.5px #a16207;
+    }
+
+    .subject-bar {
+      border-left: 3.5px solid #000000;
+      padding-left: 8px;
+    }
+
+    /* Custom scrollbars */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #0f172a;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 3px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #475569;
+    }
+
+    /* Letter Custom Table Styles */
+    .pms-letter-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 10px 0;
+      font-size: 14.5px;
+      line-height: 1.5;
+    }
+
+    .pms-letter-table th,
+    .pms-letter-table td {
+      padding: 6px 8px;
+      vertical-align: middle;
+      border: 1px solid #000000;
+      transition: border-color 0.15s, background-color 0.15s;
+    }
+
+    .pms-letter-table th {
+      font-weight: bold;
+      background-color: transparent;
+    }
+
+    /* Invisible / White border screen helper */
+    .table-border-invisible th,
+    .table-border-invisible td {
+      border: 1px dashed rgba(148, 163, 184, 0.45) !important;
+    }
+
+    @media print {
+
+      .table-border-invisible th,
+      .table-border-invisible td {
+        border: none !important;
+        border-color: transparent !important;
+      }
+    }
+
+    @media print {
+      * {
+        box-shadow: none !important;
+        text-shadow: none !important;
+      }
+
+      header,
+      aside,
+      .no-print,
+      nav {
+        display: none !important;
+        visibility: hidden !important;
+        height: 0 !important;
+        width: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        position: absolute !important;
+        top: -9999px !important;
+      }
+
+      html,
+      body {
+        width: 210mm !important;
+        height: 297mm !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #ffffff !important;
+        background-color: #ffffff !important;
+        overflow: hidden !important;
+        display: block !important;
+      }
+
+      .app-layout {
+        display: block !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        background: #ffffff !important;
+        background-color: #ffffff !important;
+        border: none !important;
+      }
+
+      main {
+        display: block !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        width: 210mm !important;
+        height: 297mm !important;
+        background: #ffffff !important;
+        background-color: #ffffff !important;
+        overflow: visible !important;
+      }
+
+      .preview-wrapper {
+        padding: 0 !important;
+        margin: 0 !important;
+        transform: none !important;
+        display: block !important;
+        width: 210mm !important;
+        height: 297mm !important;
+        background: #ffffff !important;
+      }
+
+      .a4-document {
+        margin: 0 !important;
+        box-shadow: none !important;
+        width: 210mm !important;
+        height: 297mm !important;
+        min-height: 297mm !important;
+        max-height: 297mm !important;
+        padding: 14mm 18mm 12mm 18mm !important;
+        page-break-after: avoid !important;
+        page-break-inside: avoid !important;
+        break-after: avoid !important;
+        overflow: hidden !important;
+        border: none !important;
+        background: #ffffff !important;
+      }
+
+      [contenteditable="true"] {
+        background-color: transparent !important;
+        box-shadow: none !important;
+      }
+
+      @page {
+        size: A4 portrait;
+        margin: 0mm;
+      }
+    }
+  </style>
+</head>
+
+<body class="highlight-editable min-h-screen flex flex-col">
+
+  <!-- TOP HEADER TOOLBAR -->
+  <header
+    class="no-print sticky top-0 z-50 bg-slate-950 text-white shadow-xl px-4 py-2.5 flex flex-wrap items-center justify-between gap-3 border-b border-slate-800">
+    <div class="flex items-center gap-3">
+      <div
+        class="w-9 h-9 rounded-full bg-white border border-slate-700 flex items-center justify-center p-0.5 shadow-sm">
+        <img src="logo.png" alt="PMS Logo" class="w-full h-full object-contain" onerror="this.src='logo1.png'" />
+      </div>
+      <div>
+        <div class="font-extrabold text-sm tracking-wide flex items-center gap-2">
+          <span>पुलिस मॉडर्न स्कूल - पत्र जनरेटर</span>
+          <span class="bg-blue-600 text-white text-[10px] px-2 py-0.5 rounded font-bold uppercase">Official
+            Format</span>
+        </div>
+        <div class="text-[11px] text-slate-400">25वीं वाहिनी पीएसी, रायबरेली &bull; A4 PDF Ready</div>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="flex items-center gap-2 flex-wrap text-xs">
+      <a href="index.html"
+        class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-2.5 py-1.5 rounded transition flex items-center gap-1 font-medium border border-slate-700"
+        title="Back to PMS Dashboard">
+        <span>🏠 Dashboard</span>
+      </a>
+
+      <!-- Font Size Scaler -->
+      <div class="flex items-center bg-slate-900 rounded border border-slate-700 p-0.5 text-xs font-bold">
+        <button id="fontDecBtn" title="Decrease Font Size"
+          class="hover:bg-slate-800 text-slate-300 hover:text-white px-2 py-1 rounded transition">
+          A-
+        </button>
+        <span id="fontScaleDisplay" class="px-2 text-amber-300 text-[11px]">100%</span>
+        <button id="fontIncBtn" title="Increase Font Size"
+          class="hover:bg-slate-800 text-slate-300 hover:text-white px-2 py-1 rounded transition">
+          A+
+        </button>
+      </div>
+
+      <button id="toggleHighlightBtn"
+        class="bg-slate-800 hover:bg-slate-700 text-amber-300 px-3 py-1.5 rounded transition flex items-center gap-1.5 font-medium border border-slate-700">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+        </svg>
+        <span>Highlights</span>
+      </button>
+
+      <button id="todayDateBtn"
+        class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1.5 rounded transition flex items-center gap-1.5 font-medium border border-slate-700">
+        <svg class="w-3.5 h-3.5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+        </svg>
+        <span>आज की तिथि</span>
+      </button>
+
+      <button id="openLetterHistoryBtn"
+        class="bg-indigo-700 hover:bg-indigo-600 text-white px-3 py-1.5 rounded transition flex items-center gap-1.5 font-bold shadow border border-indigo-500/50">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+        <span>📁 पुराने बैकअप (History)</span>
+        <span id="letterBackupCountBadge"
+          class="bg-indigo-900 text-indigo-200 text-[10px] px-1.5 py-0.2 rounded-full font-mono">0</span>
+      </button>
+
+      <button id="saveDraftBtn"
+        class="bg-amber-600 hover:bg-amber-500 text-white px-3 py-1.5 rounded transition flex items-center gap-1.5 font-bold shadow">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+        </svg>
+        <span>क्लाउड बैकअप (Save)</span>
+      </button>
+
+      <button id="printSaveLetterBtn"
+        class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-1.5 rounded font-bold transition flex items-center gap-1.5 shadow-md">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z">
+          </path>
+        </svg>
+        <span>प्रिंट व बैकअप (Print / PDF)</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- MAIN APP WORKSPACE -->
+  <div class="app-layout flex-1 flex flex-col lg:flex-row overflow-hidden">
+
+    <!-- LEFT PANEL: GENERATOR FORM & PRESETS -->
+    <aside
+      class="no-print w-full lg:w-[420px] bg-slate-900 border-r border-slate-800 p-4 overflow-y-auto space-y-4 flex-shrink-0 text-slate-200">
+
+      <!-- Preset Template Selector -->
+      <div class="bg-slate-800/80 rounded-lg p-3 border border-slate-700 space-y-2">
+        <label class="block text-xs font-bold text-amber-400 uppercase tracking-wider flex items-center gap-1.5">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10">
+            </path>
+          </svg>
+          <span>पत्र प्रारूप चुनें (Select Topic Preset)</span>
+        </label>
+        <select id="presetSelect"
+          class="w-full bg-slate-900 text-white border border-slate-600 rounded px-2.5 py-1.5 text-xs font-medium focus:ring-2 focus:ring-blue-500 focus:outline-none">
+          <option value="ro_repair">1. आर.ओ. (RO) मरम्मत कराने के संबंध में (Original Format)</option>
+          <option value="electric_repair">2. विद्यालय में पंखे/लाइट व विद्युत वायरिंग मरम्मत हेतु</option>
+          <option value="broadband_repair">3. बीएसएनएल फाइबर/इंटरनेट कनेक्शन मरम्मत हेतु</option>
+          <option value="water_tank">4. विद्यालय की पानी टंकी सफाई एवं ब्लीचिंग हेतु</option>
+          <option value="computer_lab">5. कंप्यूटर लैब उपकरणों की मरम्मत/सर्विसिंग हेतु</option>
+          <option value="registers_files">7. आवश्यक रजिस्टर एवं ऑफिस फाइल उपलब्ध कराने हेतु</option>
+          <option value="building_paint">8. विद्यालय भवन की रंगाई-पुताई/सिविल कार्य हेतु</option>
+          <option value="stationery">9. परीक्षा/कार्यालय स्टेशनरी सामग्री मांग हेतु</option>
+          <option value="blank_letter">10. रिक्त प्रारूप (Custom Blank Letter)</option>
+        </select>
+      </div>
+
+      <!-- Main Controls Form -->
+      <div class="space-y-3.5 text-xs">
+
+        <!-- Reference Number & Date -->
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block text-[11px] font-semibold text-slate-300 mb-1">पत्रांक संख्या (Dispatch No.)</label>
+            <input type="text" id="in-ref-no" value="पीएमएस/2026/142"
+              class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-1.5 text-white text-xs focus:ring-1 focus:ring-blue-500 focus:outline-none" />
+          </div>
+          <div>
+            <label class="block text-[11px] font-semibold text-slate-300 mb-1">दिनांक (Date)</label>
+            <input type="text" id="in-date" value="सितंबर, 12, 2026"
+              class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-1.5 text-white text-xs focus:ring-1 focus:ring-blue-500 focus:outline-none" />
+          </div>
+        </div>
+
+        <!-- Recipient -->
+        <div>
+          <label class="block text-[11px] font-semibold text-slate-300 mb-1">सेवा में (Recipient)</label>
+          <div class="flex gap-1 mb-1.5">
+            <select id="recipientPreset"
+              class="flex-1 bg-slate-800 text-white border border-slate-700 rounded px-2 py-1 text-[11px] focus:outline-none">
+              <option value="senanayak">श्रीमान सेनानायक महोदय, 25वीं वाहिनी पीएसी, रायबरेली।</option>
+              <option value="sahayak_senanayak">श्रीमान सहायक सेनानायक महोदय, 25वीं वाहिनी पीएसी, रायबरेली।</option>
+              <option value="shivirpal">श्रीमान शिविरपाल महोदय, 25वीं वाहिनी पीएसी, रायबरेली।</option>
+              <option value="subedar_major">श्रीमान सूबेदार मेजर महोदय, 25वीं वाहिनी पीएसी, रायबरेली।</option>
+              <option value="custom">-- कस्टम दर्ज करें --</option>
+            </select>
+          </div>
+          <textarea id="in-recipient" rows="3"
+            class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-1.5 text-white text-xs leading-relaxed focus:ring-1 focus:ring-blue-500 focus:outline-none">श्रीमान सेनानायक महोदय,
+25वीं वाहिनी पीएसी,
+रायबरेली।</textarea>
+        </div>
+
+        <!-- Subject -->
+        <div>
+          <div class="flex items-center justify-between mb-1">
+            <label class="block text-[11px] font-semibold text-slate-300">विषय (Subject)</label>
+            <button type="button" id="toggleSubjectBtn"
+              class="text-[10px] px-2 py-0.5 rounded border border-slate-700 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition flex items-center gap-1 cursor-pointer font-medium"
+              title="पत्र से विषय छिपाएं या दिखाएं">
+              <span id="subjectHideIcon">👁️</span>
+              <span id="subjectHideText">विषय छिपाएं</span>
+            </button>
+          </div>
+          <div class="relative">
+            <input type="text" id="in-subject" value="विद्यालय में खराब आर.ओ. की मरम्मत कराए जाने के संबंध में।"
+              class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-1.5 text-white text-xs font-semibold focus:ring-1 focus:ring-blue-500 focus:outline-none transition" />
+            <div id="subjectHiddenBadge"
+              class="hidden absolute right-2 top-1.5 text-[10px] bg-rose-950/90 text-rose-300 border border-rose-800/60 px-1.5 py-0.5 rounded font-medium pointer-events-none">
+              पत्र से छिपा हुआ
+            </div>
+          </div>
+        </div>
+
+        <!-- Salutation & Closing -->
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block text-[11px] font-semibold text-slate-300 mb-1">संबोधन (Salutation)</label>
+            <input type="text" id="in-salutation" value="महोदय,"
+              class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-1.5 text-white text-xs focus:ring-1 focus:ring-blue-500 focus:outline-none" />
+          </div>
+          <div>
+            <label class="block text-[11px] font-semibold text-slate-300 mb-1">समापन (Closing)</label>
+            <input type="text" id="in-closing" value="महोदय की महान कृपा होगी।"
+              class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-1.5 text-white text-xs focus:ring-1 focus:ring-blue-500 focus:outline-none" />
+          </div>
+        </div>
+
+        <!-- Body Paragraph 1 -->
+        <div>
+          <label class="block text-[11px] font-semibold text-slate-300 mb-1">विवरण पैरा 1 (Issue Description)</label>
+          <textarea id="in-body1" rows="3"
+            class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-1.5 text-white text-xs leading-relaxed focus:ring-1 focus:ring-blue-500 focus:outline-none">सादर अवगत कराना है कि विद्यालय में स्थापित आर.ओ. (RO) खराब हो गया है। उक्त आर.ओ. को विद्यालय के बिजली मिस्त्री द्वारा जाँच कराया गया, जिसमें आर.ओ. में ही तकनीकी खराबी होना पाया गया है।</textarea>
+        </div>
+
+        <!-- Body Paragraph 2 (Request) -->
+        <div>
+          <label class="block text-[11px] font-semibold text-slate-300 mb-1">अनुरोध पैरा 2 (Action Requested)</label>
+          <textarea id="in-body2" rows="3"
+            class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-1.5 text-white text-xs leading-relaxed focus:ring-1 focus:ring-blue-500 focus:outline-none">अतः श्रीमान जी से सादर अनुरोध है कि खराब आर.ओ. की आवश्यक मरम्मत तत्काल कराए जाने हेतु संबंधित को आदेशित करने की कृपा करें, जिससे विद्यालय में पेयजल की व्यवस्था सुचारु रूप से संचालित हो सके।</textarea>
+        </div>
+
+        <!-- ================= TABLE / MULTI-COLUMN BUILDER ================= -->
+        <div class="bg-slate-800/90 rounded-lg p-3 border border-slate-700 space-y-2.5">
+          <div class="flex items-center justify-between">
+            <label class="flex items-center gap-2 cursor-pointer select-none">
+              <input type="checkbox" id="toggleTableCheckbox"
+                class="w-4 h-4 rounded bg-slate-900 text-blue-600 focus:ring-0 cursor-pointer">
+              <span class="text-xs font-bold text-amber-400 uppercase tracking-wider flex items-center gap-1.5">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M3 10h18M3 14h18m-9-4v8m-7 4h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
+                  </path>
+                </svg>
+                <span>तालिका / कॉलम्स जोड़ें</span>
+              </span>
+            </label>
+            <span id="tableStatusBadge"
+              class="text-[10px] bg-slate-900 text-slate-400 font-medium px-2 py-0.5 rounded border border-slate-700">बंद
+              (Off)</span>
+          </div>
+
+          <!-- Table Controls Area -->
+          <div id="tableControlsArea" class="space-y-2.5 pt-2 border-t border-slate-700/80 hidden">
+
+            <!-- Table Preset Selector -->
+            <div>
+              <label class="block text-[11px] font-semibold text-slate-300 mb-1">तालिका प्रारूप (Template)</label>
+              <select id="tablePresetSelect"
+                class="w-full bg-slate-900 border border-slate-600 rounded px-2 py-1.5 text-xs text-white focus:outline-none">
+                <option value="items_qty">1. क्र.सं., विवरण/सामग्री, संख्या/मात्रा (3 Columns)</option>
+                <option value="two_col">2. 2-कॉलम विवरण/सूची (2 Columns)</option>
+                <option value="four_col">3. क्र.सं., सामग्री नाम, वर्तमान स्थिति, अपेक्षित संख्या (4 Columns)</option>
+                <option value="side_by_side">4. साइड-बाय-साइड विवरण (2 Key-Value Cols)</option>
+              </select>
+            </div>
+
+            <!-- Border Style & Visibility Buttons -->
+            <div>
+              <label class="block text-[11px] font-semibold text-slate-300 mb-1">बॉर्डर शैली व दृश्यता (Border
+                Style)</label>
+              <div class="grid grid-cols-2 gap-1.5 text-xs">
+                <button type="button" id="btnBorderBlack"
+                  class="px-2 py-1.5 bg-slate-900 hover:bg-slate-700 text-white rounded border border-slate-600 font-medium transition flex items-center justify-center gap-1">
+                  ⬛ काला बॉर्डर (Solid)
+                </button>
+                <button type="button" id="btnBorderInvisible"
+                  class="px-2 py-1.5 bg-slate-900 hover:bg-slate-700 text-amber-300 rounded border border-slate-600 font-medium transition flex items-center justify-center gap-1"
+                  title="कॉलम लेआउट हेतु बॉर्डर अदृश्य करें">
+                  ⬜ अदृश्य (Invisible)
+                </button>
+                <button type="button" id="btnBorderLight"
+                  class="px-2 py-1.5 bg-slate-900 hover:bg-slate-700 text-slate-300 rounded border border-slate-600 font-medium transition flex items-center justify-center gap-1">
+                  ◽ हल्का ग्रे (Light)
+                </button>
+                <button type="button" id="btnBorderBox"
+                  class="px-2 py-1.5 bg-slate-900 hover:bg-slate-700 text-slate-300 rounded border border-slate-600 font-medium transition flex items-center justify-center gap-1">
+                  🔲 बाहरी बॉक्स (Box)
+                </button>
+              </div>
+            </div>
+
+            <!-- Custom Border Color & Thickness -->
+            <div class="grid grid-cols-2 gap-2 bg-slate-900/90 p-2.5 rounded-lg border border-slate-700/80">
+              <div>
+                <label class="block text-[10px] text-slate-400 mb-1">बॉर्डर रंग (Border Color)</label>
+                <div class="flex items-center gap-2">
+                  <input type="color" id="tableBorderColorPicker" value="#000000"
+                    class="w-7 h-7 bg-transparent rounded cursor-pointer border border-slate-600 p-0">
+                  <span id="tableBorderColorHex" class="text-[11px] font-mono text-slate-200">#000000</span>
+                </div>
+              </div>
+              <div>
+                <label class="block text-[10px] text-slate-400 mb-1">बॉर्डर मोटाई (Width)</label>
+                <select id="tableBorderWidthSelect"
+                  class="w-full bg-slate-800 border border-slate-600 rounded px-1.5 py-1 text-xs text-white focus:outline-none">
+                  <option value="1px" selected>1px (सामान्य)</option>
+                  <option value="2px">2px (मोटा बॉर्डर)</option>
+                  <option value="0px">0px (अदृश्य / कोई नहीं)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Header Fill & Alignment -->
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="block text-[10px] text-slate-400 mb-0.5">हेडर शेडिंग (Header Fill)</label>
+                <select id="tableHeaderBgSelect"
+                  class="w-full bg-slate-900 border border-slate-600 rounded px-1.5 py-1 text-xs text-white focus:outline-none">
+                  <option value="transparent" selected>पारदर्शी / सफेद</option>
+                  <option value="#f1f5f9">हल्का ग्रे (#f1f5f9)</option>
+                  <option value="#e2e8f0">गहरा ग्रे (#e2e8f0)</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-[10px] text-slate-400 mb-0.5">टेक्स्ट एलाइनमेंट (Align)</label>
+                <select id="tableAlignSelect"
+                  class="w-full bg-slate-900 border border-slate-600 rounded px-1.5 py-1 text-xs text-white focus:outline-none">
+                  <option value="center" selected>केंद्र (Center)</option>
+                  <option value="left">बायां (Left)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Add / Remove Rows & Cols -->
+            <div class="grid grid-cols-2 gap-1.5 pt-1">
+              <button type="button" id="btnAddTableRow"
+                class="px-2 py-1.5 bg-blue-600/30 hover:bg-blue-600 text-blue-200 hover:text-white rounded border border-blue-500/40 text-xs font-semibold flex items-center justify-center gap-1 transition">
+                + पंक्ति जोड़ें (Row)
+              </button>
+              <button type="button" id="btnRemoveTableRow"
+                class="px-2 py-1.5 bg-rose-600/20 hover:bg-rose-600 text-rose-300 hover:text-white rounded border border-rose-500/30 text-xs font-semibold flex items-center justify-center gap-1 transition">
+                - पंक्ति हटाएं
+              </button>
+              <button type="button" id="btnAddTableCol"
+                class="px-2 py-1.5 bg-emerald-600/30 hover:bg-emerald-600 text-emerald-200 hover:text-white rounded border border-emerald-500/40 text-xs font-semibold flex items-center justify-center gap-1 transition">
+                + कॉलम जोड़ें (Col)
+              </button>
+              <button type="button" id="btnRemoveTableCol"
+                class="px-2 py-1.5 bg-amber-600/20 hover:bg-amber-600 text-amber-300 hover:text-white rounded border border-amber-500/30 text-xs font-semibold flex items-center justify-center gap-1 transition">
+                - कॉलम हटाएं
+              </button>
+            </div>
+
+            <p class="text-[10px] text-slate-400 italic">
+              💡 आप सीधे दाईं ओर A4 लेटर पेपर पर तालिका के किसी भी सेल पर क्लिक करके तुरंत लिख व एडिट कर सकते हैं।
+            </p>
+
+          </div>
+        </div>
+
+        <!-- Signatory -->
+        <div class="border-t border-slate-800 pt-2 space-y-2">
+          <label class="block text-[11px] font-semibold text-slate-300">हस्ताक्षरकर्ता (Signatory Details)</label>
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <input type="text" id="in-sign-title" value="प्रभारी प्रधानाचार्य"
+                class="w-full bg-slate-800 border border-slate-700 rounded px-2 py-1 text-white text-xs focus:outline-none" />
+            </div>
+            <div>
+              <input type="text" id="in-sign-org" value="पुलिस मॉडर्न स्कूल"
+                class="w-full bg-slate-800 border border-slate-700 rounded px-2 py-1 text-white text-xs focus:outline-none" />
+            </div>
+          </div>
+          <input type="text" id="in-sign-location" value="25वीं वाहिनी पीएसी, रायबरेली"
+            class="w-full bg-slate-800 border border-slate-700 rounded px-2 py-1 text-white text-xs focus:outline-none" />
+        </div>
+
+        <!-- Options: Show / Hide Subject & Noting Stamp -->
+        <div class="border-t border-slate-800 pt-2 space-y-1.5">
+          <div class="flex items-center justify-between">
+            <label class="flex items-center gap-2 cursor-pointer select-none">
+              <input type="checkbox" id="toggleSubjectCheckbox"
+                class="w-4 h-4 rounded bg-slate-800 text-blue-600 focus:ring-0 cursor-pointer" checked />
+              <span class="text-xs text-slate-300">विषय (Subject Line) दिखाएं</span>
+            </label>
+            <span id="subjectStatusBadge"
+              class="text-[10px] bg-blue-950/70 text-blue-300 px-2 py-0.5 rounded border border-blue-800/40">दिख रहा है</span>
+          </div>
+          <div class="flex items-center justify-between">
+            <label class="flex items-center gap-2 cursor-pointer select-none">
+              <input type="checkbox" id="toggleNoting"
+                class="w-4 h-4 rounded bg-slate-800 text-blue-600 focus:ring-0 cursor-pointer" />
+              <span class="text-xs text-slate-300">I/C P.M.S पृष्ठांकन/निशान दिखाएं</span>
+            </label>
+            <button id="resetBtn" class="text-xs text-red-400 hover:text-red-300 transition underline">
+              Reset to Default
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Info footer note -->
+      <div class="text-[11px] text-slate-400 bg-slate-950 p-2.5 rounded border border-slate-800">
+        💡 <b>टिप:</b> आप दाईं ओर सीधे लेटर पेपर पर किसी भी टेक्स्ट पर क्लिक करके भी सीधे हिंदी में लिख सकते हैं।
+      </div>
+    </aside>
+
+    <!-- RIGHT PANEL: A4 LIVE DOCUMENT PREVIEW -->
+    <main class="flex-1 bg-slate-800 overflow-y-auto p-4 md:p-8 flex justify-center items-start">
+      <div class="preview-wrapper">
+
+        <!-- A4 DOCUMENT PAPER -->
+        <div class="a4-document" id="letterDocument">
+
+          <!-- TOP HEADER WITH LOGO AND SCHOOL TITLE -->
+          <div>
+            <div class="flex items-center justify-between pb-3.5 border-b-2 border-black">
+              <!-- Left Logo -->
+              <div class="w-24 h-24 flex-shrink-0 flex items-center justify-center">
+                <img src="logo.png" alt="पुलिस मॉडर्न स्कूल लोगो" class="w-full h-full object-contain"
+                  onerror="this.src='logo1.png'" />
+              </div>
+
+              <!-- Center Title -->
+              <div class="flex-1 text-center px-2">
+                <h1 class="hindi-heading text-[29px] font-black text-black tracking-tight leading-tight"
+                  contenteditable="true" id="doc-school-name">
+                  कार्यालय पुलिस मॉडर्न स्कूल
+                </h1>
+                <h2 class="hindi-heading text-[20px] font-bold text-black mt-1 tracking-wide" contenteditable="true"
+                  id="doc-school-unit">
+                  25वीं वाहिनी पीएसी, रायबरेली
+                </h2>
+              </div>
+
+              <!-- Right Logo (Replica) -->
+              <div class="w-24 h-24 flex-shrink-0 flex items-center justify-center">
+                <img src="pac_logo.png" alt="पुलिस मॉडर्न स्कूल लोगो" class="w-full h-full object-contain"
+                  onerror="this.src='logo1.png'" />
+              </div>
+            </div>
+
+            <!-- DISPATCH NO & DATE ROW -->
+            <div
+              class="flex justify-between items-center py-2.5 border-b border-black text-[15px] font-semibold text-black hindi-body">
+              <div>
+                <span>पत्रांक संख्या: </span>
+                <span contenteditable="true" id="doc-ref-no">पीएमएस/2026/142</span>
+              </div>
+              <div>
+                <span>दिनांक: </span>
+                <span contenteditable="true" id="doc-date">सितंबर, 12, 2026</span>
+              </div>
+            </div>
+
+            <!-- RECIPIENT SECTION -->
+            <div class="mt-6 text-[16px] leading-relaxed text-black hindi-body">
+              <div class="font-bold">सेवा में,</div>
+              <div class="pl-6 mt-1 font-semibold whitespace-pre-line leading-snug" contenteditable="true"
+                id="doc-recipient">श्रीमान सेनानायक महोदय,
+                25वीं वाहिनी पीएसी,
+                रायबरेली।</div>
+            </div>
+
+            <!-- SUBJECT -->
+            <div id="doc-subject-container" class="mt-6 text-[16.5px] font-bold text-black hindi-body subject-bar">
+              <span>विषय: </span>
+              <span contenteditable="true" id="doc-subject">विद्यालय में खराब आर.ओ. की मरम्मत कराए जाने के संबंध
+                में।</span>
+            </div>
+
+            <!-- SALUTATION -->
+            <div class="mt-5 text-[16px] font-bold text-black hindi-body" contenteditable="true" id="doc-salutation">
+              महोदय,
+            </div>
+
+            <!-- BODY PARAGRAPHS -->
+            <div class="mt-3.5 text-[16px] text-justify leading-[1.85] text-black hindi-body space-y-3.5">
+              <p class="indent-10" contenteditable="true" id="doc-body1">
+                सादर अवगत कराना है कि विद्यालय में स्थापित आर.ओ. (RO) खराब हो गया है। उक्त आर.ओ. को विद्यालय के बिजली
+                मिस्त्री द्वारा जाँच कराया गया, जिसमें आर.ओ. में ही तकनीकी खराबी होना पाया गया है।
+              </p>
+
+              <!-- OPTIONAL EMBEDDED TABLE / MULTI-COLUMN CONTAINER -->
+              <div id="doc-table-wrapper" class="hidden my-3 overflow-x-auto">
+                <table id="doc-custom-table" class="pms-letter-table">
+                  <thead>
+                    <tr id="doc-table-thead-tr">
+                      <th contenteditable="true" style="width: 12%;">कम सं०</th>
+                      <th contenteditable="true" style="width: 60%;">सामग्री / विवरण</th>
+                      <th contenteditable="true" style="width: 28%;">मात्रा / संख्या</th>
+                    </tr>
+                  </thead>
+                  <tbody id="doc-table-tbody">
+                    <tr>
+                      <td contenteditable="true">1.</td>
+                      <td contenteditable="true">Activity Register</td>
+                      <td contenteditable="true">01 अदद</td>
+                    </tr>
+                    <tr>
+                      <td contenteditable="true">2.</td>
+                      <td contenteditable="true">Meeting & Minutes Register</td>
+                      <td contenteditable="true">01 अदद</td>
+                    </tr>
+                    <tr>
+                      <td contenteditable="true">3.</td>
+                      <td contenteditable="true">ऑफिस फाइल (Office Files)</td>
+                      <td contenteditable="true">05 अदद</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <p class="indent-10" contenteditable="true" id="doc-body2">
+                अतः श्रीमान जी से सादर अनुरोध है कि खराब आर.ओ. की आवश्यक मरम्मत तत्काल कराए जाने हेतु संबंधित को आदेशित
+                करने की कृपा करें, जिससे विद्यालय में पेयजल की व्यवस्था सुचारु रूप से संचालित हो सके।
+              </p>
+              <p class="indent-10 font-medium" contenteditable="true" id="doc-closing">
+                महोदय की महान कृपा होगी।
+              </p>
+            </div>
+
+            <!-- SIGNATURE & NOTING BLOCK (Directly Under Body Text) -->
+            <div id="signature-container" class="mt-8 mb-2">
+              <div class="flex justify-between items-end">
+
+                <!-- Left Endorsement / Noting (Optional) -->
+                <div id="doc-noting-block" class="hidden pl-2 pb-1">
+                  <div class="font-mono text-xs font-black tracking-wider text-slate-700">
+                    <div class="border-b border-black pb-0.5 mb-1 inline-block">IC. P.M.S</div>
+                    <div class="text-[11.5px] text-gray-800">Date: ____/____/2026</div>
+                  </div>
+                </div>
+
+                <!-- Right Official Signature Block -->
+                <div class="text-center min-w-[210px] ml-auto">
+                  <!-- Signature Line -->
+                  <div class="h-10 flex items-end justify-center pb-1">
+                    <div class="w-40 border-b border-black"></div>
+                  </div>
+
+                  <div class="text-[15.5px] font-extrabold text-black hindi-heading mt-1" contenteditable="true"
+                    id="doc-sign-title">
+                    प्रभारी प्रधानाचार्य
+                  </div>
+                  <div class="text-[14.5px] font-bold text-black hindi-body mt-0.5" contenteditable="true"
+                    id="doc-sign-org">
+                    पुलिस मॉडर्न स्कूल
+                  </div>
+                  <div class="text-[13.5px] font-semibold text-black hindi-body mt-0.5" contenteditable="true"
+                    id="doc-sign-location">
+                    25वीं वाहिनी पीएसी, रायबरेली
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // Templates Database
+    const PRESETS = {
+      ro_repair: {
+        subject: "विद्यालय में खराब आर.ओ. की मरम्मत कराए जाने के संबंध में।",
+        body1: "सादर अवगत कराना है कि विद्यालय में स्थापित आर.ओ. (RO) खराब हो गया है। उक्त आर.ओ. को विद्यालय के बिजली मिस्त्री द्वारा जाँच कराया गया, जिसमें आर.ओ. में ही तकनीकी खराबी होना पाया गया है।",
+        body2: "अतः श्रीमान जी से सादर अनुरोध है कि खराब आर.ओ. की आवश्यक मरम्मत तत्काल कराए जाने हेतु संबंधित को आदेशित करने की कृपा करें, जिससे विद्यालय में पेयजल की व्यवस्था सुचारु रूप से संचालित हो सके।"
+      },
+      electric_repair: {
+        subject: "विद्यालय के कक्षाओं में विद्युत वायरिंग व पंखों की मरम्मत कराए जाने के संबंध में।",
+        body1: "सादर अवगत कराना है कि विद्यालय के प्राथमिक व जूनियर कक्षाओं में लगे कुछ विद्युत पंखे एवं ट्यूबलाइट्स खराब हो गए हैं तथा मुख्य वायरिंग में शॉर्ट-सर्किट की समस्या उत्पन्न हो रही है।",
+        body2: "अतः श्रीमान जी से सादर अनुरोध है कि छात्र-छात्राओं की सुविधा व सुरक्षा को दृष्टिगत रखते हुए वाहिनी के विद्युत मिस्त्री द्वारा आवश्यक मरम्मत कार्य तत्काल कराए जाने हेतु आदेशित करने की कृपा करें।"
+      },
+      broadband_repair: {
+        subject: "विद्यालय में बीएसएनएल ब्रॉडबैंड/इंटरनेट कनेक्शन की मरम्मत कराए जाने के संबंध में।",
+        body1: "सादर अवगत कराना है कि विद्यालय कार्यालय एवं कंप्यूटर कक्ष में स्थापित बीएसएनएल ब्रॉडबैंड (इंटरनेट) सेवा पिछले कुछ दिनों से बाधित चल रही है, जिसके कारण विभागीय ऑनलाइन कार्य एवं पत्राचार प्रभावित हो रहा है।",
+        body2: "अतः श्रीमान जी से सादर अनुरोध है कि ब्रॉडबैंड कनेक्शन को तत्काल सुचारु कराए जाने हेतु संबंधित विभाग/दूरसंचार को निर्देशित कराने की कृपा करें।"
+      },
+      water_tank: {
+        subject: "विद्यालय भवन की पानी टंकी की सफाई एवं ब्लीचिंग कराए जाने के संबंध में।",
+        body1: "सादर अवगत कराना है कि विद्यालय परिसर में स्थापित पेयजल टंकियों की नियमित समयावधि पूर्ण हो चुकी है एवं छात्र-छात्राओं के स्वास्थ्य हित में टंकियों की विधिवत सफाई व शुद्धिकरण कराया जाना अति-आवश्यक है।",
+        body2: "अतः श्रीमान जी से सादर अनुरोध है कि विद्यालय की पानी टंकियों की सफाई हेतु संबंधित कर्मचारियों को निर्देशित करने की कृपा करें।"
+      },
+      computer_lab: {
+        subject: "विद्यालय कंप्यूटर लैब के कंप्यूटर सिस्टम एवं प्रिंटर की सर्विसिंग कराने के संबंध में।",
+        body1: "सादर अवगत कराना है कि विद्यालय कंप्यूटर लैब में स्थापित 4 सिस्टम्स एवं मुख्य कार्यालय प्रिंटर में तकनीकी खराबी आ जाने के कारण शिक्षण व परीक्षा संबंधी कार्य बाधित हो रहे हैं।",
+        body2: "अतः श्रीमान जी से सादर अनुरोध है कि उक्त कंप्यूटर व प्रिंटर की तकनीकी जांच एवं मरम्मत कराए जाने की अनुमति प्रदान करने की कृपा करें।"
+      },
+      sports_items: {
+        subject: "वार्षिक खेलकूद प्रतियोगिता हेतु खेल सामग्री व्यवस्था कराए जाने के संबंध में।",
+        body1: "सादर अवगत कराना है कि विद्यालय के छात्र-छात्राओं के शारीरिक विकास एवं आगामी अंतर-सदन खेलकूद प्रतियोगिता हेतु नवीन खेलकूद सामग्री (फुटबॉल, वॉलीबॉल, बैडमिंटन व कैरम) की आवश्यकता है।",
+        body2: "अतः श्रीमान जी से सादर अनुरोध है कि आवश्यक खेलकूद सामग्री की व्यवस्था/स्वीकृति प्रदान करने की कृपा करें।"
+      },
+      registers_files: {
+        subject: "विद्यालय में आवश्यक रजिस्टर एवं ऑफिस फाइल उपलब्ध कराए जाने के संबंध में।",
+        body1: "सादर अवगत कराना है कि विद्यालय में विभिन्न शैक्षणिक एवं प्रशासनिक कार्यों के सुव्यवस्थित अभिलेखीकरण हेतु Activity Register, Meeting Register, Minutes of the Meeting Register एवं इनसे संबंधित अभिलेखों को सुरक्षित रखने के लिए 02 अदद रजिस्टर एवं 05 अदद ऑफिस फाइल की आवश्यकता है।",
+        body2: "अतः श्रीमान जी से सादर अनुरोध है कि उक्त 02 अदद रजिस्टर एवं 05 अदद ऑफिस फाइल उपलब्ध कराए जाने हेतु संबंधित को आदेशित करने की कृपा करें।"
+      },
+      building_paint: {
+        subject: "विद्यालय भवन के मुख्य कक्षों एवं प्रांगण की रंगाई-पुताई कराए जाने के संबंध में।",
+        body1: "सादर अवगत कराना है कि नवीन शैक्षिक सत्र के उपलक्ष्य में विद्यालय भवन के मुख्य प्रवेश द्वार, कक्षाओं एवं बरामदे की रंगाई-पुताई एवं मरम्मत कराया जाना आवश्यक प्रतीत होता है।",
+        body2: "अतः श्रीमान जी से सादर अनुरोध है कि उक्त रंगाई-पुताई कार्य हेतु संबंधित को निर्देशित करने की कृपा करें।"
+      },
+      stationery: {
+        subject: "आगामी अर्द्धवार्षिक परीक्षा हेतु परीक्षा सामग्री एवं स्टेशनरी मांग के संबंध में।",
+        body1: "सादर अवगत कराना है कि विद्यालय में आगामी अर्द्धवार्षिक परीक्षा का आयोजन होना सुनिश्चित हुआ है, जिसके सफल संचालन हेतु उत्तर-पुस्तिकाएं, प्रश्न-पत्र मुद्रण पेपर एवं कार्यालय स्टेशनरी की तात्कालिक आवश्यकता है।",
+        body2: "अतः श्रीमान जी से सादर अनुरोध है कि परीक्षा सामग्री क्रय/उपलब्ध कराए जाने हेतु आवश्यक स्वीकृति प्रदान करने की कृपा करें।"
+      },
+      blank_letter: {
+        subject: "विषय यहाँ दर्ज करें...",
+        body1: "सादर अवगत कराना है कि...",
+        body2: "अतः श्रीमान जी से सादर अनुरोध है कि..."
+      }
+    };
+
+    // Hindi Month Formatter
+    const HINDI_MONTHS = [
+      "जनवरी", "फरवरी", "मार्च", "अप्रैल", "मई", "जून",
+      "जुलाई", "अगस्त", "सितंबर", "अक्टूबर", "नवंबर", "दिसंबर"
+    ];
+
+    function getFormattedHindiDate() {
+      const now = new Date();
+      const month = HINDI_MONTHS[now.getMonth()];
+      const day = now.getDate();
+      const year = now.getFullYear();
+      return `${month}, ${day}, ${year}`;
+    }
+
+    // Two-Way Sync between Input Controls and Document
+    const bindings = [
+      ['in-ref-no', 'doc-ref-no'],
+      ['in-date', 'doc-date'],
+      ['in-recipient', 'doc-recipient'],
+      ['in-subject', 'doc-subject'],
+      ['in-salutation', 'doc-salutation'],
+      ['in-body1', 'doc-body1'],
+      ['in-body2', 'doc-body2'],
+      ['in-closing', 'doc-closing'],
+      ['in-sign-title', 'doc-sign-title'],
+      ['in-sign-org', 'doc-sign-org'],
+      ['in-sign-location', 'doc-sign-location']
+    ];
+
+    bindings.forEach(([inId, docId]) => {
+      const inEl = document.getElementById(inId);
+      const docEl = document.getElementById(docId);
+
+      if (inEl && docEl) {
+        // From Form to Doc
+        inEl.addEventListener('input', () => {
+          docEl.innerText = inEl.value;
+        });
+
+        // From Doc to Form
+        docEl.addEventListener('input', () => {
+          inEl.value = docEl.innerText;
+        });
+      }
+    });
+
+    // Preset Selection Handler
+    const presetSelect = document.getElementById('presetSelect');
+    presetSelect.addEventListener('change', () => {
+      const key = presetSelect.value;
+      const data = PRESETS[key];
+      if (data) {
+        document.getElementById('in-subject').value = data.subject;
+        document.getElementById('doc-subject').innerText = data.subject;
+
+        document.getElementById('in-body1').value = data.body1;
+        document.getElementById('doc-body1').innerText = data.body1;
+
+        document.getElementById('in-body2').value = data.body2;
+        document.getElementById('doc-body2').innerText = data.body2;
+
+        if (key === 'registers_files') {
+          updateTableVisibility(true);
+          loadTableTemplate('items_qty');
+        }
+      }
+    });
+
+    // Recipient Preset Handler
+    const recipientPreset = document.getElementById('recipientPreset');
+    recipientPreset.addEventListener('change', () => {
+      const val = recipientPreset.value;
+      let text = '';
+      if (val === 'senanayak') {
+        text = 'श्रीमान सेनानायक महोदय,\n25वीं वाहिनी पीएसी,\nरायबरेली।';
+      } else if (val === 'sahayak_senanayak') {
+        text = 'श्रीमान सहायक सेनानायक महोदय,\n25वीं वाहिनी पीएसी,\nरायबरेली।';
+      } else if (val === 'shivirpal') {
+        text = 'श्रीमान शिविरपाल महोदय,\n25वीं वाहिनी पीएसी,\nरायबरेली।';
+      } else if (val === 'subedar_major') {
+        text = 'श्रीमान सूबेदार मेजर महोदय,\n25वीं वाहिनी पीएसी,\nरायबरेली।';
+      }
+      if (text) {
+        document.getElementById('in-recipient').value = text;
+        document.getElementById('doc-recipient').innerText = text;
+      }
+    });
+
+    // Today Date Button
+    document.getElementById('todayDateBtn').addEventListener('click', () => {
+      const dateStr = getFormattedHindiDate();
+      document.getElementById('in-date').value = dateStr;
+      document.getElementById('doc-date').innerText = dateStr;
+    });
+
+    // Toggle Noting Block
+    const toggleNoting = document.getElementById('toggleNoting');
+    const docNotingBlock = document.getElementById('doc-noting-block');
+    toggleNoting.addEventListener('change', () => {
+      if (toggleNoting.checked) {
+        docNotingBlock.classList.remove('hidden');
+      } else {
+        docNotingBlock.classList.add('hidden');
+      }
+    });
+
+    // Subject Visibility Controller
+    let isSubjectVisible = true;
+    window.isSubjectVisible = true;
+    const docSubjectContainer = document.getElementById('doc-subject-container');
+    const toggleSubjectBtn = document.getElementById('toggleSubjectBtn');
+    const toggleSubjectCheckbox = document.getElementById('toggleSubjectCheckbox');
+    const subjectHideIcon = document.getElementById('subjectHideIcon');
+    const subjectHideText = document.getElementById('subjectHideText');
+    const subjectHiddenBadge = document.getElementById('subjectHiddenBadge');
+    const subjectStatusBadge = document.getElementById('subjectStatusBadge');
+    const inSubject = document.getElementById('in-subject');
+
+    window.setSubjectVisibility = function (visible) {
+      isSubjectVisible = !!visible;
+      window.isSubjectVisible = isSubjectVisible;
+
+      if (docSubjectContainer) {
+        if (isSubjectVisible) {
+          docSubjectContainer.classList.remove('hidden');
+        } else {
+          docSubjectContainer.classList.add('hidden');
+        }
+      }
+      if (toggleSubjectCheckbox) {
+        toggleSubjectCheckbox.checked = isSubjectVisible;
+      }
+      if (subjectHideIcon && subjectHideText) {
+        if (isSubjectVisible) {
+          subjectHideIcon.textContent = '👁️';
+          subjectHideText.textContent = 'विषय छिपाएं';
+          if (toggleSubjectBtn) {
+            toggleSubjectBtn.classList.remove('bg-rose-900/40', 'border-rose-700', 'text-rose-200');
+            toggleSubjectBtn.classList.add('bg-slate-800', 'border-slate-700', 'text-slate-300');
+          }
+        } else {
+          subjectHideIcon.textContent = '🙈';
+          subjectHideText.textContent = 'विषय दिखाएं';
+          if (toggleSubjectBtn) {
+            toggleSubjectBtn.classList.add('bg-rose-900/40', 'border-rose-700', 'text-rose-200');
+            toggleSubjectBtn.classList.remove('bg-slate-800', 'border-slate-700', 'text-slate-300');
+          }
+        }
+      }
+      if (subjectHiddenBadge) {
+        if (isSubjectVisible) {
+          subjectHiddenBadge.classList.add('hidden');
+        } else {
+          subjectHiddenBadge.classList.remove('hidden');
+        }
+      }
+      if (subjectStatusBadge) {
+        if (isSubjectVisible) {
+          subjectStatusBadge.textContent = 'दिख रहा है';
+          subjectStatusBadge.className = 'text-[10px] bg-blue-950/70 text-blue-300 px-2 py-0.5 rounded border border-blue-800/40';
+        } else {
+          subjectStatusBadge.textContent = 'छिपा हुआ (Off)';
+          subjectStatusBadge.className = 'text-[10px] bg-rose-950/70 text-rose-300 px-2 py-0.5 rounded border border-rose-800/40';
+        }
+      }
+      if (inSubject) {
+        if (!isSubjectVisible) {
+          inSubject.classList.add('opacity-60', 'line-through');
+        } else {
+          inSubject.classList.remove('opacity-60', 'line-through');
+        }
+      }
+    };
+
+    if (toggleSubjectBtn) {
+      toggleSubjectBtn.addEventListener('click', () => {
+        window.setSubjectVisibility(!isSubjectVisible);
+      });
+    }
+
+    if (toggleSubjectCheckbox) {
+      toggleSubjectCheckbox.addEventListener('change', () => {
+        window.setSubjectVisibility(toggleSubjectCheckbox.checked);
+      });
+    }
+
+    // Font Size Scaler
+    let currentFontScale = 100;
+    const letterDoc = document.getElementById('letterDocument');
+    const fontScaleDisplay = document.getElementById('fontScaleDisplay');
+
+    document.getElementById('fontIncBtn').addEventListener('click', () => {
+      if (currentFontScale < 130) {
+        currentFontScale += 5;
+        letterDoc.style.fontSize = (currentFontScale / 100) + 'em';
+        fontScaleDisplay.innerText = currentFontScale + '%';
+      }
+    });
+
+    document.getElementById('fontDecBtn').addEventListener('click', () => {
+      if (currentFontScale > 85) {
+        currentFontScale -= 5;
+        letterDoc.style.fontSize = (currentFontScale / 100) + 'em';
+        fontScaleDisplay.innerText = currentFontScale + '%';
+      }
+    });
+
+    // Toggle Editable Highlights
+    const toggleHighlightBtn = document.getElementById('toggleHighlightBtn');
+    toggleHighlightBtn.addEventListener('click', () => {
+      document.body.classList.toggle('highlight-editable');
+    });
+
+    // Reset to Default
+    document.getElementById('resetBtn').addEventListener('click', () => {
+      presetSelect.value = 'ro_repair';
+      presetSelect.dispatchEvent(new Event('change'));
+      window.setSubjectVisibility(true);
+      document.getElementById('todayDateBtn').click();
+    });
+
+    // ================= TABLE & COLUMN BUILDER CONTROLLER =================
+    const TABLE_PRESETS = {
+      items_qty: {
+        headers: ["कम सं०", "सामग्री / विवरण", "मात्रा / संख्या"],
+        rows: [
+          ["1.", "Activity Register", "01 अदद"],
+          ["2.", "Meeting & Minutes Register", "01 अदद"],
+          ["3.", "ऑफिस फाइल (Office Files)", "05 अदद"]
+        ]
+      },
+      two_col: {
+        headers: ["कम सं० / मद", "विवरण / आख्या"],
+        rows: [
+          ["1. कार्य मद", "विवरण यहाँ दर्ज करें..."],
+          ["2. अन्य मद", "विवरण यहाँ दर्ज करें..."]
+        ]
+      },
+      four_col: {
+        headers: ["कम सं०", "सामग्री का नाम", "वर्तमान स्थिति", "अपेक्षित संख्या"],
+        rows: [
+          ["1.", "रजिस्टर", "अनुपलब्ध", "02 अदद"],
+          ["2.", "ऑफिस फाइल", "अनुपलब्ध", "05 अदद"]
+        ]
+      },
+      side_by_side: {
+        headers: ["बिन्दु / मद", "विवरण / स्थिति"],
+        rows: [
+          ["दिनांक / समय", "पूर्वाह्न 10:00 बजे"],
+          ["स्थान", "विद्यालय कार्यालय"],
+          ["अभिलेख", "रजिस्टर व फाइलें"]
+        ]
+      }
+    };
+
+    let tableConfig = {
+      enabled: false,
+      borderStyle: 'black', // black, invisible, light, box_only
+      borderColor: '#000000',
+      borderWidth: '1px',
+      headerBg: 'transparent',
+      align: 'center'
+    };
+
+    const toggleTableCheckbox = document.getElementById('toggleTableCheckbox');
+    const tableControlsArea = document.getElementById('tableControlsArea');
+    const tableStatusBadge = document.getElementById('tableStatusBadge');
+    const docTableWrapper = document.getElementById('doc-table-wrapper');
+    const docCustomTable = document.getElementById('doc-custom-table');
+    const docTableTheadTr = document.getElementById('doc-table-thead-tr');
+    const docTableTbody = document.getElementById('doc-table-tbody');
+
+    const tablePresetSelect = document.getElementById('tablePresetSelect');
+    const tableBorderColorPicker = document.getElementById('tableBorderColorPicker');
+    const tableBorderColorHex = document.getElementById('tableBorderColorHex');
+    const tableBorderWidthSelect = document.getElementById('tableBorderWidthSelect');
+    const tableHeaderBgSelect = document.getElementById('tableHeaderBgSelect');
+    const tableAlignSelect = document.getElementById('tableAlignSelect');
+
+    function updateTableVisibility(enable) {
+      tableConfig.enabled = !!enable;
+      if (toggleTableCheckbox) toggleTableCheckbox.checked = tableConfig.enabled;
+      if (tableControlsArea) {
+        if (tableConfig.enabled) {
+          tableControlsArea.classList.remove('hidden');
+          tableStatusBadge.className = "text-[10px] bg-emerald-950 text-emerald-400 font-bold px-2 py-0.5 rounded border border-emerald-800";
+          tableStatusBadge.innerText = "सक्रिय (On)";
+          docTableWrapper.classList.remove('hidden');
+        } else {
+          tableControlsArea.classList.add('hidden');
+          tableStatusBadge.className = "text-[10px] bg-slate-900 text-slate-400 font-medium px-2 py-0.5 rounded border border-slate-700";
+          tableStatusBadge.innerText = "बंद (Off)";
+          docTableWrapper.classList.add('hidden');
+        }
+      }
+    }
+
+    if (toggleTableCheckbox) {
+      toggleTableCheckbox.addEventListener('change', () => {
+        updateTableVisibility(toggleTableCheckbox.checked);
+      });
+    }
+
+    function applyTableStyles() {
+      if (!docCustomTable) return;
+      const isInv = tableConfig.borderStyle === 'invisible' || tableConfig.borderWidth === '0px' || tableConfig.borderColor.toLowerCase() === '#ffffff';
+
+      if (isInv) {
+        docCustomTable.classList.add('table-border-invisible');
+      } else {
+        docCustomTable.classList.remove('table-border-invisible');
+      }
+
+      const allTh = docCustomTable.querySelectorAll('th');
+      const allTd = docCustomTable.querySelectorAll('td');
+
+      allTh.forEach(th => {
+        th.style.textAlign = tableConfig.align;
+        th.style.backgroundColor = tableConfig.headerBg;
+        if (isInv) {
+          th.style.border = '0px solid transparent';
+        } else if (tableConfig.borderStyle === 'light') {
+          th.style.border = `${tableConfig.borderWidth} solid #cbd5e1`;
+        } else {
+          th.style.border = `${tableConfig.borderWidth} solid ${tableConfig.borderColor}`;
+        }
+      });
+
+      allTd.forEach(td => {
+        td.style.textAlign = tableConfig.align;
+        if (isInv) {
+          td.style.border = '0px solid transparent';
+        } else if (tableConfig.borderStyle === 'light') {
+          td.style.border = `${tableConfig.borderWidth} solid #cbd5e1`;
+        } else {
+          td.style.border = `${tableConfig.borderWidth} solid ${tableConfig.borderColor}`;
+        }
+      });
+
+      if (tableConfig.borderStyle === 'box_only') {
+        docCustomTable.style.border = `${tableConfig.borderWidth} solid ${tableConfig.borderColor}`;
+        allTd.forEach(td => td.style.border = '0px solid transparent');
+      } else {
+        docCustomTable.style.border = 'none';
+      }
+    }
+
+    window.setTableBorderStyle = function (style) {
+      tableConfig.borderStyle = style;
+      if (style === 'invisible') {
+        tableConfig.borderWidth = '0px';
+        tableBorderWidthSelect.value = '0px';
+      } else if (style === 'light') {
+        tableConfig.borderWidth = '1px';
+        tableBorderWidthSelect.value = '1px';
+        tableConfig.borderColor = '#cbd5e1';
+        tableBorderColorPicker.value = '#cbd5e1';
+        tableBorderColorHex.innerText = '#cbd5e1';
+      } else if (style === 'black') {
+        tableConfig.borderWidth = '1px';
+        tableBorderWidthSelect.value = '1px';
+        tableConfig.borderColor = '#000000';
+        tableBorderColorPicker.value = '#000000';
+        tableBorderColorHex.innerText = '#000000';
+      }
+      applyTableStyles();
+    };
+
+    if (document.getElementById('btnBorderBlack')) document.getElementById('btnBorderBlack').addEventListener('click', () => setTableBorderStyle('black'));
+    if (document.getElementById('btnBorderInvisible')) document.getElementById('btnBorderInvisible').addEventListener('click', () => setTableBorderStyle('invisible'));
+    if (document.getElementById('btnBorderLight')) document.getElementById('btnBorderLight').addEventListener('click', () => setTableBorderStyle('light'));
+    if (document.getElementById('btnBorderBox')) document.getElementById('btnBorderBox').addEventListener('click', () => setTableBorderStyle('box_only'));
+
+    if (tableBorderColorPicker) {
+      tableBorderColorPicker.addEventListener('input', (e) => {
+        tableConfig.borderColor = e.target.value;
+        tableBorderColorHex.innerText = e.target.value.toUpperCase();
+        applyTableStyles();
+      });
+    }
+
+    if (tableBorderWidthSelect) {
+      tableBorderWidthSelect.addEventListener('change', (e) => {
+        tableConfig.borderWidth = e.target.value;
+        applyTableStyles();
+      });
+    }
+
+    if (tableHeaderBgSelect) {
+      tableHeaderBgSelect.addEventListener('change', (e) => {
+        tableConfig.headerBg = e.target.value;
+        applyTableStyles();
+      });
+    }
+
+    if (tableAlignSelect) {
+      tableAlignSelect.addEventListener('change', (e) => {
+        tableConfig.align = e.target.value;
+        applyTableStyles();
+      });
+    }
+
+    // Populate Table from Preset
+    function loadTableTemplate(presetKey) {
+      const p = TABLE_PRESETS[presetKey];
+      if (!p) return;
+
+      docTableTheadTr.innerHTML = p.headers.map((h, i) => `<th contenteditable="true" style="padding: 6px 8px;">${h}</th>`).join('');
+      docTableTbody.innerHTML = p.rows.map(row => `
+        <tr>
+          ${row.map(c => `<td contenteditable="true" style="padding: 6px 8px;">${c}</td>`).join('')}
+        </tr>
+      `).join('');
+
+      applyTableStyles();
+    }
+
+    if (tablePresetSelect) {
+      tablePresetSelect.addEventListener('change', (e) => {
+        loadTableTemplate(e.target.value);
+      });
+    }
+
+    // Add / Remove Row
+    if (document.getElementById('btnAddTableRow')) {
+      document.getElementById('btnAddTableRow').addEventListener('click', () => {
+        const colCount = docTableTheadTr.children.length;
+        const currentRows = docTableTbody.children.length;
+        const tr = document.createElement('tr');
+        for (let i = 0; i < colCount; i++) {
+          const td = document.createElement('td');
+          td.contentEditable = "true";
+          td.style.padding = "6px 8px";
+          td.innerText = i === 0 ? `${currentRows + 1}.` : 'नया विवरण';
+          tr.appendChild(td);
+        }
+        docTableTbody.appendChild(tr);
+        applyTableStyles();
+      });
+    }
+
+    if (document.getElementById('btnRemoveTableRow')) {
+      document.getElementById('btnRemoveTableRow').addEventListener('click', () => {
+        if (docTableTbody.children.length > 1) {
+          docTableTbody.lastElementChild.remove();
+        } else {
+          alert('तालिका में कम से कम एक पंक्ति होना आवश्यक है।');
+        }
+      });
+    }
+
+    // Add / Remove Column
+    if (document.getElementById('btnAddTableCol')) {
+      document.getElementById('btnAddTableCol').addEventListener('click', () => {
+        const th = document.createElement('th');
+        th.contentEditable = "true";
+        th.style.padding = "6px 8px";
+        th.innerText = `कॉलम ${docTableTheadTr.children.length + 1}`;
+        docTableTheadTr.appendChild(th);
+
+        Array.from(docTableTbody.children).forEach(row => {
+          const td = document.createElement('td');
+          td.contentEditable = "true";
+          td.style.padding = "6px 8px";
+          td.innerText = '-';
+          row.appendChild(td);
+        });
+        applyTableStyles();
+      });
+    }
+
+    if (document.getElementById('btnRemoveTableCol')) {
+      document.getElementById('btnRemoveTableCol').addEventListener('click', () => {
+        if (docTableTheadTr.children.length > 1) {
+          docTableTheadTr.lastElementChild.remove();
+          Array.from(docTableTbody.children).forEach(row => {
+            if (row.lastElementChild) row.lastElementChild.remove();
+          });
+        } else {
+          alert('तालिका में कम से कम एक कॉलम होना आवश्यक है।');
+        }
+      });
+    }
+
+    // Capture & Restore Table State helper
+    window.captureTableState = function () {
+      return {
+        enabled: !!tableConfig.enabled,
+        borderStyle: tableConfig.borderStyle,
+        borderColor: tableConfig.borderColor,
+        borderWidth: tableConfig.borderWidth,
+        headerBg: tableConfig.headerBg,
+        align: tableConfig.align,
+        htmlHead: docTableTheadTr ? docTableTheadTr.innerHTML : '',
+        htmlBody: docTableTbody ? docTableTbody.innerHTML : ''
+      };
+    };
+
+    window.restoreTableState = function (state) {
+      if (!state) return;
+      tableConfig = {
+        enabled: !!state.enabled,
+        borderStyle: state.borderStyle || 'black',
+        borderColor: state.borderColor || '#000000',
+        borderWidth: state.borderWidth || '1px',
+        headerBg: state.headerBg || 'transparent',
+        align: state.align || 'center'
+      };
+
+      if (tableBorderColorPicker) tableBorderColorPicker.value = tableConfig.borderColor;
+      if (tableBorderColorHex) tableBorderColorHex.innerText = tableConfig.borderColor.toUpperCase();
+      if (tableBorderWidthSelect) tableBorderWidthSelect.value = tableConfig.borderWidth;
+      if (tableHeaderBgSelect) tableHeaderBgSelect.value = tableConfig.headerBg;
+      if (tableAlignSelect) tableAlignSelect.value = tableConfig.align;
+
+      if (state.htmlHead && docTableTheadTr) docTableTheadTr.innerHTML = state.htmlHead;
+      if (state.htmlBody && docTableTbody) docTableTbody.innerHTML = state.htmlBody;
+
+      updateTableVisibility(tableConfig.enabled);
+      applyTableStyles();
+    };
+
+    // Save Draft to LocalStorage
+    document.getElementById('saveDraftBtn').addEventListener('click', () => {
+      const draft = {
+        refNo: document.getElementById('in-ref-no').value,
+        date: document.getElementById('in-date').value,
+        recipient: document.getElementById('in-recipient').value,
+        subject: document.getElementById('in-subject').value,
+        subjectVisible: isSubjectVisible,
+        salutation: document.getElementById('in-salutation').value,
+        body1: document.getElementById('in-body1').value,
+        body2: document.getElementById('in-body2').value,
+        closing: document.getElementById('in-closing').value,
+        signTitle: document.getElementById('in-sign-title').value,
+        signOrg: document.getElementById('in-sign-org').value,
+        signLocation: document.getElementById('in-sign-location').value,
+        tableState: window.captureTableState()
+      };
+      localStorage.setItem('pms_letter_draft', JSON.stringify(draft));
+      alert('पत्र प्रारूप एवं तालिका सफलतापूर्वक सहेज ली गई (Draft Saved)!');
+    });
+
+    // Auto load current date and draft on startup
+    window.addEventListener('load', () => {
+      const saved = localStorage.getItem('pms_letter_draft');
+      if (saved) {
+        try {
+          const d = JSON.parse(saved);
+          if (d.refNo) {
+            document.getElementById('in-ref-no').value = d.refNo;
+            document.getElementById('doc-ref-no').innerText = d.refNo;
+          }
+          if (d.subject) {
+            document.getElementById('in-subject').value = d.subject;
+            document.getElementById('doc-subject').innerText = d.subject;
+          }
+          if (typeof d.subjectVisible !== 'undefined') {
+            window.setSubjectVisibility(d.subjectVisible);
+          }
+          if (d.tableState) {
+            window.restoreTableState(d.tableState);
+          }
+        } catch (e) { }
+      } else {
+        document.getElementById('todayDateBtn').click();
+      }
+    });
+  </script>
+
+  <!-- ================= LETTER BACKUPS & ARCHIVE MODAL ================= -->
+  <div id="letterHistoryModal"
+    class="no-print fixed inset-0 z-[100] bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+    <div
+      class="bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] flex flex-col overflow-hidden text-slate-100 font-sans">
+      <!-- Modal Header -->
+      <div class="px-6 py-4 border-b border-slate-800 flex items-center justify-between bg-slate-950/50">
+        <div class="flex items-center gap-3">
+          <div class="bg-indigo-600/20 text-indigo-400 p-2 rounded-xl border border-indigo-500/30">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10">
+              </path>
+            </svg>
+          </div>
+          <div>
+            <h3 class="text-lg font-bold text-white flex items-center gap-2">
+              पत्र एवं प्रार्थना पत्र क्लाउड बैकअप (Letter Archive)
+              <span id="letterModalCount"
+                class="bg-indigo-600 text-white text-xs px-2 py-0.5 rounded-full font-mono">0</span>
+            </h3>
+            <p class="text-xs text-slate-400">पूर्व में जारी किए गए सभी पत्रों का बैकअप देखें, लोड करें अथवा पुनः प्रिंट
+              (Reprint) करें</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2">
+          <button id="refreshLetterBackupsBtn"
+            class="p-2 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition" title="Refresh List">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15">
+              </path>
+            </svg>
+          </button>
+          <button id="closeLetterHistoryBtn"
+            class="p-2 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Search Bar -->
+      <div class="px-6 py-3 border-b border-slate-800/80 bg-slate-900/50 flex gap-3">
+        <div class="relative flex-1">
+          <input type="text" id="letterSearchInput"
+            placeholder="पत्रांक संख्या, विषय, प्रेषिती (Recipient) या दिनांक से खोजें..."
+            class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3.5 py-2 pl-9 text-xs text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent" />
+          <svg class="w-4 h-4 text-slate-500 absolute left-3 top-2.5" fill="none" stroke="currentColor"
+            viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Backups List -->
+      <div id="letterBackupsList" class="flex-1 overflow-y-auto p-6 space-y-3 min-h-[300px]">
+        <div class="text-center py-12 text-slate-500 text-sm">
+          <div class="animate-spin inline-block w-6 h-6 border-2 border-current border-t-transparent rounded-full mb-2">
+          </div>
+          <p>क्लाउड बैकअप लोड हो रहे हैं...</p>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div
+        class="px-6 py-3 border-t border-slate-800 bg-slate-950/60 flex items-center justify-between text-xs text-slate-400">
+        <span>संग्रह (Firestore Collection): <code
+            class="text-indigo-400 bg-indigo-950/40 px-1.5 py-0.5 rounded border border-indigo-800/40">pms_letters_backup</code></span>
+        <button id="closeLetterHistoryFooterBtn"
+          class="px-4 py-1.5 bg-slate-800 hover:bg-slate-700 text-white rounded-lg transition font-semibold">
+          बंद करें (Close)
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div id="letterToastContainer"
+    class="no-print fixed bottom-5 right-5 z-[150] flex flex-col gap-2 pointer-events-none"></div>
+
+  <!-- ================= FIREBASE FIRESTORE INTEGRATION ================= -->
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js';
+    import { initializeFirestore, collection, doc, setDoc, getDocs, deleteDoc, query, orderBy } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDsVKuptdW4jRWQ5rLX_h_fn53xuFoYVMI",
+      authDomain: "abcreport-27dea.firebaseapp.com",
+      projectId: "abcreport-27dea",
+      storageBucket: "abcreport-27dea.firebasestorage.app",
+      messagingSenderId: "1422972209",
+      appId: "1:1422972209:web:82fbc39400d75566d8cc10"
+    };
+
+    let app, db;
+    try {
+      app = initializeApp(firebaseConfig);
+      db = initializeFirestore(app, { experimentalAutoDetectLongPolling: true });
+    } catch (err) {
+      console.warn("Firebase Init Letter Generator:", err);
+    }
+
+    const COLLECTION_NAME = 'pms_letters_backup';
+    let cachedLetters = [];
+
+    // Toast Notification
+    function showLetterToast(msg, type = 'success') {
+      const container = document.getElementById('letterToastContainer');
+      if (!container) return;
+      const toast = document.createElement('div');
+      const isSuccess = type === 'success';
+      const isError = type === 'error';
+      const bgClass = isSuccess ? 'bg-emerald-950 border-emerald-600/60 text-emerald-100' : (isError ? 'bg-rose-950 border-rose-600/60 text-rose-100' : 'bg-indigo-950 border-indigo-600/60 text-indigo-100');
+      const icon = isSuccess ? '✓' : (isError ? '✕' : 'ℹ');
+      toast.className = `${bgClass} border px-4 py-2.5 rounded-xl shadow-xl flex items-center gap-2.5 text-xs font-semibold transform transition-all duration-300 pointer-events-auto translate-y-2 opacity-0 font-sans`;
+      toast.innerHTML = `<span class="text-sm font-bold">${icon}</span><span>${msg}</span>`;
+      container.appendChild(toast);
+
+      requestAnimationFrame(() => {
+        toast.classList.remove('translate-y-2', 'opacity-0');
+      });
+
+      setTimeout(() => {
+        toast.classList.add('translate-y-2', 'opacity-0');
+        setTimeout(() => toast.remove(), 300);
+      }, 3500);
+    }
+
+    // Capture Letter Data
+    function captureLetterPayload() {
+      const getVal = (id) => {
+        const el = document.getElementById(id);
+        return el ? el.value.trim() : '';
+      };
+
+      const refNo = getVal('in-ref-no') || ('PMS-' + Date.now());
+      const dateVal = getVal('in-date');
+      const recipient = getVal('in-recipient');
+      const subject = getVal('in-subject');
+      const salutation = getVal('in-salutation');
+      const body1 = getVal('in-body1');
+      const body2 = getVal('in-body2');
+      const closing = getVal('in-closing');
+      const signTitle = getVal('in-sign-title');
+      const signOrg = getVal('in-sign-org');
+      const signLocation = getVal('in-sign-location');
+      const notingChecked = document.getElementById('toggleNoting') ? document.getElementById('toggleNoting').checked : false;
+
+      // Unique Document ID based on Ref No or timestamp
+      const docId = ('letter_' + refNo).replace(/[^a-zA-Z0-9_\u0900-\u097F-]/g, '_') + '_' + Date.now().toString().slice(-4);
+
+      return {
+        id: docId,
+        refNo: refNo,
+        date: dateVal,
+        recipient: recipient,
+        subject: subject,
+        salutation: salutation,
+        body1: body1,
+        body2: body2,
+        closing: closing,
+        signTitle: signTitle,
+        signOrg: signOrg,
+        signLocation: signLocation,
+        notingEnabled: notingChecked,
+        subjectVisible: (typeof window.isSubjectVisible !== 'undefined') ? window.isSubjectVisible : true,
+        tableState: (typeof window.captureTableState === 'function') ? window.captureTableState() : null,
+        savedAt: new Date().toLocaleString('hi-IN', { timeZone: 'Asia/Kolkata' }),
+        timestamp: Date.now()
+      };
+    }
+
+    // Save To Firestore
+    async function saveLetterToFirestore(triggerPrint = false) {
+      if (!db) {
+        showLetterToast('क्लाउड कनेक्ट नहीं हो सका, कृपया नेटवर्क जांचें', 'error');
+        if (triggerPrint) window.print();
+        return;
+      }
+
+      const saveBtn = document.getElementById('saveDraftBtn');
+      const printBtn = document.getElementById('printSaveLetterBtn');
+      if (saveBtn) saveBtn.classList.add('opacity-50', 'pointer-events-none');
+      if (printBtn) printBtn.classList.add('opacity-50', 'pointer-events-none');
+
+      try {
+        const payload = captureLetterPayload();
+        const docRef = doc(db, COLLECTION_NAME, payload.id);
+        await setDoc(docRef, payload, { merge: true });
+
+        // Save local backup as fallback
+        localStorage.setItem('pms_letter_draft', JSON.stringify(payload));
+
+        if (window.PMS_DOC_INDEX) {
+          window.PMS_DOC_INDEX.registerDocument({
+            id: `letter_${payload.id || payload.refNo}`,
+            title: `पत्र: ${payload.subject || payload.refNo}`,
+            category: "सहेजे गए पत्र (Letters)",
+            desc: `पत्रांक: ${payload.refNo} | सेवा में: ${payload.recipientDept || 'विभागीय'} | दिनांक: ${payload.date}`,
+            url: "pms_letter_generator.html",
+            icon: "fa-solid fa-file-signature"
+          });
+        }
+
+        showLetterToast(`पत्र क्लाउड पर सहेजा गया: ${payload.refNo}`, 'success');
+        fetchLetterBackups();
+
+        if (triggerPrint) {
+          setTimeout(() => {
+            window.print();
+          }, 350);
+        }
+      } catch (err) {
+        console.error("Error saving letter backup:", err);
+        showLetterToast(`बैकअप विफल: ${err.message}`, 'error');
+        if (triggerPrint) window.print();
+      } finally {
+        if (saveBtn) saveBtn.classList.remove('opacity-50', 'pointer-events-none');
+        if (printBtn) printBtn.classList.remove('opacity-50', 'pointer-events-none');
+      }
+    }
+
+    // Fetch Letters Backups
+    async function fetchLetterBackups() {
+      if (!db) return;
+      try {
+        const q = query(collection(db, COLLECTION_NAME));
+        const snap = await getDocs(q);
+        cachedLetters = [];
+        snap.forEach(docSnap => {
+          cachedLetters.push({ docId: docSnap.id, ...docSnap.data() });
+        });
+
+        cachedLetters.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+
+        const countBadge = document.getElementById('letterBackupCountBadge');
+        const modalCount = document.getElementById('letterModalCount');
+        if (countBadge) countBadge.textContent = cachedLetters.length;
+        if (modalCount) modalCount.textContent = cachedLetters.length;
+
+        renderLetterBackupsList(cachedLetters);
+      } catch (err) {
+        console.error("Error fetching letters:", err);
+        const container = document.getElementById('letterBackupsList');
+        if (container) {
+          container.innerHTML = `<div class="text-center py-10 text-rose-400 text-xs">बैकअप लोड करने में त्रुटि: ${err.message}</div>`;
+        }
+      }
+    }
+
+    // Render List
+    function renderLetterBackupsList(list) {
+      const container = document.getElementById('letterBackupsList');
+      if (!container) return;
+
+      if (!list || list.length === 0) {
+        container.innerHTML = `
+          <div class="text-center py-14 text-slate-500">
+            <svg class="w-12 h-12 mx-auto mb-3 opacity-40 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+            <p class="font-semibold text-sm text-slate-300">कोई पत्र बैकअप नहीं मिला</p>
+            <p class="text-xs text-slate-500 mt-1">'प्रिंट व बैकअप' या 'क्लाउड बैकअप' बटन दबाकर नया बैकअप बनाएं</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = list.map(item => `
+        <div class="bg-slate-950 border border-slate-800 hover:border-indigo-500/50 rounded-xl p-4 transition duration-200 flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center gap-2 flex-wrap mb-1">
+              <span class="font-mono font-bold text-indigo-400 text-xs bg-indigo-950/60 px-2 py-0.5 rounded border border-indigo-800/40">${item.refNo || 'बिना पत्रांक'}</span>
+              <span class="text-xs text-slate-400 font-medium">${item.date || '-'}</span>
+              ${item.tableState && item.tableState.enabled ? '<span class="text-[10px] bg-emerald-950/80 border border-emerald-800 text-emerald-300 px-1.5 py-0.2 rounded">📊 तालिका शामिल</span>' : ''}
+            </div>
+            <h4 class="font-bold text-white text-sm line-clamp-1 mt-1">${item.subject || 'कोई विषय नहीं'}</h4>
+            <div class="text-xs text-slate-400 mt-1.5 flex flex-wrap gap-x-4 gap-y-1">
+              <span><b>सेवा में:</b> ${(item.recipient || '').split('\n')[0] || '-'}</span>
+              <span><b>सहेजा गया:</b> <span class="text-slate-500 font-mono">${item.savedAt || '-'}</span></span>
+            </div>
+          </div>
+          <div class="flex items-center gap-2 self-end md:self-center flex-shrink-0">
+            <button class="load-letter-btn bg-slate-800 hover:bg-indigo-600 text-slate-200 hover:text-white px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 border border-slate-700 hover:border-indigo-500" data-id="${item.docId}">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+              <span>लोड करें</span>
+            </button>
+            <button class="reprint-letter-btn bg-indigo-600 hover:bg-indigo-500 text-white px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 shadow" data-id="${item.docId}">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+              <span>रीप्रिंट (Reprint)</span>
+            </button>
+            <button class="delete-letter-btn bg-slate-800 hover:bg-rose-900/60 text-slate-400 hover:text-rose-300 p-1.5 rounded-lg transition border border-slate-700 hover:border-rose-700" data-id="${item.docId}" title="डिलीट करें">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+            </button>
+          </div>
+        </div>
+      `).join('');
+
+      container.querySelectorAll('.load-letter-btn').forEach(btn => {
+        btn.addEventListener('click', () => loadLetterData(btn.dataset.id, false));
+      });
+
+      container.querySelectorAll('.reprint-letter-btn').forEach(btn => {
+        btn.addEventListener('click', () => loadLetterData(btn.dataset.id, true));
+      });
+
+      container.querySelectorAll('.delete-letter-btn').forEach(btn => {
+        btn.addEventListener('click', () => deleteLetterData(btn.dataset.id));
+      });
+    }
+
+    // Load Letter Data
+    function loadLetterData(docId, triggerPrint = false) {
+      const data = cachedLetters.find(l => l.docId === docId);
+      if (!data) {
+        showLetterToast('बैकअप डेटा नहीं मिला', 'error');
+        return;
+      }
+
+      const setBoth = (inId, docId, val) => {
+        const inEl = document.getElementById(inId);
+        const docEl = document.getElementById(docId);
+        if (inEl && val !== undefined) inEl.value = val;
+        if (docEl && val !== undefined) docEl.innerText = val;
+      };
+
+      setBoth('in-ref-no', 'doc-ref-no', data.refNo);
+      setBoth('in-date', 'doc-date', data.date);
+      setBoth('in-recipient', 'doc-recipient', data.recipient);
+      setBoth('in-subject', 'doc-subject', data.subject);
+      setBoth('in-salutation', 'doc-salutation', data.salutation);
+      setBoth('in-body1', 'doc-body1', data.body1);
+      setBoth('in-body2', 'doc-body2', data.body2);
+      setBoth('in-closing', 'doc-closing', data.closing);
+      setBoth('in-sign-title', 'doc-sign-title', data.signTitle);
+      setBoth('in-sign-org', 'doc-sign-org', data.signOrg);
+      setBoth('in-sign-location', 'doc-sign-location', data.signLocation);
+
+      const toggleNoting = document.getElementById('toggleNoting');
+      if (toggleNoting) {
+        toggleNoting.checked = !!data.notingEnabled;
+        toggleNoting.dispatchEvent(new Event('change'));
+      }
+
+      if (typeof window.setSubjectVisibility === 'function') {
+        window.setSubjectVisibility(data.subjectVisible !== false);
+      }
+
+      if (data.tableState && typeof window.restoreTableState === 'function') {
+        window.restoreTableState(data.tableState);
+      } else if (typeof window.restoreTableState === 'function') {
+        window.restoreTableState({ enabled: false });
+      }
+
+      const modal = document.getElementById('letterHistoryModal');
+      if (modal) modal.classList.add('hidden');
+
+      showLetterToast(`पत्र लोड किया गया: ${data.refNo}`, 'success');
+
+      if (triggerPrint) {
+        setTimeout(() => {
+          window.print();
+        }, 400);
+      }
+    }
+
+    // Delete Letter Data
+    async function deleteLetterData(docId) {
+      if (!confirm('क्या आप इस पत्र के बैकअप को स्थायी रूप से हटाना चाहते हैं?')) return;
+      if (!db) return;
+      try {
+        await deleteDoc(doc(db, COLLECTION_NAME, docId));
+        showLetterToast('बैकअप सफलतापूर्वक हटा दिया गया', 'info');
+        fetchLetterBackups();
+      } catch (err) {
+        showLetterToast(`हटाने में त्रुटि: ${err.message}`, 'error');
+      }
+    }
+
+    // Event Bindings
+    const letterHistoryModal = document.getElementById('letterHistoryModal');
+    const openLetterHistoryBtn = document.getElementById('openLetterHistoryBtn');
+    const closeLetterHistoryBtn = document.getElementById('closeLetterHistoryBtn');
+    const closeLetterHistoryFooterBtn = document.getElementById('closeLetterHistoryFooterBtn');
+    const refreshLetterBackupsBtn = document.getElementById('refreshLetterBackupsBtn');
+    const letterSearchInput = document.getElementById('letterSearchInput');
+    const saveDraftBtn = document.getElementById('saveDraftBtn');
+    const printSaveLetterBtn = document.getElementById('printSaveLetterBtn');
+
+    if (openLetterHistoryBtn) {
+      openLetterHistoryBtn.addEventListener('click', () => {
+        letterHistoryModal.classList.remove('hidden');
+        fetchLetterBackups();
+      });
+    }
+
+    if (closeLetterHistoryBtn) {
+      closeLetterHistoryBtn.addEventListener('click', () => letterHistoryModal.classList.add('hidden'));
+    }
+    if (closeLetterHistoryFooterBtn) {
+      closeLetterHistoryFooterBtn.addEventListener('click', () => letterHistoryModal.classList.add('hidden'));
+    }
+
+    if (letterHistoryModal) {
+      letterHistoryModal.addEventListener('click', (e) => {
+        if (e.target === letterHistoryModal) letterHistoryModal.classList.add('hidden');
+      });
+    }
+
+    if (refreshLetterBackupsBtn) {
+      refreshLetterBackupsBtn.addEventListener('click', fetchLetterBackups);
+    }
+
+    if (letterSearchInput) {
+      letterSearchInput.addEventListener('input', () => {
+        const q = letterSearchInput.value.toLowerCase().trim();
+        if (!q) {
+          renderLetterBackupsList(cachedLetters);
+          return;
+        }
+        const filtered = cachedLetters.filter(l =>
+          (l.refNo && l.refNo.toLowerCase().includes(q)) ||
+          (l.subject && l.subject.toLowerCase().includes(q)) ||
+          (l.recipient && l.recipient.toLowerCase().includes(q)) ||
+          (l.date && l.date.toLowerCase().includes(q))
+        );
+        renderLetterBackupsList(filtered);
+      });
+    }
+
+    if (saveDraftBtn) {
+      // Replace existing local-only save listener with Firestore save
+      saveDraftBtn.addEventListener('click', (e) => {
+        e.stopImmediatePropagation();
+        saveLetterToFirestore(false);
+      });
+    }
+
+    if (printSaveLetterBtn) {
+      printSaveLetterBtn.addEventListener('click', () => saveLetterToFirestore(true));
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      fetchLetterBackups();
+    });
+  </script>
+  <script src="js/pms_nav_search.js"></script>
+</body>
+
+</html>

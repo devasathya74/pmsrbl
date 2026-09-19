@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="hi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>अभिभावक सहमति पत्र - Albendazole Deworming | Police Modern School</title>
+    <!-- Google Fonts: Inter & Noto Sans Devanagari -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --primary-dark: #1e2356;
+            --slate-700: #334155;
+            --slate-800: #1e293b;
+            --border: #cbd5e1;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Noto Sans Devanagari', 'Inter', sans-serif;
+            background-color: #f1f5f9;
+            color: #0f172a;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Action bar at top (hidden during print) */
+        .no-print-bar {
+            width: 100%;
+            max-width: 800px;
+            background: #ffffff;
+            padding: 12px 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 9px 18px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: #2563eb;
+            color: #ffffff;
+        }
+
+        .btn-primary:hover {
+            background: #1d4ed8;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #cbd5e1;
+            color: #475569;
+        }
+
+        .btn-outline:hover {
+            background: #f8fafc;
+            color: #0f172a;
+        }
+
+        /* A4 Document Page Styling */
+        .page {
+            width: 210mm;
+            min-height: 297mm;
+            padding: 15mm 18mm;
+            background: #ffffff;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            border-radius: 2px;
+            position: relative;
+            box-sizing: border-box;
+        }
+
+        /* Document Header */
+        .doc-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 2px solid #1e3a8a;
+            padding-bottom: 12px;
+            margin-bottom: 14px;
+        }
+
+        .logo-box {
+            width: 70px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-box img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .header-title {
+            text-align: center;
+            flex: 1;
+            padding: 0 10px;
+        }
+
+        .header-title h1 {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            line-height: 1.2;
+        }
+
+        .header-title p {
+            font-size: 12px;
+            color: #475569;
+            font-weight: 600;
+            margin-top: 3px;
+        }
+
+        .badge-ndd {
+            font-size: 11px;
+            background: #eff6ff;
+            color: #1d4ed8;
+            border: 1px solid #bfdbfe;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-weight: 700;
+            display: inline-block;
+            margin-top: 4px;
+        }
+
+        /* Form Sub-Header */
+        .form-banner {
+            background: #f8fafc;
+            border: 1px dashed #94a3b8;
+            border-radius: 6px;
+            padding: 8px 12px;
+            text-align: center;
+            margin-bottom: 14px;
+        }
+
+        .form-banner h2 {
+            font-size: 15px;
+            color: #0f172a;
+            font-weight: 700;
+            text-decoration: underline;
+        }
+
+        .form-banner p {
+            font-size: 11px;
+            color: #475569;
+            margin-top: 2px;
+        }
+
+        /* Info Box */
+        .info-box {
+            background: #fffbebf8;
+            border-left: 4px solid #f59e0b;
+            padding: 8px 12px;
+            font-size: 11.5px;
+            line-height: 1.5;
+            color: #78350f;
+            border-radius: 0 6px 6px 0;
+            margin-bottom: 14px;
+        }
+
+        .info-box b {
+            color: #92400e;
+        }
+
+        /* Section Headings */
+        .sec-head {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--primary);
+            background: #f1f5f9;
+            padding: 4px 10px;
+            border-left: 3px solid var(--primary);
+            margin: 12px 0 8px 0;
+            text-transform: uppercase;
+        }
+
+        /* Field Layout Tables */
+        .form-grid {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 10px;
+        }
+
+        .form-grid td {
+            padding: 6px 4px;
+            font-size: 12px;
+            vertical-align: middle;
+        }
+
+        .field-label {
+            font-weight: 600;
+            color: #334155;
+            white-space: nowrap;
+        }
+
+        .field-line {
+            border-bottom: 1px dotted #475569;
+            display: inline-block;
+            width: 100%;
+            height: 18px;
+        }
+
+        /* Checkbox Options Box */
+        .options-box {
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            padding: 10px 12px;
+            margin-bottom: 12px;
+            background: #ffffff;
+        }
+
+        .opt-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 10px;
+            font-size: 12px;
+            line-height: 1.4;
+        }
+
+        .opt-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .checkbox-square {
+            width: 16px;
+            height: 16px;
+            border: 1.5px solid #334155;
+            border-radius: 3px;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        /* Health Questions */
+        .health-tbl {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 11.5px;
+            margin-bottom: 12px;
+        }
+
+        .health-tbl th,
+        .health-tbl td {
+            border: 1px solid #cbd5e1;
+            padding: 6px 8px;
+        }
+
+        .health-tbl th {
+            background: #f8fafc;
+            text-align: left;
+            font-weight: 700;
+            color: #334155;
+        }
+
+        /* Signature Grid */
+        .sig-grid {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-top: 25px;
+            padding-top: 10px;
+        }
+
+        .sig-block {
+            text-align: center;
+            width: 30%;
+        }
+
+        .sig-line {
+            border-top: 1px dashed #334155;
+            margin-bottom: 4px;
+            padding-top: 4px;
+            font-weight: 700;
+            font-size: 11.5px;
+            color: #0f172a;
+        }
+
+        .sig-sub {
+            font-size: 10.5px;
+            color: #64748b;
+        }
+
+        /* Tear-off / Cutout Slip */
+        .cutout-divider {
+            border: none;
+            border-top: 1.5px dashed #94a3b8;
+            margin: 20px 0 12px 0;
+            position: relative;
+        }
+
+        .cutout-label {
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #ffffff;
+            padding: 0 10px;
+            font-size: 10px;
+            color: #64748b;
+            font-weight: 600;
+        }
+
+        .slip-box {
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            padding: 10px 12px;
+            background: #fafafa;
+            font-size: 11px;
+        }
+
+        .slip-header {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 700;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 4px;
+            margin-bottom: 8px;
+            color: var(--primary);
+        }
+
+        /* Print Media Styles */
+        @media print {
+            body {
+                background: white !important;
+                padding: 0 !important;
+            }
+
+            .no-print-bar {
+                display: none !important;
+            }
+
+            .page {
+                box-shadow: none !important;
+                width: 100% !important;
+                min-height: auto !important;
+                padding: 10mm 12mm !important;
+                margin: 0 !important;
+                border: none !important;
+            }
+
+            @page {
+                size: A4 portrait;
+                margin: 5mm;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- TOP ACTION TOOLBAR (Hidden in Print / PDF) -->
+    <div class="no-print-bar">
+        <div style="display: flex; align-items: center; gap: 8px;">
+            <i class="fa-solid fa-file-pdf text-red-600" style="font-size: 22px; color: #dc2626;"></i>
+            <div>
+                <strong style="font-size: 15px; color: #0f172a;">अभिभावक सहमति पत्र (Consent Form Studio)</strong>
+                <p style="font-size: 11px; color: #64748b;">A4 साइज़ में PDF प्रिंट करें व Firestore क्लाउड पर बैकअप सहेजें</p>
+            </div>
+        </div>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
+            <a href="index.html" class="btn btn-outline"><i class="fa-solid fa-house"></i> Dashboard</a>
+            <button id="openConsentHistoryBtn" class="btn" style="background:#4338ca;color:#fff;"><i class="fa-solid fa-folder-open"></i> पुराने बैकअप (<span id="consentBackupCountBadge">0</span>)</button>
+            <button id="saveConsentCloudBtn" class="btn" style="background:#d97706;color:#fff;"><i class="fa-solid fa-cloud-arrow-up"></i> क्लाउड सेव</button>
+            <button id="printSaveConsentBtn" class="btn btn-primary"><i class="fa-solid fa-print"></i> प्रिंट व बैकअप</button>
+        </div>
+    </div>
+
+    <!-- PRINTABLE A4 CONSENT FORM PAGE -->
+    <div class="page" id="printable-form">
+
+        <!-- Header -->
+        <div class="doc-header">
+            <div class="logo-box">
+                <img src="logo1.png" alt="School Logo"
+                    onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/2997/2997295.png';">
+            </div>
+            <div class="header-title">
+                <h1>POLICE MODERN SCHOOL</h1>
+                <p>25th BN P.A.C., RAEBARELI (U.P.)</p>
+                <div class="badge-ndd"><i class="fa-solid fa-notes-medical"></i> राष्ट्रीय कृमि मुक्ति दिवस (National
+                    Deworming Day)</div>
+            </div>
+            <div class="logo-box">
+                <img src="logo2.png" alt="PAC Logo" onerror="this.style.display='none'">
+            </div>
+        </div>
+
+        <!-- Banner Title -->
+        <div class="form-banner">
+            <h2>अभिभावक सहमति एवं स्वास्थ्य घोषणा पत्र (PARENT CONSENT FORM)</h2>
+            <p>पेट के कीड़े मारने की दवा (Albendazole 400mg) सेवन हेतु अनुमति पत्र</p>
+        </div>
+
+        <!-- Informational Notice -->
+        <div class="info-box">
+            <b>जरूरी सूचना:</b> स्वास्थ्य विभाग एवं राष्ट्रीय स्वास्थ्य मिशन (NHM) के निर्देशानुसार विद्यालय में बच्चों
+            के शारीरिक एवं मानसिक विकास हेतु <b>कृमिनाशक दवा</b> की खुराक दी जानी है। यह दवा पेट के हानिकारक कीड़ों
+            (कृमि) को नष्ट
+            करती है। यह पूर्णतः सुरक्षित एवं स्वास्थ्य मंत्रालय द्वारा अनुशंसित है।
+        </div>
+
+        <!-- Student Details Section -->
+        <div class="sec-head"><i class="fa-solid fa-user-graduate"></i> 1. छात्र / छात्रा का विवरण (Student Details)
+        </div>
+        <table class="form-grid">
+            <tr>
+                <td style="width: 15%;" class="field-label">छात्र/छात्रा का नाम:</td>
+                <td style="width: 45%;"><span class="field-line" contenteditable="true" id="cf-student-name" style="outline:none; display:inline-block; min-width:140px; font-weight:700; color:#1e3a8a;"></span></td>
+                <td style="width: 12%;" class="field-label">कक्षा व वर्ग:</td>
+                <td style="width: 28%;"><span class="field-line" contenteditable="true" id="cf-class-sec" style="outline:none; display:inline-block; min-width:60px; font-weight:700;"></span></td>
+            </tr>
+            <tr>
+                <td class="field-label">पिता/अभिभावक का नाम:</td>
+                <td><span class="field-line" contenteditable="true" id="cf-father-name" style="outline:none; display:inline-block; min-width:140px;"></span></td>
+                <td class="field-label">अनुक्रमांक (Roll):</td>
+                <td><span class="field-line" contenteditable="true" id="cf-roll-no" style="outline:none; display:inline-block; min-width:60px;"></span></td>
+            </tr>
+            <tr>
+                <td class="field-label">माता का नाम:</td>
+                <td><span class="field-line" contenteditable="true" id="cf-mother-name" style="outline:none; display:inline-block; min-width:140px;"></span></td>
+                <td class="field-label">आयु / जन्मतिथि:</td>
+                <td><span class="field-line" contenteditable="true" id="cf-dob" style="outline:none; display:inline-block; min-width:60px;"></span></td>
+            </tr>
+            <tr>
+                <td class="field-label">संपर्क (मोबाइल नंबर):</td>
+                <td><span class="field-line" contenteditable="true" id="cf-mobile" style="outline:none; display:inline-block; min-width:140px;"></span></td>
+                <td class="field-label">एस.आर. नंबर (SR):</td>
+                <td><span class="field-line" contenteditable="true" id="cf-sr-no" style="outline:none; display:inline-block; min-width:60px;"></span></td>
+            </tr>
+        </table>
+
+        <!-- Health Checklist -->
+        <div class="sec-head"><i class="fa-solid fa-heart-pulse"></i> 2. बच्चे की वर्तमान स्वास्थ्य स्थिति (Health
+            Checklist)</div>
+        <table class="health-tbl">
+            <thead>
+                <tr>
+                    <th style="width: 70%;">प्रश्न / विवरण</th>
+                    <th style="width: 15%; text-align: center;">हाँ (Yes)</th>
+                    <th style="width: 15%; text-align: center;">नहीं (No)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1. क्या बच्चा वर्तमान में किसी गंभीर बीमारी से पीड़ित है?</td>
+                    <td style="text-align: center;">[ &nbsp; ]</td>
+                    <td style="text-align: center;">[ &nbsp; ]</td>
+                </tr>
+                <tr>
+                    <td>2. क्या बच्चे को किसी दवा से एलर्जी या मिर्गी/दौरे की शिकायत है?</td>
+                    <td style="text-align: center;">[ &nbsp; ]</td>
+                    <td style="text-align: center;">[ &nbsp; ]</td>
+                </tr>
+                <tr>
+                    <td>3. क्या बच्चा वर्तमान में कोई अन्य नियमित दवा ले रहा है?</td>
+                    <td style="text-align: center;">[ &nbsp; ]</td>
+                    <td style="text-align: center;">[ &nbsp; ]</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Consent Choice Section -->
+        <div class="sec-head"><i class="fa-solid fa-file-signature"></i> 3. अभिभावक की सहमति / असहमति (Parent Consent
+            Option)</div>
+        <div class="options-box">
+            <div class="opt-row">
+                <div class="checkbox-square"></div>
+                <div>
+                    <b>विकल्प 'A' (सहमति / CONSENT APPROVED):</b><br>
+                    मैं प्रमाणित करता/करती हूँ कि मैंने उपरोक्त सूचना ध्यानपूर्वक पढ़ ली है। मैं अपने बच्चे को स्कूल में
+                    स्वास्थ्य कर्मियों / अध्यापकों की देखरेख में <b>कृमिनाशक दवा</b> की दवा खिलाने हेतु <b>पूर्ण
+                        सहमति</b> प्रदान करता/करती हूँ।
+                </div>
+            </div>
+            <div style="border-top: 1px dashed #e2e8f0; margin: 8px 0;"></div>
+            <div class="opt-row">
+                <div class="checkbox-square"></div>
+                <div>
+                    <b>विकल्प 'B' (असहमति / CONSENT DECLINED):</b><br>
+                    मैं अपने बच्चे को यह दवा खिलाने हेतु <b>सहमत नहीं हूँ।</b><br>
+                    <span style="font-size: 11px; color: #64748b;">(अस्वीकृति का कारण:
+                        ______________________________________________________________________)</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Guardian Declaration & Signatures -->
+        <div style="font-size: 11px; color: #475569; margin-top: 10px; line-height: 1.4;">
+            <b>घोषणा:</b> मेरे द्वारा दी गई उपरोक्त सभी जानकारी सत्य है। भविष्य में इस सम्बन्ध में विद्यालय प्रशासन की
+            कोई व्यक्तिगत जिम्मेदारी नहीं होगी।
+        </div>
+
+        <div class="sig-grid">
+            <div class="sig-block">
+                <div class="sig-line">दिनांक: <span contenteditable="true" id="cf-date" style="outline:none;"></span></div>
+                <div class="sig-sub">स्थान: <span contenteditable="true" id="cf-location" style="outline:none;">रायबरेली</span></div>
+            </div>
+            <div class="sig-block">
+                <div class="sig-line">अभिभावक का नाम व हस्ताक्षर</div>
+                <div class="sig-sub">सम्बन्ध: __________________</div>
+            </div>
+            <div class="sig-block">
+                <div class="sig-line">कक्षा अध्यापक के हस्ताक्षर</div>
+                <div class="sig-sub">Police Modern School</div>
+            </div>
+        </div>
+
+        <!-- Cutout Slip for School Record -->
+        <div class="cutout-divider">
+            <span class="cutout-label">✂----------------- विद्यालय रिकॉर्ड हेतु पावती रसीद (SCHOOL ACKNOWLEDGEMENT SLIP)
+                -----------------✂</span>
+        </div>
+
+        <div class="slip-box">
+            <div class="slip-header">
+                <span>POLICE MODERN SCHOOL, RAEBARELI</span>
+                <span>Albendazole Consent Slip (Session 2025-26)</span>
+            </div>
+            <table style="width: 100%; border-collapse: collapse; font-size: 11px;">
+                <tr>
+                    <td style="width: 50%;"><b>छात्र का नाम:</b> <span id="cf-slip-name" contenteditable="true" style="border-bottom: 1px dotted #64748b; font-weight:700; color:#1e3a8a;">___________________________</span></td>
+                    <td style="width: 25%;"><b>कक्षा:</b> <span id="cf-slip-class" contenteditable="true" style="border-bottom: 1px dotted #64748b; font-weight:700;">________</span></td>
+                    <td style="width: 25%;"><b>रोल नं:</b> <span id="cf-slip-roll" contenteditable="true" style="border-bottom: 1px dotted #64748b; font-weight:700;">______</span></td>
+                </tr>
+                <tr>
+                    <td style="padding-top: 6px;"><b>सहमति स्थिति:</b> [ &nbsp; ] स्वीकृत (Approved) &nbsp;&nbsp; [
+                        &nbsp; ] अस्वीकृत (Declined)</td>
+                    <td colspan="2" style="padding-top: 6px; text-align: right;"><b>अभिभावक हस्ताक्षर:</b>
+                        ___________________</td>
+                </tr>
+            </table>
+        </div>
+
+    </div>
+
+    <!-- ================= CONSENT BACKUPS MODAL ================= -->
+    <div id="consentHistoryModal" style="display:none; position:fixed; inset:0; z-index:999; background:rgba(15,23,42,0.75); backdrop-filter:blur(4px); align-items:center; justify-content:center; padding:16px;">
+        <div style="background:#0f172a; border:1px solid #334155; border-radius:16px; width:100%; max-width:760px; max-height:85vh; display:flex; flex-direction:column; overflow:hidden; color:#f8fafc; font-family:'Noto Sans Devanagari', sans-serif;">
+            <div style="padding:14px 20px; border-bottom:1px solid #1e293b; display:flex; justify-content:space-between; align-items:center; background:#020617;">
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <span style="background:#1e3a8a; color:#93c5fd; padding:6px 10px; border-radius:8px; font-size:14px;"><i class="fa-solid fa-folder-open"></i></span>
+                    <div>
+                        <strong style="font-size:16px;">सहमति पत्र क्लाउड बैकअप (Consent Archive)</strong>
+                        <p style="font-size:11px; color:#94a3b8; margin-top:2px;">पूर्व में सहेजे अथवा प्रिंट किए गए सहमति पत्रों का विवरण</p>
+                    </div>
+                </div>
+                <button id="closeConsentHistoryBtn" style="background:transparent; border:none; color:#94a3b8; font-size:18px; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            
+            <div style="padding:10px 20px; border-bottom:1px solid #1e293b; background:#0b1329;">
+                <input type="text" id="consentSearchInput" placeholder="छात्र का नाम, कक्षा, पिता का नाम या दिनांक से खोजें..." style="width:100%; background:#020617; border:1px solid #334155; color:#fff; padding:8px 12px; border-radius:8px; font-size:12px; outline:none;" />
+            </div>
+
+            <div id="consentBackupsList" style="flex:1; overflow-y:auto; padding:16px; display:flex; flex-direction:column; gap:10px; min-height:260px;">
+                <div style="text-align:center; padding:30px; color:#64748b; font-size:13px;">बैकअप लोड हो रहे हैं...</div>
+            </div>
+
+            <div style="padding:10px 20px; border-top:1px solid #1e293b; display:flex; justify-content:space-between; align-items:center; font-size:11px; color:#64748b; background:#020617;">
+                <span>Firestore: <code style="color:#60a5fa;">consent_forms_backup</code></span>
+                <button id="closeConsentHistoryFooterBtn" style="padding:6px 14px; background:#1e293b; color:#fff; border:none; border-radius:6px; cursor:pointer; font-weight:600;">बंद करें</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST CONTAINER -->
+    <div id="consentToastContainer" style="position:fixed; bottom:20px; right:20px; z-index:1000; display:flex; flex-direction:column; gap:8px; pointer-events:none;"></div>
+
+    <!-- ================= FIREBASE FIRESTORE INTEGRATION ================= -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js';
+        import { initializeFirestore, collection, doc, setDoc, getDocs, deleteDoc, query } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDsVKuptdW4jRWQ5rLX_h_fn53xuFoYVMI",
+            authDomain: "abcreport-27dea.firebaseapp.com",
+            projectId: "abcreport-27dea",
+            storageBucket: "abcreport-27dea.firebasestorage.app",
+            messagingSenderId: "1422972209",
+            appId: "1:1422972209:web:82fbc39400d75566d8cc10"
+        };
+
+        let app, db;
+        try {
+            app = initializeApp(firebaseConfig);
+            db = initializeFirestore(app, { experimentalAutoDetectLongPolling: true });
+        } catch(e) {
+            console.warn("Firebase Init Consent Form:", e);
+        }
+
+        const COLLECTION_NAME = 'consent_forms_backup';
+        let cachedConsent = [];
+
+        function showToast(msg, type = 'success') {
+            const container = document.getElementById('consentToastContainer');
+            if (!container) return;
+            const t = document.createElement('div');
+            const bg = type === 'success' ? '#064e3b' : (type === 'error' ? '#881337' : '#1e3a8a');
+            const border = type === 'success' ? '#059669' : (type === 'error' ? '#e11d48' : '#3b82f6');
+            t.style.cssText = `background:${bg}; border:1px solid ${border}; color:#fff; padding:8px 14px; border-radius:8px; font-size:12px; font-weight:600; box-shadow:0 10px 25px rgba(0,0,0,0.4); pointer-events:auto; transition:all 0.3s ease;`;
+            t.innerHTML = `${type === 'success' ? '✓ ' : 'ℹ '}${msg}`;
+            container.appendChild(t);
+            setTimeout(() => t.remove(), 3500);
+        }
+
+        // Two-way sync student details with slip
+        const nameEl = document.getElementById('cf-student-name');
+        const slipNameEl = document.getElementById('cf-slip-name');
+        const classEl = document.getElementById('cf-class-sec');
+        const slipClassEl = document.getElementById('cf-slip-class');
+        const rollEl = document.getElementById('cf-roll-no');
+        const slipRollEl = document.getElementById('cf-slip-roll');
+
+        if (nameEl && slipNameEl) {
+            nameEl.addEventListener('input', () => { slipNameEl.innerText = nameEl.innerText || '___________________________'; });
+            slipNameEl.addEventListener('input', () => { nameEl.innerText = slipNameEl.innerText; });
+        }
+        if (classEl && slipClassEl) {
+            classEl.addEventListener('input', () => { slipClassEl.innerText = classEl.innerText || '________'; });
+            slipClassEl.addEventListener('input', () => { classEl.innerText = slipClassEl.innerText; });
+        }
+        if (rollEl && slipRollEl) {
+            rollEl.addEventListener('input', () => { slipRollEl.innerText = rollEl.innerText || '______'; });
+            slipRollEl.addEventListener('input', () => { rollEl.innerText = slipRollEl.innerText; });
+        }
+
+        // Set default date
+        const dateEl = document.getElementById('cf-date');
+        if (dateEl && !dateEl.innerText) {
+            const today = new Date();
+            dateEl.innerText = `${today.getDate()}/${today.getMonth() + 1}/${today.getFullYear()}`;
+        }
+
+        function capturePayload() {
+            const getText = id => document.getElementById(id) ? document.getElementById(id).innerText.trim() : '';
+            const studentName = getText('cf-student-name') || 'छात्र';
+            const className = getText('cf-class-sec');
+            const fatherName = getText('cf-father-name');
+            const rollNo = getText('cf-roll-no');
+            const motherName = getText('cf-mother-name');
+            const dob = getText('cf-dob');
+            const mobile = getText('cf-mobile');
+            const srNo = getText('cf-sr-no');
+            const dateVal = getText('cf-date');
+            const locationVal = getText('cf-location');
+
+            const docId = ('cf_' + studentName + '_' + (rollNo || Date.now())).replace(/[^a-zA-Z0-9_\u0900-\u097F-]/g, '_');
+
+            return {
+                id: docId,
+                studentName,
+                className,
+                fatherName,
+                rollNo,
+                motherName,
+                dob,
+                mobile,
+                srNo,
+                date: dateVal,
+                location: locationVal,
+                savedAt: new Date().toLocaleString('hi-IN', { timeZone: 'Asia/Kolkata' }),
+                timestamp: Date.now()
+            };
+        }
+
+        async function saveConsentBackup(triggerPrint = false) {
+            if (!db) {
+                showToast('Firestore कनेक्ट नहीं है', 'error');
+                if (triggerPrint) window.print();
+                return;
+            }
+
+            try {
+                const payload = capturePayload();
+                const docRef = doc(db, COLLECTION_NAME, payload.id);
+                await setDoc(docRef, payload, { merge: true });
+
+                // Save local draft & register with search index
+                localStorage.setItem("pms_consent_draft", JSON.stringify(payload));
+                if (window.PMS_DOC_INDEX) {
+                    window.PMS_DOC_INDEX.registerDocument({
+                        id: `consent_${payload.id}`,
+                        title: `सहमति पत्र: ${payload.studentName} (${payload.className || 'कक्षा'})`,
+                        category: "सहेजे गए सहमति पत्र",
+                        desc: `पिता: श्री ${payload.fatherName || '-'} | मोबाइल: ${payload.mobile || '-'} | दिनांक: ${payload.date}`,
+                        url: "consent_form.html",
+                        icon: "fa-solid fa-user-check"
+                    });
+                }
+
+                showToast(`सहमति पत्र बैकअप सहेजा गया: ${payload.studentName}`, 'success');
+                fetchConsentBackups();
+
+                if (triggerPrint) {
+                    setTimeout(() => window.print(), 350);
+                }
+            } catch(e) {
+                console.error("Error saving consent form:", e);
+                showToast(`बैकअप त्रुटि: ${e.message}`, 'error');
+                if (triggerPrint) window.print();
+            }
+        }
+
+        async function fetchConsentBackups() {
+            if (!db) return;
+            try {
+                const q = query(collection(db, COLLECTION_NAME));
+                const snap = await getDocs(q);
+                cachedConsent = [];
+                snap.forEach(d => cachedConsent.push({ docId: d.id, ...d.data() }));
+                cachedConsent.sort((a,b) => (b.timestamp || 0) - (a.timestamp || 0));
+
+                const badge = document.getElementById('consentBackupCountBadge');
+                if (badge) badge.innerText = cachedConsent.length;
+
+                renderConsentList(cachedConsent);
+            } catch(e) {
+                console.error("Error fetching consent backups:", e);
+            }
+        }
+
+        function renderConsentList(list) {
+            const container = document.getElementById('consentBackupsList');
+            if (!container) return;
+
+            if (!list || list.length === 0) {
+                container.innerHTML = `<div style="text-align:center; padding:30px; color:#64748b; font-size:13px;">कोई सहमति पत्र बैकअप नहीं मिला</div>`;
+                return;
+            }
+
+            container.innerHTML = list.map(item => `
+                <div style="background:#020617; border:1px solid #1e293b; border-radius:10px; padding:12px 14px; display:flex; justify-content:space-between; align-items:center; gap:10px;">
+                    <div>
+                        <div style="font-weight:700; color:#93c5fd; font-size:13px;">${item.studentName || 'बिना नाम'} <span style="font-size:11px; color:#94a3b8; font-weight:normal;">(कक्षा: ${item.className || '-'}, रोल: ${item.rollNo || '-'})</span></div>
+                        <div style="font-size:11px; color:#cbd5e1; margin-top:2px;">पिता: ${item.fatherName || '-'} | मोबाइल: ${item.mobile || '-'}</div>
+                        <div style="font-size:10px; color:#64748b; margin-top:2px;">सहेजा गया: ${item.savedAt || '-'}</div>
+                    </div>
+                    <div style="display:flex; gap:6px; flex-shrink:0;">
+                        <button class="load-cf-btn" data-id="${item.docId}" style="padding:5px 10px; background:#1e293b; color:#cbd5e1; border:1px solid #334155; border-radius:6px; cursor:pointer; font-size:11px; font-weight:600;"><i class="fa-solid fa-eye"></i> लोड</button>
+                        <button class="reprint-cf-btn" data-id="${item.docId}" style="padding:5px 10px; background:#2563eb; color:#fff; border:none; border-radius:6px; cursor:pointer; font-size:11px; font-weight:600;"><i class="fa-solid fa-print"></i> रीप्रिंट</button>
+                        <button class="del-cf-btn" data-id="${item.docId}" style="padding:5px 8px; background:#1e293b; color:#f87171; border:1px solid #334155; border-radius:6px; cursor:pointer; font-size:11px;"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                </div>
+            `).join('');
+
+            container.querySelectorAll('.load-cf-btn').forEach(btn => {
+                btn.addEventListener('click', () => loadConsentData(btn.dataset.id, false));
+            });
+            container.querySelectorAll('.reprint-cf-btn').forEach(btn => {
+                btn.addEventListener('click', () => loadConsentData(btn.dataset.id, true));
+            });
+            container.querySelectorAll('.del-cf-btn').forEach(btn => {
+                btn.addEventListener('click', () => deleteConsentData(btn.dataset.id));
+            });
+        }
+
+        function loadConsentData(docId, triggerPrint = false) {
+            const item = cachedConsent.find(c => c.docId === docId);
+            if (!item) return;
+
+            const setField = (id, val) => {
+                const el = document.getElementById(id);
+                if (el) el.innerText = val || '';
+            };
+
+            setField('cf-student-name', item.studentName);
+            setField('cf-class-sec', item.className);
+            setField('cf-father-name', item.fatherName);
+            setField('cf-roll-no', item.rollNo);
+            setField('cf-mother-name', item.motherName);
+            setField('cf-dob', item.dob);
+            setField('cf-mobile', item.mobile);
+            setField('cf-sr-no', item.srNo);
+            setField('cf-date', item.date);
+            setField('cf-location', item.location);
+
+            setField('cf-slip-name', item.studentName || '___________________________');
+            setField('cf-slip-class', item.className || '________');
+            setField('cf-slip-roll', item.rollNo || '______');
+
+            document.getElementById('consentHistoryModal').style.display = 'none';
+            showToast(`सहमति पत्र लोड किया गया: ${item.studentName}`, 'success');
+
+            if (triggerPrint) {
+                setTimeout(() => window.print(), 350);
+            }
+        }
+
+        async function deleteConsentData(docId) {
+            if (!confirm('क्या आप इस सहमति पत्र के बैकअप को हटाना चाहते हैं?')) return;
+            if (!db) return;
+            try {
+                await deleteDoc(doc(db, COLLECTION_NAME, docId));
+                showToast('बैकअप हटा दिया गया', 'info');
+                fetchConsentBackups();
+            } catch(e) {
+                showToast(`त्रुटि: ${e.message}`, 'error');
+            }
+        }
+
+        // Modal Controls
+        const modal = document.getElementById('consentHistoryModal');
+        const openBtn = document.getElementById('openConsentHistoryBtn');
+        const closeBtn = document.getElementById('closeConsentHistoryBtn');
+        const closeFooterBtn = document.getElementById('closeConsentHistoryFooterBtn');
+        const searchInput = document.getElementById('consentSearchInput');
+        const saveCloudBtn = document.getElementById('saveConsentCloudBtn');
+        const printSaveBtn = document.getElementById('printSaveConsentBtn');
+
+        if (openBtn) openBtn.addEventListener('click', () => { modal.style.display = 'flex'; fetchConsentBackups(); });
+        if (closeBtn) closeBtn.addEventListener('click', () => { modal.style.display = 'none'; });
+        if (closeFooterBtn) closeFooterBtn.addEventListener('click', () => { modal.style.display = 'none'; });
+        if (modal) modal.addEventListener('click', e => { if (e.target === modal) modal.style.display = 'none'; });
+
+        if (searchInput) {
+            searchInput.addEventListener('input', () => {
+                const q = searchInput.value.toLowerCase().trim();
+                if (!q) { renderConsentList(cachedConsent); return; }
+                const filtered = cachedConsent.filter(c => 
+                    (c.studentName && c.studentName.toLowerCase().includes(q)) ||
+                    (c.className && c.className.toLowerCase().includes(q)) ||
+                    (c.fatherName && c.fatherName.toLowerCase().includes(q)) ||
+                    (c.date && c.date.toLowerCase().includes(q))
+                );
+                renderConsentList(filtered);
+            });
+        }
+
+        if (saveCloudBtn) saveCloudBtn.addEventListener('click', () => saveConsentBackup(false));
+        if (printSaveBtn) printSaveBtn.addEventListener('click', () => saveConsentBackup(true));
+
+        window.addEventListener('DOMContentLoaded', () => {
+            fetchConsentBackups();
+        });
+    </script>
+    <script src="js/pms_nav_search.js"></script>
+</body>
+
+</html>

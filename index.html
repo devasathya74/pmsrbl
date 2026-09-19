@@ -19,6 +19,7 @@
       });
     }
   </script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
   <link rel="stylesheet" href="css/style.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -61,7 +62,12 @@
         <p>25th BN P.A.C., Raebareli &nbsp;|&nbsp; Digital Fee Register (Aone Register)</p>
       </div>
       <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end">
-        <span class="badge">Session 2025&#8211;26</span>
+        <div style="display:flex;gap:8px;align-items:center">
+          <button onclick="window.openPmsSearch()" class="btn btn-sm" style="background:linear-gradient(135deg, #2563eb, #1d4ed8);color:#fff;font-weight:700;padding:5px 12px;display:flex;align-items:center;gap:6px;border-radius:6px;box-shadow:0 2px 8px rgba(37,99,235,0.3);border:none;cursor:pointer;">
+            <i class="fa-solid fa-magnifying-glass"></i> &#128269; खोजें (Ctrl+K)
+          </button>
+          <span class="badge">Session 2025&#8211;26</span>
+        </div>
         <div style="display:flex;gap:10px;align-items:center">
           <div class="fb-indicator" id="fbIndicator">
             <div class="fb-dot" id="fbDot"></div><span id="fbStatus">Connecting...</span>
@@ -81,8 +87,15 @@
       <button onclick="showPanel('print')" id="tab-print">&#128424; View / Print</button>
       <button onclick="showPanel('fee-chart')" id="tab-fee-chart">&#128203; Fee Chart</button>
       <button onclick="showPanel('gate-pass')" id="tab-gate-pass">&#128663; Gate Pass</button>
-      <button onclick="window.location.href='attendance.html'" id="tab-attendance">&#128652; Transport /
-        Attendance</button>
+      <button onclick="window.location.href='fee_data/index.html'" id="tab-fee-data" style="background:linear-gradient(135deg, #4f46e5, #4338ca);color:#fff;font-weight:700;">💼 Fee Portal 2026-27 (fee_data)</button>
+      <button onclick="window.location.href='attendance.html'" id="tab-attendance" style="background:#0284c7;color:#fff;">&#128652; Transport / Attendance</button>
+      <button onclick="window.location.href='medicine_stock_register.html'" id="tab-medicine" style="background:#e11d48;color:#fff;">💊 औषधि रजिस्टर</button>
+      <button onclick="window.location.href='staff_salary.html'" id="tab-salary" style="background:#0d9488;color:#fff;">💵 स्टाफ वेतन</button>
+      <button onclick="window.location.href='pms_letter_generator.html'" id="tab-letter" style="background:#4338ca;color:#fff;">&#128221; पत्र जनरेटर</button>
+      <button onclick="window.location.href='anupalan-akhya.html'" id="tab-anupalan" style="background:#059669;color:#fff;">&#128203; अनुपालन आख्या</button>
+      <button onclick="window.location.href='bsnl_bill.html'" id="tab-bsnl" style="background:#2563eb;color:#fff;">&#128222; BSNL Bill</button>
+      <button onclick="window.location.href='consent_form.html'" id="tab-consent" style="background:#3b82f6;color:#fff;">&#128203; Consent Form</button>
+      <button onclick="window.openPmsSearch()" id="tab-all-pages" style="background:linear-gradient(135deg, #d97706, #b45309);color:#fff;font-weight:bold;">&#127891; 🇮🇳 2 अक्टूबर जयंती पोर्टल (खोजें)</button>
       <button onclick="showPanel('trash')" id="tab-trash">&#128465; Recycle Bin (<span
           id="trashCountNav">0</span>)</button>
     </nav>
@@ -91,6 +104,176 @@
       <!-- DASHBOARD -->
       <section id="panel-dashboard" class="panel active">
         <div class="stats-strip" id="dashStats"></div>
+
+        <!-- PMS INTEGRATED SYSTEMS & FEE_DATA HUB -->
+        <div class="card" style="border-left: 5px solid #4f46e5; background: linear-gradient(180deg, #ffffff 0%, #f5f3ff 100%); margin-bottom: 16px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:12px;">
+            <div style="font-size:1.05rem;font-weight:800;color:#312e81;display:flex;align-items:center;gap:8px;">
+              <span>💼</span> पुलिस मॉडर्न स्कूल - एकीकृत डिजिटल सिस्टम एवं पोर्टल्स हब
+            </div>
+            <div style="display:flex;gap:8px;align-items:center;">
+              <a href="fee_data/index.html" class="btn btn-sm" style="background:linear-gradient(135deg, #4f46e5, #3730a3);color:#fff;font-weight:700;border:none;cursor:pointer;padding:5px 12px;border-radius:6px;text-decoration:none;display:flex;align-items:center;gap:6px;box-shadow:0 2px 8px rgba(79,70,229,0.3);">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i> Fee Portal (2026-27 / fee_data) खोलें
+              </a>
+              <button onclick="window.openPmsSearch()" class="btn btn-sm" style="background:#0284c7;color:#fff;font-weight:700;border:none;cursor:pointer;padding:5px 10px;border-radius:6px;">
+                <i class="fa-solid fa-magnifying-glass"></i> खोजें (Ctrl+K)
+              </button>
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));gap:12px;">
+            
+            <!-- FEE DATA SUITE -->
+            <div style="background:#fff;border:1px solid #c7d2fe;border-radius:10px;padding:12px;box-shadow:0 2px 6px rgba(0,0,0,0.04);">
+              <div style="font-weight:800;font-size:.9rem;color:#3730a3;margin-bottom:8px;border-bottom:1px solid #e0e7ff;padding-bottom:4px;display:flex;align-items:center;justify-content:space-between;">
+                <span><i class="fa-solid fa-vault"></i> Fee Management Suite (fee_data)</span>
+                <span style="font-size:0.7rem;background:#4f46e5;color:#fff;padding:1px 6px;border-radius:4px;">Session 26-27</span>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:6px;">
+                <a href="fee_data/index.html" style="text-decoration:none;padding:6px 10px;background:#e0e7ff;border-radius:6px;font-size:.82rem;font-weight:700;color:#3730a3;display:flex;justify-content:space-between;align-items:center;">
+                  <span>💳 Fee Management Portal (मुख्य)</span>
+                  <i class="fa-solid fa-arrow-right text-xs"></i>
+                </a>
+                <a href="fee_data/reciept.html" target="_blank" style="text-decoration:none;padding:6px 10px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;font-size:.82rem;font-weight:600;color:#334155;display:flex;justify-content:space-between;align-items:center;">
+                  <span>🧾 फीस रसीद जनरेटर व व्यूअर</span>
+                  <i class="fa-solid fa-arrow-right text-xs"></i>
+                </a>
+                <a href="fee_data/form_s02.html" target="_blank" style="text-decoration:none;padding:6px 10px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;font-size:.82rem;font-weight:600;color:#334155;display:flex;justify-content:space-between;align-items:center;">
+                  <span>📋 Form S02 (UDISE+ Studio)</span>
+                  <i class="fa-solid fa-arrow-right text-xs"></i>
+                </a>
+                <a href="fee_data/docs/index.html" target="_blank" style="text-decoration:none;padding:6px 10px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;font-size:.82rem;font-weight:600;color:#334155;display:flex;justify-content:space-between;align-items:center;">
+                  <span>📑 VC Review Document</span>
+                  <i class="fa-solid fa-arrow-right text-xs"></i>
+                </a>
+              </div>
+            </div>
+
+            <!-- SCHOOL REGISTERS -->
+            <div style="background:#fff;border:1px solid #bbf7d0;border-radius:10px;padding:12px;box-shadow:0 2px 6px rgba(0,0,0,0.04);">
+              <div style="font-weight:800;font-size:.9rem;color:#166534;margin-bottom:8px;border-bottom:1px solid #dcfce7;padding-bottom:4px;display:flex;align-items:center;justify-content:space-between;">
+                <span><i class="fa-solid fa-book-bookmark"></i> विद्यालय प्रबंधन व पंजिकाएं</span>
+                <span style="font-size:0.7rem;background:#16a34a;color:#fff;padding:1px 6px;border-radius:4px;">Live</span>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:6px;">
+                <a href="attendance.html" style="text-decoration:none;padding:6px 10px;background:#ecfdf5;border-radius:6px;font-size:.82rem;font-weight:700;color:#065f46;display:flex;justify-content:space-between;align-items:center;">
+                  <span>🚌 छात्र दैनिक उपस्थिति व वाहन पंजिका</span>
+                  <i class="fa-solid fa-arrow-right text-xs"></i>
+                </a>
+                <a href="medicine_stock_register.html" style="text-decoration:none;padding:6px 10px;background:#fff1f2;border:1px solid #fecdd3;border-radius:6px;font-size:.82rem;font-weight:700;color:#9f1239;display:flex;justify-content:space-between;align-items:center;">
+                  <span>💊 PMS औषधि व प्राथमिक उपचार स्टॉक</span>
+                  <i class="fa-solid fa-arrow-right text-xs"></i>
+                </a>
+                <a href="staff_salary.html" style="text-decoration:none;padding:6px 10px;background:#f0fdfa;border:1px solid #ccfbf1;border-radius:6px;font-size:.82rem;font-weight:700;color:#115e59;display:flex;justify-content:space-between;align-items:center;">
+                  <span>💵 स्टाफ वेतन व मानदेय बिल पंजिका</span>
+                  <i class="fa-solid fa-arrow-right text-xs"></i>
+                </a>
+                <a href="class6_science_question_bank.html" style="text-decoration:none;padding:6px 10px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;font-size:.82rem;font-weight:600;color:#334155;display:flex;justify-content:space-between;align-items:center;">
+                  <span>🔬 कक्षा 6 विज्ञान प्रश्न बैंक</span>
+                  <i class="fa-solid fa-arrow-right text-xs"></i>
+                </a>
+              </div>
+            </div>
+
+            <!-- OFFICIAL CORRESPONDENCE -->
+            <div style="background:#fff;border:1px solid #fed7aa;border-radius:10px;padding:12px;box-shadow:0 2px 6px rgba(0,0,0,0.04);">
+              <div style="font-weight:800;font-size:.9rem;color:#9a3412;margin-bottom:8px;border-bottom:1px solid #ffedd5;padding-bottom:4px;display:flex;align-items:center;justify-content:space-between;">
+                <span><i class="fa-solid fa-file-pen"></i> आधिकारिक पत्राचार व जनरेटर</span>
+                <span style="font-size:0.7rem;background:#ea580c;color:#fff;padding:1px 6px;border-radius:4px;">Official</span>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:6px;">
+                <a href="pms_letter_generator.html" style="text-decoration:none;padding:6px 10px;background:#fff7ed;border-radius:6px;font-size:.82rem;font-weight:700;color:#9a3412;display:flex;justify-content:space-between;align-items:center;">
+                  <span>📝 पत्र व प्रार्थना पत्र जनरेटर</span>
+                  <i class="fa-solid fa-arrow-right text-xs"></i>
+                </a>
+                <a href="anupalan-akhya.html" style="text-decoration:none;padding:6px 10px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:6px;font-size:.82rem;font-weight:700;color:#166534;display:flex;justify-content:space-between;align-items:center;">
+                  <span>📋 अनुपालन आख्या जनरेटर (Inspection)</span>
+                  <i class="fa-solid fa-arrow-right text-xs"></i>
+                </a>
+                <a href="bsnl_bill.html" style="text-decoration:none;padding:6px 10px;background:#eff6ff;border:1px solid #bfdbfe;border-radius:6px;font-size:.82rem;font-weight:700;color:#1e40af;display:flex;justify-content:space-between;align-items:center;">
+                  <span>📞 BSNL बिल व वाउचर जनरेटर</span>
+                  <i class="fa-solid fa-arrow-right text-xs"></i>
+                </a>
+                <a href="consent_form.html" style="text-decoration:none;padding:6px 10px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;font-size:.82rem;font-weight:600;color:#334155;display:flex;justify-content:space-between;align-items:center;">
+                  <span>📄 छात्र अभिभावक सहमति पत्र</span>
+                  <i class="fa-solid fa-arrow-right text-xs"></i>
+                </a>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- 2 OCTOBER SPECIAL PORTAL CARD -->
+        <div class="card" style="border-left: 5px solid #f59e0b; background: linear-gradient(180deg, #ffffff 0%, #fffbeb 100%);">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:12px;">
+            <div style="font-size:1.05rem;font-weight:800;color:#78350f;display:flex;align-items:center;gap:8px;">
+              <span>🇮🇳</span> 2 अक्टूबर राष्ट्रीय जयंती पोर्टल (गांधी व शास्त्री जयंती विशेष क्विज़ एवं निबंध)
+            </div>
+            <button onclick="window.openPmsSearch()" class="btn btn-sm" style="background:#d97706;color:#fff;font-weight:700;border:none;cursor:pointer;padding:4px 10px;border-radius:6px;">
+              <i class="fa-solid fa-magnifying-glass"></i> सभी पेज खोजें (Ctrl+K)
+            </button>
+          </div>
+          
+          <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:12px;">
+            
+            <!-- GANDHI JI SECTION -->
+            <div style="background:#fff;border:1px solid #fde68a;border-radius:10px;padding:12px;box-shadow:0 2px 6px rgba(0,0,0,0.04);">
+              <div style="font-weight:800;font-size:.9rem;color:#92400e;margin-bottom:8px;border-bottom:1px solid #fef3c7;padding-bottom:4px;display:flex;align-items:center;gap:6px;">
+                <i class="fa-solid fa-graduation-cap"></i> महात्मा गांधी विशेष
+              </div>
+              <div style="display:flex;flex-direction:column;gap:6px;">
+                <a href="gandhi_jayanti_quiz.html" style="text-decoration:none;padding:6px 10px;background:#fef3c7;border-radius:6px;font-size:.82rem;font-weight:700;color:#78350f;display:flex;justify-content:space-between;align-items:center;">
+                  <span>📝 गांधी जयंती क्विज़ (50 प्रश्न - हिंदी)</span>
+                  <i class="fa-solid fa-arrow-right text-xs"></i>
+                </a>
+                <a href="gandhi_jayanti_quiz_english.html" style="text-decoration:none;padding:6px 10px;background:#ecfdf5;border-radius:6px;font-size:.82rem;font-weight:700;color:#065f46;display:flex;justify-content:space-between;align-items:center;">
+                  <span>📝 Gandhi Quiz (50 MCQs - English)</span>
+                  <i class="fa-solid fa-arrow-right text-xs"></i>
+                </a>
+                <a href="mahatma_gandhi_10_lines.html" style="text-decoration:none;padding:6px 10px;background:#f0fdf4;border-radius:6px;font-size:.82rem;font-weight:600;color:#166534;display:flex;justify-content:space-between;align-items:center;">
+                  <span>✍️ महात्मा गांधी - 10 Lines Essay</span>
+                  <i class="fa-solid fa-arrow-right text-xs"></i>
+                </a>
+                <a href="mahatma_gandhi_detailed_essay.html" style="text-decoration:none;padding:6px 10px;background:#f8fafc;border-radius:6px;font-size:.82rem;font-weight:600;color:#334155;border:1px solid #e2e8f0;display:flex;justify-content:space-between;align-items:center;">
+                  <span>📖 महात्मा गांधी - विस्तृत निबंध (Junior)</span>
+                  <i class="fa-solid fa-arrow-right text-xs"></i>
+                </a>
+              </div>
+            </div>
+
+            <!-- SHASTRI JI SECTION -->
+            <div style="background:#fff;border:1px solid #fed7aa;border-radius:10px;padding:12px;box-shadow:0 2px 6px rgba(0,0,0,0.04);">
+              <div style="font-weight:800;font-size:.9rem;color:#9a3412;margin-bottom:8px;border-bottom:1px solid #ffedd5;padding-bottom:4px;display:flex;align-items:center;gap:6px;">
+                <i class="fa-solid fa-flag"></i> लाल बहादुर शास्त्री विशेष
+              </div>
+              <div style="display:flex;flex-direction:column;gap:6px;">
+                <a href="shastri_jayanti_quiz.html" style="text-decoration:none;padding:6px 10px;background:#ffedd5;border-radius:6px;font-size:.82rem;font-weight:700;color:#7c2d12;display:flex;justify-content:space-between;align-items:center;">
+                  <span>📝 शास्त्री जी क्विज़ (50 प्रश्न - रैंडमाइज़्ड)</span>
+                  <i class="fa-solid fa-arrow-right text-xs"></i>
+                </a>
+                <a href="shastri_10_lines.html" style="text-decoration:none;padding:6px 10px;background:#fff7ed;border-radius:6px;font-size:.82rem;font-weight:600;color:#c2410c;display:flex;justify-content:space-between;align-items:center;">
+                  <span>✍️ लाल बहादुर शास्त्री - 10 Lines Essay</span>
+                  <i class="fa-solid fa-arrow-right text-xs"></i>
+                </a>
+                <a href="shastri_detailed_essay.html" style="text-decoration:none;padding:6px 10px;background:#f8fafc;border-radius:6px;font-size:.82rem;font-weight:600;color:#334155;border:1px solid #e2e8f0;display:flex;justify-content:space-between;align-items:center;">
+                  <span>📖 लाल बहादुर शास्त्री - विस्तृत निबंध</span>
+                  <i class="fa-solid fa-arrow-right text-xs"></i>
+                </a>
+                <div style="display:flex;gap:6px;margin-top:2px;">
+                  <a href="pms_letter_generator.html" style="flex:1;text-decoration:none;text-align:center;padding:5px 6px;background:#e0e7ff;border-radius:6px;font-size:.76rem;font-weight:700;color:#3730a3;">
+                    📝 पत्र जनरेटर
+                  </a>
+                  <a href="anupalan-akhya.html" style="flex:1;text-decoration:none;text-align:center;padding:5px 6px;background:#d1fae5;border-radius:6px;font-size:.76rem;font-weight:700;color:#065f46;">
+                    📋 अनुपालन
+                  </a>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
         <div class="card">
           <div class="card-title">&#128197; Recent Fee Entries (Last 10)</div>
           <div class="tbl-wrap">
@@ -231,6 +414,13 @@
                       class="slider"></span></label>
                   <span class="toggle-label" id="busLabel">Not Availing</span>
                 </div>
+              </div>
+              <div class="form-group" style="grid-column: span 2;">
+                <label style="display:flex; align-items:center; gap:8px; cursor:pointer; background:#fff1f2; border:1px solid #fecdd3; padding:8px 12px; border-radius:6px; margin-top:4px;">
+                  <input type="checkbox" id="fSelfTransport" style="width:18px; height:18px; cursor:pointer;" onchange="selfTransportToggle()" />
+                  <span style="font-weight:700; color:#be123c; font-size:0.88rem;">🚶 पैदल / निजी वाहन (बटालियन से बाहर) [Bus Not Availing]</span>
+                </label>
+                <span style="font-size:0.75rem; color:#881337; margin-top:3px; display:block;">(चेक करें यदि छात्र बस नहीं लेता बल्कि पैदल/अपने वाहन से आता है - यह छात्र Transport List में 'पैदल/निजी (बटालियन बाहर)' लिस्ट में दिखेगा)</span>
               </div>
               <div class="form-group">
                 <label>Sibling Discount</label>
@@ -622,6 +812,7 @@
   <div id="toast"></div>
 
   <script type="module" src="js/script.js"></script>
+  <script src="js/pms_nav_search.js"></script>
 </body>
 
 </html>

@@ -1,0 +1,1714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BSNL Tax Invoice Replica - Editable & PDF Ready</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&family=Caveat:wght@600&family=JetBrains+Mono:wght@400;600;800&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+
+    body {
+      font-family: 'Roboto', -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+      background-color: #3f4448;
+      color: #000;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Strict A4 page specifications */
+    .a4-page {
+      width: 210mm;
+      min-height: 297mm;
+      max-height: 297mm;
+      margin: 20px auto;
+      background: #ffffff;
+      padding: 5.5mm 7.5mm 5mm 7.5mm;
+      position: relative;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+      page-break-after: always;
+      break-after: page;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border-radius: 2px;
+    }
+
+    [contenteditable="true"] {
+      outline: none;
+      transition: background-color 0.15s ease, box-shadow 0.15s ease;
+      border-radius: 2px;
+      padding: 0 1px;
+    }
+
+    body.highlight-editable [contenteditable="true"]:hover {
+      background-color: #fef08a !important;
+      box-shadow: 0 0 0 1px #ca8a04;
+    }
+
+    body.highlight-editable [contenteditable="true"]:focus {
+      background-color: #fde047 !important;
+      box-shadow: 0 0 0 1.5px #a16207;
+    }
+
+    .bsnl-blue-text {
+      color: #0c3875;
+    }
+
+    .box-border {
+      border: 1px solid #6b7280;
+    }
+
+    .box-border-thin {
+      border: 1px solid #9ca3af;
+    }
+
+    .bill-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 8.5px;
+    }
+
+    .bill-table th, .bill-table td {
+      border: 1px solid #6b7280;
+      padding: 2px 4.5px;
+    }
+
+    .bill-table-light th, .bill-table-light td {
+      border: 1px solid #9ca3af;
+      padding: 1.5px 4px;
+    }
+
+    .vertical-text {
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      text-orientation: mixed;
+      letter-spacing: 0.5px;
+    }
+
+    /* Active page filters */
+    body.show-p1 #bill-page-2, body.show-p1 #bill-page-3 { display: none !important; }
+    body.show-p2 #bill-page-1, body.show-p2 #bill-page-3 { display: none !important; }
+    body.show-p3 #bill-page-1, body.show-p3 #bill-page-2 { display: none !important; }
+
+    @media print {
+      body {
+        background: #fff !important;
+        padding: 0 !important;
+        margin: 0 !important;
+      }
+      .no-print {
+        display: none !important;
+      }
+      .a4-page {
+        margin: 0 !important;
+        box-shadow: none !important;
+        width: 210mm !important;
+        height: 297mm !important;
+        max-height: 297mm !important;
+        padding: 5.5mm 7.5mm 5mm 7.5mm !important;
+        page-break-after: always !important;
+        break-after: page !important;
+        border-radius: 0 !important;
+      }
+      @page {
+        size: A4 portrait;
+        margin: 0;
+      }
+    }
+  </style>
+</head>
+<body class="highlight-editable">
+
+  <!-- TOP FLOATING TOOLBAR -->
+  <header class="no-print sticky top-0 z-50 bg-slate-950/95 backdrop-blur-md text-white shadow-2xl px-4 py-2 flex flex-wrap items-center justify-between gap-2.5 border-b border-slate-700">
+    <!-- Brand / Title -->
+    <div class="flex items-center gap-2.5">
+      <div class="bg-gradient-to-r from-blue-700 to-indigo-600 text-white text-xs px-2.5 py-1 rounded font-black tracking-wider uppercase shadow-sm flex items-center gap-1.5">
+        <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14h2v2h-2v-2zm0-10h2v8h-2V6z"/></svg>
+        <span>BSNL Invoice Studio</span>
+      </div>
+      <span class="text-[11px] text-slate-300 hidden md:inline">&bull; Click text to edit &bull; Auto-calculates tax & dates</span>
+    </div>
+
+    <!-- Month & Year Billing Cycle Selector -->
+    <div class="flex items-center gap-1.5 bg-slate-900/90 px-2 py-1 rounded-lg border border-slate-700 text-xs">
+      <span class="text-amber-300 font-bold flex items-center gap-1">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+        <span class="hidden sm:inline">Bill Month:</span>
+      </span>
+
+      <button id="prevMonthBtn" title="Previous Month" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-1.5 py-0.5 rounded text-xs font-bold border border-slate-700 transition">
+        &larr;
+      </button>
+
+      <select id="monthSelect" class="bg-slate-800 text-white border border-slate-600 rounded px-2 py-0.5 font-semibold text-xs focus:outline-none focus:ring-1 focus:ring-blue-500">
+        <option value="0">January</option>
+        <option value="1">February</option>
+        <option value="2">March</option>
+        <option value="3">April</option>
+        <option value="4">May</option>
+        <option value="5">June</option>
+        <option value="6">July</option>
+        <option value="7">August</option>
+        <option value="8" selected>September</option>
+        <option value="9">October</option>
+        <option value="10">November</option>
+        <option value="11">December</option>
+      </select>
+
+      <select id="yearSelect" class="bg-slate-800 text-white border border-slate-600 rounded px-1.5 py-0.5 font-semibold text-xs focus:outline-none focus:ring-1 focus:ring-blue-500">
+        <option value="2024">2024</option>
+        <option value="2025">2025</option>
+        <option value="2026" selected>2026</option>
+        <option value="2027">2027</option>
+        <option value="2028">2028</option>
+      </select>
+
+      <button id="nextMonthBtn" title="Next Month" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-1.5 py-0.5 rounded text-xs font-bold border border-slate-700 transition">
+        &rarr;
+      </button>
+
+      <button id="currentMonthBtn" title="Set to Current Live Month" class="bg-blue-600 hover:bg-blue-500 text-white px-2 py-0.5 rounded text-[11px] font-bold transition ml-0.5 shadow-sm">
+        Today
+      </button>
+    </div>
+
+    <!-- View & Action Controls -->
+    <div class="flex items-center gap-1.5 flex-wrap text-xs">
+      <a href="index.html" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-2.5 py-1.5 rounded transition flex items-center gap-1 font-medium border border-slate-700 text-[11px]" title="Back to PMS Dashboard">
+        <span>🏠 Dashboard</span>
+      </a>
+
+      <!-- Page Switcher Tabs -->
+      <div class="flex items-center bg-slate-900 rounded border border-slate-700 p-0.5 text-[11px] font-bold">
+        <button id="viewAllBtn" class="bg-blue-600 text-white px-2 py-0.5 rounded transition">All (3)</button>
+        <button id="viewP1Btn" class="text-slate-300 hover:text-white px-2 py-0.5 rounded transition">Page 1</button>
+        <button id="viewP2Btn" class="text-slate-300 hover:text-white px-2 py-0.5 rounded transition">Page 2</button>
+        <button id="viewP3Btn" class="text-slate-300 hover:text-white px-2 py-0.5 rounded transition">Page 3</button>
+      </div>
+
+      <button id="toggleHighlightBtn" class="bg-slate-800 hover:bg-slate-700 text-amber-300 px-2.5 py-1.5 rounded transition flex items-center gap-1 font-medium border border-slate-700">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+        <span>Highlight</span>
+      </button>
+
+      <button id="recalcBtn" class="bg-emerald-700 hover:bg-emerald-600 text-white px-3 py-1.5 rounded transition flex items-center gap-1 font-bold shadow">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+        <span>Calculate</span>
+      </button>
+
+      <button id="openHistoryBtn" class="bg-indigo-700 hover:bg-indigo-600 text-white px-3 py-1.5 rounded transition flex items-center gap-1.5 font-bold shadow border border-indigo-500/50">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        <span>📁 Backups & History</span>
+        <span id="backupCountBadge" class="bg-indigo-900 text-indigo-200 text-[10px] px-1.5 py-0.2 rounded-full font-mono">0</span>
+      </button>
+
+      <button id="saveCloudBtn" class="bg-amber-600 hover:bg-amber-500 text-white px-3 py-1.5 rounded transition flex items-center gap-1 font-bold shadow">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+        <span>Save Cloud</span>
+      </button>
+
+      <button id="printSaveBtn" class="bg-blue-600 hover:bg-blue-500 text-white px-3.5 py-1.5 rounded font-bold transition flex items-center gap-1 shadow-md">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+        <span>Print & Backup</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ================= PAGE 1 ================= -->
+  <div class="a4-page" id="bill-page-1">
+    <div>
+      <!-- TOP ROW: BSNL GSTIN line -->
+      <div class="text-[9px] pb-1 text-black font-semibold flex justify-between">
+        <div>
+          <span class="font-bold">BSNL GSTIN: </span>
+          <span contenteditable="true" id="f-bsnl-gstin-top">09AABCB5576G1ZJ</span>
+        </div>
+      </div>
+
+      <!-- EXACT REPLICA TOP HEADER BOX -->
+      <div class="box-border grid grid-cols-12 mb-1.5 bg-white">
+        <!-- Left half: Emblem Logo & Connecting Bharat -->
+        <div class="col-span-6 border-r border-zinc-500 relative flex items-center justify-center p-0.5 overflow-hidden bg-white min-h-[78px]">
+          <img src="bsnl_header_logo.png" alt="BSNL Connecting Bharat - Tax Invoice" class="w-full h-full max-h-[82px] object-contain" />
+        </div>
+
+        <!-- Right half: Account No, Invoice No, Invoice Date, Usage Period, Fixed Monthly note -->
+        <div class="col-span-6 p-1.5 text-[9.5px] leading-relaxed flex flex-col justify-between">
+          <div>
+            <div class="grid grid-cols-2 gap-1 mb-0.5">
+              <div><span class="font-normal text-black">Account No : </span><b class="font-black text-black tracking-wide" contenteditable="true" id="f-acc-no">1026567446</b></div>
+              <div><span class="font-normal text-black">Invoice No : </span><b class="font-black text-black tracking-wide font-mono" contenteditable="true" id="f-inv-no">NDCUP2616898651</b></div>
+            </div>
+            <div class="mb-0.5">
+              <span class="font-normal text-black">Invoice Date : </span><b class="font-black text-black" contenteditable="true" id="f-inv-date">04-JUL-2026</b>
+            </div>
+            <div>
+              <span class="font-normal text-black">Usage Period &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: </span><b class="font-black text-black" contenteditable="true" id="f-usage-period">01-JUN-2026 to 30-JUN-2026</b>
+            </div>
+          </div>
+          <div class="text-center font-bold text-[8.8px] text-black pt-1">
+            Fixed Monthly Charge Period available on Page 3
+          </div>
+        </div>
+      </div>
+
+      <!-- EXACT 4 CARDS ROW -->
+      <div class="grid grid-cols-12 gap-1.5 mb-1.5">
+        <!-- Box 1: Customer Name & Address -->
+        <div class="col-span-4 box-border p-1.5 text-[8.8px] leading-tight flex flex-col justify-start">
+          <div class="bsnl-blue-text font-black text-[10.5px] uppercase" contenteditable="true" id="f-cust-name">
+            Mr. POLICE MODERN SCHOOL
+          </div>
+          <div class="bsnl-blue-text font-black text-[9.8px] uppercase mb-1.5" contenteditable="true">
+            SCHOOL
+          </div>
+          <div class="text-black leading-snug" contenteditable="true" id="f-cust-address">
+            0,25TH BN PAC GORA BAZAR PAC<br>
+            COLONY-RAEBARELI UE RAEBARELI-<br>
+            RAEBARELI229001-IN
+          </div>
+        </div>
+
+        <!-- Box 2: Telephone Number & GSTIN split horizontally -->
+        <div class="col-span-3 box-border flex flex-col justify-between text-center">
+          <div class="p-1">
+            <div class="bsnl-blue-text font-black text-[10px] tracking-wide uppercase">
+              TELEPHONE NUMBER
+            </div>
+            <div class="text-[12.5px] font-black text-black mt-0.5 tracking-wider font-mono" contenteditable="true" id="f-phone-no">
+              0535-2974104
+            </div>
+          </div>
+          <div class="border-t border-zinc-500 p-0.5 bg-white">
+            <div class="bsnl-blue-text font-black text-[9.5px] tracking-wide uppercase">
+              GSTIN
+            </div>
+            <div class="text-[9.5px] font-bold text-gray-700 min-h-[14px]" contenteditable="true" id="f-cust-gstin">
+            </div>
+          </div>
+        </div>
+
+        <!-- Box 3: Amount Payable -->
+        <div class="col-span-2 box-border p-1.5 text-center flex flex-col justify-center items-center bg-blue-50/20">
+          <div class="bsnl-blue-text font-black text-[10.5px] leading-tight uppercase">
+            AMOUNT<br>PAYABLE
+          </div>
+          <div class="text-[14.5px] font-black text-black mt-1">
+            ₹ <span contenteditable="true" id="f-amount-payable">1108.00</span>
+          </div>
+        </div>
+
+        <!-- Box 4: Due Date & 24x7 Helpline split horizontally -->
+        <div class="col-span-3 box-border flex flex-col justify-between text-center">
+          <div class="p-1">
+            <div class="bsnl-blue-text font-black text-[10px] tracking-wide uppercase">
+              DUE DATE
+            </div>
+            <div class="text-[12.5px] font-black text-black mt-0.5" contenteditable="true" id="f-due-date">
+              20-JUL-2026
+            </div>
+          </div>
+          <div class="border-t border-zinc-500 p-0.5 leading-tight text-red-600">
+            <div class="text-[8.5px] font-semibold">24x7 Toll Free Helpline</div>
+            <div class="text-[7.8px]">Call or WhatsApp <b class="font-black text-red-700">Hi</b> to</div>
+            <div class="text-[11px] font-black tracking-wide text-red-700 font-mono" contenteditable="true" id="f-helpline">
+              1800 4444
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- EXACT ACCOUNT SUMMARY SECTION -->
+      <div class="mb-1.5">
+        <div class="bsnl-blue-text font-black text-[11px] mb-0.5">
+          Account Summary
+        </div>
+        
+        <div class="flex items-center justify-between text-center">
+          <!-- Box 1: Previous Balance -->
+          <div class="box-border p-1 flex-1 min-h-[42px] flex flex-col justify-center">
+            <div class="text-[7.5px] font-black uppercase text-black leading-tight">PREVIOUS<br>BALANCE</div>
+            <div class="text-[9.5px] font-bold text-black mt-0.5 font-mono">₹ <span contenteditable="true" id="f-prev-bal">1108.00</span></div>
+          </div>
+          <div class="px-1 text-xs font-bold text-black">-</div>
+
+          <!-- Box 2: Payment Received -->
+          <div class="box-border p-1 flex-1 min-h-[42px] flex flex-col justify-center">
+            <div class="text-[7.5px] font-black uppercase text-black leading-tight">PAYMENT<br>RECEIVED</div>
+            <div class="text-[9.5px] font-bold text-black mt-0.5 font-mono">₹ <span contenteditable="true" id="f-pay-received">1108.00</span></div>
+          </div>
+          <div class="px-1 text-xs font-bold text-black">+</div>
+
+          <!-- Box 3: Adjustments -->
+          <div class="box-border p-1 flex-1 min-h-[42px] flex flex-col justify-center">
+            <div class="text-[7.5px] font-black uppercase text-black leading-tight">ADJUSTMENTS</div>
+            <div class="text-[9.5px] font-bold text-black mt-0.5 font-mono">₹ <span contenteditable="true" id="f-adjustments">0.00</span></div>
+          </div>
+          <div class="px-1 text-xs font-bold text-black">+</div>
+
+          <!-- Box 4: Current Charges -->
+          <div class="box-border p-1 flex-1 min-h-[42px] flex flex-col justify-center">
+            <div class="text-[7.5px] font-black uppercase text-black leading-tight">CURRENT CHARGES</div>
+            <div class="text-[9.5px] font-bold text-black mt-0.5 font-mono">₹ <span contenteditable="true" id="f-curr-charges">1108.02</span></div>
+          </div>
+          <div class="px-1 text-xs font-bold text-black">=</div>
+
+          <!-- Box 5: Total Due -->
+          <div class="box-border p-1 flex-1 min-h-[42px] flex flex-col justify-center">
+            <div class="text-[7.5px] font-black uppercase text-black leading-tight">TOTAL DUE</div>
+            <div class="text-[10px] font-black text-black mt-0.5 font-mono">₹ <span contenteditable="true" id="f-total-due">1107.12</span></div>
+          </div>
+          <div class="px-1 text-xs font-bold text-black">=</div>
+
+          <!-- Box 6: Amount Payable -->
+          <div class="box-border p-1 flex-1 min-h-[42px] flex flex-col justify-center bg-blue-50/20">
+            <div class="text-[7.5px] font-black uppercase text-black leading-tight">AMOUNT PAYABLE</div>
+            <div class="text-[10px] font-black text-black mt-0.5 font-mono">₹ <span contenteditable="true" id="f-eq-payable">1108.00</span></div>
+          </div>
+        </div>
+
+        <!-- Credit limit & Deposit amount + Amount in Words line -->
+        <div class="flex justify-between items-center text-[8.2px] text-black font-medium mt-1">
+          <div>
+            Credit Limit: <span contenteditable="true">₹ 3,000.00</span> &nbsp;|&nbsp; Deposit Amount: <span contenteditable="true">₹ 849.00</span>
+          </div>
+          <div>
+            Amount in Words: <b contenteditable="true" id="f-words">Rupees One Thousand One Hundred Eight Only</b>
+          </div>
+        </div>
+      </div>
+
+      <!-- CHARGES SUMMARY & TAX DETAILS & QR CODE (With Vertical GSTIN line) -->
+      <div class="flex gap-1.5 mb-1.5 items-stretch">
+        <!-- Vertical GSTIN Text on left border -->
+        <div class="vertical-text text-[7.8px] font-bold text-black whitespace-nowrap tracking-wider flex items-center justify-center pr-0.5">
+          BSNL GSTIN: <span contenteditable="true" id="f-bsnl-gstin">09AABCB5576G1ZJ</span>
+        </div>
+
+        <!-- Middle Main Table: Summary of Current Charges + Tax Details -->
+        <div class="flex-1">
+          <table class="bill-table">
+            <thead>
+              <tr class="bg-blue-50/50 font-bold text-black text-left">
+                <th class="py-0.5 text-blue-900 font-extrabold" style="color: #0c3875;">Summary of Current Charges</th>
+                <th class="text-right py-0.5 w-24">Amount ₹</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td contenteditable="true">Recurring Charges</td>
+                <td class="text-right font-mono" contenteditable="true" id="f-rec-charges">849.00</td>
+              </tr>
+              <tr>
+                <td contenteditable="true">One Time Charges</td>
+                <td class="text-right font-mono" contenteditable="true" id="f-onetime-charges">0.00</td>
+              </tr>
+              <tr>
+                <td contenteditable="true">Usage Charges</td>
+                <td class="text-right font-mono" contenteditable="true" id="f-usage-charges">0.00</td>
+              </tr>
+              <tr>
+                <td contenteditable="true">Miscellaneous Charges</td>
+                <td class="text-right font-mono" contenteditable="true" id="f-misc-charges">90.00</td>
+              </tr>
+              <tr>
+                <td contenteditable="true">Discounts</td>
+                <td class="text-right font-mono" contenteditable="true" id="f-discount-charges">0.00</td>
+              </tr>
+              <tr>
+                <td contenteditable="true">Late Fee</td>
+                <td class="text-right font-mono" contenteditable="true" id="f-latefee-charges">0.00</td>
+              </tr>
+              <tr class="font-bold bg-zinc-50/50">
+                <td>Total Taxable (Rs.)</td>
+                <td class="text-right font-mono" contenteditable="true" id="f-taxable-amt">939.00</td>
+              </tr>
+              <tr class="font-bold">
+                <td contenteditable="true">Tax</td>
+                <td class="text-right font-mono" contenteditable="true" id="f-total-tax">169.02</td>
+              </tr>
+              <tr class="font-black bg-zinc-100/70">
+                <td>Total Current Charges</td>
+                <td class="text-right font-mono" contenteditable="true" id="f-summary-total">1108.02</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- Tax Details Sub-Table -->
+          <table class="bill-table mt-1">
+            <thead>
+              <tr class="font-bold text-black bg-blue-50/50">
+                <th class="text-left py-0.5 text-blue-900" style="color:#0c3875;">Tax Details</th>
+                <th class="text-center py-0.5 w-24">Tax Rate</th>
+                <th class="text-right py-0.5 w-24">Amount ₹</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td contenteditable="true">CGST</td>
+                <td class="text-center font-mono" contenteditable="true" id="f-cgst-rate">9.00%</td>
+                <td class="text-right font-mono" contenteditable="true" id="f-cgst-amt">84.51</td>
+              </tr>
+              <tr>
+                <td contenteditable="true">SGST/UTGST</td>
+                <td class="text-center font-mono" contenteditable="true" id="f-sgst-rate">9.00%</td>
+                <td class="text-right font-mono" contenteditable="true" id="f-sgst-amt">84.51</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Right Side: UPI QR Code & Officer Block -->
+        <div class="w-48 box-border p-1 flex flex-col justify-between items-center text-center bg-white">
+          <div class="flex flex-col items-center">
+            <img id="f-upi-qr-img" src="bsnl_upi_qr.png" alt="Scan QR to make Online UPI" class="w-32 h-32 object-contain" />
+            <div class="text-[7.8px] font-bold text-black mt-0.5">Scan QR to make Online UPI</div>
+          </div>
+          
+          <div class="text-[7.8px] leading-tight border-t border-zinc-400 w-full pt-1 mt-1 text-center">
+            <div class="font-bold text-black uppercase" contenteditable="true" id="f-officer-name">RAMAKANT MISHRA</div>
+            <div class="text-gray-700" contenteditable="true">Accounts Officer (TR)</div>
+            <div class="text-[7.2px] text-gray-700 mt-0.5">
+              For Billing related issues:<br><b class="text-black text-[7.8px] font-mono" contenteditable="true">0535-2703101</b>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Soft copy customer notification -->
+      <div class="text-[7.8px] border border-zinc-400 p-0.5 text-center text-black mb-1.5 leading-snug bg-zinc-50/50" contenteditable="true" id="f-softcopy-notice">
+        Dear Customer, Soft copy of this Bill has been mailed to your ID <span class="font-bold text-red-600">POLICEMODERNSCHOOLBNPACRBL@GMAIL.COM</span>. If mail ID is incorrect, please update correct ID at <span class="underline">www.selfcare.bsnl.co.in</span>
+      </div>
+
+      <!-- EXACT BSNL WhatsApp Banner & Portal QR Promo Row -->
+      <div class="box-border p-0 mb-1.5 flex items-stretch justify-between overflow-hidden bg-white">
+        <div class="flex-1 flex items-center justify-center p-0.5 overflow-hidden">
+          <img src="bsnl_whatsapp_banner.png" alt="BSNL WhatsApp Service" class="w-full h-full object-contain" />
+        </div>
+        <div class="w-36 flex flex-col items-center justify-center text-center border-l border-zinc-400 p-1 flex-shrink-0">
+          <img src="bsnl_portal_qr.png" alt="PORTAL QR Code" class="w-24 h-24 object-contain" />
+          <div class="text-[7.5px] font-bold text-black mt-0.5">PORTAL QR Code (for Payment)</div>
+        </div>
+      </div>
+
+      <!-- PAYMENT SLIP (Tear-off slip at bottom of page 1) -->
+      <div class="border-t-2 border-dashed border-zinc-700 pt-1">
+        <div class="flex justify-between items-center text-[9.2px] font-bold text-black pb-1">
+          <span class="tracking-wider font-extrabold">BHARAT SANCHAR NIGAM LIMITED</span>
+          <span class="tracking-widest font-black uppercase text-[8.8px]">&#9986; PAYMENT SLIP</span>
+        </div>
+
+        <div class="grid grid-cols-12 gap-2 text-[7.8px]">
+          <!-- Left: Payment details mode and signature -->
+          <div class="col-span-7 flex flex-col justify-between pr-1">
+            <div class="flex items-center gap-4 mb-1 text-[8px]">
+              <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" class="w-3 h-3"/> Cash</label>
+              <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" class="w-3 h-3"/> Cheque/DD</label>
+              <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" class="w-3 h-3"/> Credit/Debit Card</label>
+            </div>
+
+            <div class="space-y-1">
+              <div class="flex justify-between">
+                <div>Cheque/DD No. <span class="border-b border-black inline-block w-28"></span></div>
+                <div>Date <span class="border-b border-black inline-block w-20"></span></div>
+                <div>Amount ₹ <b class="text-[9px] font-mono" contenteditable="true" id="f-slip-amount">1108.00</b></div>
+              </div>
+              <div class="flex justify-between">
+                <div>Bank <span class="border-b border-black inline-block w-28"></span></div>
+                <div>Branch <span class="border-b border-black inline-block w-24"></span></div>
+                <div>Signature <span class="border-b border-black inline-block w-16"></span></div>
+              </div>
+            </div>
+
+            <div class="text-[7.2px] text-gray-800 mt-1" contenteditable="true">
+              Please make crossed Cheque/DD/Pay Order for Amount Payable (Rounded Up) in favour of <b>AO (Cash), BSNL, RBL.</b>
+            </div>
+          </div>
+
+          <!-- Right: Summary metadata for payment counters -->
+          <div class="col-span-5 pl-1">
+            <table class="bill-table text-[7.5px]">
+              <tbody>
+                <tr>
+                  <td class="font-bold w-24 bg-zinc-50">Invoice No</td>
+                  <td class="font-bold font-mono" contenteditable="true" id="f-slip-inv">NDCUP2616898651</td>
+                </tr>
+                <tr>
+                  <td class="font-bold bg-zinc-50">Invoice Date</td>
+                  <td contenteditable="true" id="f-slip-date">04-JUL-2026</td>
+                </tr>
+                <tr>
+                  <td class="font-bold bg-zinc-50">Account No</td>
+                  <td class="font-bold font-mono" contenteditable="true" id="f-slip-acc">1026567446</td>
+                </tr>
+                <tr>
+                  <td class="font-bold bg-zinc-50">Phone No</td>
+                  <td class="font-bold font-mono" contenteditable="true" id="f-slip-phone">0535-2974104</td>
+                </tr>
+                <tr>
+                  <td class="font-bold bg-zinc-50">Due Date</td>
+                  <td class="font-bold text-red-700" contenteditable="true" id="f-slip-due">20-JUL-2026</td>
+                </tr>
+                <tr class="font-bold bg-zinc-50">
+                  <td>Amount Payable</td>
+                  <td class="font-black text-[9px] font-mono" contenteditable="true" id="f-slip-pay">₹ 1108.00</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Page 1 Footer -->
+    <div class="border-t border-gray-400 pt-1 text-[7.2px] text-gray-600 flex justify-between items-center mt-1">
+      <div contenteditable="true">This is a Computer generated Bill and does not require any Signature.</div>
+      <div class="font-bold text-gray-900">Page 1 of 3</div>
+    </div>
+  </div>
+
+
+  <!-- ================= PAGE 2 ================= -->
+  <div class="a4-page" id="bill-page-2">
+    <div>
+      <!-- Page 2 Header with BSNL Logo -->
+      <div class="flex justify-between items-center border-b border-gray-400 pb-1 mb-2">
+        <div class="flex items-center gap-2">
+          <img src="bsnl_header_logo.png" alt="BSNL Logo" class="h-10 object-contain" />
+        </div>
+        <div class="text-[8.5px] font-bold text-gray-800 uppercase tracking-wide">
+          Tax Invoice - Important Customer Information
+        </div>
+      </div>
+
+      <!-- Aadhaar Services Banner Replica -->
+      <div class="border-2 border-amber-600 rounded p-1.5 bg-gradient-to-r from-amber-50 via-white to-amber-50 mb-2 text-center shadow-xs">
+        <div class="inline-block bg-red-700 text-white text-[9.5px] font-extrabold uppercase px-4 py-0.5 rounded tracking-wide shadow-xs mb-1">
+          Aadhaar Services
+        </div>
+        <div class="text-[8.2px] font-bold text-gray-800 mb-1">
+          available at Aadhaar Seva Kendra at BSNL Customer Service Centres
+        </div>
+
+        <div class="grid grid-cols-4 gap-1.5 text-white text-[7.2px] font-bold">
+          <div class="bg-blue-600 rounded py-1 px-1 flex items-center justify-center gap-1 shadow-xs">
+            <span class="bg-white text-blue-600 w-3 h-3 rounded-full flex items-center justify-center text-[7px] font-black">1</span>
+            <span>NEW AADHAAR ENROLMENT</span>
+          </div>
+          <div class="bg-purple-700 rounded py-1 px-1 flex items-center justify-center gap-1 shadow-xs">
+            <span class="bg-white text-purple-700 w-3 h-3 rounded-full flex items-center justify-center text-[7px] font-black">2</span>
+            <span>BIOMETRIC UPDATE</span>
+          </div>
+          <div class="bg-amber-600 rounded py-1 px-1 flex items-center justify-center gap-1 shadow-xs">
+            <span class="bg-white text-amber-600 w-3 h-3 rounded-full flex items-center justify-center text-[7px] font-black">3</span>
+            <span>DEMOGRAPHIC UPDATE</span>
+          </div>
+          <div class="bg-yellow-600 rounded py-1 px-1 flex items-center justify-center gap-1 shadow-xs">
+            <span class="bg-white text-yellow-800 w-3 h-3 rounded-full flex items-center justify-center text-[7px] font-black">4</span>
+            <span>DOCUMENT UPDATE</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Important Customer Information Columns -->
+      <div class="text-[7.8px] leading-snug space-y-2 text-gray-800">
+        <div class="bg-gray-100 font-bold px-2 py-0.5 text-blue-950 uppercase border-l-4 border-blue-900 text-[8.2px]">
+          Important Customer Information
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <!-- Column 1: Ways to pay & Customer Care -->
+          <div>
+            <div class="font-bold text-blue-900 border-b border-gray-300 pb-0.5 mb-1 text-[8.2px]">WAYS TO PAY BILL</div>
+            <ul class="list-disc pl-4 space-y-0.5 text-[7.5px]">
+              <li>Now you can pay your bill on WhatsApp, message <b>Hi</b> to <b>1800 4444</b></li>
+              <li><b>Online:</b> www.bsnl.co.in or scan QR on bill</li>
+              <li>Pay at any <b>BSNL Retailer Outlet</b></li>
+              <li>Pay at any <b>Post Office</b> on or before Due Date</li>
+              <li>Drop Cheque/DD at <b>BSNL collection center</b></li>
+            </ul>
+
+            <div class="font-bold text-blue-900 border-b border-gray-300 pb-0.5 mb-1 mt-2 text-[8.2px]">CUSTOMER CARE</div>
+            <ul class="list-disc pl-4 space-y-0.5 text-[7.5px]">
+              <li>Dial Toll Free: <b>1800 4444</b></li>
+              <li>Web self-care: <b>www.selfcare.bsnl.co.in</b></li>
+              <li>Automatic Fault Booking & other services</li>
+            </ul>
+          </div>
+
+          <!-- Column 2: Customer information & Rules -->
+          <div>
+            <div class="font-bold text-blue-900 border-b border-gray-300 pb-0.5 mb-1 text-[8.2px]">CUSTOMER INFORMATION</div>
+            <ul class="list-disc pl-4 space-y-0.5 text-[7.5px]">
+              <li>Log on to <b>www.bsnl.co.in</b> for information on tariff plans and prices.</li>
+              <li>For change of billing address, please contact your nearest customer care or AO (TR) / Commercial Officer of your exchange area.</li>
+              <li>If your mobile/landline is used for sending unsolicited commercial communication (UCC) through SMS or Voice, it leads to disconnection of telecom resources and blacklisting for two years.</li>
+              <li>For contact details of Nodal Officer / Appellate Authority, tariffs and other information, visit <b>www.bsnl.co.in</b></li>
+              <li>Disputes if any, should be brought to the notice of the concerned AO(TR) within 30 days.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Late Fee Charges Table -->
+        <div class="mt-1 border border-gray-400 p-1.5 bg-white">
+          <div class="font-bold text-[7.8px] text-red-800 mb-0.5 uppercase">
+            LATE FEE CHARGES [revised late fee charges effective for all the invoices issued on or after 01.04.2026]
+          </div>
+          <div class="text-[7.2px] text-gray-700 mb-1">
+            Pay your bill in time and save on late fee charges. Late fee will be levied on payable amount as mentioned below:
+          </div>
+          <div class="grid grid-cols-2 gap-x-2 text-[7.2px] leading-tight">
+            <div>&bull; No late fee shall be charged if the invoice amount is less than ₹10/-.</div>
+            <div>&bull; Late fee of <b>₹15/-</b> shall be charged for invoice amounts between ₹10/- and up to ₹500/-.</div>
+            <div>&bull; Late fee of <b>₹25/-</b> shall be charged for invoice amounts above ₹500/- and up to ₹1,000/-.</div>
+            <div>&bull; Late fee of <b>₹40/-</b> shall be charged for invoice amounts above ₹1,000/- and up to ₹1,500/-.</div>
+            <div class="col-span-2">&bull; Late fee of <b>₹50/-</b> shall be charged for invoice amounts above ₹1,500/-, or <b>2%</b> of the invoice amount, whichever is higher.</div>
+          </div>
+        </div>
+
+        <!-- Statutory Details Grid -->
+        <div class="border border-gray-400 p-1.5 bg-gray-50 text-[7.5px] leading-tight space-y-1">
+          <div class="grid grid-cols-2 gap-1">
+            <div><b>PAN Number:</b> <span contenteditable="true" id="f-pan-no">AABCB5576G</span></div>
+            <div><b>GST Registration Number:</b> <span contenteditable="true" id="f-gst-reg">09AABCB5576G1ZJ</span></div>
+            <div><b>HSN/SAC Code:</b> <span contenteditable="true">998412</span></div>
+            <div><b>CIN:</b> <span contenteditable="true">U74899DL2000GOI107739</span></div>
+          </div>
+          <div>
+            <b>Supplier's Address:</b> 
+            <span contenteditable="true">O/o Chief General Manager, UP, PMG Building, Hazaratganj, Lucknow, 226001</span>
+          </div>
+          <div><b>Reverse Charges:</b> <span contenteditable="true">Not Applicable</span></div>
+          <div class="text-[7px] text-gray-600 pt-1 border-t border-gray-300" contenteditable="true">
+            Dear Customer, Income Tax Department, Govt of India has granted certificate no. 197(1)_206C(9)/AABCB5576G/2026-27/1 Dt 24-04-2026 (Click here to Download) to BSNL relating to TDS at lower rates applicable from 24/04/2026 to 31/03/2027. TDS may be recovered at the lower rates mentioned in the certificate issued by Income Tax Department.
+          </div>
+        </div>
+
+        <div class="text-right text-[7.2px] text-gray-600 font-mono">
+          Mbs used:- <span contenteditable="true" id="f-mbs-used">31.55</span>
+        </div>
+
+        <!-- BSNL Home WiFi rural ad banner -->
+        <div class="border border-blue-400 rounded p-1.5 bg-gradient-to-r from-blue-50 to-indigo-50 flex items-center justify-between mt-1">
+          <div>
+            <div class="text-[6.5px] bg-red-600 text-white font-bold inline-block px-1 rounded uppercase">NEW</div>
+            <div class="text-[9.5px] font-black text-blue-950 leading-tight">Gaon Gaon Mein Fast Internet</div>
+            <div class="text-[8.2px] font-extrabold text-gray-800">BSNL Home WiFi <span class="text-[6.8px] font-normal text-gray-600">(For rural areas only)</span></div>
+            <div class="text-[7.2px] text-gray-700">1400 GB Data &bull; Speed 40 Mbps &bull; Unlimited Calls</div>
+          </div>
+          <div class="text-right">
+            <div class="text-[9px] font-black text-emerald-800">Rs. 1099/- <span class="text-[6.8px] text-gray-500 line-through">Rs. 1197/-</span> for 3 months</div>
+            <div class="text-[6.5px] text-gray-600">*Get Rs. 98 cashback with quarterly payment or go monthly at Rs. 399</div>
+            <div class="text-[7.8px] font-bold text-blue-900 mt-0.5">Book now: 1800 4444</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Page 2 Footer -->
+    <div class="border-t border-gray-400 pt-1 text-[7.2px] text-gray-600 flex justify-between items-center mt-1">
+      <div contenteditable="true">This is a Computer generated Bill and does not require any Signature.</div>
+      <div class="font-bold text-gray-900">Page 2 of 3</div>
+    </div>
+  </div>
+
+
+  <!-- ================= PAGE 3 ================= -->
+  <div class="a4-page" id="bill-page-3">
+    <div>
+      <!-- Page 3 Header -->
+      <div class="flex justify-between items-start border-b border-gray-400 pb-1 mb-2">
+        <div class="flex items-center gap-2">
+          <img src="bsnl_header_logo.png" alt="BSNL Logo" class="h-9 object-contain" />
+        </div>
+
+        <div class="text-[7.8px] text-right">
+          <div><b>Account No : </b><span class="font-mono font-bold" id="p3-acc-no">1026567446</span></div>
+          <div><b>Invoice No : </b><span class="font-mono font-bold" id="p3-inv-no">NDCUP2616898651</span></div>
+          <div><b>Invoice Date : </b><span id="p3-inv-date">04-JUL-2026</span></div>
+          <div><b>Usage Period : </b><span id="p3-usage-period">01-JUN-2026 to 30-JUN-2026</span></div>
+        </div>
+      </div>
+
+      <!-- Payment Details Table -->
+      <div class="mb-2">
+        <div class="bg-gray-100 text-black font-bold px-2 py-0.5 text-[8.2px] uppercase border border-gray-400">
+          Payment Details
+        </div>
+        <table class="bill-table border-t-0">
+          <thead>
+            <tr class="bg-gray-50 text-[7.8px]">
+              <th class="w-10 text-center">S.No</th>
+              <th class="text-left">Description</th>
+              <th class="text-center w-28">Transaction Date</th>
+              <th class="text-right w-24">Amount (₹)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="text-center">1</td>
+              <td contenteditable="true" id="f-pay-ref">RBLPOR0111062600004</td>
+              <td class="text-center" contenteditable="true" id="f-pay-date">11-JUN-2026</td>
+              <td class="text-right font-mono font-semibold" contenteditable="true" id="f-pay-amt">-1108.00</td>
+            </tr>
+            <tr class="font-black bg-gray-50">
+              <td colspan="3" class="text-right">Total</td>
+              <td class="text-right font-mono" contenteditable="true" id="f-pay-total">-1108.00</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- List of Services / Details of Current Charges -->
+      <div class="mb-2">
+        <div class="bg-gray-100 text-black font-bold px-2 py-0.5 text-[8.2px] uppercase border border-gray-400 flex justify-between items-center">
+          <span>DETAILS OF CURRENT CHARGES</span>
+          <span class="text-[7.2px] font-normal lowercase text-gray-700">List of Services</span>
+        </div>
+        <table class="bill-table border-t-0">
+          <thead>
+            <tr class="bg-gray-50 text-[7.8px]">
+              <th class="w-8 text-center">S.No</th>
+              <th class="text-left">Phone Number / Service Id</th>
+              <th class="text-right">Monthly Rental (₹)</th>
+              <th class="text-right">One Time Charges (₹)</th>
+              <th class="text-right">Usage Amount (₹)</th>
+              <th class="text-right">Discounts (₹)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="text-center">1</td>
+              <td contenteditable="true">0535-2974104 / 0535-2974104</td>
+              <td class="text-right font-mono" contenteditable="true" id="f-row1-rent">90.00</td>
+              <td class="text-right font-mono" contenteditable="true">0.00</td>
+              <td class="text-right font-mono" contenteditable="true">0.00</td>
+              <td class="text-right font-mono" contenteditable="true">0.00</td>
+            </tr>
+            <tr>
+              <td class="text-center">2</td>
+              <td contenteditable="true">05352974104 / po5352974104_nid</td>
+              <td class="text-right font-mono" contenteditable="true" id="f-row2-rent">849.00</td>
+              <td class="text-right font-mono" contenteditable="true">0.00</td>
+              <td class="text-right font-mono" contenteditable="true">0.00</td>
+              <td class="text-right font-mono" contenteditable="true">0.00</td>
+            </tr>
+            <tr class="font-black bg-gray-50">
+              <td colspan="2" class="text-right">Total</td>
+              <td class="text-right font-mono" contenteditable="true" id="f-row-total-rent">939.00</td>
+              <td class="text-right font-mono">0.00</td>
+              <td class="text-right font-mono">0.00</td>
+              <td class="text-right font-mono">0.00</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Account Level Charges -->
+      <div class="mb-2">
+        <div class="bg-gray-100 text-black font-bold px-2 py-0.5 text-[8.2px] uppercase border border-gray-400">
+          Account Level Charges
+        </div>
+        <table class="bill-table border-t-0">
+          <thead>
+            <tr class="bg-gray-50 text-[7.8px]">
+              <th class="text-left">Description</th>
+              <th class="text-right w-28">Amount (₹)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td contenteditable="true">FB_PR_ONT_-998412</td>
+              <td class="text-right font-mono" contenteditable="true">90.00</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Fiber Plan Details Box -->
+      <div class="border border-gray-400 p-1.5 text-[7.8px] bg-gray-50 leading-relaxed mb-2">
+        <div class="flex justify-between border-b border-gray-300 pb-0.5 mb-1">
+          <div>
+            <b>Phone Number / Service ID: </b>
+            <span class="font-mono font-bold text-blue-900" contenteditable="true" id="f-p3-servid">05352974104 / po5352974104_nid</span>
+          </div>
+        </div>
+        <div>
+          <b>Plan: </b>
+          <span class="font-semibold text-gray-900" contenteditable="true" id="f-plan-name">
+            FIBRE_VALUES_PLUS UP TO 150 MBPS TILL 5000 GB, UPTO 10 MBPS BEYOND
+          </span>
+        </div>
+        <div>
+          <b>Installation Address: </b>
+          <span contenteditable="true" id="f-install-addr">
+            0 25TH BN PAC, GORA BAZAR UE GORA BAZAR, RAEBARELI IN 229001
+          </span>
+        </div>
+      </div>
+
+      <!-- Monthly Recurring Charges Table -->
+      <div>
+        <div class="bg-gray-100 text-black font-bold px-2 py-0.5 text-[8.2px] uppercase border border-gray-400">
+          Monthly Recurring Charges
+        </div>
+        <table class="bill-table border-t-0">
+          <thead>
+            <tr class="bg-gray-50 text-[7.8px]">
+              <th class="text-left">Description & HSN / SAC Code</th>
+              <th class="text-center w-28">Start Date</th>
+              <th class="text-center w-28">End Date</th>
+              <th class="text-right w-24">Amount (₹)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td contenteditable="true" id="f-rec-desc">FB_PR_FIBRE_VALUES_PLUS_-998412</td>
+              <td class="text-center" contenteditable="true" id="f-rec-start">01-JUN-2026</td>
+              <td class="text-center" contenteditable="true" id="f-rec-end">30-JUN-2026</td>
+              <td class="text-right font-mono font-bold" contenteditable="true" id="f-rec-val">849.00</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Page 3 Footer -->
+    <div class="border-t border-gray-400 pt-1 text-[7.2px] text-gray-600 flex justify-between items-center mt-1">
+      <div contenteditable="true">This is a Computer generated Bill and does not require any Signature.</div>
+      <div class="font-bold text-gray-900">Page 3 of 3</div>
+    </div>
+  </div>
+
+  <script>
+    const MONTH_NAMES = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+    const FULL_MONTH_NAMES = [
+      'January', 'February', 'March', 'April', 'May', 'June',
+      'July', 'August', 'September', 'October', 'November', 'December'
+    ];
+
+    // Numbers to Words in Indian Rupee format
+    function convertNumberToWords(amount) {
+      const words = [
+        '', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten',
+        'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen'
+      ];
+      const tens = ['', '', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
+
+      function formatHundred(n) {
+        let str = '';
+        if (n > 99) {
+          str += words[Math.floor(n / 100)] + ' Hundred ';
+          n %= 100;
+        }
+        if (n > 19) {
+          str += tens[Math.floor(n / 10)] + ' ' + words[n % 10] + ' ';
+        } else if (n > 0) {
+          str += words[n] + ' ';
+        }
+        return str.trim();
+      }
+
+      const num = Math.round(amount);
+      if (num === 0) return 'Rupees Zero Only';
+
+      const crore = Math.floor(num / 10000000);
+      const lakh = Math.floor((num % 10000000) / 100000);
+      const thousand = Math.floor((num % 100000) / 1000);
+      const remainder = num % 1000;
+
+      let result = '';
+      if (crore > 0) result += formatHundred(crore) + ' Crore ';
+      if (lakh > 0) result += formatHundred(lakh) + ' Lakh ';
+      if (thousand > 0) result += formatHundred(thousand) + ' Thousand ';
+      if (remainder > 0) result += formatHundred(remainder);
+
+      return 'Rupees ' + result.trim() + ' Only';
+    }
+
+    // Smart Month & Billing Cycle Engine
+    function calculateBillingCycle(invoiceYear, invoiceMonthIndex) {
+      // Usage month is the preceding month
+      let usageMonthIndex = invoiceMonthIndex - 1;
+      let usageYear = invoiceYear;
+      if (usageMonthIndex < 0) {
+        usageMonthIndex = 11;
+        usageYear = invoiceYear - 1;
+      }
+
+      // Calculate last day of usage month (e.g. 28/29 Feb, 30 Apr/Jun/Sep/Nov, 31 Jan/Mar/May/Jul/Aug/Oct/Dec)
+      const lastDayOfUsageMonth = new Date(usageYear, usageMonthIndex + 1, 0).getDate();
+
+      const invMonthStr = MONTH_NAMES[invoiceMonthIndex];
+      const usageMonthStr = MONTH_NAMES[usageMonthIndex];
+
+      const invoiceDate = `04-${invMonthStr}-${invoiceYear}`;
+      const dueDate = `20-${invMonthStr}-${invoiceYear}`;
+      const usagePeriod = `01-${usageMonthStr}-${usageYear} to ${lastDayOfUsageMonth}-${usageMonthStr}-${usageYear}`;
+      const paymentDate = `11-${usageMonthStr}-${usageYear}`;
+      const paymentRef = `RBLPOR0111${String(usageMonthIndex + 1).padStart(2, '0')}${String(usageYear).slice(-2)}00004`;
+      
+      const invYearShort = String(invoiceYear).slice(-2);
+      const invoiceNo = `NDCUP${invYearShort}16898651`;
+
+      return {
+        invoiceYear,
+        invoiceMonthIndex,
+        usageYear,
+        usageMonthIndex,
+        invoiceDate,
+        dueDate,
+        usagePeriod,
+        paymentDate,
+        paymentRef,
+        invoiceNo,
+        usageStart: `01-${usageMonthStr}-${usageYear}`,
+        usageEnd: `${lastDayOfUsageMonth}-${usageMonthStr}-${usageYear}`
+      };
+    }
+
+    // Apply Billing Cycle to All Bill Pages
+    function applyBillingCycle(cycle) {
+      const setVal = (id, val) => {
+        const el = document.getElementById(id);
+        if (el) el.innerText = val;
+      };
+
+      // Page 1
+      setVal('f-inv-date', cycle.invoiceDate);
+      setVal('f-usage-period', cycle.usagePeriod);
+      setVal('f-due-date', cycle.dueDate);
+      setVal('f-inv-no', cycle.invoiceNo);
+
+      // Payment Slip
+      setVal('f-slip-date', cycle.invoiceDate);
+      setVal('f-slip-due', cycle.dueDate);
+      setVal('f-slip-inv', cycle.invoiceNo);
+
+      // Page 3
+      setVal('p3-inv-date', cycle.invoiceDate);
+      setVal('p3-usage-period', cycle.usagePeriod);
+      setVal('p3-inv-no', cycle.invoiceNo);
+      setVal('f-pay-date', cycle.paymentDate);
+      setVal('f-pay-ref', cycle.paymentRef);
+      setVal('f-rec-start', cycle.usageStart);
+      setVal('f-rec-end', cycle.usageEnd);
+
+      // Update selector UI
+      const mSel = document.getElementById('monthSelect');
+      const ySel = document.getElementById('yearSelect');
+      if (mSel) mSel.value = cycle.invoiceMonthIndex;
+      if (ySel) ySel.value = cycle.invoiceYear;
+    }
+
+    // Try detecting month and year from a string (e.g. '04-JUL-2026' or 'JUL-2026')
+    function parseDateString(str) {
+      if (!str) return null;
+      const clean = str.toUpperCase();
+      for (let i = 0; i < MONTH_NAMES.length; i++) {
+        if (clean.includes(MONTH_NAMES[i])) {
+          const yearMatch = clean.match(/20\d\d/);
+          const year = yearMatch ? parseInt(yearMatch[0], 10) : new Date().getFullYear();
+          return { monthIndex: i, year: year };
+        }
+      }
+      return null;
+    }
+
+    // Invoice Math Recalculation
+    function recalculateInvoice() {
+      const parseField = (id, fallback = 0) => {
+        const el = document.getElementById(id);
+        if (!el) return fallback;
+        const cleaned = el.innerText.replace(/[^0-9.-]+/g, '');
+        const val = parseFloat(cleaned);
+        return isNaN(val) ? fallback : val;
+      };
+
+      const setField = (id, num, dec = 2) => {
+        const el = document.getElementById(id);
+        if (el) el.innerText = num.toFixed(dec);
+      };
+
+      // 1. Current Charges Subtotal
+      const rec = parseField('f-rec-charges', 849.00);
+      const misc = parseField('f-misc-charges', 90.00);
+      const oneTime = parseField('f-onetime-charges', 0.00);
+      const usage = parseField('f-usage-charges', 0.00);
+      const discount = parseField('f-discount-charges', 0.00);
+      const lateFee = parseField('f-latefee-charges', 0.00);
+
+      const taxable = (rec + misc + oneTime + usage + lateFee) - discount;
+      setField('f-taxable-amt', taxable);
+
+      // 2. GST Calculation (9% CGST + 9% SGST)
+      const cgst = taxable * 0.09;
+      const sgst = taxable * 0.09;
+      const totalTax = cgst + sgst;
+      setField('f-cgst-amt', cgst);
+      setField('f-sgst-amt', sgst);
+      setField('f-total-tax', totalTax);
+
+      const currentCharges = taxable + totalTax;
+      setField('f-summary-total', currentCharges);
+      setField('f-curr-charges', currentCharges);
+
+      // 3. Account Summary formula: (Prev - Paid) + Adj + Curr
+      const prevBal = parseField('f-prev-bal', 1108.00);
+      const payRec = parseField('f-pay-received', 1108.00);
+      const adjustments = parseField('f-adjustments', 0.00);
+
+      const totalDue = (prevBal - payRec) + adjustments + currentCharges;
+      setField('f-total-due', totalDue);
+
+      // 4. Rounded Amount Payable
+      const amountPayable = Math.round(totalDue);
+      setField('f-amount-payable', amountPayable);
+      setField('f-eq-payable', amountPayable);
+      setField('f-slip-amount', amountPayable);
+      const slipPay = document.getElementById('f-slip-pay');
+      if (slipPay) slipPay.innerText = '₹ ' + amountPayable.toFixed(2);
+
+      // 5. Amount in Words
+      const wordsEl = document.getElementById('f-words');
+      if (wordsEl) {
+        wordsEl.innerText = convertNumberToWords(amountPayable);
+      }
+
+      // Sync across metadata
+      sync('f-acc-no', 'p3-acc-no');
+      sync('f-acc-no', 'f-slip-acc');
+      sync('f-inv-no', 'p3-inv-no');
+      sync('f-inv-no', 'f-slip-inv');
+      sync('f-inv-date', 'p3-inv-date');
+      sync('f-inv-date', 'f-slip-date');
+      sync('f-usage-period', 'p3-usage-period');
+      sync('f-phone-no', 'f-slip-phone');
+      sync('f-due-date', 'f-slip-due');
+    }
+
+    function sync(srcId, destId) {
+      const src = document.getElementById(srcId);
+      const dest = document.getElementById(destId);
+      if (src && dest) dest.innerText = src.innerText;
+    }
+
+    // Event Listeners Setup
+    const monthSelect = document.getElementById('monthSelect');
+    const yearSelect = document.getElementById('yearSelect');
+    const prevMonthBtn = document.getElementById('prevMonthBtn');
+    const nextMonthBtn = document.getElementById('nextMonthBtn');
+    const currentMonthBtn = document.getElementById('currentMonthBtn');
+    const highlightBtn = document.getElementById('toggleHighlightBtn');
+    const recalcBtn = document.getElementById('recalcBtn');
+
+    function applySelectedMonthYear() {
+      const m = parseInt(monthSelect.value, 10);
+      const y = parseInt(yearSelect.value, 10);
+      const cycle = calculateBillingCycle(y, m);
+      applyBillingCycle(cycle);
+      recalculateInvoice();
+    }
+
+    if (monthSelect && yearSelect) {
+      monthSelect.addEventListener('change', applySelectedMonthYear);
+      yearSelect.addEventListener('change', applySelectedMonthYear);
+    }
+
+    if (prevMonthBtn) {
+      prevMonthBtn.addEventListener('click', () => {
+        let m = parseInt(monthSelect.value, 10) - 1;
+        let y = parseInt(yearSelect.value, 10);
+        if (m < 0) {
+          m = 11;
+          y -= 1;
+        }
+        monthSelect.value = m;
+        yearSelect.value = y;
+        applySelectedMonthYear();
+      });
+    }
+
+    if (nextMonthBtn) {
+      nextMonthBtn.addEventListener('click', () => {
+        let m = parseInt(monthSelect.value, 10) + 1;
+        let y = parseInt(yearSelect.value, 10);
+        if (m > 11) {
+          m = 0;
+          y += 1;
+        }
+        monthSelect.value = m;
+        yearSelect.value = y;
+        applySelectedMonthYear();
+      });
+    }
+
+    if (currentMonthBtn) {
+      currentMonthBtn.addEventListener('click', () => {
+        const now = new Date();
+        const m = now.getMonth();
+        const y = now.getFullYear();
+        if (monthSelect) monthSelect.value = m;
+        if (yearSelect) yearSelect.value = y;
+        applySelectedMonthYear();
+      });
+    }
+
+    // Page switcher tabs
+    const viewAllBtn = document.getElementById('viewAllBtn');
+    const viewP1Btn = document.getElementById('viewP1Btn');
+    const viewP2Btn = document.getElementById('viewP2Btn');
+    const viewP3Btn = document.getElementById('viewP3Btn');
+    const viewBtns = [viewAllBtn, viewP1Btn, viewP2Btn, viewP3Btn];
+
+    function setActiveTab(btn, className) {
+      document.body.classList.remove('show-p1', 'show-p2', 'show-p3');
+      if (className) document.body.classList.add(className);
+      viewBtns.forEach(b => {
+        if (b === btn) {
+          b.className = 'bg-blue-600 text-white px-2 py-0.5 rounded transition';
+        } else {
+          b.className = 'text-slate-300 hover:text-white px-2 py-0.5 rounded transition';
+        }
+      });
+    }
+
+    if (viewAllBtn) viewAllBtn.addEventListener('click', () => setActiveTab(viewAllBtn, ''));
+    if (viewP1Btn) viewP1Btn.addEventListener('click', () => setActiveTab(viewP1Btn, 'show-p1'));
+    if (viewP2Btn) viewP2Btn.addEventListener('click', () => setActiveTab(viewP2Btn, 'show-p2'));
+    if (viewP3Btn) viewP3Btn.addEventListener('click', () => setActiveTab(viewP3Btn, 'show-p3'));
+
+    if (highlightBtn) {
+      highlightBtn.addEventListener('click', () => {
+        document.body.classList.toggle('highlight-editable');
+      });
+    }
+
+    if (recalcBtn) {
+      recalcBtn.addEventListener('click', () => {
+        recalculateInvoice();
+      });
+    }
+
+    // Auto-correction on manual field editing
+    const invDateEl = document.getElementById('f-inv-date');
+    if (invDateEl) {
+      invDateEl.addEventListener('blur', () => {
+        const parsed = parseDateString(invDateEl.innerText);
+        if (parsed) {
+          const cycle = calculateBillingCycle(parsed.year, parsed.monthIndex);
+          applyBillingCycle(cycle);
+          recalculateInvoice();
+        }
+      });
+    }
+
+    const usagePeriodEl = document.getElementById('f-usage-period');
+    if (usagePeriodEl) {
+      usagePeriodEl.addEventListener('blur', () => {
+        const parsed = parseDateString(usagePeriodEl.innerText);
+        if (parsed) {
+          let invMonth = parsed.monthIndex + 1;
+          let invYear = parsed.year;
+          if (invMonth > 11) {
+            invMonth = 0;
+            invYear += 1;
+          }
+          const cycle = calculateBillingCycle(invYear, invMonth);
+          applyBillingCycle(cycle);
+          recalculateInvoice();
+        }
+      });
+    }
+
+    // Live typing synchronization
+    const syncRules = [
+      ['f-acc-no', ['p3-acc-no', 'f-slip-acc']],
+      ['f-inv-no', ['p3-inv-no', 'f-slip-inv']],
+      ['f-inv-date', ['p3-inv-date', 'f-slip-date']],
+      ['f-phone-no', ['f-slip-phone']],
+      ['f-due-date', ['f-slip-due']],
+      ['f-usage-period', ['p3-usage-period']],
+      ['f-bsnl-gstin-top', ['f-bsnl-gstin', 'f-gst-reg']]
+    ];
+
+    syncRules.forEach(([src, targets]) => {
+      const el = document.getElementById(src);
+      if (el) {
+        el.addEventListener('input', () => {
+          targets.forEach(tId => {
+            const t = document.getElementById(tId);
+            if (t) t.innerText = el.innerText;
+          });
+        });
+      }
+    });
+
+    // Auto-load on startup with intelligent month detection
+    window.addEventListener('load', () => {
+      const now = new Date();
+      const currentMonth = now.getMonth();
+      const currentYear = now.getFullYear();
+
+      if (monthSelect) monthSelect.value = currentMonth;
+      if (yearSelect) yearSelect.value = currentYear;
+
+      const cycle = calculateBillingCycle(currentYear, currentMonth);
+      applyBillingCycle(cycle);
+      recalculateInvoice();
+    });
+  </script>
+
+  <!-- ================= CLOUD BACKUPS & HISTORY MODAL ================= -->
+  <div id="historyModal" class="no-print fixed inset-0 z-[100] bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+    <div class="bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] flex flex-col overflow-hidden text-slate-100">
+      <!-- Modal Header -->
+      <div class="px-6 py-4 border-b border-slate-800 flex items-center justify-between bg-slate-950/50">
+        <div class="flex items-center gap-3">
+          <div class="bg-blue-600/20 text-blue-400 p-2 rounded-xl border border-blue-500/30">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"></path></svg>
+          </div>
+          <div>
+            <h3 class="text-lg font-bold text-white flex items-center gap-2">
+              BSNL Invoice Cloud Backups
+              <span id="modalBackupCount" class="bg-blue-600 text-white text-xs px-2 py-0.5 rounded-full font-mono">0</span>
+            </h3>
+            <p class="text-xs text-slate-400">View, restore, or instantly reprint previously generated BSNL tax invoices from Firestore</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2">
+          <button id="refreshBackupsBtn" class="p-2 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition" title="Refresh list">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+          </button>
+          <button id="closeHistoryBtn" class="p-2 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Search and Filter Bar -->
+      <div class="px-6 py-3 border-b border-slate-800/80 bg-slate-900/50 flex gap-3">
+        <div class="relative flex-1">
+          <input type="text" id="backupSearchInput" placeholder="Search by Invoice No, Date, Account No, or Period..." 
+            class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3.5 py-2 pl-9 text-xs text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
+          <svg class="w-4 h-4 text-slate-500 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+        </div>
+      </div>
+
+      <!-- Modal Body (Backups List) -->
+      <div id="backupsListContainer" class="flex-1 overflow-y-auto p-6 space-y-3 min-h-[300px]">
+        <div class="text-center py-12 text-slate-500 text-sm">
+          <div class="animate-spin inline-block w-6 h-6 border-2 border-current border-t-transparent rounded-full mb-2"></div>
+          <p>Loading cloud backups...</p>
+        </div>
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="px-6 py-3 border-t border-slate-800 bg-slate-950/60 flex items-center justify-between text-xs text-slate-400">
+        <span>Collection: <code class="text-blue-400 bg-blue-950/40 px-1.5 py-0.5 rounded border border-blue-800/40">bsnl_bills_backup</code></span>
+        <button id="closeHistoryFooterBtn" class="px-4 py-1.5 bg-slate-800 hover:bg-slate-700 text-white rounded-lg transition font-semibold">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div id="toastContainer" class="no-print fixed bottom-5 right-5 z-[150] flex flex-col gap-2 pointer-events-none"></div>
+
+  <!-- ================= FIREBASE FIRESTORE INTEGRATION ================= -->
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js';
+    import { initializeFirestore, collection, doc, setDoc, getDocs, deleteDoc, getDoc, query, orderBy } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDsVKuptdW4jRWQ5rLX_h_fn53xuFoYVMI",
+      authDomain: "abcreport-27dea.firebaseapp.com",
+      projectId: "abcreport-27dea",
+      storageBucket: "abcreport-27dea.firebasestorage.app",
+      messagingSenderId: "1422972209",
+      appId: "1:1422972209:web:82fbc39400d75566d8cc10"
+    };
+
+    let app, db;
+    try {
+      app = initializeApp(firebaseConfig);
+      db = initializeFirestore(app, { experimentalAutoDetectLongPolling: true });
+    } catch(err) {
+      console.warn("Firebase initialization warning:", err);
+    }
+
+    const COLLECTION_NAME = 'bsnl_bills_backup';
+    let cachedBackups = [];
+
+    // Toast Notification Helper
+    function showToast(message, type = 'success') {
+      const container = document.getElementById('toastContainer');
+      if (!container) return;
+      const toast = document.createElement('div');
+      const isSuccess = type === 'success';
+      const isError = type === 'error';
+      const bgClass = isSuccess ? 'bg-emerald-950 border-emerald-600/60 text-emerald-100' : (isError ? 'bg-rose-950 border-rose-600/60 text-rose-100' : 'bg-blue-950 border-blue-600/60 text-blue-100');
+      const icon = isSuccess ? '✓' : (isError ? '✕' : 'ℹ');
+      toast.className = `${bgClass} border px-4 py-2.5 rounded-xl shadow-xl flex items-center gap-2.5 text-xs font-semibold transform transition-all duration-300 pointer-events-auto translate-y-2 opacity-0`;
+      toast.innerHTML = `<span class="text-sm font-bold">${icon}</span><span>${message}</span>`;
+      container.appendChild(toast);
+      
+      requestAnimationFrame(() => {
+        toast.classList.remove('translate-y-2', 'opacity-0');
+      });
+
+      setTimeout(() => {
+        toast.classList.add('translate-y-2', 'opacity-0');
+        setTimeout(() => toast.remove(), 300);
+      }, 3500);
+    }
+
+    // Capture Document Payload
+    function captureInvoicePayload() {
+      const getText = (id) => {
+        const el = document.getElementById(id);
+        return el ? el.innerText.trim() : '';
+      };
+
+      const invNo = getText('f-inv-no') || ('NDCUP' + Date.now());
+      const accNo = getText('f-acc-no');
+      const invDate = getText('f-inv-date');
+      const usagePeriod = getText('f-usage-period');
+      const custName = getText('f-cust-name');
+      const custAddress = document.getElementById('f-cust-address') ? document.getElementById('f-cust-address').innerHTML : '';
+      const phoneNo = getText('f-phone-no');
+      const bsnlGstin = getText('f-bsnl-gstin-top');
+      const dueDate = getText('f-due-date');
+      const amountPayable = getText('f-amount-payable') || getText('f-total-due');
+      const currCharges = getText('f-curr-charges');
+      const prevBal = getText('f-prev-bal');
+      const payRec = getText('f-pay-received');
+      const adjustments = getText('f-adjustments');
+      const taxableVal = getText('f-taxable-val');
+      const planName = getText('f-plan-name');
+      const planRate = getText('f-plan-rate');
+
+      const monthSelect = document.getElementById('monthSelect');
+      const yearSelect = document.getElementById('yearSelect');
+
+      return {
+        id: invNo.replace(/[^a-zA-Z0-9_-]/g, '_'),
+        invoiceNo: invNo,
+        accountNo: accNo,
+        invoiceDate: invDate,
+        usagePeriod: usagePeriod,
+        customerName: custName,
+        customerAddress: custAddress,
+        phoneNo: phoneNo,
+        bsnlGstin: bsnlGstin,
+        dueDate: dueDate,
+        amountPayable: amountPayable,
+        currCharges: currCharges,
+        prevBal: prevBal,
+        payReceived: payRec,
+        adjustments: adjustments,
+        taxableVal: taxableVal,
+        planName: planName,
+        planRate: planRate,
+        selectedMonth: monthSelect ? monthSelect.value : '',
+        selectedYear: yearSelect ? yearSelect.value : '',
+        savedAt: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }),
+        timestamp: Date.now()
+      };
+    }
+
+    // Save To Firestore
+    async function saveToFirestore(triggerPrint = false) {
+      if (!db) {
+        showToast('Firestore not connected. Check network.', 'error');
+        if (triggerPrint) window.print();
+        return;
+      }
+
+      const saveBtn = document.getElementById('saveCloudBtn');
+      const printBtn = document.getElementById('printSaveBtn');
+      if (saveBtn) saveBtn.classList.add('opacity-50', 'pointer-events-none');
+      if (printBtn) printBtn.classList.add('opacity-50', 'pointer-events-none');
+
+      try {
+        const payload = captureInvoicePayload();
+        const docRef = doc(db, COLLECTION_NAME, payload.id);
+        await setDoc(docRef, payload, { merge: true });
+        
+        // Save local draft & register with search index
+        localStorage.setItem("bsnl_bill_draft", JSON.stringify(payload));
+        if (window.PMS_DOC_INDEX) {
+          window.PMS_DOC_INDEX.registerDocument({
+            id: `bsnl_${payload.id}`,
+            title: `BSNL बिल: ${payload.invoiceNo} (${payload.customerName || 'PMS'})`,
+            category: "सहेजे गए बिल (BSNL)",
+            desc: `अवधि: ${payload.usagePeriod || '-'} | देय राशि: ₹${payload.amountPayable || '0'} | दिनांक: ${payload.invoiceDate}`,
+            url: "bsnl_bill.html",
+            icon: "fa-solid fa-file-invoice-dollar"
+          });
+        }
+
+        showToast(`Cloud Backup Saved: ${payload.invoiceNo} (₹${payload.amountPayable})`, 'success');
+        fetchBackups();
+
+        if (triggerPrint) {
+          setTimeout(() => {
+            window.print();
+          }, 400);
+        }
+      } catch (err) {
+        console.error("Error saving backup to Firestore:", err);
+        showToast(`Save failed: ${err.message}`, 'error');
+        if (triggerPrint) window.print();
+      } finally {
+        if (saveBtn) saveBtn.classList.remove('opacity-50', 'pointer-events-none');
+        if (printBtn) printBtn.classList.remove('opacity-50', 'pointer-events-none');
+      }
+    }
+
+    // Fetch and render backups
+    async function fetchBackups() {
+      if (!db) return;
+      try {
+        const q = query(collection(db, COLLECTION_NAME));
+        const snapshot = await getDocs(q);
+        cachedBackups = [];
+        snapshot.forEach(docSnap => {
+          cachedBackups.push({ docId: docSnap.id, ...docSnap.data() });
+        });
+
+        // Sort descending by timestamp or date
+        cachedBackups.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+
+        // Update badge counters
+        const countBadge = document.getElementById('backupCountBadge');
+        const modalCount = document.getElementById('modalBackupCount');
+        if (countBadge) countBadge.textContent = cachedBackups.length;
+        if (modalCount) modalCount.textContent = cachedBackups.length;
+
+        renderBackupsList(cachedBackups);
+      } catch (err) {
+        console.error("Error fetching backups:", err);
+        const container = document.getElementById('backupsListContainer');
+        if (container) {
+          container.innerHTML = `<div class="text-center py-10 text-rose-400 text-xs">Failed to load backups: ${err.message}</div>`;
+        }
+      }
+    }
+
+    // Render list
+    function renderBackupsList(list) {
+      const container = document.getElementById('backupsListContainer');
+      if (!container) return;
+
+      if (!list || list.length === 0) {
+        container.innerHTML = `
+          <div class="text-center py-14 text-slate-500">
+            <svg class="w-12 h-12 mx-auto mb-3 opacity-40 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+            <p class="font-semibold text-sm text-slate-300">No backups found yet</p>
+            <p class="text-xs text-slate-500 mt-1">Tap 'Print & Backup' or 'Save Cloud' to create an instant cloud backup</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = list.map(item => `
+        <div class="bg-slate-950 border border-slate-800 hover:border-blue-500/50 rounded-xl p-4 transition duration-200 flex flex-col md:flex-row md:items-center justify-between gap-4 group">
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center gap-2.5 flex-wrap mb-1">
+              <span class="font-mono font-black text-white text-sm tracking-wide text-blue-400">${item.invoiceNo || 'No Inv No'}</span>
+              <span class="bg-slate-800 text-slate-300 text-[10.5px] px-2 py-0.5 rounded font-mono font-medium">Acc: ${item.accountNo || '-'}</span>
+              <span class="bg-emerald-950/80 text-emerald-300 border border-emerald-800/50 text-[11px] font-bold px-2 py-0.5 rounded">₹ ${item.amountPayable || '0'}</span>
+            </div>
+            <div class="text-xs text-slate-300 grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-0.5 mt-1.5">
+              <div><span class="text-slate-500">Bill Date:</span> <b>${item.invoiceDate || '-'}</b></div>
+              <div><span class="text-slate-500">Period:</span> <b>${item.usagePeriod || '-'}</b></div>
+              <div><span class="text-slate-500">Customer:</span> <b>${item.customerName || 'Police Modern School'}</b></div>
+              <div><span class="text-slate-500">Saved:</span> <span class="text-slate-400 font-mono text-[11px]">${item.savedAt || '-'}</span></div>
+            </div>
+          </div>
+          <div class="flex items-center gap-2 self-end md:self-center flex-shrink-0">
+            <button class="load-backup-btn bg-slate-800 hover:bg-blue-600 text-slate-200 hover:text-white px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 border border-slate-700 hover:border-blue-500" data-id="${item.docId}">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+              <span>Load</span>
+            </button>
+            <button class="reprint-backup-btn bg-blue-600 hover:bg-blue-500 text-white px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 shadow" data-id="${item.docId}">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+              <span>Reprint</span>
+            </button>
+            <button class="delete-backup-btn bg-slate-800 hover:bg-rose-900/60 text-slate-400 hover:text-rose-300 p-1.5 rounded-lg transition border border-slate-700 hover:border-rose-700" data-id="${item.docId}" title="Delete Backup">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+            </button>
+          </div>
+        </div>
+      `).join('');
+
+      // Bind button events
+      container.querySelectorAll('.load-backup-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          loadBackupData(btn.dataset.id, false);
+        });
+      });
+
+      container.querySelectorAll('.reprint-backup-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          loadBackupData(btn.dataset.id, true);
+        });
+      });
+
+      container.querySelectorAll('.delete-backup-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          deleteBackupData(btn.dataset.id);
+        });
+      });
+    }
+
+    // Load Backup into DOM
+    function loadBackupData(docId, triggerPrint = false) {
+      const data = cachedBackups.find(b => b.docId === docId);
+      if (!data) {
+        showToast('Backup data not found', 'error');
+        return;
+      }
+
+      const setElText = (id, val) => {
+        const el = document.getElementById(id);
+        if (el && val !== undefined) el.innerText = val;
+      };
+
+      setElText('f-inv-no', data.invoiceNo);
+      setElText('f-acc-no', data.accountNo);
+      setElText('f-inv-date', data.invoiceDate);
+      setElText('f-usage-period', data.usagePeriod);
+      setElText('f-cust-name', data.customerName);
+      if (data.customerAddress && document.getElementById('f-cust-address')) {
+        document.getElementById('f-cust-address').innerHTML = data.customerAddress;
+      }
+      setElText('f-phone-no', data.phoneNo);
+      setElText('f-bsnl-gstin-top', data.bsnlGstin);
+      setElText('f-due-date', data.dueDate);
+      setElText('f-prev-bal', data.prevBal);
+      setElText('f-pay-received', data.payReceived);
+      setElText('f-adjustments', data.adjustments);
+      setElText('f-taxable-val', data.taxableVal);
+      setElText('f-plan-name', data.planName);
+      setElText('f-plan-rate', data.planRate);
+
+      if (data.selectedMonth !== undefined && document.getElementById('monthSelect')) {
+        document.getElementById('monthSelect').value = data.selectedMonth;
+      }
+      if (data.selectedYear !== undefined && document.getElementById('yearSelect')) {
+        document.getElementById('yearSelect').value = data.selectedYear;
+      }
+
+      // Trigger standard invoice recalculation & synchronization
+      if (typeof window.recalculateInvoice === 'function') {
+        window.recalculateInvoice();
+      }
+
+      // Close modal
+      const modal = document.getElementById('historyModal');
+      if (modal) modal.classList.add('hidden');
+
+      showToast(`Restored Invoice: ${data.invoiceNo} (${data.invoiceDate})`, 'success');
+
+      if (triggerPrint) {
+        setTimeout(() => {
+          window.print();
+        }, 500);
+      }
+    }
+
+    // Delete Backup
+    async function deleteBackupData(docId) {
+      if (!confirm('Are you sure you want to delete this backup from Firestore?')) return;
+      if (!db) return;
+      try {
+        await deleteDoc(doc(db, COLLECTION_NAME, docId));
+        showToast('Backup deleted successfully', 'info');
+        fetchBackups();
+      } catch (err) {
+        showToast(`Failed to delete: ${err.message}`, 'error');
+      }
+    }
+
+    // Modal and Filter Setup
+    const historyModal = document.getElementById('historyModal');
+    const openHistoryBtn = document.getElementById('openHistoryBtn');
+    const closeHistoryBtn = document.getElementById('closeHistoryBtn');
+    const closeHistoryFooterBtn = document.getElementById('closeHistoryFooterBtn');
+    const refreshBackupsBtn = document.getElementById('refreshBackupsBtn');
+    const backupSearchInput = document.getElementById('backupSearchInput');
+    const saveCloudBtn = document.getElementById('saveCloudBtn');
+    const printSaveBtn = document.getElementById('printSaveBtn');
+
+    if (openHistoryBtn) {
+      openHistoryBtn.addEventListener('click', () => {
+        historyModal.classList.remove('hidden');
+        fetchBackups();
+      });
+    }
+
+    if (closeHistoryBtn) {
+      closeHistoryBtn.addEventListener('click', () => historyModal.classList.add('hidden'));
+    }
+    if (closeHistoryFooterBtn) {
+      closeHistoryFooterBtn.addEventListener('click', () => historyModal.classList.add('hidden'));
+    }
+
+    if (historyModal) {
+      historyModal.addEventListener('click', (e) => {
+        if (e.target === historyModal) historyModal.classList.add('hidden');
+      });
+    }
+
+    if (refreshBackupsBtn) {
+      refreshBackupsBtn.addEventListener('click', fetchBackups);
+    }
+
+    if (backupSearchInput) {
+      backupSearchInput.addEventListener('input', () => {
+        const queryStr = backupSearchInput.value.toLowerCase().trim();
+        if (!queryStr) {
+          renderBackupsList(cachedBackups);
+          return;
+        }
+        const filtered = cachedBackups.filter(b => 
+          (b.invoiceNo && b.invoiceNo.toLowerCase().includes(queryStr)) ||
+          (b.accountNo && b.accountNo.toLowerCase().includes(queryStr)) ||
+          (b.invoiceDate && b.invoiceDate.toLowerCase().includes(queryStr)) ||
+          (b.usagePeriod && b.usagePeriod.toLowerCase().includes(queryStr)) ||
+          (b.customerName && b.customerName.toLowerCase().includes(queryStr))
+        );
+        renderBackupsList(filtered);
+      });
+    }
+
+    if (saveCloudBtn) {
+      saveCloudBtn.addEventListener('click', () => saveToFirestore(false));
+    }
+
+    if (printSaveBtn) {
+      printSaveBtn.addEventListener('click', () => saveToFirestore(true));
+    }
+
+    // Initialize list on startup
+    window.addEventListener('DOMContentLoaded', () => {
+      fetchBackups();
+    });
+  </script>
+  <script src="js/pms_nav_search.js"></script>
+</body>
+</html>

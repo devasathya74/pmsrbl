@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="hi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>चौरासिया ट्रांसपोर्ट - बिल्टी / रसीद (Chaurasia Transport Receipt)</title>
+    <!-- Google Fonts for authentic Hindi print typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Martel:wght@700;800;900&family=Noto+Sans+Devanagari:wght@400;500;600;700;800;900&family=Yantramanav:wght@500;700;900&display=swap"
+        rel="stylesheet">
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        @page {
+            size: A4 landscape;
+            margin: 8mm;
+        }
+
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: 'Noto Sans Devanagari', 'Yantramanav', 'Arial', sans-serif;
+            background-color: #e5e7eb;
+            color: #111827;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+
+        /* Top Action Toolbar (Screen Only) */
+        .no-print-toolbar {
+            max-width: 275mm;
+            margin: 0 auto 16px auto;
+            background: #ffffff;
+            padding: 14px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .toolbar-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1e3a8a;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 8px 18px;
+            font-size: 14px;
+            font-weight: 700;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-primary {
+            background: #2563eb;
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background: #1d4ed8;
+        }
+
+        .btn-success {
+            background: #059669;
+            color: #fff;
+        }
+
+        .btn-success:hover {
+            background: #047857;
+        }
+
+        .btn-secondary {
+            background: #6b7280;
+            color: #fff;
+        }
+
+        .btn-secondary:hover {
+            background: #4b5563;
+        }
+
+        /* The Main Receipt Container (A4 Landscape Form Factor) */
+        .receipt-container {
+            width: 275mm;
+            min-height: 188mm;
+            margin: 0 auto;
+            background-color: #fca5ba;
+            /* Authentic Pink color of physical slip */
+            border: 2.5px solid #111827;
+            padding: 8mm 10mm;
+            position: relative;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            color: #0f172a;
+            font-size: 13.5px;
+            line-height: 1.25;
+        }
+
+        /* Top Bar */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            font-weight: 800;
+            border-bottom: 2px solid #111827;
+            padding-bottom: 3px;
+            margin-bottom: 4px;
+        }
+
+        /* Main Header Grid */
+        .header-grid {
+            display: grid;
+            grid-template-columns: 23% 57% 20%;
+            border-bottom: 2px solid #111827;
+            padding-bottom: 6px;
+            margin-bottom: 6px;
+            align-items: center;
+        }
+
+        .header-services {
+            font-size: 11.5px;
+            font-weight: 700;
+            line-height: 1.35;
+            padding-right: 5px;
+        }
+
+        .header-title-box {
+            text-align: center;
+        }
+
+        .main-brand-title {
+            font-family: 'Martel', 'Noto Sans Devanagari', serif;
+            font-size: 60px;
+            font-weight: 900;
+            margin-top: 50px;
+            color: #0f172a;
+            margin: 0;
+            line-height: 1.0;
+            letter-spacing: 0.5px;
+            text-shadow: 0.5px 0.5px 0px rgba(0, 0, 0, 0.1);
+        }
+
+        .main-brand-address {
+            font-size: 22px;
+            font-weight: 800;
+            margin-top: px;
+            letter-spacing: 0.3px;
+        }
+
+        .header-contact-box {
+            text-align: right;
+            font-size: 12px;
+            font-weight: 800;
+            line-height: 1.4;
+        }
+
+        /* Main Body Columns */
+        .bill-body-grid {
+            display: grid;
+            grid-template-columns: 41% 59%;
+            border: 2px solid #111827;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        /* Left Column (Driver & Vehicle Info) */
+        .left-details-col {
+            border-right: 2px solid #111827;
+            padding: 8px 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .form-row {
+            display: flex;
+            align-items: flex-end;
+            margin-bottom: 7px;
+            font-size: 13.5px;
+            font-weight: 800;
+        }
+
+        .form-row:last-child {
+            margin-bottom: 2px;
+        }
+
+        .form-label {
+            white-space: nowrap;
+            margin-right: 4px;
+            color: #0f172a;
+        }
+
+        .form-dotted-line {
+            flex: 1;
+            border-bottom: 1.5px dotted #111827;
+            min-height: 20px;
+            font-size: 14px;
+            font-weight: 700;
+            color: #1e3a8a;
+            /* Pen blue ink */
+            padding: 0 4px;
+            outline: none;
+        }
+
+        /* Right Column (Parties, Item Table & Totals) */
+        .right-details-col {
+            padding: 8px 10px 0 10px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .parties-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 6px;
+        }
+
+        /* Item Grid Table */
+        .cargo-table {
+            width: 100%;
+            border-collapse: collapse;
+            border: 1.8px solid #111827;
+            margin-top: 5px;
+            text-align: center;
+        }
+
+        .cargo-table th,
+        .cargo-table td {
+            border: 1.5px solid #111827;
+            padding: 4px 4px;
+            font-size: 12.5px;
+            font-weight: 800;
+        }
+
+        .cargo-table th {
+            background: rgba(0, 0, 0, 0.04);
+            font-size: 13px;
+        }
+
+        .cargo-table td {
+            color: #1e3a8a;
+            /* Handwritten blue ink */
+            height: 38px;
+            vertical-align: middle;
+            font-size: 14px;
+        }
+
+        /* Bottom Section with Terms & S.C. Grid */
+        .bottom-calc-grid {
+            display: grid;
+            grid-template-columns: 55% 45%;
+            border: 1.8px solid #111827;
+            border-top: none;
+            margin-bottom: 6px;
+        }
+
+        .terms-conditions {
+            padding: 6px 8px;
+            font-size: 12px;
+            font-weight: 800;
+            border-right: 1.5px solid #111827;
+            line-height: 1.45;
+        }
+
+        .terms-conditions ol {
+            margin: 0;
+            padding-left: 16px;
+        }
+
+        .totals-subtable {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: center;
+            height: 100%;
+        }
+
+        .totals-subtable td {
+            border-bottom: 1.5px solid #111827;
+            border-right: 1.5px solid #111827;
+            padding: 4px;
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        .totals-subtable td:last-child {
+            border-right: none;
+        }
+
+        .totals-subtable tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Footer Declaration & Signatures */
+        .receipt-footer {
+            margin-top: 6px;
+            padding-top: 4px;
+        }
+
+        .footer-declaration {
+            font-size: 12px;
+            font-weight: 800;
+            margin-bottom: 30px;
+        }
+
+        .signatures-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1.2fr;
+            text-align: center;
+            font-size: 13.5px;
+            font-weight: 800;
+            align-items: flex-end;
+        }
+
+        .sign-box {
+            position: relative;
+        }
+
+        /* Editable Highlight during Screen View */
+        [contenteditable="true"] {
+            outline: none;
+            cursor: text;
+        }
+
+        [contenteditable="true"]:hover,
+        [contenteditable="true"]:focus {
+            background: rgba(255, 255, 255, 0.45);
+        }
+
+        /* Print Media Styles */
+        @media print {
+            body {
+                background-color: #fca5ba;
+                padding: 0;
+            }
+
+            .no-print-toolbar {
+                display: none !important;
+            }
+
+            .receipt-container {
+                box-shadow: none;
+                width: 100%;
+                min-height: auto;
+                border: 2px solid #000;
+                margin: 0;
+                padding: 6mm 8mm;
+            }
+
+            [contenteditable="true"]:hover,
+            [contenteditable="true"]:focus {
+                background: transparent;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Top Action Toolbar -->
+    <div class="no-print-toolbar">
+        <div class="toolbar-title">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                <polyline points="14 2 14 8 20 8" />
+                <line x1="16" y1="13" x2="8" y2="13" />
+                <line x1="16" y1="17" x2="8" y2="17" />
+                <polyline points="10 9 9 9 8 9" />
+            </svg>
+            चौरासिया ट्रांसपोर्ट - बिल्टी प्रारूप (Editable Transport Receipt)
+        </div>
+        <div class="btn-group">
+            <button class="btn btn-secondary" onclick="loadSampleData()">फोटो वाला सैंपल डेटा भरें</button>
+            <button class="btn btn-secondary" onclick="clearAllData()">सब साफ़ करें (Blank)</button>
+            <button class="btn btn-primary" onclick="window.print()">🖨️ प्रिंट करें (Print)</button>
+        </div>
+    </div>
+
+    <!-- The Printable Receipt Slip -->
+    <div class="receipt-container" id="printable-receipt">
+
+        <!-- Top Header Strip -->
+        <div class="top-bar">
+            <div>ड्राइवर कापी/व्यापारी कापी</div>
+            <div>समस्त विवादों का न्याय क्षेत्र सीतापुर होगा</div>
+        </div>
+
+        <!-- Main Header Section -->
+        <div class="header-grid">
+            <!-- Left Services Note -->
+            <div class="header-services">
+                <strong>सर्विस -</strong><br>
+                समस्त उ०प्र०, बिहार,<br>
+                हरियाणा, मध्य प्रदेश के<br>
+                डी.सी.एम., टोयटा कैन्टर<br>
+                टाटा 608, महिन्द्रा मिनी<br>
+                ट्रक माल ढुलाई के लिए हर समय<br>
+                तैयार मिलती है
+            </div>
+
+            <!-- Center Brand Name & Address -->
+            <div class="header-title-box">
+                <h1 class="main-brand-title">चौरासिया ट्रांसपोर्ट</h1>
+                <div class="main-brand-address">29, स्टेशन रोड, सीतापुर-261001</div>
+            </div>
+
+            <!-- Right Contact & GST -->
+            <div class="header-contact-box">
+                <div>मो. 9450376694, 9935890839</div>
+                <div style="margin-top: 4px;">GSTIN : 09BKIPC3484M1ZQ</div>
+                <div>TRN - 93/RTA/2018</div>
+            </div>
+        </div>
+
+        <!-- Main Form Body -->
+        <div class="bill-body-grid">
+
+            <!-- Left Details Column (Driver & Vehicle Info) -->
+            <div class="left-details-col">
+                <div class="form-row">
+                    <span class="form-label">दिनांक</span>
+                    <span class="form-dotted-line" id="f-date" contenteditable="true">19/11/2025</span>
+                </div>
+                <div class="form-row">
+                    <span class="form-label">ट्रक नं०</span>
+                    <span class="form-dotted-line" id="f-truck" contenteditable="true">UP 34 DT 0852</span>
+                </div>
+                <div class="form-row">
+                    <span class="form-label">इंश्योरेंस नं०</span>
+                    <span class="form-dotted-line" id="f-insurance" contenteditable="true"></span>
+                </div>
+                <div class="form-row">
+                    <span class="form-label">चैसिस नं०</span>
+                    <span class="form-dotted-line" id="f-chassis" contenteditable="true"></span>
+                </div>
+                <div class="form-row">
+                    <span class="form-label">इंजन नं०</span>
+                    <span class="form-dotted-line" id="f-engine" contenteditable="true"></span>
+                </div>
+                <div class="form-row">
+                    <span class="form-label">नाम ड्राइवर व पता</span>
+                    <span class="form-dotted-line" id="f-driver" contenteditable="true">लक्ष्मण कुमार</span>
+                </div>
+                <div class="form-row">
+                    <span class="form-label">&nbsp;</span>
+                    <span class="form-dotted-line" id="f-driver-extra" contenteditable="true"></span>
+                </div>
+                <div class="form-row">
+                    <span class="form-label">ड्राइवर लाइसेंस नं०</span>
+                    <span class="form-dotted-line" id="f-license" contenteditable="true"></span>
+                </div>
+                <div class="form-row">
+                    <span class="form-label">मालिक का नाम</span>
+                    <span class="form-dotted-line" id="f-owner" contenteditable="true">लक्ष्मण कुमार</span>
+                </div>
+                <div class="form-row">
+                    <span class="form-label">संबंधित ट्रांसपोर्ट का नाम</span>
+                    <span class="form-dotted-line" id="f-rel-transport" contenteditable="true"></span>
+                </div>
+            </div>
+
+            <!-- Right Details Column (Consignment, Table & Totals) -->
+            <div class="right-details-col">
+                <!-- Parties: Sender & Receiver -->
+                <div class="parties-grid">
+                    <div class="form-row">
+                        <span class="form-label">भेजने वाले</span>
+                        <span class="form-dotted-line" id="f-sender" contenteditable="true">श्रीमती सुधा कुमारी</span>
+                    </div>
+                    <div class="form-row">
+                        <span class="form-label">पाने वाले</span>
+                        <span class="form-dotted-line" id="f-receiver" contenteditable="true">स्वयं</span>
+                    </div>
+                </div>
+
+                <!-- Locations: From & To -->
+                <div class="parties-grid">
+                    <div class="form-row">
+                        <span class="form-label">कहाँ से</span>
+                        <span class="form-dotted-line" id="f-from" contenteditable="true">पुलिस लाइन सीतापुर</span>
+                    </div>
+                    <div class="form-row">
+                        <span class="form-label">कहाँ तक</span>
+                        <span class="form-dotted-line" id="f-to" contenteditable="true">रायबरेली पुलिस लाइन</span>
+                    </div>
+                </div>
+
+                <!-- Item & Cargo Table -->
+                <table class="cargo-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 32%;" rowspan="2">विवरण</th>
+                            <th style="width: 14%;" rowspan="2">कुल वजन</th>
+                            <th style="width: 18%;" colspan="2">किराया</th>
+                            <th style="width: 18%;" colspan="2">अग्रिम</th>
+                            <th style="width: 18%;" colspan="2">बाकी</th>
+                            <th style="width: 10%;" rowspan="2">क०नं०</th>
+                        </tr>
+                        <tr>
+                            <th style="width: 11%; font-size: 11px;">रु०</th>
+                            <th style="width: 7%; font-size: 11px;">पै०</th>
+                            <th style="width: 11%; font-size: 11px;">रु०</th>
+                            <th style="width: 7%; font-size: 11px;">पै०</th>
+                            <th style="width: 11%; font-size: 11px;">रु०</th>
+                            <th style="width: 7%; font-size: 11px;">पै०</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td id="f-cargo-desc" contenteditable="true">घरेलू सामान</td>
+                            <td id="f-cargo-weight" contenteditable="true"></td>
+                            <td id="f-rent-rs" contenteditable="true">7500</td>
+                            <td id="f-rent-paise" contenteditable="true"></td>
+                            <td id="f-adv-rs" contenteditable="true"></td>
+                            <td id="f-adv-paise" contenteditable="true"></td>
+                            <td id="f-bal-rs" contenteditable="true">7510</td>
+                            <td id="f-bal-paise" contenteditable="true"></td>
+                            <td id="f-kn" contenteditable="true"></td>
+                        </tr>
+                        <tr>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true">Paid</td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                        </tr>
+                        <tr>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                            <td contenteditable="true"></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- Bottom Terms & S.C. Grid -->
+                <div class="bottom-calc-grid">
+                    <div class="terms-conditions">
+                        <ol>
+                            <li>रास्ता खर्चा व्यापारी देगा।</li>
+                            <li>आखिरी चुंगी व्यापारी देगा।</li>
+                            <li>अवैध माल की जिम्मेदारी व्यापारी की होगी।</li>
+                        </ol>
+                    </div>
+                    <div>
+                        <table class="totals-subtable">
+                            <tr>
+                                <td style="width: 50%;">S.C.</td>
+                                <td style="width: 50%; color: #1e3a8a;" id="f-sc" contenteditable="true">10.00</td>
+                            </tr>
+                            <tr>
+                                <td style="width: 50%; font-weight:900;">कुल योग</td>
+                                <td style="width: 50%; color: #1e3a8a; font-weight:900;" id="f-grand-total"
+                                    contenteditable="true">7510</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer Notice & Signatures -->
+        <div class="receipt-footer">
+            <div class="footer-declaration">
+                1. मैंने पीछे लिखी शर्तें पढ़ ली हैं और मुझे मान्य है। 2. ड्राइवर की जिम्मेदारी मोटर मालिक की समझी
+                जाएगी।
+            </div>
+            <div class="signatures-row">
+                <div class="sign-box">
+                    <div>हस्ताक्षर व्यापारी</div>
+                </div>
+                <div class="sign-box">
+                    <div>हस्ताक्षर ड्राइवर</div>
+                </div>
+                <div class="sign-box">
+                    <div style="font-size: 13px; font-weight: 800; line-height: 1.3;">
+                        वास्ते-चौरसिया ट्रांसपोर्ट<br>
+                        <span style="display:inline-block; margin-top: 16px;">हस्ताक्षर क्लर्क</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Interactive Script -->
+    <script>
+        function loadSampleData() {
+            document.getElementById('f-date').innerText = '19/11/2025';
+            document.getElementById('f-truck').innerText = 'UP 34 DT 0852';
+            document.getElementById('f-insurance').innerText = '';
+            document.getElementById('f-chassis').innerText = '';
+            document.getElementById('f-engine').innerText = '';
+            document.getElementById('f-driver').innerText = 'लक्ष्मण कुमार';
+            document.getElementById('f-driver-extra').innerText = '';
+            document.getElementById('f-license').innerText = '';
+            document.getElementById('f-owner').innerText = 'लक्ष्मण कुमार';
+            document.getElementById('f-rel-transport').innerText = '';
+
+            document.getElementById('f-sender').innerText = 'श्रीमती सुधा कुमारी';
+            document.getElementById('f-receiver').innerText = 'स्वयं';
+            document.getElementById('f-from').innerText = 'पुलिस लाइन सीतापुर';
+            document.getElementById('f-to').innerText = 'रायबरेली पुलिस लाइन';
+
+            document.getElementById('f-cargo-desc').innerText = 'घरेलू सामान';
+            document.getElementById('f-cargo-weight').innerText = '';
+            document.getElementById('f-rent-rs').innerText = '7500';
+            document.getElementById('f-rent-paise').innerText = '';
+            document.getElementById('f-adv-rs').innerText = '';
+            document.getElementById('f-adv-paise').innerText = '';
+            document.getElementById('f-bal-rs').innerText = '7510';
+            document.getElementById('f-sc').innerText = '10.00';
+            document.getElementById('f-grand-total').innerText = '7510';
+        }
+
+        function clearAllData() {
+            if (confirm('क्या आप रसीद का सारा डेटा साफ़ करना चाहते हैं?')) {
+                const editables = document.querySelectorAll('[contenteditable="true"]');
+                editables.forEach(el => {
+                    if (el.id === 'f-sc') el.innerText = '10.00';
+                    else el.innerText = '';
+                });
+            }
+        }
+    </script>
+</body>
+
+</html>

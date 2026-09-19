@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="hi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>पुलिस माडर्न स्कूल - वेतनमान</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #e0e0e0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .controls {
+            margin-bottom: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            background-color: #004080;
+            color: white;
+            border-radius: 5px;
+            margin: 0 5px;
+            transition: background 0.2s;
+        }
+
+        button:hover {
+            background-color: #00264d;
+        }
+
+        .btn-download {
+            background-color: #1a7a1a;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: bold;
+            box-shadow: 0 3px 8px rgba(0,100,0,0.3);
+        }
+
+        .btn-download:hover {
+            background-color: #145214 !important;
+            box-shadow: 0 5px 14px rgba(0,100,0,0.45);
+            transform: translateY(-1px);
+        }
+
+        .document {
+            background-color: white;
+            width: 210mm;
+            min-height: 297mm;
+            padding: 20mm 25mm;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            box-sizing: border-box;
+            display: none;
+            color: #111;
+        }
+
+        .document.active {
+            display: block;
+        }
+
+        .header {
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 24px;
+            color: #000;
+        }
+
+        .sub-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            margin-bottom: 24px;
+        }
+
+        .email-date {
+            text-align: right;
+        }
+
+        .address {
+            margin-bottom: 18px;
+            line-height: 1.6;
+        }
+
+        .subject {
+            margin-bottom: 18px;
+            text-indent: 40px;
+            line-height: 1.6;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 18px;
+            font-size: 13px;
+        }
+
+        th, td {
+            border: 1px solid #000;
+            padding: 7px 6px;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        th {
+            font-weight: bold;
+            background-color: #f0f0f0;
+        }
+
+        .conclusion {
+            margin-bottom: 50px;
+            text-indent: 40px;
+            line-height: 1.6;
+        }
+
+        .signatures {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+        }
+
+        .sign-left {
+            text-align: left;
+        }
+
+        .sign-right {
+            text-align: center;
+            line-height: 1.5;
+        }
+
+        .handwritten-note {
+            color: red;
+            font-family: 'cursive';
+            transform: rotate(-15deg);
+            position: absolute;
+            bottom: 100px;
+            right: 150px;
+            font-size: 14px;
+        }
+
+        /* ===== PRINT / PDF STYLES ===== */
+        @media print {
+            body {
+                background: white !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                display: block !important;
+            }
+
+            .controls {
+                display: none !important;
+            }
+
+            .document {
+                display: none !important;
+                box-shadow: none !important;
+                width: 100% !important;
+                min-height: auto !important;
+                padding: 10mm 15mm !important;
+                margin: 0 !important;
+            }
+
+            .document.active {
+                display: block !important;
+            }
+
+            @page {
+                size: A4 portrait;
+                margin: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="controls">
+        <button onclick="switchDoc('doc-june')">📄 जून 2026</button>
+        <button onclick="switchDoc('doc-july')">📄 जुलाई 2026</button>
+        <button class="btn-download" onclick="downloadPDF()">
+            ⬇️ Download PDF (A4)
+        </button>
+    </div>
+
+    <!-- Document 1: June 2026 -->
+    <div id="doc-june" class="document active">
+        <div class="header">कार्यालय पुलिस माडर्न स्कूल 25वीं वाहिनी पीएसी रायबरेली</div>
+
+        <div class="sub-header">
+            <div>पत्रांक संख्या-पीएमएस / 2026</div>
+            <div class="email-date">
+                ई-मेल - policemodernschoolbmpacrb@gmail.com<br>
+                दिनांक- अगस्त , 2026
+            </div>
+        </div>
+
+        <div class="address">
+            सेवा में,<br>
+            श्रीमान सेनानायक महोदय<br>
+            25वीं वाहिनी पीएसी<br>
+            रायबरेली।
+        </div>
+
+        <div class="subject">
+            सादर अनुरोध है कि पुलिस माडर्न स्कूल 25वीं वाहिनी पीएसी रायबरेली के स्टाफ का <strong>जून माह-2026</strong>
+            का वेतनमान निम्नप्रकार है-
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>कम सं०</th>
+                    <th>नाम</th>
+                    <th>पद</th>
+                    <th>खाता सं०</th>
+                    <th>IFSC</th>
+                    <th>वेतनमान</th>
+                    <th>देय वेतन</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1.</td>
+                    <td>कु० अंचल यादव</td>
+                    <td>सहायक अध्यापिका</td>
+                    <td>44236642681</td>
+                    <td>SBIN0001218</td>
+                    <td>₹5250.00</td>
+                    <td>₹875.00</td>
+                </tr>
+                <tr>
+                    <td>2.</td>
+                    <td>कु० वैष्णवी शर्मा</td>
+                    <td>सहायक अध्यापिका</td>
+                    <td>58400100006436</td>
+                    <td>BARB0BUPGBX</td>
+                    <td>₹5250.00</td>
+                    <td>₹875.00</td>
+                </tr>
+                <tr>
+                    <td colspan="6" style="text-align: right; font-weight: bold; padding-right: 20px;">योग-</td>
+                    <td style="font-weight: bold;">₹1750.00</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="conclusion">
+            अतः महोदय से अनुरोध है कि उपरोक्त धन <strong>रू1750.00 (सत्रह सौ पचास रुपये मात्र)</strong> पुलिस माडर्न
+            स्कूल फण्ड से निर्गत करने की कृपा करें।
+        </div>
+
+        <div class="signatures">
+            <div class="sign-left">
+                सधन्यवाद
+            </div>
+            <div class="sign-right">
+                <div
+                    style="color:blue; font-style:italic; font-size:24px; margin-bottom: -15px; position:relative; z-index:1; right: 20px;">
+                </div>
+                प्रभारी प्रधानाचार्या<br>
+                पुलिस माडर्न स्कूल<br>
+                25वीं वाहिनी पीएसी<br>
+                रायबरेली।
+            </div>
+        </div>
+    </div>
+
+    <!-- Document 2: July 2026 -->
+    <div id="doc-july" class="document">
+        <div class="header">कार्यालय पुलिस माडर्न स्कूल 25वीं वाहिनी पीएसी रायबरेली</div>
+
+        <div class="sub-header">
+            <div>पत्रांक संख्या-पीएमएस / 2026</div>
+            <div class="email-date">
+                ई-मेल - policemodernschoolbmpacrb@gmail.com<br>
+                दिनांक- अगस्त , 2026
+            </div>
+        </div>
+
+        <div class="address">
+            सेवा में,<br>
+            श्रीमान सेनानायक महोदय<br>
+            25वीं वाहिनी पीएसी<br>
+            रायबरेली।
+        </div>
+
+        <div class="subject">
+            सादर अनुरोध है कि पुलिस माडर्न स्कूल 25वीं वाहिनी पीएसी रायबरेली के स्टाफ का <strong>जुलाई माह-2026</strong>
+            का वेतनमान निम्नप्रकार है-
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>कम सं०</th>
+                    <th>नाम</th>
+                    <th>पद</th>
+                    <th>खाता सं०</th>
+                    <th>IFSC</th>
+                    <th>वेतनमान</th>
+                    <th>देय वेतन</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1.</td>
+                    <td>श्रीमती सविता सिंह</td>
+                    <td>कार्यवाहक प्रधानाचार्या</td>
+                    <td>09760100040248</td>
+                    <td>BARB0MALIKM</td>
+                    <td>₹6000.00</td>
+                    <td>₹6000.00</td>
+                </tr>
+                <tr>
+                    <td>2.</td>
+                    <td>श्रीमती अनीता</td>
+                    <td>सहायक अध्यापिका</td>
+                    <td>110246228888</td>
+                    <td>CNRB0000267</td>
+                    <td>₹5250.00</td>
+                    <td>₹4375.00</td>
+                </tr>
+                <tr>
+                    <td>3.</td>
+                    <td>श्रीमती अंजलि यादव</td>
+                    <td>सहायक अध्यापिका</td>
+                    <td>50550100022457</td>
+                    <td>BARB0BUPGBX</td>
+                    <td>₹5250.00</td>
+                    <td>₹3150.00</td>
+                </tr>
+                <tr>
+                    <td>4.</td>
+                    <td>कु० अंचल यादव</td>
+                    <td>सहायक अध्यापिका</td>
+                    <td>44236642681</td>
+                    <td>SBIN0001218</td>
+                    <td>₹5250.00</td>
+                    <td>₹5250.00</td>
+                </tr>
+                <tr>
+                    <td>5.</td>
+                    <td>कु० वैष्णवी शर्मा</td>
+                    <td>सहायक अध्यापिका</td>
+                    <td>58400100006436</td>
+                    <td>BARB0BUPGBX</td>
+                    <td>₹5250.00</td>
+                    <td>₹5250.00</td>
+                </tr>
+                <tr>
+                    <td>6.</td>
+                    <td>कु० संध्या</td>
+                    <td>सहायक अध्यापिका</td>
+                    <td>00520100029181</td>
+                    <td>BARB0RAEBAR</td>
+                    <td>₹5250.00</td>
+                    <td>₹3150.00</td>
+                </tr>
+                <tr>
+                    <td>7.</td>
+                    <td>कु० अनीता निर्मल</td>
+                    <td>आया</td>
+                    <td>58400100001740</td>
+                    <td>BARB0BUPGBX</td>
+                    <td>₹4000.00</td>
+                    <td>₹3333.33</td>
+                </tr>
+                <tr>
+                    <td colspan="6" style="text-align: right; font-weight: bold; padding-right: 20px;">योग-</td>
+                    <td style="font-weight: bold;">₹30508.33</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="conclusion" style="position: relative;">
+            अतः महोदय से अनुरोध है कि उपरोक्त धन <strong>रू30508.33 (तीस हजार पांच सौ आठ रुपये तैतीस पैसे
+                मात्र)</strong> पुलिस माडर्न स्कूल फण्ड से निर्गत करने की कृपा करें।
+
+            <!-- Approver Handwritten Annotation Approximation -->
+
+        </div>
+
+        <div class="signatures">
+            <div class="sign-left">
+                सधन्यवाद
+            </div>
+            <div class="sign-right">
+                <div
+                    style="color:blue; font-style:italic; font-size:24px; margin-bottom: -15px; position:relative; z-index:1; right: 20px;">
+                </div>
+                प्रभारी प्रधानाचार्या<br>
+                पुलिस माडर्न स्कूल<br>
+                25वीं वाहिनी पीएसी<br>
+                रायबरेली।
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function switchDoc(docId) {
+            document.querySelectorAll('.document').forEach(function (doc) {
+                doc.classList.remove('active');
+            });
+            document.getElementById(docId).classList.add('active');
+        }
+
+        function downloadPDF() {
+            // Get the currently active document's title for info
+            var activeDoc = document.querySelector('.document.active');
+            if (!activeDoc) {
+                alert('कोई document नहीं चुना है।');
+                return;
+            }
+
+            // Determine filename hint from document id
+            var docId = activeDoc.id;
+            var monthName = docId === 'doc-june' ? 'June_2026' : 'July_2026';
+
+            // Show print dialog — user selects "Save as PDF" with A4 size
+            // The @media print CSS ensures controls are hidden and only active doc shows
+            var originalTitle = document.title;
+            document.title = 'Vetan_' + monthName + '_PMS_Raebareli';
+
+            window.print();
+
+            // Restore title after print dialog closes
+            setTimeout(function () {
+                document.title = originalTitle;
+            }, 1000);
+        }
+    </script>
+</body>
+
+</html>

@@ -347,7 +347,7 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.1/fireba
           '</td>' +
           '<td>' +
           '<div style="margin-bottom:6px;"><span class="badge-cls">' + (s.cls || '-') + '</span></div>' +
-          '<div><span class="badge-bus ' + (s.bus ? 'yes' : 'no') + '">' + (s.bus ? 'Bus: Yes' : 'Bus: No') + '</span></div>' +
+          '<div>' + (s.bus ? '<span class="badge-bus yes">Bus: Yes</span>' : ((s.isSelfTransport || s.vehicle === 'self') ? '<span class="badge-bus" style="background:#ffe4e6;color:#be123c;border:1px solid #fecdd3;">🚶 पैदल/निजी (बटालियन बाहर)</span>' : '<span class="badge-bus no">Bus: No</span>')) + '</div>' +
           '</td>' +
           '<td>' +
           '<div style="font-weight:700;color:var(--green);margin-bottom:6px;">Monthly Fee: Rs.' + f.net + '</div>' +
@@ -435,6 +435,8 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.1/fireba
         fatherAadhar: document.getElementById('fFatherAadhar').value.trim(), motherAadhar: document.getElementById('fMotherAadhar').value.trim(),
         siblingId: document.getElementById('fSibling').value || null,
         bus: document.getElementById('fBus').checked,
+        isSelfTransport: document.getElementById('fSelfTransport') ? document.getElementById('fSelfTransport').checked : false,
+        vehicle: (document.getElementById('fSelfTransport') && document.getElementById('fSelfTransport').checked) ? 'self' : (document.getElementById('fBus').checked ? 'v1' : 'none'),
         siblingDisc: document.getElementById('fSiblingDisc').value, pacDisc: document.getElementById('fPacDisc').value,
         admYear: document.getElementById('fAdmYear').value,
         createdAt: ex ? ex.createdAt : Date.now(), updatedAt: Date.now()
@@ -471,6 +473,7 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.1/fireba
       document.getElementById('formTitle').textContent = 'Add New Student';
       document.getElementById('feePreviewBox').style.display = 'none';
       document.getElementById('busLabel').textContent = 'Not Availing';
+      if (document.getElementById('fSelfTransport')) document.getElementById('fSelfTransport').checked = false;
       populateSiblingDropdown('');
     }
     function fmtAadhar(el) {
@@ -479,7 +482,22 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.1/fireba
       if (v.length > 9) v = v.slice(0, 9) + ' ' + v.slice(9);
       el.value = v.slice(0, 14);
     }
-    function busToggle() { document.getElementById('busLabel').textContent = document.getElementById('fBus').checked ? 'Availing Bus Service' : 'Not Availing'; updateFeePreview(); }
+    function selfTransportToggle() {
+      const el = document.getElementById('fSelfTransport');
+      if (el && el.checked) {
+        document.getElementById('fBus').checked = false;
+        document.getElementById('busLabel').textContent = 'Not Availing';
+        updateFeePreview();
+      }
+    }
+    function busToggle() {
+      const isBus = document.getElementById('fBus').checked;
+      document.getElementById('busLabel').textContent = isBus ? 'Availing Bus Service' : 'Not Availing';
+      if (isBus && document.getElementById('fSelfTransport')) {
+        document.getElementById('fSelfTransport').checked = false;
+      }
+      updateFeePreview();
+    }
     function updateFeePreview() {
       const cls = document.getElementById('fClass').value;
       if (!cls) { document.getElementById('feePreviewBox').style.display = 'none'; return; }
@@ -499,6 +517,7 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.1/fireba
       Object.keys(m).forEach(fid => { document.getElementById(fid).value = s[m[fid]] || ''; });
       document.getElementById('fBus').checked = s.bus || false;
       document.getElementById('busLabel').textContent = s.bus ? 'Availing Bus Service' : 'Not Availing';
+      if (document.getElementById('fSelfTransport')) document.getElementById('fSelfTransport').checked = s.isSelfTransport || s.vehicle === 'self' || false;
       document.getElementById('fSiblingDisc').value = s.siblingDisc || '0';
       document.getElementById('fPacDisc').value = s.pacDisc || '0';
       document.getElementById('formTitle').textContent = 'Edit: ' + s.name;
@@ -558,7 +577,7 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.1/fireba
         '<tr><td class="dt-key">Birth Cert No.</td><td style="font-family:monospace">' + (s.birthCert || '-') + '</td></tr>' +
         '<tr><td class="dt-key">Father Aadhar</td><td style="font-family:monospace">' + (s.fatherAadhar || '-') + '</td></tr>' +
         '<tr><td class="dt-key">Mother Aadhar</td><td style="font-family:monospace">' + (s.motherAadhar || '-') + '</td></tr>' +
-        '<tr><td class="dt-key">Bus Service</td><td><span class="badge-bus ' + (s.bus ? 'yes' : 'no') + '">' + (s.bus ? 'Availing' : 'Not Availing') + '</span></td></tr>' +
+        '<tr><td class="dt-key">Bus / Transport</td><td>' + (s.bus ? '<span class="badge-bus yes">Availing Bus</span>' : ((s.isSelfTransport || s.vehicle === 'self') ? '<span class="badge-bus" style="background:#ffe4e6;color:#be123c;">🚶 पैदल / निजी (बटालियन बाहर)</span>' : '<span class="badge-bus no">Not Availing Bus</span>')) + '</td></tr>' +
         '<tr><td class="dt-key">Monthly Fee</td><td><b style="color:var(--green)">Rs.' + f.net + '</b></td></tr>' +
         '<tr><td class="dt-key">Total Paid</td><td><b style="color:var(--teal)">Rs.' + totPaid.toLocaleString('en-IN') + '</b> (' + fees.length + ' months)</td></tr>' +
         '<tr><td class="dt-key">Admission Year</td><td>' + (s.admYear || '-') + '</td></tr>' +
@@ -1782,7 +1801,7 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.1/fireba
     window.fcFilter = fcFilter; window.selectStudent = selectStudent; window.renderFcStudents = renderFcStudents;
     window.toggleTuition = toggleTuition; window.saveTuition = saveTuition; window.unmarkTuition = unmarkTuition; window.editTuition = editTuition;
     window.toggleBus = toggleBus; window.saveBus = saveBus; window.unmarkBus = unmarkBus; window.editBus = editBus;
-    window.renderPrint = renderPrint; window.downloadPDF = downloadPDF; window.fmtAadhar = fmtAadhar; window.busToggle = busToggle;
+    window.renderPrint = renderPrint; window.downloadPDF = downloadPDF; window.fmtAadhar = fmtAadhar; window.busToggle = busToggle; window.selfTransportToggle = selfTransportToggle;
     window.togglePrintFieldsBox = togglePrintFieldsBox; window.setPrintFields = setPrintFields;
     window.updateFeePreview = updateFeePreview; window.resetForm = resetForm; window.clearErr = clearErr;
     window.logout = logout; window.checkSiblingDisc = checkSiblingDisc; window.renderSiblingList = renderSiblingList;

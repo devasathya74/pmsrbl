@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Essay on Mahatma Gandhi | Police Modern School, 25th Bn PAC, Raebareli</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800;900&family=Martel:wght@700;800;900&family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=Poppins:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+
+    body {
+      font-family: 'Poppins', 'Noto Sans Devanagari', sans-serif;
+      background-color: #0f172a;
+      color: #1e293b;
+      margin: 0;
+      padding: 0;
+    }
+
+    .font-heading {
+      font-family: 'Martel', 'Cinzel', serif;
+    }
+
+    /* Standard A4 Paper */
+    .paper-sheet {
+      background: #ffffff;
+      width: 210mm;
+      min-height: 297mm;
+      margin: 20px auto;
+      padding: 13mm 18mm 13mm 18mm;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      position: relative;
+      border-radius: 6px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .essay-section {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-left: 4px solid #d97706;
+      border-radius: 8px;
+      padding: 10px 14px;
+      margin-bottom: 9px;
+      transition: all 0.2s ease;
+    }
+
+    .essay-section:hover {
+      border-color: #f59e0b;
+      background-color: #fffdfa;
+      box-shadow: 0 2px 8px rgba(245, 158, 11, 0.08);
+    }
+
+    .sec-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13.5px;
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .sec-body {
+      font-size: 12.5px;
+      line-height: 1.55;
+      color: #334155;
+    }
+
+    .hindi-trans {
+      font-size: 11px;
+      line-height: 1.45;
+      color: #64748b;
+      margin-top: 3px;
+      font-style: normal;
+      padding-top: 3px;
+      border-top: 1px dashed #e2e8f0;
+    }
+
+    @media print {
+      body {
+        background-color: #ffffff !important;
+        padding: 0 !important;
+      }
+
+      .no-print {
+        display: none !important;
+      }
+
+      .paper-sheet {
+        width: 100% !important;
+        min-height: 100% !important;
+        margin: 0 !important;
+        padding: 9mm 12mm !important;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+      }
+
+      .essay-section {
+        border: 1px solid #cbd5e1 !important;
+        border-left: 4px solid #b45309 !important;
+        padding: 7px 11px !important;
+        margin-bottom: 6.5px !important;
+        page-break-inside: avoid;
+        break-inside: avoid;
+      }
+
+      .sec-title {
+        font-size: 12px !important;
+        margin-bottom: 2px !important;
+      }
+
+      .sec-body {
+        font-size: 11px !important;
+        line-height: 1.4 !important;
+      }
+
+      .hindi-trans {
+        font-size: 9.8px !important;
+        line-height: 1.35 !important;
+        margin-top: 2px !important;
+        padding-top: 2px !important;
+      }
+    }
+  </style>
+</head>
+
+<body class="p-0 md:py-6">
+
+  <!-- TOP CONTROL TOOLBAR (No Print) -->
+  <header class="no-print max-w-[210mm] mx-auto mb-4 bg-slate-900 border border-slate-700 text-white rounded-xl p-4 shadow-xl flex flex-wrap items-center justify-between gap-3 sticky top-2 z-50">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-lg bg-amber-600 flex items-center justify-center font-bold text-white shadow">
+        <i class="fa-solid fa-book-open text-lg"></i>
+      </div>
+      <div>
+        <h1 class="font-bold text-base md:text-lg leading-tight">महात्मा गांधी - विस्तृत निबंध (Detailed Essay)</h1>
+        <p class="text-xs text-slate-300">पुलिस मॉडर्न स्कूल, 25वीं वाहिनी पीएसी, रायबरेली</p>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="flex items-center gap-2">
+      <button onclick="toggleHindi()" id="toggleHindiBtn"
+        class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-600 text-amber-300 text-xs font-semibold rounded-lg flex items-center gap-1.5 transition">
+        <i class="fa-solid fa-language"></i>
+        <span>हिंदी अनुवाद दिखाएं / छिपाएं</span>
+      </button>
+
+      <button onclick="window.print()"
+        class="px-4 py-2 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white text-xs md:text-sm font-bold rounded-lg shadow-lg flex items-center gap-2 transition transform active:scale-95">
+        <i class="fa-solid fa-print"></i>
+        <span>प्रिंट / PDF सेव करें</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- PRINTABLE DOCUMENT CONTAINER -->
+  <main>
+    <div class="paper-sheet">
+      
+      <!-- TOP SCHOOL HEADER -->
+      <div class="border-b-2 border-slate-900 pb-2.5">
+        <div class="flex items-center justify-between">
+          <!-- Left PMS Logo -->
+          <div class="w-20 h-20 flex-shrink-0 flex items-center justify-center">
+            <img src="pms-logo.png" alt="Police Modern School" class="w-full h-full object-contain"
+              onerror="this.src='logo.png'" />
+          </div>
+
+          <!-- School Center Info -->
+          <div class="flex-1 text-center px-3">
+            <h1 class="font-heading text-2xl font-black text-slate-900 tracking-tight leading-tight">
+              POLICE MODERN SCHOOL
+            </h1>
+            <h2 class="text-sm font-bold text-slate-700 tracking-wide">
+              25TH BN. P.A.C., RAEBARELI (U.P.)
+            </h2>
+            <div class="mt-1 inline-flex items-center gap-1.5 bg-amber-100 text-amber-900 border border-amber-300 px-3 py-0.5 rounded-full text-xs font-black uppercase tracking-wider">
+              <span>🇮🇳</span> Gandhi Jayanti Special &bull; Comprehensive Essay <span>🇮🇳</span>
+            </div>
+            <p class="text-[12px] font-bold text-slate-800 mt-0.5">
+              Topic: <b>Mahatma Gandhi – Father of the Nation (राष्ट्रपिता महात्मा गांधी)</b>
+            </p>
+          </div>
+
+          <!-- Right PAC Logo -->
+          <div class="w-20 h-20 flex-shrink-0 flex items-center justify-center">
+            <img src="pac_logo.png" alt="PAC Logo" class="w-full h-full object-contain"
+              onerror="this.src='logo1.png'" />
+          </div>
+        </div>
+
+        <!-- STUDENT INFORMATION FILL-IN ROW -->
+        <div class="mt-2 pt-2 border-t border-slate-200 grid grid-cols-4 gap-2 text-xs font-semibold text-slate-800 bg-slate-50 p-2 rounded-lg border border-slate-200">
+          <div><span class="text-slate-500">Student Name:</span> _______________</div>
+          <div><span class="text-slate-500">Class & Sec:</span> _________</div>
+          <div><span class="text-slate-500">Roll No:</span> _______</div>
+          <div class="text-right"><span class="text-slate-500">Occasion:</span> <b>Gandhi Jayanti</b></div>
+        </div>
+      </div>
+
+      <!-- ESSAY CONTENT SECTION -->
+      <div class="my-2.5 flex-1">
+
+        <!-- 1. Introduction -->
+        <div class="essay-section">
+          <div class="sec-title text-amber-800">
+            <i class="fa-solid fa-bookmark text-amber-600 text-xs"></i>
+            <span>1. Introduction (परिचय)</span>
+          </div>
+          <div class="sec-body">
+            <b>Mahatma Gandhi</b> was one of the greatest leaders of India's freedom movement. He is remembered worldwide for his simple life, honesty, dedication, and unflinching belief in the power of <b>truth and non-violence</b>.
+          </div>
+          <div class="hindi-trans">
+            <b>हिंदी भावार्थ:</b> महात्मा गांधी भारत के स्वतंत्रता संग्राम के महानतम जननायकों में से एक थे। उन्हें उनके सादा जीवन, ईमानदारी और सत्य-अहिंसा के प्रति अटूट विश्वास के लिए विश्व भर में आदरपूर्वक याद किया जाता है।
+          </div>
+        </div>
+
+        <!-- 2. Early Life -->
+        <div class="essay-section">
+          <div class="sec-title text-sky-800">
+            <i class="fa-solid fa-child text-sky-600 text-xs"></i>
+            <span>2. Early Life & Family (प्रारंभिक जीवन एवं परिवार)</span>
+          </div>
+          <div class="sec-body">
+            Mahatma Gandhi was born on <b>2 October 1869</b> in <b>Porbandar, Gujarat</b>. His full name was <b>Mohandas Karamchand Gandhi</b>. His father's name was <b>Karamchand Gandhi</b> and his mother's name was <b>Putlibai</b>, who instilled strong moral values in him.
+          </div>
+          <div class="hindi-trans">
+            <b>हिंदी भावार्थ:</b> महात्मा गांधी का जन्म 2 अक्टूबर 1869 को गुजरात के पोरबंदर में हुआ था। उनका पूरा नाम मोहनदास करमचंद गांधी था। उनके पिता का नाम करमचंद गांधी एवं माता का नाम पुतलीबाई था।
+          </div>
+        </div>
+
+        <!-- 3. Freedom Struggle -->
+        <div class="essay-section">
+          <div class="sec-title text-emerald-800">
+            <i class="fa-solid fa-flag text-emerald-600 text-xs"></i>
+            <span>3. Gandhi Ji and India's Freedom Struggle (स्वतंत्रता संग्राम में योगदान)</span>
+          </div>
+          <div class="sec-body">
+            Gandhi Ji returned to India in <b>1915</b> after spending many years fighting racial injustice in South Africa. He used <b>Satyagraha (truth and non-violence)</b> to resist British rule. He successfully led mass historic movements such as the <b>Non-Cooperation Movement (1920)</b>, <b>Civil Disobedience Movement</b>, and the <b>Quit India Movement (1942)</b>. He also led the iconic <b>Dandi March in 1930</b> against the British salt law. He encouraged Indians to adopt <b>khadi and Swadeshi goods</b> to foster self-reliance.
+          </div>
+          <div class="hindi-trans">
+            <b>हिंदी भावार्थ:</b> गांधी जी 1915 में दक्षिण अफ्रीका से भारत लौटे। उन्होंने असहयोग आंदोलन, सविनय अवज्ञा आंदोलन, नमक सत्याग्रह (दांडी मार्च 1930) तथा भारत छोड़ो आंदोलन का नेतृत्व किया एवं स्वदेशी व खादी को बढ़ावा दिया।
+          </div>
+        </div>
+
+        <!-- 4. His Teachings -->
+        <div class="essay-section">
+          <div class="sec-title text-indigo-800">
+            <i class="fa-solid fa-hand-holding-heart text-indigo-600 text-xs"></i>
+            <span>4. His Teachings & Philosophy (गांधी जी की अमर शिक्षाएं)</span>
+          </div>
+          <div class="sec-body">
+            Gandhi Ji taught people to always <b>speak the truth (Satya)</b> and completely avoid violence (Ahimsa). He firmly believed that humanity should live with <b>love, peace, simplicity, cleanliness (Swachhata), and mutual respect</b> for all religions and communities.
+          </div>
+          <div class="hindi-trans">
+            <b>हिंदी भावार्थ:</b> गांधी जी ने सदैव सत्य बोलने और अहिंसा का पालन करने की सीख दी। उन्होंने समाज में सादगी, स्वच्छता, प्रेम, शांति और सभी धर्मों व वर्गों के प्रति परस्पर सम्मान का संदेश दिया।
+          </div>
+        </div>
+
+        <!-- 5. Gandhi Jayanti -->
+        <div class="essay-section">
+          <div class="sec-title text-rose-800">
+            <i class="fa-solid fa-calendar-star text-rose-600 text-xs"></i>
+            <span>5. Gandhi Jayanti & Global Recognition (गांधी जयंती)</span>
+          </div>
+          <div class="sec-body">
+            Gandhi Jayanti is celebrated with great reverence across India every year on <b>2 October</b>. In honor of his peaceful philosophy, the United Nations also observes this day globally as the <b>International Day of Non-Violence</b>.
+          </div>
+          <div class="hindi-trans">
+            <b>हिंदी भावार्थ:</b> प्रत्येक वर्ष 2 अक्टूबर को राष्ट्रपिता महात्मा गांधी की जयंती राष्ट्रीय पर्व के रूप में मनाई जाती है। अंतरराष्ट्रीय स्तर पर संयुक्त राष्ट्र द्वारा इसे 'अंतरराष्ट्रीय अहिंसा दिवस' के रूप में मनाया जाता है।
+          </div>
+        </div>
+
+        <!-- 6. Conclusion -->
+        <div class="essay-section">
+          <div class="sec-title text-amber-900">
+            <i class="fa-solid fa-star text-amber-600 text-xs"></i>
+            <span>6. Conclusion (उपसंहार / निष्कर्ष)</span>
+          </div>
+          <div class="sec-body">
+            Mahatma Gandhi's noble life and timeless philosophy continue to guide and inspire millions of people across the globe. His powerful message of <b>truth, peace, harmony, and kindness</b> remains profoundly relevant for everyone, especially students and young citizens.
+          </div>
+          <div class="hindi-trans">
+            <b>हिंदी भावार्थ:</b> महात्मा गांधी का जीवन और उनकी शिक्षाएं आज भी पूरी दुनिया का मार्गदर्शन करती हैं। सत्य, शांति और अहिंसा का उनका संदेश प्रत्येक नागरिक और विशेषकर विद्यार्थियों के लिए अत्यंत प्रेरणादायक है।
+          </div>
+        </div>
+
+      </div>
+
+      <!-- INSPIRING QUOTE & SIGNATURE FOOTER -->
+      <div>
+        <div class="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-300 rounded-lg p-2 text-center mb-2">
+          <p class="text-[11.5px] font-bold text-amber-950 italic">
+            "My life is my message. In a gentle way, you can shake the world." — Mahatma Gandhi
+          </p>
+        </div>
+
+        <!-- SIGNATURES -->
+        <div class="pt-2 border-t border-slate-300 flex justify-between items-end text-xs font-bold text-slate-800">
+          <div class="text-center">
+            <div class="w-28 border-b border-black mb-1"></div>
+            <div>Class Teacher</div>
+          </div>
+          <div class="text-center">
+            <div class="w-28 border-b border-black mb-1"></div>
+            <div>Activity Incharge</div>
+          </div>
+          <div class="text-center">
+            <div class="w-32 border-b border-black mb-1"></div>
+            <div>Principal / Headmistress<br><span class="text-[10px] font-normal text-slate-600">Police Modern School, Raebareli</span></div>
+          </div>
+        </div>
+
+        <!-- COPYRIGHT FOOTER -->
+        <div class="mt-1.5 pt-1 border-t border-slate-200 flex justify-between items-center text-[10px] text-slate-500">
+          <span>Police Modern School, 25th Bn PAC, Raebareli</span>
+          <span>Gandhi Jayanti Special Comprehensive Essay &bull; Session 2026-27</span>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <script>
+    let hindiVisible = true;
+    function toggleHindi() {
+      hindiVisible = !hindiVisible;
+      const hindiEls = document.querySelectorAll('.hindi-trans');
+      hindiEls.forEach(el => {
+        el.style.display = hindiVisible ? 'block' : 'none';
+      });
+
+      const btn = document.getElementById('toggleHindiBtn');
+      if (hindiVisible) {
+        btn.innerHTML = '<i class="fa-solid fa-language"></i> <span>हिंदी अनुवाद छिपाएं</span>';
+      } else {
+        btn.innerHTML = '<i class="fa-solid fa-language"></i> <span>हिंदी अनुवाद दिखाएं</span>';
+      }
+    }
+  </script>
+  <script src="js/pms_nav_search.js"></script>
+</body>
+
+</html>

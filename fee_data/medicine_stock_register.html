@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="hi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>औषधि स्टॉक पंजिका एवं छात्र वितरण रजिस्टर - पुलिस मॉडर्न स्कूल</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Mukta:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="medicine_stock_register.css">
+</head>
+
+<body>
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container"></div>
+
+    <!-- Header Navbar -->
+    <header class="app-header">
+        <div class="header-container">
+            <div class="logo-group">
+                <img src="logo1.png" alt="Police Modern School Logo" class="school-logo-img"
+                    onerror="this.src='https://cdn-icons-png.flaticon.com/512/2997/2997295.png'">
+                <div class="title-area">
+                    <div class="flex items-center gap-2">
+                        <h1>पुलिस मॉडर्न स्कूल, 25वीं वाहिनी पीएसी, रायबरेली</h1>
+                        <span id="firebase-status-badge" class="status-badge-cloud connecting">
+                            <span class="live-dot"></span> Firestore Connecting...
+                        </span>
+                    </div>
+                    <p>औषधि स्टॉक पंजिका एवं छात्र वितरण रजिस्टर (Cloud Synced Medical Stock Register)</p>
+                </div>
+            </div>
+
+            <div class="header-actions no-print">
+                <a href="index.html" class="btn btn-white" title="मुख्य फीस व छात्र पोर्टल पर जाएं">
+                    <i class="fas fa-school"></i> मुख्य पोर्टल
+                </a>
+                <button onclick="openDispenseModal()" class="btn btn-emerald">
+                    <i class="fas fa-plus-circle"></i> नई दवाई वितरित करें
+                </button>
+                <button onclick="openAddStockModal()" class="btn btn-primary">
+                    <i class="fas fa-box-open"></i> + स्टॉक आवक जोड़ें
+                </button>
+                <button onclick="printStockListOnly()" class="btn btn-amber">
+                    <i class="fas fa-file-invoice"></i> 📋 स्टॉक रसीद प्रिंट
+                </button>
+                <button onclick="exportDistributionCSV()" class="btn btn-primary">
+                    <i class="fas fa-file-excel"></i> एक्सेल (CSV)
+                </button>
+                <button onclick="printFullRegister()" class="btn btn-white">
+                    <i class="fas fa-print"></i> पूरा रजिस्टर प्रिंट
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Wrapper -->
+    <main class="main-wrapper">
+
+        <!-- View Switcher Tabs (Dashboard vs Student Matrix vs Official Stock Voucher Preview) -->
+        <div class="view-switch-bar no-print">
+            <div class="tab-pill-group">
+                <button id="btn-tab-dashboard" class="view-tab-btn active" onclick="switchViewMode('dashboard')">
+                    <i class="fas fa-chart-pie"></i> 📊 स्टॉक व वितरण डैशबोर्ड
+                </button>
+                <button id="btn-tab-matrix" class="view-tab-btn" onclick="switchViewMode('matrix')">
+                    <i class="fas fa-user-check"></i> 👥 समस्त छात्र मार्किंग एवं बल्क वितरण (Student Matrix)
+                </button>
+                <button id="btn-tab-voucher" class="view-tab-btn" onclick="switchViewMode('voucher')">
+                    <i class="fas fa-file-lines"></i> 📋 आधिकारिक स्टॉक प्राप्ति रसीद (A4)
+                </button>
+            </div>
+
+            <div class="flex items-center gap-2">
+                <button onclick="syncNowWithCloud()" class="btn btn-white text-xs" title="क्लाउड से रिफ्रेश करें">
+                    <i class="fas fa-rotate"></i> रीफ्रेश डाटा
+                </button>
+                <button onclick="printStockListOnly()" class="btn btn-amber text-xs">
+                    <i class="fas fa-print"></i> स्टॉक रसीद प्रिंट (A4)
+                </button>
+            </div>
+        </div>
+
+        <!-- Print-Only Official Heading (For Full Register Print Mode) -->
+        <div class="print-only-section">
+            <div class="print-school-heading">पुलिस मॉडर्न स्कूल, 25वीं वाहिनी पीएसी, रायबरेली (उ.प्र.)</div>
+            <div class="print-sub-heading">औषधि स्टॉक पंजिका एवं छात्र वितरण रजिस्टर (Medical Stock & Student Dispensing
+                Register)</div>
+            <div
+                style="display: flex; justify-content: space-between; font-size: 9pt; font-weight: bold; margin-top: 6px;">
+                <span>प्राप्ति स्रोत: 25वीं वाहिनी पीएसी चिकित्सालय</span>
+                <span id="print-receipt-date">प्राप्ति दिनांक: 27/08/2026</span>
+                <span>प्राप्तकर्ता: संजीव कुमार (190511502) PMS</span>
+            </div>
+        </div>
+
+        <!-- ==================== VIEW 1: DASHBOARD VIEW ==================== -->
+        <div id="dashboard-view-container" class="dashboard-view-container">
+            <!-- Top Stat Cards -->
+            <div class="stats-grid no-print">
+                <div class="stat-card">
+                    <div class="stat-icon icon-blue">
+                        <i class="fas fa-boxes-stacked"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>कुल प्राप्त स्टॉक (आवक)</h3>
+                        <div class="stat-value text-blue-700" id="stat-total-stock">0 पीस</div>
+                        <div class="stat-sub">25वीं वाहिनी चिकित्सालय द्वारा प्रदत्त</div>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon icon-green">
+                        <i class="fas fa-prescription-bottle-medical"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>वर्तमान उपलब्ध स्टॉक</h3>
+                        <div class="stat-value text-emerald-600" id="stat-available-stock">0 पीस</div>
+                        <div class="stat-sub">स्कूल मेडिकल रूम में सुरक्षित</div>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon icon-amber">
+                        <i class="fas fa-hand-holding-medical"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>कुल वितरित स्टॉक</h3>
+                        <div class="stat-value text-amber-700" id="stat-distributed-stock">0 पीस</div>
+                        <div class="stat-sub">छात्रों/स्टाफ को प्रदत्त</div>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon icon-purple">
+                        <i class="fas fa-pills"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>औषधि श्रेणियां व छात्र</h3>
+                        <div class="stat-value text-purple-700" id="stat-medicine-types">0 औषधियां</div>
+                        <div class="stat-sub" id="stat-students-synced">लोड हो रहा है...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Inward Stock Receipt Banner -->
+            <div class="inward-banner">
+                <div class="inward-info-group">
+                    <div class="inward-badge-icon">
+                        <i class="fas fa-hospital-user"></i>
+                    </div>
+                    <div class="inward-text">
+                        <h2>25वीं वाहिनी पीएसी चिकित्सालय द्वारा प्राप्त स्टॉक (Stock Inward)</h2>
+                        <p>दिनांक 27.08.2026 को विद्यालय छात्रों के स्वास्थ्य संवर्धन हेतु प्राप्त औषधियों का विवरण</p>
+                    </div>
+                </div>
+
+                <div class="inward-meta">
+                    <div><i class="fas fa-calendar-alt text-emerald-700 mr-1"></i> प्राप्ति दिनांक:
+                        <strong>27/08/2026</strong>
+                    </div>
+                    <div><i class="fas fa-user-check text-emerald-700 mr-1"></i> प्राप्तकर्ता: <strong>संजीव कुमार
+                            (190511502) PMS</strong></div>
+                    <div><i class="fas fa-database text-emerald-700 mr-1"></i> स्थिति: <strong id="cloud-sync-text">Firestore Synced</strong></div>
+                </div>
+            </div>
+
+            <!-- Medicines Stock Cards Grid -->
+            <div class="section-title">
+                <div class="flex items-center gap-2">
+                    <i class="fas fa-capsules text-sky-600"></i>
+                    <span>औषधि इन्वेंट्री एवं स्टॉक स्थिति (Stock Ledger Breakdown)</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="switchViewMode('matrix')" class="btn btn-emerald text-xs no-print">
+                        <i class="fas fa-user-check"></i> छात्र मार्किंग लिस्ट खोलें
+                    </button>
+                    <button onclick="openAddStockModal()" class="btn btn-primary text-xs no-print">
+                        <i class="fas fa-plus"></i> नया स्टॉक / औषधि जोड़ें
+                    </button>
+                </div>
+            </div>
+
+            <div class="med-grid" id="medicines-grid">
+                <!-- Rendered by JS -->
+            </div>
+
+            <!-- Distribution Log Table Section -->
+            <div class="table-container">
+                <div class="table-header-bar no-print">
+                    <div class="flex items-center gap-2 font-bold text-slate-800 text-sm">
+                        <i class="fas fa-list-check text-sky-600"></i>
+                        <span>छात्र दवाई वितरण रजिस्टर (Distribution History Log)</span>
+                        <span class="bg-sky-100 text-sky-800 text-xs px-2 py-0.5 rounded-full font-bold"
+                            id="distribution-count-badge">0 रिकॉर्ड</span>
+                    </div>
+
+                    <div class="search-filters-group">
+                        <input type="text" id="search-student" class="input-search"
+                            placeholder="🔍 छात्र / पिता / अनुक्रमांक / कारण खोजें...">
+
+                        <select id="filter-class" class="select-filter">
+                            <option value="">सभी कक्षाएं (All Classes)</option>
+                            <option value="Nursery">Nursery</option>
+                            <option value="LKG">LKG</option>
+                            <option value="UKG">UKG</option>
+                            <option value="KG-1">KG-1</option>
+                            <option value="KG-2">KG-2</option>
+                            <option value="Class 1">Class 1st</option>
+                            <option value="Class 2">Class 2nd</option>
+                            <option value="Class 3">Class 3rd</option>
+                            <option value="Class 4">Class 4th</option>
+                            <option value="Class 5">Class 5th</option>
+                            <option value="Class 6">Class 6th</option>
+                            <option value="Class 7">Class 7th</option>
+                            <option value="Class 8">Class 8th</option>
+                            <option value="Staff">School Staff / अध्यापक</option>
+                        </select>
+
+                        <select id="filter-medicine" class="select-filter">
+                            <!-- Populated by JS -->
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Responsive Table -->
+                <div class="table-responsive">
+                    <table class="stock-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 50px;">क्र.सं.</th>
+                                <th>छात्र / प्राप्तकर्ता का विवरण</th>
+                                <th>कक्षा</th>
+                                <th>प्रदत्त औषधि</th>
+                                <th>मात्रा</th>
+                                <th>प्रयोजन / लक्षण</th>
+                                <th>वितरण दिनांक व प्रभारी</th>
+                                <th class="no-print" style="width: 80px; text-align: center;">कार्रवाई</th>
+                            </tr>
+                        </thead>
+                        <tbody id="distribution-tbody">
+                            <!-- Rendered by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Print Signatures Section (Visible in full register print) -->
+            <div class="print-signatures" style="display: flex; justify-content: flex-end; padding-right: 15px;">
+                <div class="sig-box" style="width: 250px;">
+                    <div>हस्ताक्षर प्राप्तकर्ता </div>
+                    <div style="font-size: 8pt; font-weight: bold; color: #111;">संजीव कुमार (190511502)</div>
+                    <div style="font-size: 7.5pt; font-weight: normal; color: #333;">पुलिस मॉडर्न स्कूल, 25वीं वाहिनी
+                        पीएसी</div>
+                    <div style="font-size: 7.5pt; font-weight: bold; color: #000;">दिनांक: 27/08/2026</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== VIEW 2: STUDENT DISPENSING MATRIX & BULK MARKING ==================== -->
+        <div id="matrix-view-container" class="matrix-view-container" style="display: none;">
+            
+            <!-- Class Pills Fast Navigator -->
+            <div class="class-pills-bar no-print" id="matrix-class-pills">
+                <!-- Populated dynamically by JS -->
+            </div>
+
+            <!-- Top Filter & Search Bar for Matrix -->
+            <div class="table-container mb-3 no-print">
+                <div class="flex items-center justify-between gap-3 flex-wrap p-3">
+                    <div class="flex items-center gap-2 flex-1 min-w-[280px]">
+                        <input type="text" id="matrix-search-input" class="input-search flex-1"
+                            placeholder="🔍 छात्र का नाम / PEN नंबर / पिता का नाम खोजें...">
+                    </div>
+
+                    <div class="flex items-center gap-2 flex-wrap">
+                        <select id="matrix-status-filter" class="select-filter">
+                            <option value="ALL">सभी छात्र (All Status)</option>
+                            <option value="PENDING">⏳ केवल लंबित (Not Given Yet)</option>
+                            <option value="DONE">✓ केवल दवाई प्राप्त (Dispensed)</option>
+                        </select>
+
+                        <select id="matrix-medicine-filter" class="select-filter">
+                            <option value="">सभी औषधियां (Any Medicine)</option>
+                            <!-- Populated by JS -->
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bulk Action Toolbar -->
+            <div class="bulk-action-bar no-print" id="bulk-action-toolbar">
+                <div class="flex items-center gap-3">
+                    <label class="flex items-center gap-2 cursor-pointer font-bold text-sm">
+                        <input type="checkbox" id="matrix-select-all" class="w-4 h-4 rounded text-sky-600 cursor-pointer">
+                        <span>सभी चुनें (Select All)</span>
+                    </label>
+                    <span class="bulk-selected-badge" id="bulk-selected-count">
+                        <i class="fas fa-check-double"></i> 0 छात्र चयनित
+                    </span>
+                </div>
+
+                <div class="bulk-inputs-group">
+                    <select id="bulk-medicine-select" title="दवाई चुनें" class="font-semibold text-sky-300">
+                        <option value="">-- दवाई चुनें (Select Medicine) --</option>
+                        <!-- Populated by JS -->
+                    </select>
+
+                    <input type="number" id="bulk-quantity-input" min="1" max="10" value="1" style="width: 65px;" title="प्रति छात्र मात्रा">
+
+                    <input type="text" id="bulk-reason-input" placeholder="प्रयोजन (उदा. दांतों की सफाई / पोषण)" style="width: 220px;" title="प्रयोजन">
+
+                    <button type="button" onclick="executeBulkDispense()" id="btn-execute-bulk" class="btn btn-emerald text-xs">
+                        <i class="fas fa-bolt"></i> चयनित छात्रों को दवाई वितरित करें
+                    </button>
+                </div>
+            </div>
+
+            <!-- Student Matrix Table -->
+            <div class="table-container">
+                <div class="table-header-bar">
+                    <div class="flex items-center gap-2 font-bold text-slate-800 text-sm">
+                        <i class="fas fa-users-viewfinder text-sky-600"></i>
+                        <span>छात्र-वार औषधि वितरण सूची (Student Roster Medicine Dispensing Matrix)</span>
+                        <span class="bg-blue-100 text-blue-800 text-xs px-2 py-0.5 rounded-full font-bold" id="matrix-student-count">0 छात्र</span>
+                    </div>
+                    <div class="text-xs text-slate-500 font-normal">
+                        (प्रत्येक छात्र की पंक्ति से सीधे दवाई चुनें या ऊपर चेकबॉक्स से पूरी कक्षा को एक साथ वितरित करें)
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="stock-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 40px; text-align: center;">
+                                    <input type="checkbox" id="matrix-th-select-all" class="cursor-pointer">
+                                </th>
+                                <th style="width: 45px;">क्र.सं.</th>
+                                <th>छात्र का विवरण (Student & Guardian Info)</th>
+                                <th>कक्षा</th>
+                                <th>प्रदत्त औषधि इतिहास (Dispensed Medicines)</th>
+                                <th>त्वरित वितरण (Quick Dispense)</th>
+                                <th style="width: 95px; text-align: center;">स्थिति</th>
+                                <th class="no-print" style="width: 90px; text-align: center;">कार्रवाई</th>
+                            </tr>
+                        </thead>
+                        <tbody id="matrix-tbody">
+                            <!-- Populated dynamically by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== VIEW 2: DEDICATED STOCK INWARD VOUCHER ==================== -->
+        <div id="voucher-view-container" class="voucher-view-container" style="display: none;">
+            <div class="voucher-paper-preview">
+                <!-- Voucher Header -->
+                <header class="voucher-doc-header">
+                    <h1 class="voucher-school-title">कार्यालय पुलिस मॉडर्न स्कूल, 25वीं वाहिनी पीएसी, रायबरेली</h1>
+                    <h2 class="voucher-subject-title">दवाईयों की सूची (औषधि प्राप्ति रसीद एवं स्टॉक पंजिका)</h2>
+                    <p style="font-size: 0.85rem; color: #475569; font-weight: 500; margin-top: 3px;">
+                        स्रोत: 25वीं वाहिनी पीएसी चिकित्सालय (Battalion Hospital) | शैक्षिक सत्र: 2026-27
+                    </p>
+                </header>
+
+                <!-- Meta Line -->
+                <div class="voucher-meta-row">
+                    <div><strong>पत्रांक संख्या:</strong> पीएमएस / औषधि-स्टॉक / 2026</div>
+                    <div style="text-align: right;"><strong>प्राप्ति दिनांक:</strong> 27 अगस्त 2026</div>
+                    <div><strong>प्राप्ति स्रोत / प्रदाता:</strong> 25वीं वाहिनी पीएसी चिकित्सालय</div>
+                    <div style="text-align: right;"><strong>अधिकृत प्राप्तकर्ता:</strong> संजीव कुमार (190511502) PMS
+                    </div>
+                </div>
+
+                <!-- Redesigned Stock Ledger Table -->
+                <div class="voucher-table-wrapper">
+                    <table class="voucher-ledger-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 45px; text-align: center;">क्र.सं.</th>
+                                <th style="text-align: left;">औषधि का नाम व विवरण</th>
+                                <th style="text-align: left;">प्रयोजन / उपयोग</th>
+                                <th style="text-align: center; width: 95px;">कुल आवक</th>
+                                <th style="text-align: center; width: 95px;">कुल वितरित</th>
+                                <th style="text-align: center; width: 105px;">वर्तमान शेष</th>
+                                <th style="text-align: center; width: 85px;">स्थिति</th>
+                            </tr>
+                        </thead>
+                        <tbody id="voucher-tbody">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Receipt Declaration Text -->
+                <div class="voucher-declaration-box">
+                    <strong>प्राप्ति प्रमाण-पत्र / प्रविष्टि आख्या:</strong> प्रमाणित किया जाता है कि 25वीं वाहिनी पीएसी
+                    चिकित्सालय द्वारा विद्यालय के छात्र-छात्राओं के स्वास्थ्य संवर्धन व प्राथमिक चिकित्सा हेतु प्रेषित
+                    समस्त औषधियां (कुल <strong id="voucher-total-stock-pcs">77 पीस</strong>) <strong>श्री संजीव कुमार (190511502)
+                        PMS</strong> द्वारा उपरोक्त मात्रा में सही-सलामत प्राप्त कर ली गई हैं तथा इन्हें विद्यालय की
+                    आधिकारिक औषधि स्टॉक पंजिका (Stock Register) में दर्ज कर लिया गया है।
+                </div>
+
+                <!-- Single Receiver Signature Block -->
+                <div class="voucher-signature-block">
+                    <div class="voucher-sign-box">
+                        <div style="font-size: 0.95rem; color: #000;">हस्ताक्षर प्राप्तकर्ता / औषधि प्रभारी</div>
+                        <div style="font-size: 0.92rem; font-weight: 800; color: #0f172a; margin-top: 3px;">संजीव कुमार
+                            (190511502)</div>
+                        <div style="font-size: 0.82rem; font-weight: 500; color: #475569;">पुलिस मॉडर्न स्कूल, 25वीं
+                            वाहिनी पीएसी, रायबरेली</div>
+                        <div style="font-size: 0.82rem; font-weight: 700; color: #000; margin-top: 4px;">दिनांक:
+                            27/08/2026</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- ==================== MODAL 1: DISPENSE MEDICINE ==================== -->
+    <div class="modal-overlay" id="dispense-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-hand-holding-medical"></i> छात्र औषधि वितरण प्रविष्टि</h3>
+                <button class="btn-close-modal" onclick="closeModal('dispense-modal')">&times;</button>
+            </div>
+
+            <form id="dispense-form">
+                <div class="modal-body">
+                    <!-- Student Live Search from Firestore -->
+                    <div class="form-group">
+                        <label class="form-label font-bold text-sky-900">
+                            🔍 छात्र खोजें एवं चुनें (Live Firestore Search)
+                            <span class="text-xs font-normal text-slate-500 ml-1">नाम, अनुक्रमांक (PEN) या पिता के नाम से खोजें</span>
+                        </label>
+                        <div class="student-search-wrapper">
+                            <input type="text" id="modal-student-search" class="form-control"
+                                placeholder="छात्र का नाम / PEN नंबर / पिता का नाम टाइप करें..." autocomplete="off">
+                            <div id="student-autocomplete-results" class="student-autocomplete-list"></div>
+                        </div>
+                    </div>
+
+                    <!-- Selected Student Card (Shown when picked from live list) -->
+                    <div id="selected-student-box" class="selected-student-card" style="display: none;">
+                        <div class="selected-student-details">
+                            <div class="st-title" id="sel-st-name">छात्र का नाम</div>
+                            <div class="st-meta" id="sel-st-meta">कक्षा: Class 1 | PEN: ADM-101 | पिता: श्री शर्मा</div>
+                            <div class="text-xs text-emerald-700 font-semibold" id="sel-st-history">पूर्व वितरण: कोई नहीं</div>
+                        </div>
+                        <button type="button" class="btn btn-white text-xs p-1" onclick="clearSelectedStudent()">
+                            <i class="fas fa-times"></i> हटाएं
+                        </button>
+                    </div>
+
+                    <div class="form-row-2 mt-3">
+                        <div class="form-group">
+                            <label class="form-label">छात्र का नाम (Student Name) *</label>
+                            <input type="text" id="modal-student-name" class="form-control" placeholder="उदा. अमन कुमार"
+                                required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">कक्षा (Class) *</label>
+                            <select id="modal-student-class" class="form-control" required>
+                                <option value="">-- कक्षा चुनें --</option>
+                                <option value="Nursery">Nursery</option>
+                                <option value="LKG">LKG</option>
+                                <option value="UKG">UKG</option>
+                                <option value="KG-1">KG-1</option>
+                                <option value="KG-2">KG-2</option>
+                                <option value="Class 1">Class 1</option>
+                                <option value="Class 2">Class 2</option>
+                                <option value="Class 3">Class 3</option>
+                                <option value="Class 4">Class 4</option>
+                                <option value="Class 5">Class 5</option>
+                                <option value="Class 6">Class 6</option>
+                                <option value="Class 7">Class 7</option>
+                                <option value="Class 8">Class 8</option>
+                                <option value="Staff">School Staff / अध्यापक</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row-2">
+                        <div class="form-group">
+                            <label class="form-label">अनुक्रमांक / Roll / PEN No.</label>
+                            <input type="text" id="modal-roll-no" class="form-control" placeholder="उदा. 12 या PEN नंबर">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">पिता का नाम (Father Name)</label>
+                            <input type="text" id="modal-father-name" class="form-control" placeholder="उदा. श्री राजेश कुमार">
+                        </div>
+                    </div>
+
+                    <div class="form-row-2">
+                        <div class="form-group">
+                            <label class="form-label">
+                                औषधि का नाम (Select Medicine) *
+                                <span id="modal-stock-hint"></span>
+                            </label>
+                            <select id="modal-medicine-select" class="form-control" required>
+                                <!-- Populated by JS -->
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">मात्रा (Quantity) *</label>
+                            <input type="number" id="modal-quantity" class="form-control" min="1" max="50" value="1"
+                                required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">प्रयोजन / लक्षण (Reason / Symptoms)</label>
+                        <input type="text" id="modal-reason" class="form-control"
+                            placeholder="उदा. दांतों की सफाई / दुर्बलता / भूख बढ़ाने हेतु">
+                        <div class="symptom-chips">
+                            <span class="symptom-chip" onclick="setQuickReason('दांतों की सफाई एवं सुरक्षा')">🦷 दांतों की सफाई</span>
+                            <span class="symptom-chip" onclick="setQuickReason('भूख बढ़ाने एवं पाचन दुरुस्त करने हेतु')">🍽️ भूख बढ़ाना</span>
+                            <span class="symptom-chip" onclick="setQuickReason('हड्डियों की मजबूती एवं कैल्शियम पूर्ति')">🦴 कैल्शियम / हड्डी</span>
+                            <span class="symptom-chip" onclick="setQuickReason('ताकत, ऊर्जा एवं हीमोग्लोबिन संवर्धन')">🩸 हीमोग्लोबिन / ताकत</span>
+                            <span class="symptom-chip" onclick="setQuickReason('प्राथमिक चिकित्सा / सामान्य दुर्बलता')">🩹 प्राथमिक चिकित्सा</span>
+                        </div>
+                    </div>
+
+                    <div class="form-row-2">
+                        <div class="form-group">
+                            <label class="form-label">वितरण दिनांक (Date) *</label>
+                            <input type="date" id="modal-date" class="form-control" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">वितरणकर्ता प्रभारी</label>
+                            <input type="text" id="modal-dispensed-by" class="form-control"
+                                value="संजीव कुमार (190511502)" placeholder="प्रभारी नाम">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" onclick="closeModal('dispense-modal')">रद्द करें</button>
+                    <button type="submit" id="btn-submit-dispense" class="btn btn-emerald">
+                        <i class="fas fa-check-circle"></i> क्लाउड में वितरण दर्ज करें एवं स्टॉक घटाएं
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ==================== MODAL 2: ADD / EDIT INWARD STOCK ==================== -->
+    <div class="modal-overlay" id="add-stock-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-boxes-packing"></i> नया स्टॉक आवक प्रविष्टि (Stock Inward Entry)</h3>
+                <button class="btn-close-modal" onclick="closeModal('add-stock-modal')">&times;</button>
+            </div>
+
+            <form id="add-stock-form">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="form-label">प्रकार चुनें *</label>
+                        <select id="stock-mode-select" class="form-control" onchange="toggleStockMode(this.value)">
+                            <option value="existing">विद्यमान औषधि में स्टॉक जोड़ें (Add to Existing Medicine)</option>
+                            <option value="new">नई औषधि पंजीकृत करें (Add New Medicine Type)</option>
+                        </select>
+                    </div>
+
+                    <div id="group-existing-med" class="form-group">
+                        <label class="form-label">औषधि चुनें (Select Medicine) *</label>
+                        <select id="stock-existing-med-id" class="form-control">
+                            <!-- Populated by JS -->
+                        </select>
+                    </div>
+
+                    <div id="group-new-med" style="display: none;">
+                        <div class="form-row-2">
+                            <div class="form-group">
+                                <label class="form-label">औषधि का नाम (हिंदी) *</label>
+                                <input type="text" id="stock-new-name-hi" class="form-control" placeholder="उदा. पैरासिटामोल सिरप">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">औषधि का नाम (English) *</label>
+                                <input type="text" id="stock-new-name-en" class="form-control" placeholder="उदा. Paracetamol Syrup">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">प्रयोजन / उपयोग (Purpose)</label>
+                            <input type="text" id="stock-new-purpose" class="form-control" placeholder="उदा. बुखार एवं दर्द निवारण हेतु">
+                        </div>
+                    </div>
+
+                    <div class="form-row-2">
+                        <div class="form-group">
+                            <label class="form-label">आवक मात्रा (Quantity in Pcs) *</label>
+                            <input type="number" id="stock-inward-qty" class="form-control" min="1" max="500" value="10" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">प्राप्ति दिनांक (Inward Date) *</label>
+                            <input type="date" id="stock-inward-date" class="form-control" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row-2">
+                        <div class="form-group">
+                            <label class="form-label">प्राप्ति स्रोत (Received From)</label>
+                            <input type="text" id="stock-received-from" class="form-control" value="25वीं वाहिनी पीएसी चिकित्सालय">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">प्राप्तकर्ता (Incharge Name)</label>
+                            <input type="text" id="stock-incharge-name" class="form-control" value="संजीव कुमार (190511502) PMS">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" onclick="closeModal('add-stock-modal')">रद्द करें</button>
+                    <button type="submit" id="btn-submit-stock" class="btn btn-primary">
+                        <i class="fas fa-save"></i> स्टॉक पंजिका में दर्ज करें (Save to Firestore)
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Firebase Compat SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+    <!-- App Configuration Bridge -->
+    <script src="js/env.js"></script>
+    <script src="js/config.js"></script>
+
+    <!-- Custom Script with Firestore Sync -->
+    <script src="medicine_stock_register.js"></script>
+</body>
+
+</html>

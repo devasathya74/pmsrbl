@@ -1,0 +1,1165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gandhi Jayanti Quiz (50 Questions) - Police Modern School, 25th Bn PAC, Raebareli</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800;900&family=Martel:wght@700;800;900&family=Poppins:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+
+    body {
+      font-family: 'Poppins', 'Inter', sans-serif;
+      background-color: #0f172a;
+      color: #1e293b;
+      margin: 0;
+      padding: 0;
+    }
+
+    .font-heading {
+      font-family: 'Cinzel', 'Martel', serif;
+    }
+
+    /* Standard A4 Paper Style */
+    .paper-sheet {
+      background: #ffffff;
+      width: 210mm;
+      min-height: 297mm;
+      margin: 20px auto;
+      padding: 13mm 16mm 13mm 16mm;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      position: relative;
+      border-radius: 4px;
+    }
+
+    .quiz-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px 16px;
+    }
+
+    .q-item {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 9px 11px;
+      font-size: 12px;
+      line-height: 1.4;
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+
+    .q-item.correct-revealed .opt-correct {
+      background-color: #ecfdf5;
+      border-color: #10b981;
+      color: #065f46;
+      font-weight: 700;
+    }
+
+    .opt-label {
+      display: block;
+      padding: 2.5px 6px;
+      margin-top: 2px;
+      border-radius: 4px;
+      border: 1px solid transparent;
+      transition: all 0.15s ease;
+    }
+
+    .opt-label:hover {
+      background-color: #f1f5f9;
+    }
+
+    .key-table th,
+    .key-table td {
+      border: 1px solid #cbd5e1;
+      padding: 4px 6px;
+      text-align: center;
+      font-size: 11.5px;
+    }
+
+    .key-table th {
+      background-color: #f8fafc;
+      font-weight: 700;
+    }
+
+    /* Print Styles */
+    @media print {
+      body {
+        background-color: #ffffff !important;
+        padding: 0 !important;
+      }
+
+      .no-print {
+        display: none !important;
+      }
+
+      .paper-sheet {
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 8mm 10mm !important;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+      }
+
+      .quiz-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 7px 12px;
+      }
+
+      .q-item {
+        border: 1px solid #94a3b8 !important;
+        padding: 6.5px 8.5px !important;
+        font-size: 10.8px !important;
+        line-height: 1.32 !important;
+      }
+
+      .opt-label {
+        padding: 1px 3px !important;
+        margin-top: 1px !important;
+      }
+
+      .page-break {
+        page-break-before: always;
+        break-before: page;
+      }
+    }
+  </style>
+</head>
+
+<body class="p-0 md:py-6">
+
+  <!-- TOP ACTION TOOLBAR (No Print) -->
+  <header class="no-print max-w-[210mm] mx-auto mb-4 bg-slate-900 border border-slate-700 text-white rounded-xl p-4 shadow-xl flex flex-wrap items-center justify-between gap-3 sticky top-2 z-50">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-lg bg-emerald-600 flex items-center justify-center font-bold text-white shadow">
+        <i class="fa-solid fa-file-lines text-lg"></i>
+      </div>
+      <div>
+        <h1 class="font-bold text-base md:text-lg leading-tight">Gandhi Jayanti Special Quiz (English Version - 50 MCQs)</h1>
+        <p class="text-xs text-slate-300">Police Modern School, 25th Bn PAC, Raebareli</p>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="flex flex-wrap items-center gap-2">
+      <!-- Language Switch -->
+      <a href="gandhi_jayanti_quiz.html"
+        class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-600 text-teal-300 text-xs font-semibold rounded-lg flex items-center gap-1.5 transition">
+        <i class="fa-solid fa-language"></i>
+        <span>हिंदी संस्करण (Hindi)</span>
+      </a>
+
+      <!-- Mode toggle -->
+      <button onclick="toggleAnswerKey()" id="toggleAnsBtn"
+        class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-600 text-amber-300 text-xs font-semibold rounded-lg flex items-center gap-1.5 transition">
+        <i class="fa-solid fa-eye"></i>
+        <span>Show / Hide Answers</span>
+      </button>
+
+      <!-- Layout toggle -->
+      <button onclick="toggleKeyTable()"
+        class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-600 text-sky-300 text-xs font-semibold rounded-lg flex items-center gap-1.5 transition">
+        <i class="fa-solid fa-table-list"></i>
+        <span>Answer Key Table</span>
+      </button>
+
+      <!-- Print Button -->
+      <button onclick="window.print()"
+        class="px-4 py-2 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs md:text-sm font-bold rounded-lg shadow-lg flex items-center gap-2 transition transform active:scale-95">
+        <i class="fa-solid fa-print"></i>
+        <span>Print / Save PDF</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- PRINTABLE DOCUMENT CONTAINER -->
+  <main id="printableArea">
+
+    <!-- SHEET 1: Questions 1 to 26 -->
+    <div class="paper-sheet">
+      
+      <!-- SCHOOL OFFICIAL HEADER -->
+      <div class="border-b-2 border-black pb-2.5 mb-2.5">
+        <div class="flex items-center justify-between">
+          <!-- Left Logo -->
+          <div class="w-20 h-20 flex-shrink-0 flex items-center justify-center">
+            <img src="pms-logo.png" alt="Police Modern School" class="w-full h-full object-contain"
+              onerror="this.src='logo.png'" />
+          </div>
+
+          <!-- School Title Details -->
+          <div class="flex-1 text-center px-2">
+            <h1 class="font-heading text-xl md:text-2xl font-black text-black tracking-tight leading-tight">
+              POLICE MODERN SCHOOL
+            </h1>
+            <h2 class="text-sm font-bold text-slate-800 tracking-wide">
+              25TH BN. P.A.C., RAEBARELI (U.P.)
+            </h2>
+            <div class="mt-1 inline-block bg-neutral-100 text-neutral-900 border border-neutral-400 px-3 py-0.5 rounded-full text-xs font-black uppercase tracking-wider">
+              Gandhi Jayanti Special General Knowledge Competition - 2026
+            </div>
+            <p class="text-[11px] font-semibold text-neutral-700 mt-0.5">
+              Subject: Father of the Nation Mahatma Gandhi - Life, Philosophy & Freedom Struggle (50 MCQs)
+            </p>
+          </div>
+
+          <!-- Right Logo -->
+          <div class="w-20 h-20 flex-shrink-0 flex items-center justify-center">
+            <img src="pac_logo.png" alt="PAC Logo" class="w-full h-full object-contain"
+              onerror="this.src='logo1.png'" />
+          </div>
+        </div>
+
+        <!-- CANDIDATE INFO BOX -->
+        <div class="mt-2 pt-1.5 border-t border-slate-300 grid grid-cols-4 gap-2 text-xs font-semibold text-slate-800 bg-slate-50 p-2 rounded border border-slate-200">
+          <div><span class="text-slate-500">Student Name:</span> _______________</div>
+          <div><span class="text-slate-500">Class & Sec:</span> _________</div>
+          <div><span class="text-slate-500">Roll No:</span> _______</div>
+          <div class="text-right"><span class="text-slate-500">Max Marks:</span> <b class="text-black font-black">50 Marks</b></div>
+        </div>
+      </div>
+
+      <!-- SECTION INSTRUCTION -->
+      <div class="bg-amber-50 border-l-4 border-amber-500 px-3 py-1 mb-2 text-[11px] font-medium text-amber-900 flex justify-between items-center">
+        <span><b>Instructions:</b> Each question has four options. Choose the correct option and mark the corresponding letter. Each question carries 1 mark.</span>
+        <span class="font-bold text-slate-600 text-[10.5px]">Section - 1 (Q. 1 to 26)</span>
+      </div>
+
+      <!-- QUESTIONS GRID (1-26) -->
+      <div class="quiz-grid" id="qGroup1">
+
+        <!-- Q1 -->
+        <div class="q-item" data-q="1" data-ans="A">
+          <div class="font-bold text-slate-900 mb-0.5">
+            <span class="inline-block w-4 h-4 bg-slate-800 text-white rounded-full text-center text-[10px] leading-4 mr-1">1</span>
+            When was Mahatma Gandhi born?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> 2 October 1869</div>
+            <div class="opt-label"><b>B.</b> 15 August 1870</div>
+            <div class="opt-label"><b>C.</b> 26 January 1869</div>
+            <div class="opt-label"><b>D.</b> 14 November 1869</div>
+          </div>
+        </div>
+
+        <!-- Q2 -->
+        <div class="q-item" data-q="2" data-ans="A">
+          <div class="font-bold text-slate-900 mb-0.5">
+            <span class="inline-block w-4 h-4 bg-slate-800 text-white rounded-full text-center text-[10px] leading-4 mr-1">2</span>
+            What was the full name of Mahatma Gandhi?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> Mohandas Karamchand Gandhi</div>
+            <div class="opt-label"><b>B.</b> Mohanlal Karamchand Gandhi</div>
+            <div class="opt-label"><b>C.</b> Mohandas Ramdas Gandhi</div>
+            <div class="opt-label"><b>D.</b> Karamchand Mohandas Gandhi</div>
+          </div>
+        </div>
+
+        <!-- Q3 -->
+        <div class="q-item" data-q="3" data-ans="A">
+          <div class="font-bold text-slate-900 mb-0.5">
+            <span class="inline-block w-4 h-4 bg-slate-800 text-white rounded-full text-center text-[10px] leading-4 mr-1">3</span>
+            In which present-day state of India was Mahatma Gandhi born?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> Gujarat</div>
+            <div class="opt-label"><b>B.</b> Maharashtra</div>
+            <div class="opt-label"><b>C.</b> Rajasthan</div>
+            <div class="opt-label"><b>D.</b> Madhya Pradesh</div>
+          </div>
+        </div>
+
+        <!-- Q4 -->
+        <div class="q-item" data-q="4" data-ans="A">
+          <div class="font-bold text-slate-900 mb-0.5">
+            <span class="inline-block w-4 h-4 bg-slate-800 text-white rounded-full text-center text-[10px] leading-4 mr-1">4</span>
+            What is the birthplace of Mahatma Gandhi?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> Porbandar</div>
+            <div class="opt-label"><b>B.</b> Rajkot</div>
+            <div class="opt-label"><b>C.</b> Ahmedabad</div>
+            <div class="opt-label"><b>D.</b> Surat</div>
+          </div>
+        </div>
+
+        <!-- Q5 -->
+        <div class="q-item" data-q="5" data-ans="A">
+          <div class="font-bold text-slate-900 mb-0.5">
+            <span class="inline-block w-4 h-4 bg-slate-800 text-white rounded-full text-center text-[10px] leading-4 mr-1">5</span>
+            By what respectful title is Gandhi Ji commonly addressed in India?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> Mahatma Gandhi</div>
+            <div class="opt-label"><b>B.</b> Lokmanya Gandhi</div>
+            <div class="opt-label"><b>C.</b> Netaji Gandhi</div>
+            <div class="opt-label"><b>D.</b> Sardar Gandhi</div>
+          </div>
+        </div>
+
+        <!-- Q6 -->
+        <div class="q-item" data-q="6" data-ans="A">
+          <div class="font-bold text-slate-900 mb-0.5">
+            <span class="inline-block w-4 h-4 bg-slate-800 text-white rounded-full text-center text-[10px] leading-4 mr-1">6</span>
+            In which country did Gandhi Ji study law?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> England</div>
+            <div class="opt-label"><b>B.</b> South Africa</div>
+            <div class="opt-label"><b>C.</b> United States</div>
+            <div class="opt-label"><b>D.</b> France</div>
+          </div>
+        </div>
+
+        <!-- Q7 -->
+        <div class="q-item" data-q="7" data-ans="A">
+          <div class="font-bold text-slate-900 mb-0.5">
+            <span class="inline-block w-4 h-4 bg-slate-800 text-white rounded-full text-center text-[10px] leading-4 mr-1">7</span>
+            Which key principle did Gandhi Ji practice during his struggle in South Africa?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> Satyagraha</div>
+            <div class="opt-label"><b>B.</b> Armed Struggle</div>
+            <div class="opt-label"><b>C.</b> Monarchy</div>
+            <div class="opt-label"><b>D.</b> Military Rule</div>
+          </div>
+        </div>
+
+        <!-- Q8 -->
+        <div class="q-item" data-q="8" data-ans="A">
+          <div class="font-bold text-slate-900 mb-0.5">
+            <span class="inline-block w-4 h-4 bg-slate-800 text-white rounded-full text-center text-[10px] leading-4 mr-1">8</span>
+            Which principle was central to Gandhi Ji's political and social movements?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> Non-violence (Ahimsa)</div>
+            <div class="opt-label"><b>B.</b> Violent Resistance</div>
+            <div class="opt-label"><b>C.</b> Military Expansion</div>
+            <div class="opt-label"><b>D.</b> Colonial Rule</div>
+          </div>
+        </div>
+
+        <!-- Q9 -->
+        <div class="q-item" data-q="9" data-ans="A">
+          <div class="font-bold text-slate-900 mb-0.5">
+            <span class="inline-block w-4 h-4 bg-slate-800 text-white rounded-full text-center text-[10px] leading-4 mr-1">9</span>
+            In which state did the Champaran Satyagraha take place?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> Bihar</div>
+            <div class="opt-label"><b>B.</b> Gujarat</div>
+            <div class="opt-label"><b>C.</b> Maharashtra</div>
+            <div class="opt-label"><b>D.</b> Bengal</div>
+          </div>
+        </div>
+
+        <!-- Q10 -->
+        <div class="q-item" data-q="10" data-ans="A">
+          <div class="font-bold text-slate-900 mb-0.5">
+            <span class="inline-block w-4 h-4 bg-slate-800 text-white rounded-full text-center text-[10px] leading-4 mr-1">10</span>
+            The Dandi March was associated with which historic movement?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> Salt Satyagraha</div>
+            <div class="opt-label"><b>B.</b> Champaran Satyagraha</div>
+            <div class="opt-label"><b>C.</b> Kheda Satyagraha</div>
+            <div class="opt-label"><b>D.</b> Quit India Movement</div>
+          </div>
+        </div>
+
+        <!-- Q11 -->
+        <div class="q-item" data-q="11" data-ans="A">
+          <div class="font-bold text-slate-900 mb-0.5">
+            <span class="inline-block w-4 h-4 bg-slate-800 text-white rounded-full text-center text-[10px] leading-4 mr-1">11</span>
+            In which year did the Dandi March begin?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> 1930</div>
+            <div class="opt-label"><b>B.</b> 1920</div>
+            <div class="opt-label"><b>C.</b> 1942</div>
+            <div class="opt-label"><b>D.</b> 1919</div>
+          </div>
+        </div>
+
+        <!-- Q12 -->
+        <div class="q-item" data-q="12" data-ans="A">
+          <div class="font-bold text-slate-900 mb-0.5">
+            <span class="inline-block w-4 h-4 bg-slate-800 text-white rounded-full text-center text-[10px] leading-4 mr-1">12</span>
+            In which year was the Quit India Movement launched?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> 1942</div>
+            <div class="opt-label"><b>B.</b> 1930</div>
+            <div class="opt-label"><b>C.</b> 1922</div>
+            <div class="opt-label"><b>D.</b> 1915</div>
+          </div>
+        </div>
+
+        <!-- Q13 -->
+        <div class="q-item" data-q="13" data-ans="A">
+          <div class="font-bold text-slate-900 mb-0.5">
+            <span class="inline-block w-4 h-4 bg-slate-800 text-white rounded-full text-center text-[10px] leading-4 mr-1">13</span>
+            In which year did Gandhi Ji return permanently to India?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> 1915</div>
+            <div class="opt-label"><b>B.</b> 1905</div>
+            <div class="opt-label"><b>C.</b> 1920</div>
+            <div class="opt-label"><b>D.</b> 1930</div>
+          </div>
+        </div>
+
+        <!-- Q14 -->
+        <div class="q-item" data-q="14" data-ans="A">
+          <div class="font-bold text-slate-900 mb-0.5">
+            <span class="inline-block w-4 h-4 bg-slate-800 text-white rounded-full text-center text-[10px] leading-4 mr-1">14</span>
+            In which year was the Non-Cooperation Movement started?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> 1920</div>
+            <div class="opt-label"><b>B.</b> 1930</div>
+            <div class="opt-label"><b>C.</b> 1942</div>
+            <div class="opt-label"><b>D.</b> 1915</div>
+          </div>
+        </div>
+
+        <!-- Q15 -->
+        <div class="q-item" data-q="15" data-ans="A">
+          <div class="font-bold text-slate-900 mb-0.5">
+            <span class="inline-block w-4 h-4 bg-slate-800 text-white rounded-full text-center text-[10px] leading-4 mr-1">15</span>
+            On which date is Gandhi Jayanti celebrated in India every year?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> 2 October</div>
+            <div class="opt-label"><b>B.</b> 15 August</div>
+            <div class="opt-label"><b>C.</b> 26 January</div>
+            <div class="opt-label"><b>D.</b> 14 November</div>
+          </div>
+        </div>
+
+        <!-- Q16 -->
+        <div class="q-item" data-q="16" data-ans="A">
+          <div class="font-bold text-slate-900 mb-0.5">
+            <span class="inline-block w-4 h-4 bg-slate-800 text-white rounded-full text-center text-[10px] leading-4 mr-1">16</span>
+            Which international day is observed globally on 2 October?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> International Day of Non-Violence</div>
+            <div class="opt-label"><b>B.</b> World Environment Day</div>
+            <div class="opt-label"><b>C.</b> Human Rights Day</div>
+            <div class="opt-label"><b>D.</b> International Literacy Day</div>
+          </div>
+        </div>
+
+        <!-- Q17 -->
+        <div class="q-item" data-q="17" data-ans="A">
+          <div class="font-bold text-slate-900 mb-0.5">
+            <span class="inline-block w-4 h-4 bg-slate-800 text-white rounded-full text-center text-[10px] leading-4 mr-1">17</span>
+            What is the title of Mahatma Gandhi's famous autobiography?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> The Story of My Experiments with Truth</div>
+            <div class="opt-label"><b>B.</b> The Discovery of India</div>
+            <div class="opt-label"><b>C.</b> Hind Swaraj</div>
+            <div class="opt-label"><b>D.</b> Wings of Fire</div>
+          </div>
+        </div>
+
+        <!-- Q18 -->
+        <div class="q-item" data-q="18" data-ans="A">
+          <div class="font-bold text-slate-900 mb-0.5">
+            <span class="inline-block w-4 h-4 bg-slate-800 text-white rounded-full text-center text-[10px] leading-4 mr-1">18</span>
+            What core ideas are presented in Gandhi Ji's book 'Hind Swaraj'?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> Views on civilization, Swaraj (self-rule) and modernity</div>
+            <div class="opt-label"><b>B.</b> Mathematics education only</div>
+            <div class="opt-label"><b>C.</b> Military strategy and warfare</div>
+            <div class="opt-label"><b>D.</b> Weather forecasting</div>
+          </div>
+        </div>
+
+        <!-- Q19 -->
+        <div class="q-item" data-q="19" data-ans="A">
+          <div class="font-bold text-slate-900 mb-0.5">
+            <span class="inline-block w-4 h-4 bg-slate-800 text-white rounded-full text-center text-[10px] leading-4 mr-1">19</span>
+            What is the fundamental meaning of 'Satyagraha' in Gandhi Ji's movement?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> Insistence on Truth / Firm adherence to Truth</div>
+            <div class="opt-label"><b>B.</b> Use of armed force</div>
+            <div class="opt-label"><b>C.</b> Territorial conquest</div>
+            <div class="opt-label"><b>D.</b> Commercial trade war</div>
+          </div>
+        </div>
+
+        <!-- Q20 -->
+        <div class="q-item" data-q="20" data-ans="A">
+          <div class="font-bold text-slate-900 mb-0.5">
+            <span class="inline-block w-4 h-4 bg-slate-800 text-white rounded-full text-center text-[10px] leading-4 mr-1">20</span>
+            What was Gandhi Ji's primary method during India's freedom struggle?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> Non-violent mass civil movement</div>
+            <div class="opt-label"><b>B.</b> Armed military insurrection</div>
+            <div class="opt-label"><b>C.</b> Endorsement of colonial rule</div>
+            <div class="opt-label"><b>D.</b> Establishing an autocracy</div>
+          </div>
+        </div>
+
+        <!-- Q21 -->
+        <div class="q-item" data-q="21" data-ans="A">
+          <div class="font-bold text-slate-900 mb-0.5">
+            <span class="inline-block w-4 h-4 bg-slate-800 text-white rounded-full text-center text-[10px] leading-4 mr-1">21</span>
+            What was the name of Mahatma Gandhi's father?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> Karamchand Gandhi</div>
+            <div class="opt-label"><b>B.</b> Motilal Gandhi</div>
+            <div class="opt-label"><b>C.</b> Harilal Gandhi</div>
+            <div class="opt-label"><b>D.</b> Devdas Gandhi</div>
+          </div>
+        </div>
+
+        <!-- Q22 -->
+        <div class="q-item" data-q="22" data-ans="B">
+          <div class="font-bold text-slate-900 mb-0.5">
+            <span class="inline-block w-4 h-4 bg-slate-800 text-white rounded-full text-center text-[10px] leading-4 mr-1">22</span>
+            What was the name of Gandhi Ji's mother?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label"><b>A.</b> Kasturba Gandhi</div>
+            <div class="opt-label opt-correct"><b>B.</b> Putlibai</div>
+            <div class="opt-label"><b>C.</b> Lakshmibai</div>
+            <div class="opt-label"><b>D.</b> Anandibai</div>
+          </div>
+        </div>
+
+        <!-- Q23 -->
+        <div class="q-item" data-q="23" data-ans="B">
+          <div class="font-bold text-slate-900 mb-0.5">
+            <span class="inline-block w-4 h-4 bg-slate-800 text-white rounded-full text-center text-[10px] leading-4 mr-1">23</span>
+            What was the name of Gandhi Ji's wife?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label"><b>A.</b> Sarojini Devi</div>
+            <div class="opt-label opt-correct"><b>B.</b> Kasturba Gandhi</div>
+            <div class="opt-label"><b>C.</b> Kamala Devi</div>
+            <div class="opt-label"><b>D.</b> Vijayalakshmi Pandit</div>
+          </div>
+        </div>
+
+        <!-- Q24 -->
+        <div class="q-item" data-q="24" data-ans="A">
+          <div class="font-bold text-slate-900 mb-0.5">
+            <span class="inline-block w-4 h-4 bg-slate-800 text-white rounded-full text-center text-[10px] leading-4 mr-1">24</span>
+            What type of discrimination did Gandhi Ji confront in South Africa?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> Racial discrimination (Apartheid)</div>
+            <div class="opt-label"><b>B.</b> Linguistic discrimination</div>
+            <div class="opt-label"><b>C.</b> Religious instruction ban</div>
+            <div class="opt-label"><b>D.</b> Economic depression</div>
+          </div>
+        </div>
+
+        <!-- Q25 -->
+        <div class="q-item" data-q="25" data-ans="A">
+          <div class="font-bold text-slate-900 mb-0.5">
+            <span class="inline-block w-4 h-4 bg-slate-800 text-white rounded-full text-center text-[10px] leading-4 mr-1">25</span>
+            What famous incident happened to Gandhi Ji during a train ride in South Africa?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> Ejected from a 1st-class train compartment</div>
+            <div class="opt-label"><b>B.</b> He inaugurated a new railway line</div>
+            <div class="opt-label"><b>C.</b> He constructed a railway station</div>
+            <div class="opt-label"><b>D.</b> He organized a railway strike</div>
+          </div>
+        </div>
+
+        <!-- Q26 -->
+        <div class="q-item" data-q="26" data-ans="B">
+          <div class="font-bold text-slate-900 mb-0.5">
+            <span class="inline-block w-4 h-4 bg-slate-800 text-white rounded-full text-center text-[10px] leading-4 mr-1">26</span>
+            In which country did Gandhi Ji primarily live and struggle before returning to India?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label"><b>A.</b> England</div>
+            <div class="opt-label opt-correct"><b>B.</b> South Africa</div>
+            <div class="opt-label"><b>C.</b> Sri Lanka</div>
+            <div class="opt-label"><b>D.</b> Japan</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- FOOTER -->
+      <div class="mt-2.5 pt-1.5 border-t border-slate-300 flex justify-between items-center text-[10px] text-slate-500">
+        <span>Police Modern School, 25th Bn PAC, Raebareli</span>
+        <span>Page 1 of 2</span>
+      </div>
+    </div>
+
+    <!-- SHEET 2: Questions 27 to 50 -->
+    <div class="paper-sheet page-break">
+
+      <!-- MINI HEADER FOR PAGE 2 -->
+      <div class="border-b border-slate-400 pb-1.5 mb-2 flex justify-between items-center text-xs font-bold text-slate-800">
+        <div class="flex items-center gap-2">
+          <img src="pms-logo.png" class="w-6 h-6 object-contain" onerror="this.src='logo.png'" />
+          <span>Police Modern School, Raebareli - Gandhi Jayanti Quiz</span>
+        </div>
+        <div class="bg-amber-100 text-amber-900 px-2 py-0.5 rounded text-[11px]">Section - 2 (Q. 27 to 50)</div>
+      </div>
+
+      <!-- QUESTIONS GRID (27-50) -->
+      <div class="quiz-grid" id="qGroup2">
+
+        <!-- Q27 -->
+        <div class="q-item" data-q="27" data-ans="A">
+          <div class="font-bold text-slate-900 mb-0.5">
+            <span class="inline-block w-4 h-4 bg-slate-800 text-white rounded-full text-center text-[10px] leading-4 mr-1">27</span>
+            From which place did Gandhi Ji launch his first major Satyagraha in India?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> Champaran</div>
+            <div class="opt-label"><b>B.</b> Delhi</div>
+            <div class="opt-label"><b>C.</b> Mumbai</div>
+            <div class="opt-label"><b>D.</b> Amritsar</div>
+          </div>
+        </div>
+
+        <!-- Q28 -->
+        <div class="q-item" data-q="28" data-ans="A">
+          <div class="font-bold text-slate-900 mb-0.5">
+            <span class="inline-block w-4 h-4 bg-slate-800 text-white rounded-full text-center text-[10px] leading-4 mr-1">28</span>
+            The Champaran Satyagraha was primarily related to which problem?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> Indigo cultivation (Tinkathia system)</div>
+            <div class="opt-label"><b>B.</b> Salt tax</div>
+            <div class="opt-label"><b>C.</b> Textile mill workers</div>
+            <div class="opt-label"><b>D.</b> Forest revenue laws</div>
+          </div>
+        </div>
+
+        <!-- Q29 -->
+        <div class="q-item" data-q="29" data-ans="A">
+          <div class="font-bold text-slate-900 mb-0.5">
+            <span class="inline-block w-4 h-4 bg-slate-800 text-white rounded-full text-center text-[10px] leading-4 mr-1">29</span>
+            In which state did the Kheda Satyagraha take place?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> Gujarat</div>
+            <div class="opt-label"><b>B.</b> Bihar</div>
+            <div class="opt-label"><b>C.</b> Punjab</div>
+            <div class="opt-label"><b>D.</b> Bengal</div>
+          </div>
+        </div>
+
+        <!-- Q30 -->
+        <div class="q-item" data-q="30" data-ans="A">
+          <div class="font-bold text-slate-900 mb-0.5">
+            <span class="inline-block w-4 h-4 bg-slate-800 text-white rounded-full text-center text-[10px] leading-4 mr-1">30</span>
+            The Ahmedabad movement (1918) was primarily related to which group?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> Cotton Mill Workers</div>
+            <div class="opt-label"><b>B.</b> Farmers</div>
+            <div class="opt-label"><b>C.</b> Soldiers</div>
+            <div class="opt-label"><b>D.</b> University Students</div>
+          </div>
+        </div>
+
+        <!-- Q31 -->
+        <div class="q-item" data-q="31" data-ans="A">
+          <div class="font-bold text-slate-900 mb-0.5">
+            <span class="inline-block w-4 h-4 bg-slate-800 text-white rounded-full text-center text-[10px] leading-4 mr-1">31</span>
+            What did Gandhi Ji promote as a substitute for foreign textiles?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> Khadi</div>
+            <div class="opt-label"><b>B.</b> Imported Silk</div>
+            <div class="opt-label"><b>C.</b> Foreign Apparel</div>
+            <div class="opt-label"><b>D.</b> Machine-made imports</div>
+          </div>
+        </div>
+
+        <!-- Q32 -->
+        <div class="q-item" data-q="32" data-ans="A">
+          <div class="font-bold text-slate-900 mb-0.5">
+            <span class="inline-block w-4 h-4 bg-slate-800 text-white rounded-full text-center text-[10px] leading-4 mr-1">32</span>
+            For Gandhi Ji, what was the spinning wheel (Charkha) a symbol of?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> Self-reliance and Swadeshi</div>
+            <div class="opt-label"><b>B.</b> Military strength</div>
+            <div class="opt-label"><b>C.</b> Heavy industrial warfare</div>
+            <div class="opt-label"><b>D.</b> Foreign trade dominance</div>
+          </div>
+        </div>
+
+        <!-- Q33 -->
+        <div class="q-item" data-q="33" data-ans="A">
+          <div class="font-bold text-slate-900 mb-0.5">
+            <span class="inline-block w-4 h-4 bg-slate-800 text-white rounded-full text-center text-[10px] leading-4 mr-1">33</span>
+            Under the Swadeshi movement, which product did Gandhi Ji emphasize the most?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> Khadi</div>
+            <div class="opt-label"><b>B.</b> Foreign clothes</div>
+            <div class="opt-label"><b>C.</b> Imported raw silk</div>
+            <div class="opt-label"><b>D.</b> Foreign machinery</div>
+          </div>
+        </div>
+
+        <!-- Q34 -->
+        <div class="q-item" data-q="34" data-ans="A">
+          <div class="font-bold text-slate-900 mb-0.5">
+            <span class="inline-block w-4 h-4 bg-slate-800 text-white rounded-full text-center text-[10px] leading-4 mr-1">34</span>
+            What was the primary goal of the Non-Cooperation Movement?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> End cooperation with British administration</div>
+            <div class="opt-label"><b>B.</b> Expand the British Empire</div>
+            <div class="opt-label"><b>C.</b> Restore monarchical reign</div>
+            <div class="opt-label"><b>D.</b> Increase foreign exports</div>
+          </div>
+        </div>
+
+        <!-- Q35 -->
+        <div class="q-item" data-q="35" data-ans="A">
+          <div class="font-bold text-slate-900 mb-0.5">
+            <span class="inline-block w-4 h-4 bg-slate-800 text-white rounded-full text-center text-[10px] leading-4 mr-1">35</span>
+            Following which violent incident did Gandhi Ji suspend the Non-Cooperation Movement?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> Chauri Chaura incident</div>
+            <div class="opt-label"><b>B.</b> Dandi March</div>
+            <div class="opt-label"><b>C.</b> Jallianwala Bagh massacre</div>
+            <div class="opt-label"><b>D.</b> Arrival of Simon Commission</div>
+          </div>
+        </div>
+
+        <!-- Q36 -->
+        <div class="q-item" data-q="36" data-ans="A">
+          <div class="font-bold text-slate-900 mb-0.5">
+            <span class="inline-block w-4 h-4 bg-slate-800 text-white rounded-full text-center text-[10px] leading-4 mr-1">36</span>
+            In which year did the Chauri Chaura incident take place?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> 1922</div>
+            <div class="opt-label"><b>B.</b> 1919</div>
+            <div class="opt-label"><b>C.</b> 1930</div>
+            <div class="opt-label"><b>D.</b> 1942</div>
+          </div>
+        </div>
+
+        <!-- Q37 -->
+        <div class="q-item" data-q="37" data-ans="A">
+          <div class="font-bold text-slate-900 mb-0.5">
+            <span class="inline-block w-4 h-4 bg-slate-800 text-white rounded-full text-center text-[10px] leading-4 mr-1">37</span>
+            Which famous historic march did Gandhi Ji undertake against the salt tax?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> Dandi March</div>
+            <div class="opt-label"><b>B.</b> Delhi March</div>
+            <div class="opt-label"><b>C.</b> Champaran March</div>
+            <div class="opt-label"><b>D.</b> Kheda March</div>
+          </div>
+        </div>
+
+        <!-- Q38 -->
+        <div class="q-item" data-q="38" data-ans="A">
+          <div class="font-bold text-slate-900 mb-0.5">
+            <span class="inline-block w-4 h-4 bg-slate-800 text-white rounded-full text-center text-[10px] leading-4 mr-1">38</span>
+            Where did the famous Dandi March commence from?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> Sabarmati Ashram</div>
+            <div class="opt-label"><b>B.</b> Sevagram Ashram</div>
+            <div class="opt-label"><b>C.</b> Wardha</div>
+            <div class="opt-label"><b>D.</b> Porbandar</div>
+          </div>
+        </div>
+
+        <!-- Q39 -->
+        <div class="q-item" data-q="39" data-ans="A">
+          <div class="font-bold text-slate-900 mb-0.5">
+            <span class="inline-block w-4 h-4 bg-slate-800 text-white rounded-full text-center text-[10px] leading-4 mr-1">39</span>
+            What was the coastal destination point of the Dandi March?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> Dandi</div>
+            <div class="opt-label"><b>B.</b> Surat</div>
+            <div class="opt-label"><b>C.</b> Rajkot</div>
+            <div class="opt-label"><b>D.</b> Ahmedabad</div>
+          </div>
+        </div>
+
+        <!-- Q40 -->
+        <div class="q-item" data-q="40" data-ans="A">
+          <div class="font-bold text-slate-900 mb-0.5">
+            <span class="inline-block w-4 h-4 bg-slate-800 text-white rounded-full text-center text-[10px] leading-4 mr-1">40</span>
+            By breaking the British salt law, which nationwide movement was inaugurated?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> Civil Disobedience Movement</div>
+            <div class="opt-label"><b>B.</b> Non-Cooperation Movement</div>
+            <div class="opt-label"><b>C.</b> Quit India Movement</div>
+            <div class="opt-label"><b>D.</b> Swadeshi Movement</div>
+          </div>
+        </div>
+
+        <!-- Q41 -->
+        <div class="q-item" data-q="41" data-ans="A">
+          <div class="font-bold text-slate-900 mb-0.5">
+            <span class="inline-block w-4 h-4 bg-slate-800 text-white rounded-full text-center text-[10px] leading-4 mr-1">41</span>
+            From which ashram did Gandhi Ji march towards Dandi?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> Sabarmati Ashram</div>
+            <div class="opt-label"><b>B.</b> Belur Math</div>
+            <div class="opt-label"><b>C.</b> Anand Bhawan</div>
+            <div class="opt-label"><b>D.</b> Phoenix Settlement</div>
+          </div>
+        </div>
+
+        <!-- Q42 -->
+        <div class="q-item" data-q="42" data-ans="A">
+          <div class="font-bold text-slate-900 mb-0.5">
+            <span class="inline-block w-4 h-4 bg-slate-800 text-white rounded-full text-center text-[10px] leading-4 mr-1">42</span>
+            In which city was Gandhi Ji's Sabarmati Ashram situated?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> Ahmedabad</div>
+            <div class="opt-label"><b>B.</b> Patna</div>
+            <div class="opt-label"><b>C.</b> Delhi</div>
+            <div class="opt-label"><b>D.</b> Pune</div>
+          </div>
+        </div>
+
+        <!-- Q43 -->
+        <div class="q-item" data-q="43" data-ans="A">
+          <div class="font-bold text-slate-900 mb-0.5">
+            <span class="inline-block w-4 h-4 bg-slate-800 text-white rounded-full text-center text-[10px] leading-4 mr-1">43</span>
+            During which movement did Gandhi Ji give the resounding call 'Do or Die'?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> Quit India Movement</div>
+            <div class="opt-label"><b>B.</b> Non-Cooperation Movement</div>
+            <div class="opt-label"><b>C.</b> Champaran Satyagraha</div>
+            <div class="opt-label"><b>D.</b> Salt Satyagraha</div>
+          </div>
+        </div>
+
+        <!-- Q44 -->
+        <div class="q-item" data-q="44" data-ans="A">
+          <div class="font-bold text-slate-900 mb-0.5">
+            <span class="inline-block w-4 h-4 bg-slate-800 text-white rounded-full text-center text-[10px] leading-4 mr-1">44</span>
+            In which city was the Quit India resolution officially adopted by the AICC?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> Bombay (Mumbai)</div>
+            <div class="opt-label"><b>B.</b> Lucknow</div>
+            <div class="opt-label"><b>C.</b> Delhi</div>
+            <div class="opt-label"><b>D.</b> Kolkata</div>
+          </div>
+        </div>
+
+        <!-- Q45 -->
+        <div class="q-item" data-q="45" data-ans="A">
+          <div class="font-bold text-slate-900 mb-0.5">
+            <span class="inline-block w-4 h-4 bg-slate-800 text-white rounded-full text-center text-[10px] leading-4 mr-1">45</span>
+            What was the iconic slogan of the Quit India Movement in 1942?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> Do or Die</div>
+            <div class="opt-label"><b>B.</b> Jai Jawan Jai Kisan</div>
+            <div class="opt-label"><b>C.</b> Inquilab Zindabad</div>
+            <div class="opt-label"><b>D.</b> Give me blood, and I will give you freedom</div>
+          </div>
+        </div>
+
+        <!-- Q46 -->
+        <div class="q-item" data-q="46" data-ans="A">
+          <div class="font-bold text-slate-900 mb-0.5">
+            <span class="inline-block w-4 h-4 bg-slate-800 text-white rounded-full text-center text-[10px] leading-4 mr-1">46</span>
+            With which major organization was Gandhi Ji deeply associated as a chief leader?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> Indian National Congress</div>
+            <div class="opt-label"><b>B.</b> All-India Muslim League</div>
+            <div class="opt-label"><b>C.</b> Arya Samaj</div>
+            <div class="opt-label"><b>D.</b> Hindu Mahasabha</div>
+          </div>
+        </div>
+
+        <!-- Q47 -->
+        <div class="q-item" data-q="47" data-ans="A">
+          <div class="font-bold text-slate-900 mb-0.5">
+            <span class="inline-block w-4 h-4 bg-slate-800 text-white rounded-full text-center text-[10px] leading-4 mr-1">47</span>
+            By which honorific title is Gandhi Ji known, which translates to 'Great Soul'?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> Mahatma</div>
+            <div class="opt-label"><b>B.</b> Lokmanya</div>
+            <div class="opt-label"><b>C.</b> Netaji</div>
+            <div class="opt-label"><b>D.</b> Sardar</div>
+          </div>
+        </div>
+
+        <!-- Q48 -->
+        <div class="q-item" data-q="48" data-ans="A">
+          <div class="font-bold text-slate-900 mb-0.5">
+            <span class="inline-block w-4 h-4 bg-slate-800 text-white rounded-full text-center text-[10px] leading-4 mr-1">48</span>
+            According to Gandhi Ji, what was the relationship between Truth and Non-violence?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> Both were inseparable core pillars of his philosophy</div>
+            <div class="opt-label"><b>B.</b> They were fundamentally opposed to each other</div>
+            <div class="opt-label"><b>C.</b> Non-violence held no place in his thought</div>
+            <div class="opt-label"><b>D.</b> Truth was meant only for politicians</div>
+          </div>
+        </div>
+
+        <!-- Q49 -->
+        <div class="q-item" data-q="49" data-ans="A">
+          <div class="font-bold text-slate-900 mb-0.5">
+            <span class="inline-block w-4 h-4 bg-slate-800 text-white rounded-full text-center text-[10px] leading-4 mr-1">49</span>
+            In which year did Mahatma Gandhi pass away?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> 1948</div>
+            <div class="opt-label"><b>B.</b> 1947</div>
+            <div class="opt-label"><b>C.</b> 1950</div>
+            <div class="opt-label"><b>D.</b> 1942</div>
+          </div>
+        </div>
+
+        <!-- Q50 -->
+        <div class="q-item" data-q="50" data-ans="A">
+          <div class="font-bold text-slate-900 mb-0.5">
+            <span class="inline-block w-4 h-4 bg-slate-800 text-white rounded-full text-center text-[10px] leading-4 mr-1">50</span>
+            On which exact date did Mahatma Gandhi attain martyrdom?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> 30 January 1948</div>
+            <div class="opt-label"><b>B.</b> 26 January 1948</div>
+            <div class="opt-label"><b>C.</b> 15 August 1948</div>
+            <div class="opt-label"><b>D.</b> 2 October 1948</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- FOOTER -->
+      <div class="mt-2.5 pt-1.5 border-t border-slate-300 flex justify-between items-center text-[10px] text-slate-500">
+        <span>Police Modern School, 25th Bn PAC, Raebareli</span>
+        <span>Page 2 of 2</span>
+      </div>
+    </div>
+
+    <!-- SHEET 3: OFFICIAL ANSWER KEY -->
+    <div class="paper-sheet page-break" id="answerKeySheet">
+      <!-- HEADER -->
+      <div class="border-b-2 border-black pb-2 mb-3 text-center">
+        <h2 class="font-heading text-lg font-black text-black">
+          POLICE MODERN SCHOOL, 25TH BN. PAC, RAEBARELI
+        </h2>
+        <h3 class="text-base font-bold text-emerald-800 mt-0.5">
+          Gandhi Jayanti Quiz Competition - Official Answer Key
+        </h3>
+        <p class="text-xs text-slate-600 font-semibold">
+          Date: 02 October | Total Questions: 50 | Marks per question: 1
+        </p>
+      </div>
+
+      <!-- ANSWER KEY 5-COLUMN TABLE -->
+      <div class="overflow-x-auto">
+        <table class="key-table w-full border-collapse">
+          <thead>
+            <tr class="bg-slate-800 text-white">
+              <th class="bg-slate-800 text-white">Q.</th>
+              <th class="bg-slate-800 text-white">Ans</th>
+              <th class="bg-slate-800 text-white">Q.</th>
+              <th class="bg-slate-800 text-white">Ans</th>
+              <th class="bg-slate-800 text-white">Q.</th>
+              <th class="bg-slate-800 text-white">Ans</th>
+              <th class="bg-slate-800 text-white">Q.</th>
+              <th class="bg-slate-800 text-white">Ans</th>
+              <th class="bg-slate-800 text-white">Q.</th>
+              <th class="bg-slate-800 text-white">Ans</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="font-bold">1</td><td>A</td>
+              <td class="font-bold">11</td><td>A</td>
+              <td class="font-bold">21</td><td>A</td>
+              <td class="font-bold">31</td><td>A</td>
+              <td class="font-bold">41</td><td>A</td>
+            </tr>
+            <tr class="bg-slate-50">
+              <td class="font-bold">2</td><td>A</td>
+              <td class="font-bold">12</td><td>A</td>
+              <td class="font-bold">22</td><td>B</td>
+              <td class="font-bold">32</td><td>A</td>
+              <td class="font-bold">42</td><td>A</td>
+            </tr>
+            <tr>
+              <td class="font-bold">3</td><td>A</td>
+              <td class="font-bold">13</td><td>A</td>
+              <td class="font-bold">23</td><td>B</td>
+              <td class="font-bold">33</td><td>A</td>
+              <td class="font-bold">43</td><td>A</td>
+            </tr>
+            <tr class="bg-slate-50">
+              <td class="font-bold">4</td><td>A</td>
+              <td class="font-bold">14</td><td>A</td>
+              <td class="font-bold">24</td><td>A</td>
+              <td class="font-bold">34</td><td>A</td>
+              <td class="font-bold">44</td><td>A</td>
+            </tr>
+            <tr>
+              <td class="font-bold">5</td><td>A</td>
+              <td class="font-bold">15</td><td>A</td>
+              <td class="font-bold">25</td><td>A</td>
+              <td class="font-bold">35</td><td>A</td>
+              <td class="font-bold">45</td><td>A</td>
+            </tr>
+            <tr class="bg-slate-50">
+              <td class="font-bold">6</td><td>A</td>
+              <td class="font-bold">16</td><td>A</td>
+              <td class="font-bold">26</td><td>B</td>
+              <td class="font-bold">36</td><td>A</td>
+              <td class="font-bold">46</td><td>A</td>
+            </tr>
+            <tr>
+              <td class="font-bold">7</td><td>A</td>
+              <td class="font-bold">17</td><td>A</td>
+              <td class="font-bold">27</td><td>A</td>
+              <td class="font-bold">37</td><td>A</td>
+              <td class="font-bold">47</td><td>A</td>
+            </tr>
+            <tr class="bg-slate-50">
+              <td class="font-bold">8</td><td>A</td>
+              <td class="font-bold">18</td><td>A</td>
+              <td class="font-bold">28</td><td>A</td>
+              <td class="font-bold">38</td><td>A</td>
+              <td class="font-bold">48</td><td>A</td>
+            </tr>
+            <tr>
+              <td class="font-bold">9</td><td>A</td>
+              <td class="font-bold">19</td><td>A</td>
+              <td class="font-bold">29</td><td>A</td>
+              <td class="font-bold">39</td><td>A</td>
+              <td class="font-bold">49</td><td>A</td>
+            </tr>
+            <tr class="bg-slate-50">
+              <td class="font-bold">10</td><td>A</td>
+              <td class="font-bold">20</td><td>A</td>
+              <td class="font-bold">30</td><td>A</td>
+              <td class="font-bold">40</td><td>A</td>
+              <td class="font-bold">50</td><td>A</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- KEY HIGHLIGHTS -->
+      <div class="mt-4 pt-3 border-t border-slate-300">
+        <h4 class="font-bold text-xs text-slate-800 mb-2">Key Answer Highlights:</h4>
+        <div class="grid grid-cols-2 gap-x-4 gap-y-1 text-[11px] text-slate-700">
+          <div><b>Q. 22:</b> Mother's name: <b>Putlibai (B)</b></div>
+          <div><b>Q. 23:</b> Wife's name: <b>Kasturba Gandhi (B)</b></div>
+          <div><b>Q. 26:</b> Struggle country before India: <b>South Africa (B)</b></div>
+          <div><b>Q. 16:</b> 2 October UN Day: <b>International Day of Non-Violence (A)</b></div>
+          <div><b>Q. 43:</b> 'Do or Die' call: <b>Quit India Movement (A)</b></div>
+          <div><b>Q. 50:</b> Martyrdom Date: <b>30 January 1948 (A)</b></div>
+        </div>
+      </div>
+
+      <!-- SIGNATURE BLOCK -->
+      <div class="mt-8 pt-4 flex justify-between items-end text-xs font-bold text-slate-800">
+        <div class="text-center">
+          <div class="w-32 border-b border-black mb-1"></div>
+          <div>Competition Incharge</div>
+        </div>
+        <div class="text-center">
+          <div class="w-32 border-b border-black mb-1"></div>
+          <div>Controller of Examination</div>
+        </div>
+        <div class="text-center">
+          <div class="w-36 border-b border-black mb-1"></div>
+          <div>Principal / Headmistress<br><span class="text-[10px] font-normal">Police Modern School, Raebareli</span></div>
+        </div>
+      </div>
+
+      <!-- FOOTER -->
+      <div class="mt-6 pt-2 border-t border-slate-300 flex justify-between items-center text-[11px] text-slate-500">
+        <span>Police Modern School, 25th Bn PAC, Raebareli</span>
+        <span>Answer Key Sheet (Page 3)</span>
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    let answersRevealed = false;
+    let keyTableVisible = true;
+
+    function toggleAnswerKey() {
+      answersRevealed = !answersRevealed;
+      const items = document.querySelectorAll('.q-item');
+      items.forEach(el => {
+        if (answersRevealed) {
+          el.classList.add('correct-revealed');
+        } else {
+          el.classList.remove('correct-revealed');
+        }
+      });
+
+      const btn = document.getElementById('toggleAnsBtn');
+      if (answersRevealed) {
+        btn.classList.replace('text-amber-300', 'text-emerald-300');
+        btn.innerHTML = '<i class="fa-solid fa-eye-slash"></i> <span>Hide Answers (Student Mode)</span>';
+      } else {
+        btn.classList.replace('text-emerald-300', 'text-amber-300');
+        btn.innerHTML = '<i class="fa-solid fa-eye"></i> <span>Show Answers (Teacher Mode)</span>';
+      }
+    }
+
+    function toggleKeyTable() {
+      const sheet = document.getElementById('answerKeySheet');
+      keyTableVisible = !keyTableVisible;
+      if (keyTableVisible) {
+        sheet.style.display = 'block';
+      } else {
+        sheet.style.display = 'none';
+      }
+    }
+  </script>
+  <script src="js/pms_nav_search.js"></script>
+</body>
+
+</html>

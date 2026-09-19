@@ -1,0 +1,1178 @@
+<!DOCTYPE html>
+<html lang="hi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>गांधी जयंती क्विज़ (50 प्रश्न) - पुलिस मॉडर्न स्कूल, 25वीं वाहिनी पीएसी, रायबरेली</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Martel:wght@400;600;700;800;900&family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=Tiro+Devanagari+Hindi:ital@0;1&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+
+    body {
+      font-family: 'Noto Sans Devanagari', 'Inter', sans-serif;
+      background-color: #0f172a;
+      color: #1e293b;
+      margin: 0;
+      padding: 0;
+    }
+
+    .hindi-heading {
+      font-family: 'Martel', 'Noto Sans Devanagari', serif;
+    }
+
+    .hindi-body {
+      font-family: 'Noto Sans Devanagari', 'Tiro Devanagari Hindi', sans-serif;
+    }
+
+    /* Standard A4 Paper Style */
+    .paper-sheet {
+      background: #ffffff;
+      width: 210mm;
+      min-height: 297mm;
+      margin: 20px auto;
+      padding: 14mm 16mm 14mm 16mm;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      position: relative;
+      border-radius: 4px;
+    }
+
+    .quiz-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px 18px;
+    }
+
+    .q-item {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 10px 12px;
+      font-size: 13px;
+      line-height: 1.45;
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+
+    .q-item.correct-revealed .opt-correct {
+      background-color: #ecfdf5;
+      border-color: #10b981;
+      color: #065f46;
+      font-weight: 700;
+    }
+
+    .opt-label {
+      display: block;
+      padding: 3px 6px;
+      margin-top: 3px;
+      border-radius: 4px;
+      border: 1px solid transparent;
+      transition: all 0.15s ease;
+    }
+
+    .opt-label:hover {
+      background-color: #f1f5f9;
+    }
+
+    .key-table th,
+    .key-table td {
+      border: 1px solid #cbd5e1;
+      padding: 4px 6px;
+      text-align: center;
+      font-size: 12px;
+    }
+
+    .key-table th {
+      background-color: #f8fafc;
+      font-weight: 700;
+    }
+
+    /* Print Styles */
+    @media print {
+      body {
+        background-color: #ffffff !important;
+        padding: 0 !important;
+      }
+
+      .no-print {
+        display: none !important;
+      }
+
+      .paper-sheet {
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 8mm 10mm !important;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+      }
+
+      .quiz-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 8px 14px;
+      }
+
+      .q-item {
+        border: 1px solid #94a3b8 !important;
+        padding: 7px 9px !important;
+        font-size: 11.5px !important;
+        line-height: 1.35 !important;
+      }
+
+      .opt-label {
+        padding: 1.5px 3px !important;
+        margin-top: 1.5px !important;
+      }
+
+      .page-break {
+        page-break-before: always;
+        break-before: page;
+      }
+    }
+
+    /* Watermark for official feel */
+    .watermark {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(-30deg);
+      font-size: 55px;
+      font-weight: 900;
+      color: rgba(226, 232, 240, 0.35);
+      pointer-events: none;
+      z-index: 0;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      white-space: nowrap;
+    }
+  </style>
+</head>
+
+<body class="p-0 md:py-6">
+
+  <!-- TOP CONTROL TOOLBAR (No Print) -->
+  <header class="no-print max-w-[210mm] mx-auto mb-4 bg-slate-900 border border-slate-700 text-white rounded-xl p-4 shadow-xl flex flex-wrap items-center justify-between gap-3 sticky top-2 z-50">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-lg bg-emerald-600 flex items-center justify-center font-bold text-white shadow">
+        <i class="fa-solid fa-file-pdf text-lg"></i>
+      </div>
+      <div>
+        <h1 class="font-bold text-base md:text-lg leading-tight">गांधी जयंती विशेष क्विज़ (1-50 प्रश्न)</h1>
+        <p class="text-xs text-slate-300">पुलिस मॉडर्न स्कूल, 25वीं वाहिनी पीएसी, रायबरेली</p>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="flex flex-wrap items-center gap-2">
+      <!-- Mode toggle -->
+      <button onclick="toggleAnswerKey()" id="toggleAnsBtn"
+        class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-600 text-amber-300 text-xs font-semibold rounded-lg flex items-center gap-1.5 transition">
+        <i class="fa-solid fa-eye"></i>
+        <span>उत्तर दिखाएं / छिपाएं</span>
+      </button>
+
+      <!-- Layout toggle -->
+      <button onclick="toggleKeyTable()"
+        class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-600 text-sky-300 text-xs font-semibold rounded-lg flex items-center gap-1.5 transition">
+        <i class="fa-solid fa-table-list"></i>
+        <span>उत्तर कुंजी तालिका</span>
+      </button>
+
+      <!-- Print Button -->
+      <button onclick="window.print()"
+        class="px-4 py-2 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs md:text-sm font-bold rounded-lg shadow-lg flex items-center gap-2 transition transform active:scale-95">
+        <i class="fa-solid fa-print"></i>
+        <span>प्रिंट / PDF सेव करें</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- PRINTABLE DOCUMENT CONTAINER -->
+  <main id="printableArea">
+
+    <!-- SHEET 1: Questions 1 to 26 -->
+    <div class="paper-sheet">
+      
+      <!-- SCHOOL OFFICIAL HEADER -->
+      <div class="border-b-2 border-black pb-2.5 mb-3">
+        <div class="flex items-center justify-between">
+          <!-- Left Logo -->
+          <div class="w-20 h-20 flex-shrink-0 flex items-center justify-center">
+            <img src="pms-logo.png" alt="पुलिस मॉडर्न स्कूल" class="w-full h-full object-contain"
+              onerror="this.src='logo.png'" />
+          </div>
+
+          <!-- School Title Details -->
+          <div class="flex-1 text-center px-2">
+            <h1 class="hindi-heading text-xl md:text-2xl font-black text-black tracking-tight leading-tight">
+              पुलिस मॉडर्न स्कूल
+            </h1>
+            <h2 class="hindi-heading text-sm md:text-base font-bold text-slate-800">
+              25वीं वाहिनी पीएसी, रायबरेली (उ.प्र.)
+            </h2>
+            <div class="mt-1 inline-block bg-neutral-100 text-neutral-900 border border-neutral-400 px-3 py-0.5 rounded-full text-xs font-black uppercase tracking-wider">
+              गांधी जयंती विशेष सामान्य ज्ञान प्रतियोगिता - 2026
+            </div>
+            <p class="text-[11.5px] font-semibold text-neutral-700 mt-0.5">
+              विषय: राष्ट्रपिता महात्मा गांधी - जीवन, दर्शन एवं राष्ट्रीय आंदोलन (कुल 50 प्रश्न)
+            </p>
+          </div>
+
+          <!-- Right Logo -->
+          <div class="w-20 h-20 flex-shrink-0 flex items-center justify-center">
+            <img src="pac_logo.png" alt="पीएसी लोगो" class="w-full h-full object-contain"
+              onerror="this.src='logo1.png'" />
+          </div>
+        </div>
+
+        <!-- CANDIDATE INFO BOX -->
+        <div class="mt-2.5 pt-2 border-t border-slate-300 grid grid-cols-4 gap-2 text-xs font-semibold text-slate-800 bg-slate-50 p-2 rounded border border-slate-200">
+          <div><span class="text-slate-500">विद्यार्थी का नाम:</span> _______________</div>
+          <div><span class="text-slate-500">कक्षा / वर्ग:</span> _______________</div>
+          <div><span class="text-slate-500">अनुक्रमांक (Roll No):</span> _______</div>
+          <div class="text-right"><span class="text-slate-500">पूर्णांक:</span> <b class="text-black font-black">50 अंक</b></div>
+        </div>
+      </div>
+
+      <!-- SECTION INSTRUCTION -->
+      <div class="bg-amber-50 border-l-4 border-amber-500 px-3 py-1 mb-2.5 text-[11.5px] font-medium text-amber-900 flex justify-between items-center">
+        <span><b>निर्देश:</b> प्रत्येक प्रश्न के चार विकल्प दिए गए हैं। सही विकल्प का चयन करें एवं ओएमआर/कोष्ठक में लिखें। प्रत्येक प्रश्न 1 अंक का है।</span>
+        <span class="font-bold text-slate-600 text-[11px]">भाग - 1 (प्रश्न 1 से 26)</span>
+      </div>
+
+      <!-- QUESTIONS GRID (1-26) -->
+      <div class="quiz-grid" id="qGroup1">
+
+        <!-- Q1 -->
+        <div class="q-item" data-q="1" data-ans="A">
+          <div class="font-bold text-slate-900 mb-1">
+            <span class="inline-block w-5 h-5 bg-slate-800 text-white rounded-full text-center text-[11px] leading-5 mr-1">1</span>
+            महात्मा गांधी का जन्म किस दिन हुआ था?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> 2 अक्टूबर 1869</div>
+            <div class="opt-label"><b>B.</b> 15 अगस्त 1870</div>
+            <div class="opt-label"><b>C.</b> 26 जनवरी 1869</div>
+            <div class="opt-label"><b>D.</b> 14 नवंबर 1869</div>
+          </div>
+        </div>
+
+        <!-- Q2 -->
+        <div class="q-item" data-q="2" data-ans="A">
+          <div class="font-bold text-slate-900 mb-1">
+            <span class="inline-block w-5 h-5 bg-slate-800 text-white rounded-full text-center text-[11px] leading-5 mr-1">2</span>
+            महात्मा गांधी का पूरा नाम क्या था?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> मोहनदास करमचंद गांधी</div>
+            <div class="opt-label"><b>B.</b> मोहनलाल करमचंद गांधी</div>
+            <div class="opt-label"><b>C.</b> मोहनदास रामदास गांधी</div>
+            <div class="opt-label"><b>D.</b> करमचंद मोहनदास गांधी</div>
+          </div>
+        </div>
+
+        <!-- Q3 -->
+        <div class="q-item" data-q="3" data-ans="A">
+          <div class="font-bold text-slate-900 mb-1">
+            <span class="inline-block w-5 h-5 bg-slate-800 text-white rounded-full text-center text-[11px] leading-5 mr-1">3</span>
+            महात्मा गांधी का जन्म भारत के किस वर्तमान राज्य में हुआ था?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> गुजरात</div>
+            <div class="opt-label"><b>B.</b> महाराष्ट्र</div>
+            <div class="opt-label"><b>C.</b> राजस्थान</div>
+            <div class="opt-label"><b>D.</b> मध्य प्रदेश</div>
+          </div>
+        </div>
+
+        <!-- Q4 -->
+        <div class="q-item" data-q="4" data-ans="A">
+          <div class="font-bold text-slate-900 mb-1">
+            <span class="inline-block w-5 h-5 bg-slate-800 text-white rounded-full text-center text-[11px] leading-5 mr-1">4</span>
+            महात्मा गांधी का जन्मस्थान कौन-सा है?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> पोरबंदर</div>
+            <div class="opt-label"><b>B.</b> राजकोट</div>
+            <div class="opt-label"><b>C.</b> अहमदाबाद</div>
+            <div class="opt-label"><b>D.</b> सूरत</div>
+          </div>
+        </div>
+
+        <!-- Q5 -->
+        <div class="q-item" data-q="5" data-ans="A">
+          <div class="font-bold text-slate-900 mb-1">
+            <span class="inline-block w-5 h-5 bg-slate-800 text-white rounded-full text-center text-[11px] leading-5 mr-1">5</span>
+            गांधी जी को भारत में सामान्यतः किस नाम से सम्मानपूर्वक संबोधित किया जाता है?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> महात्मा गांधी</div>
+            <div class="opt-label"><b>B.</b> लोकमान्य गांधी</div>
+            <div class="opt-label"><b>C.</b> नेताजी गांधी</div>
+            <div class="opt-label"><b>D.</b> सरदार गांधी</div>
+          </div>
+        </div>
+
+        <!-- Q6 -->
+        <div class="q-item" data-q="6" data-ans="A">
+          <div class="font-bold text-slate-900 mb-1">
+            <span class="inline-block w-5 h-5 bg-slate-800 text-white rounded-full text-center text-[11px] leading-5 mr-1">6</span>
+            गांधी जी ने कानून की पढ़ाई किस देश में की थी?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> इंग्लैंड</div>
+            <div class="opt-label"><b>B.</b> दक्षिण अफ्रीका</div>
+            <div class="opt-label"><b>C.</b> अमेरिका</div>
+            <div class="opt-label"><b>D.</b> फ्रांस</div>
+          </div>
+        </div>
+
+        <!-- Q7 -->
+        <div class="q-item" data-q="7" data-ans="A">
+          <div class="font-bold text-slate-900 mb-1">
+            <span class="inline-block w-5 h-5 bg-slate-800 text-white rounded-full text-center text-[11px] leading-5 mr-1">7</span>
+            गांधी जी ने दक्षिण अफ्रीका में किस प्रमुख सिद्धांत का प्रयोग किया?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> सत्याग्रह</div>
+            <div class="opt-label"><b>B.</b> सशस्त्र संघर्ष</div>
+            <div class="opt-label"><b>C.</b> राजतंत्र</div>
+            <div class="opt-label"><b>D.</b> सैन्य शासन</div>
+          </div>
+        </div>
+
+        <!-- Q8 -->
+        <div class="q-item" data-q="8" data-ans="A">
+          <div class="font-bold text-slate-900 mb-1">
+            <span class="inline-block w-5 h-5 bg-slate-800 text-white rounded-full text-center text-[11px] leading-5 mr-1">8</span>
+            गांधी जी के राजनीतिक और सामाजिक आंदोलनों में कौन-सा सिद्धांत केंद्रीय था?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> अहिंसा</div>
+            <div class="opt-label"><b>B.</b> हिंसक प्रतिरोध</div>
+            <div class="opt-label"><b>C.</b> सैन्य विस्तार</div>
+            <div class="opt-label"><b>D.</b> औपनिवेशिक शासन</div>
+          </div>
+        </div>
+
+        <!-- Q9 -->
+        <div class="q-item" data-q="9" data-ans="A">
+          <div class="font-bold text-slate-900 mb-1">
+            <span class="inline-block w-5 h-5 bg-slate-800 text-white rounded-full text-center text-[11px] leading-5 mr-1">9</span>
+            चंपारण सत्याग्रह किस राज्य में हुआ था?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> बिहार</div>
+            <div class="opt-label"><b>B.</b> गुजरात</div>
+            <div class="opt-label"><b>C.</b> महाराष्ट्र</div>
+            <div class="opt-label"><b>D.</b> बंगाल</div>
+          </div>
+        </div>
+
+        <!-- Q10 -->
+        <div class="q-item" data-q="10" data-ans="A">
+          <div class="font-bold text-slate-900 mb-1">
+            <span class="inline-block w-5 h-5 bg-slate-800 text-white rounded-full text-center text-[11px] leading-5 mr-1">10</span>
+            दांडी मार्च किस आंदोलन से संबंधित था?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> नमक सत्याग्रह</div>
+            <div class="opt-label"><b>B.</b> चंपारण सत्याग्रह</div>
+            <div class="opt-label"><b>C.</b> खेड़ा सत्याग्रह</div>
+            <div class="opt-label"><b>D.</b> भारत छोड़ो आंदोलन</div>
+          </div>
+        </div>
+
+        <!-- Q11 -->
+        <div class="q-item" data-q="11" data-ans="A">
+          <div class="font-bold text-slate-900 mb-1">
+            <span class="inline-block w-5 h-5 bg-slate-800 text-white rounded-full text-center text-[11px] leading-5 mr-1">11</span>
+            दांडी मार्च किस वर्ष शुरू हुआ था?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> 1930</div>
+            <div class="opt-label"><b>B.</b> 1920</div>
+            <div class="opt-label"><b>C.</b> 1942</div>
+            <div class="opt-label"><b>D.</b> 1919</div>
+          </div>
+        </div>
+
+        <!-- Q12 -->
+        <div class="q-item" data-q="12" data-ans="A">
+          <div class="font-bold text-slate-900 mb-1">
+            <span class="inline-block w-5 h-5 bg-slate-800 text-white rounded-full text-center text-[11px] leading-5 mr-1">12</span>
+            भारत छोड़ो आंदोलन किस वर्ष शुरू हुआ था?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> 1942</div>
+            <div class="opt-label"><b>B.</b> 1930</div>
+            <div class="opt-label"><b>C.</b> 1922</div>
+            <div class="opt-label"><b>D.</b> 1915</div>
+          </div>
+        </div>
+
+        <!-- Q13 -->
+        <div class="q-item" data-q="13" data-ans="A">
+          <div class="font-bold text-slate-900 mb-1">
+            <span class="inline-block w-5 h-5 bg-slate-800 text-white rounded-full text-center text-[11px] leading-5 mr-1">13</span>
+            गांधी जी भारत वापस किस वर्ष लौटे थे?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> 1915</div>
+            <div class="opt-label"><b>B.</b> 1905</div>
+            <div class="opt-label"><b>C.</b> 1920</div>
+            <div class="opt-label"><b>D.</b> 1930</div>
+          </div>
+        </div>
+
+        <!-- Q14 -->
+        <div class="q-item" data-q="14" data-ans="A">
+          <div class="font-bold text-slate-900 mb-1">
+            <span class="inline-block w-5 h-5 bg-slate-800 text-white rounded-full text-center text-[11px] leading-5 mr-1">14</span>
+            असहयोग आंदोलन किस वर्ष शुरू हुआ था?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> 1920</div>
+            <div class="opt-label"><b>B.</b> 1930</div>
+            <div class="opt-label"><b>C.</b> 1942</div>
+            <div class="opt-label"><b>D.</b> 1915</div>
+          </div>
+        </div>
+
+        <!-- Q15 -->
+        <div class="q-item" data-q="15" data-ans="A">
+          <div class="font-bold text-slate-900 mb-1">
+            <span class="inline-block w-5 h-5 bg-slate-800 text-white rounded-full text-center text-[11px] leading-5 mr-1">15</span>
+            गांधी जयंती भारत में हर वर्ष किस तारीख को मनाई जाती है?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> 2 अक्टूबर</div>
+            <div class="opt-label"><b>B.</b> 15 अगस्त</div>
+            <div class="opt-label"><b>C.</b> 26 जनवरी</div>
+            <div class="opt-label"><b>D.</b> 14 नवंबर</div>
+          </div>
+        </div>
+
+        <!-- Q16 -->
+        <div class="q-item" data-q="16" data-ans="A">
+          <div class="font-bold text-slate-900 mb-1">
+            <span class="inline-block w-5 h-5 bg-slate-800 text-white rounded-full text-center text-[11px] leading-5 mr-1">16</span>
+            2 अक्टूबर को गांधी जयंती के साथ अंतरराष्ट्रीय स्तर पर कौन-सा दिवस मनाया जाता है?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> अंतरराष्ट्रीय अहिंसा दिवस</div>
+            <div class="opt-label"><b>B.</b> विश्व पर्यावरण दिवस</div>
+            <div class="opt-label"><b>C.</b> मानवाधिकार दिवस</div>
+            <div class="opt-label"><b>D.</b> अंतरराष्ट्रीय साक्षरता दिवस</div>
+          </div>
+        </div>
+
+        <!-- Q17 -->
+        <div class="q-item" data-q="17" data-ans="A">
+          <div class="font-bold text-slate-900 mb-1">
+            <span class="inline-block w-5 h-5 bg-slate-800 text-white rounded-full text-center text-[11px] leading-5 mr-1">17</span>
+            गांधी जी की आत्मकथा का प्रसिद्ध नाम क्या है?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> सत्य के प्रयोग अथवा आत्मकथा</div>
+            <div class="opt-label"><b>B.</b> भारत की खोज</div>
+            <div class="opt-label"><b>C.</b> हिंद स्वराज्य</div>
+            <div class="opt-label"><b>D.</b> डिस्कवरी ऑफ इंडिया</div>
+          </div>
+        </div>
+
+        <!-- Q18 -->
+        <div class="q-item" data-q="18" data-ans="A">
+          <div class="font-bold text-slate-900 mb-1">
+            <span class="inline-block w-5 h-5 bg-slate-800 text-white rounded-full text-center text-[11px] leading-5 mr-1">18</span>
+            गांधी जी द्वारा लिखित 'हिंद स्वराज' मुख्य रूप से किससे संबंधित विचार प्रस्तुत करता है?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> सभ्यता, स्वराज और आधुनिकता पर विचार</div>
+            <div class="opt-label"><b>B.</b> केवल गणित की शिक्षा</div>
+            <div class="opt-label"><b>C.</b> केवल सैन्य रणनीति</div>
+            <div class="opt-label"><b>D.</b> केवल मौसम विज्ञान</div>
+          </div>
+        </div>
+
+        <!-- Q19 -->
+        <div class="q-item" data-q="19" data-ans="A">
+          <div class="font-bold text-slate-900 mb-1">
+            <span class="inline-block w-5 h-5 bg-slate-800 text-white rounded-full text-center text-[11px] leading-5 mr-1">19</span>
+            गांधी जी के आंदोलन में 'सत्याग्रह' का मूल भाव किससे जुड़ा था?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> सत्य के लिए दृढ़ आग्रह</div>
+            <div class="opt-label"><b>B.</b> हथियारों का प्रयोग</div>
+            <div class="opt-label"><b>C.</b> सत्ता का सैन्य विस्तार</div>
+            <div class="opt-label"><b>D.</b> व्यापारिक प्रतिस्पर्धा</div>
+          </div>
+        </div>
+
+        <!-- Q20 -->
+        <div class="q-item" data-q="20" data-ans="A">
+          <div class="font-bold text-slate-900 mb-1">
+            <span class="inline-block w-5 h-5 bg-slate-800 text-white rounded-full text-center text-[11px] leading-5 mr-1">20</span>
+            गांधी जी का स्वतंत्रता आंदोलन में संघर्ष करने का प्रमुख तरीका क्या था?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> अहिंसक जन आंदोलन</div>
+            <div class="opt-label"><b>B.</b> सशस्त्र सैन्य अभियान</div>
+            <div class="opt-label"><b>C.</b> विदेशी शासन का समर्थन</div>
+            <div class="opt-label"><b>D.</b> राजतंत्र की स्थापना</div>
+          </div>
+        </div>
+
+        <!-- Q21 -->
+        <div class="q-item" data-q="21" data-ans="A">
+          <div class="font-bold text-slate-900 mb-1">
+            <span class="inline-block w-5 h-5 bg-slate-800 text-white rounded-full text-center text-[11px] leading-5 mr-1">21</span>
+            महात्मा गांधी के पिता का नाम क्या था?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> करमचंद गांधी</div>
+            <div class="opt-label"><b>B.</b> मोतीलाल गांधी</div>
+            <div class="opt-label"><b>C.</b> हरिलाल गांधी</div>
+            <div class="opt-label"><b>D.</b> देवदास गांधी</div>
+          </div>
+        </div>
+
+        <!-- Q22 -->
+        <div class="q-item" data-q="22" data-ans="B">
+          <div class="font-bold text-slate-900 mb-1">
+            <span class="inline-block w-5 h-5 bg-slate-800 text-white rounded-full text-center text-[11px] leading-5 mr-1">22</span>
+            गांधी जी की माता का नाम क्या था?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label"><b>A.</b> कस्तूरबा गांधी</div>
+            <div class="opt-label opt-correct"><b>B.</b> पुतलीबाई</div>
+            <div class="opt-label"><b>C.</b> लक्ष्मीबाई</div>
+            <div class="opt-label"><b>D.</b> आनंदीबाई</div>
+          </div>
+        </div>
+
+        <!-- Q23 -->
+        <div class="q-item" data-q="23" data-ans="B">
+          <div class="font-bold text-slate-900 mb-1">
+            <span class="inline-block w-5 h-5 bg-slate-800 text-white rounded-full text-center text-[11px] leading-5 mr-1">23</span>
+            गांधी जी की पत्नी का नाम क्या था?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label"><b>A.</b> सरोजिनी देवी</div>
+            <div class="opt-label opt-correct"><b>B.</b> कस्तूरबा गांधी</div>
+            <div class="opt-label"><b>C.</b> कमला देवी</div>
+            <div class="opt-label"><b>D.</b> विजयलक्ष्मी पंडित</div>
+          </div>
+        </div>
+
+        <!-- Q24 -->
+        <div class="q-item" data-q="24" data-ans="A">
+          <div class="font-bold text-slate-900 mb-1">
+            <span class="inline-block w-5 h-5 bg-slate-800 text-white rounded-full text-center text-[11px] leading-5 mr-1">24</span>
+            गांधी जी ने दक्षिण अफ्रीका में किस प्रकार के भेदभाव का सामना किया था?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> नस्लीय भेदभाव</div>
+            <div class="opt-label"><b>B.</b> भाषाई भेदभाव</div>
+            <div class="opt-label"><b>C.</b> धार्मिक शिक्षा का विरोध</div>
+            <div class="opt-label"><b>D.</b> आर्थिक मंदी</div>
+          </div>
+        </div>
+
+        <!-- Q25 -->
+        <div class="q-item" data-q="25" data-ans="A">
+          <div class="font-bold text-slate-900 mb-1">
+            <span class="inline-block w-5 h-5 bg-slate-800 text-white rounded-full text-center text-[11px] leading-5 mr-1">25</span>
+            दक्षिण अफ्रीका में गांधी जी के साथ रेल यात्रा के दौरान प्रसिद्ध घटना किससे संबंधित थी?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> उन्हें प्रथम श्रेणी के डिब्बे से बाहर निकाल दिया गया था</div>
+            <div class="opt-label"><b>B.</b> उन्होंने रेल सेवा शुरू की थी</div>
+            <div class="opt-label"><b>C.</b> उन्होंने रेलवे स्टेशन बनाया था</div>
+            <div class="opt-label"><b>D.</b> उन्होंने रेल कर्मचारियों की हड़ताल कराई थी</div>
+          </div>
+        </div>
+
+        <!-- Q26 -->
+        <div class="q-item" data-q="26" data-ans="B">
+          <div class="font-bold text-slate-900 mb-1">
+            <span class="inline-block w-5 h-5 bg-slate-800 text-white rounded-full text-center text-[11px] leading-5 mr-1">26</span>
+            गांधी जी भारत लौटने से पहले मुख्य रूप से किस देश में रहे और संघर्ष किया?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label"><b>A.</b> इंग्लैंड</div>
+            <div class="opt-label opt-correct"><b>B.</b> दक्षिण अफ्रीका</div>
+            <div class="opt-label"><b>C.</b> श्रीलंका</div>
+            <div class="opt-label"><b>D.</b> जापान</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- FOOTER -->
+      <div class="mt-3 pt-2 border-t border-slate-300 flex justify-between items-center text-[11px] text-slate-500">
+        <span>पुलिस मॉडर्न स्कूल, 25वीं वाहिनी पीएसी, रायबरेली</span>
+        <span>पृष्ठ: 1 / 2</span>
+      </div>
+    </div>
+
+    <!-- SHEET 2: Questions 27 to 50 + Answer Key -->
+    <div class="paper-sheet page-break">
+
+      <!-- MINI HEADER FOR PAGE 2 -->
+      <div class="border-b border-slate-400 pb-1.5 mb-2.5 flex justify-between items-center text-xs font-bold text-slate-800">
+        <div class="flex items-center gap-2">
+          <img src="pms-logo.png" class="w-6 h-6 object-contain" onerror="this.src='logo.png'" />
+          <span>पुलिस मॉडर्न स्कूल, रायबरेली - गांधी जयंती क्विज़</span>
+        </div>
+        <div class="bg-amber-100 text-amber-900 px-2 py-0.5 rounded text-[11px]">भाग - 2 (प्रश्न 27 से 50)</div>
+      </div>
+
+      <!-- QUESTIONS GRID (27-50) -->
+      <div class="quiz-grid" id="qGroup2">
+
+        <!-- Q27 -->
+        <div class="q-item" data-q="27" data-ans="A">
+          <div class="font-bold text-slate-900 mb-1">
+            <span class="inline-block w-5 h-5 bg-slate-800 text-white rounded-full text-center text-[11px] leading-5 mr-1">27</span>
+            गांधी जी ने भारत में अपना पहला प्रमुख सत्याग्रह किस स्थान से शुरू किया?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> चंपारण</div>
+            <div class="opt-label"><b>B.</b> दिल्ली</div>
+            <div class="opt-label"><b>C.</b> मुंबई</div>
+            <div class="opt-label"><b>D.</b> अमृतसर</div>
+          </div>
+        </div>
+
+        <!-- Q28 -->
+        <div class="q-item" data-q="28" data-ans="A">
+          <div class="font-bold text-slate-900 mb-1">
+            <span class="inline-block w-5 h-5 bg-slate-800 text-white rounded-full text-center text-[11px] leading-5 mr-1">28</span>
+            चंपारण सत्याग्रह मुख्य रूप से किस समस्या से जुड़ा था?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> नील की खेती</div>
+            <div class="opt-label"><b>B.</b> नमक कर</div>
+            <div class="opt-label"><b>C.</b> कपड़ा मिल मजदूर</div>
+            <div class="opt-label"><b>D.</b> वन कानून</div>
+          </div>
+        </div>
+
+        <!-- Q29 -->
+        <div class="q-item" data-q="29" data-ans="A">
+          <div class="font-bold text-slate-900 mb-1">
+            <span class="inline-block w-5 h-5 bg-slate-800 text-white rounded-full text-center text-[11px] leading-5 mr-1">29</span>
+            खेड़ा सत्याग्रह किस राज्य में हुआ था?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> गुजरात</div>
+            <div class="opt-label"><b>B.</b> बिहार</div>
+            <div class="opt-label"><b>C.</b> पंजाब</div>
+            <div class="opt-label"><b>D.</b> बंगाल</div>
+          </div>
+        </div>
+
+        <!-- Q30 -->
+        <div class="q-item" data-q="30" data-ans="A">
+          <div class="font-bold text-slate-900 mb-1">
+            <span class="inline-block w-5 h-5 bg-slate-800 text-white rounded-full text-center text-[11px] leading-5 mr-1">30</span>
+            अहमदाबाद आंदोलन मुख्य रूप से किन लोगों से संबंधित था?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> मिल मजदूरों</div>
+            <div class="opt-label"><b>B.</b> किसानों</div>
+            <div class="opt-label"><b>C.</b> सैनिकों</div>
+            <div class="opt-label"><b>D.</b> विद्यार्थियों</div>
+          </div>
+        </div>
+
+        <!-- Q31 -->
+        <div class="q-item" data-q="31" data-ans="A">
+          <div class="font-bold text-slate-900 mb-1">
+            <span class="inline-block w-5 h-5 bg-slate-800 text-white rounded-full text-center text-[11px] leading-5 mr-1">31</span>
+            गांधी जी ने विदेशी वस्त्रों के स्थान पर किसे प्रोत्साहित किया?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> खादी</div>
+            <div class="opt-label"><b>B.</b> रेशम का आयात</div>
+            <div class="opt-label"><b>C.</b> विदेशी कपड़े</div>
+            <div class="opt-label"><b>D.</b> मशीन निर्मित विदेशी वस्त्र</div>
+          </div>
+        </div>
+
+        <!-- Q32 -->
+        <div class="q-item" data-q="32" data-ans="A">
+          <div class="font-bold text-slate-900 mb-1">
+            <span class="inline-block w-5 h-5 bg-slate-800 text-white rounded-full text-center text-[11px] leading-5 mr-1">32</span>
+            चरखा गांधी जी के लिए किसका प्रतीक था?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> स्वावलंबन और स्वदेशी</div>
+            <div class="opt-label"><b>B.</b> सैन्य शक्ति</div>
+            <div class="opt-label"><b>C.</b> औद्योगिक युद्ध</div>
+            <div class="opt-label"><b>D.</b> विदेशी व्यापार</div>
+          </div>
+        </div>
+
+        <!-- Q33 -->
+        <div class="q-item" data-q="33" data-ans="A">
+          <div class="font-bold text-slate-900 mb-1">
+            <span class="inline-block w-5 h-5 bg-slate-800 text-white rounded-full text-center text-[11px] leading-5 mr-1">33</span>
+            गांधी जी ने स्वदेशी आंदोलन के अंतर्गत किस वस्तु के उपयोग पर विशेष जोर दिया?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> खादी</div>
+            <div class="opt-label"><b>B.</b> विदेशी कपड़े</div>
+            <div class="opt-label"><b>C.</b> आयातित रेशम</div>
+            <div class="opt-label"><b>D.</b> विदेशी मशीनें</div>
+          </div>
+        </div>
+
+        <!-- Q34 -->
+        <div class="q-item" data-q="34" data-ans="A">
+          <div class="font-bold text-slate-900 mb-1">
+            <span class="inline-block w-5 h-5 bg-slate-800 text-white rounded-full text-center text-[11px] leading-5 mr-1">34</span>
+            गांधी जी के नेतृत्व में असहयोग आंदोलन का प्रमुख उद्देश्य क्या था?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> ब्रिटिश शासन के साथ सहयोग समाप्त करना</div>
+            <div class="opt-label"><b>B.</b> ब्रिटिश शासन का विस्तार करना</div>
+            <div class="opt-label"><b>C.</b> भारत में राजतंत्र स्थापित करना</div>
+            <div class="opt-label"><b>D.</b> विदेशी व्यापार बढ़ाना</div>
+          </div>
+        </div>
+
+        <!-- Q35 -->
+        <div class="q-item" data-q="35" data-ans="A">
+          <div class="font-bold text-slate-900 mb-1">
+            <span class="inline-block w-5 h-5 bg-slate-800 text-white rounded-full text-center text-[11px] leading-5 mr-1">35</span>
+            गांधी जी ने असहयोग आंदोलन वापस लेने का निर्णय किस घटना के बाद लिया?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> चौरी चौरा कांड</div>
+            <div class="opt-label"><b>B.</b> दांडी मार्च</div>
+            <div class="opt-label"><b>C.</b> जलियांवाला बाग कांड</div>
+            <div class="opt-label"><b>D.</b> साइमन कमीशन</div>
+          </div>
+        </div>
+
+        <!-- Q36 -->
+        <div class="q-item" data-q="36" data-ans="A">
+          <div class="font-bold text-slate-900 mb-1">
+            <span class="inline-block w-5 h-5 bg-slate-800 text-white rounded-full text-center text-[11px] leading-5 mr-1">36</span>
+            चौरी चौरा घटना किस वर्ष हुई थी?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> 1922</div>
+            <div class="opt-label"><b>B.</b> 1919</div>
+            <div class="opt-label"><b>C.</b> 1930</div>
+            <div class="opt-label"><b>D.</b> 1942</div>
+          </div>
+        </div>
+
+        <!-- Q37 -->
+        <div class="q-item" data-q="37" data-ans="A">
+          <div class="font-bold text-slate-900 mb-1">
+            <span class="inline-block w-5 h-5 bg-slate-800 text-white rounded-full text-center text-[11px] leading-5 mr-1">37</span>
+            गांधी जी ने नमक कानून के विरोध में कौन-सा प्रसिद्ध मार्च किया?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> दांडी मार्च</div>
+            <div class="opt-label"><b>B.</b> दिल्ली मार्च</div>
+            <div class="opt-label"><b>C.</b> चंपारण मार्च</div>
+            <div class="opt-label"><b>D.</b> खेड़ा मार्च</div>
+          </div>
+        </div>
+
+        <!-- Q38 -->
+        <div class="q-item" data-q="38" data-ans="A">
+          <div class="font-bold text-slate-900 mb-1">
+            <span class="inline-block w-5 h-5 bg-slate-800 text-white rounded-full text-center text-[11px] leading-5 mr-1">38</span>
+            दांडी मार्च का आरंभ कहाँ से हुआ था?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> साबरमती आश्रम</div>
+            <div class="opt-label"><b>B.</b> सेवाग्राम आश्रम</div>
+            <div class="opt-label"><b>C.</b> वर्धा</div>
+            <div class="opt-label"><b>D.</b> पोरबंदर</div>
+          </div>
+        </div>
+
+        <!-- Q39 -->
+        <div class="q-item" data-q="39" data-ans="A">
+          <div class="font-bold text-slate-900 mb-1">
+            <span class="inline-block w-5 h-5 bg-slate-800 text-white rounded-full text-center text-[11px] leading-5 mr-1">39</span>
+            दांडी मार्च का गंतव्य कौन-सा स्थान था?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> दांडी</div>
+            <div class="opt-label"><b>B.</b> सूरत</div>
+            <div class="opt-label"><b>C.</b> राजकोट</div>
+            <div class="opt-label"><b>D.</b> अहमदाबाद</div>
+          </div>
+        </div>
+
+        <!-- Q40 -->
+        <div class="q-item" data-q="40" data-ans="A">
+          <div class="font-bold text-slate-900 mb-1">
+            <span class="inline-block w-5 h-5 bg-slate-800 text-white rounded-full text-center text-[11px] leading-5 mr-1">40</span>
+            गांधी जी ने नमक कानून तोड़कर किस आंदोलन को मजबूत किया?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> सविनय अवज्ञा आंदोलन</div>
+            <div class="opt-label"><b>B.</b> असहयोग आंदोलन</div>
+            <div class="opt-label"><b>C.</b> भारत छोड़ो आंदोलन</div>
+            <div class="opt-label"><b>D.</b> स्वदेशी आंदोलन</div>
+          </div>
+        </div>
+
+        <!-- Q41 -->
+        <div class="q-item" data-q="41" data-ans="A">
+          <div class="font-bold text-slate-900 mb-1">
+            <span class="inline-block w-5 h-5 bg-slate-800 text-white rounded-full text-center text-[11px] leading-5 mr-1">41</span>
+            गांधी जी किस आश्रम से दांडी मार्च के लिए निकले थे?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> साबरमती आश्रम</div>
+            <div class="opt-label"><b>B.</b> बेलूर मठ</div>
+            <div class="opt-label"><b>C.</b> आनंद भवन</div>
+            <div class="opt-label"><b>D.</b> फीनिक्स आश्रम</div>
+          </div>
+        </div>
+
+        <!-- Q42 -->
+        <div class="q-item" data-q="42" data-ans="A">
+          <div class="font-bold text-slate-900 mb-1">
+            <span class="inline-block w-5 h-5 bg-slate-800 text-white rounded-full text-center text-[11px] leading-5 mr-1">42</span>
+            गांधी जी का साबरमती आश्रम किस शहर में स्थित था?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> अहमदाबाद</div>
+            <div class="opt-label"><b>B.</b> पटना</div>
+            <div class="opt-label"><b>C.</b> दिल्ली</div>
+            <div class="opt-label"><b>D.</b> पुणे</div>
+          </div>
+        </div>
+
+        <!-- Q43 -->
+        <div class="q-item" data-q="43" data-ans="A">
+          <div class="font-bold text-slate-900 mb-1">
+            <span class="inline-block w-5 h-5 bg-slate-800 text-white rounded-full text-center text-[11px] leading-5 mr-1">43</span>
+            गांधी जी ने 'करो या मरो' का प्रसिद्ध आह्वान किस आंदोलन के दौरान किया?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> भारत छोड़ो आंदोलन</div>
+            <div class="opt-label"><b>B.</b> असहयोग आंदोलन</div>
+            <div class="opt-label"><b>C.</b> चंपारण सत्याग्रह</div>
+            <div class="opt-label"><b>D.</b> नमक सत्याग्रह</div>
+          </div>
+        </div>
+
+        <!-- Q44 -->
+        <div class="q-item" data-q="44" data-ans="A">
+          <div class="font-bold text-slate-900 mb-1">
+            <span class="inline-block w-5 h-5 bg-slate-800 text-white rounded-full text-center text-[11px] leading-5 mr-1">44</span>
+            भारत छोड़ो आंदोलन का प्रस्ताव किस शहर में अखिल भारतीय कांग्रेस समिति द्वारा स्वीकार किया गया था?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> मुंबई</div>
+            <div class="opt-label"><b>B.</b> लखनऊ</div>
+            <div class="opt-label"><b>C.</b> दिल्ली</div>
+            <div class="opt-label"><b>D.</b> कोलकाता</div>
+          </div>
+        </div>
+
+        <!-- Q45 -->
+        <div class="q-item" data-q="45" data-ans="A">
+          <div class="font-bold text-slate-900 mb-1">
+            <span class="inline-block w-5 h-5 bg-slate-800 text-white rounded-full text-center text-[11px] leading-5 mr-1">45</span>
+            भारत छोड़ो आंदोलन का प्रमुख नारा क्या था?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> करो या मरो</div>
+            <div class="opt-label"><b>B.</b> जय जवान जय किसान</div>
+            <div class="opt-label"><b>C.</b> इंकलाब जिंदाबाद</div>
+            <div class="opt-label"><b>D.</b> तुम मुझे खून दो</div>
+          </div>
+        </div>
+
+        <!-- Q46 -->
+        <div class="q-item" data-q="46" data-ans="A">
+          <div class="font-bold text-slate-900 mb-1">
+            <span class="inline-block w-5 h-5 bg-slate-800 text-white rounded-full text-center text-[11px] leading-5 mr-1">46</span>
+            गांधी जी किस संस्था से लंबे समय तक जुड़े रहे और उसके प्रमुख नेताओं में रहे?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> भारतीय राष्ट्रीय कांग्रेस</div>
+            <div class="opt-label"><b>B.</b> मुस्लिम लीग</div>
+            <div class="opt-label"><b>C.</b> आर्य समाज</div>
+            <div class="opt-label"><b>D.</b> हिंदू महासभा</div>
+          </div>
+        </div>
+
+        <!-- Q47 -->
+        <div class="q-item" data-q="47" data-ans="A">
+          <div class="font-bold text-slate-900 mb-1">
+            <span class="inline-block w-5 h-5 bg-slate-800 text-white rounded-full text-center text-[11px] leading-5 mr-1">47</span>
+            गांधी जी को किस उपाधि से भी जाना जाता है जिसका अर्थ 'महान आत्मा' है?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> महात्मा</div>
+            <div class="opt-label"><b>B.</b> लोकमान्य</div>
+            <div class="opt-label"><b>C.</b> नेताजी</div>
+            <div class="opt-label"><b>D.</b> सरदार</div>
+          </div>
+        </div>
+
+        <!-- Q48 -->
+        <div class="q-item" data-q="48" data-ans="A">
+          <div class="font-bold text-slate-900 mb-1">
+            <span class="inline-block w-5 h-5 bg-slate-800 text-white rounded-full text-center text-[11px] leading-5 mr-1">48</span>
+            गांधी जी के अनुसार सत्य और अहिंसा का संबंध किस प्रकार का था?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> दोनों उनके विचारों के महत्वपूर्ण आधार थे</div>
+            <div class="opt-label"><b>B.</b> दोनों एक-दूसरे के विरोधी थे</div>
+            <div class="opt-label"><b>C.</b> अहिंसा का उनके विचारों में कोई स्थान नहीं था</div>
+            <div class="opt-label"><b>D.</b> सत्य केवल राजनीतिक नेताओं के लिए था</div>
+          </div>
+        </div>
+
+        <!-- Q49 -->
+        <div class="q-item" data-q="49" data-ans="A">
+          <div class="font-bold text-slate-900 mb-1">
+            <span class="inline-block w-5 h-5 bg-slate-800 text-white rounded-full text-center text-[11px] leading-5 mr-1">49</span>
+            गांधी जी का निधन किस वर्ष हुआ था?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> 1948</div>
+            <div class="opt-label"><b>B.</b> 1947</div>
+            <div class="opt-label"><b>C.</b> 1950</div>
+            <div class="opt-label"><b>D.</b> 1942</div>
+          </div>
+        </div>
+
+        <!-- Q50 -->
+        <div class="q-item" data-q="50" data-ans="A">
+          <div class="font-bold text-slate-900 mb-1">
+            <span class="inline-block w-5 h-5 bg-slate-800 text-white rounded-full text-center text-[11px] leading-5 mr-1">50</span>
+            गांधी जी की मृत्यु किस तारीख को हुई थी?
+          </div>
+          <div class="pl-2 space-y-0.5 text-slate-800">
+            <div class="opt-label opt-correct"><b>A.</b> 30 जनवरी 1948</div>
+            <div class="opt-label"><b>B.</b> 26 जनवरी 1948</div>
+            <div class="opt-label"><b>C.</b> 15 अगस्त 1948</div>
+            <div class="opt-label"><b>D.</b> 2 अक्टूबर 1948</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- FOOTER -->
+      <div class="mt-3 pt-2 border-t border-slate-300 flex justify-between items-center text-[11px] text-slate-500">
+        <span>पुलिस मॉडर्न स्कूल, 25वीं वाहिनी पीएसी, रायबरेली</span>
+        <span>पृष्ठ: 2 / 2</span>
+      </div>
+    </div>
+
+    <!-- SHEET 3: OFFICIAL ANSWER KEY (उत्तर कुंजी) -->
+    <div class="paper-sheet page-break" id="answerKeySheet">
+      <!-- HEADER -->
+      <div class="border-b-2 border-black pb-2 mb-3 text-center">
+        <h2 class="hindi-heading text-lg font-black text-black">
+          पुलिस मॉडर्न स्कूल, 25वीं वाहिनी पीएसी, रायबरेली
+        </h2>
+        <h3 class="hindi-heading text-base font-bold text-emerald-800 mt-0.5">
+          गांधी जयंती क्विज़ प्रतियोगिता - आधिकारिक उत्तर कुंजी (Official Answer Key)
+        </h3>
+        <p class="text-xs text-slate-600 font-semibold">
+          प्रतियोगिता दिनांक: 02 अक्टूबर | कुल प्रश्न: 50 | प्रत्येक प्रश्न: 1 अंक
+        </p>
+      </div>
+
+      <!-- ANSWER KEY 5-COLUMN TABLE -->
+      <div class="overflow-x-auto">
+        <table class="key-table w-full border-collapse">
+          <thead>
+            <tr class="bg-slate-800 text-white">
+              <th class="bg-slate-800 text-white">प्र.</th>
+              <th class="bg-slate-800 text-white">उत्तर</th>
+              <th class="bg-slate-800 text-white">प्र.</th>
+              <th class="bg-slate-800 text-white">उत्तर</th>
+              <th class="bg-slate-800 text-white">प्र.</th>
+              <th class="bg-slate-800 text-white">उत्तर</th>
+              <th class="bg-slate-800 text-white">प्र.</th>
+              <th class="bg-slate-800 text-white">उत्तर</th>
+              <th class="bg-slate-800 text-white">प्र.</th>
+              <th class="bg-slate-800 text-white">उत्तर</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="font-bold">1</td><td>A</td>
+              <td class="font-bold">11</td><td>A</td>
+              <td class="font-bold">21</td><td>A</td>
+              <td class="font-bold">31</td><td>A</td>
+              <td class="font-bold">41</td><td>A</td>
+            </tr>
+            <tr class="bg-slate-50">
+              <td class="font-bold">2</td><td>A</td>
+              <td class="font-bold">12</td><td>A</td>
+              <td class="font-bold">22</td><td>B</td>
+              <td class="font-bold">32</td><td>A</td>
+              <td class="font-bold">42</td><td>A</td>
+            </tr>
+            <tr>
+              <td class="font-bold">3</td><td>A</td>
+              <td class="font-bold">13</td><td>A</td>
+              <td class="font-bold">23</td><td>B</td>
+              <td class="font-bold">33</td><td>A</td>
+              <td class="font-bold">43</td><td>A</td>
+            </tr>
+            <tr class="bg-slate-50">
+              <td class="font-bold">4</td><td>A</td>
+              <td class="font-bold">14</td><td>A</td>
+              <td class="font-bold">24</td><td>A</td>
+              <td class="font-bold">34</td><td>A</td>
+              <td class="font-bold">44</td><td>A</td>
+            </tr>
+            <tr>
+              <td class="font-bold">5</td><td>A</td>
+              <td class="font-bold">15</td><td>A</td>
+              <td class="font-bold">25</td><td>A</td>
+              <td class="font-bold">35</td><td>A</td>
+              <td class="font-bold">45</td><td>A</td>
+            </tr>
+            <tr class="bg-slate-50">
+              <td class="font-bold">6</td><td>A</td>
+              <td class="font-bold">16</td><td>A</td>
+              <td class="font-bold">26</td><td>B</td>
+              <td class="font-bold">36</td><td>A</td>
+              <td class="font-bold">46</td><td>A</td>
+            </tr>
+            <tr>
+              <td class="font-bold">7</td><td>A</td>
+              <td class="font-bold">17</td><td>A</td>
+              <td class="font-bold">27</td><td>A</td>
+              <td class="font-bold">37</td><td>A</td>
+              <td class="font-bold">47</td><td>A</td>
+            </tr>
+            <tr class="bg-slate-50">
+              <td class="font-bold">8</td><td>A</td>
+              <td class="font-bold">18</td><td>A</td>
+              <td class="font-bold">28</td><td>A</td>
+              <td class="font-bold">38</td><td>A</td>
+              <td class="font-bold">48</td><td>A</td>
+            </tr>
+            <tr>
+              <td class="font-bold">9</td><td>A</td>
+              <td class="font-bold">19</td><td>A</td>
+              <td class="font-bold">29</td><td>A</td>
+              <td class="font-bold">39</td><td>A</td>
+              <td class="font-bold">49</td><td>A</td>
+            </tr>
+            <tr class="bg-slate-50">
+              <td class="font-bold">10</td><td>A</td>
+              <td class="font-bold">20</td><td>A</td>
+              <td class="font-bold">30</td><td>A</td>
+              <td class="font-bold">40</td><td>A</td>
+              <td class="font-bold">50</td><td>A</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- DETAILED ANSWERS SUMMARY -->
+      <div class="mt-4 pt-3 border-t border-slate-300">
+        <h4 class="font-bold text-xs text-slate-800 mb-2">महत्वपूर्ण उत्तर विवरण तालिका:</h4>
+        <div class="grid grid-cols-2 gap-x-4 gap-y-1 text-[11px] text-slate-700">
+          <div><b>प्र. 22:</b> गांधी जी की माता का नाम: <b>पुतलीबाई (B)</b></div>
+          <div><b>प्र. 23:</b> गांधी जी की पत्नी का नाम: <b>कस्तूरबा गांधी (B)</b></div>
+          <div><b>प्र. 26:</b> भारत लौटने से पहले संघर्ष स्थल: <b>दक्षिण अफ्रीका (B)</b></div>
+          <div><b>प्र. 16:</b> 2 अक्टूबर अंतरराष्ट्रीय दिवस: <b>अंतरराष्ट्रीय अहिंसा दिवस (A)</b></div>
+          <div><b>प्र. 43:</b> 'करो या मरो' का नारा: <b>भारत छोड़ो आंदोलन (A)</b></div>
+          <div><b>प्र. 50:</b> गांधी जी की पुण्यतिथि: <b>30 जनवरी 1948 (A)</b></div>
+        </div>
+      </div>
+
+      <!-- SIGNATURE BLOCK -->
+      <div class="mt-8 pt-4 flex justify-between items-end text-xs font-bold text-slate-800">
+        <div class="text-center">
+          <div class="w-32 border-b border-black mb-1"></div>
+          <div>प्रतियोगिता प्रभारी</div>
+        </div>
+        <div class="text-center">
+          <div class="w-32 border-b border-black mb-1"></div>
+          <div>परीक्षा नियंत्रक</div>
+        </div>
+        <div class="text-center">
+          <div class="w-36 border-b border-black mb-1"></div>
+          <div>प्रधानाचार्य / प्रधानाध्यापिका<br><span class="text-[10px] font-normal">पुलिस मॉडर्न स्कूल, रायबरेली</span></div>
+        </div>
+      </div>
+
+      <!-- FOOTER -->
+      <div class="mt-6 pt-2 border-t border-slate-300 flex justify-between items-center text-[11px] text-slate-500">
+        <span>पुलिस मॉडर्न स्कूल, 25वीं वाहिनी पीएसी, रायबरेली</span>
+        <span>उत्तर कुंजी पत्रक (Page 3)</span>
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    let answersRevealed = false;
+    let keyTableVisible = true;
+
+    function toggleAnswerKey() {
+      answersRevealed = !answersRevealed;
+      const items = document.querySelectorAll('.q-item');
+      items.forEach(el => {
+        if (answersRevealed) {
+          el.classList.add('correct-revealed');
+        } else {
+          el.classList.remove('correct-revealed');
+        }
+      });
+
+      const btn = document.getElementById('toggleAnsBtn');
+      if (answersRevealed) {
+        btn.classList.replace('text-amber-300', 'text-emerald-300');
+        btn.innerHTML = '<i class="fa-solid fa-eye-slash"></i> <span>उत्तर छिपाएं (Student Mode)</span>';
+      } else {
+        btn.classList.replace('text-emerald-300', 'text-amber-300');
+        btn.innerHTML = '<i class="fa-solid fa-eye"></i> <span>उत्तर दिखाएं (Teacher Mode)</span>';
+      }
+    }
+
+    function toggleKeyTable() {
+      const sheet = document.getElementById('answerKeySheet');
+      keyTableVisible = !keyTableVisible;
+      if (keyTableVisible) {
+        sheet.style.display = 'block';
+      } else {
+        sheet.style.display = 'none';
+      }
+    }
+  </script>
+  <script src="js/pms_nav_search.js"></script>
+</body>
+
+</html>

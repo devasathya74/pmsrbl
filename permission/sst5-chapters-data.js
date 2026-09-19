@@ -434,7 +434,7 @@ const SST5_CHAPTERS_DATA = [
       {"q": "Which of the following conditions is NOT essential for seed germination?", "options": ["A. Water", "B. Oxygen", "C. Sunlight for non-green embryo", "D. Warmth"], "ans": "C. Sunlight for non-green embryo", "exp": "Most seeds germinate underground in darkness using stored cotyledon food before leaves appear."},
       {"q": "The part of the seed that stores food for the growing embryo is the:", "options": ["A. Radicle", "B. Cotyledon", "C. Plumule", "D. Testa"], "ans": "B. Cotyledon", "exp": "Cotyledons store starch and nutrients to sustain the young seedling."},
       {"q": "Which of these seeds is dispersed primarily by wind?", "options": ["A. Coconut", "B. Mango", "C. Dandelion", "D. Lotus"], "ans": "C. Dandelion", "exp": "Dandelion seeds have feathery parachutes easily carried by wind."},
-      {"q": "Which of the following is a dicot seed?", "options": ["A. Wheat", "B. Rice", "C. Maize", "D. Chickpea (Gram)", "ans": "D. Chickpea (Gram)", "exp": "Chickpea splits into two halves (two cotyledons), making it a dicot."},
+      {"q": "Which of the following is a dicot seed?", "options": ["A. Wheat", "B. Rice", "C. Maize", "D. Chickpea (Gram)"], "ans": "D. Chickpea (Gram)", "exp": "Chickpea splits into two halves (two cotyledons), making it a dicot."},
       {"q": "What emerges first from a germinating seed?", "options": ["A. Flower", "B. Leaf", "C. Radicle (Root)", "D. Fruit"], "ans": "C. Radicle (Root)", "exp": "The radicle emerges first to anchor the seedling and absorb water."}
     ]
   },

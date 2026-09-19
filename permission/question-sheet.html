@@ -1046,11 +1046,18 @@
       if (ch.sectionD) {
         secDHtml += '<div class="space-y-1.5">';
         ch.sectionD.forEach((item, idx) => {
+          let text = '';
+          const ansText = item.ans || '';
+          if (item.q) {
+            text = item.q.replace(/__________/g, '<strong class="blank-answer-text text-blue-800 bg-blue-50 px-2 py-0.5 rounded border border-blue-200 underline decoration-amber-500">' + ansText + '</strong><span class="blank-underline"></span>');
+          } else {
+            text = (item.before || '') + '<strong class="blank-answer-text text-blue-800 bg-blue-50 px-2 py-0.5 rounded border border-blue-200 underline decoration-amber-500">' + ansText + '</strong><span class="blank-underline"></span>' + (item.after || '');
+          }
           secDHtml += `
             <div class="qa-card py-2">
               <div class="q-title text-xs">
                 <span class="q-num-badge text-[10px]">${idx+1}</span>
-                <span>${item.q.replace(/__________/g, '<strong class="blank-answer-text text-blue-800 bg-blue-50 px-2 py-0.5 rounded border border-blue-200 underline decoration-amber-500">' + item.ans + '</strong><span class="blank-underline"></span>')}</span>
+                <span>${text}</span>
               </div>
             </div>
           `;
@@ -1062,16 +1069,18 @@
       if (ch.sectionE) {
         secEHtml += '<div class="space-y-1.5">';
         ch.sectionE.forEach((item, idx) => {
-          const isTrue = (item.ans || '').toLowerCase() === 'true';
+          const qText = item.q || item.statement || '';
+          const isTrue = (typeof item.isTrue === 'boolean') ? item.isTrue : ((item.ans || '').toLowerCase() === 'true');
+          const ansDisplay = isTrue ? 'True' : 'False';
           secEHtml += `
             <div class="qa-card py-2">
               <div class="flex items-start justify-between">
                 <div class="q-title text-xs">
                   <span class="q-num-badge text-[10px]">${idx+1}</span>
-                  <span>${item.q}</span>
+                  <span>${qText}</span>
                 </div>
                 <div class="true-false-ans">
-                  <span class="${isTrue ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'} font-extrabold text-xs px-2 py-0.5 rounded border">${item.ans}</span>
+                  <span class="${isTrue ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'} font-extrabold text-xs px-2 py-0.5 rounded border">${ansDisplay}</span>
                 </div>
                 <div class="true-false-box">
                   <span class="tf-circle">[ &nbsp; ] True</span>

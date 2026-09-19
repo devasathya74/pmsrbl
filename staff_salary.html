@@ -570,11 +570,11 @@
           <!-- Sub Header: Dispatch No & Email/Date -->
           <div class="flex justify-between items-start text-[12.5px] text-black mb-3.5 leading-tight">
             <div class="font-medium">
-              पत्रांक संख्या-<span id="docPatrank" class="font-semibold">पीएमएस / 2026</span>
+              पत्रांक संख्या-<span id="docPatrank" contenteditable="true" oninput="onDocHeaderEdit('patrank', this)" class="font-semibold editable-inline" title="सीधा संपादन करें">पीएमएस / 2026</span>
             </div>
             <div class="text-right">
-              ई-मेल - <span id="docEmail">policemodernschoolbmpacrb@gmail.com</span><br>
-              दिनांक- <span id="docDate" class="font-semibold">अगस्त , 2026</span>
+              ई-मेल - <span id="docEmail" contenteditable="true" oninput="onDocHeaderEdit('email', this)" class="editable-inline" title="सीधा संपादन करें">policemodernschoolbmpacrb@gmail.com</span><br>
+              दिनांक- <span id="docDate" contenteditable="true" oninput="onDocHeaderEdit('issueDate', this)" class="font-semibold editable-inline" title="सीधा संपादन करें">अगस्त , 2026</span>
             </div>
           </div>
 
@@ -626,7 +626,7 @@
               सधन्यवाद
             </div>
             <div class="text-center leading-snug">
-              <div id="docSignatoryTitle" class="font-bold">प्रभारी प्रधानाचार्या</div>
+              <div id="docSignatoryTitle" contenteditable="true" oninput="onDocHeaderEdit('signatory', this)" class="font-bold editable-inline" title="सीधा संपादन करें">प्रभारी प्रधानाचार्या</div>
               <div>पुलिस माडर्न स्कूल</div>
               <div>25वीं वाहिनी पीएसी</div>
               <div>रायबरेली।</div>
@@ -1114,35 +1114,24 @@
       });
     };
 
-    // Render Editor & Document Preview
-    window.renderAll = function() {
-      // 1. Sync Input Controls
-      document.getElementById('inputMonth').value = window.currentSheet.month || 'जुलाई';
-      document.getElementById('inputYear').value = window.currentSheet.year || 2026;
-      document.getElementById('inputPatrank').value = window.currentSheet.patrank || 'पीएमएस / 2026';
-      document.getElementById('inputDate').value = window.currentSheet.issueDate || 'अगस्त , 2026';
-      document.getElementById('inputEmail').value = window.currentSheet.email || 'policemodernschoolbmpacrb@gmail.com';
-      document.getElementById('inputSignatory').value = window.currentSheet.signatory || 'प्रभारी प्रधानाचार्या';
+    // ================= SEAMLESS DECOUPLED RENDERING ARCHITECTURE =================
 
-      // 2. Render Left Editor Staff Cards
+    // 1. Structural Render of Left Editor Staff Cards (Only called on structure change or load)
+    window.renderEditorList = function() {
       const editorList = document.getElementById('staffListEditor');
+      if (!editorList) return;
       editorList.innerHTML = '';
-      
-      let totalBase = 0;
-      let totalPayable = 0;
 
       window.currentSheet.staff.forEach((st, idx) => {
         const base = parseFloat(st.baseScale || 0);
         const pay = parseFloat(st.payable || 0);
-        totalBase += base;
-        totalPayable += pay;
-
         const diff = pay - base;
         const isFull = Math.abs(diff) < 0.01;
         const diffText = isFull ? '100% पूरा वेतन' : `${diff < 0 ? 'कटौती: ' : 'अतिरिक्त: '} ₹${Math.abs(diff).toFixed(2)}`;
         const diffBadgeClass = isFull ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30' : 'bg-amber-500/20 text-amber-300 border-amber-500/30';
 
         const card = document.createElement('div');
+        card.id = `staff-card-${idx}`;
         card.className = "staff-editor-card bg-slate-950/90 border border-slate-800 rounded-xl p-3 text-xs hover:border-slate-700 transition relative group shadow-sm";
         card.setAttribute('data-search', `${(st.name || '').toLowerCase()} ${(st.designation || '').toLowerCase()}`);
         
@@ -1150,9 +1139,9 @@
           <div class="flex items-center justify-between mb-2 pb-1.5 border-b border-slate-800/80">
             <div class="flex items-center gap-2">
               <span class="w-5 h-5 rounded-full bg-slate-800 text-sky-400 font-bold flex items-center justify-center text-[11px] font-mono">${idx + 1}</span>
-              <span class="font-bold text-slate-200 text-xs">${st.name || 'कर्मचारी का नाम'}</span>
-              <span class="text-[10px] text-slate-400 bg-slate-900 px-1.5 py-0.5 rounded border border-slate-800">${st.designation || 'पद'}</span>
-              <span class="text-[10px] px-1.5 py-0.2 rounded border font-semibold ${diffBadgeClass}">${diffText}</span>
+              <span class="card-name-title font-bold text-slate-200 text-xs">${st.name || 'कर्मचारी का नाम'}</span>
+              <span class="card-desig-title text-[10px] text-slate-400 bg-slate-900 px-1.5 py-0.5 rounded border border-slate-800">${st.designation || 'पद'}</span>
+              <span class="card-diff-badge text-[10px] px-1.5 py-0.2 rounded border font-semibold ${diffBadgeClass}">${diffText}</span>
             </div>
             <div class="flex items-center gap-1">
               <button onclick="openDaysCalcModal(${idx})" class="p-1 text-sky-400 hover:text-sky-300 hover:bg-sky-950/40 rounded transition flex items-center gap-0.5 text-[10px] font-semibold border border-sky-500/20 px-1.5" title="दिनों के अनुसार वेतन निकालें">
@@ -1176,84 +1165,266 @@
           <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
             <div>
               <label class="text-[10px] text-slate-400 block mb-0.5">कर्मचारी का नाम</label>
-              <input type="text" value="${st.name || ''}" oninput="updateStaffField(${idx}, 'name', this.value)" class="w-full bg-slate-900 border border-slate-700/80 rounded px-2 py-1 text-slate-100 text-xs focus:ring-1 focus:ring-sky-500 outline-none font-medium">
+              <input type="text" id="input-staff-name-${idx}" value="${st.name || ''}" oninput="updateStaffField(${idx}, 'name', this.value)" class="w-full bg-slate-900 border border-slate-700/80 rounded px-2 py-1 text-slate-100 text-xs focus:ring-1 focus:ring-sky-500 outline-none font-medium">
             </div>
             <div>
               <label class="text-[10px] text-slate-400 block mb-0.5">पद / पदनाम</label>
-              <input type="text" value="${st.designation || ''}" oninput="updateStaffField(${idx}, 'designation', this.value)" class="w-full bg-slate-900 border border-slate-700/80 rounded px-2 py-1 text-slate-100 text-xs focus:ring-1 focus:ring-sky-500 outline-none font-medium">
+              <input type="text" id="input-staff-designation-${idx}" value="${st.designation || ''}" oninput="updateStaffField(${idx}, 'designation', this.value)" class="w-full bg-slate-900 border border-slate-700/80 rounded px-2 py-1 text-slate-100 text-xs focus:ring-1 focus:ring-sky-500 outline-none font-medium">
             </div>
             <div>
               <label class="text-[10px] text-slate-400 block mb-0.5">बैंक खाता सं०</label>
-              <input type="text" value="${st.accountNo || ''}" oninput="updateStaffField(${idx}, 'accountNo', this.value)" class="w-full bg-slate-900 border border-slate-700/80 rounded px-2 py-1 text-slate-100 text-xs focus:ring-1 focus:ring-sky-500 outline-none font-mono">
+              <input type="text" id="input-staff-accountNo-${idx}" value="${st.accountNo || ''}" oninput="updateStaffField(${idx}, 'accountNo', this.value)" class="w-full bg-slate-900 border border-slate-700/80 rounded px-2 py-1 text-slate-100 text-xs focus:ring-1 focus:ring-sky-500 outline-none font-mono">
             </div>
             <div>
               <label class="text-[10px] text-slate-400 block mb-0.5">बैंक IFSC कोड</label>
-              <input type="text" value="${st.ifsc || ''}" oninput="updateStaffField(${idx}, 'ifsc', this.value)" class="w-full bg-slate-900 border border-slate-700/80 rounded px-2 py-1 text-slate-100 text-xs focus:ring-1 focus:ring-sky-500 outline-none font-mono uppercase">
+              <input type="text" id="input-staff-ifsc-${idx}" value="${st.ifsc || ''}" oninput="updateStaffField(${idx}, 'ifsc', this.value.toUpperCase())" class="w-full bg-slate-900 border border-slate-700/80 rounded px-2 py-1 text-slate-100 text-xs focus:ring-1 focus:ring-sky-500 outline-none font-mono uppercase">
             </div>
             <div>
               <label class="text-[10px] text-slate-400 block mb-0.5">मूल वेतनमान (₹)</label>
-              <input type="number" step="0.01" value="${st.baseScale || 0}" oninput="updateStaffField(${idx}, 'baseScale', this.value)" class="w-full bg-slate-900 border border-slate-700/80 rounded px-2 py-1 text-slate-100 text-xs focus:ring-1 focus:ring-sky-500 outline-none font-mono font-bold">
+              <input type="number" step="0.01" id="input-staff-baseScale-${idx}" value="${st.baseScale || 0}" oninput="updateStaffField(${idx}, 'baseScale', this.value)" class="w-full bg-slate-900 border border-slate-700/80 rounded px-2 py-1 text-slate-100 text-xs focus:ring-1 focus:ring-sky-500 outline-none font-mono font-bold">
             </div>
             <div>
               <label class="text-[10px] text-emerald-400 font-bold block mb-0.5">देय वेतन (₹)</label>
-              <input type="number" step="0.01" value="${st.payable || 0}" oninput="updateStaffField(${idx}, 'payable', this.value)" class="w-full bg-slate-900 border border-emerald-500/80 rounded px-2 py-1 text-emerald-300 font-bold text-xs focus:ring-1 focus:ring-emerald-400 outline-none font-mono">
+              <input type="number" step="0.01" id="input-staff-payable-${idx}" value="${st.payable || 0}" oninput="updateStaffField(${idx}, 'payable', this.value)" class="w-full bg-slate-900 border border-emerald-500/80 rounded px-2 py-1 text-emerald-300 font-bold text-xs focus:ring-1 focus:ring-emerald-400 outline-none font-mono">
             </div>
           </div>
         `;
         editorList.appendChild(card);
       });
+    };
 
-      // Update KPI Cards & Counts
-      const staffLen = window.currentSheet.staff.length;
-      document.getElementById('staffCountLabel').innerText = staffLen;
-      document.getElementById('kpiStaffCount').innerText = staffLen;
-      document.getElementById('kpiTotalBase').innerText = '₹' + totalBase.toFixed(2);
-      document.getElementById('kpiTotalPayable').innerText = '₹' + totalPayable.toFixed(2);
-      document.getElementById('editorTotalAmount').innerText = '₹' + totalPayable.toFixed(2);
-
-      const variance = totalPayable - totalBase;
-      document.getElementById('kpiVariance').innerText = `${variance < 0 ? '-' : '+'}₹${Math.abs(variance).toFixed(2)}`;
-      document.getElementById('kpiVarianceDesc').innerText = variance === 0 ? '100% पूरा वेतन वितरित' : `${Math.abs(variance).toFixed(2)} रु अंतर`;
-
-      // 3. Render Right A4 Official Sheet
-      document.getElementById('docPatrank').innerText = window.currentSheet.patrank || 'पीएमएस / 2026';
-      document.getElementById('docEmail').innerText = window.currentSheet.email || 'policemodernschoolbmpacrb@gmail.com';
-      document.getElementById('docDate').innerText = window.currentSheet.issueDate || 'अगस्त , 2026';
-      document.getElementById('docMonthSubject').innerText = `${window.currentSheet.month || 'जुलाई'} माह-${window.currentSheet.year || '2026'}`;
-      document.getElementById('docSignatoryTitle').innerText = window.currentSheet.signatory || 'प्रभारी प्रधानाचार्या';
-
+    // 2. Structural Render of Right A4 Official Sheet Table (Only called on structure change or load)
+    window.renderPreviewTable = function() {
       const docTbody = document.getElementById('docTableBody');
+      if (!docTbody) return;
       docTbody.innerHTML = '';
 
       if (window.currentSheet.staff.length === 0) {
         docTbody.innerHTML = `<tr><td colspan="7" class="text-slate-400 italic py-4">कोई स्टाफ प्रविष्टि नहीं है। कृपया बाईं ओर से स्टाफ जोड़ें।</td></tr>`;
-      } else {
-        window.currentSheet.staff.forEach((st, i) => {
-          const row = document.createElement('tr');
-          row.innerHTML = `
-            <td style="font-weight: 600;">${i + 1}.</td>
-            <td style="text-align: left; padding-left: 8px; font-weight: 600;">${st.name || ''}</td>
-            <td style="text-align: left; padding-left: 8px;">${st.designation || ''}</td>
-            <td style="font-family: monospace; letter-spacing: 0.5px;">${st.accountNo || ''}</td>
-            <td style="font-family: monospace; letter-spacing: 0.5px;">${st.ifsc || ''}</td>
-            <td>₹${parseFloat(st.baseScale || 0).toFixed(2)}</td>
-            <td style="font-weight: 700;">₹${parseFloat(st.payable || 0).toFixed(2)}</td>
-          `;
-          docTbody.appendChild(row);
-        });
+        return;
       }
 
-      document.getElementById('docTotalCell').innerText = '₹' + totalPayable.toFixed(2);
-      
-      // Hindi Words for amount in conclusion
-      const hindiAmountWords = window.numberToHindiWords(totalPayable);
-      document.getElementById('docConclusionAmount').innerText = `रू${totalPayable.toFixed(2)} (${hindiAmountWords})`;
+      window.currentSheet.staff.forEach((st, i) => {
+        const row = document.createElement('tr');
+        row.id = `doc-row-${i}`;
+        row.innerHTML = `
+          <td style="font-weight: 600;">${i + 1}.</td>
+          <td id="doc-cell-name-${i}" contenteditable="true" oninput="onDocCellEdit(${i}, 'name', this)" class="editable-inline" style="text-align: left; padding-left: 8px; font-weight: 600;" title="सीधा संपादन करें">${st.name || ''}</td>
+          <td id="doc-cell-designation-${i}" contenteditable="true" oninput="onDocCellEdit(${i}, 'designation', this)" class="editable-inline" style="text-align: left; padding-left: 8px;" title="सीधा संपादन करें">${st.designation || ''}</td>
+          <td id="doc-cell-accountNo-${i}" contenteditable="true" oninput="onDocCellEdit(${i}, 'accountNo', this)" class="editable-inline" style="font-family: monospace; letter-spacing: 0.5px;" title="सीधा संपादन करें">${st.accountNo || ''}</td>
+          <td id="doc-cell-ifsc-${i}" contenteditable="true" oninput="onDocCellEdit(${i}, 'ifsc', this)" class="editable-inline" style="font-family: monospace; letter-spacing: 0.5px;" title="सीधा संपादन करें">${st.ifsc || ''}</td>
+          <td id="doc-cell-baseScale-${i}" contenteditable="true" oninput="onDocCellEdit(${i}, 'baseScale', this)" onblur="onDocCellBlur(${i}, 'baseScale', this)" class="editable-inline" title="सीधा संपादन करें">₹${parseFloat(st.baseScale || 0).toFixed(2)}</td>
+          <td id="doc-cell-payable-${i}" contenteditable="true" oninput="onDocCellEdit(${i}, 'payable', this)" onblur="onDocCellBlur(${i}, 'payable', this)" class="editable-inline" style="font-weight: 700;" title="सीधा संपादन करें">₹${parseFloat(st.payable || 0).toFixed(2)}</td>
+        `;
+        docTbody.appendChild(row);
+      });
+    };
 
-      // Refresh feather icons
+    // 3. Fast KPI, Totals & Hindi Words Calculator (Never destroys input elements)
+    window.updateTotalsAndKPIs = function() {
+      let totalBase = 0;
+      let totalPayable = 0;
+
+      window.currentSheet.staff.forEach((st) => {
+        totalBase += parseFloat(st.baseScale || 0);
+        totalPayable += parseFloat(st.payable || 0);
+      });
+
+      const staffLen = window.currentSheet.staff.length;
+      const countLabel = document.getElementById('staffCountLabel');
+      if (countLabel) countLabel.innerText = staffLen;
+      
+      const kpiCount = document.getElementById('kpiStaffCount');
+      if (kpiCount) kpiCount.innerText = staffLen;
+
+      const kpiBase = document.getElementById('kpiTotalBase');
+      if (kpiBase) kpiBase.innerText = '₹' + totalBase.toFixed(2);
+
+      const kpiPay = document.getElementById('kpiTotalPayable');
+      if (kpiPay) kpiPay.innerText = '₹' + totalPayable.toFixed(2);
+
+      const editorTotal = document.getElementById('editorTotalAmount');
+      if (editorTotal) editorTotal.innerText = '₹' + totalPayable.toFixed(2);
+
+      const variance = totalPayable - totalBase;
+      const kpiVar = document.getElementById('kpiVariance');
+      if (kpiVar) kpiVar.innerText = `${variance < 0 ? '-' : '+'}₹${Math.abs(variance).toFixed(2)}`;
+
+      const kpiVarDesc = document.getElementById('kpiVarianceDesc');
+      if (kpiVarDesc) kpiVarDesc.innerText = Math.abs(variance) < 0.01 ? '100% पूरा वेतन वितरित' : `${Math.abs(variance).toFixed(2)} रु अंतर`;
+
+      const docTotalCell = document.getElementById('docTotalCell');
+      if (docTotalCell) docTotalCell.innerText = '₹' + totalPayable.toFixed(2);
+
+      const hindiAmountWords = window.numberToHindiWords(totalPayable);
+      const conclusion = document.getElementById('docConclusionAmount');
+      if (conclusion) conclusion.innerText = `रू${totalPayable.toFixed(2)} (${hindiAmountWords})`;
+    };
+
+    // Sync A4 Header Elements
+    window.updateA4HeaderFields = function() {
+      const docPatrank = document.getElementById('docPatrank');
+      if (docPatrank) docPatrank.innerText = window.currentSheet.patrank || 'पीएमएस / 2026';
+
+      const docEmail = document.getElementById('docEmail');
+      if (docEmail) docEmail.innerText = window.currentSheet.email || 'policemodernschoolbmpacrb@gmail.com';
+
+      const docDate = document.getElementById('docDate');
+      if (docDate) docDate.innerText = window.currentSheet.issueDate || 'अगस्त , 2026';
+
+      const docSub = document.getElementById('docMonthSubject');
+      if (docSub) docSub.innerText = `${window.currentSheet.month || 'जुलाई'} माह-${window.currentSheet.year || '2026'}`;
+
+      const docSign = document.getElementById('docSignatoryTitle');
+      if (docSign) docSign.innerText = window.currentSheet.signatory || 'प्रभारी प्रधानाचार्या';
+    };
+
+    // Master Render Method
+    window.renderAll = function() {
+      // 1. Sync Left Header Form Controls
+      document.getElementById('inputMonth').value = window.currentSheet.month || 'जुलाई';
+      document.getElementById('inputYear').value = window.currentSheet.year || 2026;
+      document.getElementById('inputPatrank').value = window.currentSheet.patrank || 'पीएमएस / 2026';
+      document.getElementById('inputDate').value = window.currentSheet.issueDate || 'अगस्त , 2026';
+      document.getElementById('inputEmail').value = window.currentSheet.email || 'policemodernschoolbmpacrb@gmail.com';
+      document.getElementById('inputSignatory').value = window.currentSheet.signatory || 'प्रभारी प्रधानाचार्या';
+
+      // 2. Render Cards & A4 Document
+      renderEditorList();
+      renderPreviewTable();
+      updateA4HeaderFields();
+      updateTotalsAndKPIs();
+
+      // 3. Refresh feather icons
       if (window.feather) { try { feather.replace(); } catch(e) { console.warn("Feather replace warn:", e); } }
     };
 
-    // Events & Mutation handlers
+    // ================= REAL-TIME TWO-WAY INPUT EDITING HANDLERS =================
+
+    // 1. When typing in Editor Card inputs
+    window.updateStaffField = function(index, field, value) {
+      if (!window.currentSheet.staff[index]) return;
+
+      if (field === 'baseScale' || field === 'payable') {
+        window.currentSheet.staff[index][field] = parseFloat(value) || 0;
+      } else {
+        window.currentSheet.staff[index][field] = value;
+      }
+
+      // Update Card Header info without re-rendering DOM
+      const card = document.getElementById(`staff-card-${index}`);
+      if (card) {
+        if (field === 'name') {
+          const nameTitle = card.querySelector('.card-name-title');
+          if (nameTitle) nameTitle.innerText = value || 'कर्मचारी का नाम';
+        }
+        if (field === 'designation') {
+          const desigTitle = card.querySelector('.card-desig-title');
+          if (desigTitle) desigTitle.innerText = value || 'पद';
+        }
+
+        // Update Diff Badge on Card
+        const base = parseFloat(window.currentSheet.staff[index].baseScale || 0);
+        const pay = parseFloat(window.currentSheet.staff[index].payable || 0);
+        const diff = pay - base;
+        const isFull = Math.abs(diff) < 0.01;
+        const diffText = isFull ? '100% पूरा वेतन' : `${diff < 0 ? 'कटौती: ' : 'अतिरिक्त: '} ₹${Math.abs(diff).toFixed(2)}`;
+        const diffBadgeClass = isFull ? 'card-diff-badge text-[10px] px-1.5 py-0.2 rounded border font-semibold bg-emerald-500/20 text-emerald-300 border-emerald-500/30' : 'card-diff-badge text-[10px] px-1.5 py-0.2 rounded border font-semibold bg-amber-500/20 text-amber-300 border-amber-500/30';
+        
+        const badge = card.querySelector('.card-diff-badge');
+        if (badge) {
+          badge.className = diffBadgeClass;
+          badge.innerText = diffText;
+        }
+
+        card.setAttribute('data-search', `${(window.currentSheet.staff[index].name || '').toLowerCase()} ${(window.currentSheet.staff[index].designation || '').toLowerCase()}`);
+      }
+
+      // Update A4 Document Cell
+      const docCell = document.getElementById(`doc-cell-${field}-${index}`);
+      if (docCell) {
+        if (field === 'baseScale' || field === 'payable') {
+          docCell.innerText = '₹' + (parseFloat(value) || 0).toFixed(2);
+        } else {
+          docCell.innerText = value || '';
+        }
+      }
+
+      // Update KPI Totals & Save
+      updateTotalsAndKPIs();
+      saveToLocalStorage();
+    };
+
+    // 2. When typing directly on A4 Document Table Cells (contenteditable)
+    window.onDocCellEdit = function(index, field, element) {
+      if (!window.currentSheet.staff[index]) return;
+
+      let rawVal = element.innerText.replace(/[₹s,]/g, '').trim();
+      if (field === 'baseScale' || field === 'payable') {
+        const num = parseFloat(rawVal) || 0;
+        window.currentSheet.staff[index][field] = num;
+        
+        const inputElem = document.getElementById(`input-staff-${field}-${index}`);
+        if (inputElem) inputElem.value = num;
+      } else {
+        window.currentSheet.staff[index][field] = element.innerText;
+        const inputElem = document.getElementById(`input-staff-${field}-${index}`);
+        if (inputElem) inputElem.value = element.innerText;
+      }
+
+      // Update card title/badge
+      const card = document.getElementById(`staff-card-${index}`);
+      if (card) {
+        if (field === 'name') {
+          const nameTitle = card.querySelector('.card-name-title');
+          if (nameTitle) nameTitle.innerText = element.innerText || 'कर्मचारी का नाम';
+        }
+        if (field === 'designation') {
+          const desigTitle = card.querySelector('.card-desig-title');
+          if (desigTitle) desigTitle.innerText = element.innerText || 'पद';
+        }
+
+        const base = parseFloat(window.currentSheet.staff[index].baseScale || 0);
+        const pay = parseFloat(window.currentSheet.staff[index].payable || 0);
+        const diff = pay - base;
+        const isFull = Math.abs(diff) < 0.01;
+        const diffText = isFull ? '100% पूरा वेतन' : `${diff < 0 ? 'कटौती: ' : 'अतिरिक्त: '} ₹${Math.abs(diff).toFixed(2)}`;
+        const diffBadgeClass = isFull ? 'card-diff-badge text-[10px] px-1.5 py-0.2 rounded border font-semibold bg-emerald-500/20 text-emerald-300 border-emerald-500/30' : 'card-diff-badge text-[10px] px-1.5 py-0.2 rounded border font-semibold bg-amber-500/20 text-amber-300 border-amber-500/30';
+        
+        const badge = card.querySelector('.card-diff-badge');
+        if (badge) {
+          badge.className = diffBadgeClass;
+          badge.innerText = diffText;
+        }
+      }
+
+      updateTotalsAndKPIs();
+      saveToLocalStorage();
+    };
+
+    // Format A4 Currency cell on blur
+    window.onDocCellBlur = function(index, field, element) {
+      if (!window.currentSheet.staff[index]) return;
+      if (field === 'baseScale' || field === 'payable') {
+        const val = parseFloat(window.currentSheet.staff[index][field]) || 0;
+        element.innerText = '₹' + val.toFixed(2);
+      }
+    };
+
+    // 3. When editing A4 Header directly
+    window.onDocHeaderEdit = function(field, element) {
+      const text = element.innerText.trim();
+      window.currentSheet[field] = text;
+
+      if (field === 'patrank') document.getElementById('inputPatrank').value = text;
+      if (field === 'email') document.getElementById('inputEmail').value = text;
+      if (field === 'issueDate') document.getElementById('inputDate').value = text;
+      if (field === 'signatory') document.getElementById('inputSignatory').value = text;
+
+      saveToLocalStorage();
+    };
+
+    // 4. When changing Left Header Inputs
     window.onMetadataChange = function() {
       window.currentSheet.month = document.getElementById('inputMonth').value;
       window.currentSheet.year = parseInt(document.getElementById('inputYear').value, 10) || 2026;
@@ -1261,32 +1432,41 @@
       window.currentSheet.issueDate = document.getElementById('inputDate').value;
       window.currentSheet.email = document.getElementById('inputEmail').value;
       window.currentSheet.signatory = document.getElementById('inputSignatory').value;
-      renderAll();
+
+      updateA4HeaderFields();
       saveToLocalStorage();
     };
 
-    window.updateStaffField = function(index, field, value) {
-      if (!window.currentSheet.staff[index]) return;
-      if (field === 'baseScale' || field === 'payable') {
-        window.currentSheet.staff[index][field] = parseFloat(value) || 0;
-      } else {
-        window.currentSheet.staff[index][field] = value;
-      }
-      renderAll();
-      saveToLocalStorage();
-    };
-
+    // 5. Row manipulation methods
     window.setRowFullPay = function(index) {
       if (window.currentSheet.staff[index]) {
-        window.currentSheet.staff[index].payable = parseFloat(window.currentSheet.staff[index].baseScale) || 0;
-        renderAll();
+        const fullBase = parseFloat(window.currentSheet.staff[index].baseScale) || 0;
+        window.currentSheet.staff[index].payable = fullBase;
+        
+        const payableInput = document.getElementById(`input-staff-payable-${index}`);
+        if (payableInput) payableInput.value = fullBase;
+
+        const docCellPayable = document.getElementById(`doc-cell-payable-${index}`);
+        if (docCellPayable) docCellPayable.innerText = '₹' + fullBase.toFixed(2);
+
+        // Update Card Badge
+        const card = document.getElementById(`staff-card-${index}`);
+        if (card) {
+          const badge = card.querySelector('.card-diff-badge');
+          if (badge) {
+            badge.className = 'card-diff-badge text-[10px] px-1.5 py-0.2 rounded border font-semibold bg-emerald-500/20 text-emerald-300 border-emerald-500/30';
+            badge.innerText = '100% पूरा वेतन';
+          }
+        }
+
+        updateTotalsAndKPIs();
         saveToLocalStorage();
         showToast(`${window.currentSheet.staff[index].name} का 100% पूरा वेतन सेट किया गया`, 'success');
       }
     };
 
     window.addNewStaffRow = function(preset = null) {
-      const newStaff = preset ? { ...preset } : {
+      const newStaff = preset ? { ...preset, payable: preset.baseScale } : {
         name: "नया कर्मचारी",
         designation: "सहायक अध्यापिका",
         accountNo: "",
@@ -1320,7 +1500,7 @@
     };
 
     window.calculateAllFullPay = function() {
-      window.currentSheet.staff.forEach(s => {
+      window.currentSheet.staff.forEach((s, idx) => {
         s.payable = parseFloat(s.baseScale) || 0;
       });
       renderAll();
@@ -1347,9 +1527,10 @@
           issueDate: new Date().toLocaleDateString('hi-IN', { month: 'long', year: 'numeric' }),
           email: "policemodernschoolbmpacrb@gmail.com",
           signatory: "प्रभारी प्रधानाचार्या",
-          staff: JSON.parse(JSON.stringify(STAFF_MASTER))
+          staff: JSON.parse(JSON.stringify(STAFF_MASTER)).map(s => ({ ...s, payable: s.baseScale }))
         };
         renderAll();
+        saveToLocalStorage();
         showToast("नया वेतन बिल तैयार है", 'info');
       }
     };
@@ -1421,7 +1602,29 @@
 
       const result = Math.round(((base / totalDays) * workedDays) * 100) / 100;
       window.currentSheet.staff[currentCalcStaffIndex].payable = result;
-      renderAll();
+      
+      const payableInput = document.getElementById(`input-staff-payable-${currentCalcStaffIndex}`);
+      if (payableInput) payableInput.value = result;
+
+      const docCellPayable = document.getElementById(`doc-cell-payable-${currentCalcStaffIndex}`);
+      if (docCellPayable) docCellPayable.innerText = '₹' + result.toFixed(2);
+
+      // Update Card Badge
+      const card = document.getElementById(`staff-card-${currentCalcStaffIndex}`);
+      if (card) {
+        const diff = result - base;
+        const isFull = Math.abs(diff) < 0.01;
+        const diffText = isFull ? '100% पूरा वेतन' : `${diff < 0 ? 'कटौती: ' : 'अतिरिक्त: '} ₹${Math.abs(diff).toFixed(2)}`;
+        const diffBadgeClass = isFull ? 'card-diff-badge text-[10px] px-1.5 py-0.2 rounded border font-semibold bg-emerald-500/20 text-emerald-300 border-emerald-500/30' : 'card-diff-badge text-[10px] px-1.5 py-0.2 rounded border font-semibold bg-amber-500/20 text-amber-300 border-amber-500/30';
+        
+        const badge = card.querySelector('.card-diff-badge');
+        if (badge) {
+          badge.className = diffBadgeClass;
+          badge.innerText = diffText;
+        }
+      }
+
+      updateTotalsAndKPIs();
       saveToLocalStorage();
       closeDaysCalcModal();
       showToast(`${window.currentSheet.staff[currentCalcStaffIndex].name} का देय वेतन ₹${result.toFixed(2)} सेट किया गया`, 'success');
@@ -1507,7 +1710,8 @@
       window.savedRecordsCache = records;
       localStorage.setItem('pms_staff_salary_records', JSON.stringify(records));
 
-      document.getElementById('savedCountBadge').innerText = records.length;
+      const badge = document.getElementById('savedCountBadge');
+      if (badge) badge.innerText = records.length;
       renderSavedDrawerList(records);
     };
 
@@ -1517,7 +1721,7 @@
       const totalCount = document.getElementById('drawerTotalCount');
       if (!container) return;
 
-      totalCount.innerText = records.length;
+      if (totalCount) totalCount.innerText = records.length;
       container.innerHTML = '';
 
       if (records.length === 0) {
@@ -1619,7 +1823,8 @@
       window.savedRecordsCache = window.savedRecordsCache.filter(r => r.id !== recordId);
       localStorage.setItem('pms_staff_salary_records', JSON.stringify(window.savedRecordsCache));
       renderSavedDrawerList(window.savedRecordsCache);
-      document.getElementById('savedCountBadge').innerText = window.savedRecordsCache.length;
+      const badge = document.getElementById('savedCountBadge');
+      if (badge) badge.innerText = window.savedRecordsCache.length;
       showToast("रिकॉर्ड हटाया गया", 'info');
     };
 
@@ -1666,6 +1871,7 @@
     // Preset Staff Directory Modal with Multi-select
     window.openPresetStaffModal = function() {
       const container = document.getElementById('presetStaffList');
+      if (!container) return;
       container.innerHTML = '';
 
       STAFF_MASTER.forEach((staff, idx) => {
@@ -1704,7 +1910,8 @@
 
     window.updateDirectorySelectedCount = function() {
       const checked = document.querySelectorAll('.preset-checkbox:checked').length;
-      document.getElementById('directorySelectedCount').innerText = checked;
+      const countEl = document.getElementById('directorySelectedCount');
+      if (countEl) countEl.innerText = checked;
     };
 
     window.addSelectedDirectoryStaff = function() {

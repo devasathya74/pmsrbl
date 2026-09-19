@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="hi" class="h-full bg-slate-900">
+<html lang="hi" class="h-full bg-slate-950">
 
 <head>
   <meta charset="UTF-8">
@@ -12,7 +12,7 @@
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Martel:wght@400;600;700;800;900&family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=Noto+Serif+Devanagari:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Martel:wght@400;600;700;800;900&family=Noto+Sans+Devanagari:wght@400;500;600;700;800;900&family=Noto+Serif+Devanagari:wght@400;600;700;800&family=Outfit:wght@500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 
   <!-- Feather Icons -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.js"></script>
@@ -38,7 +38,9 @@
             sans: ['Inter', 'sans-serif'],
             devanagari: ['Noto Sans Devanagari', 'sans-serif'],
             serifdev: ['Noto Serif Devanagari', 'serif'],
-            martel: ['Martel', 'serif']
+            martel: ['Martel', 'serif'],
+            heading: ['Outfit', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace']
           }
         }
       }
@@ -61,14 +63,21 @@
       height: 6px;
     }
     ::-webkit-scrollbar-track {
-      background: #0f172a;
+      background: #090d16;
     }
     ::-webkit-scrollbar-thumb {
-      background: #334155;
+      background: #1e293b;
       border-radius: 4px;
     }
     ::-webkit-scrollbar-thumb:hover {
-      background: #475569;
+      background: #334155;
+    }
+
+    /* Glass Effect */
+    .glass-card {
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(51, 65, 85, 0.6);
     }
 
     /* A4 Physical Paper Specifications */
@@ -78,12 +87,14 @@
       background: #ffffff;
       color: #111827;
       margin: 0 auto;
-      padding: 16mm 20mm 16mm 20mm;
+      padding: 15mm 18mm 15mm 18mm;
       position: relative;
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.45);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.1);
       border-radius: 2px;
       font-family: 'Noto Sans Devanagari', 'Arial', sans-serif;
       box-sizing: border-box;
+      transform-origin: top center;
+      transition: transform 0.2s ease;
     }
 
     .doc-table {
@@ -91,13 +102,13 @@
       border-collapse: collapse;
       margin-top: 10px;
       margin-bottom: 12px;
-      font-size: 13px;
+      font-size: 12.5px;
     }
 
     .doc-table th, 
     .doc-table td {
-      border: 1px solid #1e293b;
-      padding: 6px 7px;
+      border: 1px solid #0f172a;
+      padding: 5.5px 6px;
       text-align: center;
       vertical-align: middle;
     }
@@ -142,11 +153,28 @@
 
       .no-print, 
       #appHeader, 
+      #kpiStatsBar,
+      #viewModeTabs,
       #sidebarControls, 
       #savedDrawer, 
+      #presetStaffModal,
+      #daysCalcModal,
       #toastContainer,
       .action-buttons {
         display: none !important;
+      }
+
+      .main-workspace {
+        display: block !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        max-width: 100% !important;
+      }
+
+      .preview-col {
+        width: 100% !important;
+        max-width: 100% !important;
+        display: block !important;
       }
 
       .a4-page {
@@ -158,6 +186,7 @@
         margin: 0 !important;
         padding: 12mm 15mm 12mm 15mm !important;
         display: block !important;
+        transform: none !important;
         page-break-after: avoid !important;
         page-break-inside: avoid !important;
       }
@@ -184,53 +213,63 @@
 <body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans selection:bg-sky-500 selection:text-white">
 
   <!-- ================= TOP NAVIGATION BAR ================= -->
-  <header id="appHeader" class="bg-slate-900 border-b border-slate-800 sticky top-0 z-40 backdrop-blur-md bg-opacity-95 shadow-lg">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex items-center justify-between h-16">
+  <header id="appHeader" class="bg-slate-900/95 border-b border-slate-800 sticky top-0 z-40 backdrop-blur-md shadow-xl">
+    <div class="max-w-7xl mx-auto px-3 sm:px-5 lg:px-6">
+      <div class="flex items-center justify-between h-16 gap-3">
         
-        <!-- Left Brand -->
+        <!-- Left: Brand & Back Link -->
         <div class="flex items-center space-x-3">
-          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-sky-600 to-indigo-600 p-0.5 shadow-md shadow-sky-500/20 flex items-center justify-center">
-            <img src="pms-logo.png" alt="PMS Logo" class="w-9 h-9 object-contain rounded-lg" onerror="this.src='pms_round_logo.png'">
+          <a href="index.html" class="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 transition" title="मुख्य पृष्ठ पर जाएं">
+            <i data-feather="arrow-left" class="w-4 h-4"></i>
+          </a>
+
+          <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-sky-600 via-indigo-600 to-amber-500 p-0.5 shadow-md shadow-sky-500/20 flex items-center justify-center flex-shrink-0">
+            <img src="pms-logo.png" alt="PMS Logo" class="w-8 h-8 object-contain rounded-lg" onerror="this.src='pms_round_logo.png'">
           </div>
           <div>
             <div class="flex items-center gap-2">
-              <h1 class="text-base sm:text-lg font-bold text-white tracking-wide font-martel">पुलिस मॉडर्न स्कूल</h1>
-              <span class="text-xs bg-sky-500/20 border border-sky-400/30 text-sky-300 font-medium px-2 py-0.5 rounded-full">वेतनमान 25वीं वाहिनी</span>
+              <h1 class="text-sm sm:text-base font-bold text-white tracking-wide font-martel leading-tight">पुलिस मॉडर्न स्कूल</h1>
+              <span class="text-[10px] sm:text-xs bg-sky-500/15 border border-sky-400/30 text-sky-300 font-semibold px-2 py-0.5 rounded-full">वेतनमान 25वीं वाहिनी</span>
             </div>
-            <p class="text-xs text-slate-400 hidden sm:block">25वीं वाहिनी पीएसी, रायबरेली • स्टाफ सैलरी & क्लाउड बैकअप सिस्टम</p>
+            <p class="text-[11px] text-slate-400 hidden sm:block">25वीं वाहिनी पीएसी, रायबरेली • स्टाफ सैलरी प्रबंधन एवं मुद्रण प्रणाली</p>
           </div>
         </div>
 
         <!-- Middle Cloud Status Badge -->
         <div class="hidden md:flex items-center space-x-2">
-          <div id="cloudStatusBadge" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-800 border border-slate-700 text-slate-300 text-xs font-medium transition-all shadow-inner">
+          <div id="cloudStatusBadge" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-800/90 border border-slate-700 text-slate-300 text-xs font-medium transition-all shadow-inner">
             <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
             <span id="cloudStatusText">क्लाउड से जुड़ रहा है...</span>
           </div>
-          <span id="lastSavedIndicator" class="text-xs text-slate-400"></span>
+          <span id="lastSavedIndicator" class="text-[11px] text-slate-400"></span>
         </div>
 
         <!-- Right Quick Actions -->
-        <div class="flex items-center space-x-2 sm:space-x-3">
+        <div class="flex items-center space-x-2 sm:space-x-2.5">
           
+          <!-- Staff Directory Quick Add -->
+          <button onclick="openPresetStaffModal()" class="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 sm:py-2 text-xs font-semibold rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-amber-300 hover:text-amber-200 transition shadow-sm active:scale-95" title="स्टाफ डायरेक्टरी से चयन करें (Ctrl + D)">
+            <i data-feather="users" class="w-3.5 h-3.5 text-amber-400"></i>
+            <span class="hidden sm:inline">स्टाफ डायरेक्टरी</span>
+          </button>
+
           <!-- History / Saved Drawer Trigger -->
-          <button onclick="toggleSavedDrawer(true)" class="inline-flex items-center gap-1.5 px-3 py-2 text-xs sm:text-sm font-medium rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 transition-all hover:border-slate-600 shadow-sm active:scale-95" title="सुरक्षित वेतन रिकॉर्ड सूची">
-            <i data-feather="database" class="w-4 h-4 text-sky-400"></i>
-            <span class="hidden sm:inline">सुरक्षित रिकॉर्ड्स</span>
-            <span id="savedCountBadge" class="ml-1 bg-sky-600 text-white text-[11px] font-bold px-1.5 py-0.2 rounded-full">0</span>
+          <button onclick="toggleSavedDrawer(true)" class="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 sm:py-2 text-xs font-semibold rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 transition shadow-sm active:scale-95" title="सुरक्षित वेतन रिकॉर्ड सूची">
+            <i data-feather="database" class="w-3.5 h-3.5 text-sky-400"></i>
+            <span class="hidden md:inline">सुरक्षित रिकॉर्ड्स</span>
+            <span id="savedCountBadge" class="bg-sky-600 text-white text-[10px] font-bold px-1.5 py-0.2 rounded-full">0</span>
           </button>
 
           <!-- Save to Cloud Button -->
-          <button id="btnSaveCloud" onclick="saveCurrentSheetToCloud()" class="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs sm:text-sm font-semibold rounded-lg bg-gradient-to-r from-sky-600 to-blue-600 hover:from-sky-500 hover:to-blue-500 text-white shadow-md shadow-sky-600/30 transition-all active:scale-95 hover:shadow-sky-500/40">
-            <i data-feather="cloud" class="w-4 h-4"></i>
-            <span>क्लाउड सेव</span>
+          <button id="btnSaveCloud" onclick="saveCurrentSheetToCloud()" class="inline-flex items-center gap-1.5 px-3 sm:px-3.5 py-1.5 sm:py-2 text-xs font-bold rounded-lg bg-gradient-to-r from-sky-600 to-blue-600 hover:from-sky-500 hover:to-blue-500 text-white shadow-md shadow-sky-600/30 transition-all active:scale-95" title="क्लाउड में सुरक्षित करें (Ctrl + S)">
+            <i data-feather="cloud" class="w-3.5 h-3.5"></i>
+            <span class="hidden sm:inline">क्लाउड सेव</span>
           </button>
 
           <!-- Print / PDF Button -->
-          <button onclick="triggerPrintPDF()" class="inline-flex items-center gap-1.5 px-4 py-2 text-xs sm:text-sm font-semibold rounded-lg bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white shadow-md shadow-emerald-600/30 transition-all active:scale-95 hover:shadow-emerald-500/40">
-            <i data-feather="printer" class="w-4 h-4"></i>
-            <span>A4 प्रिंट / PDF</span>
+          <button onclick="triggerPrintPDF()" class="inline-flex items-center gap-1.5 px-3 sm:px-4 py-1.5 sm:py-2 text-xs font-bold rounded-lg bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white shadow-md shadow-emerald-600/30 transition-all active:scale-95" title="A4 प्रिंट या PDF सेव करें (Ctrl + P)">
+            <i data-feather="printer" class="w-3.5 h-3.5"></i>
+            <span>प्रिंट / PDF</span>
           </button>
 
         </div>
@@ -238,132 +277,235 @@
     </div>
   </header>
 
-  <!-- ================= MAIN WORKSPACE CONTAINER ================= -->
-  <main class="flex-1 max-w-7xl w-full mx-auto p-3 sm:p-5 lg:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+  <!-- ================= KPI STATS SUMMARY BAR ================= -->
+  <section id="kpiStatsBar" class="max-w-7xl w-full mx-auto px-3 sm:px-5 lg:px-6 pt-4 pb-1 no-print">
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3.5">
+      
+      <!-- Card 1: Staff Count -->
+      <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-3 flex items-center justify-between shadow-md">
+        <div>
+          <span class="text-[10px] text-slate-400 uppercase font-semibold tracking-wider block">कर्मचारी संख्या</span>
+          <span id="kpiStaffCount" class="text-lg sm:text-xl font-black text-white font-heading">0</span>
+          <span class="text-[10px] text-slate-500 ml-1">Staff Members</span>
+        </div>
+        <div class="p-2 rounded-lg bg-sky-500/10 text-sky-400">
+          <i data-feather="user-check" class="w-4 h-4"></i>
+        </div>
+      </div>
 
-    <!-- LEFT COLUMN: CONTROLS & STAFF DATA EDITOR (5 Cols on LG) -->
-    <section class="lg:col-span-5 flex flex-col space-y-5 no-print">
+      <!-- Card 2: Total Base Scale -->
+      <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-3 flex items-center justify-between shadow-md">
+        <div>
+          <span class="text-[10px] text-slate-400 uppercase font-semibold tracking-wider block">कुल मूल वेतनमान</span>
+          <span id="kpiTotalBase" class="text-base sm:text-lg font-black text-slate-200 font-martel">₹0.00</span>
+          <span class="text-[10px] text-slate-500 block">स्वीकृत मासिक बजट</span>
+        </div>
+        <div class="p-2 rounded-lg bg-slate-800 text-slate-300">
+          <i data-feather="credit-card" class="w-4 h-4"></i>
+        </div>
+      </div>
+
+      <!-- Card 3: Total Payable (Highlighted) -->
+      <div class="bg-gradient-to-br from-emerald-950/60 via-slate-900 to-slate-900 border border-emerald-500/40 rounded-xl p-3 flex items-center justify-between shadow-md ring-1 ring-emerald-500/20">
+        <div>
+          <span class="text-[10px] text-emerald-400 uppercase font-bold tracking-wider block flex items-center gap-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> कुल देय वेतन
+          </span>
+          <span id="kpiTotalPayable" class="text-lg sm:text-xl font-black text-emerald-400 font-martel">₹0.00</span>
+          <span id="kpiPayableStatus" class="text-[10px] text-emerald-500/80 block font-medium">चेक निर्गमन धनराशि</span>
+        </div>
+        <div class="p-2 rounded-lg bg-emerald-500/20 text-emerald-300">
+          <i data-feather="check-circle" class="w-4 h-4"></i>
+        </div>
+      </div>
+
+      <!-- Card 4: Variance / Deductions -->
+      <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-3 flex items-center justify-between shadow-md">
+        <div>
+          <span class="text-[10px] text-slate-400 uppercase font-semibold tracking-wider block">वेतन कटौती / बचत</span>
+          <span id="kpiVariance" class="text-base sm:text-lg font-black text-amber-400 font-martel">₹0.00</span>
+          <span id="kpiVarianceDesc" class="text-[10px] text-slate-500 block">अवकाश/आंशिक दिवस</span>
+        </div>
+        <div class="p-2 rounded-lg bg-amber-500/10 text-amber-400">
+          <i data-feather="trending-down" class="w-4 h-4"></i>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= VIEW MODE TABS ================= -->
+  <section id="viewModeTabs" class="max-w-7xl w-full mx-auto px-3 sm:px-5 lg:px-6 pt-2 no-print">
+    <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+      
+      <!-- Mode Buttons -->
+      <div class="flex items-center gap-1.5 bg-slate-900/90 p-1 rounded-xl border border-slate-800 text-xs">
+        <button onclick="setViewMode('split')" id="tabBtnSplit" class="px-3 py-1.5 rounded-lg font-bold transition flex items-center gap-1.5 bg-sky-600 text-white shadow">
+          <i data-feather="columns" class="w-3.5 h-3.5"></i>
+          <span>स्प्लिट दृश्य (Editor + Live A4)</span>
+        </button>
+        <button onclick="setViewMode('editor')" id="tabBtnEditor" class="px-3 py-1.5 rounded-lg font-medium text-slate-400 hover:text-white transition flex items-center gap-1.5">
+          <i data-feather="edit-3" class="w-3.5 h-3.5"></i>
+          <span>केवल डेटा प्रविष्टि (Full Editor)</span>
+        </button>
+        <button onclick="setViewMode('preview')" id="tabBtnPreview" class="px-3 py-1.5 rounded-lg font-medium text-slate-400 hover:text-white transition flex items-center gap-1.5">
+          <i data-feather="file-text" class="w-3.5 h-3.5"></i>
+          <span>केवल A4 पूर्वावलोकन (Preview Only)</span>
+        </button>
+      </div>
+
+      <!-- Quick Shortcuts Helpers -->
+      <div class="hidden lg:flex items-center gap-3 text-[11px] text-slate-400">
+        <span><kbd class="px-1.5 py-0.5 rounded bg-slate-800 text-slate-300 font-mono border border-slate-700">Ctrl+S</kbd> सेव</span>
+        <span><kbd class="px-1.5 py-0.5 rounded bg-slate-800 text-slate-300 font-mono border border-slate-700">Ctrl+P</kbd> प्रिंट</span>
+        <span><kbd class="px-1.5 py-0.5 rounded bg-slate-800 text-slate-300 font-mono border border-slate-700">Ctrl+D</kbd> डायरेक्टरी</span>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= MAIN WORKSPACE CONTAINER ================= -->
+  <main class="main-workspace flex-1 max-w-7xl w-full mx-auto p-3 sm:p-5 lg:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+    <!-- LEFT COLUMN: CONTROLS & STAFF DATA EDITOR -->
+    <section id="editorSection" class="lg:col-span-5 flex flex-col space-y-4 no-print">
 
       <!-- Action Card 1: Letter Setup & Month Selection -->
-      <div class="bg-slate-900/90 rounded-2xl border border-slate-800 p-4 sm:p-5 shadow-xl relative overflow-hidden">
+      <div class="bg-slate-900/95 rounded-2xl border border-slate-800 p-4 sm:p-5 shadow-xl relative overflow-hidden">
         <div class="absolute top-0 right-0 w-32 h-32 bg-sky-500/5 rounded-full blur-2xl pointer-events-none"></div>
 
-        <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-800">
+        <div class="flex items-center justify-between mb-3.5 pb-2.5 border-b border-slate-800">
           <div class="flex items-center gap-2">
-            <div class="p-2 rounded-lg bg-sky-500/10 text-sky-400">
+            <div class="p-1.5 rounded-lg bg-sky-500/10 text-sky-400">
               <i data-feather="file-text" class="w-4 h-4"></i>
             </div>
-            <h2 class="text-sm font-bold text-slate-200 tracking-wide uppercase">वेतन पत्र विवरण</h2>
+            <h2 class="text-xs font-bold text-slate-200 tracking-wider uppercase">1. वेतन पत्र विवरण (Official Header)</h2>
           </div>
           
-          <div class="flex items-center gap-1">
-            <button onclick="createNewSalarySheet()" class="text-xs bg-slate-800 hover:bg-slate-700 text-sky-400 hover:text-sky-300 font-medium px-2.5 py-1.5 rounded-lg border border-slate-700 flex items-center gap-1 transition" title="नया वेतन बिल बनाएं">
-              <i data-feather="plus-circle" class="w-3.5 h-3.5"></i>
+          <div class="flex items-center gap-1.5">
+            <button onclick="createNewSalarySheet()" class="text-xs bg-slate-800 hover:bg-slate-700 text-sky-400 hover:text-sky-300 font-semibold px-2.5 py-1 rounded-lg border border-slate-700 flex items-center gap-1 transition active:scale-95" title="नया वेतन बिल बनाएं">
+              <i data-feather="plus-circle" class="w-3 h-3"></i>
               <span>नया बिल</span>
             </button>
           </div>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 text-xs">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
           
-          <!-- Month & Year -->
+          <!-- Month & Year Selector with Smart Presets -->
           <div>
-            <label class="block font-medium text-slate-400 mb-1">वेतन माह एवं वर्ष <span class="text-rose-400">*</span></label>
+            <label class="block font-semibold text-slate-300 mb-1 flex items-center justify-between">
+              <span>वेतन माह एवं वर्ष <span class="text-rose-400">*</span></span>
+              <span class="text-[10px] text-sky-400 font-normal">सत्र 2026-27</span>
+            </label>
             <div class="grid grid-cols-2 gap-1.5">
-              <select id="inputMonth" onchange="onMetadataChange()" class="bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-2 text-slate-100 text-xs focus:ring-2 focus:ring-sky-500 focus:border-transparent outline-none">
+              <select id="inputMonth" onchange="onMetadataChange()" class="bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-slate-100 text-xs focus:ring-2 focus:ring-sky-500 focus:border-transparent outline-none font-medium">
                 <option value="जनवरी">जनवरी</option>
                 <option value="फ़रवरी">फ़रवरी</option>
                 <option value="मार्च">मार्च</option>
                 <option value="अप्रैल">अप्रैल</option>
                 <option value="मई">मई</option>
-                <option value="जून" selected>जून</option>
-                <option value="जुलाई">जुलाई</option>
+                <option value="जून">जून</option>
+                <option value="जुलाई" selected>जुलाई</option>
                 <option value="अगस्त">अगस्त</option>
                 <option value="सितम्बर">सितम्बर</option>
                 <option value="अक्टूबर">अक्टूबर</option>
                 <option value="नवम्बर">नवम्बर</option>
                 <option value="दिसम्बर">दिसम्बर</option>
               </select>
-              <input type="number" id="inputYear" value="2026" onchange="onMetadataChange()" class="bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-2 text-slate-100 text-xs focus:ring-2 focus:ring-sky-500 outline-none">
+              <input type="number" id="inputYear" value="2026" onchange="onMetadataChange()" class="bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-slate-100 text-xs focus:ring-2 focus:ring-sky-500 outline-none font-mono">
             </div>
           </div>
 
           <!-- Dispatch Ref No -->
           <div>
-            <label class="block font-medium text-slate-400 mb-1">पत्रांक संख्या (Dispatch No.)</label>
-            <input type="text" id="inputPatrank" value="पीएमएस / 2026" oninput="onMetadataChange()" placeholder="उदा. पीएमएस / 2026" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-2 text-slate-100 text-xs focus:ring-2 focus:ring-sky-500 outline-none">
+            <label class="block font-semibold text-slate-300 mb-1 flex items-center justify-between">
+              <span>पत्रांक संख्या (Dispatch No.)</span>
+              <button onclick="autoFillPatrank()" class="text-[10px] text-sky-400 hover:underline">ऑटो</button>
+            </label>
+            <input type="text" id="inputPatrank" value="पीएमएस / 2026" oninput="onMetadataChange()" placeholder="उदा. पीएमएस / 2026" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-slate-100 text-xs focus:ring-2 focus:ring-sky-500 outline-none font-medium">
           </div>
 
           <!-- Letter Issue Date -->
           <div>
-            <label class="block font-medium text-slate-400 mb-1">पत्र जारी दिनांक (Issue Date)</label>
-            <input type="text" id="inputDate" value="अगस्त , 2026" oninput="onMetadataChange()" placeholder="उदा. 15 अगस्त, 2026" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-2 text-slate-100 text-xs focus:ring-2 focus:ring-sky-500 outline-none">
-          </div>
-
-          <!-- Email / Contact -->
-          <div>
-            <label class="block font-medium text-slate-400 mb-1">ई-मेल आईडी</label>
-            <input type="text" id="inputEmail" value="policemodernschoolbmpacrb@gmail.com" oninput="onMetadataChange()" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-2 text-slate-100 text-xs focus:ring-2 focus:ring-sky-500 outline-none">
+            <label class="block font-semibold text-slate-300 mb-1 flex items-center justify-between">
+              <span>पत्र दिनांक (Issue Date)</span>
+              <button onclick="setTodayDate()" class="text-[10px] text-emerald-400 hover:underline">आज की तिथि</button>
+            </label>
+            <input type="text" id="inputDate" value="अगस्त , 2026" oninput="onMetadataChange()" placeholder="उदा. 15 अगस्त, 2026" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-slate-100 text-xs focus:ring-2 focus:ring-sky-500 outline-none font-medium">
           </div>
 
           <!-- Signatory Designation -->
-          <div class="sm:col-span-2">
-            <label class="block font-medium text-slate-400 mb-1">हस्ताक्षरकर्ता पद (Signatory Designation)</label>
-            <select id="inputSignatory" onchange="onMetadataChange()" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-2 text-slate-100 text-xs focus:ring-2 focus:ring-sky-500 outline-none">
-              <option value="प्रभारी प्रधानाचार्या" selected>प्रभारी प्रधानाचार्या (Officiating Principal)</option>
-              <option value="कार्यवाहक प्रधानाचार्या">कार्यवाहक प्रधानाचार्या (Acting Principal)</option>
+          <div>
+            <label class="block font-semibold text-slate-300 mb-1">हस्ताक्षरकर्ता पद</label>
+            <select id="inputSignatory" onchange="onMetadataChange()" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-slate-100 text-xs focus:ring-2 focus:ring-sky-500 outline-none">
+              <option value="प्रभारी प्रधानाचार्या" selected>प्रभारी प्रधानाचार्या</option>
+              <option value="कार्यवाहक प्रधानाचार्या">कार्यवाहक प्रधानाचार्या</option>
               <option value="प्रधानाचार्या">प्रधानाचार्या (Principal)</option>
               <option value="प्रधानाध्यापक">प्रधानाध्यापक (Headmaster)</option>
             </select>
+          </div>
+
+          <!-- Email / Contact (Full Width) -->
+          <div class="sm:col-span-2">
+            <label class="block font-semibold text-slate-300 mb-1">विद्यालय आधिकारिक ई-मेल आईडी</label>
+            <input type="text" id="inputEmail" value="policemodernschoolbmpacrb@gmail.com" oninput="onMetadataChange()" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-slate-100 text-xs focus:ring-2 focus:ring-sky-500 outline-none font-mono">
           </div>
 
         </div>
       </div>
 
       <!-- Action Card 2: Staff Table Data Grid Editor -->
-      <div class="bg-slate-900/90 rounded-2xl border border-slate-800 p-4 sm:p-5 shadow-xl flex flex-col flex-1">
+      <div class="bg-slate-900/95 rounded-2xl border border-slate-800 p-4 sm:p-5 shadow-xl flex flex-col flex-1">
         
-        <div class="flex items-center justify-between mb-3 pb-2 border-b border-slate-800">
+        <div class="flex flex-wrap items-center justify-between mb-3 pb-2.5 border-b border-slate-800 gap-2">
           <div class="flex items-center gap-2">
-            <div class="p-2 rounded-lg bg-emerald-500/10 text-emerald-400">
+            <div class="p-1.5 rounded-lg bg-emerald-500/10 text-emerald-400">
               <i data-feather="users" class="w-4 h-4"></i>
             </div>
             <div>
-              <h2 class="text-sm font-bold text-slate-200 tracking-wide uppercase">स्टाफ सूची एवं वेतन प्रविष्टि</h2>
-              <p class="text-[11px] text-slate-400"><span id="staffCountLabel">0</span> कर्मचारी शामिल</p>
+              <h2 class="text-xs font-bold text-slate-200 tracking-wider uppercase">2. स्टाफ प्रविष्टि व वेतन तालिका</h2>
+              <p class="text-[11px] text-slate-400"><span id="staffCountLabel" class="text-emerald-400 font-bold">0</span> कर्मचारी सम्मिलित</p>
             </div>
           </div>
 
-          <!-- Add Staff Button -->
+          <!-- Quick Action Buttons on Staff Grid -->
           <div class="flex items-center gap-1.5">
-            <!-- Preset Quick Add Dropdown -->
-            <button onclick="openPresetStaffModal()" class="text-xs bg-slate-800 hover:bg-slate-700 text-amber-400 hover:text-amber-300 font-medium px-2.5 py-1.5 rounded-lg border border-slate-700 flex items-center gap-1 transition" title="पुराने स्टाफ से त्वरित जोड़ें">
-              <i data-feather="user-check" class="w-3.5 h-3.5"></i>
-              <span>स्टाफ डायरेक्टरी</span>
+            <button onclick="openPresetStaffModal()" class="text-xs bg-amber-500/15 hover:bg-amber-500/25 text-amber-300 border border-amber-500/30 font-bold px-2.5 py-1.5 rounded-lg flex items-center gap-1 transition active:scale-95" title="डायरेक्टरी से कई स्टाफ एक साथ जोड़ें">
+              <i data-feather="user-plus" class="w-3.5 h-3.5"></i>
+              <span>+ डायरेक्टरी</span>
             </button>
-            <button onclick="addNewStaffRow()" class="text-xs bg-emerald-600 hover:bg-emerald-500 text-white font-semibold px-2.5 py-1.5 rounded-lg shadow-sm flex items-center gap-1 transition active:scale-95">
+            <button onclick="addNewStaffRow()" class="text-xs bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-2.5 py-1.5 rounded-lg shadow flex items-center gap-1 transition active:scale-95">
               <i data-feather="plus" class="w-3.5 h-3.5"></i>
-              <span>पंक्ति जोड़ें</span>
+              <span>खाली पंक्ति</span>
             </button>
           </div>
         </div>
 
+        <!-- Filter / Search within staff list -->
+        <div class="mb-3 flex items-center gap-2">
+          <div class="relative flex-1">
+            <i data-feather="search" class="w-3.5 h-3.5 text-slate-500 absolute left-2.5 top-2.5"></i>
+            <input type="text" id="staffFilterInput" oninput="filterStaffEditorRows()" placeholder="कर्मचारी नाम या पद से खोजें..." class="w-full bg-slate-950 border border-slate-800 rounded-lg pl-8 pr-3 py-1.5 text-xs text-slate-200 focus:outline-none focus:ring-1 focus:ring-sky-500">
+          </div>
+          <button onclick="calculateAllFullPay()" class="text-[11px] bg-slate-800 hover:bg-slate-700 text-sky-300 px-2.5 py-1.5 rounded-lg border border-slate-700 font-semibold transition whitespace-nowrap" title="सभी का देय वेतन मूल वेतनमान के बराबर करें">
+            ⚡ 100% पूरा वेतन
+          </button>
+        </div>
+
         <!-- Scrollable Staff Item Cards -->
-        <div id="staffListEditor" class="space-y-3 max-h-[460px] overflow-y-auto pr-1">
+        <div id="staffListEditor" class="space-y-2.5 max-h-[500px] overflow-y-auto pr-1">
           <!-- Dynamically Rendered via JS -->
         </div>
 
         <!-- Total Calculation Footer inside Editor -->
-        <div class="mt-4 pt-3 border-t border-slate-800 bg-slate-950/60 -mx-4 -mb-4 p-4 rounded-b-2xl flex items-center justify-between">
+        <div class="mt-4 pt-3 border-t border-slate-800 bg-slate-950/70 -mx-4 -mb-4 p-4 rounded-b-2xl flex items-center justify-between">
           <div>
-            <div class="text-[11px] text-slate-400 uppercase tracking-wider font-semibold">कुल देय धनराशि (Total Payable)</div>
-            <div id="editorTotalAmount" class="text-lg font-extrabold text-emerald-400 font-martel">₹0.00</div>
+            <div class="text-[10px] text-slate-400 uppercase tracking-wider font-semibold">देय कुल धनराशि (Payable Total)</div>
+            <div id="editorTotalAmount" class="text-lg font-black text-emerald-400 font-martel">₹0.00</div>
           </div>
           <div class="flex items-center gap-2">
-            <button onclick="calculateAllFullPay()" class="text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-2.5 py-1.5 rounded-lg border border-slate-700 transition" title="सभी का देय वेतन मूल वेतनमान के बराबर करें">
-              ⚡ 100% पूरा वेतन
-            </button>
-            <button onclick="clearAllStaff()" class="text-[11px] bg-rose-950/40 hover:bg-rose-900/60 text-rose-300 border border-rose-800/40 px-2.5 py-1.5 rounded-lg transition" title="सभी पंक्तियाँ हटाएं">
+            <button onclick="clearAllStaff()" class="text-xs bg-rose-950/40 hover:bg-rose-900/60 text-rose-300 border border-rose-800/40 px-3 py-1.5 rounded-lg transition" title="सभी पंक्तियाँ हटाएं">
               🗑️ खाली करें
             </button>
           </div>
@@ -372,16 +514,16 @@
       </div>
 
       <!-- Quick Template Loaders -->
-      <div class="bg-slate-900/60 rounded-xl border border-slate-800/80 p-3.5 flex items-center justify-between text-xs">
+      <div class="bg-slate-900/80 rounded-xl border border-slate-800 p-3 flex items-center justify-between text-xs">
         <div class="flex items-center gap-2 text-slate-300">
           <i data-feather="bookmark" class="w-4 h-4 text-sky-400"></i>
-          <span class="font-medium">मूलभूत टेम्पलेट्स (Default Samples):</span>
+          <span class="font-semibold">डिफ़ॉल्ट नमूने (Default Sample Months):</span>
         </div>
         <div class="flex items-center gap-2">
-          <button onclick="loadSampleMonth('june')" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium border border-slate-700 transition">
+          <button onclick="loadSampleMonth('june')" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold border border-slate-700 transition">
             जून 2026
           </button>
-          <button onclick="loadSampleMonth('july')" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium border border-slate-700 transition">
+          <button onclick="loadSampleMonth('july')" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold border border-slate-700 transition">
             जुलाई 2026
           </button>
         </div>
@@ -389,103 +531,191 @@
 
     </section>
 
-    <!-- RIGHT COLUMN: OFFICIAL A4 DOCUMENT REAL-TIME PREVIEW (7 Cols on LG) -->
-    <section class="lg:col-span-7 flex flex-col items-center">
+    <!-- RIGHT COLUMN: OFFICIAL A4 DOCUMENT REAL-TIME PREVIEW -->
+    <section id="previewSection" class="preview-col lg:col-span-7 flex flex-col items-center">
       
-      <!-- Preview Header Toolbar -->
-      <div class="w-full max-w-[210mm] flex items-center justify-between mb-3 px-2 text-xs text-slate-400 no-print">
+      <!-- Preview Header Toolbar & Zoom Controls -->
+      <div class="w-full max-w-[210mm] flex flex-wrap items-center justify-between mb-3 px-1 text-xs text-slate-400 no-print gap-2">
         <div class="flex items-center gap-2">
-          <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
-          <span class="font-semibold text-slate-200">A4 ओरिजिनल प्रिंट पूर्वावलोकन (Live Document)</span>
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span class="font-bold text-slate-200">A4 ओरिजिनल प्रिंट पूर्वावलोकन (Live Document)</span>
         </div>
-        <div class="flex items-center gap-3">
-          <span class="text-[11px] text-slate-400 hidden sm:inline">💡 सीधे प्रिंट के लिए Ctrl + P दबाएं</span>
-          <button onclick="triggerPrintPDF()" class="text-xs text-emerald-400 hover:text-emerald-300 font-semibold flex items-center gap-1">
+        
+        <!-- Zoom & Print Controls -->
+        <div class="flex items-center gap-2">
+          <div class="flex items-center bg-slate-900 border border-slate-800 rounded-lg p-0.5 text-slate-300">
+            <button onclick="changeZoom(-0.1)" class="px-2 py-0.5 hover:bg-slate-800 rounded font-mono font-bold" title="छोटा करें">-</button>
+            <span id="zoomLevelLabel" class="px-1.5 text-[11px] font-mono text-sky-400">100%</span>
+            <button onclick="changeZoom(0.1)" class="px-2 py-0.5 hover:bg-slate-800 rounded font-mono font-bold" title="बड़ा करें">+</button>
+            <button onclick="resetZoom()" class="px-1.5 py-0.5 hover:bg-slate-800 rounded text-[10px]" title="रीसेट">1:1</button>
+          </div>
+
+          <button onclick="triggerPrintPDF()" class="px-3 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs flex items-center gap-1 shadow transition active:scale-95">
             <i data-feather="printer" class="w-3.5 h-3.5"></i>
-            प्रिंट
+            <span>प्रिंट A4</span>
           </button>
         </div>
       </div>
 
       <!-- The Real A4 Sheet for Display & Printing -->
-      <div id="salaryDocumentPage" class="a4-page">
-        
-        <!-- Header Title -->
-        <div class="text-center font-bold text-[19px] sm:text-[21px] text-black mb-4 font-martel tracking-wide border-b border-transparent pb-1">
-          कार्यालय पुलिस माडर्न स्कूल 25वीं वाहिनी पीएसी रायबरेली
-        </div>
-
-        <!-- Sub Header: Dispatch No & Email/Date -->
-        <div class="flex justify-between items-start text-[13px] text-black mb-4 leading-tight">
-          <div class="font-medium">
-            पत्रांक संख्या-<span id="docPatrank" class="font-semibold">पीएमएस / 2026</span>
+      <div id="salaryDocumentWrapper" class="w-full flex justify-center overflow-x-auto pb-10">
+        <div id="salaryDocumentPage" class="a4-page">
+          
+          <!-- Header Title -->
+          <div class="text-center font-bold text-[18px] sm:text-[20px] text-black mb-3 font-martel tracking-wide border-b border-transparent pb-1">
+            कार्यालय पुलिस माडर्न स्कूल 25वीं वाहिनी पीएसी रायबरेली
           </div>
-          <div class="text-right">
-            ई-मेल - <span id="docEmail">policemodernschoolbmpacrb@gmail.com</span><br>
-            दिनांक- <span id="docDate" class="font-semibold">अगस्त , 2026</span>
+
+          <!-- Sub Header: Dispatch No & Email/Date -->
+          <div class="flex justify-between items-start text-[12.5px] text-black mb-3.5 leading-tight">
+            <div class="font-medium">
+              पत्रांक संख्या-<span id="docPatrank" class="font-semibold">पीएमएस / 2026</span>
+            </div>
+            <div class="text-right">
+              ई-मेल - <span id="docEmail">policemodernschoolbmpacrb@gmail.com</span><br>
+              दिनांक- <span id="docDate" class="font-semibold">अगस्त , 2026</span>
+            </div>
           </div>
-        </div>
 
-        <!-- Address To Authority -->
-        <div class="text-[13px] text-black mb-3 leading-relaxed">
-          सेवा में,<br>
-          श्रीमान सेनानायक महोदय<br>
-          25वीं वाहिनी पीएसी<br>
-          रायबरेली।
-        </div>
-
-        <!-- Subject Line -->
-        <div class="text-[13px] text-black mb-3.5 text-justify leading-relaxed indent-8">
-          सादर अनुरोध है कि पुलिस माडर्न स्कूल 25वीं वाहिनी पीएसी रायबरेली के स्टाफ का <strong id="docMonthSubject" class="font-bold">जून माह-2026</strong> का वेतनमान निम्नप्रकार है-
-        </div>
-
-        <!-- Staff Salary Table -->
-        <table class="doc-table">
-          <thead>
-            <tr>
-              <th style="width: 7%;">कम सं०</th>
-              <th style="width: 26%;">नाम</th>
-              <th style="width: 22%;">पद</th>
-              <th style="width: 20%;">खाता सं०</th>
-              <th style="width: 14%;">IFSC</th>
-              <th style="width: 11%;">वेतनमान</th>
-              <th style="width: 12%;">देय वेतन</th>
-            </tr>
-          </thead>
-          <tbody id="docTableBody">
-            <!-- Populated Dynamically -->
-          </tbody>
-          <tfoot>
-            <tr style="font-weight: bold; background-color: #fafafa;">
-              <td colspan="6" style="text-align: right; padding-right: 18px; font-size: 13px;">योग-</td>
-              <td id="docTotalCell" style="text-align: center; font-size: 13px; font-weight: 800;">₹0.00</td>
-            </tr>
-          </tfoot>
-        </table>
-
-        <!-- Conclusion & Cheque Request Paragraph -->
-        <div class="text-[13px] text-black mb-10 text-justify leading-relaxed indent-8 mt-4">
-          अतः महोदय से अनुरोध है कि उपरोक्त धन <strong id="docConclusionAmount" class="font-bold">रू0.00 (शून्य रुपये मात्र)</strong> पुलिस माडर्न स्कूल फण्ड से निर्गत करने की कृपा करें।
-        </div>
-
-        <!-- Official Signatures Block -->
-        <div class="flex justify-between items-end mt-12 text-[13px] text-black">
-          <div class="font-semibold">
-            सधन्यवाद
+          <!-- Address To Authority -->
+          <div class="text-[12.5px] text-black mb-2.5 leading-relaxed">
+            सेवा में,<br>
+            श्रीमान सेनानायक महोदय<br>
+            25वीं वाहिनी पीएसी<br>
+            रायबरेली।
           </div>
-          <div class="text-center leading-snug">
-            <div id="docSignatoryTitle" class="font-bold">प्रभारी प्रधानाचार्या</div>
-            <div>पुलिस माडर्न स्कूल</div>
-            <div>25वीं वाहिनी पीएसी</div>
-            <div>रायबरेली।</div>
-          </div>
-        </div>
 
+          <!-- Subject Line -->
+          <div class="text-[12.5px] text-black mb-3 text-justify leading-relaxed" style="text-indent: 2rem;">
+            सादर अनुरोध है कि पुलिस माडर्न स्कूल 25वीं वाहिनी पीएसी रायबरेली के स्टाफ का <strong id="docMonthSubject" class="font-bold">जून माह-2026</strong> का वेतनमान निम्नप्रकार है-
+          </div>
+
+          <!-- Staff Salary Table -->
+          <table class="doc-table">
+            <thead>
+              <tr>
+                <th style="width: 7%;">कम सं०</th>
+                <th style="width: 25%;">नाम</th>
+                <th style="width: 21%;">पद</th>
+                <th style="width: 20%;">खाता सं०</th>
+                <th style="width: 14%;">IFSC</th>
+                <th style="width: 13%;">वेतनमान</th>
+                <th style="width: 13%;">देय वेतन</th>
+              </tr>
+            </thead>
+            <tbody id="docTableBody">
+              <!-- Populated Dynamically -->
+            </tbody>
+            <tfoot>
+              <tr style="font-weight: bold; background-color: #fafafa;">
+                <td colspan="6" style="text-align: right; padding-right: 18px; font-size: 12.5px;">योग-</td>
+                <td id="docTotalCell" style="text-align: center; font-size: 13px; font-weight: 800;">₹0.00</td>
+              </tr>
+            </tfoot>
+          </table>
+
+          <!-- Conclusion & Cheque Request Paragraph -->
+          <div class="text-[12.5px] text-black mb-8 text-justify leading-relaxed mt-3" style="text-indent: 2rem;">
+            अतः महोदय से अनुरोध है कि उपरोक्त धन <strong id="docConclusionAmount" class="font-bold">रू0.00 (शून्य रुपये मात्र)</strong> पुलिस माडर्न स्कूल फण्ड से निर्गत करने की कृपा करें।
+          </div>
+
+          <!-- Official Signatures Block -->
+          <div class="flex justify-between items-end mt-10 text-[12.5px] text-black">
+            <div class="font-semibold">
+              सधन्यवाद
+            </div>
+            <div class="text-center leading-snug">
+              <div id="docSignatoryTitle" class="font-bold">प्रभारी प्रधानाचार्या</div>
+              <div>पुलिस माडर्न स्कूल</div>
+              <div>25वीं वाहिनी पीएसी</div>
+              <div>रायबरेली।</div>
+            </div>
+          </div>
+
+        </div>
       </div>
 
     </section>
 
   </main>
+
+  <!-- ================= SMART ATTENDANCE / DAYS SALARY CALCULATOR MODAL ================= -->
+  <div id="daysCalcModal" class="fixed inset-0 z-50 overflow-hidden hidden" role="dialog" aria-modal="true">
+    <div class="absolute inset-0 bg-slate-950/80 backdrop-blur-sm" onclick="closeDaysCalcModal()"></div>
+    <div class="fixed inset-0 flex items-center justify-center p-4">
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-md w-full p-5 shadow-2xl relative">
+        <div class="flex items-center justify-between mb-4 pb-2 border-b border-slate-800">
+          <div class="flex items-center gap-2">
+            <div class="p-2 rounded-lg bg-sky-500/10 text-sky-400">
+              <i data-feather="calculator" class="w-4 h-4"></i>
+            </div>
+            <div>
+              <h3 class="text-sm font-bold text-white">स्मार्ट वेतन कैलकुलेटर (Attendance / Days)</h3>
+              <p id="calcStaffName" class="text-xs text-sky-400 font-medium">कर्मचारी का नाम</p>
+            </div>
+          </div>
+          <button onclick="closeDaysCalcModal()" class="p-1 text-slate-400 hover:text-white rounded">
+            <i data-feather="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+
+        <div class="space-y-3.5 text-xs">
+          <div>
+            <label class="block text-slate-400 mb-1">मूल मासिक वेतनमान (Base Scale ₹)</label>
+            <input type="number" id="calcBaseScale" readonly class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-slate-200 font-bold font-mono">
+          </div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-slate-400 mb-1">माह के कुल दिन</label>
+              <select id="calcTotalDays" onchange="recalculateDaysModal()" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-slate-200 font-medium">
+                <option value="30" selected>30 दिन (मानक / जून / आदि)</option>
+                <option value="31">31 दिन (जुलाई / अगस्त / आदि)</option>
+                <option value="28">28 दिन (फ़रवरी)</option>
+                <option value="29">29 दिन (लीप वर्ष)</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-slate-400 mb-1">उपस्थित / कार्य दिवस</label>
+              <input type="number" id="calcWorkedDays" value="5" min="0" max="31" step="0.5" oninput="recalculateDaysModal()" class="w-full bg-slate-950 border border-sky-500 rounded-lg p-2 text-white font-bold font-mono text-sm">
+            </div>
+          </div>
+
+          <!-- Quick presets -->
+          <div>
+            <span class="text-[10px] text-slate-500 block mb-1.5">त्वरित प्रतिशत / दिन चयन:</span>
+            <div class="flex flex-wrap gap-1.5">
+              <button onclick="setCalcDaysPreset(30)" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded text-[11px] font-medium">पूरे 30 दिन (100%)</button>
+              <button onclick="setCalcDaysPreset(15)" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded text-[11px] font-medium">15 दिन (50%)</button>
+              <button onclick="setCalcDaysPreset(10)" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded text-[11px] font-medium">10 दिन</button>
+              <button onclick="setCalcDaysPreset(5)" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded text-[11px] font-medium">5 दिन (जून नमूना)</button>
+            </div>
+          </div>
+
+          <!-- Calculated Result Preview -->
+          <div class="p-3 bg-emerald-950/40 border border-emerald-500/40 rounded-xl flex items-center justify-between">
+            <div>
+              <span class="text-[10px] text-emerald-400 font-semibold block">परिकलित देय वेतन (Calculated Payable):</span>
+              <span id="calcResultDisplay" class="text-base font-black text-emerald-300 font-martel">₹0.00</span>
+            </div>
+            <div class="text-right text-[10px] text-slate-400">
+              <span id="calcFormulaText">सूत्र: (Base / 30) × 5</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-5 pt-3 border-t border-slate-800 flex items-center justify-end gap-2">
+          <button onclick="closeDaysCalcModal()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold rounded-lg">
+            रद्द करें
+          </button>
+          <button onclick="applyDaysCalcResult()" class="px-4 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-lg shadow transition active:scale-95">
+            देय वेतन में लागू करें
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- ================= SAVED RECORDS CLOUD DRAWER / MODAL ================= -->
   <div id="savedDrawer" class="fixed inset-0 z-50 overflow-hidden hidden" aria-labelledby="slide-over-title" role="dialog" aria-modal="true">
@@ -495,7 +725,7 @@
       <div class="pointer-events-auto w-screen max-w-md bg-slate-900 border-l border-slate-800 shadow-2xl flex flex-col">
         
         <!-- Drawer Header -->
-        <div class="p-5 border-b border-slate-800 flex items-center justify-between bg-slate-900/80">
+        <div class="p-4 sm:p-5 border-b border-slate-800 flex items-center justify-between bg-slate-900/80">
           <div class="flex items-center gap-2.5">
             <div class="p-2 rounded-lg bg-sky-500/10 text-sky-400">
               <i data-feather="cloud" class="w-5 h-5"></i>
@@ -551,30 +781,55 @@
     </div>
   </div>
 
-  <!-- ================= STAFF DIRECTORY PRESETS MODAL ================= -->
+  <!-- ================= STAFF DIRECTORY MULTI-SELECT PRESETS MODAL ================= -->
   <div id="presetStaffModal" class="fixed inset-0 z-50 overflow-hidden hidden" role="dialog" aria-modal="true">
     <div class="absolute inset-0 bg-slate-950/80 backdrop-blur-sm" onclick="closePresetStaffModal()"></div>
     <div class="fixed inset-0 flex items-center justify-center p-4">
-      <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-lg w-full p-5 shadow-2xl relative">
-        <div class="flex items-center justify-between mb-4 pb-2 border-b border-slate-800">
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-lg w-full p-5 shadow-2xl relative flex flex-col max-h-[90vh]">
+        
+        <div class="flex items-center justify-between mb-3 pb-2 border-b border-slate-800">
           <div class="flex items-center gap-2">
-            <i data-feather="book-open" class="w-5 h-5 text-amber-400"></i>
-            <h3 class="text-sm font-bold text-white">स्टाफ डायरेक्टरी (PMS Staff Directory)</h3>
+            <div class="p-1.5 rounded-lg bg-amber-500/10 text-amber-400">
+              <i data-feather="users" class="w-4 h-4"></i>
+            </div>
+            <div>
+              <h3 class="text-sm font-bold text-white">स्टाफ डायरेक्टरी (PMS Staff Directory)</h3>
+              <p class="text-[11px] text-slate-400">कर्मचारियों को चेक करें और एक क्लिक में बिल में जोड़ें</p>
+            </div>
           </div>
           <button onclick="closePresetStaffModal()" class="text-slate-400 hover:text-white">
             <i data-feather="x" class="w-5 h-5"></i>
           </button>
         </div>
 
-        <p class="text-xs text-slate-400 mb-3">किसी भी नियमित स्टाफ को क्लिक करके तुरंत बिल में जोड़ें:</p>
+        <!-- Directory Search & Select All Actions -->
+        <div class="mb-3 flex items-center justify-between gap-2 text-xs">
+          <div class="flex items-center gap-1.5">
+            <button onclick="selectAllDirectoryStaff(true)" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-sky-400 rounded border border-slate-700 font-semibold text-[11px]">
+              ✓ सभी चुनें
+            </button>
+            <button onclick="selectAllDirectoryStaff(false)" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-400 rounded border border-slate-700 text-[11px]">
+              ✗ साफ़ करें
+            </button>
+          </div>
+          <div class="text-[11px] text-slate-400">
+            चयनित: <span id="directorySelectedCount" class="font-bold text-amber-400">0</span> / 7
+          </div>
+        </div>
 
-        <div id="presetStaffList" class="space-y-2 max-h-72 overflow-y-auto pr-1">
+        <!-- Directory List with Checkboxes -->
+        <div id="presetStaffList" class="space-y-2 overflow-y-auto pr-1 flex-1">
           <!-- Populated dynamically from known staff master -->
         </div>
 
-        <div class="mt-4 pt-3 border-t border-slate-800 flex justify-end">
-          <button onclick="closePresetStaffModal()" class="px-4 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-lg">
-            बंद करें
+        <!-- Directory Modal Footer -->
+        <div class="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between">
+          <button onclick="closePresetStaffModal()" class="px-3.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold rounded-lg">
+            रद्द करें
+          </button>
+          <button onclick="addSelectedDirectoryStaff()" class="px-4 py-1.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-bold rounded-lg shadow transition active:scale-95 flex items-center gap-1.5">
+            <i data-feather="user-plus" class="w-3.5 h-3.5"></i>
+            <span>चयनित स्टाफ जोड़ें</span>
           </button>
         </div>
       </div>
@@ -584,7 +839,7 @@
   <!-- ================= FLOATING TOAST NOTIFICATION CONTAINER ================= -->
   <div id="toastContainer" class="fixed bottom-5 right-5 z-50 space-y-2 pointer-events-none"></div>
 
-  <!-- ================= FIREBASE INITIALIZATION & APPLICATION LOGIC ================= -->
+  <!-- ================= APPLICATION SCRIPTS & FIREBASE MODULE ================= -->
   <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js';
     import { 
@@ -610,6 +865,8 @@
     let app = null;
     let db = null;
     let isCloudConnected = false;
+    let currentCalcStaffIndex = -1;
+    let currentZoomScale = 1.0;
 
     // Staff Master Preset Directory
     const STAFF_MASTER = [
@@ -687,8 +944,7 @@
 
     function updateCloudStatusUI(connected) {
       const badge = document.getElementById('cloudStatusBadge');
-      const text = document.getElementById('cloudStatusText');
-      if (!badge || !text) return;
+      if (!badge) return;
 
       if (connected) {
         badge.className = "inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-950/80 border border-emerald-700/60 text-emerald-300 text-xs font-medium shadow-inner";
@@ -794,6 +1050,69 @@
       }, 3500);
     };
 
+    // View Mode Switcher (Split / Full Editor / Preview Only)
+    window.setViewMode = function(mode) {
+      const editor = document.getElementById('editorSection');
+      const preview = document.getElementById('previewSection');
+      const tabSplit = document.getElementById('tabBtnSplit');
+      const tabEditor = document.getElementById('tabBtnEditor');
+      const tabPreview = document.getElementById('tabBtnPreview');
+
+      const activeClass = "bg-sky-600 text-white shadow font-bold";
+      const inactiveClass = "text-slate-400 hover:text-white font-medium";
+
+      tabSplit.className = `px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 ${mode === 'split' ? activeClass : inactiveClass}`;
+      tabEditor.className = `px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 ${mode === 'editor' ? activeClass : inactiveClass}`;
+      tabPreview.className = `px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 ${mode === 'preview' ? activeClass : inactiveClass}`;
+
+      if (mode === 'split') {
+        editor.classList.remove('hidden', 'lg:col-span-12');
+        editor.classList.add('lg:col-span-5');
+        preview.classList.remove('hidden', 'lg:col-span-12');
+        preview.classList.add('lg:col-span-7');
+      } else if (mode === 'editor') {
+        editor.classList.remove('hidden', 'lg:col-span-5');
+        editor.classList.add('lg:col-span-12');
+        preview.classList.add('hidden');
+      } else if (mode === 'preview') {
+        editor.classList.add('hidden');
+        preview.classList.remove('hidden', 'lg:col-span-7');
+        preview.classList.add('lg:col-span-12');
+      }
+    };
+
+    // Zoom Controls for A4 Preview
+    window.changeZoom = function(delta) {
+      currentZoomScale = Math.max(0.6, Math.min(1.4, currentZoomScale + delta));
+      applyZoom();
+    };
+
+    window.resetZoom = function() {
+      currentZoomScale = 1.0;
+      applyZoom();
+    };
+
+    function applyZoom() {
+      const page = document.getElementById('salaryDocumentPage');
+      const label = document.getElementById('zoomLevelLabel');
+      if (page) {
+        page.style.transform = `scale(${currentZoomScale})`;
+      }
+      if (label) {
+        label.innerText = `${Math.round(currentZoomScale * 100)}%`;
+      }
+    }
+
+    // Filter staff rows inside editor
+    window.filterStaffEditorRows = function() {
+      const q = (document.getElementById('staffFilterInput').value || '').toLowerCase().trim();
+      const cards = document.querySelectorAll('.staff-editor-card');
+      cards.forEach(card => {
+        const text = card.getAttribute('data-search') || '';
+        card.style.display = text.includes(q) ? 'block' : 'none';
+      });
+    };
+
     // Render Editor & Document Preview
     window.renderAll = function() {
       // 1. Sync Input Controls
@@ -808,21 +1127,39 @@
       const editorList = document.getElementById('staffListEditor');
       editorList.innerHTML = '';
       
+      let totalBase = 0;
       let totalPayable = 0;
+
       window.currentSheet.staff.forEach((st, idx) => {
+        const base = parseFloat(st.baseScale || 0);
         const pay = parseFloat(st.payable || 0);
+        totalBase += base;
         totalPayable += pay;
 
+        const diff = pay - base;
+        const isFull = Math.abs(diff) < 0.01;
+        const diffText = isFull ? '100% पूरा वेतन' : `${diff < 0 ? 'कटौती: ' : 'अतिरिक्त: '} ₹${Math.abs(diff).toFixed(2)}`;
+        const diffBadgeClass = isFull ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30' : 'bg-amber-500/20 text-amber-300 border-amber-500/30';
+
         const card = document.createElement('div');
-        card.className = "bg-slate-950/80 border border-slate-800 rounded-xl p-3 text-xs hover:border-slate-700 transition relative group";
+        card.className = "staff-editor-card bg-slate-950/90 border border-slate-800 rounded-xl p-3 text-xs hover:border-slate-700 transition relative group shadow-sm";
+        card.setAttribute('data-search', `${(st.name || '').toLowerCase()} ${(st.designation || '').toLowerCase()}`);
+        
         card.innerHTML = `
           <div class="flex items-center justify-between mb-2 pb-1.5 border-b border-slate-800/80">
             <div class="flex items-center gap-2">
-              <span class="w-5 h-5 rounded-full bg-slate-800 text-sky-400 font-bold flex items-center justify-center text-[11px]">${idx + 1}</span>
-              <span class="font-bold text-slate-200">${st.name || 'कर्मचारी का नाम'}</span>
+              <span class="w-5 h-5 rounded-full bg-slate-800 text-sky-400 font-bold flex items-center justify-center text-[11px] font-mono">${idx + 1}</span>
+              <span class="font-bold text-slate-200 text-xs">${st.name || 'कर्मचारी का नाम'}</span>
               <span class="text-[10px] text-slate-400 bg-slate-900 px-1.5 py-0.5 rounded border border-slate-800">${st.designation || 'पद'}</span>
+              <span class="text-[10px] px-1.5 py-0.2 rounded border font-semibold ${diffBadgeClass}">${diffText}</span>
             </div>
             <div class="flex items-center gap-1">
+              <button onclick="openDaysCalcModal(${idx})" class="p-1 text-sky-400 hover:text-sky-300 hover:bg-sky-950/40 rounded transition flex items-center gap-0.5 text-[10px] font-semibold border border-sky-500/20 px-1.5" title="दिनों के अनुसार वेतन निकालें">
+                <i data-feather="calculator" class="w-3 h-3"></i> दिन
+              </button>
+              <button onclick="setRowFullPay(${idx})" class="p-1 text-emerald-400 hover:text-emerald-300 hover:bg-emerald-950/40 rounded transition text-[10px] font-semibold" title="100% पूरा वेतन करें">
+                100%
+              </button>
               <button onclick="moveStaffRow(${idx}, -1)" ${idx === 0 ? 'disabled class="opacity-30 p-1 text-slate-500"' : 'class="p-1 text-slate-400 hover:text-white"'} title="ऊपर करें">
                 <i data-feather="chevron-up" class="w-3.5 h-3.5"></i>
               </button>
@@ -837,36 +1174,45 @@
 
           <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
             <div>
-              <label class="text-[10px] text-slate-500 block mb-0.5">कर्मचारी का नाम</label>
-              <input type="text" value="${st.name || ''}" oninput="updateStaffField(${idx}, 'name', this.value)" class="w-full bg-slate-900 border border-slate-700/80 rounded px-2 py-1 text-slate-100 text-xs focus:ring-1 focus:ring-sky-500 outline-none">
+              <label class="text-[10px] text-slate-400 block mb-0.5">कर्मचारी का नाम</label>
+              <input type="text" value="${st.name || ''}" oninput="updateStaffField(${idx}, 'name', this.value)" class="w-full bg-slate-900 border border-slate-700/80 rounded px-2 py-1 text-slate-100 text-xs focus:ring-1 focus:ring-sky-500 outline-none font-medium">
             </div>
             <div>
-              <label class="text-[10px] text-slate-500 block mb-0.5">पद / पदनाम</label>
-              <input type="text" value="${st.designation || ''}" oninput="updateStaffField(${idx}, 'designation', this.value)" class="w-full bg-slate-900 border border-slate-700/80 rounded px-2 py-1 text-slate-100 text-xs focus:ring-1 focus:ring-sky-500 outline-none">
+              <label class="text-[10px] text-slate-400 block mb-0.5">पद / पदनाम</label>
+              <input type="text" value="${st.designation || ''}" oninput="updateStaffField(${idx}, 'designation', this.value)" class="w-full bg-slate-900 border border-slate-700/80 rounded px-2 py-1 text-slate-100 text-xs focus:ring-1 focus:ring-sky-500 outline-none font-medium">
             </div>
             <div>
-              <label class="text-[10px] text-slate-500 block mb-0.5">बैंक खाता सं०</label>
+              <label class="text-[10px] text-slate-400 block mb-0.5">बैंक खाता सं०</label>
               <input type="text" value="${st.accountNo || ''}" oninput="updateStaffField(${idx}, 'accountNo', this.value)" class="w-full bg-slate-900 border border-slate-700/80 rounded px-2 py-1 text-slate-100 text-xs focus:ring-1 focus:ring-sky-500 outline-none font-mono">
             </div>
             <div>
-              <label class="text-[10px] text-slate-500 block mb-0.5">बैंक IFSC कोड</label>
+              <label class="text-[10px] text-slate-400 block mb-0.5">बैंक IFSC कोड</label>
               <input type="text" value="${st.ifsc || ''}" oninput="updateStaffField(${idx}, 'ifsc', this.value)" class="w-full bg-slate-900 border border-slate-700/80 rounded px-2 py-1 text-slate-100 text-xs focus:ring-1 focus:ring-sky-500 outline-none font-mono uppercase">
             </div>
             <div>
-              <label class="text-[10px] text-slate-500 block mb-0.5">मूल वेतनमान (₹)</label>
-              <input type="number" step="0.01" value="${st.baseScale || 0}" oninput="updateStaffField(${idx}, 'baseScale', this.value)" class="w-full bg-slate-900 border border-slate-700/80 rounded px-2 py-1 text-slate-100 text-xs focus:ring-1 focus:ring-sky-500 outline-none font-mono">
+              <label class="text-[10px] text-slate-400 block mb-0.5">मूल वेतनमान (₹)</label>
+              <input type="number" step="0.01" value="${st.baseScale || 0}" oninput="updateStaffField(${idx}, 'baseScale', this.value)" class="w-full bg-slate-900 border border-slate-700/80 rounded px-2 py-1 text-slate-100 text-xs focus:ring-1 focus:ring-sky-500 outline-none font-mono font-bold">
             </div>
             <div>
-              <label class="text-[10px] text-emerald-400 font-semibold block mb-0.5">देय वेतन (₹)</label>
-              <input type="number" step="0.01" value="${st.payable || 0}" oninput="updateStaffField(${idx}, 'payable', this.value)" class="w-full bg-slate-900 border border-emerald-600/70 rounded px-2 py-1 text-emerald-300 font-bold text-xs focus:ring-1 focus:ring-emerald-400 outline-none font-mono">
+              <label class="text-[10px] text-emerald-400 font-bold block mb-0.5">देय वेतन (₹)</label>
+              <input type="number" step="0.01" value="${st.payable || 0}" oninput="updateStaffField(${idx}, 'payable', this.value)" class="w-full bg-slate-900 border border-emerald-500/80 rounded px-2 py-1 text-emerald-300 font-bold text-xs focus:ring-1 focus:ring-emerald-400 outline-none font-mono">
             </div>
           </div>
         `;
         editorList.appendChild(card);
       });
 
-      document.getElementById('staffCountLabel').innerText = window.currentSheet.staff.length;
+      // Update KPI Cards & Counts
+      const staffLen = window.currentSheet.staff.length;
+      document.getElementById('staffCountLabel').innerText = staffLen;
+      document.getElementById('kpiStaffCount').innerText = staffLen;
+      document.getElementById('kpiTotalBase').innerText = '₹' + totalBase.toFixed(2);
+      document.getElementById('kpiTotalPayable').innerText = '₹' + totalPayable.toFixed(2);
       document.getElementById('editorTotalAmount').innerText = '₹' + totalPayable.toFixed(2);
+
+      const variance = totalPayable - totalBase;
+      document.getElementById('kpiVariance').innerText = `${variance < 0 ? '-' : '+'}₹${Math.abs(variance).toFixed(2)}`;
+      document.getElementById('kpiVarianceDesc').innerText = variance === 0 ? '100% पूरा वेतन वितरित' : `${Math.abs(variance).toFixed(2)} रु अंतर`;
 
       // 3. Render Right A4 Official Sheet
       document.getElementById('docPatrank').innerText = window.currentSheet.patrank || 'पीएमएस / 2026';
@@ -929,6 +1275,15 @@
       saveToLocalStorage();
     };
 
+    window.setRowFullPay = function(index) {
+      if (window.currentSheet.staff[index]) {
+        window.currentSheet.staff[index].payable = parseFloat(window.currentSheet.staff[index].baseScale) || 0;
+        renderAll();
+        saveToLocalStorage();
+        showToast(`${window.currentSheet.staff[index].name} का 100% पूरा वेतन सेट किया गया`, 'success');
+      }
+    };
+
     window.addNewStaffRow = function(preset = null) {
       const newStaff = preset ? { ...preset } : {
         name: "नया कर्मचारी",
@@ -945,7 +1300,8 @@
     };
 
     window.deleteStaffRow = function(index) {
-      if (confirm(`क्या आप इस पंक्ति को हटाना चाहते हैं?`)) {
+      const name = window.currentSheet.staff[index]?.name || 'कर्मचारी';
+      if (confirm(`क्या आप ${name} को हटाना चाहते हैं?`)) {
         window.currentSheet.staff.splice(index, 1);
         renderAll();
         saveToLocalStorage();
@@ -997,6 +1353,22 @@
       }
     };
 
+    window.setTodayDate = function() {
+      const monthsHi = ["जनवरी", "फ़रवरी", "मार्च", "अप्रैल", "मई", "जून", "जुलाई", "अगस्त", "सितम्बर", "अक्टूबर", "नवम्बर", "दिसम्बर"];
+      const d = new Date();
+      const str = `${d.getDate()} ${monthsHi[d.getMonth()]}, ${d.getFullYear()}`;
+      document.getElementById('inputDate').value = str;
+      onMetadataChange();
+      showToast("दिनांक अपडेट की गई", 'info');
+    };
+
+    window.autoFillPatrank = function() {
+      const y = document.getElementById('inputYear').value || '2026';
+      document.getElementById('inputPatrank').value = `पीएमएस / वेत० / ${y}`;
+      onMetadataChange();
+      showToast("पत्रांक संख्या अपडेट की गई", 'info');
+    };
+
     window.loadSampleMonth = function(monthKey) {
       if (DEFAULT_DATASETS[`${monthKey}_2026`]) {
         window.currentSheet = JSON.parse(JSON.stringify(DEFAULT_DATASETS[`${monthKey}_2026`]));
@@ -1004,6 +1376,54 @@
         saveToLocalStorage();
         showToast(`${window.currentSheet.month} ${window.currentSheet.year} का प्रारूप लोड किया गया`, 'success');
       }
+    };
+
+    // ================= SMART DAYS SALARY CALCULATOR =================
+    window.openDaysCalcModal = function(index) {
+      currentCalcStaffIndex = index;
+      const staff = window.currentSheet.staff[index];
+      if (!staff) return;
+
+      document.getElementById('calcStaffName').innerText = `${staff.name} (${staff.designation})`;
+      document.getElementById('calcBaseScale').value = staff.baseScale || 0;
+      document.getElementById('calcWorkedDays').value = 5;
+      document.getElementById('calcTotalDays').value = "30";
+
+      recalculateDaysModal();
+      document.getElementById('daysCalcModal').classList.remove('hidden');
+    };
+
+    window.closeDaysCalcModal = function() {
+      document.getElementById('daysCalcModal').classList.add('hidden');
+    };
+
+    window.setCalcDaysPreset = function(days) {
+      document.getElementById('calcWorkedDays').value = days;
+      recalculateDaysModal();
+    };
+
+    window.recalculateDaysModal = function() {
+      const base = parseFloat(document.getElementById('calcBaseScale').value) || 0;
+      const totalDays = parseFloat(document.getElementById('calcTotalDays').value) || 30;
+      const workedDays = parseFloat(document.getElementById('calcWorkedDays').value) || 0;
+
+      const result = (base / totalDays) * workedDays;
+      document.getElementById('calcResultDisplay').innerText = '₹' + result.toFixed(2);
+      document.getElementById('calcFormulaText').innerText = `सूत्र: (₹${base.toFixed(2)} ÷ ${totalDays}) × ${workedDays} दिन`;
+    };
+
+    window.applyDaysCalcResult = function() {
+      if (currentCalcStaffIndex < 0 || !window.currentSheet.staff[currentCalcStaffIndex]) return;
+      const base = parseFloat(document.getElementById('calcBaseScale').value) || 0;
+      const totalDays = parseFloat(document.getElementById('calcTotalDays').value) || 30;
+      const workedDays = parseFloat(document.getElementById('calcWorkedDays').value) || 0;
+
+      const result = Math.round(((base / totalDays) * workedDays) * 100) / 100;
+      window.currentSheet.staff[currentCalcStaffIndex].payable = result;
+      renderAll();
+      saveToLocalStorage();
+      closeDaysCalcModal();
+      showToast(`${window.currentSheet.staff[currentCalcStaffIndex].name} का देय वेतन ₹${result.toFixed(2)} सेट किया गया`, 'success');
     };
 
     // ================= FIRESTORE CLOUD STORAGE METHODS =================
@@ -1073,7 +1493,6 @@
       // Ensure June and July are included in records if empty
       if (records.length === 0) {
         records = [DEFAULT_DATASETS["july_2026"], DEFAULT_DATASETS["june_2026"]];
-        // Auto seed to Firestore if cloud available
         if (isCloudConnected && db) {
           try {
             await setDoc(doc(db, COLLECTION_NAME, DEFAULT_DATASETS["june_2026"].id), DEFAULT_DATASETS["june_2026"]);
@@ -1188,7 +1607,6 @@
     window.deleteSavedRecord = async function(recordId) {
       if (!confirm("क्या आप वाकई इस रिकॉर्ड को हमेशा के लिए हटाना चाहते हैं?")) return;
       
-      // Delete from Firestore
       if (isCloudConnected && db) {
         try {
           await deleteDoc(doc(db, COLLECTION_NAME, recordId));
@@ -1244,36 +1662,68 @@
       reader.readAsText(file);
     };
 
-    // Preset Staff Directory Modal
+    // Preset Staff Directory Modal with Multi-select
     window.openPresetStaffModal = function() {
       const container = document.getElementById('presetStaffList');
       container.innerHTML = '';
 
-      STAFF_MASTER.forEach(staff => {
-        const item = document.createElement('div');
-        item.className = "flex items-center justify-between p-2.5 rounded-lg bg-slate-950/70 border border-slate-800 hover:border-sky-500/50 hover:bg-sky-950/20 transition cursor-pointer";
-        item.onclick = () => {
-          addNewStaffRow(staff);
-          closePresetStaffModal();
-        };
+      STAFF_MASTER.forEach((staff, idx) => {
+        const item = document.createElement('label');
+        item.className = "flex items-center justify-between p-2.5 rounded-xl bg-slate-950/80 border border-slate-800 hover:border-sky-500/50 hover:bg-sky-950/20 transition cursor-pointer";
         item.innerHTML = `
-          <div>
-            <div class="font-bold text-white text-xs">${staff.name}</div>
-            <div class="text-[11px] text-slate-400">${staff.designation} • खाता: ${staff.accountNo}</div>
+          <div class="flex items-center gap-2.5">
+            <input type="checkbox" data-idx="${idx}" class="preset-checkbox rounded accent-sky-500 w-4 h-4 cursor-pointer" onchange="updateDirectorySelectedCount()">
+            <div>
+              <div class="font-bold text-white text-xs">${staff.name}</div>
+              <div class="text-[11px] text-slate-400">${staff.designation} • खाता: <span class="font-mono">${staff.accountNo}</span></div>
+            </div>
           </div>
           <div class="text-right">
             <span class="text-xs font-bold text-emerald-400">₹${staff.baseScale.toFixed(2)}</span>
-            <span class="block text-[10px] text-sky-400">+ जोड़ें</span>
+            <span class="block text-[10px] text-slate-400">मूल वेतनमान</span>
           </div>
         `;
         container.appendChild(item);
       });
 
+      updateDirectorySelectedCount();
       document.getElementById('presetStaffModal').classList.remove('hidden');
+      if (window.feather) feather.replace();
     };
 
     window.closePresetStaffModal = function() {
       document.getElementById('presetStaffModal').classList.add('hidden');
+    };
+
+    window.selectAllDirectoryStaff = function(select) {
+      const checkboxes = document.querySelectorAll('.preset-checkbox');
+      checkboxes.forEach(cb => cb.checked = select);
+      updateDirectorySelectedCount();
+    };
+
+    window.updateDirectorySelectedCount = function() {
+      const checked = document.querySelectorAll('.preset-checkbox:checked').length;
+      document.getElementById('directorySelectedCount').innerText = checked;
+    };
+
+    window.addSelectedDirectoryStaff = function() {
+      const checkboxes = document.querySelectorAll('.preset-checkbox:checked');
+      if (checkboxes.length === 0) {
+        showToast("कृपया कम से कम एक कर्मचारी चुनें", 'warning');
+        return;
+      }
+
+      let addedCount = 0;
+      checkboxes.forEach(cb => {
+        const idx = parseInt(cb.getAttribute('data-idx'), 10);
+        if (STAFF_MASTER[idx]) {
+          addNewStaffRow(STAFF_MASTER[idx]);
+          addedCount++;
+        }
+      });
+
+      closePresetStaffModal();
+      showToast(`${addedCount} कर्मचारी सफलतापूर्वक जोड़े गए`, 'success');
     };
 
     // Drawer Visibility
@@ -1321,6 +1771,16 @@
       if ((e.ctrlKey || e.metaKey) && e.key === 's') {
         e.preventDefault();
         saveCurrentSheetToCloud();
+      }
+      // Ctrl + P: Print
+      if ((e.ctrlKey || e.metaKey) && e.key === 'p') {
+        e.preventDefault();
+        triggerPrintPDF();
+      }
+      // Ctrl + D: Open Directory
+      if ((e.ctrlKey || e.metaKey) && e.key === 'd') {
+        e.preventDefault();
+        openPresetStaffModal();
       }
     });
 

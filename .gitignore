@@ -3,3 +3,8 @@ public/
 .env
 .vercel
 fee_management.html
+*.zip
+__pycache__/
+*.bak
+3d_text/
+*.pdf

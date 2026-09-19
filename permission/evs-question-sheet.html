@@ -1,0 +1,1379 @@
+<!DOCTYPE html>
+<html lang="hi" class="h-full bg-slate-950">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Class 2 EVS (Friends of the Earth) Q&A Sheet - पुलिस मॉडर्न स्कूल, रायबरेली</title>
+  <meta name="description"
+    content="Police Modern School Class 2 Environmental Studies (Friends of the Earth) Chapter-wise Question Answer and Practice Worksheet Suite. Features 5 True/False, 5 One-Word, and 5 Match the Following for all 17 chapters.">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts: Noto Sans Devanagari & Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;600;700;800;900&family=Outfit:wght@400;500;600;700;800;900&family=Fredoka:wght@500;600;700&display=swap"
+    rel="stylesheet">
+
+  <!-- Feather Icons -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.js"></script>
+
+  <!-- Class 2 EVS Comprehensive Curriculum Data -->
+  <script src="evs-chapters-data.js"></script>
+
+  <style>
+    :root {
+      --font-body: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-hindi: 'Noto Sans Devanagari', sans-serif;
+      --font-kid: 'Fredoka', 'Outfit', cursive, sans-serif;
+      --color-brand: #065f46;
+      --color-gold: #f59e0b;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background-color: #090d16;
+      color: #1e293b;
+      -webkit-font-smoothing: antialiased;
+      margin: 0;
+      padding: 0;
+    }
+
+    .font-hindi {
+      font-family: var(--font-hindi);
+    }
+
+    .font-kid {
+      font-family: var(--font-kid);
+    }
+
+    /* A4 Document Physical Dimensions */
+    .a4-document {
+      width: 210mm;
+      min-height: 297mm;
+      margin: 20px auto;
+      background: #ffffff;
+      padding: 16mm 18mm 18mm 18mm;
+      box-shadow: 0 10px 35px -5px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05);
+      box-sizing: border-box;
+      position: relative;
+      border-radius: 6px;
+    }
+
+    /* Print Setup */
+    @page {
+      size: A4 portrait;
+      margin: 10mm 12mm 12mm 12mm;
+    }
+
+    @media print {
+      body {
+        background: #ffffff !important;
+        color: #000000 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+
+      .no-print {
+        display: none !important;
+      }
+
+      .a4-document {
+        width: 100% !important;
+        min-height: auto !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+      }
+
+      .page-break-before {
+        page-break-before: always !important;
+        break-before: page !important;
+      }
+
+      .avoid-break {
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+      }
+
+      .qa-card, .match-container {
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+      }
+    }
+
+    /* UI Components */
+    .section-ribbon {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: linear-gradient(135deg, #064e3b 0%, #022c22 100%);
+      color: #ffffff;
+      padding: 7px 14px;
+      border-radius: 6px;
+      margin-top: 18px;
+      margin-bottom: 12px;
+      border-left: 5px solid #10b981;
+    }
+
+    .section-title {
+      font-size: 0.95rem;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .section-badge {
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      background: rgba(16, 185, 129, 0.25);
+      border: 1px solid rgba(16, 185, 129, 0.5);
+      border-radius: 9999px;
+      color: #a7f3d0;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .qa-card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-left: 4px solid #059669;
+      border-radius: 6px;
+      padding: 10px 12px;
+      margin-bottom: 9px;
+      transition: all 0.2s ease;
+    }
+
+    .qa-card:hover {
+      border-color: #cbd5e1;
+      background: #f1f5f9;
+    }
+
+    .q-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 22px;
+      background: #065f46;
+      color: #ffffff;
+      font-size: 0.72rem;
+      font-weight: 800;
+      border-radius: 5px;
+      flex-shrink: 0;
+      margin-right: 6px;
+    }
+
+    .ans-tag {
+      display: inline-flex;
+      align-items: center;
+      font-size: 0.72rem;
+      font-weight: 800;
+      padding: 1px 7px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .ans-true {
+      background: #dcfce7;
+      color: #166534;
+      border: 1px solid #bbf7d0;
+    }
+
+    .ans-false {
+      background: #fee2e2;
+      color: #991b1b;
+      border: 1px solid #fecaca;
+    }
+
+    .ans-word {
+      background: #e0e7ff;
+      color: #3730a3;
+      border: 1px solid #c7d2fe;
+    }
+
+    /* Match the Following Grid */
+    .match-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      margin-top: 6px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      overflow: hidden;
+    }
+
+    .match-table th {
+      background: #0f172a;
+      color: #ffffff;
+      font-size: 0.75rem;
+      font-weight: 800;
+      padding: 7px 12px;
+      text-align: left;
+      letter-spacing: 0.04em;
+    }
+
+    .match-table td {
+      padding: 7px 12px;
+      font-size: 0.8rem;
+      border-top: 1px solid #e2e8f0;
+      vertical-align: middle;
+    }
+
+    .match-table tr:nth-child(even) {
+      background: #f8fafc;
+    }
+
+    .key-badge {
+      background: #ecfdf5;
+      color: #065f46;
+      border: 1px solid #a7f3d0;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-weight: 700;
+      font-size: 0.75rem;
+      display: inline-block;
+    }
+
+    /* Worksheet Practice Mode */
+    .worksheet-mode .ans-text-reveal {
+      display: none !important;
+    }
+
+    .worksheet-mode .practice-blank {
+      display: block !important;
+    }
+
+    .practice-blank {
+      display: none;
+      height: 22px;
+      border-bottom: 1.5px dashed #94a3b8;
+      margin-top: 6px;
+    }
+
+    .worksheet-mode .match-key-col {
+      display: none !important;
+    }
+
+    .worksheet-mode .match-blank-col {
+      display: table-cell !important;
+    }
+
+    .match-blank-col {
+      display: none;
+    }
+
+    /* Font Size Variations */
+    body.font-size-compact .a4-document {
+      font-size: 0.82rem;
+    }
+    body.font-size-compact .qa-card {
+      padding: 7px 10px;
+      margin-bottom: 7px;
+    }
+
+    body.font-size-large .a4-document {
+      font-size: 1.05rem;
+    }
+    body.font-size-large .qa-card {
+      padding: 13px 15px;
+    }
+
+    /* Audio Speaking Pulse */
+    .active-speaking {
+      animation: pulse-border 1.5s infinite;
+      background: #ecfdf5 !important;
+      border-color: #059669 !important;
+    }
+
+    @keyframes pulse-border {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(5, 150, 105, 0.4); }
+      50% { box-shadow: 0 0 0 6px rgba(5, 150, 105, 0); }
+    }
+
+    /* High-Visibility Chapter Select Styling (Never hidden in background) */
+    #chapterSelect {
+      position: relative;
+      z-index: 9999 !important;
+      background-color: #020617 !important;
+      color: #34d399 !important;
+      cursor: pointer;
+    }
+
+    #chapterSelect option {
+      background-color: #0f172a !important;
+      color: #f8fafc !important;
+      padding: 10px 14px !important;
+      font-size: 13px !important;
+      font-weight: 600 !important;
+    }
+
+    #chapterSelect option:checked {
+      background-color: #059669 !important;
+      color: #ffffff !important;
+      font-weight: 800 !important;
+    }
+
+    #chapterSelect optgroup {
+      background-color: #020617 !important;
+      color: #10b981 !important;
+      font-weight: 800 !important;
+      font-size: 11px !important;
+      padding: 6px 10px !important;
+      letter-spacing: 0.05em !important;
+      border-bottom: 1px solid #334155 !important;
+    }
+  </style>
+</head>
+
+<body class="min-h-full flex flex-col justify-between items-center text-slate-800">
+
+  <!-- =========================================================================
+       Top Screen Control Toolbar (Excluded from Print)
+       ========================================================================= -->
+  <header class="no-print w-full bg-slate-900 text-white py-2 px-3 sticky top-0 z-50 shadow-md border-b border-slate-800">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2.5 text-xs">
+
+      <!-- 1. Chapter Switcher Centerpiece (Brought to the Front as Requested) -->
+      <div class="flex items-center gap-1.5 bg-slate-800/95 px-2.5 py-1.5 rounded-lg border-2 border-emerald-400/80 shadow-md">
+        <span class="text-emerald-400 font-bold text-xs uppercase tracking-wider hidden sm:inline flex items-center gap-1">
+          <i data-feather="book-open" class="w-3.5 h-3.5 text-emerald-400"></i>
+          <span>अध्याय:</span>
+        </span>
+        <button onclick="navigateChapter(-1)" title="पिछला अध्याय (Previous Chapter)"
+          class="px-2 py-1 rounded bg-slate-700 hover:bg-slate-600 text-slate-200 hover:text-emerald-300 font-bold text-xs flex items-center gap-1 cursor-pointer transition">
+          <i data-feather="chevron-left" class="w-3.5 h-3.5"></i>
+          <span class="font-bold">Prev</span>
+        </button>
+
+        <!-- Chapter Selector Dropdown (High-Visibility Custom Dropdown Menu) -->
+        <div class="relative" id="customChapterDropdownContainer">
+          <!-- Dropdown Trigger Button -->
+          <button id="customDropdownTrigger" onclick="toggleCustomDropdown(event)" type="button"
+            class="bg-slate-950 hover:bg-slate-900 text-emerald-300 font-bold font-kid text-xs py-1 px-2.5 rounded border border-emerald-500/80 hover:border-emerald-400 focus:outline-none focus:ring-1 focus:ring-emerald-400 max-w-[240px] sm:max-w-[340px] flex items-center justify-between gap-2 cursor-pointer shadow-inner transition">
+            <span id="customDropdownCurrentTitle" class="truncate flex items-center gap-1.5 text-left">
+              <span class="px-1.5 py-0.2 rounded bg-emerald-400 text-slate-950 font-black text-[10px]">Ch 1</span>
+              <span class="truncate">About Me</span>
+            </span>
+            <i data-feather="chevron-down" id="customDropdownChevron" class="w-3.5 h-3.5 text-emerald-400 flex-shrink-0 transition-transform duration-200"></i>
+          </button>
+
+          <!-- Hidden native select to maintain 100% compatibility -->
+          <select id="chapterSelect" onchange="onChapterSelectChange(this.value)" class="sr-only" aria-hidden="true" tabindex="-1">
+            <!-- Dynamically populated from EVS_CHAPTERS_DATA -->
+          </select>
+
+          <!-- Floating High-Visibility Dropdown Menu -->
+          <div id="customDropdownMenu"
+            class="hidden absolute left-0 top-full mt-2 w-[320px] sm:w-[440px] bg-slate-950 border-2 border-emerald-500 rounded-xl shadow-2xl z-[999999] flex flex-col overflow-hidden text-white">
+            
+            <!-- Dropdown Menu Header: Selected Subject Info & Switcher -->
+            <div class="p-2.5 bg-slate-900 border-b border-slate-800 space-y-2">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-1.5">
+                  <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                  <span class="text-[11px] font-extrabold uppercase tracking-wider text-emerald-400 font-heading">
+                    विषय: कक्षा 2 EVS (Friends of the Earth)
+                  </span>
+                </div>
+                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
+                  17 अध्याय
+                </span>
+              </div>
+
+              <!-- Subject Switcher Tabs -->
+              <div class="flex items-center gap-1.5 text-[11px]">
+                <span class="text-slate-400 text-[10px] flex-shrink-0 font-bold">विषय बदलें:</span>
+                <span class="px-2 py-0.5 rounded bg-emerald-500 text-slate-950 font-black text-[10px] shadow">🌱 EVS (17)</span>
+                <a href="question-sheet.html" class="px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-amber-300 hover:text-amber-200 border border-slate-700 text-[10px] font-bold transition flex items-center gap-1 no-underline">
+                  🌍 SST (14)
+                </a>
+                <a href="science-question-sheet.html" class="px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-white hover:text-neutral-200 border border-slate-700 text-[10px] font-bold transition flex items-center gap-1 no-underline">
+                  🔬 Science (12)
+                </a>
+              </div>
+
+              <!-- Quick Search Input -->
+              <div class="relative">
+                <input type="text" id="customDropdownSearch" oninput="filterCustomDropdownChapters(this.value)"
+                  placeholder="🔍 अध्याय खोजें (Search chapter name or number)..."
+                  class="w-full bg-slate-950 text-slate-100 placeholder-slate-400 text-xs px-2.5 py-1.5 rounded-lg border border-slate-700 focus:outline-none focus:border-emerald-400 font-sans shadow-inner">
+              </div>
+            </div>
+
+            <!-- Scrollable List of All Chapters by Unit -->
+            <div id="customDropdownList" class="overflow-y-auto max-h-[360px] p-2 space-y-2">
+              <!-- Dynamically populated -->
+            </div>
+
+            <!-- Dropdown Footer -->
+            <div class="px-3 py-1.5 bg-slate-900 border-t border-slate-800 flex items-center justify-between text-[10px] text-slate-400">
+              <span class="text-emerald-400/90 font-medium">चैप्टर पर क्लिक करके तुरंत लोड करें</span>
+              <button type="button" onclick="closeCustomDropdown()" class="text-slate-400 hover:text-white font-bold cursor-pointer">
+                बंद करें ✕
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <button onclick="navigateChapter(1)" title="अगला अध्याय (Next Chapter)"
+          class="px-2 py-1 rounded bg-slate-700 hover:bg-slate-600 text-slate-200 hover:text-emerald-300 font-bold text-xs flex items-center gap-1 cursor-pointer transition">
+          <span class="font-bold">Next</span>
+          <i data-feather="chevron-right" class="w-3.5 h-3.5"></i>
+        </button>
+      </div>
+
+      <!-- 2. Brand & School Indicator -->
+      <div class="flex items-center gap-2">
+        <span class="font-bold tracking-wide text-emerald-400 font-hindi text-sm">पुलिस मॉडर्न स्कूल</span>
+        <span class="text-slate-600 hidden md:inline">|</span>
+        <span class="text-slate-300 font-semibold hidden md:inline text-xs">Class 2 EVS (Friends of the Earth)</span>
+      </div>
+
+      <!-- 3. Control Actions -->
+      <div class="flex items-center flex-wrap gap-1.5">
+
+        <!-- Mode Toggle: Study Guide vs Practice Worksheet -->
+        <button id="modeToggleBtn" onclick="toggleWorksheetMode()" title="अध्ययन मोड (उत्तर सहित) या अभ्यास कार्यपुस्तिका मोड बदलें"
+          class="px-2.5 py-1.5 rounded bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold transition text-xs flex items-center gap-1 cursor-pointer shadow-sm">
+          <i data-feather="edit-2" class="w-3.5 h-3.5"></i>
+          <span id="modeToggleText">अभ्यास वर्कशीट</span>
+        </button>
+
+        <!-- Audio TTS -->
+        <button id="ttsBtn" onclick="toggleTTSReadAloud()" title="वर्तमान अध्याय के प्रश्नों का वाचन सुनें"
+          class="px-2.5 py-1.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 hover:border-slate-500 transition text-xs flex items-center gap-1 cursor-pointer">
+          <i data-feather="volume-2" class="w-3.5 h-3.5 text-sky-400"></i>
+          <span id="ttsBtnText">ऑडियो</span>
+        </button>
+
+        <!-- Font Size Adjuster -->
+        <div class="inline-flex rounded-md shadow-sm border border-slate-700 overflow-hidden bg-slate-800" role="group">
+          <button onclick="setFontSize('compact')" title="कॉम्पैक्ट प्रिंट"
+            class="px-2 py-1 text-xs text-slate-300 hover:bg-slate-700 border-r border-slate-700">A-</button>
+          <button onclick="setFontSize('normal')" title="सामान्य"
+            class="px-2 py-1 text-xs text-emerald-400 font-bold hover:bg-slate-700 border-r border-slate-700">A</button>
+          <button onclick="setFontSize('large')" title="बड़ा"
+            class="px-2 py-1 text-xs text-slate-300 hover:bg-slate-700">A+</button>
+        </div>
+
+        <!-- Copy Clean Q&A Text -->
+        <button onclick="copySheetText()" title="पूरा प्रश्न-उत्तर टेक्स्ट कॉपी करें (WhatsApp/Word हेतु)"
+          class="px-2.5 py-1.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 hover:border-slate-500 transition text-xs flex items-center gap-1 cursor-pointer">
+          <i data-feather="copy" class="w-3.5 h-3.5 text-amber-400"></i>
+          <span>कॉपी</span>
+        </button>
+
+        <!-- Cross Links -->
+        <a href="science-question-sheet.html" title="Class 6 Science (Curiosity) B&W Suite with Figures"
+          class="px-2 py-1.5 rounded bg-slate-800 hover:bg-slate-700 text-white border border-slate-600 transition text-xs flex items-center gap-1 cursor-pointer no-underline">
+          <i data-feather="compass" class="w-3.5 h-3.5 text-white"></i>
+          <span>Science B&W</span>
+        </a>
+
+        <a href="question-sheet.html" title="Class 6 SST Master Suite"
+          class="px-2 py-1.5 rounded bg-slate-800 hover:bg-slate-700 text-amber-300 border border-slate-700 transition text-xs flex items-center gap-1 cursor-pointer no-underline">
+          <i data-feather="award" class="w-3.5 h-3.5 text-amber-400"></i>
+          <span>Class 6 SST</span>
+        </a>
+
+        <a href="classroom.html" title="कक्षा अंग्रेज़ी"
+          class="px-2 py-1.5 rounded bg-slate-800 hover:bg-slate-700 text-sky-300 border border-slate-700 transition text-xs flex items-center gap-1 cursor-pointer no-underline">
+          <i data-feather="message-circle" class="w-3.5 h-3.5 text-sky-400"></i>
+          <span>Classroom</span>
+        </a>
+
+        <!-- Print / PDF Button -->
+        <button onclick="window.print()" title="A4 पृष्ठ पर वर्तमान अध्याय प्रिंट करें या PDF सेव करें"
+          class="px-3 py-1.5 rounded bg-white hover:bg-slate-200 text-slate-900 font-bold transition text-xs flex items-center gap-1 shadow cursor-pointer">
+          <i data-feather="printer" class="w-3.5 h-3.5 text-slate-900"></i>
+          <span>प्रिंट / PDF</span>
+        </button>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- Sub-Toolbar: Unit Theme & Section Jump Links -->
+  <div class="no-print w-full bg-slate-800/95 text-slate-300 py-1.5 px-4 border-b border-slate-700 text-xs">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
+      <div class="flex items-center flex-wrap gap-2">
+        <span id="currentThemeBadge" class="font-bold text-emerald-400 bg-slate-900 px-2.5 py-0.5 rounded border border-slate-700">
+          Unit 1: My Needs
+        </span>
+        <span class="text-slate-500">|</span>
+        <a href="#sec-tf" class="hover:text-white px-2 py-0.5 rounded bg-slate-700/60 hover:bg-slate-700">A. 5 True / False</a>
+        <a href="#sec-oneword" class="hover:text-white px-2 py-0.5 rounded bg-slate-700/60 hover:bg-slate-700">B. 5 One Word</a>
+        <a href="#sec-match" class="hover:text-white px-2 py-0.5 rounded bg-slate-700/60 hover:bg-slate-700">C. 5 Match Following</a>
+        <a href="#sec-short" class="hover:text-white px-2 py-0.5 rounded bg-slate-700/60 hover:bg-slate-700">D. Short Q&A</a>
+        <a href="#sec-points" class="hover:text-emerald-300 px-2 py-0.5 rounded bg-emerald-950/40 border border-emerald-800/60 font-semibold">⭐ 5 Golden Points</a>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <span id="modeBadge" class="font-bold text-emerald-400 bg-emerald-950/50 px-2 py-0.5 rounded border border-emerald-800">
+          अध्ययन मोड (Answers Visible)
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Front Quick Chapter Strip (Always visible at front for effortless navigation) -->
+  <div class="no-print w-full bg-slate-950 text-slate-200 py-1.5 px-4 border-b border-emerald-500/50 shadow-md">
+    <div class="max-w-7xl mx-auto flex items-center justify-between gap-3 text-xs overflow-x-auto scrollbar-thin">
+      <div class="flex items-center gap-2 flex-shrink-0">
+        <span class="font-extrabold text-emerald-400 font-heading text-[11px] uppercase tracking-wider flex items-center gap-1">
+          <i data-feather="compass" class="w-3.5 h-3.5 text-emerald-400"></i>
+          <span>त्वरित अध्याय (1-17):</span>
+        </span>
+      </div>
+
+      <!-- Quick Chapter Pills -->
+      <div id="quickChapterPills" class="flex items-center gap-1.5 flex-nowrap overflow-x-auto py-0.5">
+        <!-- Rendered by JavaScript -->
+      </div>
+
+      <!-- Open All Chapters Modal Trigger -->
+      <button onclick="toggleChaptersModal()" title="सभी 17 EVS अध्यायों की सूची व यूनिट देखें"
+        class="flex-shrink-0 px-2.5 py-1 rounded bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold text-xs flex items-center gap-1 cursor-pointer transition shadow">
+        <i data-feather="grid" class="w-3.5 h-3.5"></i>
+        <span>सभी अध्याय मेनू</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- All Chapters Modal Dialog (Front Center View) -->
+  <div id="chaptersModal"
+    class="no-print fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-[99999] hidden flex items-center justify-center p-3 sm:p-6 transition-all duration-200">
+    <div class="bg-slate-900 border-2 border-emerald-500 rounded-xl shadow-2xl max-w-3xl w-full max-h-[90vh] flex flex-col overflow-hidden text-white">
+      
+      <!-- Modal Header -->
+      <div class="px-4 py-3 bg-slate-950 border-b border-slate-800 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <span class="font-hindi font-bold text-emerald-400 text-base">कक्षा 2 पर्यावरण अध्ययन (EVS)</span>
+          <span class="text-slate-600">|</span>
+          <span class="text-xs text-slate-300 font-bold font-heading">सम्पूर्ण 17 अध्याय सूची</span>
+        </div>
+        <button onclick="toggleChaptersModal()" class="text-slate-400 hover:text-white p-1 rounded hover:bg-slate-800 transition cursor-pointer">
+          <i data-feather="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <!-- Modal Body (Grid of Chapters by Theme) -->
+      <div id="chaptersModalContent" class="p-4 overflow-y-auto space-y-4">
+        <!-- Populated by JavaScript -->
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="px-4 py-2.5 bg-slate-950 border-t border-slate-800 text-right">
+        <button onclick="toggleChaptersModal()" class="px-4 py-1.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs cursor-pointer">
+          बंद करें (Close)
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Toast Notification Message -->
+  <div id="toast"
+    class="no-print fixed bottom-5 right-5 z-50 bg-slate-900 text-white border border-slate-700 px-4 py-2.5 rounded-lg text-xs shadow-2xl opacity-0 transition-opacity duration-300 pointer-events-none flex items-center gap-2">
+    <i data-feather="check-circle" class="w-4 h-4 text-emerald-400"></i>
+    <span id="toastMsg">संदेश</span>
+  </div>
+
+  <!-- =========================================================================
+       Main A4 Document Container (Dynamically Rendered)
+       ========================================================================= -->
+  <main class="sheet-wrapper w-full flex justify-center p-2 sm:p-5" id="documentContainer">
+    <!-- Rendered via JavaScript -->
+  </main>
+
+  <!-- =========================================================================
+       Application Script & Rendering Logic
+       ========================================================================= -->
+  <script>
+    let currentChapterId = 1;
+    let isWorksheetMode = false;
+    let currentSpeechCard = null;
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // Check hash for chapter link (e.g., #ch3)
+      const hash = window.location.hash;
+      if (hash && hash.startsWith('#ch')) {
+        const parsed = parseInt(hash.replace('#ch', ''), 10);
+        if (parsed >= 1 && parsed <= EVS_CHAPTERS_DATA.length) {
+          currentChapterId = parsed;
+        }
+      }
+
+      initChapterSelect();
+      renderActiveChapter();
+    });
+
+    // Populate Chapter Selector Dropdown (Native + Custom Dropdown Menu)
+    function initChapterSelect() {
+      const select = document.getElementById('chapterSelect');
+      if (!select || !window.EVS_CHAPTERS_DATA) return;
+
+      select.innerHTML = '';
+
+      // Group chapters by theme
+      const themes = {};
+      EVS_CHAPTERS_DATA.forEach(ch => {
+        if (!themes[ch.theme]) themes[ch.theme] = [];
+        themes[ch.theme].push(ch);
+      });
+
+      for (const [themeName, chList] of Object.entries(themes)) {
+        const group = document.createElement('optgroup');
+        group.label = themeName;
+        chList.forEach(ch => {
+          const opt = document.createElement('option');
+          opt.value = ch.id;
+          opt.textContent = `Ch ${ch.id}: ${ch.title}`;
+          if (ch.id === currentChapterId) opt.selected = true;
+          group.appendChild(opt);
+        });
+        select.appendChild(group);
+      }
+
+      updateCustomDropdownTrigger();
+      populateCustomDropdownList();
+    }
+
+    // Toggle Custom Chapter Dropdown Menu
+    function toggleCustomDropdown(e) {
+      if (e) e.stopPropagation();
+      const menu = document.getElementById('customDropdownMenu');
+      const chevron = document.getElementById('customDropdownChevron');
+      if (!menu) return;
+      const isHidden = menu.classList.toggle('hidden');
+      if (!isHidden) {
+        if (chevron) chevron.classList.add('rotate-180');
+        populateCustomDropdownList();
+        const searchInput = document.getElementById('customDropdownSearch');
+        if (searchInput) {
+          searchInput.value = '';
+          setTimeout(() => searchInput.focus(), 50);
+        }
+        feather.replace();
+      } else {
+        if (chevron) chevron.classList.remove('rotate-180');
+      }
+    }
+
+    function closeCustomDropdown() {
+      const menu = document.getElementById('customDropdownMenu');
+      const chevron = document.getElementById('customDropdownChevron');
+      if (menu && !menu.classList.contains('hidden')) {
+        menu.classList.add('hidden');
+      }
+      if (chevron) chevron.classList.remove('rotate-180');
+    }
+
+    // Populate Custom Dropdown List of All Chapters
+    function populateCustomDropdownList(filterText = '') {
+      const listContainer = document.getElementById('customDropdownList');
+      if (!listContainer || !window.EVS_CHAPTERS_DATA) return;
+      listContainer.innerHTML = '';
+
+      const cleanFilter = (filterText || '').toLowerCase().trim();
+
+      const themes = {};
+      EVS_CHAPTERS_DATA.forEach(ch => {
+        if (!themes[ch.theme]) themes[ch.theme] = [];
+        themes[ch.theme].push(ch);
+      });
+
+      let totalMatched = 0;
+
+      for (const [themeName, chList] of Object.entries(themes)) {
+        const matchingChapters = chList.filter(ch => {
+          if (!cleanFilter) return true;
+          return ch.title.toLowerCase().includes(cleanFilter) ||
+                 ch.id.toString() === cleanFilter ||
+                 `ch ${ch.id}`.includes(cleanFilter) ||
+                 themeName.toLowerCase().includes(cleanFilter);
+        });
+
+        if (matchingChapters.length === 0) continue;
+
+        totalMatched += matchingChapters.length;
+
+        const groupDiv = document.createElement('div');
+        groupDiv.className = 'pt-1.5 first:pt-0';
+        groupDiv.innerHTML = `
+          <div class="text-[10px] font-extrabold uppercase tracking-wider text-emerald-400 mb-1 px-1.5 flex items-center gap-1">
+            <i data-feather="folder" class="w-3 h-3 text-emerald-400"></i>
+            <span>${themeName}</span>
+          </div>
+          <div class="space-y-1">
+            ${matchingChapters.map(ch => {
+              const isActive = ch.id === currentChapterId;
+              return `
+                <button type="button" onclick="selectCustomChapter(${ch.id})"
+                  class="w-full text-left p-2 rounded-lg border transition flex items-center justify-between gap-2.5 cursor-pointer ${
+                    isActive 
+                      ? 'bg-emerald-500/25 border-emerald-400 text-emerald-200 font-bold shadow-sm' 
+                      : 'bg-slate-900 hover:bg-slate-800/90 border-slate-800 hover:border-slate-700 text-slate-200'
+                  }">
+                  <div class="flex items-center gap-2 min-w-0">
+                    <span class="w-7 h-5 rounded flex items-center justify-center font-black text-[11px] flex-shrink-0 ${
+                      isActive ? 'bg-emerald-400 text-slate-950 font-black' : 'bg-slate-800 text-slate-300 border border-slate-700'
+                    }">
+                      ${ch.id}
+                    </span>
+                    <span class="text-xs font-semibold truncate ${isActive ? 'text-emerald-300 font-bold' : 'text-slate-100'}">
+                      ${ch.title}
+                    </span>
+                  </div>
+                  ${isActive ? '<span class="text-emerald-400 font-black text-xs">✓</span>' : ''}
+                </button>
+              `;
+            }).join('')}
+          </div>
+        `;
+        listContainer.appendChild(groupDiv);
+      }
+
+      if (totalMatched === 0) {
+        listContainer.innerHTML = `
+          <div class="text-center py-6 text-slate-400 text-xs">
+            कोई अध्याय नहीं मिला ("${filterText}")
+          </div>
+        `;
+      }
+
+      feather.replace();
+    }
+
+    function filterCustomDropdownChapters(text) {
+      populateCustomDropdownList(text);
+    }
+
+    function selectCustomChapter(id) {
+      currentChapterId = id;
+      window.location.hash = `ch${currentChapterId}`;
+      closeCustomDropdown();
+      renderActiveChapter();
+    }
+
+    function updateCustomDropdownTrigger() {
+      const ch = EVS_CHAPTERS_DATA.find(c => c.id === currentChapterId) || EVS_CHAPTERS_DATA[0];
+      const titleEl = document.getElementById('customDropdownCurrentTitle');
+      if (titleEl && ch) {
+        titleEl.innerHTML = `
+          <span class="px-1.5 py-0.5 rounded bg-emerald-400 text-slate-950 font-black text-[10px]">Ch ${ch.id}</span>
+          <span class="truncate font-bold">${ch.title}</span>
+        `;
+      }
+    }
+
+    // Global Click-Outside & ESC listener
+    document.addEventListener('click', (e) => {
+      const container = document.getElementById('customChapterDropdownContainer');
+      if (container && !container.contains(e.target)) {
+        closeCustomDropdown();
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeCustomDropdown();
+      }
+    });
+
+    function onChapterSelectChange(val) {
+      currentChapterId = parseInt(val, 10);
+      window.location.hash = `ch${currentChapterId}`;
+      renderActiveChapter();
+    }
+
+    function navigateChapter(delta) {
+      let newId = currentChapterId + delta;
+      if (newId < 1) newId = EVS_CHAPTERS_DATA.length;
+      if (newId > EVS_CHAPTERS_DATA.length) newId = 1;
+      currentChapterId = newId;
+      document.getElementById('chapterSelect').value = currentChapterId;
+      window.location.hash = `ch${currentChapterId}`;
+      renderActiveChapter();
+    }
+
+    // Render Quick Chapter Pills Strip
+    function renderQuickChapterPills() {
+      const container = document.getElementById('quickChapterPills');
+      if (!container || !window.EVS_CHAPTERS_DATA) return;
+      container.innerHTML = '';
+      EVS_CHAPTERS_DATA.forEach(ch => {
+        const btn = document.createElement('button');
+        const isActive = ch.id === currentChapterId;
+        btn.className = isActive
+          ? 'px-2 py-0.5 rounded bg-emerald-400 text-slate-950 font-black text-xs shadow border border-emerald-300 flex items-center gap-1 flex-shrink-0 cursor-pointer'
+          : 'px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-emerald-300 font-bold text-xs border border-slate-700 flex-shrink-0 cursor-pointer transition';
+        btn.innerHTML = `<span>Ch ${ch.id}</span>`;
+        btn.title = `Ch ${ch.id}: ${ch.title}`;
+        btn.onclick = () => {
+          currentChapterId = ch.id;
+          window.location.hash = `ch${currentChapterId}`;
+          renderActiveChapter();
+        };
+        container.appendChild(btn);
+      });
+    }
+
+    // All Chapters Modal Logic
+    function toggleChaptersModal() {
+      const modal = document.getElementById('chaptersModal');
+      if (!modal) return;
+      const isHidden = modal.classList.toggle('hidden');
+      if (!isHidden) {
+        populateChaptersModal();
+      }
+    }
+
+    function populateChaptersModal() {
+      const container = document.getElementById('chaptersModalContent');
+      if (!container || !window.EVS_CHAPTERS_DATA) return;
+      container.innerHTML = '';
+
+      const themes = {};
+      EVS_CHAPTERS_DATA.forEach(ch => {
+        if (!themes[ch.theme]) themes[ch.theme] = [];
+        themes[ch.theme].push(ch);
+      });
+
+      for (const [themeName, chList] of Object.entries(themes)) {
+        const section = document.createElement('div');
+        section.innerHTML = `
+          <h4 class="font-bold text-emerald-400 text-xs uppercase tracking-wider mb-2 pb-1 border-b border-slate-800 flex items-center gap-1.5">
+            <i data-feather="folder" class="w-3.5 h-3.5 text-emerald-400"></i>
+            ${themeName}
+          </h4>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            ${chList.map(ch => {
+              const isActive = ch.id === currentChapterId;
+              return `
+                <button onclick="selectChapterFromModal(${ch.id})"
+                  class="text-left p-2.5 rounded-lg border transition flex items-start gap-2.5 cursor-pointer ${
+                    isActive 
+                      ? 'bg-emerald-500/20 border-emerald-400 text-emerald-200 font-bold shadow' 
+                      : 'bg-slate-800/80 hover:bg-slate-800 border-slate-700 hover:border-slate-500 text-slate-200'
+                  }">
+                  <span class="w-6 h-6 rounded flex items-center justify-center font-bold text-xs flex-shrink-0 ${
+                    isActive ? 'bg-emerald-400 text-slate-950 font-black' : 'bg-slate-700 text-slate-300'
+                  }">
+                    ${ch.id}
+                  </span>
+                  <div class="min-w-0 flex-1">
+                    <div class="text-xs font-bold truncate">${ch.title}</div>
+                    <div class="text-[11px] text-slate-400 mt-0.5 line-clamp-1">${ch.summary || ''}</div>
+                  </div>
+                </button>
+              `;
+            }).join('')}
+          </div>
+        `;
+        container.appendChild(section);
+      }
+      feather.replace();
+    }
+
+    function selectChapterFromModal(id) {
+      currentChapterId = id;
+      window.location.hash = `ch${currentChapterId}`;
+      toggleChaptersModal();
+      renderActiveChapter();
+    }
+
+    // Render Active Chapter into A4 Document
+    function renderActiveChapter() {
+      window.speechSynthesis.cancel();
+      const container = document.getElementById('documentContainer');
+      const ch = EVS_CHAPTERS_DATA.find(c => c.id === currentChapterId) || EVS_CHAPTERS_DATA[0];
+
+      // Keep dropdown in sync
+      const sel = document.getElementById('chapterSelect');
+      if (sel && parseInt(sel.value, 10) !== currentChapterId) {
+        sel.value = currentChapterId;
+      }
+
+      // Update custom dropdown trigger & list
+      updateCustomDropdownTrigger();
+      populateCustomDropdownList();
+
+      // Update Quick Chapter Pills
+      renderQuickChapterPills();
+
+      // Update Theme badge
+      document.getElementById('currentThemeBadge').textContent = ch.theme;
+
+      // Update Page Title
+      document.title = `Class 2 EVS - Ch ${ch.id}: ${ch.title} | Police Modern School`;
+
+      const todayDate = new Date().toLocaleDateString('en-GB');
+
+      // 1. Section A: 5 True or False
+      let secTFHtml = '';
+      ch.trueFalse.forEach((item, idx) => {
+        const isTrue = item.ans.toLowerCase() === 'true';
+        secTFHtml += `
+          <div class="qa-card" id="qa-tf-${idx+1}">
+            <div class="flex items-start justify-between gap-2">
+              <div class="flex items-start gap-2 flex-1">
+                <span class="q-num">${idx+1}</span>
+                <span class="font-medium text-slate-900">${item.q}</span>
+              </div>
+              <button onclick="speakText(this, '${escapeForTTS(item.q + ' Answer: ' + item.ans + '. ' + item.reason)}')"
+                class="no-print text-slate-400 hover:text-emerald-600 p-1 rounded hover:bg-slate-100 transition" title="Listen">
+                <i data-feather="volume-2" class="w-3.5 h-3.5"></i>
+              </button>
+            </div>
+            <div class="mt-1.5 pl-8 flex items-center gap-2">
+              <div class="ans-text-reveal flex items-center gap-2">
+                <span class="ans-tag ${isTrue ? 'ans-true' : 'ans-false'}">${item.ans}</span>
+                <span class="text-xs text-slate-500">(${item.reason})</span>
+              </div>
+              <div class="practice-blank flex-1"></div>
+            </div>
+          </div>
+        `;
+      });
+
+      // 2. Section B: 5 One Word Answers
+      let secOneWordHtml = '';
+      ch.oneWord.forEach((item, idx) => {
+        secOneWordHtml += `
+          <div class="qa-card" id="qa-oneword-${idx+1}">
+            <div class="flex items-start justify-between gap-2">
+              <div class="flex items-start gap-2 flex-1">
+                <span class="q-num">${idx+1}</span>
+                <span class="font-medium text-slate-900">${item.q}</span>
+              </div>
+              <button onclick="speakText(this, '${escapeForTTS(item.q + ' Answer is: ' + item.ans)}')"
+                class="no-print text-slate-400 hover:text-emerald-600 p-1 rounded hover:bg-slate-100 transition" title="Listen">
+                <i data-feather="volume-2" class="w-3.5 h-3.5"></i>
+              </button>
+            </div>
+            <div class="mt-1.5 pl-8 flex items-center gap-2">
+              <div class="ans-text-reveal">
+                <span class="text-xs text-slate-600 font-bold mr-1">Answer:</span>
+                <span class="ans-tag ans-word font-bold">${item.ans}</span>
+              </div>
+              <div class="practice-blank flex-1"></div>
+            </div>
+          </div>
+        `;
+      });
+
+      // 3. Section C: 5 Match the Following
+      let matchRows = '';
+      ch.matchFollowing.forEach((item, idx) => {
+        matchRows += `
+          <tr>
+            <td class="font-semibold text-slate-900">
+              <span class="inline-block w-5 h-5 text-center bg-slate-200 text-slate-800 rounded font-bold text-xs mr-1">${idx+1}</span>
+              ${item.left}
+            </td>
+            <td class="text-slate-700">
+              <span class="inline-block w-5 h-5 text-center bg-emerald-100 text-emerald-800 rounded font-bold text-xs mr-1">(${String.fromCharCode(97+idx)})</span>
+              ${item.right}
+            </td>
+            <td class="match-key-col text-center">
+              <span class="key-badge">${item.pair}</span>
+            </td>
+            <td class="match-blank-col text-center">
+              <span class="inline-block w-16 border-b border-dashed border-slate-400"></span>
+            </td>
+          </tr>
+        `;
+      });
+
+      // 4. Section D: Short Q&A
+      let shortQAHtml = '';
+      ch.shortQA.forEach((item, idx) => {
+        shortQAHtml += `
+          <div class="qa-card mb-2">
+            <div class="flex items-start justify-between gap-2">
+              <div class="font-bold text-slate-900 text-xs sm:text-sm">
+                <span class="text-emerald-800 font-extrabold mr-1">Q${idx+1}.</span> ${item.q}
+              </div>
+              <button onclick="speakText(this, '${escapeForTTS(item.q + ' Answer: ' + item.ans)}')"
+                class="no-print text-slate-400 hover:text-emerald-600 p-1 rounded hover:bg-slate-100 transition" title="Listen">
+                <i data-feather="volume-2" class="w-3.5 h-3.5"></i>
+              </button>
+            </div>
+            <div class="ans-text-reveal text-xs text-slate-700 mt-1 pl-4 border-l-2 border-emerald-400">
+              <strong class="text-emerald-900">Ans:</strong> ${item.ans}
+            </div>
+            <div class="practice-blank"></div>
+            <div class="practice-blank"></div>
+          </div>
+        `;
+      });
+
+      // 5. Section E: 5 Golden Points
+      let goldenPointsHtml = '';
+      ch.goldenPoints.forEach((pt, idx) => {
+        goldenPointsHtml += `
+          <li class="flex items-start gap-2 text-xs leading-relaxed">
+            <span class="inline-flex items-center justify-center w-4 h-4 rounded-full bg-amber-200 text-amber-900 font-bold text-[10px] flex-shrink-0 mt-0.5">${idx+1}</span>
+            <span>${pt}</span>
+          </li>
+        `;
+      });
+
+      // Complete Document Template
+      container.innerHTML = `
+        <article id="sheetDocument" class="a4-document">
+
+          <!-- Official School Letterhead -->
+          <header class="pb-3 border-b-2 border-emerald-900">
+            <div class="flex items-center justify-between gap-3 sm:gap-5">
+              
+              <!-- PMS Logo -->
+              <div class="w-20 h-20 sm:w-22 sm:h-22 flex-shrink-0 flex items-center justify-center">
+                <img src="pms-logo.png" width="88" height="88" alt="Police Modern School Logo"
+                  class="w-full h-full object-contain" onerror="this.src='ChatGPT Image Sep 11, 2026, 02_21_01 PM.png'"
+                  loading="eager" />
+              </div>
+
+              <!-- Header Text -->
+              <div class="text-center flex-1 min-w-0">
+                <p class="text-xs sm:text-sm font-extrabold tracking-widest text-emerald-900 uppercase">
+                  POLICE MODERN SCHOOL
+                </p>
+                <h1 class="font-hindi text-xl sm:text-2xl font-black text-slate-950 leading-tight tracking-tight mt-0.5">
+                  कार्यालय पुलिस मॉडर्न स्कूल
+                </h1>
+                <h2 class="font-hindi text-xs sm:text-sm font-extrabold text-slate-800 tracking-tight">
+                  25वीं वाहिनी पीएसी, रायबरेली (उ.प्र.)
+                </h2>
+                <div class="mt-1.5 inline-block bg-emerald-800 text-white px-3 py-0.5 rounded-full text-[11px] font-bold tracking-wider uppercase">
+                  ACADEMIC SESSION 2026 – 2027 • EVS PRACTICE STUDY SHEET
+                </div>
+              </div>
+
+              <!-- PAC Badge -->
+              <div class="w-20 h-20 sm:w-22 sm:h-22 flex-shrink-0 flex items-center justify-center">
+                <img src="pac_logo.png" width="80" height="80" alt="PAC Logo"
+                  class="w-full h-full object-contain opacity-95" onerror="this.style.display='none'" />
+              </div>
+
+            </div>
+
+            <!-- Subject & Chapter Banner -->
+            <div class="mt-3 pt-2 border-t border-slate-300 flex flex-wrap items-center justify-between gap-2 text-xs sm:text-sm">
+              <div class="flex items-center gap-2">
+                <span class="bg-emerald-100 text-emerald-900 border border-emerald-300 px-2.5 py-0.5 rounded font-bold">
+                  CLASS 2
+                </span>
+                <span class="font-bold text-slate-900 uppercase">
+                  ENVIRONMENTAL STUDIES (EVS)
+                </span>
+              </div>
+              <div class="text-right">
+                <span class="text-slate-500 font-medium">Chapter ${ch.id}:</span>
+                <span class="font-extrabold text-emerald-900 ml-1 underline decoration-emerald-500 decoration-2 font-kid text-sm sm:text-base">
+                  “${ch.title.toUpperCase()}”
+                </span>
+              </div>
+            </div>
+
+            <!-- Student Metadata Box -->
+            <div class="mt-2.5 bg-slate-50 border border-slate-200 rounded-md p-2 grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
+              <div>
+                <span class="text-slate-500 font-semibold">Student Name:</span>
+                <span contenteditable="true" class="font-bold text-slate-900 ml-1 border-b border-dashed border-slate-400 inline-block min-w-[100px]">_________________</span>
+              </div>
+              <div>
+                <span class="text-slate-500 font-semibold">Roll No:</span>
+                <span contenteditable="true" class="font-bold text-slate-900 ml-1 border-b border-dashed border-slate-400 inline-block min-w-[45px]">______</span>
+              </div>
+              <div>
+                <span class="text-slate-500 font-semibold">Section:</span>
+                <span contenteditable="true" class="font-bold text-slate-900 ml-1 border-b border-dashed border-slate-400 inline-block min-w-[40px]">Class 2-A</span>
+              </div>
+              <div>
+                <span class="text-slate-500 font-semibold">Date:</span>
+                <span contenteditable="true" class="font-bold text-slate-900 ml-1 border-b border-dashed border-slate-400 inline-block min-w-[70px]">${todayDate}</span>
+              </div>
+            </div>
+          </header>
+
+          <!-- Learning Summary -->
+          <div class="mt-2.5 bg-emerald-50/80 border-l-4 border-emerald-600 p-2 rounded-r-md text-xs text-emerald-950 flex items-start gap-2">
+            <i data-feather="smile" class="w-4 h-4 text-emerald-700 flex-shrink-0 mt-0.5"></i>
+            <div class="leading-relaxed">
+              <strong class="font-bold text-emerald-900">Learning Objective:</strong>
+              ${ch.summary}
+            </div>
+          </div>
+
+          <!-- Section A: 5 True or False -->
+          <section id="sec-tf">
+            <div class="section-ribbon">
+              <div class="section-title">
+                <i data-feather="check-circle" class="w-4 h-4 text-emerald-300"></i>
+                <span>A. Write 'True' or 'False'</span>
+              </div>
+              <span class="section-badge">5 Questions • 1 Mark Each</span>
+            </div>
+            ${secTFHtml}
+          </section>
+
+          <!-- Section B: 5 One Word Answers -->
+          <section id="sec-oneword" class="mt-3">
+            <div class="section-ribbon bg-gradient-to-r from-blue-900 to-slate-900 border-blue-500">
+              <div class="section-title">
+                <i data-feather="help-circle" class="w-4 h-4 text-blue-300"></i>
+                <span>B. Answer in One Word</span>
+              </div>
+              <span class="section-badge bg-blue-900/60 border-blue-400 text-blue-200">5 Questions • Concept Check</span>
+            </div>
+            ${secOneWordHtml}
+          </section>
+
+          <!-- Section C: 5 Match the Following -->
+          <section id="sec-match" class="mt-3">
+            <div class="section-ribbon bg-gradient-to-r from-amber-900 to-slate-900 border-amber-500">
+              <div class="section-title">
+                <i data-feather="shuffle" class="w-4 h-4 text-amber-300"></i>
+                <span>C. Match the Following</span>
+              </div>
+              <span class="section-badge bg-amber-900/60 border-amber-400 text-amber-200">5 Pairs • Column Matching</span>
+            </div>
+            <div class="match-container">
+              <table class="match-table">
+                <thead>
+                  <tr>
+                    <th style="width: 38%;">Column A</th>
+                    <th style="width: 38%;">Column B</th>
+                    <th class="match-key-col" style="width: 24%; text-align: center;">Correct Match</th>
+                    <th class="match-blank-col" style="width: 24%; text-align: center;">Write Code</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${matchRows}
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <!-- Section D: Short Answer Questions -->
+          <section id="sec-short" class="mt-3">
+            <div class="section-ribbon bg-gradient-to-r from-purple-900 to-slate-900 border-purple-500">
+              <div class="section-title">
+                <i data-feather="edit-3" class="w-4 h-4 text-purple-300"></i>
+                <span>D. Short Answer Questions</span>
+              </div>
+              <span class="section-badge bg-purple-900/60 border-purple-400 text-purple-200">3 Questions • Understanding</span>
+            </div>
+            ${shortQAHtml}
+          </section>
+
+          <!-- Section E: 5 Golden Points to Remember -->
+          <section id="sec-points" class="mt-4">
+            <div class="p-3 bg-amber-50 border-2 border-amber-300 rounded-lg">
+              <div class="flex items-center justify-between pb-1.5 border-b border-amber-200 mb-2">
+                <div class="flex items-center gap-1.5">
+                  <span class="text-base">⭐</span>
+                  <h3 class="font-extrabold text-amber-950 text-xs sm:text-sm tracking-wide uppercase">
+                    LET'S REMEMBER: 5 GOLDEN POINTS (CHAPTER ${ch.id})
+                  </h3>
+                </div>
+                <span class="bg-amber-600 text-white font-bold text-[9px] px-2 py-0.5 rounded uppercase">
+                  Fast Revision
+                </span>
+              </div>
+              <ul class="space-y-1.5">
+                ${goldenPointsHtml}
+              </ul>
+            </div>
+          </section>
+
+          <!-- Teacher Assessment & Signatures -->
+          <footer class="mt-6 pt-3 border-t-2 border-slate-900 flex justify-between items-end text-xs">
+            <div>
+              <p class="font-bold text-slate-800">Teacher's Remarks / Assessment:</p>
+              <div contenteditable="true" class="w-60 border-b border-dashed border-slate-400 mt-1 text-slate-700">Excellent progress! Very good handwriting.</div>
+              <p class="text-[11px] text-slate-500 mt-1 font-hindi">पुलिस मॉडर्न स्कूल, 25वीं वाहिनी पीएसी, रायबरेली</p>
+            </div>
+            <div class="text-center">
+              <div class="w-36 border-b border-slate-800 mb-1"></div>
+              <p class="font-bold text-slate-900">EVS Teacher's Signature</p>
+              <p class="text-[10px] text-slate-500">Class 2 Environmental Studies</p>
+            </div>
+          </footer>
+
+        </article>
+      `;
+
+      // Re-initialize feather icons
+      feather.replace();
+    }
+
+    function escapeForTTS(str) {
+      return (str || '')
+        .replace(/<[^>]*>/g, '')
+        .replace(/'/g, "\\'")
+        .replace(/"/g, '&quot;')
+        .replace(/\n/g, ' ')
+        .trim();
+    }
+
+    // Toggle Worksheet vs Study Mode
+    function toggleWorksheetMode() {
+      isWorksheetMode = !isWorksheetMode;
+      const body = document.body;
+      const btnText = document.getElementById('modeToggleText');
+      const badge = document.getElementById('modeBadge');
+
+      if (isWorksheetMode) {
+        body.classList.add('worksheet-mode');
+        btnText.textContent = 'अध्ययन गाइड (Show Answers)';
+        badge.textContent = 'अभ्यास टेस्ट मोड (Answers Hidden)';
+        badge.className = 'font-bold text-amber-400 bg-amber-950/50 px-2 py-0.5 rounded border border-amber-800';
+        showToast('Worksheet mode on: Answers hidden for student test practice!');
+      } else {
+        body.classList.remove('worksheet-mode');
+        btnText.textContent = 'अभ्यास वर्कशीट';
+        badge.textContent = 'अध्ययन मोड (Answers Visible)';
+        badge.className = 'font-bold text-emerald-400 bg-emerald-950/50 px-2 py-0.5 rounded border border-emerald-800';
+        showToast('Study Guide mode on: Full answers visible.');
+      }
+    }
+
+    // Font Size Adjuster
+    function setFontSize(size) {
+      document.body.classList.remove('font-size-compact', 'font-size-large');
+      if (size === 'compact') {
+        document.body.classList.add('font-size-compact');
+        showToast('Font size: Compact');
+      } else if (size === 'large') {
+        document.body.classList.add('font-size-large');
+        showToast('Font size: Large');
+      } else {
+        showToast('Font size: Normal');
+      }
+    }
+
+    // Toast Messenger
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      const toastMsg = document.getElementById('toastMsg');
+      if (!toast || !toastMsg) return;
+
+      toastMsg.textContent = msg;
+      toast.classList.remove('opacity-0');
+      toast.classList.add('opacity-100');
+
+      setTimeout(() => {
+        toast.classList.remove('opacity-100');
+        toast.classList.add('opacity-0');
+      }, 2500);
+    }
+
+    // Speech Synthesis for Card
+    function speakText(btn, text) {
+      if (!('speechSynthesis' in window)) {
+        showToast('Browser does not support Speech Synthesis');
+        return;
+      }
+
+      window.speechSynthesis.cancel();
+      clearSpeakingCards();
+
+      const card = btn.closest('.qa-card');
+      if (card) {
+        card.classList.add('active-speaking');
+        currentSpeechCard = card;
+      }
+
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.rate = 0.85; // Kid-friendly slower pace
+      utterance.lang = 'en-US';
+
+      utterance.onend = () => clearSpeakingCards();
+      utterance.onerror = () => clearSpeakingCards();
+
+      window.speechSynthesis.speak(utterance);
+      showToast('Reading out question for Class 2...');
+    }
+
+    function clearSpeakingCards() {
+      document.querySelectorAll('.active-speaking').forEach(c => c.classList.remove('active-speaking'));
+      currentSpeechCard = null;
+    }
+
+    // Toggle Chapter Audio Read Aloud
+    function toggleTTSReadAloud() {
+      if (!('speechSynthesis' in window)) {
+        showToast('Browser does not support Speech Synthesis');
+        return;
+      }
+
+      const btn = document.getElementById('ttsBtnText');
+      if (window.speechSynthesis.speaking) {
+        window.speechSynthesis.cancel();
+        clearSpeakingCards();
+        btn.textContent = 'ऑडियो';
+        showToast('Audio paused');
+      } else {
+        const ch = EVS_CHAPTERS_DATA.find(c => c.id === currentChapterId);
+        const text = `Class 2 Environmental Studies. Chapter ${ch.id}: ${ch.title}. Police Modern School, 25th Battalion PAC, Raebareli. ${ch.summary}. Question 1: ${ch.trueFalse[0].q}. Answer: ${ch.trueFalse[0].ans}. ${ch.trueFalse[0].reason}`;
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.rate = 0.85;
+        utterance.lang = 'en-US';
+        btn.textContent = 'रोकें';
+
+        utterance.onend = () => {
+          btn.textContent = 'ऑडियो';
+        };
+
+        window.speechSynthesis.speak(utterance);
+        showToast(`Playing audio for Chapter ${ch.id}...`);
+      }
+    }
+
+    // Copy formatted Q&A text to clipboard
+    function copySheetText() {
+      const ch = EVS_CHAPTERS_DATA.find(c => c.id === currentChapterId);
+      let text = `POLICE MODERN SCHOOL, 25TH BN PAC, RAEBARELI\nClass 2 EVS - Chapter ${ch.id}: ${ch.title}\n${ch.theme}\n\n`;
+
+      text += "A. TRUE OR FALSE (5 QUESTIONS):\n";
+      ch.trueFalse.forEach((item, i) => {
+        text += `${i+1}. ${item.q}\nAns: ${item.ans} (${item.reason})\n\n`;
+      });
+
+      text += "\nB. ANSWER IN ONE WORD (5 QUESTIONS):\n";
+      ch.oneWord.forEach((item, i) => {
+        text += `${i+1}. ${item.q}\nAns: ${item.ans}\n\n`;
+      });
+
+      text += "\nC. MATCH THE FOLLOWING (5 PAIRS):\n";
+      ch.matchFollowing.forEach((item, i) => {
+        text += `${i+1}. ${item.left}  --->  ${item.right}  [${item.pair}]\n`;
+      });
+
+      text += "\n⭐ 5 GOLDEN POINTS (LET'S REMEMBER):\n";
+      ch.goldenPoints.forEach((pt, i) => {
+        text += `${i+1}. ${pt}\n`;
+      });
+
+      navigator.clipboard.writeText(text).then(() => {
+        showToast(`Chapter ${ch.id} का पूरा टेक्स्ट क्लिपबोर्ड पर कॉपी हो गया!`);
+      }).catch(() => {
+        showToast('Copy failed, please copy manually.');
+      });
+    }
+  </script>
+
+</body>
+</html>

@@ -268,6 +268,68 @@
       icon: "fa-solid fa-tags",
       badge: "कवर लेबल्स",
       keywords: "class cover labels register sticker tags file cover print"
+    },
+
+    // --- Permission & Certificate Suite ---
+    {
+      id: "permission_studio",
+      title: "अनुमोदन प्रार्थना पत्र जनरेटर (PMS Official Permission Studio)",
+      category: "आधिकारिक पत्राचार",
+      desc: "आधिकारिक अनुमोदन, स्वीकृति व अनुमति प्रार्थना पत्र जनरेटर",
+      url: "permission/index.html",
+      icon: "fa-solid fa-file-signature",
+      badge: "अनुमोदन स्टूडियो",
+      keywords: "permission anumodan prarthna patra approval pms letter permission_studio"
+    },
+    {
+      id: "permission_tree",
+      title: "वृक्ष छंटाई / पातन अनुमति पत्र (Tree Trimming Permission)",
+      category: "आधिकारिक पत्राचार",
+      desc: "विद्यालय परिसर में स्थित पेड़ों की छंटाई व सुरक्षा अनुमति पत्र",
+      url: "permission/tree-permission.html",
+      icon: "fa-solid fa-tree",
+      badge: "अनुमति पत्र",
+      keywords: "tree permission vriksh chatai patan anumatipatra"
+    },
+    {
+      id: "permission_ro",
+      title: "RO वाटर प्यूरीफायर मरम्मत व सर्विस अनुमति पत्र",
+      category: "आधिकारिक पत्राचार",
+      desc: "छात्र पेयजल सुरक्षा हेतु आरओ प्लांट सर्विस व फिल्टर रिपेयर अनुमति",
+      url: "permission/ro-repair.html",
+      icon: "fa-solid fa-faucet-drip",
+      badge: "अनुमति पत्र",
+      keywords: "ro repair water purifier service filter maintenance permission"
+    },
+    {
+      id: "permission_birthday",
+      title: "छात्र जन्मदिन शुभकामना प्रमाण पत्र (Birthday Certificate)",
+      category: "शैक्षणिक सामग्री",
+      desc: "विद्यार्थियों के जन्मदिवस पर विद्यालय परिवार द्वारा शुभकामना प्रमाण पत्र",
+      url: "permission/birthday.html",
+      icon: "fa-solid fa-cake-candles",
+      badge: "प्रमाण पत्र",
+      keywords: "birthday certificate shubhkamna patra student birth day"
+    },
+    {
+      id: "permission_certificate",
+      title: "प्रशस्ति व सहभागिता प्रमाण पत्र (Honor & Participation Certificate)",
+      category: "शैक्षणिक सामग्री",
+      desc: "विभिन्न खेलकूद व सांस्कृतिक प्रतियोगिताओं हेतु आधिकारिक प्रमाण पत्र",
+      url: "permission/certificate.html",
+      icon: "fa-solid fa-award",
+      badge: "प्रमाण पत्र",
+      keywords: "certificate prashasti patra award honor merit sports"
+    },
+    {
+      id: "permission_question_sheet",
+      title: "कम्पोजिट प्रश्न पत्र जनरेटर (Composite Question Sheet Studio)",
+      category: "शैक्षणिक सामग्री",
+      desc: "विज्ञान, EVS व अंग्रेजी विषयों हेतु अभ्यास एवं परीक्षा प्रश्न पत्र जनरेटर",
+      url: "permission/question-sheet.html",
+      icon: "fa-solid fa-pen-ruler",
+      badge: "प्रश्न पत्र स्टूडियो",
+      keywords: "question sheet prashn patra composite paper exam test"
     }
   ];
 

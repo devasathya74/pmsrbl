@@ -1,0 +1,1664 @@
+<!DOCTYPE html>
+<html lang="hi" class="h-full bg-neutral-100">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>समीक्षा गोष्ठी अनुपालन आख्या - पुलिस मॉडर्न स्कूल, 25वीं वाहिनी पीएसी, रायबरेली</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts: Noto Sans Devanagari & Inter for Authentic Official Hindi Typing -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700;800;900&family=Noto+Serif+Devanagari:wght@400;600;700;800&display=swap"
+    rel="stylesheet">
+
+  <!-- Feather Icons -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.js"></script>
+
+  <style>
+    body {
+      font-family: 'Noto Sans Devanagari', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: #111827;
+      background-color: #f3f4f6;
+    }
+
+    .font-serif-hi {
+      font-family: 'Noto Serif Devanagari', Georgia, serif;
+    }
+
+    /* A4 Physical Dimensions & Print Setup */
+    @page {
+      size: A4 portrait;
+      margin: 10mm 12mm 10mm 12mm;
+    }
+
+    .logo-container {
+      width: 84px;
+      height: 84px;
+      min-width: 84px;
+      max-width: 84px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .logo-container img {
+      width: 84px;
+      height: 84px;
+      object-fit: contain;
+      display: block;
+    }
+
+    .header-spacer {
+      width: 84px;
+      min-width: 84px;
+      display: block;
+      flex-shrink: 0;
+    }
+
+    @media print {
+
+      *,
+      *::before,
+      *::after {
+        color: #000000 !important;
+        text-shadow: none !important;
+        box-sizing: border-box !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+
+      html,
+      body {
+        width: 100% !important;
+        height: auto !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #ffffff !important;
+        display: block !important;
+        overflow: visible !important;
+        font-size: 11pt !important;
+      }
+
+      .no-print {
+        display: none !important;
+      }
+
+      .sheet-container {
+        padding: 0 !important;
+        margin: 0 !important;
+        background: #ffffff !important;
+        width: 100% !important;
+      }
+
+      .a4-sheet {
+        box-shadow: none !important;
+        border: none !important;
+        margin: 0 auto !important;
+        padding: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        height: auto !important;
+        page-break-after: auto !important;
+      }
+
+      .page-break {
+        page-break-before: always !important;
+        break-before: page !important;
+        padding-top: 12mm !important;
+      }
+
+      .avoid-break {
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+      }
+
+      [contenteditable="true"] {
+        outline: none !important;
+        background: transparent !important;
+      }
+    }
+
+    /* Screen simulation */
+    .a4-sheet {
+      width: 210mm;
+      min-height: 297mm;
+      background: #ffffff;
+      margin: 1rem auto;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+      border: 1px solid #e5e7eb;
+      position: relative;
+    }
+
+    @media (max-width: 860px) {
+      .a4-sheet {
+        width: 100%;
+        min-height: auto;
+      }
+    }
+
+    /* Editable active cues */
+    [contenteditable="true"]:focus {
+      outline: 1.5px dashed #2563eb;
+      background-color: #eff6ff;
+      border-radius: 2px;
+    }
+
+    .report-point {
+      transition: background-color 0.15s ease;
+    }
+
+    .report-point:hover {
+      background-color: #fafafa;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.15rem 0.5rem;
+      border-radius: 9999px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    /* Make delete and manage point action buttons clearly visible & interactive */
+    .point-actions {
+      opacity: 0.9 !important;
+      transition: all 0.2s ease;
+    }
+
+    .report-point:hover .point-actions {
+      opacity: 1 !important;
+      transform: scale(1.02);
+    }
+
+    .delete-btn-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.2rem 0.6rem;
+      font-size: 0.72rem;
+      font-weight: 700;
+      border-radius: 0.35rem;
+      background-color: #fef2f2;
+      border: 1px solid #fecaca;
+      color: #dc2626;
+      transition: all 0.15s ease;
+      cursor: pointer;
+    }
+
+    .delete-btn-tag:hover {
+      background-color: #fee2e2;
+      border-color: #f87171;
+      color: #991b1b;
+      box-shadow: 0 2px 6px rgba(220, 38, 38, 0.15);
+    }
+  </style>
+</head>
+
+<body class="min-h-full flex flex-col justify-between items-center text-black">
+
+  <!-- =========================================================================
+       Top Screen Control Toolbar (Excluded from Print)
+       ========================================================================= -->
+  <header
+    class="no-print w-full bg-neutral-900 text-white py-2.5 px-4 sticky top-0 z-50 shadow-md border-b border-neutral-800">
+    <div class="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-3 text-xs sm:text-sm">
+
+      <!-- Brand Title -->
+      <div class="flex items-center gap-2">
+        <span class="font-extrabold tracking-wide text-amber-400 font-hindi">पुलिस मॉडर्न स्कूल</span>
+        <span class="text-neutral-500">|</span>
+        <span class="text-neutral-200 font-semibold">अनुपालन आख्या (पीएमएस गोष्ठी / समीक्षा बैठक)</span>
+      </div>
+
+      <!-- Action Controls -->
+      <div class="flex items-center flex-wrap gap-2">
+
+        <!-- Add New Point Button -->
+        <button onclick="openAddPointModal()" title="आख्या में नया बिंदु जोड़ें"
+          class="px-2.5 py-1.5 rounded bg-emerald-700 hover:bg-emerald-600 text-white font-bold transition text-xs flex items-center gap-1.5 shadow-sm cursor-pointer border border-emerald-600">
+          <i data-feather="plus-circle" class="w-3.5 h-3.5 text-white"></i>
+          <span>+ नया बिंदु जोड़ें</span>
+        </button>
+
+        <!-- Format View Toggle: Running Letter vs Tabular Matrix -->
+        <button id="viewToggleBtn" onclick="toggleReportView()"
+          title="पारंपरिक पत्र प्रारूप या सारणीबद्ध प्रारूप में बदलें"
+          class="px-2.5 py-1.5 rounded bg-neutral-800 hover:bg-neutral-700 text-amber-300 border border-neutral-700 hover:border-amber-500 transition text-xs flex items-center gap-1.5 cursor-pointer">
+          <i data-feather="layout" class="w-3.5 h-3.5 text-amber-400"></i>
+          <span id="viewToggleText">सारणीबद्ध प्रारूप देखें</span>
+        </button>
+
+        <!-- Auto Renumber Points -->
+        <button onclick="renumberAllPoints()" title="हटाए गए बिंदुओं के बाद क्रम संख्या को क्रमिक (1, 2, 3... या 8, 9, 10...) करें"
+          class="px-2.5 py-1.5 rounded bg-neutral-800 hover:bg-neutral-700 text-sky-300 border border-neutral-700 hover:border-sky-500 transition text-xs flex items-center gap-1.5 cursor-pointer">
+          <i data-feather="hash" class="w-3.5 h-3.5 text-sky-400"></i>
+          <span>क्रम संख्या सही करें</span>
+        </button>
+
+        <!-- Reset Document to Defaults -->
+        <button onclick="resetToDefaultReport()" title="मूल आख्या प्रारूप (बिंदु 8-22) पर रीसेट करें"
+          class="px-2.5 py-1.5 rounded bg-neutral-800 hover:bg-neutral-700 text-neutral-300 border border-neutral-700 hover:border-neutral-500 transition text-xs flex items-center gap-1.5 cursor-pointer">
+          <i data-feather="rotate-ccw" class="w-3.5 h-3.5 text-neutral-400"></i>
+          <span>रीसेट</span>
+        </button>
+
+        <!-- Set Current Date -->
+        <button onclick="setTodayDate()" title="वर्तमान दिनांक अद्यतन करें"
+          class="px-2.5 py-1.5 rounded bg-neutral-800 hover:bg-neutral-700 text-neutral-200 border border-neutral-700 hover:border-neutral-500 transition text-xs flex items-center gap-1.5 cursor-pointer">
+          <i data-feather="calendar" class="w-3.5 h-3.5 text-blue-400"></i>
+          <span>आज की दिनांक</span>
+        </button>
+
+        <!-- Toggle Edit Mode -->
+        <button id="editToggleBtn" onclick="toggleEditMode()" title="दस्तावेज़ में सीधे टाइप/एडिट करें"
+          class="px-2.5 py-1.5 rounded bg-neutral-800 hover:bg-neutral-700 text-neutral-200 border border-neutral-700 hover:border-neutral-500 transition text-xs flex items-center gap-1.5 cursor-pointer">
+          <i data-feather="edit-2" class="w-3.5 h-3.5 text-emerald-400"></i>
+          <span id="editToggleText">संपादन सक्षम</span>
+        </button>
+
+        <!-- Copy Clean Text for Word / e-Office / WhatsApp -->
+        <button onclick="copyReportText()" title="संपूर्ण आख्या का शुद्ध हिंदी टेक्स्ट कॉपी करें"
+          class="px-2.5 py-1.5 rounded bg-neutral-800 hover:bg-neutral-700 text-neutral-200 border border-neutral-700 hover:border-neutral-500 transition text-xs flex items-center gap-1.5 cursor-pointer">
+          <i data-feather="copy" class="w-3.5 h-3.5 text-amber-400"></i>
+          <span>टेक्स्ट कॉपी</span>
+        </button>
+
+        <!-- Cross Links -->
+        <a href="tree-permission.html" title="पेड़ कटवाए जाने हेतु प्रार्थना पत्र"
+          class="px-2.5 py-1.5 rounded bg-neutral-800 hover:bg-neutral-700 text-neutral-200 border border-neutral-700 transition text-xs flex items-center gap-1 cursor-pointer no-underline">
+          <i data-feather="file-text" class="w-3.5 h-3.5 text-emerald-400"></i>
+          <span>पेड़ प्रार्थना पत्र</span>
+        </a>
+
+        <!-- Print / PDF Button -->
+        <button onclick="window.print()" title="A4 आकार में प्रिंट करें या PDF सेव करें"
+          class="px-3.5 py-1.5 rounded bg-white hover:bg-neutral-200 text-black font-extrabold transition text-xs flex items-center gap-1.5 shadow cursor-pointer border-2 border-white">
+          <i data-feather="printer" class="w-3.5 h-3.5 text-black"></i>
+          <span>प्रिंट / PDF सेव करें</span>
+        </button>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- Message Toast with Undo Option -->
+  <div id="toast"
+    class="no-print fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-neutral-900 text-white border border-neutral-700 px-4 py-2.5 rounded-lg text-xs sm:text-sm shadow-2xl opacity-0 transition-opacity duration-300 pointer-events-none flex items-center gap-2.5">
+    <i data-feather="check-circle" class="w-4 h-4 text-emerald-400"></i>
+    <span id="toastMsg">संदेश</span>
+    <button id="toastUndoBtn" onclick="undoLastDelete()" class="hidden px-2.5 py-1 rounded bg-amber-500 hover:bg-amber-400 text-neutral-900 font-black cursor-pointer pointer-events-auto ml-1 transition">
+      पूर्ववत करें (Undo)
+    </button>
+  </div>
+
+  <!-- =========================================================================
+       Main Physical A4 Document Container
+       ========================================================================= -->
+  <main class="w-full flex-1 py-4 sm:py-8 px-2 flex justify-center items-start sheet-container">
+
+    <article class="a4-sheet p-6 sm:p-10 text-black flex flex-col justify-between leading-relaxed bg-white">
+      <div>
+
+        <!-- Top Official Letterhead -->
+        <div class="flex items-center justify-between pb-3 border-b-2 border-black gap-2 sm:gap-4">
+          <!-- Official School / PAC Logo -->
+          <div class="logo-container">
+            <img src="pms-logo.png" alt="पुलिस मॉडर्न स्कूल लोगो" onerror="this.src='pac_logo.png'" loading="eager" />
+          </div>
+
+          <!-- Header Text -->
+          <div class="text-center flex-1 min-w-0 px-2">
+            <h1 class="text-xl sm:text-2xl md:text-[26px] font-black tracking-tight text-black uppercase">
+              कार्यालय पुलिस मॉडर्न स्कूल
+            </h1>
+            <h2 class="text-sm sm:text-base md:text-lg font-bold text-black mt-0.5 tracking-tight">
+              25वीं वाहिनी पीएसी, रायबरेली
+            </h2>
+            <p class="text-xs font-semibold text-neutral-700 mt-0.5 tracking-wide">
+              (समीक्षा गोष्ठी / आकस्मिक निरीक्षण अनुपालन आख्या)
+            </p>
+          </div>
+
+          <!-- Right Balancing PAC Logo -->
+          <div class="logo-container hidden sm:flex">
+            <img src="pac_logo.png" alt="पीएसी लोगो" onerror="this.src='pms-logo.png'" loading="eager" />
+          </div>
+        </div>
+
+        <!-- Meta Dispatch Bar -->
+        <div class="flex justify-between items-center mt-3 pb-2 border-b border-black text-xs sm:text-sm font-semibold">
+          <div>
+            <span>पत्रांक:</span>
+            <span id="metaDispatch" class="font-bold ml-1 font-mono tracking-wide" contenteditable="true">
+              पीएमएस/अनुपालन-गोष्ठी/2026
+            </span>
+          </div>
+          <div>
+            <span>दिनांक:</span>
+            <span id="metaDate" class="font-bold ml-1" contenteditable="true">
+              सितम्बर 15, 2026
+            </span>
+          </div>
+        </div>
+
+        <!-- Official Reference Box -->
+        <div class="mt-3.5 p-2.5 bg-neutral-50 border-l-4 border-black text-xs sm:text-sm">
+          <p class="font-semibold text-neutral-800">
+            <strong>संदर्भ:</strong> सेनानायक महोदय, 25वीं वाहिनी पीएसी, रायबरेली का आदेश पत्रांक:
+            <span class="font-bold font-mono text-black">एसटी-26/2026 (पीएमएस गोष्ठी)</span>, दिनांकित:
+            <span class="font-bold text-black">12 सितम्बर 2026</span>।
+          </p>
+        </div>
+
+        <!-- Main Title Header (Exact Style as Reference Image 1) -->
+        <div class="text-center my-4">
+          <h2
+            class="text-base sm:text-lg font-black text-black underline underline-offset-4 tracking-wide font-serif-hi uppercase">
+            आकस्मिक निरीक्षण एवं समीक्षा बैठक अनुपालन आख्या
+          </h2>
+          <p class="text-xs font-bold text-neutral-800 mt-1">
+            पुलिस मॉडर्न स्कूल, 25वीं वाहिनी पीएसी, रायबरेली
+          </p>
+        </div>
+
+        <!-- Context Preamble (Matching Exact Authentic Tone of IMG_20260915_144005.jpg) -->
+        <div class="text-xs sm:text-sm text-justify leading-relaxed space-y-2 mb-4">
+          <p class="indent-8">
+            दिनांक <strong>12.09.2026</strong> को श्रीमान सेनानायक महोदय, 25वीं वाहिनी पीएसी रायबरेली की अध्यक्षता में
+            <strong>पुलिस मॉडर्न स्कूल की समीक्षा गोष्ठी/आकस्मिक निरीक्षण</strong> किया गया था, जिसमें विद्यालय के
+            शैक्षणिक संवर्धन,
+            छात्र सुरक्षा, स्वच्छता, मूलभूत सुविधाओं तथा ग्रामीण क्षेत्रों में अधिकाधिक छात्र प्रवेश हेतु प्रचार-प्रसार
+            के संबंध में
+            महत्वपूर्ण दिशा-निर्देश जारी कर अनुपालन आख्या उपलब्ध कराए जाने की अपेक्षा की गई थी।
+          </p>
+          <p class="indent-8 font-medium">
+            उपरोक्त के अनुक्रम में सेनानायक महोदय के आदेश में अंकित समस्त बिंदुओं पर <strong>बिंदुवार त्वरित एवं प्रभावी
+              अनुपालन
+              कार्यवाही</strong> सुनिश्चित कर अनुपालन आख्या सादर सेवा में प्रेषित है:-
+          </p>
+        </div>
+
+        <!-- ===================================================================
+             VIEW 1: Running Official Letter Report (Default Matching Reference)
+             =================================================================== -->
+        <div id="runningReportView" class="space-y-3.5 text-xs sm:text-sm text-justify leading-relaxed">
+
+          <!-- Point 8 -->
+          <div class="report-point p-2.5 rounded border border-neutral-200 bg-white avoid-break relative group">
+            <p contenteditable="true">
+              <strong class="font-bold text-black text-sm">8- शुद्ध पेयजल एवं पानी की टंकी की नियमित सफाईः</strong>
+              सेनानायक महोदय के निर्देशानुसार विद्यालय में स्थित मुख्य पेयजल टंकी की ब्लीचिंग पाउडर व पोटेशियम
+              परमैंगनेट द्वारा तत्काल पूर्ण रूप से सफाई व विसंक्रमण करा दिया गया है। शिविरपाल तथा प्रभारी पीएमएस द्वारा समय-सारणी
+              निर्धारित कर दी गई है, जिसके अंतर्गत प्रत्येक माह के प्रथम सप्ताह में टंकी की नियमित सफाई का रोस्टर तैयार कर लिया गया है
+              ताकि बच्चों को निरंतर शुद्ध व स्वास्थ्यप्रद पेयजल प्राप्त होता रहे।
+            </p>
+            <div class="point-actions no-print absolute top-2 right-2 flex items-center gap-1">
+              <button onclick="deletePoint(this)" title="इस बिंदु को हटाएं (Delete)" class="delete-btn-tag">
+                <i data-feather="trash-2" class="w-3.5 h-3.5"></i>
+                <span>हटाएं</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Point 9 -->
+          <div class="report-point p-2.5 rounded border border-neutral-200 bg-white avoid-break relative group">
+            <p contenteditable="true">
+              <strong class="font-bold text-black text-sm">9- अस्वस्थ विद्यार्थियों के विश्राम/उपचार हेतु तखत की व्यवस्थाः</strong>
+              सेनानायक महोदय की अनुमति प्राप्त कर शिविरपाल महोदय द्वारा पुलिस मॉडर्न स्कूल को <strong>01 अदद नया तखत
+              मय गद्दा, चादर व तकिया</strong> तत्काल उपलब्ध करा दिया गया है। उक्त तखत को विद्यालय के प्राथमिक उपचार कक्ष
+              (Medical/Sick Room) में व्यवस्थित करा दिया गया है। अब किसी भी बच्चे की तबीयत खराब होने पर उसे जमीन पर दरी पर लिटाने की आवश्यकता नहीं है।
+            </p>
+            <div class="point-actions no-print absolute top-2 right-2 flex items-center gap-1">
+              <button onclick="deletePoint(this)" title="इस बिंदु को हटाएं (Delete)" class="delete-btn-tag">
+                <i data-feather="trash-2" class="w-3.5 h-3.5"></i>
+                <span>हटाएं</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Point 10 -->
+          <div class="report-point p-2.5 rounded border border-neutral-200 bg-white avoid-break relative group">
+            <p contenteditable="true">
+              <strong class="font-bold text-black text-sm">10- अनुपस्थित आया का निस्तारण एवं नवीन आया की नियुक्तिः</strong>
+              विद्यालय में पूर्व नियुक्त आया द्वारा कार्य से लगातार अनाधिकृत रूप से अनुपस्थित रहने तथा कार्य करने में अनिच्छा व्यक्त
+              करने के दृष्टिगत उन्हें तत्काल प्रभाव से पदमुक्त कर दिया गया है तथा उनका इस माह का वेतन/मानदेय रोक दिया गया है। विद्यालय
+              के छोटे बच्चों की देखरेख व स्वच्छता हेतु कार्यदक्ष नवीन आया की तत्काल नियुक्ति कर कार्यभार ग्रहण करा दिया गया है।
+            </p>
+            <div class="point-actions no-print absolute top-2 right-2 flex items-center gap-1">
+              <button onclick="deletePoint(this)" title="इस बिंदु को हटाएं (Delete)" class="delete-btn-tag">
+                <i data-feather="trash-2" class="w-3.5 h-3.5"></i>
+                <span>हटाएं</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Point 11 -->
+          <div class="report-point p-2.5 rounded border border-neutral-200 bg-white avoid-break relative group">
+            <p contenteditable="true">
+              <strong class="font-bold text-black text-sm">11- परिसर स्थित जर्जर व खोखले ताड़ वृक्ष का भौतिक निरीक्षण व कटान कार्यवाहीः</strong>
+              निर्देश के क्रम में सहायक सेनानायक-प्रथम महोदय द्वारा मौके पर उपस्थित होकर आर०ओ० वाटर कूलर के समीप स्थित दीमक ग्रस्त
+              खोखले ताड़ के पेड़ का स्थलीय भौतिक निरीक्षण किया गया। छात्र-छात्राओं एवं विद्यालय स्टाफ की जीवन रक्षा व सुरक्षा को
+              सर्वोच्च प्राथमिकता देते हुए उक्त खतरनाक पेड़ को कटवाए जाने हेतु प्रधानाध्यापिका की आख्या सहित प्रार्थना पत्र प्रेषित
+              कर अग्रिम विधिक/विभागीय कार्यवाही पूर्ण कराई जा रही है।
+            </p>
+            <div class="point-actions no-print absolute top-2 right-2 flex items-center gap-1">
+              <button onclick="deletePoint(this)" title="इस बिंदु को हटाएं (Delete)" class="delete-btn-tag">
+                <i data-feather="trash-2" class="w-3.5 h-3.5"></i>
+                <span>हटाएं</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Point 12 -->
+          <div class="report-point p-2.5 rounded border border-neutral-200 bg-white avoid-break relative group">
+            <p contenteditable="true">
+              <strong class="font-bold text-black text-sm">12- प्रचार हेतु पीएसी वाहनों पर पीएमएस फ्लैक्सी बोर्ड की स्थापनाः</strong>
+              सेनानायक महोदय के अनुमोदनोपरांत विद्यालय के नाम, आधुनिक खूबियों, योग्य शिक्षकों, सुसज्जित कंप्यूटर लैब एवं न्यूनतम
+              शुल्क संरचना से युक्त उच्च गुणवत्तायुक्त व आकर्षक <strong>'फ्लैक्सी बोर्ड'</strong> तैयार करा लिए गए हैं। जब भी स्कूल
+              स्टाफ ग्रामीण क्षेत्रों में प्रचार-प्रसार हेतु प्रस्थान करता है, उक्त फ्लैक्सी बोर्ड को वाहन पर अनिवार्य रूप से लगाया जा
+              रहा है जिससे ग्रामीण जन बिना किसी संकोच के वाहन के पास आकर विद्यालय के संबंध में जानकारी प्राप्त कर रहे हैं।
+            </p>
+            <div class="point-actions no-print absolute top-2 right-2 flex items-center gap-1">
+              <button onclick="deletePoint(this)" title="इस बिंदु को हटाएं (Delete)" class="delete-btn-tag">
+                <i data-feather="trash-2" class="w-3.5 h-3.5"></i>
+                <span>हटाएं</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Point 13 -->
+          <div class="report-point p-2.5 rounded border border-neutral-200 bg-white avoid-break relative group">
+            <p contenteditable="true">
+              <strong class="font-bold text-black text-sm">13- छात्र परिवहन वाहन हेतु स्थायी चालक (Driver) का आवंटनः</strong>
+              सहायक सेनानायक-प्रथम महोदय द्वारा उ०नि० परिवहन (MTO) को निर्देशित किया गया, जिसके अनुपालन में वाहिनी के बाहर से छात्रों
+              को लाने व ले जाने वाले सरकारी वाहन पर <strong>एक स्थायी व अनुभवी चालक को नियमित रूप से नामित</strong> कर दिया गया है।
+              चालक न बदले जाने से छात्रों के ग्रामीण रूट, ठहराव स्थलों तथा समयबद्ध आवागमन में अब कोई असुविधा नहीं हो रही है।
+            </p>
+            <div class="point-actions no-print absolute top-2 right-2 flex items-center gap-1">
+              <button onclick="deletePoint(this)" title="इस बिंदु को हटाएं (Delete)" class="delete-btn-tag">
+                <i data-feather="trash-2" class="w-3.5 h-3.5"></i>
+                <span>हटाएं</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Point 14 -->
+          <div class="report-point p-2.5 rounded border border-neutral-200 bg-white avoid-break relative group">
+            <p contenteditable="true">
+              <strong class="font-bold text-black text-sm">14- कमजोर विद्यार्थियों पर विशेष व्यक्तिगत ध्यान व उपचारात्मक शिक्षणः</strong>
+              प्रधानाध्यापिका एवं समस्त शिक्षण स्टाफ को कड़ाई से निर्देशित कर दिया गया है। कक्षावार सबसे कमजोर छात्रों को चिह्नित कर
+              उन्हें फ्रंट रो (अगली बेंचों) पर बैठाया जा रहा है तथा उनके शैक्षणिक स्तर को ऊपर उठाने हेतु अतिरिक्त इंटरैक्टिव सत्र व
+              उपचारात्मक कक्षाएं (Remedial Classes) संचालित की जा रही हैं ताकि केवल मेधावी ही नहीं, अपितु प्रत्येक विद्यार्थी का समान
+              विकास हो सके।
+            </p>
+            <div class="point-actions no-print absolute top-2 right-2 flex items-center gap-1">
+              <button onclick="deletePoint(this)" title="इस बिंदु को हटाएं (Delete)" class="delete-btn-tag">
+                <i data-feather="trash-2" class="w-3.5 h-3.5"></i>
+                <span>हटाएं</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Point 15 -->
+          <div class="report-point p-2.5 rounded border border-neutral-200 bg-white avoid-break relative group">
+            <p contenteditable="true">
+              <strong class="font-bold text-black text-sm">15- बाल-मित्रवत संवाद, गुड बिहेवियर एवं नैसर्गिक प्रतिभा का प्रकटीकरणः</strong>
+              समस्त अध्यापकों द्वारा बच्चों के साथ स्नेहपूर्ण, खुला और तनावमुक्त वातावरण स्थापित किया जा रहा है। दैनिक प्रार्थना सभा
+              एवं नैतिक शिक्षा के कालांशों में 'गुड बिहेवियर', नागरिक शिष्टाचार एवं आत्मनिर्भरता पर विचार-विमर्श कराया जा रहा है,
+              जिससे बच्चे बिना किसी संकोच के अपनी बात रख रहे हैं और उनकी अंतर्निहित ओरिजिनलिटी खुलकर सामने आ रही है।
+            </p>
+            <div class="point-actions no-print absolute top-2 right-2 flex items-center gap-1">
+              <button onclick="deletePoint(this)" title="इस बिंदु को हटाएं (Delete)" class="delete-btn-tag">
+                <i data-feather="trash-2" class="w-3.5 h-3.5"></i>
+                <span>हटाएं</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Point 16 -->
+          <div class="report-point p-2.5 rounded border border-neutral-200 bg-white avoid-break relative group">
+            <p contenteditable="true">
+              <strong class="font-bold text-black text-sm">16- दैनिक एक्टिविटी पंजिका (Activity Register) का निर्माण एवं क्रियान्वयनः</strong>
+              प्रधानाध्यापिका द्वारा विद्यालय में एक सुव्यवस्थित <strong>'दैनिक गतिविधि पंजिका' (Daily Activity Register)</strong> तैयार
+              करा ली गई है। इसमें साप्ताहिक पाठ्यचर्या के अनुसार ड्राइंग, क्ले मॉडलिंग, पहेलियां, रोल-प्ले, सामान्य ज्ञान प्रतियोगिताएं
+              तथा विज्ञान मॉडलों की प्रायोगिक गतिविधियां निर्धारित कर प्रतिदिन छात्रों से अधिकाधिक गतिविधियां संपादित कराई जा रही हैं।
+            </p>
+            <div class="point-actions no-print absolute top-2 right-2 flex items-center gap-1">
+              <button onclick="deletePoint(this)" title="इस बिंदु को हटाएं (Delete)" class="delete-btn-tag">
+                <i data-feather="trash-2" class="w-3.5 h-3.5"></i>
+                <span>हटाएं</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Point 17 -->
+          <div class="report-point p-2.5 rounded border border-neutral-200 bg-white avoid-break relative group">
+            <p contenteditable="true">
+              <strong class="font-bold text-black text-sm">17- बच्चों हेतु पर्याप्त मात्रा में क्लेक्स (Clay Modeling Kits) की व्यवस्थाः</strong>
+              छात्रों के रचनात्मक व क्रियात्मक विकास हेतु पर्याप्त मात्रा में गुणवत्तायुक्त एवं नॉन-टॉक्सिक रंग-बिरंगी क्लेक्स
+              (Modeling Clay) का क्रय कर लिया गया है। उक्त सामग्री का वितरण प्राथमिक कक्षाओं में करा दिया गया है तथा संबंधित क्रय बिल/देयक
+              अनुमोदन एवं भुगतान हेतु सक्षम अधिकारी के समक्ष प्रस्तुत कर दिया गया है।
+            </p>
+            <div class="point-actions no-print absolute top-2 right-2 flex items-center gap-1">
+              <button onclick="deletePoint(this)" title="इस बिंदु को हटाएं (Delete)" class="delete-btn-tag">
+                <i data-feather="trash-2" class="w-3.5 h-3.5"></i>
+                <span>हटाएं</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Point 18 -->
+          <div class="report-point p-2.5 rounded border border-neutral-200 bg-white avoid-break relative group">
+            <p contenteditable="true">
+              <strong class="font-bold text-black text-sm">18- केजी-1 एवं केजी-2 हेतु विशेष एक्टिविटी किट का क्रय व प्रदायः</strong>
+              प्रधानाध्यापिका से प्रारंभिक बाल-शिक्षा (Early Childhood Education) के अनुकूल आवश्यक शिक्षण उपकरणों (जैसे: बिल्डिंग ब्लॉक्स,
+              अल्फाबेट/नंबर पजल्स, फ्लैश कार्ड्स, एबेकस व ज्यामितीय आकृतियां) की लिखित मांग सूची प्राप्त कर सहायक सेनानायक-प्रथम महोदय के
+              समन्वय से आधुनिक एक्टिविटी किट क्रय कर केजी कक्षाओं में उपलब्ध करा दी गई है।
+            </p>
+            <div class="point-actions no-print absolute top-2 right-2 flex items-center gap-1">
+              <button onclick="deletePoint(this)" title="इस बिंदु को हटाएं (Delete)" class="delete-btn-tag">
+                <i data-feather="trash-2" class="w-3.5 h-3.5"></i>
+                <span>हटाएं</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Point 19 -->
+          <div class="report-point p-2.5 rounded border border-neutral-200 bg-white avoid-break relative group">
+            <p contenteditable="true">
+              <strong class="font-bold text-black text-sm">19- व्हाइटबोर्ड मार्कर इंक का बफर स्टॉक व तत्काल आपूर्तिः</strong>
+              अध्यापन कार्य में किसी प्रकार का व्यवधान न हो, इस हेतु प्रभारी पीएमएस द्वारा सेनानायक महोदय की अनुमति प्राप्त कर विभिन्न
+              रंगों (काले, नीले, लाल, हरे) के व्हाइटबोर्ड मार्करों तथा उच्च गुणवत्ता वाली रिफिल इंक की बोतलों का पर्याप्त बफर स्टॉक क्रय
+              कर विद्यालय को सुपुर्द कर दिया गया है तथा संबंधित व्यय बिल भुगतान हेतु प्रेषित कर दिया गया है।
+            </p>
+            <div class="point-actions no-print absolute top-2 right-2 flex items-center gap-1">
+              <button onclick="deletePoint(this)" title="इस बिंदु को हटाएं (Delete)" class="delete-btn-tag">
+                <i data-feather="trash-2" class="w-3.5 h-3.5"></i>
+                <span>हटाएं</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Point 20 -->
+          <div class="report-point p-2.5 rounded border border-neutral-200 bg-white avoid-break relative group">
+            <p contenteditable="true">
+              <strong class="font-bold text-black text-sm">20- मॉडर्न साइंस व मानक पाठ्यपुस्तकों के स्पेसिमेन सेट की उपलब्धताः</strong>
+              सहायक सेनानायक-प्रथम महोदय द्वारा एनसीईआरटी एवं अग्रणी प्रतिष्ठित राष्ट्रीय प्रकाशकों की अद्यतन मॉडर्न साइंस व अन्य विषयों
+              की मानक संदर्भ पुस्तकों (Specimen Sets) की समीक्षा कर ली गई है। आगामी माह से शिक्षकों के गहन अध्ययन एवं उत्कृष्ट अध्यापन
+              हेतु स्पेसिमेन सेटों का एक-एक सेट विद्यालय पुस्तकालय/स्टाफ रूम में स्थापित कराने की कार्यवाही पूर्ण कर ली गई है।
+            </p>
+            <div class="point-actions no-print absolute top-2 right-2 flex items-center gap-1">
+              <button onclick="deletePoint(this)" title="इस बिंदु को हटाएं (Delete)" class="delete-btn-tag">
+                <i data-feather="trash-2" class="w-3.5 h-3.5"></i>
+                <span>हटाएं</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Point 21 -->
+          <div class="report-point p-2.5 rounded border border-neutral-200 bg-white avoid-break relative group">
+            <p contenteditable="true">
+              <strong class="font-bold text-black text-sm">21- ग्रामीण प्रचार-प्रसार अभियान, 2-3 घंटे का कार्यक्रम एवं मिष्ठान व्यवस्थाः</strong>
+              वाहिनी के निकटवर्ती सघन आबादी वाले चिन्हित ग्रामों (जैसे ग्राम-अमावां, सरैनी व लालगंज मार्ग क्षेत्र) की विस्तृत कार्ययोजना
+              तैयार कर ली गई है। चिन्हित स्थल पर विद्यालय के छात्र-छात्राओं एवं स्टाफ के साथ 02 से 03 घंटे का संवाद, बाल-प्रतिभा प्रदर्शन
+              व अभिभावक संगोष्ठी आयोजित की जा रही है। शिविरपाल महोदय द्वारा सेनानायक महोदय की पूर्व अनुमति प्राप्त कर उपस्थित ग्रामीणों व
+              बच्चों हेतु ताजे मिष्ठान एवं जलपान की पुख्ता व्यवस्था सुनिश्चित की गई है।
+            </p>
+            <div class="point-actions no-print absolute top-2 right-2 flex items-center gap-1">
+              <button onclick="deletePoint(this)" title="इस बिंदु को हटाएं (Delete)" class="delete-btn-tag">
+                <i data-feather="trash-2" class="w-3.5 h-3.5"></i>
+                <span>हटाएं</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Point 22 -->
+          <div class="report-point p-2.5 rounded border border-neutral-200 bg-white avoid-break relative group">
+            <p contenteditable="true">
+              <strong class="font-bold text-black text-sm">22- 2x3 आकार के प्रचार स्टीकर मुद्रण एवं चिन्हित विद्युत पोलों पर चस्पाः</strong>
+              प्रभारी पीएमएस द्वारा ग्रामीण मार्गों, तिराहों एवं प्रमुख बाजारों में लगे बिजली के पोलों की स्थिति की स्थलीय समीक्षा कर
+              स्थानों का चिन्हीकरण कर लिया गया है। उसी के अनुरूप <strong>2x3 आकार के उच्च गुणवत्तायुक्त, वाटरप्रूफ एवं आकर्षक प्रचार
+              स्टीकर</strong> शिविरपाल महोदय के माध्यम से मुद्रित कराकर चिन्हित पोलों पर चस्पा करा दिए गए हैं, जिसके फलस्वरूप विद्यालय
+              में नए छात्र-छात्राओं के दाखिले हेतु अभिभावकों के निरंतर संपर्क व उत्साहजनक प्रगति प्राप्त हो रही है।
+            </p>
+            <div class="point-actions no-print absolute top-2 right-2 flex items-center gap-1">
+              <button onclick="deletePoint(this)" title="इस बिंदु को हटाएं (Delete)" class="delete-btn-tag">
+                <i data-feather="trash-2" class="w-3.5 h-3.5"></i>
+                <span>हटाएं</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Add Point Action Bar (Screen Only) -->
+          <div id="addPointActionBar" class="no-print mt-4 pt-3 border-t border-dashed border-neutral-300 flex flex-wrap items-center justify-between gap-2 p-2.5 bg-neutral-50 rounded">
+            <div class="flex items-center gap-2 text-xs font-semibold text-neutral-600">
+              <i data-feather="file-plus" class="w-4 h-4 text-emerald-600"></i>
+              <span>अनुपालन आख्या में नया बिंदु जोड़ना चाहते हैं?</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <button onclick="quickAddEmptyPoint()" title="सीधे आख्या में रिक्त बिंदु जोड़कर टाइप करें"
+                class="px-3 py-1.5 rounded bg-white hover:bg-neutral-100 text-neutral-800 border border-neutral-300 font-bold text-xs flex items-center gap-1 transition cursor-pointer shadow-sm">
+                <i data-feather="edit-3" class="w-3 h-3 text-neutral-600"></i>
+                <span>त्वरित रिक्त बिंदु</span>
+              </button>
+              <button onclick="openAddPointModal()" title="फॉर्म के माध्यम से नया अनुपालन बिंदु जोड़ें"
+                class="px-3 py-1.5 rounded bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs flex items-center gap-1 transition cursor-pointer shadow-sm">
+                <i data-feather="plus" class="w-3 h-3 text-white"></i>
+                <span>+ नया बिंदु जोड़ें</span>
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ===================================================================
+             VIEW 2: Tabular Matrix Format (Alternative Executive View)
+             =================================================================== -->
+        <div id="tabularReportView" class="hidden my-4 overflow-x-auto text-xs sm:text-sm">
+          <table class="w-full border-collapse border-2 border-black text-left">
+            <thead>
+              <tr class="bg-neutral-100 border-b-2 border-black">
+                <th class="border border-black p-2 text-center w-12 font-bold">क्र०</th>
+                <th class="border border-black p-2 font-bold w-1/3">सेनानायक महोदय द्वारा प्रदत्त निर्देश</th>
+                <th class="border border-black p-2 font-bold w-1/2">कृत अनुपालन कार्यवाही (Action Taken)</th>
+                <th class="border border-black p-2 text-center font-bold">स्थिति</th>
+                <th class="border border-black p-2 text-center font-bold no-print w-20">हटाएं</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-black">
+              <tr>
+                <td class="border border-black p-2 text-center font-bold">8</td>
+                <td class="border border-black p-2">पानी की टंकी की नियमित सफाई ताकि शुद्ध पेयजल मिले।</td>
+                <td class="border border-black p-2">टंकी की पूर्ण सफाई व विसंक्रमण कराकर मासिक रोस्टर लागू किया गया।
+                  शुद्ध पेयजल उपलब्ध है।</td>
+                <td class="border border-black p-2 text-center font-bold text-emerald-700">पूर्ण</td>
+                <td class="border border-black p-2 text-center no-print">
+                  <button onclick="deleteTableRow(this)" title="इस पंक्ति/बिंदु को हटाएं" class="delete-btn-tag text-xs">
+                    <i data-feather="trash-2" class="w-3 h-3"></i>
+                    <span>हटाएं</span>
+                  </button>
+                </td>
+              </tr>
+              <tr class="bg-neutral-50">
+                <td class="border border-black p-2 text-center font-bold">9</td>
+                <td class="border border-black p-2">बीमार बच्चों हेतु तखत उपलब्ध कराया जाए ताकि जमीन पर न लिटाना पड़े।
+                </td>
+                <td class="border border-black p-2">01 अदद नया तखत मय गद्दा व चादर मेडिकल रूम में स्थापित करा दिया गया
+                  है।</td>
+                <td class="border border-black p-2 text-center font-bold text-emerald-700">पूर्ण</td>
+                <td class="border border-black p-2 text-center no-print">
+                  <button onclick="deleteTableRow(this)" title="इस पंक्ति/बिंदु को हटाएं" class="delete-btn-tag text-xs">
+                    <i data-feather="trash-2" class="w-3 h-3"></i>
+                    <span>हटाएं</span>
+                  </button>
+                </td>
+              </tr>
+              <tr>
+                <td class="border border-black p-2 text-center font-bold">10</td>
+                <td class="border border-black p-2">अनुपस्थित आया को हटाकर नई आया की नियुक्ति की जाए।</td>
+                <td class="border border-black p-2">अनुपस्थित आया को हटाकर मानदेय रोका गया। नवीन दक्ष आया को नियुक्त कर
+                  दिया गया।</td>
+                <td class="border border-black p-2 text-center font-bold text-emerald-700">पूर्ण</td>
+                <td class="border border-black p-2 text-center no-print">
+                  <button onclick="deleteTableRow(this)" title="इस पंक्ति/बिंदु को हटाएं" class="delete-btn-tag text-xs">
+                    <i data-feather="trash-2" class="w-3 h-3"></i>
+                    <span>हटाएं</span>
+                  </button>
+                </td>
+              </tr>
+              <tr class="bg-neutral-50">
+                <td class="border border-black p-2 text-center font-bold">11</td>
+                <td class="border border-black p-2">परिसर के खोखले वृक्ष का भौतिक निरीक्षण कर अग्रिम कार्यवाही कराएं।
+                </td>
+                <td class="border border-black p-2">सहायक सेनानायक-प्रथम द्वारा स्थलीय निरीक्षण किया गया। पेड़ कटवाने
+                  हेतु पत्राचार प्रेषित।</td>
+                <td class="border border-black p-2 text-center font-bold text-blue-700">गतिमान</td>
+                <td class="border border-black p-2 text-center no-print">
+                  <button onclick="deleteTableRow(this)" title="इस पंक्ति/बिंदु को हटाएं" class="delete-btn-tag text-xs">
+                    <i data-feather="trash-2" class="w-3 h-3"></i>
+                    <span>हटाएं</span>
+                  </button>
+                </td>
+              </tr>
+              <tr>
+                <td class="border border-black p-2 text-center font-bold">12</td>
+                <td class="border border-black p-2">प्रचार हेतु पीएसी की सरकारी गाड़ियों पर पीएमएस का फ्लैक्सी बोर्ड
+                  लगाएं।</td>
+                <td class="border border-black p-2">उच्च गुणवत्तायुक्त फ्लैक्सी बोर्ड बनवाकर प्रचार वाहन पर अनिवार्यतः
+                  लगाया जा रहा है।</td>
+                <td class="border border-black p-2 text-center font-bold text-emerald-700">पूर्ण</td>
+                <td class="border border-black p-2 text-center no-print">
+                  <button onclick="deleteTableRow(this)" title="इस पंक्ति/बिंदु को हटाएं" class="delete-btn-tag text-xs">
+                    <i data-feather="trash-2" class="w-3 h-3"></i>
+                    <span>हटाएं</span>
+                  </button>
+                </td>
+              </tr>
+              <tr class="bg-neutral-50">
+                <td class="border border-black p-2 text-center font-bold">13</td>
+                <td class="border border-black p-2">छात्रों को लाने वाले वाहन हेतु स्थायी चालक नामित किया जाए।</td>
+                <td class="border border-black p-2">उ०नि० परिवहन द्वारा एक स्थायी व अनुभवी चालक को नियमित संबद्ध कर दिया
+                  गया।</td>
+                <td class="border border-black p-2 text-center font-bold text-emerald-700">पूर्ण</td>
+                <td class="border border-black p-2 text-center no-print">
+                  <button onclick="deleteTableRow(this)" title="इस पंक्ति/बिंदु को हटाएं" class="delete-btn-tag text-xs">
+                    <i data-feather="trash-2" class="w-3 h-3"></i>
+                    <span>हटाएं</span>
+                  </button>
+                </td>
+              </tr>
+              <tr>
+                <td class="border border-black p-2 text-center font-bold">14</td>
+                <td class="border border-black p-2">कमजोर बच्चों पर विशेष ध्यान व इंटरैक्टिव शिक्षण दिया जाए।</td>
+                <td class="border border-black p-2">कमजोर विद्यार्थियों को आगे बैठाकर उपचारात्मक (Remedial) कक्षाएं
+                  संचालित की जा रही हैं।</td>
+                <td class="border border-black p-2 text-center font-bold text-emerald-700">सतत</td>
+                <td class="border border-black p-2 text-center no-print">
+                  <button onclick="deleteTableRow(this)" title="इस पंक्ति/बिंदु को हटाएं" class="delete-btn-tag text-xs">
+                    <i data-feather="trash-2" class="w-3 h-3"></i>
+                    <span>हटाएं</span>
+                  </button>
+                </td>
+              </tr>
+              <tr class="bg-neutral-50">
+                <td class="border border-black p-2 text-center font-bold">15</td>
+                <td class="border border-black p-2">बच्चों के साथ खुलकर बातचीत व गुड बिहेवियर प्रोत्साहित करें।</td>
+                <td class="border border-black p-2">तनावमुक्त वातावरण में संवाद व प्रार्थना सभा में नैतिक आचरण का अभ्यास
+                  जारी है।</td>
+                <td class="border border-black p-2 text-center font-bold text-emerald-700">सतत</td>
+                <td class="border border-black p-2 text-center no-print">
+                  <button onclick="deleteTableRow(this)" title="इस पंक्ति/बिंदु को हटाएं" class="delete-btn-tag text-xs">
+                    <i data-feather="trash-2" class="w-3 h-3"></i>
+                    <span>हटाएं</span>
+                  </button>
+                </td>
+              </tr>
+              <tr>
+                <td class="border border-black p-2 text-center font-bold">16</td>
+                <td class="border border-black p-2">दैनिक एक्टिविटी रजिस्टर तैयार कर ज्यादा गतिविधियां कराएं।</td>
+                <td class="border border-black p-2">एक्टिविटी पंजिका तैयार कर ली गई है। रोस्टर के अनुसार दैनिक
+                  गतिविधियां क्रियान्वित हैं।</td>
+                <td class="border border-black p-2 text-center font-bold text-emerald-700">पूर्ण</td>
+                <td class="border border-black p-2 text-center no-print">
+                  <button onclick="deleteTableRow(this)" title="इस पंक्ति/बिंदु को हटाएं" class="delete-btn-tag text-xs">
+                    <i data-feather="trash-2" class="w-3 h-3"></i>
+                    <span>हटाएं</span>
+                  </button>
+                </td>
+              </tr>
+              <tr class="bg-neutral-50">
+                <td class="border border-black p-2 text-center font-bold">17</td>
+                <td class="border border-black p-2">बच्चों के लिए पर्याप्त क्लेक्स मंगाकर बिल प्रस्तुत करें।</td>
+                <td class="border border-black p-2">पर्याप्त मात्रा में क्ले क्रय कर कक्षाओं में वितरित की गई व बिल
+                  भुगतान हेतु प्रस्तुत।</td>
+                <td class="border border-black p-2 text-center font-bold text-emerald-700">पूर्ण</td>
+                <td class="border border-black p-2 text-center no-print">
+                  <button onclick="deleteTableRow(this)" title="इस पंक्ति/बिंदु को हटाएं" class="delete-btn-tag text-xs">
+                    <i data-feather="trash-2" class="w-3 h-3"></i>
+                    <span>हटाएं</span>
+                  </button>
+                </td>
+              </tr>
+              <tr>
+                <td class="border border-black p-2 text-center font-bold">18</td>
+                <td class="border border-black p-2">केजी-1 व 2 हेतु एक्टिविटी किट क्रय कराकर प्रदान की जाए।</td>
+                <td class="border border-black p-2">लिखित मांग के अनुसार पजल्स, ब्लॉक्स व शिक्षण किट क्रय कर केजी वर्ग
+                  को सुपुर्द।</td>
+                <td class="border border-black p-2 text-center font-bold text-emerald-700">पूर्ण</td>
+                <td class="border border-black p-2 text-center no-print">
+                  <button onclick="deleteTableRow(this)" title="इस पंक्ति/बिंदु को हटाएं" class="delete-btn-tag text-xs">
+                    <i data-feather="trash-2" class="w-3 h-3"></i>
+                    <span>हटाएं</span>
+                  </button>
+                </td>
+              </tr>
+              <tr class="bg-neutral-50">
+                <td class="border border-black p-2 text-center font-bold">19</td>
+                <td class="border border-black p-2">व्हाइटबोर्ड मार्कर इंक तत्काल उपलब्ध कराकर बिल प्रस्तुत करें।</td>
+                <td class="border border-black p-2">मार्कर व रिफिल इंक का बफर स्टॉक क्रय कर उपलब्ध कराया गया, बिल
+                  प्रस्तुत।</td>
+                <td class="border border-black p-2 text-center font-bold text-emerald-700">पूर्ण</td>
+                <td class="border border-black p-2 text-center no-print">
+                  <button onclick="deleteTableRow(this)" title="इस पंक्ति/बिंदु को हटाएं" class="delete-btn-tag text-xs">
+                    <i data-feather="trash-2" class="w-3 h-3"></i>
+                    <span>हटाएं</span>
+                  </button>
+                </td>
+              </tr>
+              <tr>
+                <td class="border border-black p-2 text-center font-bold">20</td>
+                <td class="border border-black p-2">मॉडर्न साइंस व बुक्स के स्पेसिमेन सेट स्कूल में रखवाएं।</td>
+                <td class="border border-black p-2">मानक प्रकाशकों के स्पेसिमेन सेट चयन कर स्टाफ रूम/लाइब्रेरी में
+                  उपलब्ध कराए जा रहे हैं।</td>
+                <td class="border border-black p-2 text-center font-bold text-emerald-700">पूर्ण</td>
+                <td class="border border-black p-2 text-center no-print">
+                  <button onclick="deleteTableRow(this)" title="इस पंक्ति/बिंदु को हटाएं" class="delete-btn-tag text-xs">
+                    <i data-feather="trash-2" class="w-3 h-3"></i>
+                    <span>हटाएं</span>
+                  </button>
+                </td>
+              </tr>
+              <tr class="bg-neutral-50">
+                <td class="border border-black p-2 text-center font-bold">21</td>
+                <td class="border border-black p-2">चिन्हित गांव में 2-3 घंटे का प्रचार कार्यक्रम व मिष्ठान व्यवस्था।
+                </td>
+                <td class="border border-black p-2">चिन्हित ग्रामों हेतु रूपरेखा तैयार। पूर्व अनुमति उपरांत मिष्ठान
+                  वितरण सुनिश्चित किया गया।</td>
+                <td class="border border-black p-2 text-center font-bold text-emerald-700">क्रियान्वित</td>
+                <td class="border border-black p-2 text-center no-print">
+                  <button onclick="deleteTableRow(this)" title="इस पंक्ति/बिंदु को हटाएं" class="delete-btn-tag text-xs">
+                    <i data-feather="trash-2" class="w-3 h-3"></i>
+                    <span>हटाएं</span>
+                  </button>
+                </td>
+              </tr>
+              <tr>
+                <td class="border border-black p-2 text-center font-bold">22</td>
+                <td class="border border-black p-2">गांवों में 2x3 के स्टीकर बिजली के पोलों पर चस्पा कराएं।</td>
+                <td class="border border-black p-2">सर्वेक्षण उपरांत 2x3 साइज के रंगीन वाटरप्रूफ स्टीकर मुद्रित कराकर
+                  पोलों पर चस्पा कराए गए।</td>
+                <td class="border border-black p-2 text-center font-bold text-emerald-700">पूर्ण</td>
+                <td class="border border-black p-2 text-center no-print">
+                  <button onclick="deleteTableRow(this)" title="इस पंक्ति/बिंदु को हटाएं" class="delete-btn-tag text-xs">
+                    <i data-feather="trash-2" class="w-3 h-3"></i>
+                    <span>हटाएं</span>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- Tabular View Action Bar -->
+          <div class="no-print mt-3 flex flex-wrap items-center justify-between gap-2 p-2.5 bg-neutral-50 rounded border border-dashed border-neutral-300">
+            <div class="flex items-center gap-2 text-xs font-semibold text-neutral-600">
+              <i data-feather="table" class="w-4 h-4 text-amber-600"></i>
+              <span>सारणीबद्ध प्रारूप में बिंदु प्रबंधित करें:</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <button onclick="renumberAllPoints()" title="हटाए गए बिंदुओं के बाद क्रम संख्या को क्रमिक करें"
+                class="px-3 py-1.5 rounded bg-white hover:bg-neutral-100 text-sky-800 border border-sky-300 font-bold text-xs flex items-center gap-1 transition cursor-pointer shadow-sm">
+                <i data-feather="hash" class="w-3 h-3 text-sky-600"></i>
+                <span>क्रम संख्या सही करें</span>
+              </button>
+              <button onclick="openAddPointModal()" title="सारणीबद्ध प्रारूप में नया अनुपालन बिंदु जोड़ें"
+                class="px-3 py-1.5 rounded bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs flex items-center gap-1 transition cursor-pointer shadow-sm">
+                <i data-feather="plus" class="w-3 h-3 text-white"></i>
+                <span>+ नई सारणीबद्ध पंक्ति / बिंदु जोड़ें</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Concluding Statement -->
+        <div class="mt-6 pt-3 border-t border-black text-xs sm:text-sm text-justify leading-relaxed avoid-break">
+          <p class="indent-8 font-semibold">
+            उपरोक्तानुसार सेनानायक महोदय द्वारा पुलिस मॉडर्न स्कूल की समीक्षा गोष्ठी में दिए गए समस्त आदेशों/निर्देशों
+            का
+            <strong>अक्षरशः एवं शत-प्रतिशत अनुपालन सुनिश्चित कर दिया गया है।</strong> विद्यालय परिवार सेनानायक महोदय के
+            कुशल
+            मार्गदर्शन में विद्यालय की शैक्षणिक गुणवत्ता, अनुशासन एवं प्रतिष्ठा को निरंतर नई ऊंचाइयों पर ले जाने हेतु
+            पूर्ण
+            समर्पण के साथ कृतसंकल्पित है।
+          </p>
+          <p class="mt-2 text-right font-bold text-sm">
+            अनुपालन आख्या सादर अवलोकनार्थ एवं अग्रेतर आदेशार्थ प्रस्तुत है।
+          </p>
+        </div>
+
+        <!-- Principal Signature Section (Right End) -->
+        <div class="mt-12 pt-4 flex justify-end avoid-break">
+          <div class="text-center w-64 space-y-1">
+            <div class="h-14"></div>
+            <p class="font-bold text-sm sm:text-base text-black" contenteditable="true">(प्रधानाध्यापिका)</p>
+            <p class="text-xs sm:text-sm font-medium text-neutral-800" contenteditable="true">पुलिस मॉडर्न स्कूल,</p>
+            <p class="text-xs text-neutral-700" contenteditable="true">25वीं वाहिनी पीएसी, रायबरेली।</p>
+          </div>
+        </div>
+
+      </div>
+    </article>
+
+  </main>
+
+  <!-- =========================================================================
+       Add New Point Modal Dialog (Screen Only)
+       ========================================================================= -->
+  <div id="addPointModal"
+    class="no-print fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-3 sm:p-4 overflow-y-auto">
+    <div class="bg-white rounded-xl shadow-2xl border border-neutral-300 max-w-2xl w-full p-5 sm:p-6 space-y-4 animate-in fade-in duration-200">
+
+      <!-- Modal Header -->
+      <div class="flex items-center justify-between pb-3 border-b border-neutral-200">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold">
+            <i data-feather="plus" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <h3 class="text-base sm:text-lg font-black text-neutral-900">नया अनुपालन बिंदु जोड़ें</h3>
+            <p class="text-xs text-neutral-500">सेनानायक महोदय के निर्देश व कृत कार्यवाही विवरण दर्ज करें</p>
+          </div>
+        </div>
+        <button onclick="closeAddPointModal()" class="text-neutral-400 hover:text-neutral-700 p-1.5 rounded-lg hover:bg-neutral-100 transition cursor-pointer">
+          <i data-feather="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <!-- Quick Template Presets -->
+      <div class="space-y-1.5">
+        <span class="text-xs font-bold text-neutral-600">त्वरित सुझाव (Quick Presets):</span>
+        <div class="flex flex-wrap gap-1.5 text-xs">
+          <button type="button" onclick="applyPointPreset('computer')" class="px-2.5 py-1 rounded bg-neutral-100 hover:bg-neutral-200 text-neutral-700 border border-neutral-300 font-medium transition cursor-pointer">💻 कम्प्यूटर लैब</button>
+          <button type="button" onclick="applyPointPreset('sports')" class="px-2.5 py-1 rounded bg-neutral-100 hover:bg-neutral-200 text-neutral-700 border border-neutral-300 font-medium transition cursor-pointer">⚽ खेलकूद मैदान</button>
+          <button type="button" onclick="applyPointPreset('cctv')" class="px-2.5 py-1 rounded bg-neutral-100 hover:bg-neutral-200 text-neutral-700 border border-neutral-300 font-medium transition cursor-pointer">📹 सीसीटीवी व सुरक्षा</button>
+          <button type="button" onclick="applyPointPreset('library')" class="px-2.5 py-1 rounded bg-neutral-100 hover:bg-neutral-200 text-neutral-700 border border-neutral-300 font-medium transition cursor-pointer">📚 पुस्तकालय</button>
+          <button type="button" onclick="applyPointPreset('health')" class="px-2.5 py-1 rounded bg-neutral-100 hover:bg-neutral-200 text-neutral-700 border border-neutral-300 font-medium transition cursor-pointer">🩺 स्वास्थ्य शिविर</button>
+        </div>
+      </div>
+
+      <!-- Input Form -->
+      <div class="space-y-3 text-xs sm:text-sm">
+        <div class="grid grid-cols-1 sm:grid-cols-4 gap-3">
+          <div class="sm:col-span-1">
+            <label for="newPointNum" class="block font-bold text-neutral-700 mb-1">बिंदु क्र०:</label>
+            <input type="number" id="newPointNum" class="w-full px-3 py-2 border border-neutral-300 rounded-lg font-bold text-center focus:ring-2 focus:ring-emerald-500 focus:outline-none" min="1" value="23">
+          </div>
+          <div class="sm:col-span-3">
+            <label for="newPointTitle" class="block font-bold text-neutral-700 mb-1">बिंदु का शीर्षक / विषय:</label>
+            <input type="text" id="newPointTitle" class="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none font-semibold text-neutral-900" placeholder="उदा. खेलकूद सामग्री एवं मैदान का समतलीकरणः">
+          </div>
+        </div>
+
+        <div>
+          <label for="newPointDesc" class="block font-bold text-neutral-700 mb-1">कृत अनुपालन आख्या विवरण (Action Taken Description):</label>
+          <textarea id="newPointDesc" rows="4" class="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none text-neutral-800 leading-relaxed" placeholder="सेनानायक महोदय के निर्देशानुसार विद्यालय में..."></textarea>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex items-center justify-end gap-2.5 pt-3 border-t border-neutral-200">
+        <button onclick="closeAddPointModal()" class="px-4 py-2 rounded-lg border border-neutral-300 hover:bg-neutral-100 text-neutral-700 font-semibold text-xs sm:text-sm transition cursor-pointer">
+          रद्द करें
+        </button>
+        <button onclick="submitNewPoint()" class="px-4 py-2 rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs sm:text-sm shadow flex items-center gap-1.5 transition cursor-pointer">
+          <i data-feather="check" class="w-4 h-4"></i>
+          <span>आख्या में बिंदु जोड़ें</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Floating Quick Add Button (Bottom Right) -->
+  <div class="no-print fixed bottom-6 right-6 z-40">
+    <button onclick="openAddPointModal()" title="आख्या में नया बिंदु जोड़ें"
+      class="px-4 py-2.5 rounded-full bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs sm:text-sm shadow-2xl flex items-center gap-2 border-2 border-white hover:scale-105 active:scale-95 transition-all cursor-pointer">
+      <i data-feather="plus-circle" class="w-4 h-4 text-white"></i>
+      <span>+ नया बिंदु जोड़ें</span>
+    </button>
+  </div>
+
+  <!-- Application Interaction Logic -->
+  <script>
+    let isTabularView = false;
+    let isEditMode = true;
+    let lastDeletedPoint = null;
+    let toastTimer = null;
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // Load saved edits if present in localStorage
+      loadFromStorage();
+
+      feather.replace();
+
+      // Close modal on escape key
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeAddPointModal();
+      });
+
+      // Close modal on backdrop click
+      const addModal = document.getElementById('addPointModal');
+      if (addModal) {
+        addModal.addEventListener('click', (e) => {
+          if (e.target === addModal) closeAddPointModal();
+        });
+      }
+    });
+
+    // Toggle between Running Letter Style and Tabular Matrix View
+    function toggleReportView() {
+      isTabularView = !isTabularView;
+      const runningEl = document.getElementById('runningReportView');
+      const tabularEl = document.getElementById('tabularReportView');
+      const toggleText = document.getElementById('viewToggleText');
+
+      if (isTabularView) {
+        runningEl.classList.add('hidden');
+        tabularEl.classList.remove('hidden');
+        toggleText.textContent = 'विस्तृत आख्या प्रारूप देखें';
+        showToast('सारणीबद्ध प्रारूप (Tabular Matrix) सक्रिय');
+      } else {
+        runningEl.classList.remove('hidden');
+        tabularEl.classList.add('hidden');
+        toggleText.textContent = 'सारणीबद्ध प्रारूप देखें';
+        showToast('विस्तृत आख्या प्रारूप (Running Letter) सक्रिय');
+      }
+    }
+
+    // Toggle contenteditable on document elements
+    function toggleEditMode() {
+      isEditMode = !isEditMode;
+      const editableNodes = document.querySelectorAll('[contenteditable]');
+      editableNodes.forEach(el => {
+        el.setAttribute('contenteditable', isEditMode ? 'true' : 'false');
+      });
+
+      const btnText = document.getElementById('editToggleText');
+      if (isEditMode) {
+        btnText.textContent = 'संपादन सक्षम';
+        showToast('संपादन मोड ऑन (सीधे टाइप/एडिट करें)');
+      } else {
+        btnText.textContent = 'संपादन लॉक';
+        showToast('संपादन लॉक किया गया');
+      }
+    }
+
+    // Set today's date in formal Hindi format
+    function setTodayDate() {
+      const now = new Date();
+      const hindiMonths = [
+        'जनवरी', 'फ़रवरी', 'मार्च', 'अप्रैल', 'मई', 'जून',
+        'जुलाई', 'अगस्त', 'सितम्बर', 'अक्टूबर', 'नवम्बर', 'दिसम्बर'
+      ];
+      const formatted = `${hindiMonths[now.getMonth()]} ${now.getDate()}, ${now.getFullYear()}`;
+      const dateEl = document.getElementById('metaDate');
+      if (dateEl) {
+        dateEl.textContent = formatted;
+        saveToStorage();
+        showToast(`दिनांक अद्यतन: ${formatted}`);
+      }
+    }
+
+    // Open / Close Add Point Modal
+    function openAddPointModal() {
+      const modal = document.getElementById('addPointModal');
+      const numInput = document.getElementById('newPointNum');
+      const titleInput = document.getElementById('newPointTitle');
+      const descInput = document.getElementById('newPointDesc');
+
+      if (numInput) numInput.value = getNextPointNumber();
+      if (titleInput) titleInput.value = '';
+      if (descInput) descInput.value = '';
+
+      if (modal) {
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        feather.replace();
+        setTimeout(() => {
+          if (titleInput) titleInput.focus();
+        }, 100);
+      }
+    }
+
+    function closeAddPointModal() {
+      const modal = document.getElementById('addPointModal');
+      if (modal) {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      }
+    }
+
+    // Preset Points for Rapid Official Filing
+    const POINT_PRESETS = {
+      computer: {
+        title: 'कम्प्यूटर लैब सुदृढ़ीकरण एवं आधुनिक सॉफ्टवेयर स्थापनाः',
+        desc: 'सेनानायक महोदय के निर्देशानुसार विद्यालय की कम्प्यूटर लैब में अतिरिक्त हाई-स्पीड कम्प्यूटर सिस्टम व आवश्यक शिक्षण सॉफ्टवेयर संस्थापित करा दिए गए हैं। छात्रों को आधुनिक डिजिटल शिक्षा व कोडिंग का व्यावहारिक प्रशिक्षण नियमित समय-सारणी के अनुसार प्रदान किया जा रहा है।'
+      },
+      sports: {
+        title: 'खेलकूद मैदान समतलीकरण एवं नवीन खेल सामग्री की व्यवस्थाः',
+        desc: 'वाहिनी परिसर स्थित विद्यालय क्रीड़ांगन का समतलीकरण कराकर फुटबॉल, वॉलीबॉल, बैडमिंटन एवं एथलेटिक्स हेतु आवश्यक आधुनिक खेल सामग्री क्रय कर छात्रों को उपलब्ध करा दी गई है। शारीरिक दक्षता एवं टीम भावना के विकास हेतु दैनिक पीटी व खेल कालांश अनिवार्य रूप से संचालित हैं।'
+      },
+      cctv: {
+        title: 'परिसर सुरक्षा संवर्धन एवं 24x7 सीसीटीवी सर्विलांस व्यवस्थाः',
+        desc: 'छात्र-छात्राओं व विद्यालय परिसर की सुरक्षा के दृष्टिगत सभी संवेदनशील स्थलों, मुख्य द्वार व गलियारों में उच्च रिजोल्यूशन वाले नाइट-विजन सीसीटीवी कैमरे क्रियान्वित करा दिए गए हैं। इसका सीधा मॉनिटरिंग कंट्रोल रूम शिविरपाल कार्यालय से संबद्ध किया गया है।'
+      },
+      library: {
+        title: 'विद्यालय पुस्तकालय संवर्धन एवं ज्ञानवर्धक बाल-पत्रिकाओं की व्यवस्थाः',
+        desc: 'प्रधानाध्यापिका के समन्वय से पुस्तकालय में ज्ञान-विज्ञान, महापुरुषों की जीवनियां, सामान्य ज्ञान तथा प्रेरणादायक बाल-पत्रिकाओं के नवीन सेट उपलब्ध करा दिए गए हैं। छात्रों में नियमित स्वाध्याय की प्रवृत्ति विकसित करने हेतु साप्ताहिक लाइब्रेरी पीरियड प्रभावी बनाया गया है।'
+      },
+      health: {
+        title: 'छात्र-छात्राओं का नियमित त्रैमासिक स्वास्थ्य परीक्षण शिविरः',
+        desc: 'वाहिनी चिकित्सालय के चिकित्साधिकारी के समन्वय से विद्यालय के समस्त छात्र-छात्राओं का सामान्य स्वास्थ्य व नेत्र परीक्षण कराया गया है। अस्वस्थ पाए गए विद्यार्थियों को आवश्यक परामर्श व निःशुल्क औषधियां उपलब्ध कराई गई हैं तथा रिकॉर्ड पंजिका संधारित है।'
+      }
+    };
+
+    function applyPointPreset(key) {
+      const preset = POINT_PRESETS[key];
+      if (!preset) return;
+      const numInput = document.getElementById('newPointNum');
+      const titleInput = document.getElementById('newPointTitle');
+      const descInput = document.getElementById('newPointDesc');
+
+      const num = numInput ? numInput.value.trim() : getNextPointNumber();
+      if (titleInput) titleInput.value = `${num}- ${preset.title}`;
+      if (descInput) descInput.value = preset.desc;
+    }
+
+    // Calculate Next Point Number based on existing points
+    function getNextPointNumber() {
+      const points = document.querySelectorAll('#runningReportView .report-point');
+      let maxNum = 0;
+      points.forEach(pt => {
+        const strong = pt.querySelector('strong');
+        if (strong) {
+          const match = strong.innerText.match(/^(\d+)/);
+          if (match) {
+            const n = parseInt(match[1], 10);
+            if (n > maxNum) maxNum = n;
+          }
+        }
+      });
+      return maxNum > 0 ? maxNum + 1 : (points.length > 0 ? points.length + 8 : 1);
+    }
+
+    function escapeHtml(text) {
+      if (!text) return '';
+      return text
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    // Submit New Point from Modal
+    function submitNewPoint() {
+      const numInput = document.getElementById('newPointNum');
+      const titleInput = document.getElementById('newPointTitle');
+      const descInput = document.getElementById('newPointDesc');
+
+      const num = numInput.value.trim() || getNextPointNumber();
+      let title = titleInput.value.trim();
+      const desc = descInput.value.trim();
+
+      if (!title || !desc) {
+        alert('कृपया बिंदु का शीर्षक और विवरण दोनों भरें।');
+        return;
+      }
+
+      // Format title: "23- शीर्षकः"
+      if (num && !title.startsWith(num + '-') && !title.startsWith(num + ' -')) {
+        title = `${num}- ${title}`;
+      }
+      if (!title.endsWith('ः') && !title.endsWith(':')) {
+        title = `${title}ः`;
+      }
+
+      const container = document.getElementById('runningReportView');
+      const addBar = document.getElementById('addPointActionBar');
+
+      const pointDiv = document.createElement('div');
+      pointDiv.className = 'report-point p-2.5 rounded border border-neutral-200 bg-white avoid-break relative group transition-all duration-300';
+      pointDiv.innerHTML = `
+        <p contenteditable="${isEditMode ? 'true' : 'false'}">
+          <strong class="font-bold text-black text-sm">${escapeHtml(title)}</strong>
+          ${escapeHtml(desc)}
+        </p>
+        <div class="point-actions no-print absolute top-2 right-2 flex items-center gap-1">
+          <button onclick="deletePoint(this)" title="इस बिंदु को हटाएं (Delete)" class="delete-btn-tag">
+            <i data-feather="trash-2" class="w-3.5 h-3.5"></i>
+            <span>हटाएं</span>
+          </button>
+        </div>
+      `;
+
+      if (addBar) {
+        container.insertBefore(pointDiv, addBar);
+      } else {
+        container.appendChild(pointDiv);
+      }
+
+      // Add corresponding row in tabularReportView if present
+      const tbody = document.querySelector('#tabularReportView tbody');
+      if (tbody) {
+        const tr = document.createElement('tr');
+        tr.className = tbody.children.length % 2 === 1 ? 'bg-neutral-50' : '';
+        const cleanTitle = title.replace(/^\d+[-–]\s*/, '').replace(/[ः:]$/, '');
+        tr.innerHTML = `
+          <td class="border border-black p-2 text-center font-bold" contenteditable="${isEditMode ? 'true' : 'false'}">${escapeHtml(num)}</td>
+          <td class="border border-black p-2" contenteditable="${isEditMode ? 'true' : 'false'}">${escapeHtml(cleanTitle)}</td>
+          <td class="border border-black p-2" contenteditable="${isEditMode ? 'true' : 'false'}">${escapeHtml(desc)}</td>
+          <td class="border border-black p-2 text-center font-bold text-emerald-700" contenteditable="${isEditMode ? 'true' : 'false'}">पूर्ण</td>
+          <td class="border border-black p-2 text-center no-print">
+            <button onclick="deleteTableRow(this)" title="इस पंक्ति/बिंदु को हटाएं" class="delete-btn-tag text-xs">
+              <i data-feather="trash-2" class="w-3 h-3"></i>
+              <span>हटाएं</span>
+            </button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      }
+
+      feather.replace();
+      closeAddPointModal();
+      saveToStorage();
+
+      pointDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      pointDiv.classList.add('ring-2', 'ring-emerald-500', 'bg-emerald-50');
+      setTimeout(() => {
+        pointDiv.classList.remove('ring-2', 'ring-emerald-500', 'bg-emerald-50');
+      }, 2000);
+
+      showToast(`नया बिंदु ${num} सफलतापूर्वक जोड़ दिया गया है!`);
+    }
+
+    // Quick Add Empty Point directly in-line
+    function quickAddEmptyPoint() {
+      const nextNum = getNextPointNumber();
+      const container = document.getElementById('runningReportView');
+      const addBar = document.getElementById('addPointActionBar');
+
+      const pointDiv = document.createElement('div');
+      pointDiv.className = 'report-point p-2.5 rounded border border-neutral-200 bg-white avoid-break relative group transition-all duration-300';
+      pointDiv.innerHTML = `
+        <p contenteditable="${isEditMode ? 'true' : 'false'}">
+          <strong class="font-bold text-black text-sm">${nextNum}- [यहाँ नवीन विषय/शीर्षक टाइप करें]ः</strong>
+          [यहाँ कृत अनुपालन कार्यवाही का विस्तृत विवरण टाइप करें...]
+        </p>
+        <div class="point-actions no-print absolute top-2 right-2 flex items-center gap-1">
+          <button onclick="deletePoint(this)" title="इस बिंदु को हटाएं (Delete)" class="delete-btn-tag">
+            <i data-feather="trash-2" class="w-3.5 h-3.5"></i>
+            <span>हटाएं</span>
+          </button>
+        </div>
+      `;
+
+      if (addBar) {
+        container.insertBefore(pointDiv, addBar);
+      } else {
+        container.appendChild(pointDiv);
+      }
+
+      // Add to tabular view
+      const tbody = document.querySelector('#tabularReportView tbody');
+      if (tbody) {
+        const tr = document.createElement('tr');
+        tr.className = tbody.children.length % 2 === 1 ? 'bg-neutral-50' : '';
+        tr.innerHTML = `
+          <td class="border border-black p-2 text-center font-bold" contenteditable="${isEditMode ? 'true' : 'false'}">${nextNum}</td>
+          <td class="border border-black p-2" contenteditable="${isEditMode ? 'true' : 'false'}">[नवीन विषय/शीर्षक]</td>
+          <td class="border border-black p-2" contenteditable="${isEditMode ? 'true' : 'false'}">[कृत अनुपालन कार्यवाही]</td>
+          <td class="border border-black p-2 text-center font-bold text-emerald-700" contenteditable="${isEditMode ? 'true' : 'false'}">पूर्ण</td>
+          <td class="border border-black p-2 text-center no-print">
+            <button onclick="deleteTableRow(this)" title="इस पंक्ति/बिंदु को हटाएं" class="delete-btn-tag text-xs">
+              <i data-feather="trash-2" class="w-3 h-3"></i>
+              <span>हटाएं</span>
+            </button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      }
+
+      feather.replace();
+      saveToStorage();
+
+      pointDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      const p = pointDiv.querySelector('p');
+      if (p) p.focus();
+      showToast(`नया रिक्त बिंदु ${nextNum} जोड़ा गया! सीधे टाइप करें।`);
+    }
+
+    // Delete Point from Detailed View
+    function deletePoint(btn) {
+      const pointEl = btn.closest('.report-point');
+      if (!pointEl) return;
+
+      const strong = pointEl.querySelector('strong');
+      let pointNum = '';
+      let pointTitle = '';
+      if (strong) {
+        const text = strong.innerText.trim();
+        const m = text.match(/^(\d+)[-–\s]*(.*)/);
+        if (m) {
+          pointNum = m[1];
+          pointTitle = m[2];
+        } else {
+          pointTitle = text;
+        }
+      }
+
+      const confirmMsg = pointNum
+        ? `क्या आप बिंदु ${pointNum} ("${pointTitle.slice(0, 35)}...") को आख्या से हटाना चाहते हैं?`
+        : 'क्या आप इस अनुपालन बिंदु को आख्या से हटाना चाहते हैं?';
+
+      if (confirm(confirmMsg)) {
+        // Find matching table row for undo
+        let matchingTableRow = null;
+        if (pointNum) {
+          const rows = document.querySelectorAll('#tabularReportView tbody tr');
+          rows.forEach(r => {
+            const firstCell = r.querySelector('td');
+            if (firstCell && firstCell.innerText.trim() === pointNum) {
+              matchingTableRow = r;
+            }
+          });
+        }
+
+        // Store for Undo
+        lastDeletedPoint = {
+          html: pointEl.outerHTML,
+          pointNum: pointNum,
+          nextSibling: pointEl.nextElementSibling,
+          parent: pointEl.parentElement,
+          tableRowHtml: matchingTableRow ? matchingTableRow.outerHTML : null,
+          tableNextSibling: matchingTableRow ? matchingTableRow.nextElementSibling : null,
+          tableParent: matchingTableRow ? matchingTableRow.parentElement : null
+        };
+
+        // Remove from Running View
+        pointEl.remove();
+
+        // Remove from Tabular View
+        if (matchingTableRow) {
+          matchingTableRow.remove();
+        }
+
+        saveToStorage();
+        showToastWithUndo(`बिंदु ${pointNum || ''} हटा दिया गया है।`);
+      }
+    }
+
+    // Delete Row from Tabular View
+    function deleteTableRow(btn) {
+      const tr = btn.closest('tr');
+      if (!tr) return;
+
+      const firstCell = tr.querySelector('td');
+      const pointNum = firstCell ? firstCell.innerText.trim() : '';
+      const topicCell = tr.children[1];
+      const topicText = topicCell ? topicCell.innerText.trim() : '';
+
+      const confirmMsg = pointNum
+        ? `क्या आप सारणीबद्ध पंक्ति ${pointNum} ("${topicText.slice(0, 30)}...") को हटाना चाहते हैं?`
+        : 'क्या आप इस सारणीबद्ध पंक्ति को हटाना चाहते हैं?';
+
+      if (confirm(confirmMsg)) {
+        // Find matching point in running view
+        let matchingPoint = null;
+        if (pointNum) {
+          const points = document.querySelectorAll('#runningReportView .report-point');
+          points.forEach(pt => {
+            const strong = pt.querySelector('strong');
+            if (strong) {
+              const m = strong.innerText.match(/^(\d+)/);
+              if (m && m[1] === pointNum) {
+                matchingPoint = pt;
+              }
+            }
+          });
+        }
+
+        // Store for Undo
+        lastDeletedPoint = {
+          html: matchingPoint ? matchingPoint.outerHTML : null,
+          pointNum: pointNum,
+          nextSibling: matchingPoint ? matchingPoint.nextElementSibling : null,
+          parent: matchingPoint ? matchingPoint.parentElement : null,
+          tableRowHtml: tr.outerHTML,
+          tableNextSibling: tr.nextElementSibling,
+          tableParent: tr.parentElement
+        };
+
+        tr.remove();
+
+        if (matchingPoint) {
+          matchingPoint.remove();
+        }
+
+        saveToStorage();
+        showToastWithUndo(`पंक्ति ${pointNum || ''} हटा दी गई है।`);
+      }
+    }
+
+    // Undo Last Delete Action
+    function undoLastDelete() {
+      if (!lastDeletedPoint) return;
+
+      // Restore to running view
+      if (lastDeletedPoint.html && lastDeletedPoint.parent) {
+        const temp = document.createElement('div');
+        temp.innerHTML = lastDeletedPoint.html;
+        const restoredPoint = temp.firstElementChild;
+
+        if (lastDeletedPoint.nextSibling && lastDeletedPoint.nextSibling.parentNode === lastDeletedPoint.parent) {
+          lastDeletedPoint.parent.insertBefore(restoredPoint, lastDeletedPoint.nextSibling);
+        } else {
+          const addBar = document.getElementById('addPointActionBar');
+          if (addBar) {
+            lastDeletedPoint.parent.insertBefore(restoredPoint, addBar);
+          } else {
+            lastDeletedPoint.parent.appendChild(restoredPoint);
+          }
+        }
+      }
+
+      // Restore to tabular view
+      if (lastDeletedPoint.tableRowHtml && lastDeletedPoint.tableParent) {
+        const tempTable = document.createElement('tbody');
+        tempTable.innerHTML = lastDeletedPoint.tableRowHtml;
+        const restoredRow = tempTable.firstElementChild;
+
+        if (lastDeletedPoint.tableNextSibling && lastDeletedPoint.tableNextSibling.parentNode === lastDeletedPoint.tableParent) {
+          lastDeletedPoint.tableParent.insertBefore(restoredRow, lastDeletedPoint.tableNextSibling);
+        } else {
+          lastDeletedPoint.tableParent.appendChild(restoredRow);
+        }
+      }
+
+      feather.replace();
+      saveToStorage();
+
+      const restoredNum = lastDeletedPoint.pointNum;
+      lastDeletedPoint = null;
+
+      const undoBtn = document.getElementById('toastUndoBtn');
+      if (undoBtn) undoBtn.classList.add('hidden');
+
+      showToast(`बिंदु ${restoredNum || ''} सफलतापूर्वक वापस (Restored) आ गया है!`);
+    }
+
+    // Renumber All Points Sequentially
+    function renumberAllPoints() {
+      const points = document.querySelectorAll('#runningReportView .report-point');
+      if (points.length === 0) {
+        showToast('आख्या में कोई बिंदु उपलब्ध नहीं है');
+        return;
+      }
+
+      // Find first existing number as default prompt suggestion
+      const firstStrong = points[0].querySelector('strong');
+      let defaultStart = '8';
+      if (firstStrong) {
+        const m = firstStrong.innerText.match(/^(\d+)/);
+        if (m) defaultStart = m[1];
+      }
+
+      const input = prompt(`क्रम संख्या किस अंक से प्रारंभ करें?\n(उदा. मूल प्रारूप अनुसार '8' या नई सूची अनुसार '1')`, defaultStart);
+      if (input === null) return;
+
+      let currentNum = parseInt(input.trim(), 10);
+      if (isNaN(currentNum) || currentNum < 1) currentNum = 1;
+
+      const numMap = new Map(); // oldNum -> newNum
+
+      points.forEach(pt => {
+        const strong = pt.querySelector('strong');
+        if (strong) {
+          const text = strong.innerText;
+          const m = text.match(/^(\d+)[-–\s]*(.*)/);
+          const oldNum = m ? m[1] : null;
+          const topicRest = m ? m[2] : text;
+
+          if (oldNum) numMap.set(oldNum, currentNum.toString());
+
+          strong.innerText = `${currentNum}- ${topicRest}`;
+          currentNum++;
+        }
+      });
+
+      // Update Tabular View matching rows
+      const rows = document.querySelectorAll('#tabularReportView tbody tr');
+      rows.forEach(r => {
+        const cell = r.querySelector('td');
+        if (cell) {
+          const old = cell.innerText.trim();
+          if (numMap.has(old)) {
+            cell.innerText = numMap.get(old);
+          }
+        }
+      });
+
+      saveToStorage();
+      showToast(`समस्त बिंदुओं की क्रम संख्या सफलतापूर्वक सही कर दी गई है!`);
+    }
+
+    // LocalStorage State Management
+    function saveToStorage() {
+      try {
+        const runningEl = document.getElementById('runningReportView');
+        const tabularTbody = document.querySelector('#tabularReportView tbody');
+        const metaDispatch = document.getElementById('metaDispatch')?.innerText;
+        const metaDate = document.getElementById('metaDate')?.innerText;
+
+        if (runningEl) localStorage.setItem('pms_anupalan_running_html', runningEl.innerHTML);
+        if (tabularTbody) localStorage.setItem('pms_anupalan_tabular_html', tabularTbody.innerHTML);
+        if (metaDispatch) localStorage.setItem('pms_anupalan_dispatch', metaDispatch);
+        if (metaDate) localStorage.setItem('pms_anupalan_date', metaDate);
+      } catch (err) {
+        console.warn('LocalStorage save failed:', err);
+      }
+    }
+
+    function loadFromStorage() {
+      try {
+        const savedRunning = localStorage.getItem('pms_anupalan_running_html');
+        const savedTabular = localStorage.getItem('pms_anupalan_tabular_html');
+        const savedDispatch = localStorage.getItem('pms_anupalan_dispatch');
+        const savedDate = localStorage.getItem('pms_anupalan_date');
+
+        if (savedRunning) {
+          const runningEl = document.getElementById('runningReportView');
+          if (runningEl) runningEl.innerHTML = savedRunning;
+        }
+
+        if (savedTabular) {
+          const tabularTbody = document.querySelector('#tabularReportView tbody');
+          if (tabularTbody) tabularTbody.innerHTML = savedTabular;
+        }
+
+        if (savedDispatch) {
+          const el = document.getElementById('metaDispatch');
+          if (el) el.innerText = savedDispatch;
+        }
+
+        if (savedDate) {
+          const el = document.getElementById('metaDate');
+          if (el) el.innerText = savedDate;
+        }
+      } catch (err) {
+        console.warn('LocalStorage load failed:', err);
+      }
+    }
+
+    // Reset to Original Default Content
+    function resetToDefaultReport() {
+      if (confirm('क्या आप आख्या को मूल प्रारूप (बिंदु 8 से 22) पर रीसेट करना चाहते हैं?\nवर्तमान के सभी बदलाव व नए जोड़े गए बिंदु हट जाएंगे।')) {
+        localStorage.removeItem('pms_anupalan_running_html');
+        localStorage.removeItem('pms_anupalan_tabular_html');
+        localStorage.removeItem('pms_anupalan_dispatch');
+        localStorage.removeItem('pms_anupalan_date');
+        location.reload();
+      }
+    }
+
+    // Copy clean Hindi text of the report
+    function copyReportText() {
+      const ref = document.getElementById('metaDispatch')?.innerText || 'पीएमएस/अनुपालन-गोष्ठी/2026';
+      const dt = document.getElementById('metaDate')?.innerText || 'सितम्बर 15, 2026';
+
+      let plainText = `कार्यालय पुलिस मॉडर्न स्कूल, 25वीं वाहिनी पीएसी, रायबरेली\n`;
+      plainText += `(समीक्षा गोष्ठी / आकस्मिक निरीक्षण अनुपालन आख्या)\n\n`;
+      plainText += `पत्रांक: ${ref}\tदिनांक: ${dt}\n`;
+      plainText += `संदर्भ: सेनानायक महोदय, 25वीं वाहिनी पीएसी रायबरेली का आदेश पत्रांक: एसटी-26/2026 (पीएमएस गोष्ठी), दिनांकित: 12 सितम्बर 2026\n\n`;
+      plainText += `आकस्मिक निरीक्षण एवं समीक्षा बैठक अनुपालन आख्या:\n`;
+      plainText += `दिनांक 12.09.2026 को श्रीमान सेनानायक महोदय द्वारा पुलिस मॉडर्न स्कूल की समीक्षा गोष्ठी में दिए गए निर्देशों के क्रम में बिन्दुवार अनुपालन आख्या सादर सेवा में प्रेषित है:-\n\n`;
+
+      const points = document.querySelectorAll('#runningReportView .report-point p');
+      points.forEach(pt => {
+        plainText += pt.innerText.trim() + '\n\n';
+      });
+
+      plainText += `\nउपरोक्तानुसार सेनानायक महोदय द्वारा पुलिस मॉडर्न स्कूल की समीक्षा गोष्ठी में दिए गए समस्त आदेशों/निर्देशों का अक्षरशः एवं शत-प्रतिशत अनुपालन सुनिश्चित कर दिया गया है।\n\n`;
+      plainText += `अनुपालन आख्या सादर अवलोकनार्थ एवं अग्रेतर आदेशार्थ प्रस्तुत है।\n\n`;
+      plainText += `\nहस्ताक्षर:\n(प्रधानाध्यापिका)\nपुलिस मॉडर्न स्कूल,\n25वीं वाहिनी पीएसी, रायबरेली।`;
+
+      navigator.clipboard.writeText(plainText).then(() => {
+        showToast('अनुपालन आख्या का सम्पूर्ण टेक्स्ट क्लिपबोर्ड में कॉपी हो गया है!');
+      }).catch(() => {
+        showToast('कॉपी करने में त्रुटि हुई');
+      });
+    }
+
+    // Custom Toast Notifications
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      const toastMsg = document.getElementById('toastMsg');
+      const undoBtn = document.getElementById('toastUndoBtn');
+      if (!toast || !toastMsg) return;
+
+      if (undoBtn) undoBtn.classList.add('hidden');
+
+      toastMsg.textContent = msg;
+      toast.classList.remove('opacity-0', 'pointer-events-none');
+      toast.classList.add('opacity-100');
+
+      if (toastTimer) clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        toast.classList.remove('opacity-100');
+        toast.classList.add('opacity-0', 'pointer-events-none');
+      }, 3000);
+    }
+
+    function showToastWithUndo(msg) {
+      const toast = document.getElementById('toast');
+      const toastMsg = document.getElementById('toastMsg');
+      const undoBtn = document.getElementById('toastUndoBtn');
+      if (!toast || !toastMsg) return;
+
+      toastMsg.textContent = msg;
+      if (undoBtn) undoBtn.classList.remove('hidden');
+
+      toast.classList.remove('opacity-0', 'pointer-events-none');
+      toast.classList.add('opacity-100');
+
+      if (toastTimer) clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        toast.classList.remove('opacity-100');
+        toast.classList.add('opacity-0', 'pointer-events-none');
+        if (undoBtn) undoBtn.classList.add('hidden');
+      }, 6000);
+    }
+  </script>
+
+</body>
+
+</html>

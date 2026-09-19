@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-slate-950">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Birthday Celebration Card - Police Modern School, 25th Bn PAC, Raebareli</title>
+
+  <!-- External Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts: Poppins, Outfit, Cinzel, Montserrat, Caveat, Playfair Display -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Cinzel:wght@800;900&family=Montserrat:wght@600;700;800;900&family=Outfit:wght@500;600;700;800;900&family=Playfair+Display:ital,wght@0,800;0,900;1,700&family=Poppins:wght@600;700;800;900&display=swap"
+    rel="stylesheet">
+
+  <!-- Feather Icons for Clean Buttons -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.js"></script>
+
+  <!-- Canvas Confetti for Delightful Interactive Celebration -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+  <style>
+    :root {
+      --navy-primary: #0a1f44;
+      --navy-deep: #051329;
+      --blue-accent: #0284c7;
+      --sky-vibrant: #0284c7;
+      --gold-primary: #f59e0b;
+      --gold-dark: #b45309;
+      --gold-light: #fef08a;
+      --coral-accent: #f43f5e;
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: radial-gradient(circle at center, #0f172a 0%, #030712 100%);
+      color: #0f172a;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Font Utility Classes */
+    .font-cinzel { font-family: 'Cinzel', serif; }
+    .font-poppins { font-family: 'Poppins', sans-serif; }
+    .font-outfit { font-family: 'Outfit', sans-serif; }
+    .font-caveat { font-family: 'Caveat', cursive; }
+    .font-playfair { font-family: 'Playfair Display', Georgia, serif; }
+    .font-montserrat { font-family: 'Montserrat', sans-serif; }
+
+    /* Physical Dimensions: A5 Landscape = 210mm x 148mm */
+    @page {
+      size: A5 landscape;
+      margin: 0;
+    }
+
+    /* Print Precision Styles */
+    @media print {
+      *, *::before, *::after {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+
+      html, body {
+        width: 210mm !important;
+        height: 148mm !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #ffffff !important;
+        overflow: hidden !important;
+      }
+
+      .no-print {
+        display: none !important;
+      }
+
+      .card-viewport {
+        width: 210mm !important;
+        height: 148mm !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        box-shadow: none !important;
+        border: none !important;
+        page-break-inside: avoid !important;
+        page-break-after: avoid !important;
+        break-inside: avoid !important;
+        break-after: avoid !important;
+      }
+
+      [contenteditable="true"] {
+        outline: none !important;
+      }
+    }
+
+    /* Screen Canvas: Exact A5 Landscape Proportions with Luxury Elevation */
+    .card-viewport {
+      width: 210mm;
+      height: 148mm;
+      box-sizing: border-box;
+      position: relative;
+      background: #ffffff;
+      border-radius: 8px;
+      margin: 18px auto;
+      box-shadow: 0 30px 70px -15px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(255, 255, 255, 0.15);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    /* Rich Dual Border Frame */
+    .festive-outer-border {
+      position: absolute;
+      inset: 4mm;
+      border: 2.5px solid var(--navy-primary);
+      border-radius: 6px;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .festive-inner-border {
+      position: absolute;
+      inset: 5.5mm;
+      border: 1.2px solid #f59e0b;
+      outline: 0.5px dashed rgba(2, 132, 199, 0.45);
+      outline-offset: -2.5px;
+      border-radius: 4px;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    /* Decorative Gold Corner Badges */
+    .gold-corner {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      pointer-events: none;
+      z-index: 3;
+      fill: #f59e0b;
+    }
+    .gold-corner-tl { top: 5.5mm; left: 5.5mm; }
+    .gold-corner-tr { top: 5.5mm; right: 5.5mm; transform: scaleX(-1); }
+    .gold-corner-bl { bottom: 5.5mm; left: 5.5mm; transform: scaleY(-1); }
+    .gold-corner-br { bottom: 5.5mm; right: 5.5mm; transform: scale(-1, -1); }
+
+    /* Ambient Festive Background */
+    .bg-festive-canvas {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 50% 30%, #ffffff 0%, #fefcf8 40%, #f7faff 75%, #f1f7fe 100%);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Card Content Structure */
+    .card-content {
+      position: relative;
+      z-index: 10;
+      padding: 6.5mm 9mm 5.5mm 9mm;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-sizing: border-box;
+    }
+
+    /* Spectacular Happy Birthday Typography */
+    .hbd-title-badge {
+      display: inline-block;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 900;
+      font-size: 24pt;
+      letter-spacing: 0.05em;
+      line-height: 1.05;
+      text-transform: uppercase;
+      background: linear-gradient(135deg, #0a1f44 0%, #0369a1 40%, #f59e0b 80%, #d97706 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 2px 4px rgba(10, 31, 68, 0.18));
+    }
+
+    /* Hero Student Name Showcase */
+    .hero-name-container {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #ffffff 0%, #fffbeb 50%, #f0f9ff 100%);
+      border: 2px solid #0284c7;
+      border-radius: 9999px;
+      padding: 2px 24px 3px 20px;
+      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+      position: relative;
+    }
+
+    .hero-student-name {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-weight: 900;
+      font-size: 21pt;
+      letter-spacing: 0.03em;
+      color: #0a1f44;
+      line-height: 1.15;
+      text-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+    }
+
+    /* Message Parchment Box */
+    .message-capsule {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(245, 158, 11, 0.35);
+      border-radius: 8px;
+      padding: 5px 14px;
+      box-shadow: 0 2px 6px rgba(10, 31, 68, 0.05);
+    }
+
+    /* Editable active focus */
+    [contenteditable="true"]:focus {
+      outline: 2px dashed #0284c7;
+      background-color: rgba(224, 242, 254, 0.6);
+      border-radius: 4px;
+    }
+
+    /* Floating illustration hover animations on screen */
+    @media screen {
+      .floating-balloon {
+        animation: floatBalloon 4s ease-in-out infinite alternate;
+      }
+      .floating-cake {
+        animation: floatCake 4s ease-in-out infinite alternate 1s;
+      }
+      @keyframes floatBalloon {
+        0% { transform: translateY(0) rotate(0deg); }
+        100% { transform: translateY(-4px) rotate(1.5deg); }
+      }
+      @keyframes floatCake {
+        0% { transform: translateY(0); }
+        100% { transform: translateY(-3px); }
+      }
+    }
+  </style>
+</head>
+
+<body class="min-h-screen flex flex-col items-center justify-start text-slate-800">
+
+  <!-- ================= TOP TOOLBAR (EXCLUDED FROM PRINT) ================= -->
+  <header class="no-print w-full bg-slate-950/95 backdrop-blur-md text-white py-2.5 px-4 sticky top-0 z-50 shadow-2xl border-b border-slate-800">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3 text-xs sm:text-sm">
+      
+      <!-- Brand & Mode Title -->
+      <div class="flex items-center gap-2.5">
+        <span class="w-3 h-3 rounded-full bg-amber-400 ring-4 ring-amber-400/20"></span>
+        <span class="font-bold tracking-wider text-amber-300 font-cinzel text-sm">POLICE MODERN SCHOOL</span>
+        <span class="text-slate-600">|</span>
+        <span class="text-slate-300 font-outfit text-xs font-semibold">Birthday Celebration Card (A5 Landscape)</span>
+      </div>
+
+      <!-- Action Controls -->
+      <div class="flex items-center flex-wrap gap-2">
+        
+        <!-- Interactive Celebrate Button -->
+        <button onclick="triggerConfetti()" title="Trigger celebratory confetti shower!"
+          class="px-3 py-1.5 rounded-full bg-gradient-to-r from-pink-500 via-rose-500 to-amber-500 hover:from-pink-400 hover:to-amber-400 text-white font-extrabold text-xs shadow-lg shadow-rose-500/25 flex items-center gap-1.5 transition transform hover:scale-105 cursor-pointer">
+          <span>🎉</span>
+          <span>Celebrate!</span>
+        </button>
+
+        <!-- Quick Fill Preset Profiles -->
+        <div class="flex items-center gap-1.5 bg-slate-900 border border-slate-700 rounded px-2.5 py-1">
+          <i data-feather="user" class="w-3.5 h-3.5 text-amber-400"></i>
+          <label for="studentPreset" class="text-xs text-slate-400 font-medium">Quick Fill:</label>
+          <select id="studentPreset" onchange="applyStudentPreset(this.value)"
+            class="bg-transparent text-amber-300 text-xs font-semibold focus:outline-none cursor-pointer">
+            <option value="aarav" class="bg-slate-900 text-white">Aarav Sharma (Class VIII-A)</option>
+            <option value="priya" class="bg-slate-900 text-white">Priya Chaudhary (Class IV-B)</option>
+            <option value="rohan" class="bg-slate-900 text-white">Rohan Gupta (Class X-A)</option>
+            <option value="ananya" class="bg-slate-900 text-white">Ananya Verma (Class II-C)</option>
+            <option value="blank" class="bg-slate-900 text-white">Blank Line (Handwrite)</option>
+          </select>
+        </div>
+
+        <!-- Front/Back Card View Switcher -->
+        <div class="flex items-center bg-slate-900 border border-slate-700 rounded p-0.5">
+          <button id="btnViewFront" onclick="switchView('front')" class="px-2.5 py-1 rounded bg-blue-600 text-white font-semibold text-xs transition cursor-pointer">
+            Front (Desk Display)
+          </button>
+          <button id="btnViewBack" onclick="switchView('back')" class="px-2.5 py-1 rounded text-slate-300 hover:text-white font-semibold text-xs transition cursor-pointer">
+            Back (Keepsake Note)
+          </button>
+        </div>
+
+        <!-- Today's Date -->
+        <button onclick="setTodayDate()" title="Insert today's date"
+          class="px-2.5 py-1.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 hover:border-sky-400/50 transition text-xs flex items-center gap-1.5 cursor-pointer">
+          <i data-feather="calendar" class="w-3.5 h-3.5 text-sky-400"></i>
+          <span>Today</span>
+        </button>
+
+        <!-- Copy Wish Text -->
+        <button onclick="copyBirthdayWish()" title="Copy birthday wish text"
+          class="px-2.5 py-1.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 hover:border-emerald-400/50 transition text-xs flex items-center gap-1.5 cursor-pointer">
+          <i data-feather="copy" class="w-3.5 h-3.5 text-emerald-400"></i>
+          <span>Copy</span>
+        </button>
+
+        <!-- Reset -->
+        <button onclick="resetBirthdayCard()" title="Reset to default card"
+          class="px-2.5 py-1.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 hover:border-rose-400/50 transition text-xs flex items-center gap-1.5 cursor-pointer">
+          <i data-feather="rotate-ccw" class="w-3.5 h-3.5 text-slate-400"></i>
+          <span>Reset</span>
+        </button>
+
+        <!-- Cross Navigation Links -->
+        <a href="ro-repair.html" class="px-2 py-1.5 rounded bg-slate-800 hover:bg-slate-700 text-cyan-300 border border-slate-700 transition text-xs flex items-center gap-1 cursor-pointer no-underline" title="RO Repair Letter">
+          <i data-feather="tool" class="w-3.5 h-3.5 text-cyan-400"></i>
+          <span>RO Repair</span>
+        </a>
+
+        <a href="certificate.html" class="px-2 py-1.5 rounded bg-slate-800 hover:bg-slate-700 text-amber-300 border border-slate-700 transition text-xs flex items-center gap-1 cursor-pointer no-underline" title="Certificate of Achievement">
+          <i data-feather="award" class="w-3.5 h-3.5 text-amber-400"></i>
+          <span>Certificate</span>
+        </a>
+
+        <a href="classroom.html" class="px-2 py-1.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition text-xs flex items-center gap-1 cursor-pointer no-underline" title="Classroom English">
+          <i data-feather="book-open" class="w-3.5 h-3.5 text-blue-400"></i>
+          <span>Classroom</span>
+        </a>
+
+        <!-- Q&A Sheet Link -->
+        <a href="question-sheet.html" class="px-2 py-1.5 rounded bg-slate-800 hover:bg-slate-700 text-sky-400 border border-slate-700 transition text-xs flex items-center gap-1 cursor-pointer no-underline" title="Class 6 Q&A Sheet">
+          <i data-feather="help-circle" class="w-3.5 h-3.5 text-sky-400"></i>
+          <span>Q&A Sheet</span>
+        </a>
+
+        <!-- Print / PDF (A5 Landscape) -->
+        <button onclick="window.print()"
+          class="px-4 py-1.5 rounded bg-gradient-to-r from-amber-400 via-amber-500 to-amber-600 hover:from-amber-300 hover:to-amber-500 text-slate-950 font-black font-montserrat transition text-xs flex items-center gap-1.5 shadow-lg shadow-amber-500/25 cursor-pointer">
+          <i data-feather="printer" class="w-3.5 h-3.5 text-slate-950"></i>
+          <span>Print / PDF (A5)</span>
+        </button>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- Notification Toast -->
+  <div id="toast"
+    class="no-print fixed bottom-5 right-5 z-50 bg-slate-900 text-white border border-slate-700 px-4 py-2.5 rounded-lg text-xs shadow-2xl opacity-0 transition-opacity duration-300 pointer-events-none flex items-center gap-2">
+    <span id="toastMsg">Notification</span>
+  </div>
+
+  <!-- Main Canvas Container -->
+  <main class="w-full flex justify-center items-center py-6 px-2 overflow-x-auto">
+    
+    <!-- ========================================================================= -->
+    <!-- VIEW 1: FRONT CELEBRATION CARD (Desk Display & Presentation)               -->
+    <!-- ========================================================================= -->
+    <div id="cardFront" class="card-viewport">
+      
+      <!-- Ambient Celebratory Background -->
+      <div class="bg-festive-canvas"></div>
+      
+      <!-- Dual Border Framing -->
+      <div class="festive-outer-border"></div>
+      <div class="festive-inner-border"></div>
+
+      <!-- Gold Corner Accents -->
+      <svg class="gold-corner gold-corner-tl" viewBox="0 0 24 24"><path d="M0,0 L24,0 C12,4 4,12 0,24 Z" /></svg>
+      <svg class="gold-corner gold-corner-tr" viewBox="0 0 24 24"><path d="M0,0 L24,0 C12,4 4,12 0,24 Z" /></svg>
+      <svg class="gold-corner gold-corner-bl" viewBox="0 0 24 24"><path d="M0,0 L24,0 C12,4 4,12 0,24 Z" /></svg>
+      <svg class="gold-corner gold-corner-br" viewBox="0 0 24 24"><path d="M0,0 L24,0 C12,4 4,12 0,24 Z" /></svg>
+
+      <!-- Festive Streamers, Twinkles & Confetti Background SVG -->
+      <svg class="absolute inset-0 w-full h-full pointer-events-none z-[2]" viewBox="0 0 600 420" preserveAspectRatio="none">
+        <!-- Top Festive Garland Streamer -->
+        <path d="M10,12 Q65,35 120,16 Q175,38 230,15 Q285,38 340,15 Q395,38 450,15 Q505,38 560,15 Q585,25 590,12" fill="none" stroke="#e2e8f0" stroke-width="1.2" stroke-dasharray="3,3" />
+        
+        <!-- Garland Pennants -->
+        <polygon points="35,22 50,24 43,42" fill="#38bdf8" />
+        <polygon points="85,30 100,31 93,48" fill="#f59e0b" />
+        <polygon points="140,24 155,25 148,42" fill="#f43f5e" />
+        <polygon points="195,30 210,31 203,48" fill="#10b981" />
+        <polygon points="250,24 265,25 258,42" fill="#6366f1" />
+        <polygon points="305,30 320,31 313,48" fill="#f59e0b" />
+        <polygon points="360,24 375,25 368,42" fill="#38bdf8" />
+        <polygon points="415,30 430,31 423,48" fill="#f43f5e" />
+        <polygon points="470,24 485,25 478,42" fill="#10b981" />
+        <polygon points="525,30 540,31 533,48" fill="#fbbf24" />
+
+        <!-- Floating Sparkle Stars -->
+        <g fill="#f59e0b" opacity="0.9">
+          <path d="M60,65 L62,72 L69,74 L62,76 L60,83 L58,76 L51,74 L58,72 Z" />
+          <path d="M540,65 L542,72 L549,74 L542,76 L540,83 L538,76 L531,74 L538,72 Z" />
+          <path d="M120,110 L121,115 L126,116 L121,117 L120,122 L119,117 L114,116 L119,115 Z" fill="#38bdf8" />
+          <path d="M480,110 L481,115 L486,116 L481,117 L480,122 L479,117 L474,116 L479,115 Z" fill="#f43f5e" />
+        </g>
+
+        <!-- Confetti Elements -->
+        <circle cx="28" cy="180" r="3.5" fill="#38bdf8" opacity="0.8" />
+        <circle cx="48" cy="240" r="3" fill="#f59e0b" opacity="0.85" />
+        <circle cx="32" cy="300" r="2.5" fill="#f43f5e" opacity="0.8" />
+        <rect x="52" y="140" width="5" height="5" rx="1" fill="#10b981" transform="rotate(25 52 140)" opacity="0.75" />
+        <rect x="36" y="270" width="6" height="4" rx="1" fill="#fbbf24" transform="rotate(-30 36 270)" opacity="0.8" />
+
+        <circle cx="572" cy="180" r="3.5" fill="#f43f5e" opacity="0.8" />
+        <circle cx="552" cy="240" r="3" fill="#38bdf8" opacity="0.85" />
+        <circle cx="568" cy="300" r="2.5" fill="#f59e0b" opacity="0.8" />
+        <rect x="542" y="140" width="5" height="5" rx="1" fill="#6366f1" transform="rotate(35 542 140)" opacity="0.75" />
+        <rect x="558" y="270" width="6" height="4" rx="1" fill="#10b981" transform="rotate(-20 558 270)" opacity="0.8" />
+      </svg>
+
+      <!-- Main Interactive Content Structure -->
+      <div class="card-content">
+
+        <!-- ================= 1. POLISHED SCHOOL BRANDING HEADER ================= -->
+        <div class="flex items-center justify-between pb-1.5 border-b border-slate-200/90">
+          
+          <!-- Left: PMS School Crest with Golden Ring & Enlarged Branding -->
+          <div class="flex items-center gap-3">
+            <div class="w-14 h-14 rounded-full border-2 border-amber-500 p-0.5 bg-white shadow-md flex items-center justify-center flex-shrink-0 ring-2 ring-amber-400/20">
+              <img src="pms-logo.png" alt="PMS Logo" class="w-full h-full object-contain"
+                onerror="this.src='ChatGPT Image Sep 11, 2026, 02_21_01 PM.png'" />
+            </div>
+
+            <div class="text-left">
+              <h1 class="font-cinzel text-[14.5pt] font-black text-[#0a1f44] tracking-wider leading-none uppercase">
+                POLICE MODERN SCHOOL
+              </h1>
+              <p class="font-montserrat text-[8.5pt] font-extrabold text-[#b45309] tracking-[0.22em] uppercase mt-1">
+                25th Vahini PAC, Raebareli
+              </p>
+            </div>
+          </div>
+
+          <!-- Right: Celebrating Tagline Badge -->
+          <div class="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-gradient-to-r from-amber-50 via-amber-100 to-sky-50 border border-amber-300 text-amber-900 text-[9pt] font-bold tracking-wide shadow-xs">
+            <span class="text-amber-500 text-sm">✨</span>
+            <span class="font-outfit font-extrabold">Celebrating Our Young Stars</span>
+            <span class="text-amber-500 text-sm">✨</span>
+          </div>
+
+        </div>
+
+        <!-- ================= 2. HERO CELEBRATION BLOCK ================= -->
+        <div class="text-center my-auto py-0.5 space-y-1">
+          
+          <!-- Grand Happy Birthday Heading -->
+          <div class="flex items-center justify-center gap-2.5">
+            <span class="text-2xl filter drop-shadow">🎉</span>
+            <h2 class="hbd-title-badge">
+              HAPPY BIRTHDAY!
+            </h2>
+            <span class="text-2xl filter drop-shadow">🎉</span>
+          </div>
+
+          <!-- Hero Element: Student Nameplate -->
+          <div class="pt-0.5 pb-1">
+            <div class="hero-name-container">
+              <span class="font-playfair italic text-[14pt] font-bold text-sky-600 mr-2">Dear</span>
+              <span id="frontStudentName" class="hero-student-name" contenteditable="true">
+                Aarav Sharma
+              </span>
+              <span class="text-xl ml-2 text-amber-500 filter drop-shadow">🌟</span>
+            </div>
+          </div>
+
+          <!-- Deluxe Modern Illustrated Composition (Balloons, Message, Cake & Gifts) -->
+          <div class="flex items-center justify-between px-3 py-0.5 gap-2">
+            
+            <!-- Left: Floating 3D Glossy Balloon Cluster (SVG) -->
+            <div class="w-24 h-24 flex-shrink-0 flex items-center justify-center floating-balloon">
+              <svg class="w-full h-full filter drop-shadow-md" viewBox="0 0 120 130">
+                <defs>
+                  <!-- Glossy Balloon Radial Gradients -->
+                  <radialGradient id="balloonNavy" cx="35%" cy="30%" r="65%">
+                    <stop offset="0%" stop-color="#38bdf8" />
+                    <stop offset="45%" stop-color="#0284c7" />
+                    <stop offset="100%" stop-color="#0a1f44" />
+                  </radialGradient>
+                  <radialGradient id="balloonGold" cx="35%" cy="30%" r="65%">
+                    <stop offset="0%" stop-color="#fef08a" />
+                    <stop offset="40%" stop-color="#f59e0b" />
+                    <stop offset="100%" stop-color="#b45309" />
+                  </radialGradient>
+                  <radialGradient id="balloonCoral" cx="35%" cy="30%" r="65%">
+                    <stop offset="0%" stop-color="#fda4af" />
+                    <stop offset="45%" stop-color="#f43f5e" />
+                    <stop offset="100%" stop-color="#9f1239" />
+                  </radialGradient>
+                  <radialGradient id="balloonSky" cx="35%" cy="30%" r="65%">
+                    <stop offset="0%" stop-color="#e0f2fe" />
+                    <stop offset="45%" stop-color="#38bdf8" />
+                    <stop offset="100%" stop-color="#0369a1" />
+                  </radialGradient>
+                </defs>
+
+                <!-- Tied Strings -->
+                <path d="M42,75 Q52,100 60,125" fill="none" stroke="#94a3b8" stroke-width="1.2" />
+                <path d="M78,72 Q68,98 60,125" fill="none" stroke="#94a3b8" stroke-width="1.2" />
+                <path d="M60,65 Q60,95 60,125" fill="none" stroke="#cbd5e1" stroke-width="1.2" />
+
+                <!-- Left Balloon (Navy/Blue) -->
+                <g transform="translate(18, 18)">
+                  <ellipse cx="25" cy="30" rx="19" ry="24" fill="url(#balloonNavy)" />
+                  <ellipse cx="19" cy="22" rx="4" ry="8" fill="#ffffff" opacity="0.5" transform="rotate(-15 19 22)" />
+                  <polygon points="23,54 27,54 25,58" fill="#0284c7" />
+                </g>
+
+                <!-- Right Balloon (Coral/Rose) -->
+                <g transform="translate(56, 12)">
+                  <ellipse cx="24" cy="30" rx="18" ry="23" fill="url(#balloonCoral)" />
+                  <ellipse cx="19" cy="22" rx="4" ry="8" fill="#ffffff" opacity="0.55" transform="rotate(-15 19 22)" />
+                  <polygon points="22,53 26,53 24,57" fill="#f43f5e" />
+                </g>
+
+                <!-- Center Front Balloon (Shimmering Gold) -->
+                <g transform="translate(36, 0)">
+                  <ellipse cx="25" cy="32" rx="21" ry="26" fill="url(#balloonGold)" />
+                  <ellipse cx="18" cy="23" rx="5" ry="10" fill="#ffffff" opacity="0.65" transform="rotate(-15 18 23)" />
+                  <polygon points="23,58 27,58 25,62" fill="#b45309" />
+                </g>
+
+                <!-- Ribbon Bow at knot -->
+                <circle cx="60" cy="122" r="3" fill="#f59e0b" />
+              </svg>
+            </div>
+
+            <!-- Center: Heartwarming Birthday Citation -->
+            <div class="flex-1 max-w-sm px-1">
+              <div class="message-capsule text-center">
+                <p class="font-outfit text-[10.2pt] leading-[1.45] text-slate-700 font-medium">
+                  May your special day be filled with 
+                  <span class="font-extrabold text-[#0a1f44]">happiness, laughter, learning</span> 
+                  and wonderful memories.
+                </p>
+                <div class="mt-1 pt-1 border-t border-amber-200/60 flex items-center justify-center gap-1.5 text-[#0284c7]">
+                  <span class="text-amber-500 font-bold">✨</span>
+                  <p class="font-outfit text-[10.5pt] font-black tracking-wide">
+                    Keep smiling, keep learning and keep shining!
+                  </p>
+                  <span class="text-amber-500 font-bold">✨</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right: Deluxe 3-Tier Cake & Gift Box (SVG) -->
+            <div class="w-24 h-24 flex-shrink-0 flex items-center justify-center floating-cake">
+              <svg class="w-full h-full filter drop-shadow-md" viewBox="0 0 120 130">
+                <defs>
+                  <linearGradient id="cakeGoldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#fef08a" />
+                    <stop offset="50%" stop-color="#f59e0b" />
+                    <stop offset="100%" stop-color="#d97706" />
+                  </linearGradient>
+                  <linearGradient id="cakeBlueGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#38bdf8" />
+                    <stop offset="100%" stop-color="#0a1f44" />
+                  </linearGradient>
+                </defs>
+
+                <!-- Cake Plate Stand -->
+                <ellipse cx="60" cy="108" rx="44" ry="6" fill="#e2e8f0" />
+                <ellipse cx="60" cy="106" rx="40" ry="5" fill="#f8fafc" />
+
+                <!-- Cake Bottom Tier -->
+                <rect x="26" y="78" width="68" height="28" rx="5" fill="url(#cakeBlueGrad)" />
+                <path d="M26,86 C32,92 38,86 44,92 C50,86 56,92 62,86 C68,92 74,86 80,92 C86,86 92,92 94,86 L94,78 L26,78 Z" fill="#ffffff" opacity="0.9" />
+
+                <!-- Cake Middle Tier -->
+                <rect x="36" y="54" width="48" height="24" rx="4" fill="url(#cakeGoldGrad)" />
+                <path d="M36,60 C42,65 48,60 54,65 C60,60 66,65 72,60 C78,65 82,60 84,60 L84,54 L36,54 Z" fill="#ffffff" opacity="0.9" />
+
+                <!-- Cake Top Tier -->
+                <rect x="46" y="36" width="28" height="18" rx="3" fill="#f43f5e" />
+                <path d="M46,41 C50,44 54,41 58,44 C62,41 66,44 70,41 C72,43 74,41 74,41 L74,36 L46,36 Z" fill="#ffffff" opacity="0.9" />
+
+                <!-- Birthday Candles with Glowing Flames -->
+                <g>
+                  <!-- Candle 1 (Left) -->
+                  <rect x="50" y="24" width="3" height="12" rx="1" fill="#38bdf8" />
+                  <ellipse cx="51.5" cy="18" rx="2.5" ry="4.5" fill="#f59e0b" />
+                  <ellipse cx="51.5" cy="19" rx="1" ry="2.5" fill="#fef08a" />
+
+                  <!-- Candle 2 (Center - Tall) -->
+                  <rect x="58.5" y="21" width="3" height="15" rx="1" fill="#f59e0b" />
+                  <ellipse cx="60" cy="15" rx="3" ry="5" fill="#f59e0b" />
+                  <ellipse cx="60" cy="16" rx="1.2" ry="3" fill="#ffffff" />
+
+                  <!-- Candle 3 (Right) -->
+                  <rect x="67" y="24" width="3" height="12" rx="1" fill="#10b981" />
+                  <ellipse cx="68.5" cy="18" rx="2.5" ry="4.5" fill="#f59e0b" />
+                  <ellipse cx="68.5" cy="19" rx="1" ry="2.5" fill="#fef08a" />
+                </g>
+
+                <!-- Little Gift Box in front -->
+                <g transform="translate(86, 88)">
+                  <rect x="0" y="5" width="20" height="18" rx="2" fill="#0a1f44" />
+                  <rect x="8" y="5" width="4" height="18" fill="#f59e0b" />
+                  <rect x="0" y="12" width="20" height="3" fill="#f59e0b" />
+                  <!-- Bow -->
+                  <ellipse cx="7" cy="4" rx="3" ry="2" fill="#fbbf24" transform="rotate(-30 7 4)" />
+                  <ellipse cx="13" cy="4" rx="3" ry="2" fill="#fbbf24" transform="rotate(30 13 4)" />
+                  <circle cx="10" cy="5" r="1.5" fill="#d97706" />
+                </g>
+              </svg>
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- ================= 3. FOOTER: CLASS, DATE & PERSONAL WISH ================= -->
+        <footer class="pt-1 border-t border-slate-200/90 flex items-center justify-between text-xs font-outfit">
+          
+          <!-- Left: Class and Section Pill -->
+          <div class="flex items-center gap-1.5 bg-slate-50 border border-slate-200/90 px-3 py-1 rounded-full shadow-2xs">
+            <span class="font-extrabold text-slate-500 uppercase text-[7.5pt]">Class:</span>
+            <span id="frontClass" class="font-black text-[#0a1f44] text-[9.5pt]" contenteditable="true">VIII</span>
+            <span class="text-slate-300">|</span>
+            <span class="font-extrabold text-slate-500 uppercase text-[7.5pt]">Section:</span>
+            <span id="frontSection" class="font-black text-[#0a1f44] text-[9.5pt]" contenteditable="true">A</span>
+          </div>
+
+          <!-- Center: Warm Hand-Written Wish -->
+          <div class="text-center px-2">
+            <p class="font-caveat text-[16pt] font-bold text-rose-600 leading-none filter drop-shadow-2xs">
+              With warm wishes, PMS Family ❤️
+            </p>
+          </div>
+
+          <!-- Right: Date Pill -->
+          <div class="flex items-center gap-1.5 bg-slate-50 border border-slate-200/90 px-3 py-1 rounded-full shadow-2xs">
+            <span class="font-extrabold text-slate-500 uppercase text-[7.5pt]">Date:</span>
+            <span id="frontDate" class="font-bold text-[#0a1f44] text-[9pt]" contenteditable="true">12 September, 2026</span>
+          </div>
+
+        </footer>
+
+      </div>
+
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- VIEW 2: BACK / KEEPSAKE GREETING CARD (Personal Note & Official Stamp)    -->
+    <!-- ========================================================================= -->
+    <div id="cardBack" class="card-viewport hidden">
+      
+      <!-- Ambient Celebratory Background -->
+      <div class="bg-festive-canvas"></div>
+      
+      <!-- Dual Border Framing -->
+      <div class="festive-outer-border"></div>
+      <div class="festive-inner-border"></div>
+
+      <!-- Gold Corner Accents -->
+      <svg class="gold-corner gold-corner-tl" viewBox="0 0 24 24"><path d="M0,0 L24,0 C12,4 4,12 0,24 Z" /></svg>
+      <svg class="gold-corner gold-corner-tr" viewBox="0 0 24 24"><path d="M0,0 L24,0 C12,4 4,12 0,24 Z" /></svg>
+      <svg class="gold-corner gold-corner-bl" viewBox="0 0 24 24"><path d="M0,0 L24,0 C12,4 4,12 0,24 Z" /></svg>
+      <svg class="gold-corner gold-corner-br" viewBox="0 0 24 24"><path d="M0,0 L24,0 C12,4 4,12 0,24 Z" /></svg>
+
+      <!-- Back Card Content -->
+      <div class="card-content">
+        
+        <!-- Header with Dual Insignia (PMS + PAC) -->
+        <div class="flex items-center justify-between pb-2 border-b border-slate-200/90">
+          
+          <div class="flex items-center gap-3">
+            <div class="w-13 h-13 rounded-full border-2 border-amber-500 p-0.5 bg-white shadow-md flex items-center justify-center ring-2 ring-amber-400/20">
+              <img src="pms-logo.png" alt="PMS Logo" class="w-full h-full object-contain"
+                onerror="this.src='ChatGPT Image Sep 11, 2026, 02_21_01 PM.png'" />
+            </div>
+            <div class="text-left">
+              <h1 class="font-cinzel text-[14pt] font-black text-[#0a1f44] tracking-wider leading-none uppercase">
+                POLICE MODERN SCHOOL
+              </h1>
+              <p class="font-montserrat text-[8.5pt] font-extrabold text-[#b45309] tracking-[0.2em] uppercase mt-1">
+                25th Vahini PAC, Raebareli
+              </p>
+            </div>
+          </div>
+
+          <!-- Right PAC Logo -->
+          <div class="flex items-center gap-3">
+            <div class="text-right hidden sm:block">
+              <p class="font-outfit text-[8.5pt] font-bold text-slate-600 uppercase">Special Keepsake Note</p>
+              <p class="font-outfit text-[7.5pt] font-semibold text-slate-400">Academic Year 2026–2027</p>
+            </div>
+            <div class="w-13 h-13 rounded-full border-2 border-slate-300 p-0.5 bg-white shadow-md flex items-center justify-center">
+              <img src="pac_logo.png" alt="PAC Logo" class="w-full h-full object-contain" />
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Personal Teacher / Principal Note Area -->
+        <div class="my-auto py-1 px-4 space-y-2 text-center max-w-xl mx-auto">
+          
+          <div class="flex items-center justify-center gap-2 text-amber-600 text-xs font-bold font-outfit uppercase tracking-widest">
+            <span>✨</span>
+            <span>A Special Birthday Blessing From School</span>
+            <span>✨</span>
+          </div>
+
+          <h3 class="font-poppins text-[15pt] font-extrabold text-[#0a1f44]">
+            Dearest <span id="backStudentName" class="text-sky-600 border-b-2 border-amber-400 px-2" contenteditable="true">Aarav</span>,
+          </h3>
+
+          <p class="font-outfit text-[10.5pt] leading-relaxed text-slate-700 italic" contenteditable="true">
+            "Every child brings unique joy, energy and talent into our classrooms. On this special milestone of your life, we celebrate your curiosity, kindness, and dedication. May you always achieve great heights and make your parents and school proud!"
+          </p>
+
+          <!-- Formal Teacher & Principal Signature Stations + Gold Birthday Seal -->
+          <div class="pt-2 flex justify-between items-end px-6">
+            <div class="text-center w-36">
+              <div class="border-b border-dashed border-slate-400 w-28 mx-auto mb-1"></div>
+              <p class="font-montserrat font-bold text-[8.5pt] text-[#0a1f44] uppercase">Class Teacher</p>
+            </div>
+
+            <!-- Gold Birthday Star Stamp Emblem -->
+            <div class="w-16 h-16 rounded-full border-2 border-dashed border-amber-500 p-1 flex flex-col items-center justify-center bg-gradient-to-tr from-amber-50 to-amber-100 text-center shadow-xs">
+              <span class="text-sm">🎂</span>
+              <span class="font-cinzel text-[5.5pt] font-black text-[#0a1f44] leading-none mt-0.5">PMS STAR</span>
+              <span class="font-montserrat text-[5pt] text-amber-700 font-bold">2026–27</span>
+            </div>
+
+            <div class="text-center w-36">
+              <div class="border-b border-dashed border-slate-400 w-28 mx-auto mb-1"></div>
+              <p class="font-montserrat font-bold text-[8.5pt] text-[#0a1f44] uppercase">Principal</p>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Back Footer -->
+        <footer class="pt-1 border-t border-slate-200/90 flex items-center justify-between text-xs font-outfit">
+          <div class="text-slate-500 text-[8.5pt]">
+            Student ID: <span id="backStudentId" class="font-mono font-bold text-slate-700" contenteditable="true">PMS/2026/STU-482</span>
+          </div>
+
+          <div class="font-caveat text-[14pt] font-bold text-sky-700">
+            Always Strive for Excellence 🌟
+          </div>
+
+          <div class="text-slate-500 text-[8.5pt]">
+            Official Birthday Record
+          </div>
+        </footer>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Interactive Scripts & State Management -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (window.feather) feather.replace();
+      loadBirthdayStorage();
+    });
+
+    // Toast notification helper
+    let toastTimer;
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      const toastMsg = document.getElementById('toastMsg');
+      if (!toast || !toastMsg) return;
+      toastMsg.innerText = msg;
+      toast.classList.remove('opacity-0', 'pointer-events-none');
+      toast.classList.add('opacity-100');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        toast.classList.remove('opacity-100');
+        toast.classList.add('opacity-0', 'pointer-events-none');
+      }, 2400);
+    }
+
+    // Trigger celebratory confetti shower
+    function triggerConfetti() {
+      if (typeof confetti === 'function') {
+        confetti({
+          particleCount: 80,
+          spread: 70,
+          origin: { y: 0.6 },
+          colors: ['#0284c7', '#f59e0b', '#f43f5e', '#10b981', '#6366f1']
+        });
+        showToast('🎉 Happy Birthday celebration triggered!');
+      }
+    }
+
+    // Preset configurations for fast auto-fill
+    const birthdayPresets = {
+      aarav: {
+        name: 'Aarav Sharma',
+        cls: 'VIII',
+        sec: 'A',
+        date: '12 September, 2026',
+        id: 'PMS/2026/STU-482'
+      },
+      priya: {
+        name: 'Priya Chaudhary',
+        cls: 'IV',
+        sec: 'B',
+        date: '12 September, 2026',
+        id: 'PMS/2026/STU-719'
+      },
+      rohan: {
+        name: 'Rohan Gupta',
+        cls: 'X',
+        sec: 'A',
+        date: '12 September, 2026',
+        id: 'PMS/2026/STU-294'
+      },
+      ananya: {
+        name: 'Ananya Verma',
+        cls: 'II',
+        sec: 'C',
+        date: '12 September, 2026',
+        id: 'PMS/2026/STU-883'
+      },
+      blank: {
+        name: '______________________',
+        cls: '____',
+        sec: '____',
+        date: '__________________',
+        id: 'PMS/2026/________'
+      }
+    };
+
+    // Apply Student Preset
+    function applyStudentPreset(key) {
+      const data = birthdayPresets[key];
+      if (!data) return;
+
+      document.getElementById('frontStudentName').innerText = data.name;
+      document.getElementById('frontClass').innerText = data.cls;
+      document.getElementById('frontSection').innerText = data.sec;
+      document.getElementById('frontDate').innerText = data.date;
+
+      // Sync with Back Card
+      document.getElementById('backStudentName').innerText = data.name.split(' ')[0] || data.name;
+      document.getElementById('backStudentId').innerText = data.id;
+
+      showToast(`Applied "${data.name}" profile!`);
+      saveBirthdayStorage();
+    }
+
+    // Switch between Front (Desk Display) and Back (Keepsake Note)
+    let currentView = 'front';
+    function switchView(view) {
+      const frontCard = document.getElementById('cardFront');
+      const backCard = document.getElementById('cardBack');
+      const btnFront = document.getElementById('btnViewFront');
+      const btnBack = document.getElementById('btnViewBack');
+
+      if (view === 'front') {
+        frontCard.classList.remove('hidden');
+        backCard.classList.add('hidden');
+        btnFront.className = 'px-2.5 py-1 rounded bg-blue-600 text-white font-semibold text-xs transition cursor-pointer';
+        btnBack.className = 'px-2.5 py-1 rounded text-slate-300 hover:text-white font-semibold text-xs transition cursor-pointer';
+        currentView = 'front';
+      } else {
+        frontCard.classList.add('hidden');
+        backCard.classList.remove('hidden');
+        btnBack.className = 'px-2.5 py-1 rounded bg-blue-600 text-white font-semibold text-xs transition cursor-pointer';
+        btnFront.className = 'px-2.5 py-1 rounded text-slate-300 hover:text-white font-semibold text-xs transition cursor-pointer';
+        currentView = 'back';
+      }
+      showToast(`Showing ${view.toUpperCase()} card view`);
+    }
+
+    // Set today's date formatted
+    function setTodayDate() {
+      const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+      const now = new Date();
+      const dateStr = `${now.getDate()} ${months[now.getMonth()]}, ${now.getFullYear()}`;
+      document.getElementById('frontDate').innerText = dateStr;
+      showToast(`Date updated to: ${dateStr}`);
+      saveBirthdayStorage();
+    }
+
+    // Copy formatted birthday wish
+    function copyBirthdayWish() {
+      const name = document.getElementById('frontStudentName')?.innerText?.trim() || 'Dear Student';
+      const cls = document.getElementById('frontClass')?.innerText?.trim() || '';
+      const sec = document.getElementById('frontSection')?.innerText?.trim() || '';
+      const date = document.getElementById('frontDate')?.innerText?.trim() || '';
+
+      const text = `🎉 HAPPY BIRTHDAY, ${name.toUpperCase()}! 🎉
+Class: ${cls} - ${sec} | Date: ${date}
+
+May your special day be filled with happiness, laughter, learning and wonderful memories.
+Keep smiling, keep learning and keep shining! ✨
+
+With warm wishes,
+Police Modern School Family ❤️
+25th Vahini PAC, Raebareli`;
+
+      try {
+        const temp = document.createElement('textarea');
+        temp.value = text;
+        document.body.appendChild(temp);
+        temp.select();
+        document.execCommand('copy');
+        document.body.removeChild(temp);
+        showToast('Birthday wish copied to clipboard!');
+      } catch (e) {
+        showToast('Unable to copy automatically.');
+      }
+    }
+
+    // Reset card
+    function resetBirthdayCard() {
+      if (!confirm('Are you sure you want to reset the birthday card to default?')) return;
+      document.getElementById('studentPreset').value = 'aarav';
+      applyStudentPreset('aarav');
+      localStorage.removeItem('pms_birthday_card_state_v2');
+      showToast('Card reset to default!');
+    }
+
+    // Auto-save user edits to localStorage
+    const birthdayFields = ['frontStudentName', 'frontClass', 'frontSection', 'frontDate', 'backStudentName', 'backStudentId'];
+
+    birthdayFields.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.addEventListener('input', () => {
+          // Keep student names synced between front and back
+          if (id === 'frontStudentName') {
+            const firstName = el.innerText.trim().split(' ')[0] || el.innerText.trim();
+            const backNameEl = document.getElementById('backStudentName');
+            if (backNameEl) backNameEl.innerText = firstName;
+          }
+          saveBirthdayStorage();
+        });
+      }
+    });
+
+    function saveBirthdayStorage() {
+      const state = {
+        preset: document.getElementById('studentPreset').value,
+        view: currentView
+      };
+      birthdayFields.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) state[id] = el.innerText;
+      });
+      localStorage.setItem('pms_birthday_card_state_v2', JSON.stringify(state));
+    }
+
+    function loadBirthdayStorage() {
+      try {
+        const saved = localStorage.getItem('pms_birthday_card_state_v2');
+        if (!saved) return;
+        const state = JSON.parse(saved);
+        birthdayFields.forEach(id => {
+          if (state[id] !== undefined) {
+            const el = document.getElementById(id);
+            if (el) el.innerText = state[id];
+          }
+        });
+        if (state.preset) document.getElementById('studentPreset').value = state.preset;
+        if (state.view) switchView(state.view);
+      } catch (e) {
+        console.error('Storage load error', e);
+      }
+    }
+  </script>
+</body>
+
+</html>

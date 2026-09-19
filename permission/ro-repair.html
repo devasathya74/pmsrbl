@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="hi" class="h-full bg-neutral-100">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>आर.ओ. मरम्मत हेतु प्रार्थना पत्र - पुलिस मॉडर्न स्कूल, 25वीं वाहिनी पीएसी, रायबरेली</title>
+
+  <!-- External Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts: Noto Sans Devanagari & Inter for authentic Hindi official typing -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700;800;900&family=Noto+Serif+Devanagari:wght@400;600;700;800&display=swap"
+    rel="stylesheet">
+
+  <!-- Feather Icons for lightweight buttons -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.js"></script>
+
+  <style>
+    body {
+      font-family: 'Noto Sans Devanagari', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: #111827;
+      background-color: #f3f4f6;
+    }
+
+    .font-serif-hi {
+      font-family: 'Noto Serif Devanagari', Georgia, serif;
+    }
+
+    /* A4 Physical Dimensions & Print Setup */
+    @page {
+      size: A4 portrait;
+      margin: 10mm 14mm 10mm 14mm;
+    }
+
+    /* Screen & Universal Logo & Spacer Dimensions */
+    .logo-container {
+      width: 96px;
+      height: 96px;
+      min-width: 96px;
+      max-width: 96px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .logo-container img,
+    #schoolLogo {
+      width: 96px;
+      height: 96px;
+      max-width: 96px;
+      max-height: 96px;
+      object-fit: contain;
+      display: block;
+    }
+
+    .header-spacer {
+      width: 96px;
+      min-width: 96px;
+      max-width: 96px;
+      display: block;
+      flex-shrink: 0;
+    }
+
+    @media print {
+
+      *,
+      *::before,
+      *::after {
+        color: #000000 !important;
+        text-shadow: none !important;
+        box-sizing: border-box !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+
+      html,
+      body {
+        width: 100% !important;
+        height: auto !important;
+        min-height: auto !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #ffffff !important;
+        display: block !important;
+        overflow: visible !important;
+      }
+
+      .no-print {
+        display: none !important;
+      }
+
+      .sheet-container {
+        padding: 0 !important;
+        margin: 0 !important;
+        background: #ffffff !important;
+        display: block !important;
+        width: 100% !important;
+        min-height: auto !important;
+      }
+
+      .a4-sheet {
+        box-shadow: none !important;
+        border: none !important;
+        margin: 0 auto !important;
+        padding: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-height: auto !important;
+        height: auto !important;
+        display: block !important;
+        overflow: visible !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+        page-break-after: avoid !important;
+        break-after: avoid !important;
+      }
+
+      [contenteditable="true"] {
+        outline: none !important;
+        background: transparent !important;
+      }
+
+      /* Exact A4 Print Dimensions for Logo: 26mm x 26mm */
+      .logo-container {
+        width: 26mm !important;
+        height: 26mm !important;
+        min-width: 26mm !important;
+        max-width: 26mm !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        overflow: hidden !important;
+        flex-shrink: 0 !important;
+      }
+
+      .logo-container img,
+      #schoolLogo {
+        width: 26mm !important;
+        height: 26mm !important;
+        max-width: 26mm !important;
+        max-height: 26mm !important;
+        object-fit: contain !important;
+        display: block !important;
+        margin: 0 auto !important;
+      }
+
+      .header-spacer {
+        width: 26mm !important;
+        min-width: 26mm !important;
+        max-width: 26mm !important;
+        display: block !important;
+        flex-shrink: 0 !important;
+      }
+
+      .header-main-title {
+        font-size: 21pt !important;
+        line-height: 1.18 !important;
+        font-weight: 800 !important;
+        letter-spacing: -0.01em !important;
+        white-space: nowrap !important;
+      }
+
+      .header-sub-title {
+        font-size: 14.5pt !important;
+        line-height: 1.25 !important;
+        font-weight: 800 !important;
+        letter-spacing: normal !important;
+        white-space: nowrap !important;
+      }
+
+      .subject-box {
+        background-color: transparent !important;
+        border-left: 4px solid #000000 !important;
+        padding: 3px 8px !important;
+      }
+
+      .signature-section {
+        margin-top: 3.5rem !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+      }
+    }
+
+    /* Web Simulation A4 Dimensions */
+    .a4-sheet {
+      width: 210mm;
+      min-height: 297mm;
+      background-color: #ffffff;
+      box-sizing: border-box;
+      border: none;
+      position: relative;
+    }
+
+    @media (max-width: 860px) {
+      .a4-sheet {
+        width: 100%;
+        min-height: auto;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .header-main-title {
+        font-size: 1.35rem;
+        white-space: normal;
+      }
+
+      .header-sub-title {
+        font-size: 1.05rem;
+        white-space: normal;
+      }
+
+      .a4-sheet {
+        padding: 1.25rem 1rem !important;
+      }
+    }
+
+    /* Print Preview Active Simulation */
+    body.print-preview-active {
+      background-color: #374151 !important;
+    }
+
+    body.print-preview-active .a4-sheet {
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5) !important;
+      border: 1px solid #9ca3af !important;
+      margin: 1.5rem auto !important;
+    }
+
+    /* Editable active cues */
+    [contenteditable="true"]:focus {
+      outline: 1.5px dashed #2563eb;
+      background-color: #eff6ff;
+      border-radius: 2px;
+    }
+
+    /* Header typography enhancements for prominent display */
+    .header-main-title {
+      font-size: clamp(1.65rem, 3.8vw, 2.85rem);
+      line-height: 1.15;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+    }
+
+    .header-sub-title {
+      font-size: clamp(1.25rem, 2.6vw, 1.85rem);
+      line-height: 1.25;
+      font-weight: 800;
+      letter-spacing: -0.005em;
+    }
+  </style>
+</head>
+
+<body class="min-h-full flex flex-col justify-between items-center text-black">
+
+  <!-- Top Toolbar (Excluded from Print) -->
+  <header
+    class="no-print w-full bg-neutral-900 text-white py-2.5 px-4 sticky top-0 z-50 shadow-md border-b border-neutral-800">
+    <div class="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-3 text-xs sm:text-sm">
+      <div class="flex items-center gap-2">
+        <span class="font-bold tracking-wide text-amber-400">पुलिस मॉडर्न स्कूल</span>
+        <span class="text-neutral-500">|</span>
+        <span class="text-neutral-300">आर.ओ. मरम्मत हेतु प्रार्थना पत्र</span>
+      </div>
+
+      <div class="flex items-center flex-wrap gap-2">
+        <!-- Quick Clear/Fill Blanks -->
+        <button onclick="toggleFillFields()" title="रिक्त स्थान भरें / खाली रखें"
+          class="px-2.5 py-1.5 rounded bg-neutral-800 hover:bg-neutral-700 text-neutral-200 border border-neutral-700 hover:border-neutral-500 transition text-xs flex items-center gap-1.5 cursor-pointer">
+          <i data-feather="edit-3" class="w-3.5 h-3.5 text-amber-400"></i>
+          <span id="fillBtnText">उदा. संख्या भरें</span>
+        </button>
+
+        <!-- Set Today's Date -->
+        <button onclick="setTodayDate()" title="आज की दिनांक डालें"
+          class="px-2.5 py-1.5 rounded bg-neutral-800 hover:bg-neutral-700 text-neutral-200 border border-neutral-700 hover:border-neutral-500 transition text-xs flex items-center gap-1.5 cursor-pointer">
+          <i data-feather="calendar" class="w-3.5 h-3.5 text-blue-400"></i>
+          <span>आज की दिनांक</span>
+        </button>
+
+        <!-- Copy Clean Text -->
+        <button onclick="copyDocumentText()" title="पत्र का शुद्ध टेक्स्ट कॉपी करें"
+          class="px-2.5 py-1.5 rounded bg-neutral-800 hover:bg-neutral-700 text-neutral-200 border border-neutral-700 hover:border-neutral-500 transition text-xs flex items-center gap-1.5 cursor-pointer">
+          <i data-feather="copy" class="w-3.5 h-3.5 text-emerald-400"></i>
+          <span>टेक्स्ट कॉपी</span>
+        </button>
+
+        <!-- Reset Document -->
+        <button onclick="resetDocument()" title="मूल प्रारूप पर रीसेट करें"
+          class="px-2.5 py-1.5 rounded bg-neutral-800 hover:bg-neutral-700 text-neutral-200 border border-neutral-700 hover:border-neutral-500 transition text-xs flex items-center gap-1.5 cursor-pointer">
+          <i data-feather="rotate-ccw" class="w-3.5 h-3.5 text-neutral-400"></i>
+          <span>रीसेट</span>
+        </button>
+
+        <!-- Print Preview Toggle -->
+        <button onclick="togglePrintPreview()" title="प्रिंट प्रीव्यू मोड ऑन/ऑफ करें"
+          class="px-2.5 py-1.5 rounded bg-neutral-800 hover:bg-neutral-700 text-neutral-200 border border-neutral-700 hover:border-neutral-500 transition text-xs flex items-center gap-1.5 cursor-pointer">
+          <i data-feather="eye" class="w-3.5 h-3.5 text-sky-400"></i>
+          <span id="previewBtnText">प्रिंट प्रीव्यू</span>
+        </button>
+
+        <!-- Link to Tree Permission Letter -->
+        <a href="tree-permission.html" title="पेड़ कटवाने का प्रार्थना पत्र देखें"
+          class="px-2.5 py-1.5 rounded bg-neutral-800 hover:bg-neutral-700 text-neutral-200 border border-neutral-700 hover:border-neutral-500 transition text-xs flex items-center gap-1.5 cursor-pointer no-underline">
+          <i data-feather="file-text" class="w-3.5 h-3.5 text-emerald-400"></i>
+          <span>पेड़ पत्र</span>
+        </a>
+
+        <!-- Link to Olympiad Permission Letter -->
+        <a href="index.html" title="ओलंपियाड प्रार्थना पत्र देखें"
+          class="px-2.5 py-1.5 rounded bg-neutral-800 hover:bg-neutral-700 text-neutral-200 border border-neutral-700 hover:border-neutral-500 transition text-xs flex items-center gap-1.5 cursor-pointer no-underline">
+          <i data-feather="file-text" class="w-3.5 h-3.5 text-amber-400"></i>
+          <span>ओलंपियाड पत्र</span>
+        </a>
+
+        <!-- Classroom English Chart Link -->
+        <a href="classroom.html" title="दैनिक कक्षा अंग्रेज़ी वाक्य चार्ट खोलें"
+          class="px-2.5 py-1.5 rounded bg-neutral-800 hover:bg-neutral-700 text-amber-400 border border-neutral-700 hover:border-amber-500 transition text-xs flex items-center gap-1.5 cursor-pointer no-underline">
+          <i data-feather="book-open" class="w-3.5 h-3.5"></i>
+          <span>कक्षा अंग्रेज़ी</span>
+        </a>
+
+        <!-- PMS Achievement Certificate Link -->
+        <a href="certificate.html" title="PMS Certificate of Achievement खोलें"
+          class="px-2.5 py-1.5 rounded bg-neutral-800 hover:bg-neutral-700 text-amber-300 border border-neutral-700 hover:border-amber-400 transition text-xs flex items-center gap-1.5 cursor-pointer no-underline">
+          <i data-feather="award" class="w-3.5 h-3.5 text-amber-400"></i>
+          <span>प्रमाण पत्र</span>
+        </a>
+
+        <!-- PMS Birthday Card Link -->
+        <a href="birthday.html" title="PMS Birthday Card खोलें"
+          class="px-2.5 py-1.5 rounded bg-neutral-800 hover:bg-neutral-700 text-pink-400 border border-neutral-700 hover:border-pink-500 transition text-xs flex items-center gap-1.5 cursor-pointer no-underline">
+          <i data-feather="gift" class="w-3.5 h-3.5 text-pink-400"></i>
+          <span>जन्मदिन कार्ड</span>
+        </a>
+
+        <!-- PMS Question Answer Sheet Link -->
+        <a href="question-sheet.html" title="PMS Class 6 प्रश्न-उत्तर शीट खोलें"
+          class="px-2.5 py-1.5 rounded bg-neutral-800 hover:bg-neutral-700 text-sky-400 border border-neutral-700 hover:border-sky-500 transition text-xs flex items-center gap-1.5 cursor-pointer no-underline">
+          <i data-feather="help-circle" class="w-3.5 h-3.5 text-sky-400"></i>
+          <span>प्रश्न-उत्तर शीट</span>
+        </a>
+
+        <!-- Print Document -->
+        <button onclick="window.print()"
+          class="px-3.5 py-1.5 rounded bg-white hover:bg-neutral-200 text-black font-semibold transition text-xs flex items-center gap-1.5 shadow cursor-pointer">
+          <i data-feather="printer" class="w-3.5 h-3.5"></i>
+          <span>प्रिंट / PDF सेव करें</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Message Toast -->
+  <div id="toast"
+    class="no-print fixed bottom-5 right-5 z-50 bg-neutral-900 text-white border border-neutral-700 px-4 py-2.5 rounded-lg text-xs shadow-xl opacity-0 transition-opacity duration-300 pointer-events-none flex items-center gap-2">
+    <span id="toastMsg">संदेश</span>
+  </div>
+
+  <!-- Document Sheet Area -->
+  <main class="w-full flex-1 py-4 sm:py-8 px-2 flex justify-center items-start sheet-container">
+
+    <article class="a4-sheet p-6 sm:p-10 shadow-xl text-black flex flex-col justify-between leading-normal bg-white">
+      <div>
+
+        <!-- Header with Official School Logo -->
+        <div class="flex items-center justify-between pb-3 border-b-2 border-black gap-2 sm:gap-4">
+
+          <!-- Official School Logo -->
+          <div
+            class="logo-container w-24 h-24 sm:w-26 sm:h-26 md:w-28 md:h-28 flex-shrink-0 flex items-center justify-center overflow-hidden">
+            <img id="schoolLogo" src="pms-logo.png" width="96" height="96" alt="पुलिस मॉडर्न स्कूल लोगो"
+              class="w-full h-full object-contain" onerror="this.src='ChatGPT Image Sep 11, 2026, 02_21_01 PM.png'"
+              loading="eager" />
+          </div>
+
+          <!-- Official Header Text -->
+          <div class="text-center flex-1 min-w-0 px-2 sm:px-3">
+            <h1 class="header-main-title font-black tracking-tight text-black uppercase whitespace-nowrap">
+              कार्यालय पुलिस मॉडर्न स्कूल
+            </h1>
+            <h2 class="header-sub-title font-extrabold text-black mt-1 tracking-tight whitespace-nowrap">
+              25वीं वाहिनी पीएसी, रायबरेली
+            </h2>
+          </div>
+
+          <!-- Right Balancing Spacer for Perfect Centering -->
+          <div class="header-spacer w-24 sm:w-26 md:w-28 hidden sm:block flex-shrink-0" aria-hidden="true"></div>
+
+        </div>
+
+        <!-- Meta Information: Letter Dispatch Number and Date -->
+        <div class="flex justify-between items-center mt-3 pb-2 border-b border-black text-sm font-semibold">
+          <div>
+            <span>पत्रांक संख्या:</span>
+            <span id="dispatchRef" class="font-bold ml-1 font-mono tracking-wide"
+              contenteditable="true">पीएमएस/2026</span>
+          </div>
+          <div>
+            <span>दिनांक:</span>
+            <span id="dateRef" class="font-bold ml-1" contenteditable="true">सितंबर,____,2026</span>
+          </div>
+        </div>
+
+        <!-- Recipient (सेवा में) -->
+        <div class="mt-5 text-sm sm:text-base leading-relaxed">
+          <p class="font-bold">सेवा में,</p>
+          <div class="pl-6 space-y-0.5 mt-1">
+            <p id="recipTitle" class="font-bold text-base" contenteditable="true">श्रीमान सेनानायक महोदय,</p>
+            <p id="recipUnit" class="font-medium" contenteditable="true">25वीं वाहिनी पीएसी,</p>
+            <p id="recipCity" class="font-medium" contenteditable="true">रायबरेली।</p>
+          </div>
+        </div>
+
+        <!-- Subject (विषय) -->
+        <div class="subject-box mt-5 py-1.5 px-3 bg-neutral-50 border-l-4 border-black text-sm sm:text-base">
+          <p class="font-bold">
+            <span class="underline underline-offset-2">विषय:</span>
+            <span id="subjectText" class="ml-1" contenteditable="true">विद्यालय में खराब आर.ओ. की मरम्मत कराए जाने के
+              संबंध में।</span>
+          </p>
+        </div>
+
+        <!-- Salutation & Body Paragraphs -->
+        <div class="mt-5 space-y-4 text-sm sm:text-base text-justify leading-relaxed font-normal">
+          <p class="font-bold">महोदय,</p>
+
+          <p id="para1" class="indent-8 text-justify" contenteditable="true">
+            सादर अवगत कराना है कि विद्यालय में स्थापित <strong>आर.ओ. (RO) खराब हो गया है।</strong> उक्त आर.ओ. को
+            विद्यालय के बिजली मिस्त्री द्वारा जाँच कराया गया, जिसमें <strong>आर.ओ. में ही तकनीकी खराबी होना पाया गया
+              है।</strong>
+          </p>
+
+          <p id="para2" class="indent-8 text-justify" contenteditable="true">
+            <strong>अतः श्रीमान जी से सादर अनुरोध है कि खराब आर.ओ. की आवश्यक मरम्मत तत्काल कराए जाने हेतु संबंधित को
+              आदेशित करने की कृपा करें</strong>, जिससे विद्यालय में पेयजल की व्यवस्था सुचारु रूप से संचालित हो सके।
+          </p>
+
+          <p id="para3" class="indent-8 font-medium" contenteditable="true">
+            महोदय की महान कृपा होगी।
+          </p>
+        </div>
+
+        <!-- Applicant Signature Section -->
+        <div class="signature-section mt-14 sm:mt-16 flex justify-end">
+          <div class="text-center w-64 space-y-1">
+            <div class="border-b border-dotted border-black w-40 mx-auto mb-1"></div>
+            <p id="signDesig" class="font-bold text-sm sm:text-base" contenteditable="true">प्रभारी प्रधानाचार्य</p>
+            <p id="signSchool" class="text-xs sm:text-sm font-medium" contenteditable="true">पुलिस मॉडर्न स्कूल</p>
+            <p id="signLoc" class="text-xs text-neutral-800" contenteditable="true">25वीं वाहिनी पीएसी, रायबरेली</p>
+          </div>
+        </div>
+
+      </div>
+
+    </article>
+
+  </main>
+
+  <script>
+    // Initialize Feather Icons
+    document.addEventListener('DOMContentLoaded', () => {
+      if (window.feather) {
+        feather.replace();
+      }
+      loadFromStorage();
+    });
+
+    // Default letter content configuration
+    const defaultData = {
+      dispatchBlank: 'पीएमएस/____/2026',
+      dateBlank: '09 सितंबर, 2026',
+      dispatchFilled: 'पीएमएस/204/2026',
+      dateFilled: '09 सितंबर, 2026',
+      recipTitle: 'श्रीमान सेनानायक महोदय,',
+      recipUnit: '25वीं वाहिनी पीएसी,',
+      recipCity: 'रायबरेली।',
+      subject: 'विद्यालय में खराब आर.ओ. की मरम्मत कराए जाने के संबंध में।',
+      para1: 'सादर अवगत कराना है कि विद्यालय में स्थापित <strong>आर.ओ. (RO) खराब हो गया है।</strong> उक्त आर.ओ. को विद्यालय के बिजली मिस्त्री द्वारा जाँच कराया गया, जिसमें <strong>आर.ओ. में ही तकनीकी खराबी होना पाया गया है।</strong>',
+      para2: '<strong>अतः श्रीमान जी से सादर अनुरोध है कि खराब आर.ओ. की आवश्यक मरम्मत तत्काल कराए जाने हेतु संबंधित अधिकारी/कर्मचारी को आदेशित करने की कृपा करें</strong>, जिससे विद्यालय में पेयजल की व्यवस्था सुचारु रूप से संचालित हो सके।',
+      para3: 'महोदय की महान कृपा होगी।'
+    };
+
+    let isFilled = false;
+
+    // Toggle between blank and sample filled values
+    function toggleFillFields() {
+      const dispatchEl = document.getElementById('dispatchRef');
+      const btnText = document.getElementById('fillBtnText');
+
+      if (!isFilled) {
+        dispatchEl.innerText = defaultData.dispatchFilled;
+        btnText.innerText = 'रिक्त प्रारूप (ब्लैंक) करें';
+        isFilled = true;
+        showToast('उदाहरण पत्रांक संख्या भरा गया!');
+      } else {
+        dispatchEl.innerText = defaultData.dispatchBlank;
+        btnText.innerText = 'उदा. संख्या भरें';
+        isFilled = false;
+        showToast('रिक्त प्रारूप रीसेट किया गया!');
+      }
+      saveToStorage();
+    }
+
+    // Toggle Print Preview Mode
+    let isPreview = false;
+    function togglePrintPreview() {
+      const previewBtnText = document.getElementById('previewBtnText');
+      isPreview = !isPreview;
+
+      if (isPreview) {
+        document.body.classList.add('print-preview-active');
+        if (previewBtnText) previewBtnText.innerText = 'सामान्य दृश्य';
+        showToast('प्रिंट प्रीव्यू मोड सक्रिय');
+      } else {
+        document.body.classList.remove('print-preview-active');
+        if (previewBtnText) previewBtnText.innerText = 'प्रिंट प्रीव्यू';
+        showToast('सामान्य दृश्य मोड सक्रिय');
+      }
+      if (window.feather) feather.replace();
+    }
+
+    // Set Hindi today's date
+    function setTodayDate() {
+      const hindiMonths = [
+        'जनवरी', 'फ़रवरी', 'मार्च', 'अप्रैल', 'मई', 'जून',
+        'जुलाई', 'अगस्त', 'सितंबर', 'अक्टूबर', 'नवंबर', 'दिसंबर'
+      ];
+      const now = new Date();
+      const day = String(now.getDate()).padStart(2, '0');
+      const month = hindiMonths[now.getMonth()];
+      const year = now.getFullYear();
+
+      const formattedDate = `${day} ${month}, ${year}`;
+      const dateEl = document.getElementById('dateRef');
+      if (dateEl) {
+        dateEl.innerText = formattedDate;
+        showToast(`दिनांक अपडेट किया गया: ${formattedDate}`);
+        saveToStorage();
+      }
+    }
+
+    // Copy clean formatted letter text
+    function copyDocumentText() {
+      const dispatch = document.getElementById('dispatchRef')?.innerText?.trim() || '';
+      const date = document.getElementById('dateRef')?.innerText?.trim() || '';
+      const recipTitle = document.getElementById('recipTitle')?.innerText?.trim() || '';
+      const recipUnit = document.getElementById('recipUnit')?.innerText?.trim() || '';
+      const recipCity = document.getElementById('recipCity')?.innerText?.trim() || '';
+      const subject = document.getElementById('subjectText')?.innerText?.trim() || '';
+      const para1 = document.getElementById('para1')?.innerText?.trim() || '';
+      const para2 = document.getElementById('para2')?.innerText?.trim() || '';
+      const signDesig = document.getElementById('signDesig')?.innerText?.trim() || '';
+      const signSchool = document.getElementById('signSchool')?.innerText?.trim() || '';
+      const signLoc = document.getElementById('signLoc')?.innerText?.trim() || '';
+
+      const cleanText = `कार्यालय पुलिस मॉडर्न स्कूल
+25वीं वाहिनी पीएसी, रायबरेली
+
+पत्रांक संख्या: ${dispatch}
+दिनांक: ${date}
+
+सेवा में,
+${recipTitle}
+${recipUnit}
+${recipCity}
+
+विषय: ${subject}
+
+महोदय,
+
+${para1}
+
+${para2}
+
+महोदय की महान कृपा होगी।
+
+भवदीय,
+
+${signDesig}
+${signSchool}
+${signLoc}`;
+
+      navigator.clipboard.writeText(cleanText).then(() => {
+        showToast('पत्र का सम्पूर्ण टेक्स्ट कॉपी हो गया!');
+      }).catch(() => {
+        // Fallback
+        const textarea = document.createElement('textarea');
+        textarea.value = cleanText;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+        showToast('पत्र का सम्पूर्ण टेक्स्ट कॉपी हो गया!');
+      });
+    }
+
+    // Reset Document to Defaults
+    function resetDocument() {
+      if (confirm('क्या आप पत्र को मूल प्रारूप पर रीसेट करना चाहते हैं?')) {
+        document.getElementById('dispatchRef').innerText = defaultData.dispatchBlank;
+        document.getElementById('dateRef').innerText = defaultData.dateBlank;
+        document.getElementById('recipTitle').innerText = defaultData.recipTitle;
+        document.getElementById('recipUnit').innerText = defaultData.recipUnit;
+        document.getElementById('recipCity').innerText = defaultData.recipCity;
+        document.getElementById('subjectText').innerText = defaultData.subject;
+        document.getElementById('para1').innerHTML = defaultData.para1;
+        document.getElementById('para2').innerHTML = defaultData.para2;
+        document.getElementById('para3').innerText = defaultData.para3;
+        document.getElementById('signDesig').innerText = 'प्रभारी प्रधानाचार्य';
+        document.getElementById('signSchool').innerText = 'पुलिस मॉडर्न स्कूल';
+        document.getElementById('signLoc').innerText = '25वीं वाहिनी पीएसी, रायबरेली';
+
+        isFilled = false;
+        document.getElementById('fillBtnText').innerText = 'उदा. संख्या भरें';
+        localStorage.removeItem('pms_ro_repair_state_v1');
+        showToast('पत्र मूल प्रारूप पर रीसेट हो गया!');
+      }
+    }
+
+    // Toast Notification Display
+    let toastTimeout;
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      const toastMsg = document.getElementById('toastMsg');
+      if (!toast || !toastMsg) return;
+
+      toastMsg.innerText = message;
+      toast.classList.remove('opacity-0', 'pointer-events-none');
+      toast.classList.add('opacity-100');
+
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        toast.classList.remove('opacity-100');
+        toast.classList.add('opacity-0', 'pointer-events-none');
+      }, 2400);
+    }
+
+    // LocalStorage Auto-Save
+    const fieldsToSave = [
+      'dispatchRef', 'dateRef', 'recipTitle', 'recipUnit', 'recipCity',
+      'subjectText', 'para1', 'para2', 'para3',
+      'signDesig', 'signSchool', 'signLoc'
+    ];
+
+    fieldsToSave.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.addEventListener('input', () => {
+          saveToStorage();
+        });
+      }
+    });
+
+    function saveToStorage() {
+      const data = {};
+      fieldsToSave.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+          data[id] = el.innerHTML;
+        }
+      });
+      localStorage.setItem('pms_ro_repair_state_v1', JSON.stringify(data));
+    }
+
+    function loadFromStorage() {
+      try {
+        const saved = localStorage.getItem('pms_ro_repair_state_v1');
+        if (saved) {
+          const data = JSON.parse(saved);
+          fieldsToSave.forEach(id => {
+            const el = document.getElementById(id);
+            if (el && data[id] !== undefined) {
+              el.innerHTML = data[id];
+            }
+          });
+        }
+      } catch (e) {
+        console.error('Error loading saved state:', e);
+      }
+    }
+  </script>
+</body>
+
+</html>

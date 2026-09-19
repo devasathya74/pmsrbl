@@ -1,0 +1,1500 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-slate-950">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Class 6 English (Poorvi) Q&A Sheet & Exam Worksheet - पुलिस मॉडर्न स्कूल, रायबरेली</title>
+  <meta name="description"
+    content="Police Modern School Class 6 English (Poorvi) High-Yield Chapter-wise Question Answer Study Sheet, Vocabulary Glossary, and Examination Worksheet Suite. Covers all 16 chapters across 5 units.">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts: Inter, Outfit, Noto Sans Devanagari, and JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@500;600;700;800;900&family=Outfit:wght@500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap"
+    rel="stylesheet">
+
+  <!-- Feather Icons -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.js"></script>
+
+  <!-- Class 6 English Comprehensive Curriculum Data (16 Chapters) -->
+  <script src="english-chapters-data.js"></script>
+
+  <style>
+    :root {
+      --font-en: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-hindi: 'Noto Sans Devanagari', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --color-primary: #1e1b4b;
+      --color-accent: #d97706;
+      --color-gold: #f59e0b;
+      --color-indigo: #4338ca;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background-color: #090d16;
+      color: #1e293b;
+      -webkit-font-smoothing: antialiased;
+      margin: 0;
+      padding: 0;
+    }
+
+    .font-heading {
+      font-family: var(--font-en);
+    }
+
+    .font-hindi {
+      font-family: var(--font-hindi);
+    }
+
+    .font-mono {
+      font-family: var(--font-mono);
+    }
+
+    /* =========================================================================
+       Pure Professional A4 Document Setup
+       ========================================================================= */
+    .sheet-wrapper {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 16px 12px 60px 12px;
+    }
+
+    .a4-document {
+      width: 210mm;
+      min-height: 297mm;
+      background: #ffffff;
+      box-shadow: 0 10px 40px -5px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.08);
+      padding: 14mm 16mm 16mm 16mm;
+      box-sizing: border-box;
+      position: relative;
+      border-radius: 4px;
+      margin-bottom: 24px;
+    }
+
+    /* Print Preview Simulation */
+    body.print-preview-mode {
+      background-color: #1e293b !important;
+    }
+
+    body.print-preview-mode .a4-document {
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7) !important;
+      border: 1px solid #64748b;
+      margin: 1.5rem auto;
+    }
+
+    @page {
+      size: A4 portrait;
+      margin: 10mm 12mm 12mm 12mm;
+    }
+
+    @media print {
+      body {
+        background: #ffffff !important;
+        color: #000000 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+
+      .no-print {
+        display: none !important;
+      }
+
+      .sheet-wrapper {
+        padding: 0 !important;
+      }
+
+      .a4-document {
+        width: 100% !important;
+        min-height: auto !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        box-shadow: none !important;
+        border: none !important;
+      }
+
+      .qa-card, .table-container, .focus-card, .grammar-card, .mcq-card-item {
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+      }
+
+      .section-ribbon {
+        background: #1e1b4b !important;
+        color: #ffffff !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+    }
+
+    /* Section Ribbons */
+    .section-ribbon {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 6px 12px;
+      background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
+      color: #ffffff;
+      border-radius: 6px;
+      margin-top: 16px;
+      margin-bottom: 9px;
+      border-left: 4px solid #f59e0b;
+      page-break-after: avoid;
+      break-after: avoid;
+    }
+
+    .section-ribbon-title {
+      font-family: var(--font-en);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+
+    .section-ribbon-badge {
+      background: rgba(245, 158, 11, 0.2);
+      border: 1px solid rgba(245, 158, 11, 0.5);
+      color: #fef3c7;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 9999px;
+      margin-left: auto;
+    }
+
+    /* Question & Answer Cards */
+    .qa-card {
+      background-color: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-left: 3px solid #312e81;
+      border-radius: 6px;
+      padding: 10px 14px;
+      margin-bottom: 9px;
+      transition: all 0.15s ease;
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+
+    .qa-card:hover {
+      border-color: #cbd5e1;
+      border-left-color: #d97706;
+      box-shadow: 0 2px 8px -1px rgba(0, 0, 0, 0.05);
+    }
+
+    .qa-card.active-speaking {
+      background-color: #eef2ff !important;
+      border-left-color: #4f46e5 !important;
+      box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.3) !important;
+    }
+
+    .q-title {
+      font-family: var(--font-en);
+      font-weight: 700;
+      font-size: 13px;
+      color: #0f172a;
+      line-height: 1.35;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    .q-badge {
+      background-color: #1e1b4b;
+      color: #ffffff;
+      font-size: 10.5px;
+      font-weight: 800;
+      padding: 2px 6px;
+      border-radius: 4px;
+      min-width: 26px;
+      text-align: center;
+      flex-shrink: 0;
+    }
+
+    .ans-content {
+      margin-top: 6px;
+      font-size: 12.5px;
+      line-height: 1.5;
+      color: #334155;
+      padding-left: 34px;
+      position: relative;
+    }
+
+    .ans-badge {
+      font-weight: 700;
+      color: #1e1b4b;
+      display: inline-block;
+      margin-right: 4px;
+    }
+
+    /* Practice Lines for Worksheet Mode */
+    .worksheet-mode .ans-text-reveal {
+      display: none !important;
+    }
+
+    .worksheet-mode .practice-lines {
+      display: block !important;
+    }
+
+    .practice-lines {
+      display: none;
+      margin-top: 8px;
+      padding-left: 34px;
+    }
+
+    .practice-line {
+      height: 20px;
+      border-bottom: 1.5px dashed #cbd5e1;
+      margin-bottom: 4px;
+    }
+
+    .worksheet-mode .true-false-reason {
+      display: none !important;
+    }
+
+    .worksheet-mode .true-false-box {
+      display: flex !important;
+    }
+
+    .true-false-box {
+      display: none;
+      gap: 12px;
+      font-weight: 700;
+      font-size: 12px;
+      margin-left: 8px;
+    }
+
+    .tf-circle {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      border: 1px solid #94a3b8;
+      padding: 1px 8px;
+      border-radius: 4px;
+      color: #475569;
+    }
+
+    /* Glossary Table */
+    .glossary-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      margin-top: 8px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      overflow: hidden;
+    }
+
+    .glossary-table th {
+      background: #1e1b4b;
+      color: #ffffff;
+      font-weight: 700;
+      padding: 7px 10px;
+      text-align: left;
+      font-family: var(--font-en);
+      font-size: 11.5px;
+    }
+
+    .glossary-table td {
+      padding: 6px 10px;
+      border-bottom: 1px solid #e2e8f0;
+      color: #1e293b;
+      line-height: 1.45;
+    }
+
+    .glossary-table tr:nth-child(even) {
+      background-color: #f8fafc;
+    }
+
+    .glossary-word {
+      font-family: var(--font-en);
+      font-weight: 700;
+      color: #312e81;
+      white-space: nowrap;
+    }
+
+    /* 10 Golden Points Focus Card */
+    .focus-card {
+      background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+      border: 1.5px solid #fde68a;
+      border-left: 5px solid #d97706;
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin-top: 14px;
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+
+    .focus-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .focus-point {
+      background: #ffffff;
+      border: 1px solid #fde68a;
+      border-radius: 6px;
+      padding: 6px 9px;
+      font-size: 11.5px;
+      display: flex;
+      align-items: flex-start;
+      gap: 7px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+      line-height: 1.4;
+      color: #78350f;
+    }
+
+    .focus-num {
+      background-color: #d97706;
+      color: #ffffff;
+      font-weight: 800;
+      font-size: 9.5px;
+      width: 17px;
+      height: 17px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    /* Grammar Card */
+    .grammar-card {
+      background: #f0fdf4;
+      border: 1.5px solid #bbf7d0;
+      border-left: 5px solid #16a34a;
+      border-radius: 8px;
+      padding: 10px 14px;
+      margin-top: 10px;
+    }
+
+    /* Editable Fields */
+    [contenteditable="true"]:focus {
+      outline: 2px dashed #4338ca;
+      background-color: #eef2ff;
+      border-radius: 2px;
+    }
+
+    /* Font Sizes */
+    body.font-size-compact .a4-document {
+      font-size: 0.8rem;
+    }
+    body.font-size-compact .qa-card {
+      padding: 7px 10px;
+      margin-bottom: 7px;
+    }
+    body.font-size-compact .ans-content {
+      font-size: 11.5px;
+    }
+
+    body.font-size-large .a4-document {
+      font-size: 1.05rem;
+    }
+    body.font-size-large .qa-card {
+      padding: 12px 16px;
+    }
+    body.font-size-large .ans-content {
+      font-size: 13.5px;
+    }
+
+    #chapterSelect {
+      position: relative;
+      z-index: 9999 !important;
+      background-color: #020617 !important;
+      color: #fde047 !important;
+      cursor: pointer;
+    }
+
+    #chapterSelect option {
+      background-color: #0f172a !important;
+      color: #f8fafc !important;
+      padding: 10px 14px !important;
+      font-size: 13px !important;
+      font-weight: 600 !important;
+    }
+
+    #chapterSelect option:checked {
+      background-color: #d97706 !important;
+      color: #ffffff !important;
+      font-weight: 800 !important;
+    }
+
+    #chapterSelect optgroup {
+      background-color: #020617 !important;
+      color: #f59e0b !important;
+      font-weight: 800 !important;
+      font-size: 11px !important;
+      padding: 6px 10px !important;
+      letter-spacing: 0.05em !important;
+      border-bottom: 1px solid #334155 !important;
+    }
+  </style>
+</head>
+
+<body class="min-h-full flex flex-col justify-between items-center text-slate-800">
+
+  <!-- =========================================================================
+       Top Screen Control Toolbar (Excluded from Print)
+       ========================================================================= -->
+  <header
+    class="no-print w-full bg-slate-900 text-white py-2 px-3 sticky top-0 z-50 shadow-md border-b border-slate-800">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2.5 text-xs">
+
+      <!-- Chapter Switcher Centerpiece -->
+      <div class="flex items-center gap-1.5 bg-slate-800/95 px-2.5 py-1.5 rounded-lg border-2 border-indigo-500/80 shadow-md">
+        <span class="text-indigo-300 font-bold text-xs uppercase tracking-wider hidden sm:inline flex items-center gap-1">
+          <i data-feather="book-open" class="w-3.5 h-3.5 text-indigo-400"></i>
+          <span>पाठ:</span>
+        </span>
+        <button onclick="navigateChapter(-1)" title="पिछला पाठ (Previous Chapter)"
+          class="px-2 py-1 rounded bg-slate-700 hover:bg-slate-600 text-slate-200 hover:text-indigo-300 font-bold text-xs flex items-center gap-1 cursor-pointer transition">
+          <i data-feather="chevron-left" class="w-3.5 h-3.5"></i>
+          <span class="font-bold">Prev</span>
+        </button>
+
+        <!-- Chapter Selector Dropdown (Custom Dropdown Trigger) -->
+        <div class="relative" id="customChapterDropdownContainer">
+          <button id="customDropdownTrigger" onclick="toggleCustomDropdown(event)" type="button"
+            class="bg-slate-950 hover:bg-slate-900 text-indigo-200 font-bold font-heading text-xs py-1 px-2.5 rounded border border-indigo-500/80 hover:border-indigo-400 focus:outline-none focus:ring-1 focus:ring-indigo-400 max-w-[240px] sm:max-w-[340px] flex items-center justify-between gap-2 cursor-pointer shadow-inner transition">
+            <span id="customDropdownCurrentTitle" class="truncate flex items-center gap-1.5 text-left">
+              <span class="px-1.5 py-0.2 rounded bg-indigo-500 text-white font-black text-[10px]">Ch 1</span>
+              <span class="truncate">A Bottle of Dew</span>
+            </span>
+            <i data-feather="chevron-down" id="customDropdownChevron" class="w-3.5 h-3.5 text-indigo-400 flex-shrink-0 transition-transform duration-200"></i>
+          </button>
+
+          <!-- Hidden native select for compatibility -->
+          <select id="chapterSelect" onchange="onChapterSelectChange(this.value)" class="sr-only" aria-hidden="true" tabindex="-1">
+            <!-- Dynamically populated -->
+          </select>
+
+          <!-- Floating High-Visibility Dropdown Menu -->
+          <div id="customDropdownMenu"
+            class="hidden absolute left-0 top-full mt-2 w-[320px] sm:w-[440px] bg-slate-950 border-2 border-indigo-500 rounded-xl shadow-2xl z-[999999] flex flex-col overflow-hidden text-white">
+            
+            <div class="p-2.5 bg-slate-900 border-b border-slate-800 space-y-2">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-1.5">
+                  <span class="w-2 h-2 rounded-full bg-indigo-400"></span>
+                  <span class="text-[11px] font-extrabold uppercase tracking-wider text-indigo-300 font-heading">
+                    विषय: कक्षा 6 अंग्रेजी (Poorvi)
+                  </span>
+                </div>
+                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/40">
+                  16 अध्याय
+                </span>
+              </div>
+
+              <!-- Subject Switcher Tabs -->
+              <div class="flex items-center gap-1.5 text-[11px]">
+                <span class="text-slate-400 text-[10px] flex-shrink-0 font-bold">विषय बदलें:</span>
+                <span class="px-2 py-0.5 rounded bg-indigo-500 text-white font-black text-[10px] shadow">📖 English (16)</span>
+                <a href="question-sheet.html" class="px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-amber-300 hover:text-white border border-slate-700 text-[10px] font-bold transition flex items-center gap-1 no-underline">
+                  🌍 SST (14)
+                </a>
+                <a href="science-question-sheet.html" class="px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 text-[10px] font-bold transition flex items-center gap-1 no-underline">
+                  🔬 Science (12)
+                </a>
+                <a href="evs-question-sheet.html" class="px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-emerald-300 hover:text-white border border-slate-700 text-[10px] font-bold transition flex items-center gap-1 no-underline">
+                  🌱 EVS (17)
+                </a>
+              </div>
+
+              <!-- Quick Search Input -->
+              <div class="relative">
+                <input type="text" id="customDropdownSearch" oninput="filterCustomDropdownChapters(this.value)"
+                  placeholder="🔍 पाठ खोजें (Search chapter name or number)..."
+                  class="w-full bg-slate-950 text-slate-100 placeholder-slate-400 text-xs px-2.5 py-1.5 rounded-lg border border-slate-700 focus:outline-none focus:border-indigo-400 font-sans shadow-inner">
+              </div>
+            </div>
+
+            <!-- Scrollable List of All Chapters -->
+            <div id="customDropdownList" class="overflow-y-auto max-h-[360px] p-2 space-y-2">
+              <!-- Dynamically populated -->
+            </div>
+
+            <div class="p-2 bg-slate-900/90 border-t border-slate-800 text-center text-[10px] text-slate-400">
+              💡 किसी भी पाठ पर क्लिक करके तुरंत स्विच करें • कुल 16 अध्याय
+            </div>
+          </div>
+        </div>
+
+        <button onclick="navigateChapter(1)" title="अगला पाठ (Next Chapter)"
+          class="px-2 py-1 rounded bg-slate-700 hover:bg-slate-600 text-slate-200 hover:text-indigo-300 font-bold text-xs flex items-center gap-1 cursor-pointer transition">
+          <span class="font-bold">Next</span>
+          <i data-feather="chevron-right" class="w-3.5 h-3.5"></i>
+        </button>
+      </div>
+
+      <!-- Action Controls -->
+      <div class="flex items-center flex-wrap gap-1.5">
+
+        <!-- Study Mode vs Worksheet Exam Mode -->
+        <button id="modeToggleBtn" onclick="toggleWorksheetMode()"
+          class="px-2.5 py-1 rounded bg-amber-500 hover:bg-amber-600 text-slate-950 font-extrabold text-xs flex items-center gap-1.5 cursor-pointer shadow transition"
+          title="Toggle Answer Key / Exam Worksheet Mode">
+          <i data-feather="edit-3" class="w-3.5 h-3.5"></i>
+          <span id="modeBtnText">वर्कशीट मोड</span>
+        </button>
+
+        <!-- Chapter Audio Read-Aloud -->
+        <button onclick="toggleTTSReadAloud()"
+          class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-indigo-300 hover:text-white border border-slate-700 text-xs flex items-center gap-1.5 cursor-pointer transition"
+          title="Listen to full chapter summary & questions">
+          <i data-feather="volume-2" class="w-3.5 h-3.5 text-indigo-400"></i>
+          <span id="ttsBtnText">ऑडियो</span>
+        </button>
+
+        <!-- Copy Chapter Text -->
+        <button onclick="copySheetText()"
+          class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white border border-slate-700 text-xs flex items-center gap-1.5 cursor-pointer transition"
+          title="Copy formatted chapter text to clipboard">
+          <i data-feather="copy" class="w-3.5 h-3.5 text-amber-400"></i>
+          <span class="hidden sm:inline">कॉपी</span>
+        </button>
+
+        <!-- Font Size Selector -->
+        <div class="hidden md:flex items-center bg-slate-800 rounded border border-slate-700 p-0.5">
+          <button onclick="setFontSize('compact')" title="Compact Font (Save Paper)"
+            class="px-2 py-0.5 text-[11px] rounded hover:bg-slate-700 text-slate-300 hover:text-white transition">छोटा</button>
+          <button onclick="setFontSize('normal')" title="Normal Font"
+            class="px-2 py-0.5 text-[11px] rounded bg-slate-700 text-white font-bold transition">मध्यम</button>
+          <button onclick="setFontSize('large')" title="Large Font (Easy Reading)"
+            class="px-2 py-0.5 text-[11px] rounded hover:bg-slate-700 text-slate-300 hover:text-white transition">बड़ा</button>
+        </div>
+
+        <!-- Print Preview Mode Simulation -->
+        <button onclick="togglePrintPreview()"
+          class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white border border-slate-700 text-xs flex items-center gap-1.5 cursor-pointer transition"
+          title="Toggle Print Preview">
+          <i data-feather="eye" class="w-3.5 h-3.5 text-emerald-400"></i>
+          <span id="previewBtnText" class="hidden sm:inline">प्रीव्यू</span>
+        </button>
+
+        <!-- Direct Print Button -->
+        <button onclick="window.print()"
+          class="px-3 py-1 rounded bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs flex items-center gap-1.5 cursor-pointer shadow transition"
+          title="Print to A4 Paper / Save PDF">
+          <i data-feather="printer" class="w-3.5 h-3.5"></i>
+          <span>प्रिंट (A4)</span>
+        </button>
+
+      </div>
+
+    </div>
+  </header>
+
+  <!-- Quick Chapter Pill Scroller -->
+  <div class="no-print w-full bg-slate-950 border-b border-slate-800 py-1.5 px-3 overflow-x-auto">
+    <div class="max-w-7xl mx-auto flex items-center gap-1.5 text-xs whitespace-nowrap" id="quickPillsContainer">
+      <!-- Dynamically populated -->
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       Main Document Canvas
+       ========================================================================= -->
+  <main class="sheet-wrapper" id="documentContainer">
+    <!-- Rendered dynamically by JavaScript -->
+  </main>
+
+  <!-- Toast Messenger -->
+  <div id="toast"
+    class="no-print fixed bottom-5 right-5 bg-slate-900 border border-indigo-500/80 text-white text-xs px-4 py-2.5 rounded-lg shadow-2xl transition-opacity duration-300 opacity-0 pointer-events-none flex items-center gap-2 z-50">
+    <i data-feather="info" class="w-4 h-4 text-amber-400 flex-shrink-0"></i>
+    <span id="toastMsg">Notification message</span>
+  </div>
+
+  <!-- All Chapters Modal -->
+  <div id="chaptersModal"
+    class="no-print fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-[99999] hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-3xl max-h-[85vh] flex flex-col shadow-2xl overflow-hidden">
+      <div class="p-4 border-b border-slate-800 flex items-center justify-between bg-slate-950/80">
+        <div class="flex items-center gap-2">
+          <i data-feather="book" class="w-5 h-5 text-indigo-400"></i>
+          <h3 class="font-heading font-extrabold text-white text-sm">कक्षा 6 अंग्रेजी (Poorvi) - संपूर्ण 16 अध्याय</h3>
+        </div>
+        <button onclick="toggleChaptersModal()" class="text-slate-400 hover:text-white p-1 rounded transition">
+          <i data-feather="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      <div class="overflow-y-auto p-4 space-y-4" id="modalChaptersList">
+        <!-- Dynamically populated -->
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript Application Logic -->
+  <script>
+    let currentChapterId = 1;
+    let isWorksheetMode = false;
+    let currentSpeechCard = null;
+
+    // Initialize on DOM load
+    document.addEventListener('DOMContentLoaded', () => {
+      // Check URL hash (e.g. #ch3)
+      if (window.location.hash) {
+        const hashMatch = window.location.hash.match(/ch(\d+)/i);
+        if (hashMatch) {
+          const id = parseInt(hashMatch[1], 10);
+          if (ENGLISH_CHAPTERS_DATA.some(c => c.id === id)) {
+            currentChapterId = id;
+          }
+        }
+      }
+
+      populateNativeSelect();
+      populateCustomDropdownList();
+      renderQuickChapterPills();
+      renderActiveChapter();
+      buildModalChaptersList();
+
+      feather.replace();
+    });
+
+    // Populate Native Select for accessibility & compatibility
+    function populateNativeSelect() {
+      const select = document.getElementById('chapterSelect');
+      if (!select) return;
+      select.innerHTML = '';
+
+      const units = {};
+      ENGLISH_CHAPTERS_DATA.forEach(ch => {
+        if (!units[ch.unit]) units[ch.unit] = [];
+        units[ch.unit].push(ch);
+      });
+
+      for (const [unitName, chList] of Object.entries(units)) {
+        const group = document.createElement('optgroup');
+        group.label = unitName;
+        chList.forEach(ch => {
+          const opt = document.createElement('option');
+          opt.value = ch.id;
+          opt.textContent = `Ch ${ch.id}: ${ch.title}`;
+          if (ch.id === currentChapterId) opt.selected = true;
+          group.appendChild(opt);
+        });
+        select.appendChild(group);
+      }
+    }
+
+    // Quick Chapter Pills across the top
+    function renderQuickChapterPills() {
+      const container = document.getElementById('quickPillsContainer');
+      if (!container) return;
+      container.innerHTML = '';
+
+      ENGLISH_CHAPTERS_DATA.forEach(ch => {
+        const btn = document.createElement('button');
+        const isActive = ch.id === currentChapterId;
+        btn.onclick = () => switchToChapter(ch.id);
+        btn.className = `px-2.5 py-1 rounded-full text-[11px] font-bold transition flex items-center gap-1.5 cursor-pointer flex-shrink-0 ${
+          isActive 
+            ? 'bg-indigo-600 text-white shadow ring-2 ring-indigo-400' 
+            : 'bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-800'
+        }`;
+        btn.innerHTML = `
+          <span class="w-4 h-4 rounded-full flex items-center justify-center text-[9px] font-black ${
+            isActive ? 'bg-white text-indigo-900' : 'bg-slate-800 text-slate-400'
+          }">${ch.id}</span>
+          <span class="truncate max-w-[130px] sm:max-w-[170px]">${ch.title}</span>
+        `;
+        container.appendChild(btn);
+      });
+    }
+
+    // Switch active chapter
+    function switchToChapter(id) {
+      currentChapterId = id;
+      window.location.hash = `ch${currentChapterId}`;
+      renderActiveChapter();
+    }
+
+    function navigateChapter(delta) {
+      const newId = currentChapterId + delta;
+      if (newId >= 1 && newId <= ENGLISH_CHAPTERS_DATA.length) {
+        switchToChapter(newId);
+      } else {
+        showToast(delta < 0 ? 'पहला अध्याय सक्रिय है' : 'अंतिम अध्याय पर पहुँच गए हैं');
+      }
+    }
+
+    function onChapterSelectChange(val) {
+      switchToChapter(parseInt(val, 10));
+    }
+
+    // Custom Dropdown Controls
+    function toggleCustomDropdown(e) {
+      if (e) e.stopPropagation();
+      const menu = document.getElementById('customDropdownMenu');
+      const chevron = document.getElementById('customDropdownChevron');
+      const isHidden = menu.classList.contains('hidden');
+      if (isHidden) {
+        menu.classList.remove('hidden');
+        chevron.classList.add('rotate-180');
+        const searchInput = document.getElementById('customDropdownSearch');
+        if (searchInput) {
+          searchInput.value = '';
+          filterCustomDropdownChapters('');
+          setTimeout(() => searchInput.focus(), 50);
+        }
+      } else {
+        menu.classList.add('hidden');
+        chevron.classList.remove('rotate-180');
+      }
+    }
+
+    document.addEventListener('click', (e) => {
+      const container = document.getElementById('customChapterDropdownContainer');
+      const menu = document.getElementById('customDropdownMenu');
+      if (container && !container.contains(e.target) && menu && !menu.classList.contains('hidden')) {
+        menu.classList.add('hidden');
+        document.getElementById('customDropdownChevron')?.classList.remove('rotate-180');
+      }
+    });
+
+    function updateCustomDropdownTrigger() {
+      const current = ENGLISH_CHAPTERS_DATA.find(c => c.id === currentChapterId) || ENGLISH_CHAPTERS_DATA[0];
+      const titleSpan = document.getElementById('customDropdownCurrentTitle');
+      if (titleSpan) {
+        titleSpan.innerHTML = `
+          <span class="px-1.5 py-0.2 rounded bg-indigo-500 text-white font-black text-[10px]">Ch ${current.id}</span>
+          <span class="truncate">${current.title}</span>
+        `;
+      }
+    }
+
+    function populateCustomDropdownList(filterText = '') {
+      const listContainer = document.getElementById('customDropdownList');
+      if (!listContainer) return;
+      listContainer.innerHTML = '';
+
+      const query = filterText.toLowerCase().trim();
+      const units = {};
+      ENGLISH_CHAPTERS_DATA.forEach(ch => {
+        if (!units[ch.unit]) units[ch.unit] = [];
+        units[ch.unit].push(ch);
+      });
+
+      let matchCount = 0;
+      for (const [unitName, chList] of Object.entries(units)) {
+        const filtered = chList.filter(ch => 
+          !query || 
+          ch.title.toLowerCase().includes(query) || 
+          ch.id.toString() === query || 
+          (ch.genre && ch.genre.toLowerCase().includes(query)) ||
+          (ch.summary && ch.summary.toLowerCase().includes(query))
+        );
+
+        if (filtered.length === 0) continue;
+        matchCount += filtered.length;
+
+        const groupDiv = document.createElement('div');
+        groupDiv.className = 'space-y-1';
+        groupDiv.innerHTML = `
+          <div class="text-[10px] font-extrabold uppercase tracking-wider text-indigo-400 px-2 pt-1 border-b border-slate-800 pb-0.5">
+            ${unitName}
+          </div>
+        `;
+
+        filtered.forEach(ch => {
+          const isSelected = ch.id === currentChapterId;
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.onclick = () => {
+            switchToChapter(ch.id);
+            toggleCustomDropdown();
+          };
+          btn.className = `w-full text-left px-2.5 py-1.5 rounded-lg text-xs transition flex items-center justify-between gap-2 cursor-pointer ${
+            isSelected 
+              ? 'bg-indigo-600 text-white font-bold shadow' 
+              : 'hover:bg-slate-800 text-slate-200 hover:text-white'
+          }`;
+          btn.innerHTML = `
+            <div class="flex items-center gap-2 min-w-0">
+              <span class="w-5 h-5 rounded flex items-center justify-center font-black text-[10px] flex-shrink-0 ${
+                isSelected ? 'bg-white text-indigo-900' : 'bg-slate-800 text-slate-300'
+              }">${ch.id}</span>
+              <span class="truncate font-heading">${ch.title}</span>
+            </div>
+            <span class="text-[10px] text-slate-400 flex-shrink-0">${ch.genre ? ch.genre.split('/')[0].trim() : ''}</span>
+          `;
+          groupDiv.appendChild(btn);
+        });
+
+        listContainer.appendChild(groupDiv);
+      }
+
+      if (matchCount === 0) {
+        listContainer.innerHTML = `
+          <div class="p-4 text-center text-xs text-slate-400">
+            कोई अध्याय नहीं मिला: "<span class="text-amber-400">${filterText}</span>"
+          </div>
+        `;
+      }
+    }
+
+    function filterCustomDropdownChapters(query) {
+      populateCustomDropdownList(query);
+    }
+
+    // Modal Chapters List
+    function toggleChaptersModal() {
+      const modal = document.getElementById('chaptersModal');
+      modal.classList.toggle('hidden');
+    }
+
+    function buildModalChaptersList() {
+      const container = document.getElementById('modalChaptersList');
+      if (!container) return;
+      container.innerHTML = '';
+
+      const units = {};
+      ENGLISH_CHAPTERS_DATA.forEach(ch => {
+        if (!units[ch.unit]) units[ch.unit] = [];
+        units[ch.unit].push(ch);
+      });
+
+      for (const [unitName, chList] of Object.entries(units)) {
+        const section = document.createElement('div');
+        section.innerHTML = `
+          <h4 class="font-bold text-indigo-300 text-xs uppercase tracking-wider mb-2 pb-1 border-b border-slate-800 flex items-center gap-1.5">
+            <i data-feather="folder" class="w-3.5 h-3.5 text-indigo-400"></i>
+            ${unitName}
+          </h4>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            ${chList.map(ch => {
+              const isActive = ch.id === currentChapterId;
+              return `
+                <button onclick="switchToChapter(${ch.id}); toggleChaptersModal();"
+                  class="text-left p-2.5 rounded-lg border transition flex items-start gap-2.5 cursor-pointer ${
+                    isActive 
+                      ? 'bg-indigo-950 text-white font-bold shadow border-indigo-500' 
+                      : 'bg-slate-800/90 hover:bg-slate-800 border-slate-700 hover:border-indigo-500 text-slate-200'
+                  }">
+                  <span class="w-6 h-6 rounded flex items-center justify-center font-bold text-xs flex-shrink-0 ${
+                    isActive ? 'bg-indigo-600 text-white font-black' : 'bg-slate-700 text-slate-300'
+                  }">
+                    ${ch.id}
+                  </span>
+                  <div class="min-w-0 flex-1">
+                    <div class="text-xs font-bold truncate">${ch.title}</div>
+                    <div class="text-[10px] text-amber-400 mt-0.5">${ch.genre}</div>
+                    <div class="text-[11px] text-slate-400 mt-0.5 line-clamp-1">${ch.summary || ''}</div>
+                  </div>
+                </button>
+              `;
+            }).join('')}
+          </div>
+        `;
+        container.appendChild(section);
+      }
+      feather.replace();
+    }
+
+    // Toggle Worksheet Mode
+    function toggleWorksheetMode() {
+      const container = document.getElementById('documentContainer');
+      const btnText = document.getElementById('modeBtnText');
+      const btn = document.getElementById('modeToggleBtn');
+      isWorksheetMode = !isWorksheetMode;
+
+      if (isWorksheetMode) {
+        container.classList.add('worksheet-mode');
+        btnText.textContent = 'स्टडी मोड';
+        btn.classList.remove('bg-amber-500', 'hover:bg-amber-600');
+        btn.classList.add('bg-emerald-600', 'hover:bg-emerald-700', 'text-white');
+        showToast('Worksheet / Exam Mode active: Answers hidden for student practice.');
+      } else {
+        container.classList.remove('worksheet-mode');
+        btnText.textContent = 'वर्कशीट मोड';
+        btn.classList.remove('bg-emerald-600', 'hover:bg-emerald-700', 'text-white');
+        btn.classList.add('bg-amber-500', 'hover:bg-amber-600', 'text-slate-950');
+        showToast('Study Guide mode active: Full answers visible.');
+      }
+    }
+
+    // Toggle Print Preview Mode
+    function togglePrintPreview() {
+      const isPreview = document.body.classList.toggle('print-preview-mode');
+      const btnText = document.getElementById('previewBtnText');
+      if (btnText) btnText.textContent = isPreview ? 'सामान्य' : 'प्रीव्यू';
+      showToast(isPreview ? 'Print Preview Mode Active' : 'Normal Screen Mode Active');
+    }
+
+    // Set Font Size
+    function setFontSize(size) {
+      document.body.classList.remove('font-size-compact', 'font-size-large');
+      if (size === 'compact') {
+        document.body.classList.add('font-size-compact');
+        showToast('Font size: Compact (Paper saving)');
+      } else if (size === 'large') {
+        document.body.classList.add('font-size-large');
+        showToast('Font size: Large (Easy reading)');
+      } else {
+        showToast('Font size: Normal');
+      }
+    }
+
+    // Show Toast
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      const toastMsg = document.getElementById('toastMsg');
+      if (!toast || !toastMsg) return;
+      toastMsg.textContent = msg;
+      toast.classList.remove('opacity-0');
+      toast.classList.add('opacity-100');
+      setTimeout(() => {
+        toast.classList.remove('opacity-100');
+        toast.classList.add('opacity-0');
+      }, 2500);
+    }
+
+    // TTS Card Readout
+    function speakText(btn, text) {
+      if (!('speechSynthesis' in window)) {
+        showToast('Speech Synthesis not supported by this browser.');
+        return;
+      }
+      window.speechSynthesis.cancel();
+      clearSpeakingCards();
+
+      const card = btn.closest('.qa-card');
+      if (card) {
+        card.classList.add('active-speaking');
+        currentSpeechCard = card;
+      }
+
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.rate = 0.9;
+      utterance.lang = 'en-US';
+      utterance.onend = () => clearSpeakingCards();
+      utterance.onerror = () => clearSpeakingCards();
+
+      window.speechSynthesis.speak(utterance);
+      showToast('Reading question and answer...');
+    }
+
+    function clearSpeakingCards() {
+      document.querySelectorAll('.active-speaking').forEach(c => c.classList.remove('active-speaking'));
+      currentSpeechCard = null;
+    }
+
+    // Toggle Chapter Audio Read-Aloud
+    function toggleTTSReadAloud() {
+      if (!('speechSynthesis' in window)) {
+        showToast('Speech Synthesis not supported.');
+        return;
+      }
+      const btn = document.getElementById('ttsBtnText');
+      if (window.speechSynthesis.speaking) {
+        window.speechSynthesis.cancel();
+        clearSpeakingCards();
+        btn.textContent = 'ऑडियो';
+        showToast('Audio paused.');
+      } else {
+        const ch = ENGLISH_CHAPTERS_DATA.find(c => c.id === currentChapterId) || ENGLISH_CHAPTERS_DATA[0];
+        const text = `Class 6 English, Poorvi. Chapter ${ch.id}: ${ch.title}. ${ch.unit}. Genre: ${ch.genre}. ${ch.summary}. Core moral: ${ch.moralTheme}. Question 1: ${ch.sectionA[0].q}. Answer: ${ch.sectionA[0].ans}`;
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.rate = 0.9;
+        utterance.lang = 'en-US';
+        btn.textContent = 'रोकें';
+        utterance.onend = () => { btn.textContent = 'ऑडियो'; };
+        window.speechSynthesis.speak(utterance);
+        showToast(`Playing audio for Chapter ${ch.id}...`);
+      }
+    }
+
+    // Copy Sheet Text to Clipboard
+    function copySheetText() {
+      const ch = ENGLISH_CHAPTERS_DATA.find(c => c.id === currentChapterId) || ENGLISH_CHAPTERS_DATA[0];
+      let text = `POLICE MODERN SCHOOL, 25TH BN PAC, RAEBARELI\n`;
+      text += `Class 6 English (Poorvi) - Chapter ${ch.id}: ${ch.title}\n`;
+      text += `${ch.unit} | Genre: ${ch.genre} | Author: ${ch.author}\n\n`;
+      text += `SUMMARY:\n${ch.summary}\n\n`;
+      text += `MORAL THEME:\n${ch.moralTheme}\n\n`;
+
+      text += `SECTION A: LONG ANSWER & LITERARY COMPREHENSION\n`;
+      ch.sectionA.forEach((item, i) => {
+        text += `Q${i+1}. ${item.q}\nAns: ${item.ans.replace(/<[^>]*>/g, '')}\n\n`;
+      });
+
+      text += `SECTION B: SHORT ANSWER QUESTIONS\n`;
+      ch.sectionB.forEach((item, i) => {
+        text += `Q${i+1}. ${item.q}\nAns: ${item.ans}\n\n`;
+      });
+
+      text += `SECTION C: VOCABULARY & WORD POWER\n`;
+      ch.sectionC.glossary.forEach(g => {
+        text += `• ${g.word} (${g.hindi}): ${g.meaning} | Example: ${g.sentence}\n`;
+      });
+
+      text += `\nSECTION F: 10 GOLDEN EXAM FLASHPOINTS\n`;
+      ch.sectionF.forEach((pt, i) => {
+        text += `${i+1}. ${pt}\n`;
+      });
+
+      navigator.clipboard.writeText(text).then(() => {
+        showToast(`Chapter ${ch.id} का पूरा टेक्स्ट क्लिपबोर्ड पर कॉपी हो गया!`);
+      }).catch(() => {
+        showToast('Copy failed, please copy manually.');
+      });
+    }
+
+    function escapeForTTS(text) {
+      return text.replace(/'/g, "\\'").replace(/"/g, '&quot;').replace(/<[^>]*>/g, '');
+    }
+
+    // =========================================================================
+    // Core Render Function
+    // =========================================================================
+    function renderActiveChapter() {
+      window.speechSynthesis.cancel();
+      clearSpeakingCards();
+
+      const container = document.getElementById('documentContainer');
+      const ch = ENGLISH_CHAPTERS_DATA.find(c => c.id === currentChapterId) || ENGLISH_CHAPTERS_DATA[0];
+
+      // Update Native & Custom selects
+      const sel = document.getElementById('chapterSelect');
+      if (sel && parseInt(sel.value, 10) !== currentChapterId) {
+        sel.value = currentChapterId;
+      }
+      updateCustomDropdownTrigger();
+      renderQuickChapterPills();
+
+      document.title = `Class 6 English - Ch ${ch.id}: ${ch.title} | Police Modern School`;
+      const todayDate = new Date().toLocaleDateString('en-GB');
+
+      // 1. Section A: Long Answer
+      let secAHtml = '';
+      ch.sectionA.forEach((item, idx) => {
+        secAHtml += `
+          <div class="qa-card" id="qa-long-${idx+1}">
+            <div class="flex items-start justify-between gap-2">
+              <div class="q-title">
+                <span class="q-badge">Q${idx+1}</span>
+                <span>${item.q}</span>
+              </div>
+              <button onclick="speakText(this, '${escapeForTTS(item.q + ' Answer: ' + item.ans)}')"
+                class="no-print text-slate-400 hover:text-indigo-600 p-1 transition cursor-pointer" title="Listen">
+                <i data-feather="volume-2" class="w-3.5 h-3.5"></i>
+              </button>
+            </div>
+            <div class="ans-content">
+              <div class="ans-text-reveal">
+                <span class="ans-badge">Ans:</span> ${item.ans}
+              </div>
+              <div class="practice-lines">
+                <div class="practice-line"></div>
+                <div class="practice-line"></div>
+                <div class="practice-line"></div>
+                <div class="practice-line"></div>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+
+      // 2. Section B: Short Answer
+      let secBHtml = '';
+      ch.sectionB.forEach((item, idx) => {
+        secBHtml += `
+          <div class="qa-card" id="qa-short-${idx+1}">
+            <div class="flex items-start justify-between gap-2">
+              <div class="q-title">
+                <span class="q-badge">Q${idx+1}</span>
+                <span>${item.q}</span>
+              </div>
+              <button onclick="speakText(this, '${escapeForTTS(item.q + ' Answer: ' + item.ans)}')"
+                class="no-print text-slate-400 hover:text-indigo-600 p-1 transition cursor-pointer" title="Listen">
+                <i data-feather="volume-2" class="w-3.5 h-3.5"></i>
+              </button>
+            </div>
+            <div class="ans-content">
+              <div class="ans-text-reveal">
+                <span class="ans-badge">Ans:</span> ${item.ans}
+              </div>
+              <div class="practice-lines">
+                <div class="practice-line"></div>
+                <div class="practice-line"></div>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+
+      // 3. Section C: Glossary Table & One-Word
+      let glossaryRows = '';
+      ch.sectionC.glossary.forEach((g, idx) => {
+        glossaryRows += `
+          <tr>
+            <td class="glossary-word">
+              <span class="inline-block w-4 h-4 text-center bg-indigo-950 text-white text-[10px] rounded mr-1">${idx+1}</span>
+              ${g.word}
+            </td>
+            <td class="font-hindi text-indigo-900 font-bold text-xs">${g.hindi}</td>
+            <td>${g.meaning}</td>
+            <td class="italic text-slate-600">${g.sentence}</td>
+          </tr>
+        `;
+      });
+
+      let oneWordHtml = '';
+      ch.sectionC.oneWord.forEach((ow, idx) => {
+        oneWordHtml += `
+          <div class="qa-card py-2 text-xs flex items-center justify-between gap-2">
+            <div class="flex items-center gap-2">
+              <span class="q-badge min-w-[20px] h-[18px] text-[10px]">${idx+1}</span>
+              <span class="text-slate-800">${ow.q}</span>
+            </div>
+            <div class="ans-text-reveal">
+              <span class="font-bold text-indigo-950 border border-indigo-900 px-2 py-0.5 rounded bg-indigo-50">${ow.ans}</span>
+            </div>
+            <div class="practice-lines"><div class="practice-line w-24"></div></div>
+          </div>
+        `;
+      });
+
+      // 4. Section D: Fill in the Blanks
+      let secDHtml = '';
+      ch.sectionD.forEach((item, idx) => {
+        secDHtml += `
+          <div class="qa-card py-2 text-xs">
+            <div class="flex items-start gap-1.5">
+              <span class="q-badge min-w-[20px] h-[18px] text-[10px]">${idx+1}</span>
+              <div class="flex-1">
+                <span>${item.before}</span>
+                <span class="ans-text-reveal font-extrabold border-b-2 border-indigo-950 text-indigo-950 px-1.5 uppercase">${item.ans}</span>
+                <span class="practice-lines inline-block border-b-2 border-dashed border-slate-800 w-28 mx-1"></span>
+                <span>${item.after}</span>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+
+      // 5. Section E: True or False with Reasons
+      let secEHtml = '';
+      ch.sectionE.forEach((item, idx) => {
+        const isTrue = item.isTrue;
+        secEHtml += `
+          <div class="qa-card py-2 text-xs">
+            <div class="flex items-start justify-between gap-2">
+              <div class="flex items-start gap-1.5 flex-1">
+                <span class="q-badge min-w-[20px] h-[18px] text-[10px]">${idx+1}</span>
+                <span>${item.statement}</span>
+              </div>
+              <button onclick="speakText(this, '${escapeForTTS(item.statement + ' Is it true? ' + (isTrue ? 'True' : 'False') + '. Reason: ' + item.reason)}')"
+                class="no-print text-slate-400 hover:text-indigo-600 p-1 transition cursor-pointer" title="Listen">
+                <i data-feather="volume-2" class="w-3 h-3"></i>
+              </button>
+            </div>
+            <div class="mt-1 pl-7 flex items-center justify-between">
+              <div class="ans-text-reveal">
+                <span class="font-extrabold px-2 py-0.5 rounded text-[10.5px] uppercase ${isTrue ? 'bg-emerald-800 text-white' : 'bg-rose-800 text-white'}">
+                  ${isTrue ? 'TRUE' : 'FALSE'}
+                </span>
+                <span class="text-slate-600 ml-2 italic true-false-reason">(${item.reason})</span>
+              </div>
+              <div class="true-false-box">
+                <span class="tf-circle"><i class="w-2.5 h-2.5 rounded-full border border-slate-500 inline-block"></i> True</span>
+                <span class="tf-circle"><i class="w-2.5 h-2.5 rounded-full border border-slate-500 inline-block"></i> False</span>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+
+      // 6. Section F: 10 Golden Points
+      let goldenPointsHtml = '';
+      ch.sectionF.forEach((pt, idx) => {
+        goldenPointsHtml += `
+          <div class="focus-point">
+            <span class="focus-num">${idx+1}</span>
+            <span>${pt}</span>
+          </div>
+        `;
+      });
+
+      // 7. Section G: Multiple Choice Questions
+      let mcqHtml = '';
+      ch.sectionG.forEach((mcq, idx) => {
+        mcqHtml += `
+          <div class="qa-card py-2.5 text-xs mcq-card-item">
+            <div class="font-bold text-slate-900 flex items-start gap-1.5">
+              <span class="q-badge min-w-[20px] h-[18px] text-[10px]">${idx+1}</span>
+              <span>${mcq.q}</span>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-1.5 mt-2 pl-7">
+              ${mcq.options.map(opt => `
+                <div class="p-1.5 rounded border border-slate-200 bg-slate-50 text-slate-800">
+                  ${opt}
+                </div>
+              `).join('')}
+            </div>
+            <div class="ans-text-reveal mt-2 pl-7 text-[11.5px]">
+              <span class="font-bold text-emerald-800 bg-emerald-50 border border-emerald-300 px-2 py-0.5 rounded">Correct: ${mcq.ans}</span>
+              <span class="text-slate-600 ml-2 italic">(${mcq.exp})</span>
+            </div>
+            <div class="practice-lines pl-7">
+              <div class="text-[11px] font-bold text-slate-500">Correct Option: [ &nbsp;&nbsp;&nbsp;&nbsp; ]</div>
+            </div>
+          </div>
+        `;
+      });
+
+      // 8. Section H: Grammar in Context
+      let grammarPracticeHtml = '';
+      if (ch.sectionH && ch.sectionH.practice) {
+        ch.sectionH.practice.forEach((gp, idx) => {
+          grammarPracticeHtml += `
+            <div class="p-1.5 border-b border-green-200 text-xs flex items-center justify-between gap-2">
+              <div>
+                <span class="font-bold text-green-950">${idx+1}.</span> ${gp.sentence}
+              </div>
+              <div class="ans-text-reveal font-extrabold text-green-900 bg-green-100 border border-green-300 px-2 py-0.5 rounded">
+                ${gp.ans}
+              </div>
+              <div class="practice-lines"><div class="practice-line w-28"></div></div>
+            </div>
+          `;
+        });
+      }
+
+      // Complete Document Structure
+      container.innerHTML = `
+        <article id="sheetDocument" class="a4-document">
+
+          <!-- Official School Letterhead -->
+          <header class="pb-2.5 border-b-2 border-indigo-950">
+            <div class="flex items-center justify-between gap-3">
+              
+              <!-- PMS Logo -->
+              <div class="w-16 h-16 sm:w-20 sm:h-20 flex-shrink-0 flex items-center justify-center p-0.5">
+                <img src="pms-logo.png" width="76" height="76" alt="Police Modern School Logo"
+                  class="w-full h-full object-contain" onerror="this.src='pms-logo-original.png'"
+                  loading="eager" />
+              </div>
+
+              <!-- Header Text -->
+              <div class="text-center flex-1 min-w-0">
+                <p class="text-xs sm:text-sm font-black tracking-widest uppercase text-indigo-950 font-heading">
+                  POLICE MODERN SCHOOL
+                </p>
+                <h1 class="font-hindi text-xl sm:text-2xl font-black leading-tight tracking-tight text-slate-950 mt-0.5">
+                  कार्यालय पुलिस मॉडर्न स्कूल
+                </h1>
+                <h2 class="font-hindi text-xs sm:text-sm font-bold text-slate-800 tracking-tight">
+                  25वीं वाहिनी पीएसी, रायबरेली (उ.प्र.)
+                </h2>
+                <div class="mt-1 inline-block bg-indigo-950 text-amber-300 px-3 py-0.5 text-[10px] font-bold tracking-wider uppercase rounded">
+                  ACADEMIC SESSION 2026 – 2027 • ENGLISH (POORVI) STUDY SHEET & WORKSHEET
+                </div>
+              </div>
+
+              <!-- PAC Logo -->
+              <div class="w-16 h-16 sm:w-20 sm:h-20 flex-shrink-0 flex items-center justify-center p-0.5">
+                <img src="pac_logo.png" width="72" height="72" alt="PAC Logo"
+                  class="w-full h-full object-contain" onerror="this.style.display='none'" />
+              </div>
+
+            </div>
+
+            <!-- Subject & Chapter Banner -->
+            <div class="mt-2.5 pt-1.5 border-t border-slate-300 flex flex-wrap items-center justify-between gap-2 text-xs sm:text-sm">
+              <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 font-black bg-indigo-950 text-white rounded">
+                  CLASS 6
+                </span>
+                <span class="font-black text-indigo-950 uppercase tracking-wide font-heading">
+                  ENGLISH (POORVI)
+                </span>
+                <span class="text-slate-500 font-bold">|</span>
+                <span class="text-slate-700 font-bold">${ch.unit}</span>
+              </div>
+              <div class="text-right">
+                <span class="font-bold text-slate-600">Chapter ${ch.id}:</span>
+                <span class="font-black text-indigo-950 ml-1 uppercase underline decoration-indigo-500 decoration-2 font-heading">
+                  “${ch.title}”
+                </span>
+              </div>
+            </div>
+
+            <!-- Candidate Examination Details Box -->
+            <div class="mt-2 border border-slate-300 p-2 grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs bg-slate-50 rounded">
+              <div>
+                <span class="font-bold text-slate-700">Student Name:</span>
+                <span contenteditable="true" class="ml-1 border-b border-slate-400 inline-block min-w-[90px]">_________________</span>
+              </div>
+              <div>
+                <span class="font-bold text-slate-700">Roll Number:</span>
+                <span contenteditable="true" class="ml-1 border-b border-slate-400 inline-block min-w-[45px]">______</span>
+              </div>
+              <div>
+                <span class="font-bold text-slate-700">Class & Section:</span>
+                <span contenteditable="true" class="ml-1 border-b border-slate-400 inline-block min-w-[40px]">Class 6-A</span>
+              </div>
+              <div>
+                <span class="font-bold text-slate-700">Date:</span>
+                <span contenteditable="true" class="ml-1 border-b border-slate-400 inline-block min-w-[65px]">${todayDate}</span>
+              </div>
+            </div>
+
+            <!-- Chapter Metadata Box -->
+            <div class="mt-2 bg-indigo-50/70 border border-indigo-200 rounded p-2.5 text-xs">
+              <div class="flex flex-wrap items-center justify-between gap-2 pb-1.5 border-b border-indigo-200">
+                <div>
+                  <span class="font-bold text-indigo-950">Genre / Form:</span>
+                  <span class="ml-1 text-slate-800 font-semibold">${ch.genre}</span>
+                </div>
+                <div>
+                  <span class="font-bold text-indigo-950">Author / Source:</span>
+                  <span class="ml-1 text-slate-800 font-semibold">${ch.author}</span>
+                </div>
+                <div>
+                  <span class="font-bold text-indigo-950">Theme:</span>
+                  <span class="ml-1 text-amber-800 font-bold">${ch.moralTheme}</span>
+                </div>
+              </div>
+              <div class="mt-1.5 space-y-1">
+                <p class="text-slate-700 leading-relaxed text-[11.5px]">
+                  <strong>English Summary:</strong> ${ch.summary}
+                </p>
+                <p class="text-indigo-950 font-hindi leading-relaxed text-[11.5px] border-t border-indigo-200/60 pt-1">
+                  <strong>हिंदी सारांश:</strong> ${ch.hindiSummary}
+                </p>
+              </div>
+            </div>
+          </header>
+
+          <!-- SECTION A: Long Answer & Literary Comprehension -->
+          <div class="section-ribbon">
+            <i data-feather="file-text" class="w-4 h-4 text-amber-400"></i>
+            <span class="section-ribbon-title">Section A: Literary Comprehension & Long Answer Questions</span>
+            <span class="section-ribbon-badge">${ch.sectionA.length} Questions</span>
+          </div>
+          <div>${secAHtml}</div>
+
+          <!-- SECTION B: Short Answer Questions -->
+          <div class="section-ribbon">
+            <i data-feather="check-circle" class="w-4 h-4 text-amber-400"></i>
+            <span class="section-ribbon-title">Section B: Short Answer & Direct Textual Questions</span>
+            <span class="section-ribbon-badge">${ch.sectionB.length} Questions</span>
+          </div>
+          <div>${secBHtml}</div>
+
+          <!-- SECTION C: Vocabulary & Word Power -->
+          <div class="section-ribbon">
+            <i data-feather="book" class="w-4 h-4 text-amber-400"></i>
+            <span class="section-ribbon-title">Section C: Vocabulary & Word Power (Glossary & Definitions)</span>
+            <span class="section-ribbon-badge">Glossary & One-Word</span>
+          </div>
+          <div class="table-container mb-3">
+            <table class="glossary-table">
+              <thead>
+                <tr>
+                  <th style="width: 20%;">Word</th>
+                  <th style="width: 18%;">हिंदी अर्थ</th>
+                  <th style="width: 32%;">Contextual Meaning</th>
+                  <th style="width: 30%;">Usage in Sentence</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${glossaryRows}
+              </tbody>
+            </table>
+          </div>
+          <div class="mt-2 space-y-1">
+            <div class="text-[11px] font-bold text-indigo-950 uppercase tracking-wide mb-1">One-Word Substitutions & Identification:</div>
+            ${oneWordHtml}
+          </div>
+
+          <!-- SECTION D: Fill in the Blanks -->
+          <div class="section-ribbon">
+            <i data-feather="edit" class="w-4 h-4 text-amber-400"></i>
+            <span class="section-ribbon-title">Section D: Fill in the Blanks (Textual Recall)</span>
+            <span class="section-ribbon-badge">${ch.sectionD.length} Items</span>
+          </div>
+          <div>${secDHtml}</div>
+
+          <!-- SECTION E: True or False with Justification -->
+          <div class="section-ribbon">
+            <i data-feather="check-square" class="w-4 h-4 text-amber-400"></i>
+            <span class="section-ribbon-title">Section E: True or False with Textual Reasons</span>
+            <span class="section-ribbon-badge">${ch.sectionE.length} Items</span>
+          </div>
+          <div>${secEHtml}</div>
+
+          <!-- SECTION F: 10 Golden Points -->
+          <div class="section-ribbon">
+            <i data-feather="star" class="w-4 h-4 text-amber-400"></i>
+            <span class="section-ribbon-title">Section F: 10 Golden Points for Rapid Exam Revision</span>
+            <span class="section-ribbon-badge">10 Points</span>
+          </div>
+          <div class="focus-card">
+            <div class="text-xs font-black text-amber-900 uppercase tracking-wide flex items-center gap-1.5">
+              <i data-feather="award" class="w-4 h-4 text-amber-700"></i>
+              <span>Must-Remember Exam Flashpoints • Chapter ${ch.id}</span>
+            </div>
+            <div class="focus-grid">
+              ${goldenPointsHtml}
+            </div>
+          </div>
+
+          <!-- SECTION G: Multiple Choice Questions (MCQs) -->
+          <div class="section-ribbon">
+            <i data-feather="help-circle" class="w-4 h-4 text-amber-400"></i>
+            <span class="section-ribbon-title">Section G: Multiple Choice Questions (MCQs)</span>
+            <span class="section-ribbon-badge">${ch.sectionG.length} MCQs</span>
+          </div>
+          <div>${mcqHtml}</div>
+
+          <!-- SECTION H: Grammar & Language Skills in Context -->
+          ${ch.sectionH ? `
+            <div class="section-ribbon">
+              <i data-feather="layers" class="w-4 h-4 text-amber-400"></i>
+              <span class="section-ribbon-title">Section H: Grammar & Language Skills (${ch.sectionH.topic})</span>
+              <span class="section-ribbon-badge">Grammar Focus</span>
+            </div>
+            <div class="grammar-card">
+              <div class="text-xs font-bold text-green-950 mb-1">
+                <strong>Concept:</strong> ${ch.sectionH.topic}
+              </div>
+              <p class="text-xs text-green-900 leading-relaxed mb-2">
+                ${ch.sectionH.explanation}
+              </p>
+              <div class="space-y-1">
+                ${grammarPracticeHtml}
+              </div>
+            </div>
+          ` : ''}
+
+          <!-- Running Footer -->
+          <footer class="mt-4 pt-2 border-t border-slate-300 flex items-center justify-between text-[10px] text-slate-500">
+            <div>
+              <span>Police Modern School, 25th Bn PAC, Raebareli</span> • <span>Class 6 English (Poorvi)</span>
+            </div>
+            <div>
+              <span>Chapter ${ch.id}: ${ch.title}</span> • <span>Page 1 of Study Sheet</span>
+            </div>
+          </footer>
+
+        </article>
+      `;
+
+      feather.replace();
+    }
+  </script>
+
+</body>
+</html>

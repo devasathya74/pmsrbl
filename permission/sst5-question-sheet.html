@@ -23,6 +23,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.js"></script>
 
   <!-- Curriculum Databases for All Subjects -->
+  <script src="grammar-chapters-data.js"></script>
   <script src="sst5-chapters-data.js"></script>
   <script src="sst-chapters-data.js"></script>
   <script src="english-chapters-data.js"></script>
@@ -753,6 +754,19 @@
     let currentSpeechCard = null;
 
     const SUBJECT_CONFIGS = {
+      grammar: {
+        id: 'grammar',
+        title: 'Master English Grammar & Composition',
+        subTitle: 'COMPLETE 10-UNIT MASTER STUDY GUIDE & WORKBOOK',
+        bookTitle: 'Master English Grammar & Composition',
+        subjectLabel: 'English Grammar & Composition (All Classes)',
+        curriculum: 'NCERT & Standard School Curriculum (सत्र 2026–27)',
+        badge: '10 Units (SVG आरेख, 100 Rules व Complete Solution)',
+        totalChapters: 10,
+        data: (typeof GRAMMAR_CHAPTERS_DATA !== 'undefined') ? GRAMMAR_CHAPTERS_DATA : [],
+        themeColor: 'from-indigo-700 via-purple-700 to-indigo-900',
+        classLevel: 'Middle Wing'
+      },
       sst5: {
         id: 'sst5',
         title: 'कक्षा 5 सामाजिक विज्ञान (SST / EVS)',

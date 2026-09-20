@@ -957,6 +957,37 @@
 
     // Build Chapter HTML for SST / Standard format
     function generateStandardChapterHtml(ch, isBookMode = false, chapterIndex = 1, totalChapters = 10) {
+      // 0. Diagram Section
+      let diagramHtml = '';
+      if (ch.diagram) {
+        let diagQHtml = '';
+        if (ch.diagramQuestions && ch.diagramQuestions.length > 0) {
+          ch.diagramQuestions.forEach((dq, qIdx) => {
+            diagQHtml += `
+              <div class="mt-2 text-left p-2 border border-amber-300 bg-amber-50/80 rounded text-xs">
+                <p class="font-bold text-slate-900"><span class="text-amber-800 font-extrabold mr-1">Q${qIdx+1}.</span> ${dq.q}</p>
+                <div class="ans-content text-xs pt-1 text-slate-800 pl-3 border-l-2 border-amber-500">
+                  <strong class="text-amber-900">Ans:</strong> ${dq.ans}
+                </div>
+                <div class="practice-lines"><div class="practice-line"></div></div>
+              </div>
+            `;
+          });
+        }
+
+        diagramHtml = `
+          <div class="diagram-container avoid-break my-3 p-2.5 bg-amber-50/50 border border-amber-300 rounded-lg text-center">
+            <div class="text-xs font-bold text-amber-900 uppercase tracking-wide mb-1 flex items-center justify-center gap-1.5">
+              <i data-feather="image" class="w-3.5 h-3.5 text-amber-700"></i>
+              <span>${ch.diagram.title}</span>
+            </div>
+            ${ch.diagram.svg}
+            <p class="text-[10.5px] text-slate-600 italic mt-1">${ch.diagram.caption}</p>
+            ${diagQHtml}
+          </div>
+        `;
+      }
+
       let secAHtml = '';
       if (ch.sectionA) {
         ch.sectionA.forEach((item, idx) => {
@@ -1003,43 +1034,42 @@
       }
 
       let secCHtml = '';
-      if (ch.sectionC) {
-        if (ch.sectionC.oneWord) {
-          secCHtml += '<div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-3">';
-          ch.sectionC.oneWord.forEach((ow, idx) => {
-            secCHtml += `
-              <div class="qa-card mb-0">
-                <div class="q-title text-xs">
-                  <span class="q-num-badge text-[10px] min-w-[22px]">Q${idx+1}</span>
-                  <span>${ow.q}</span>
-                </div>
-                <div class="ans-content text-xs pt-1">
-                  <span class="ans-badge">Ans:</span>
-                  <span class="font-extrabold text-blue-900 bg-blue-100 px-2 py-0.5 rounded border border-blue-200">${ow.ans}</span>
-                </div>
-                <div class="practice-lines"><div class="practice-line"></div></div>
-              </div>
-            `;
-          });
-          secCHtml += '</div>';
-        }
-
-        if (ch.sectionC.glossary) {
+      const owList = ch.oneWord || (ch.sectionC && ch.sectionC.oneWord) || [];
+      if (owList.length > 0) {
+        secCHtml += '<div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-3">';
+        owList.forEach((ow, idx) => {
           secCHtml += `
-            <table class="glossary-table mt-2">
-              <thead><tr><th style="width: 25%;">शब्दावली / Term</th><th>अर्थ एवं परिभाषा / Meaning</th></tr></thead>
-              <tbody>
+            <div class="qa-card mb-0">
+              <div class="q-title text-xs">
+                <span class="q-num-badge text-[10px] min-w-[22px]">Q${idx+1}</span>
+                <span>${ow.q}</span>
+              </div>
+              <div class="ans-content text-xs pt-1">
+                <span class="ans-badge">Ans:</span>
+                <span class="font-extrabold text-blue-900 bg-blue-100 px-2 py-0.5 rounded border border-blue-200">${ow.ans}</span>
+              </div>
+              <div class="practice-lines"><div class="practice-line"></div></div>
+            </div>
           `;
-          ch.sectionC.glossary.forEach(g => {
-            secCHtml += `
-              <tr>
-                <td class="font-bold text-slate-900 font-heading bg-slate-50">${g.word}</td>
-                <td class="text-slate-700 leading-relaxed">${g.meaning}</td>
-              </tr>
-            `;
-          });
-          secCHtml += '</tbody></table>';
-        }
+        });
+        secCHtml += '</div>';
+      }
+
+      if (ch.sectionC && ch.sectionC.glossary) {
+        secCHtml += `
+          <table class="glossary-table mt-2">
+            <thead><tr><th style="width: 25%;">शब्दावली / Term</th><th>अर्थ एवं परिभाषा / Meaning</th></tr></thead>
+            <tbody>
+        `;
+        ch.sectionC.glossary.forEach(g => {
+          secCHtml += `
+            <tr>
+              <td class="font-bold text-slate-900 font-heading bg-slate-50">${g.word}</td>
+              <td class="text-slate-700 leading-relaxed">${g.meaning}</td>
+            </tr>
+          `;
+        });
+        secCHtml += '</tbody></table>';
       }
 
       let secDHtml = '';
@@ -1066,9 +1096,10 @@
       }
 
       let secEHtml = '';
-      if (ch.sectionE) {
+      const tfList = ch.trueFalse || ch.sectionE || [];
+      if (tfList.length > 0) {
         secEHtml += '<div class="space-y-1.5">';
-        ch.sectionE.forEach((item, idx) => {
+        tfList.forEach((item, idx) => {
           const qText = item.q || item.statement || '';
           const isTrue = (typeof item.isTrue === 'boolean') ? item.isTrue : ((item.ans || '').toLowerCase() === 'true');
           const ansDisplay = isTrue ? 'True' : 'False';
@@ -1094,9 +1125,44 @@
         secEHtml += '</div>';
       }
 
+      let matchHtml = '';
+      if (ch.matchFollowing && ch.matchFollowing.length > 0) {
+        let matchRows = '';
+        ch.matchFollowing.forEach((m, idx) => {
+          const letter = String.fromCharCode(97 + idx);
+          matchRows += `
+            <tr>
+              <td class="font-semibold text-slate-900">${idx+1}. ${m.left}</td>
+              <td class="text-slate-800">(${letter}) ${m.right}</td>
+              <td class="match-key-col text-center font-bold text-amber-900 bg-amber-50">${m.pair}</td>
+              <td class="match-blank-col text-center font-mono text-slate-400">[ &nbsp;&nbsp;&nbsp;&nbsp; ]</td>
+            </tr>
+          `;
+        });
+
+        matchHtml = `
+          <div class="my-2 avoid-break">
+            <table class="match-table">
+              <thead>
+                <tr>
+                  <th style="width: 42%;">स्तम्भ 'क' (Column A)</th>
+                  <th style="width: 42%;">स्तम्भ 'ख' (Column B)</th>
+                  <th class="match-key-col" style="width: 16%; text-align: center;">उत्तर कुंजी</th>
+                  <th class="match-blank-col" style="width: 16%; text-align: center;">उत्तर लिखें</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${matchRows}
+              </tbody>
+            </table>
+          </div>
+        `;
+      }
+
       let focusHtml = '';
-      if (ch.sectionFocus) {
-        ch.sectionFocus.forEach((pt, idx) => {
+      const gpList = ch.goldenPoints || ch.sectionFocus || [];
+      if (gpList.length > 0) {
+        gpList.forEach((pt, idx) => {
           focusHtml += `
             <div class="focus-point">
               <span class="focus-num">${idx+1}</span>
@@ -1152,7 +1218,7 @@
               <div class="flex-1 min-w-[200px]">
                 <div class="flex items-center gap-2 mb-1">
                   <span class="bg-amber-400 text-slate-950 px-2 py-0.5 rounded text-[9.5px] font-black uppercase tracking-wider font-heading">
-                    ${ch.theme}
+                    ${ch.theme || ch.unit || ''}
                   </span>
                 </div>
                 <h2 class="text-base sm:text-lg font-black font-heading tracking-wide text-white leading-tight">
@@ -1171,6 +1237,8 @@
             <strong class="font-bold text-blue-900">पाठ सार (Learning Summary):</strong>
             ${ch.summary}
           </div>
+
+          ${diagramHtml}
 
           ${secAHtml ? `
             <section class="mt-3.5" id="sec-long">
@@ -1222,6 +1290,16 @@
                 <span class="section-ribbon-title">E. सत्य अथवा असत्य (True / False with Reasons)</span>
               </div>
               ${secEHtml}
+            </section>
+          ` : ''}
+
+          ${matchHtml ? `
+            <section class="mt-3.5" id="sec-match">
+              <div class="section-ribbon">
+                <i data-feather="shuffle" class="w-4 h-4 text-amber-400"></i>
+                <span class="section-ribbon-title">F. सही मिलान करें (Match the Following)</span>
+              </div>
+              ${matchHtml}
             </section>
           ` : ''}
 

@@ -401,7 +401,7 @@
       .no-print,
       #topNavBar,
       .sidebar-drawer,
-      .topbar-controls {
+      #downloadModal {
         display: none !important;
       }
 
@@ -475,7 +475,7 @@
             <button id="btnModeStudy" onclick="setMode('study')"
               class="px-2 sm:px-3 py-1 rounded text-xs font-bold text-white bg-indigo-600 shadow transition flex items-center gap-1">
               <i data-feather="book-open" class="w-3.5 h-3.5"></i>
-              <span class="hidden sm:inline">Study Guide</span>
+              <span class="hidden sm:inline">Study</span>
             </button>
             <button id="btnModeWorksheet" onclick="setMode('worksheet')"
               class="px-2 sm:px-3 py-1 rounded text-xs font-bold text-slate-400 hover:text-slate-200 transition flex items-center gap-1">
@@ -495,18 +495,18 @@
             </button>
           </div>
 
+          <!-- Download / Export Modal Trigger -->
+          <button onclick="openDownloadModal()"
+            class="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs px-3 py-1.5 rounded-lg shadow-md transition flex items-center gap-1.5">
+            <i data-feather="download" class="w-3.5 h-3.5 text-amber-300"></i>
+            <span class="font-heading tracking-wide">Download Book / Units</span>
+          </button>
+
           <!-- Print / PDF -->
           <button onclick="window.print()"
             class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs px-3 py-1.5 rounded-lg shadow-md transition flex items-center gap-1.5">
             <i data-feather="printer" class="w-3.5 h-3.5"></i>
             <span class="hidden sm:inline">Print / PDF</span>
-          </button>
-
-          <!-- Download Offline -->
-          <button onclick="downloadStandaloneGuide()"
-            class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs px-2.5 py-1.5 rounded-lg shadow-md transition flex items-center gap-1" title="Save Complete Standalone HTML File">
-            <i data-feather="download" class="w-3.5 h-3.5"></i>
-            <span class="hidden lg:inline">Save HTML</span>
           </button>
 
         </div>
@@ -557,7 +557,8 @@
         
         <details class="toc-group bg-slate-950/60 border border-slate-800 rounded-xl mb-2 overflow-hidden" open>
           <summary class="cursor-pointer px-3 py-2 bg-slate-900 hover:bg-slate-800 text-xs font-bold text-indigo-300 hover:text-white flex items-center justify-between transition select-none">
-            <span class="flex items-center gap-1.5"><i data-feather="book" class="w-3.5 h-3.5 text-indigo-400"></i> Unit 01 · Parts of Speech</span>
+            <span class="flex items-center gap-1.5"><i data-feather="book" class="w-3.5 h-3.5 text-indigo-400"></i> Unit 01 · Parts of Speech
+30p</span>
             <span class="text-[10px] bg-slate-800 text-slate-400 px-1.5 py-0.5 rounded">30p</span>
           </summary>
           <div class="toc-list p-1.5 space-y-0.5 max-h-60 overflow-y-auto custom-scrollbar">
@@ -567,7 +568,8 @@
         
         <details class="toc-group bg-slate-950/60 border border-slate-800 rounded-xl mb-2 overflow-hidden" >
           <summary class="cursor-pointer px-3 py-2 bg-slate-900 hover:bg-slate-800 text-xs font-bold text-indigo-300 hover:text-white flex items-center justify-between transition select-none">
-            <span class="flex items-center gap-1.5"><i data-feather="book" class="w-3.5 h-3.5 text-indigo-400"></i> Unit 02 · The Tenses</span>
+            <span class="flex items-center gap-1.5"><i data-feather="book" class="w-3.5 h-3.5 text-indigo-400"></i> Unit 02 · The Tenses
+30p</span>
             <span class="text-[10px] bg-slate-800 text-slate-400 px-1.5 py-0.5 rounded">30p</span>
           </summary>
           <div class="toc-list p-1.5 space-y-0.5 max-h-60 overflow-y-auto custom-scrollbar">
@@ -577,7 +579,8 @@
         
         <details class="toc-group bg-slate-950/60 border border-slate-800 rounded-xl mb-2 overflow-hidden" >
           <summary class="cursor-pointer px-3 py-2 bg-slate-900 hover:bg-slate-800 text-xs font-bold text-indigo-300 hover:text-white flex items-center justify-between transition select-none">
-            <span class="flex items-center gap-1.5"><i data-feather="book" class="w-3.5 h-3.5 text-indigo-400"></i> Unit 03 · Articles: a, an, the</span>
+            <span class="flex items-center gap-1.5"><i data-feather="book" class="w-3.5 h-3.5 text-indigo-400"></i> Unit 03 · Articles: a, an, the
+12p</span>
             <span class="text-[10px] bg-slate-800 text-slate-400 px-1.5 py-0.5 rounded">12p</span>
           </summary>
           <div class="toc-list p-1.5 space-y-0.5 max-h-60 overflow-y-auto custom-scrollbar">
@@ -587,7 +590,8 @@
         
         <details class="toc-group bg-slate-950/60 border border-slate-800 rounded-xl mb-2 overflow-hidden" >
           <summary class="cursor-pointer px-3 py-2 bg-slate-900 hover:bg-slate-800 text-xs font-bold text-indigo-300 hover:text-white flex items-center justify-between transition select-none">
-            <span class="flex items-center gap-1.5"><i data-feather="book" class="w-3.5 h-3.5 text-indigo-400"></i> Unit 04 · Possessives</span>
+            <span class="flex items-center gap-1.5"><i data-feather="book" class="w-3.5 h-3.5 text-indigo-400"></i> Unit 04 · Possessives
+10p</span>
             <span class="text-[10px] bg-slate-800 text-slate-400 px-1.5 py-0.5 rounded">10p</span>
           </summary>
           <div class="toc-list p-1.5 space-y-0.5 max-h-60 overflow-y-auto custom-scrollbar">
@@ -597,7 +601,8 @@
         
         <details class="toc-group bg-slate-950/60 border border-slate-800 rounded-xl mb-2 overflow-hidden" >
           <summary class="cursor-pointer px-3 py-2 bg-slate-900 hover:bg-slate-800 text-xs font-bold text-indigo-300 hover:text-white flex items-center justify-between transition select-none">
-            <span class="flex items-center gap-1.5"><i data-feather="book" class="w-3.5 h-3.5 text-indigo-400"></i> Unit 05 · Gerund & Participle</span>
+            <span class="flex items-center gap-1.5"><i data-feather="book" class="w-3.5 h-3.5 text-indigo-400"></i> Unit 05 · Gerund & Participle
+12p</span>
             <span class="text-[10px] bg-slate-800 text-slate-400 px-1.5 py-0.5 rounded">12p</span>
           </summary>
           <div class="toc-list p-1.5 space-y-0.5 max-h-60 overflow-y-auto custom-scrollbar">
@@ -607,7 +612,8 @@
         
         <details class="toc-group bg-slate-950/60 border border-slate-800 rounded-xl mb-2 overflow-hidden" >
           <summary class="cursor-pointer px-3 py-2 bg-slate-900 hover:bg-slate-800 text-xs font-bold text-indigo-300 hover:text-white flex items-center justify-between transition select-none">
-            <span class="flex items-center gap-1.5"><i data-feather="book" class="w-3.5 h-3.5 text-indigo-400"></i> Unit 06 · Sentences</span>
+            <span class="flex items-center gap-1.5"><i data-feather="book" class="w-3.5 h-3.5 text-indigo-400"></i> Unit 06 · Sentences
+22p</span>
             <span class="text-[10px] bg-slate-800 text-slate-400 px-1.5 py-0.5 rounded">22p</span>
           </summary>
           <div class="toc-list p-1.5 space-y-0.5 max-h-60 overflow-y-auto custom-scrollbar">
@@ -617,7 +623,8 @@
         
         <details class="toc-group bg-slate-950/60 border border-slate-800 rounded-xl mb-2 overflow-hidden" >
           <summary class="cursor-pointer px-3 py-2 bg-slate-900 hover:bg-slate-800 text-xs font-bold text-indigo-300 hover:text-white flex items-center justify-between transition select-none">
-            <span class="flex items-center gap-1.5"><i data-feather="book" class="w-3.5 h-3.5 text-indigo-400"></i> Unit 07 · Introductory There & It</span>
+            <span class="flex items-center gap-1.5"><i data-feather="book" class="w-3.5 h-3.5 text-indigo-400"></i> Unit 07 · Introductory There & It
+10p</span>
             <span class="text-[10px] bg-slate-800 text-slate-400 px-1.5 py-0.5 rounded">10p</span>
           </summary>
           <div class="toc-list p-1.5 space-y-0.5 max-h-60 overflow-y-auto custom-scrollbar">
@@ -627,7 +634,8 @@
         
         <details class="toc-group bg-slate-950/60 border border-slate-800 rounded-xl mb-2 overflow-hidden" >
           <summary class="cursor-pointer px-3 py-2 bg-slate-900 hover:bg-slate-800 text-xs font-bold text-indigo-300 hover:text-white flex items-center justify-between transition select-none">
-            <span class="flex items-center gap-1.5"><i data-feather="book" class="w-3.5 h-3.5 text-indigo-400"></i> Unit 08 · Punctuation & Capitalisation</span>
+            <span class="flex items-center gap-1.5"><i data-feather="book" class="w-3.5 h-3.5 text-indigo-400"></i> Unit 08 · Punctuation & Capitalisation
+16p</span>
             <span class="text-[10px] bg-slate-800 text-slate-400 px-1.5 py-0.5 rounded">16p</span>
           </summary>
           <div class="toc-list p-1.5 space-y-0.5 max-h-60 overflow-y-auto custom-scrollbar">
@@ -637,7 +645,8 @@
         
         <details class="toc-group bg-slate-950/60 border border-slate-800 rounded-xl mb-2 overflow-hidden" >
           <summary class="cursor-pointer px-3 py-2 bg-slate-900 hover:bg-slate-800 text-xs font-bold text-indigo-300 hover:text-white flex items-center justify-between transition select-none">
-            <span class="flex items-center gap-1.5"><i data-feather="book" class="w-3.5 h-3.5 text-indigo-400"></i> Unit 09 · Letters & E-mails</span>
+            <span class="flex items-center gap-1.5"><i data-feather="book" class="w-3.5 h-3.5 text-indigo-400"></i> Unit 09 · Letters & E-mails
+20p</span>
             <span class="text-[10px] bg-slate-800 text-slate-400 px-1.5 py-0.5 rounded">20p</span>
           </summary>
           <div class="toc-list p-1.5 space-y-0.5 max-h-60 overflow-y-auto custom-scrollbar">
@@ -647,7 +656,8 @@
         
         <details class="toc-group bg-slate-950/60 border border-slate-800 rounded-xl mb-2 overflow-hidden" >
           <summary class="cursor-pointer px-3 py-2 bg-slate-900 hover:bg-slate-800 text-xs font-bold text-indigo-300 hover:text-white flex items-center justify-between transition select-none">
-            <span class="flex items-center gap-1.5"><i data-feather="book" class="w-3.5 h-3.5 text-indigo-400"></i> Unit 10 · Writing Paragraphs</span>
+            <span class="flex items-center gap-1.5"><i data-feather="book" class="w-3.5 h-3.5 text-indigo-400"></i> Unit 10 · Writing Paragraphs
+18p</span>
             <span class="text-[10px] bg-slate-800 text-slate-400 px-1.5 py-0.5 rounded">18p</span>
           </summary>
           <div class="toc-list p-1.5 space-y-0.5 max-h-60 overflow-y-auto custom-scrollbar">
@@ -657,7 +667,8 @@
         
         <details class="toc-group bg-slate-950/60 border border-slate-800 rounded-xl mb-2 overflow-hidden" >
           <summary class="cursor-pointer px-3 py-2 bg-slate-900 hover:bg-slate-800 text-xs font-bold text-indigo-300 hover:text-white flex items-center justify-between transition select-none">
-            <span class="flex items-center gap-1.5"><i data-feather="book" class="w-3.5 h-3.5 text-indigo-400"></i> Unit R · Revision, Tests & Answer Key</span>
+            <span class="flex items-center gap-1.5"><i data-feather="book" class="w-3.5 h-3.5 text-indigo-400"></i> Unit R · Revision, Tests & Answer Key
+16p</span>
             <span class="text-[10px] bg-slate-800 text-slate-400 px-1.5 py-0.5 rounded">16p</span>
           </summary>
           <div class="toc-list p-1.5 space-y-0.5 max-h-60 overflow-y-auto custom-scrollbar">
@@ -672,7 +683,7 @@
     <main class="content-area">
       <div class="max-w-[210mm] w-full flex flex-col items-center" id="bookPagesContainer">
         
-            <article class="book-page a4-document cover-page" id="page-1" data-page="1">
+            <article class="book-page a4-document cover-page" id="page-1" data-page="1" data-section="Cover">
               <div class="relative w-full h-full border-4 border-indigo-950 p-6 flex flex-col justify-between bg-gradient-to-b from-indigo-50/40 via-white to-purple-50/40 rounded-sm">
                 <!-- Inner Double Border Accent -->
                 <div class="absolute inset-2 border border-dashed border-indigo-300 pointer-events-none"></div>
@@ -698,7 +709,7 @@
                 <div class="relative z-10 my-4 text-center">
                   <div class="bg-gradient-to-r from-indigo-950 via-slate-900 to-indigo-950 text-white rounded-2xl p-6 shadow-xl border-t-4 border-amber-400 max-w-lg mx-auto">
                     <div class="text-[11px] font-black uppercase tracking-widest text-amber-300 font-heading mb-1">
-                      CLASS 6 · COMPLETE 200-PAGE STUDY EDITION
+                      CLASS 6 · COMPLETE 200-PAGE MASTER STUDY EDITION
                     </div>
                     <h2 class="text-xl sm:text-2xl font-black font-heading text-white tracking-wide uppercase leading-tight mb-2">
                       The Deep-Dive Grammar Guide
@@ -10187,16 +10198,233 @@
 
   </div>
 
+  <!-- ==================== DOWNLOAD & UNIT SELECTOR MODAL ==================== -->
+  <div id="downloadModal" class="no-print fixed inset-0 bg-black/85 backdrop-blur-sm z-[100] hidden items-center justify-center p-3 sm:p-4">
+    <div class="bg-slate-900 border-2 border-indigo-500/80 rounded-2xl max-w-2xl w-full p-5 sm:p-6 shadow-2xl relative text-white max-h-[90vh] overflow-y-auto">
+      
+      <!-- Close Button -->
+      <button onclick="closeDownloadModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 transition">
+        <i data-feather="x" class="w-4 h-4"></i>
+      </button>
+
+      <!-- Header -->
+      <div class="flex items-center gap-3 border-b border-slate-800 pb-3 mb-4">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white shadow-lg">
+          <i data-feather="download-cloud" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <h3 class="text-base sm:text-lg font-black font-heading text-white">
+            Download Book / Chapter-Wise Export
+          </h3>
+          <p class="text-xs text-slate-400">
+            Download the entire 200-page book or export individual chapters/units with cover & answer keys.
+          </p>
+        </div>
+      </div>
+
+      <!-- Unit Selector Grid -->
+      <div class="space-y-3">
+        <div>
+          <label class="block font-bold text-slate-300 mb-1.5 uppercase tracking-wider text-[11px] font-heading">
+            1. Select Export Scope (Entire Book or Specific Unit):
+          </label>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-60 overflow-y-auto p-1 custom-scrollbar border border-slate-800 rounded-xl bg-slate-950/60" id="downloadUnitsList">
+            
+        <div class="border-2 rounded-xl p-3 cursor-pointer transition relative bg-slate-800/80 border-slate-700 text-slate-300 hover:border-slate-500" id="unitCard-all" onclick="selectDownloadUnit('all')">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-xs text-white">Full 200-Page Master Book (Complete)</span>
+            <span class="w-4 h-4 rounded-full border border-slate-600 flex items-center justify-center text-[10px]" id="unitCheck-all"></span>
+          </div>
+          <div class="flex items-center justify-between mt-2 pt-1.5 border-t border-slate-700/60 text-[10.5px] text-slate-400">
+            <span>Pages 1–200</span>
+            <span class="bg-indigo-900/60 text-indigo-300 px-2 py-0.5 rounded font-bold">Complete Book</span>
+          </div>
+        </div>
+        
+        <div class="border-2 rounded-xl p-3 cursor-pointer transition relative bg-slate-800/80 border-slate-700 text-slate-300 hover:border-slate-500" id="unitCard-u1" onclick="selectDownloadUnit('u1')">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-xs text-white">Unit 01: Parts of Speech Mastery</span>
+            <span class="w-4 h-4 rounded-full border border-slate-600 flex items-center justify-center text-[10px]" id="unitCheck-u1"></span>
+          </div>
+          <div class="flex items-center justify-between mt-2 pt-1.5 border-t border-slate-700/60 text-[10.5px] text-slate-400">
+            <span>Pages 5–34</span>
+            <span class="bg-indigo-900/60 text-indigo-300 px-2 py-0.5 rounded font-bold">30 Pages</span>
+          </div>
+        </div>
+        
+        <div class="border-2 rounded-xl p-3 cursor-pointer transition relative bg-slate-800/80 border-slate-700 text-slate-300 hover:border-slate-500" id="unitCard-u2" onclick="selectDownloadUnit('u2')">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-xs text-white">Unit 02: The Tenses & Timeline Mastery</span>
+            <span class="w-4 h-4 rounded-full border border-slate-600 flex items-center justify-center text-[10px]" id="unitCheck-u2"></span>
+          </div>
+          <div class="flex items-center justify-between mt-2 pt-1.5 border-t border-slate-700/60 text-[10.5px] text-slate-400">
+            <span>Pages 35–64</span>
+            <span class="bg-indigo-900/60 text-indigo-300 px-2 py-0.5 rounded font-bold">30 Pages</span>
+          </div>
+        </div>
+        
+        <div class="border-2 rounded-xl p-3 cursor-pointer transition relative bg-slate-800/80 border-slate-700 text-slate-300 hover:border-slate-500" id="unitCard-u3" onclick="selectDownloadUnit('u3')">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-xs text-white">Unit 03: Articles (A, An, The & Zero Article)</span>
+            <span class="w-4 h-4 rounded-full border border-slate-600 flex items-center justify-center text-[10px]" id="unitCheck-u3"></span>
+          </div>
+          <div class="flex items-center justify-between mt-2 pt-1.5 border-t border-slate-700/60 text-[10.5px] text-slate-400">
+            <span>Pages 65–76</span>
+            <span class="bg-indigo-900/60 text-indigo-300 px-2 py-0.5 rounded font-bold">12 Pages</span>
+          </div>
+        </div>
+        
+        <div class="border-2 rounded-xl p-3 cursor-pointer transition relative bg-slate-800/80 border-slate-700 text-slate-300 hover:border-slate-500" id="unitCard-u4" onclick="selectDownloadUnit('u4')">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-xs text-white">Unit 04: Possessives & Apostrophe Rules</span>
+            <span class="w-4 h-4 rounded-full border border-slate-600 flex items-center justify-center text-[10px]" id="unitCheck-u4"></span>
+          </div>
+          <div class="flex items-center justify-between mt-2 pt-1.5 border-t border-slate-700/60 text-[10.5px] text-slate-400">
+            <span>Pages 77–86</span>
+            <span class="bg-indigo-900/60 text-indigo-300 px-2 py-0.5 rounded font-bold">10 Pages</span>
+          </div>
+        </div>
+        
+        <div class="border-2 rounded-xl p-3 cursor-pointer transition relative bg-slate-800/80 border-slate-700 text-slate-300 hover:border-slate-500" id="unitCard-u5" onclick="selectDownloadUnit('u5')">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-xs text-white">Unit 05: Verb -ing Form (Gerund & Participle)</span>
+            <span class="w-4 h-4 rounded-full border border-slate-600 flex items-center justify-center text-[10px]" id="unitCheck-u5"></span>
+          </div>
+          <div class="flex items-center justify-between mt-2 pt-1.5 border-t border-slate-700/60 text-[10.5px] text-slate-400">
+            <span>Pages 87–98</span>
+            <span class="bg-indigo-900/60 text-indigo-300 px-2 py-0.5 rounded font-bold">12 Pages</span>
+          </div>
+        </div>
+        
+        <div class="border-2 rounded-xl p-3 cursor-pointer transition relative bg-slate-800/80 border-slate-700 text-slate-300 hover:border-slate-500" id="unitCard-u6" onclick="selectDownloadUnit('u6')">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-xs text-white">Unit 06: Sentences, Clauses & Transformations</span>
+            <span class="w-4 h-4 rounded-full border border-slate-600 flex items-center justify-center text-[10px]" id="unitCheck-u6"></span>
+          </div>
+          <div class="flex items-center justify-between mt-2 pt-1.5 border-t border-slate-700/60 text-[10.5px] text-slate-400">
+            <span>Pages 99–120</span>
+            <span class="bg-indigo-900/60 text-indigo-300 px-2 py-0.5 rounded font-bold">22 Pages</span>
+          </div>
+        </div>
+        
+        <div class="border-2 rounded-xl p-3 cursor-pointer transition relative bg-slate-800/80 border-slate-700 text-slate-300 hover:border-slate-500" id="unitCard-u7" onclick="selectDownloadUnit('u7')">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-xs text-white">Unit 07: Introductory There & It</span>
+            <span class="w-4 h-4 rounded-full border border-slate-600 flex items-center justify-center text-[10px]" id="unitCheck-u7"></span>
+          </div>
+          <div class="flex items-center justify-between mt-2 pt-1.5 border-t border-slate-700/60 text-[10.5px] text-slate-400">
+            <span>Pages 121–130</span>
+            <span class="bg-indigo-900/60 text-indigo-300 px-2 py-0.5 rounded font-bold">10 Pages</span>
+          </div>
+        </div>
+        
+        <div class="border-2 rounded-xl p-3 cursor-pointer transition relative bg-slate-800/80 border-slate-700 text-slate-300 hover:border-slate-500" id="unitCard-u8" onclick="selectDownloadUnit('u8')">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-xs text-white">Unit 08: Punctuation & Capitalisation Rules</span>
+            <span class="w-4 h-4 rounded-full border border-slate-600 flex items-center justify-center text-[10px]" id="unitCheck-u8"></span>
+          </div>
+          <div class="flex items-center justify-between mt-2 pt-1.5 border-t border-slate-700/60 text-[10.5px] text-slate-400">
+            <span>Pages 131–146</span>
+            <span class="bg-indigo-900/60 text-indigo-300 px-2 py-0.5 rounded font-bold">16 Pages</span>
+          </div>
+        </div>
+        
+        <div class="border-2 rounded-xl p-3 cursor-pointer transition relative bg-slate-800/80 border-slate-700 text-slate-300 hover:border-slate-500" id="unitCard-u9" onclick="selectDownloadUnit('u9')">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-xs text-white">Unit 09: Formal Letters, Applications & E-mails</span>
+            <span class="w-4 h-4 rounded-full border border-slate-600 flex items-center justify-center text-[10px]" id="unitCheck-u9"></span>
+          </div>
+          <div class="flex items-center justify-between mt-2 pt-1.5 border-t border-slate-700/60 text-[10.5px] text-slate-400">
+            <span>Pages 147–166</span>
+            <span class="bg-indigo-900/60 text-indigo-300 px-2 py-0.5 rounded font-bold">20 Pages</span>
+          </div>
+        </div>
+        
+        <div class="border-2 rounded-xl p-3 cursor-pointer transition relative bg-slate-800/80 border-slate-700 text-slate-300 hover:border-slate-500" id="unitCard-u10" onclick="selectDownloadUnit('u10')">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-xs text-white">Unit 10: Paragraph & Guided Composition</span>
+            <span class="w-4 h-4 rounded-full border border-slate-600 flex items-center justify-center text-[10px]" id="unitCheck-u10"></span>
+          </div>
+          <div class="flex items-center justify-between mt-2 pt-1.5 border-t border-slate-700/60 text-[10.5px] text-slate-400">
+            <span>Pages 167–184</span>
+            <span class="bg-indigo-900/60 text-indigo-300 px-2 py-0.5 rounded font-bold">18 Pages</span>
+          </div>
+        </div>
+        
+        <div class="border-2 rounded-xl p-3 cursor-pointer transition relative bg-slate-800/80 border-slate-700 text-slate-300 hover:border-slate-500" id="unitCard-ur" onclick="selectDownloadUnit('ur')">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-xs text-white">Unit R: Rapid Revision, Tests & Answer Keys</span>
+            <span class="w-4 h-4 rounded-full border border-slate-600 flex items-center justify-center text-[10px]" id="unitCheck-ur"></span>
+          </div>
+          <div class="flex items-center justify-between mt-2 pt-1.5 border-t border-slate-700/60 text-[10.5px] text-slate-400">
+            <span>Pages 185–200</span>
+            <span class="bg-indigo-900/60 text-indigo-300 px-2 py-0.5 rounded font-bold">16 Pages</span>
+          </div>
+        </div>
+        
+          </div>
+        </div>
+
+        <!-- Mode Option -->
+        <div class="pt-2 border-t border-slate-800">
+          <label class="block font-bold text-slate-300 mb-1.5 uppercase tracking-wider text-[11px] font-heading">
+            2. Choose Format & Mode:
+          </label>
+          <div class="grid grid-cols-2 gap-2">
+            <div id="dlModeStudy" onclick="setDownloadMode('study')"
+              class="cursor-pointer border-2 rounded-xl p-2.5 bg-slate-950 border-indigo-500 flex items-center gap-2">
+              <span class="text-base">📖</span>
+              <div>
+                <div class="font-bold text-xs text-white">Study Edition</div>
+                <div class="text-[10px] text-slate-400">All answers & solutions included</div>
+              </div>
+            </div>
+            <div id="dlModeWs" onclick="setDownloadMode('worksheet')"
+              class="cursor-pointer border-2 rounded-xl p-2.5 bg-slate-800/80 border-slate-700 text-slate-300 hover:border-slate-500 flex items-center gap-2">
+              <span class="text-base">✏️</span>
+              <div>
+                <div class="font-bold text-xs">Worksheet Edition</div>
+                <div class="text-[10px] text-slate-400">Ruled practice lines, answers hidden</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex flex-wrap items-center justify-end gap-2 pt-3 border-t border-slate-800">
+          <button onclick="closeDownloadModal()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold transition">
+            Cancel
+          </button>
+          <button onclick="executePrintSelectedUnit()" class="px-4 py-2 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-black shadow-md transition flex items-center gap-1.5">
+            <i data-feather="printer" class="w-3.5 h-3.5"></i>
+            <span>Print Selected Unit to PDF</span>
+          </button>
+          <button onclick="executeDownloadSelectedUnitHtml()" class="px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold shadow-md transition flex items-center gap-1.5">
+            <i data-feather="download" class="w-3.5 h-3.5"></i>
+            <span>Download Standalone HTML</span>
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
   <!-- ==================== JAVASCRIPT CONTROLLER ==================== -->
   <script>
     const pages = [...document.querySelectorAll('.book-page')];
     const links = [...document.querySelectorAll('.toc-link')];
     let currentPage = 1;
     let currentMode = 'study';
+    let selectedUnitId = 'all';
+    let selectedDownloadMode = 'study';
+
+    const UNIT_RANGES = [{"id": "all", "name": "Full 200-Page Master Book (Complete)", "start": 1, "end": 200, "count": 200, "badge": "Complete Book"}, {"id": "u1", "name": "Unit 01: Parts of Speech Mastery", "start": 5, "end": 34, "count": 30, "badge": "30 Pages"}, {"id": "u2", "name": "Unit 02: The Tenses & Timeline Mastery", "start": 35, "end": 64, "count": 30, "badge": "30 Pages"}, {"id": "u3", "name": "Unit 03: Articles (A, An, The & Zero Article)", "start": 65, "end": 76, "count": 12, "badge": "12 Pages"}, {"id": "u4", "name": "Unit 04: Possessives & Apostrophe Rules", "start": 77, "end": 86, "count": 10, "badge": "10 Pages"}, {"id": "u5", "name": "Unit 05: Verb -ing Form (Gerund & Participle)", "start": 87, "end": 98, "count": 12, "badge": "12 Pages"}, {"id": "u6", "name": "Unit 06: Sentences, Clauses & Transformations", "start": 99, "end": 120, "count": 22, "badge": "22 Pages"}, {"id": "u7", "name": "Unit 07: Introductory There & It", "start": 121, "end": 130, "count": 10, "badge": "10 Pages"}, {"id": "u8", "name": "Unit 08: Punctuation & Capitalisation Rules", "start": 131, "end": 146, "count": 16, "badge": "16 Pages"}, {"id": "u9", "name": "Unit 09: Formal Letters, Applications & E-mails", "start": 147, "end": 166, "count": 20, "badge": "20 Pages"}, {"id": "u10", "name": "Unit 10: Paragraph & Guided Composition", "start": 167, "end": 184, "count": 18, "badge": "18 Pages"}, {"id": "ur", "name": "Unit R: Rapid Revision, Tests & Answer Keys", "start": 185, "end": 200, "count": 16, "badge": "16 Pages"}];
 
     document.addEventListener('DOMContentLoaded', () => {
       if (window.feather) feather.replace();
       updatePageTracking();
+      selectDownloadUnit('all');
     });
 
     function toggleSidebar() {
@@ -10288,13 +10516,158 @@
       if (e.key === 'ArrowLeft' || e.key === 'PageUp') goTo(currentPage - 1);
     });
 
-    // Download standalone guide
-    function downloadStandaloneGuide() {
-      const blob = new Blob([document.documentElement.outerHTML], { type: 'text/html;charset=utf-8' });
+    // Modal Operations
+    function openDownloadModal() {
+      const m = document.getElementById('downloadModal');
+      if (m) {
+        m.classList.remove('hidden');
+        m.classList.add('flex');
+        if (window.feather) feather.replace();
+      }
+    }
+
+    function closeDownloadModal() {
+      const m = document.getElementById('downloadModal');
+      if (m) {
+        m.classList.add('hidden');
+        m.classList.remove('flex');
+      }
+    }
+
+    function selectDownloadUnit(uId) {
+      selectedUnitId = uId;
+      UNIT_RANGES.forEach(u => {
+        const card = document.getElementById(`unitCard-${u.id}`);
+        const chk = document.getElementById(`unitCheck-${u.id}`);
+        if (!card || !chk) return;
+        if (u.id === uId) {
+          card.className = 'border-2 rounded-xl p-3 cursor-pointer transition relative bg-slate-950 border-indigo-500 text-white shadow-md';
+          chk.className = 'w-4 h-4 rounded-full bg-indigo-500 text-white flex items-center justify-center text-[10px] font-bold';
+          chk.textContent = '✓';
+        } else {
+          card.className = 'border-2 rounded-xl p-3 cursor-pointer transition relative bg-slate-800/80 border-slate-700 text-slate-300 hover:border-slate-500';
+          chk.className = 'w-4 h-4 rounded-full border border-slate-600 flex items-center justify-center text-[10px]';
+          chk.textContent = '';
+        }
+      });
+    }
+
+    function setDownloadMode(mKey) {
+      selectedDownloadMode = mKey;
+      const s = document.getElementById('dlModeStudy');
+      const w = document.getElementById('dlModeWs');
+      if (!s || !w) return;
+      if (mKey === 'study') {
+        s.className = 'cursor-pointer border-2 rounded-xl p-2.5 bg-slate-950 border-indigo-500 flex items-center gap-2';
+        w.className = 'cursor-pointer border-2 rounded-xl p-2.5 bg-slate-800/80 border-slate-700 text-slate-300 hover:border-slate-500 flex items-center gap-2';
+      } else {
+        w.className = 'cursor-pointer border-2 rounded-xl p-2.5 bg-slate-950 border-indigo-500 flex items-center gap-2';
+        s.className = 'cursor-pointer border-2 rounded-xl p-2.5 bg-slate-800/80 border-slate-700 text-slate-300 hover:border-slate-500 flex items-center gap-2';
+      }
+    }
+
+    // Execute Print of Selected Unit
+    function executePrintSelectedUnit() {
+      const targetUnit = UNIT_RANGES.find(u => u.id === selectedUnitId) || UNIT_RANGES[0];
+      closeDownloadModal();
+      
+      if (targetUnit.id === 'all') {
+        if (selectedDownloadMode === 'worksheet') document.body.classList.add('worksheet-mode');
+        else document.body.classList.remove('worksheet-mode');
+        window.print();
+        return;
+      }
+
+      // Temporarily hide other pages during print
+      const allPageEls = document.querySelectorAll('.book-page');
+      allPageEls.forEach(el => {
+        const pNum = parseInt(el.dataset.page);
+        if (pNum === 1 || (pNum >= targetUnit.start && pNum <= targetUnit.end)) {
+          el.style.display = '';
+        } else {
+          el.style.display = 'none';
+        }
+      });
+
+      if (selectedDownloadMode === 'worksheet') document.body.classList.add('worksheet-mode');
+      else document.body.classList.remove('worksheet-mode');
+
+      window.print();
+
+      // Restore all pages after print dialog closes
+      setTimeout(() => {
+        allPageEls.forEach(el => el.style.display = '');
+        if (currentMode === 'worksheet') document.body.classList.add('worksheet-mode');
+        else document.body.classList.remove('worksheet-mode');
+      }, 500);
+    }
+
+    // Execute Standalone HTML Download of Selected Unit or Full Book
+    function executeDownloadSelectedUnitHtml() {
+      const targetUnit = UNIT_RANGES.find(u => u.id === selectedUnitId) || UNIT_RANGES[0];
+      closeDownloadModal();
+
+      let pagesHtml = '';
+      const coverEl = document.getElementById('page-1');
+      if (coverEl) pagesHtml += coverEl.outerHTML;
+
+      if (targetUnit.id === 'all') {
+        for (let i = 2; i <= 200; i++) {
+          const pEl = document.getElementById(`page-${i}`);
+          if (pEl) pagesHtml += pEl.outerHTML;
+        }
+      } else {
+        for (let i = targetUnit.start; i <= targetUnit.end; i++) {
+          const pEl = document.getElementById(`page-${i}`);
+          if (pEl) pagesHtml += pEl.outerHTML;
+        }
+      }
+
+      const standaloneDocument = `<!DOCTYPE html>
+<html lang="en" class="${selectedDownloadMode === 'worksheet' ? 'worksheet-mode' : ''}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PMS Raebareli - ${targetUnit.name} (Master Guide)</title>
+  <script src="https://cdn.tailwindcss.com"><\/script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Outfit:wght@600;800;900&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; background-color: #0b0f19; margin: 0; padding: 20px; }
+    .a4-document { width: 210mm; min-height: 297mm; background: #fff; margin: 0 auto 30px auto; padding: 15mm; box-shadow: 0 4px 12px rgba(0,0,0,0.3); box-sizing: border-box; border-radius: 4px; }
+    .unit-chip { display: inline-flex; background: #e0e7ff; color: #3730a3; padding: 2px 8px; border-radius: 99px; font-size: 10px; font-weight: bold; margin-bottom: 8px; }
+    .callout { background: #f8fafc; border-left: 4px solid #4f46e5; padding: 10px 12px; border-radius: 6px; margin: 10px 0; font-size: 12px; }
+    .mistake { background: #fff1f2; border-left: 4px solid #e11d48; padding: 10px 12px; border-radius: 6px; margin: 10px 0; font-size: 12px; color: #881337; }
+    .example { background: #f8fafc; border: 1px solid #e2e8f0; padding: 6px 10px; border-radius: 6px; font-size: 11.5px; margin: 4px 0; }
+    .ex-label { background: #312e81; color: #fff; padding: 1px 5px; border-radius: 3px; font-size: 9px; font-weight: bold; margin-right: 6px; }
+    .practice { background: #f8fafc; border: 1.5px solid #cbd5e1; padding: 10px; border-radius: 8px; margin: 12px 0; }
+    .q { padding: 6px 0; border-bottom: 1px dashed #cbd5e1; font-size: 12px; }
+    .answer { background: #f0fdf4; border: 1px solid #a7f3d0; padding: 8px 12px; border-radius: 6px; margin-top: 10px; font-size: 11.5px; color: #065f46; }
+    .toc-table, .mini-table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 11.5px; }
+    .toc-table th, .mini-table th { background: #1e1b4b; color: #fff; padding: 6px; }
+    .toc-table td, .mini-table td { border: 1px solid #cbd5e1; padding: 6px; }
+    body.worksheet-mode .answer { display: none !important; }
+    body.worksheet-mode .q::after { content: ""; display: block; height: 24px; border-bottom: 1px dashed #94a3b8; margin-top: 6px; }
+    @media print {
+      body { background: #fff; padding: 0; }
+      .a4-document { box-shadow: none; margin: 0 0 20mm 0; page-break-after: always; width: 100%; }
+      .no-print { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="no-print" style="text-align: center; margin-bottom: 20px;">
+    <button onclick="window.print()" style="background: #312e81; color: #fff; border: none; padding: 10px 20px; font-weight: bold; border-radius: 6px; cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,0.3);">🖨️ Print ${targetUnit.name}</button>
+  </div>
+  ${pagesHtml}
+</body>
+</html>`;
+
+      const safeName = targetUnit.name.replace(/[^a-zA-Z0-9]/g, '_');
+      const blob = new Blob([standaloneDocument], { type: 'text/html;charset=utf-8' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `PMS_Raebareli_Class6_English_Grammar_Master_200Page.html`;
+      a.download = `PMS_Raebareli_${safeName}.html`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);

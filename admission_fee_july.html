@@ -7,13 +7,50 @@
     <title>कार्यालय आदेश - प्रवेश एवं शिक्षण शुल्क छूट सम्बन्धी दिशा-निर्देश एवं तालिका</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Mukta:wght@300;400;500;600;700&family=Tiro+Devanagari+Hindi:ital@0;1&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Mukta:wght@300;400;500;600;700;800&family=Tiro+Devanagari+Hindi:ital@0;1&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="admission_fee_july.css">
 </head>
 
 <body>
+
+    <!-- Sticky Top Editor Toolbar -->
+    <div class="top-editor-toolbar no-print">
+        <div class="editor-info">
+            <span class="editor-status-badge">
+                <i class="fa-solid fa-pen-to-square"></i> संपादन सक्रिय
+            </span>
+            <span id="cloudStatusBadge" class="cloud-status-badge cloud-offline" title="फायरस्टोर क्लाउड कनेक्शन स्थिति">
+                <i class="fa-solid fa-cloud"></i> <span id="cloudStatusText">कनेक्ट हो रहा है...</span>
+            </span>
+            <span id="currentLoadedDocBadge" class="current-doc-badge" title="वर्तमान में खुला हुआ दस्तावेज़">
+                <i class="fa-solid fa-file-lines"></i> <span id="currentDocTitleText">डिफ़ॉल्ट आदेश</span>
+            </span>
+        </div>
+        <div class="toolbar-actions">
+            <button type="button" onclick="addNewStudentRow()" class="tb-btn tb-btn-success" title="तालिका में नया छात्र जोड़ें">
+                <i class="fa-solid fa-user-plus"></i> छात्र जोड़ें
+            </button>
+            <button type="button" onclick="addNewSignatureCard()" class="tb-btn tb-btn-primary" title="नया हस्ताक्षर कार्ड जोड़ें">
+                <i class="fa-solid fa-signature"></i> हस्ताक्षर जोड़ें
+            </button>
+            <button type="button" onclick="openSaveOrderModal()" class="tb-btn tb-btn-cloud" title="फायरस्टोर क्लाउड में सुरक्षित सहेजें (Multiple Saves)">
+                <i class="fa-solid fa-cloud-arrow-up"></i> क्लाउड में सहेजें
+            </button>
+            <button type="button" onclick="openOrdersHistoryModal()" class="tb-btn tb-btn-history" title="पूर्व में सहेजे गए सभी आदेश देखें और लोड करें">
+                <i class="fa-solid fa-folder-open"></i> सहेजे गए आदेश (<span id="savedOrdersCount">0</span>)
+            </button>
+            <button type="button" onclick="window.print()" class="tb-btn tb-btn-primary" title="दस्तावेज़ A4 प्रिंट करें">
+                <i class="fa-solid fa-print"></i> प्रिंट करें
+            </button>
+            <button type="button" onclick="resetDocumentToDefault()" class="tb-btn tb-btn-danger" title="मूल प्रारूप पर रीसेट करें">
+                <i class="fa-solid fa-rotate-left"></i> रीसेट
+            </button>
+        </div>
+    </div>
 
     <!-- Floating Print Button -->
     <div class="floating-print-btn no-print">
@@ -26,417 +63,2193 @@
     </div>
 
     <!-- Main Document Paper -->
-    <main class="document-paper">
+    <main class="document-paper" id="editableDocumentPaper">
 
-        <!-- Header Banner -->
+        <!-- Header Banner with PMS Logo, Title, PAC Logo & Single-Line Meta Bar -->
         <header class="header-banner">
-            <h1 class="school-title">कार्यालय प्रबन्धक/सेनानायक, पुलिस मॉडर्न स्कूल</h1>
-            <h2 class="school-subtitle">25वीं वाहिनी पीएसी, रायबरेली (उ.प्र.)</h2>
-            
-            <div class="order-badge">
-                <h2>आदेश</h2>
+            <div class="header-top-row">
+                <div class="header-logo-left">
+                    <img src="permission/pms-logo.png" alt="पुलिस मॉडर्न स्कूल लोगो" class="school-logo">
+                </div>
+                <div class="header-title-center">
+                    <h1 class="school-title" id="docSchoolTitle" contenteditable="true" spellcheck="false">कार्यालय प्रबन्धक/सेनानायक, पुलिस मॉडर्न स्कूल</h1>
+                    <h2 class="school-subtitle" id="docSchoolSubtitle" contenteditable="true" spellcheck="false">25वीं वाहिनी पीएसी, रायबरेली (उ.प्र.)</h2>
+                </div>
+                <div class="header-logo-right">
+                    <img src="permission/pac_logo.png" alt="पीएसी लोगो" class="pac-logo">
+                </div>
             </div>
             
-            <div class="meta-row">
-                <p>पत्र संख्या: <span class="font-bold">व-88/2017</span></p>
-                <p>दिनांक: <span class="font-bold">__________/2026</span></p>
+            <!-- Single Line Row: Dispatch No (Left), Order Badge (Center), Date (Right) -->
+            <div class="header-meta-bar">
+                <div class="meta-item-left">
+                    <p>पत्र संख्या: <span class="font-bold" id="docDispatchNo" contenteditable="true" spellcheck="false">व-88/2017</span></p>
+                </div>
+                <div class="order-badge">
+                    <h2 id="docOrderBadge" contenteditable="true" spellcheck="false">आदेश</h2>
+                </div>
+                <div class="meta-item-right">
+                    <p>दिनांक: <span class="font-bold" id="docDate" contenteditable="true" spellcheck="false">__________/2026</span></p>
+                </div>
             </div>
         </header>
 
         <!-- Order Body Content -->
         <article class="content-body">
-            <p>
+            <p contenteditable="true" spellcheck="false">
                 स्थानीय प्रबन्ध समिति, पुलिस मॉडर्न स्कूल के अध्यक्ष/पुलिस उपमहानिरीक्षक पीएसी, अयोध्या अनुभाग अयोध्या की अध्यक्षता में दिनांक 16-04-2024 को वीडियो कान्फ्रेंसिंग/गूगल मीट के माध्यम से आहूत गोष्ठी की कार्यवृत्ति के पत्रांकः ए0एस0-3-473/2019(पु0म0स्कू0गोष्ठी) दिनांक 17-04-2024 से प्राप्त निर्देशों के अनुपालन में विद्यालय में छात्र संख्या में वृद्धि किये जाने हेतु आवश्यक कार्यवाही किये जाने के निर्देश प्राप्त हुए हैं।
             </p>
-            <p>
+            <p contenteditable="true" spellcheck="false">
                 उक्त के क्रम में सेनानायक महोदय द्वारा विद्यालय में छात्र संख्या बढ़ाने के उद्देश्य से निर्देशित किया गया है कि ऐसे अभिभावक जो अपने बच्चों का पुलिस मॉडर्न स्कूल में प्रवेश कराना चाहते हैं तथा आर्थिक रूप से कमजोर/गरीब हैं, उनके द्वारा आय प्रमाण-पत्र प्रस्तुत किये जाने पर प्रवेश शुल्क में नियमानुसार छूट प्रदान की जाए, जिससे आर्थिक रूप से कमजोर परिवारों के बच्चों को विद्यालय में प्रवेश हेतु प्रोत्साहित किया जा सके।
             </p>
-            <p>
+            <p contenteditable="true" spellcheck="false">
                 साथ ही यह भी निर्देशित किया गया है कि माह जुलाई अथवा उसके बाद विद्यालय में नवीन प्रवेश लेने वाले विद्यार्थियों को प्रवेश हेतु प्रोत्साहित करने के उद्देश्य से उनसे प्रवेश के माह से ही मासिक शिक्षण शुल्क लिया जाए। अर्थात यदि किसी विद्यार्थी का प्रवेश जुलाई अथवा उसके बाद किसी माह में होता है तो उस विद्यार्थी से पूर्व के माहों का शिक्षण शुल्क न लेते हुए प्रवेश वाले माह से ही विद्यालय शुल्क लिया जाए।
             </p>
             
-            <p class="no-indent font-semibold mt-4">
+            <p class="no-indent font-semibold mt-4" contenteditable="true" spellcheck="false">
                 उपरोक्त निर्देशों के प्रभावी एवं पारदर्शी क्रियान्वयन तथा पात्र अभिभावकों को नियमानुसार शुल्क में छूट प्रदान किये जाने हेतु निम्न चयन समिति का गठन किया जाता हैः
             </p>
 
             <!-- Committee Member List -->
-            <ul class="member-list">
-                <li>1. श्री लाल भरत कुमार पाल, सेनानायक, 25वीं वाहिनी पीएसी, रायबरेली - <strong>अध्यक्ष</strong></li>
-                <li>2. श्री अजय कुमार यादव, सहायक सेनानायक, 25वीं वाहिनी पीएसी, रायबरेली - <strong>सदस्य</strong></li>
-                <li>3. श्री आनंद शंकर तिवारी, शिविरपाल, 25वीं वाहिनी पीएसी, रायबरेली - <strong>सदस्य</strong></li>
-                <li>4. श्री श्रीकृष्ण राय, आंकिक शाखा, 25वीं वाहिनी पीएसी, रायबरेली - <strong>सदस्य</strong></li>
-                <li>5. श्री आलोक मिश्रा, प्रभारी, पुलिस मॉडर्न स्कूल, 25वीं वाहिनी पीएसी, रायबरेली - <strong>सदस्य</strong></li>
-                <li>6. श्रीमती सविता सिंह, प्रभारी प्रधानाचार्या, पुलिस मॉडर्न स्कूल, 25वीं वाहिनी पीएसी, रायबरेली - <strong>सदस्य</strong></li>
+            <ul class="member-list" id="committeeMemberList">
+                <li contenteditable="true" spellcheck="false">1. श्री लाल भरत कुमार पाल, सेनानायक, 25वीं वाहिनी पीएसी, रायबरेली - <strong>अध्यक्ष</strong></li>
+                <li contenteditable="true" spellcheck="false">2. श्री अजय कुमार यादव, सहायक सेनानायक, 25वीं वाहिनी पीएसी, रायबरेली - <strong>सदस्य</strong></li>
+                <li contenteditable="true" spellcheck="false">3. श्री आनंद शंकर तिवारी, शिविरपाल, 25वीं वाहिनी पीएसी, रायबरेली - <strong>सदस्य</strong></li>
+                <li contenteditable="true" spellcheck="false">4. श्री श्रीकृष्ण राय, आंकिक शाखा, 25वीं वाहिनी पीएसी, रायबरेली - <strong>सदस्य</strong></li>
+                <li contenteditable="true" spellcheck="false">5. श्री आलोक मिश्रा, प्रभारी, पुलिस मॉडर्न स्कूल, 25वीं वाहिनी पीएसी, रायबरेली - <strong>सदस्य</strong></li>
+                <li contenteditable="true" spellcheck="false">6. श्रीमती सविता सिंह, प्रभारी प्रधानाचार्या, पुलिस मॉडर्न स्कूल, 25वीं वाहिनी पीएसी, रायबरेली - <strong>सदस्य</strong></li>
             </ul>
 
-            <h3 class="section-subheading">समिति द्वारा निम्न बिन्दुओं पर कार्यवाही की जाएगीः</h3>
+            <h3 class="section-subheading" contenteditable="true" spellcheck="false">समिति द्वारा निम्न बिन्दुओं पर कार्यवाही की जाएगीः</h3>
 
             <!-- Action Points List -->
-            <ul class="styled-list">
-                <li>गरीब/आर्थिक रूप से कमजोर अभिभावकों द्वारा आय प्रमाण-पत्र प्रस्तुत किये जाने पर उनके बच्चों के प्रवेश शुल्क में नियमानुसार छूट/माफी हेतु प्रकरण का परीक्षण किया जाएगा।</li>
-                <li>पात्र अभिभावकों के बच्चों को प्रवेश हेतु प्रोत्साहित करने के उद्देश्य से प्रवेश शुल्क में अनुमन्य छूट प्रदान किये जाने की संस्तुति की जाएगी।</li>
-                <li>माह जुलाई अथवा उसके बाद प्रवेश लेने वाले नवीन विद्यार्थियों से प्रवेश वाले माह से ही मासिक शिक्षण शुल्क लिया जाएगा। पूर्व के माहों का शिक्षण शुल्क ऐसे विद्यार्थियों से नहीं लिया जाएगा।</li>
-                <li>शुल्क में छूट अथवा शुल्क निर्धारण से सम्बन्धित समस्त प्रकरणों में पारदर्शिता का विशेष ध्यान रखा जाएगा तथा अभिभावक द्वारा प्रस्तुत आय प्रमाण-पत्र एवं अन्य आवश्यक अभिलेखों का परीक्षण किया जाएगा।</li>
-                <li>उपरोक्त व्यवस्था का मुख्य उद्देश्य विद्यालय में नवीन विद्यार्थियों के प्रवेश को प्रोत्साहित करना तथा आर्थिक रूप से कमजोर परिवारों के बच्चों को पुलिस मॉडर्न स्कूल में शिक्षा प्राप्त करने का अवसर उपलब्ध कराते हुए विद्यालय की छात्र संख्या में वृद्धि करना है।</li>
-                <li>अतः सम्बन्धित सभी अधिकारी/कर्मचारी उपरोक्त निर्देशों का अनुपालन सुनिश्चित करें तथा पात्र विद्यार्थियों के प्रवेश एवं शुल्क में छूट सम्बन्धी प्रकरणों को समिति के समक्ष प्रस्तुत कर नियमानुसार आवश्यक कार्यवाही सुनिश्चित करें।</li>
+            <ul class="styled-list" id="actionPointsList">
+                <li contenteditable="true" spellcheck="false">गरीब/आर्थिक रूप से कमजोर अभिभावकों द्वारा आय प्रमाण-पत्र प्रस्तुत किये जाने पर उनके बच्चों के प्रवेश शुल्क में नियमानुसार छूट/माफी हेतु प्रकरण का परीक्षण किया जाएगा।</li>
+                <li contenteditable="true" spellcheck="false">पात्र अभिभावकों के बच्चों को प्रवेश हेतु प्रोत्साहित करने के उद्देश्य से प्रवेश शुल्क में अनुमन्य छूट प्रदान किये जाने की संस्तुति की जाएगी।</li>
+                <li contenteditable="true" spellcheck="false">माह जुलाई अथवा उसके बाद प्रवेश लेने वाले नवीन विद्यार्थियों से प्रवेश वाले माह से ही मासिक शिक्षण शुल्क लिया जाएगा। पूर्व के माहों का शिक्षण शुल्क ऐसे विद्यार्थियों से नहीं लिया जाएगा।</li>
+                <li contenteditable="true" spellcheck="false">शुल्क में छूट अथवा शुल्क निर्धारण से सम्बन्धित समस्त प्रकरणों में पारदर्शिता का विशेष ध्यान रखा जाएगा तथा अभिभावक द्वारा प्रस्तुत आय प्रमाण-पत्र एवं अन्य आवश्यक अभिलेखों का परीक्षण किया जाएगा।</li>
+                <li contenteditable="true" spellcheck="false">उपरोक्त व्यवस्था का मुख्य उद्देश्य विद्यालय में नवीन विद्यार्थियों के प्रवेश को प्रोत्साहित करना तथा आर्थिक रूप से कमजोर परिवारों के बच्चों को पुलिस मॉडर्न स्कूल में शिक्षा प्राप्त करने का अवसर उपलब्ध कराते हुए विद्यालय की छात्र संख्या में वृद्धि करना है।</li>
+                <li contenteditable="true" spellcheck="false">अतः सम्बन्धित सभी अधिकारी/कर्मचारी उपरोक्त निर्देशों का अनुपालन सुनिश्चित करें तथा पात्र विद्यार्थियों के प्रवेश एवं शुल्क में छूट सम्बन्धी प्रकरणों को समिति के समक्ष प्रस्तुत कर नियमानुसार आवश्यक कार्यवाही सुनिश्चित करें।</li>
             </ul>
 
-            <!-- Order Signatory -->
-            <div class="signatory-block">
-                <div class="signatory-box">
-                    <p class="signatory-title">प्रबन्धक/सेनानायक</p>
-                    <p>पुलिस मॉडर्न स्कूल</p>
-                    <p>25वीं वाहिनी पीएसी</p>
-                    <p>रायबरेली।</p>
+            <!-- Order Signatory & Pratilipi Unified Toolbar -->
+            <div class="signatory-toolbar no-print">
+                <div class="sig-section-title">
+                    <i class="fa-solid fa-signature"></i>
+                    <span>आदेश हस्ताक्षर एवं प्रतिलिपि कैनवास (Unified Draggable Canvas)</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="sig-drag-hint">
+                        <i class="fa-solid fa-arrows-up-down-left-right text-blue-600"></i> माउस से पकड़कर कहीं भी रखें
+                    </span>
+                    <button type="button" class="sig-align-btn" onclick="layoutParallelSideBySide()" title="प्रतिलिपि बायीं ओर और हस्ताक्षर दायीं ओर समानांतर रखें">
+                        <i class="fa-solid fa-table-columns"></i> साइड-बाई-साइड पैरेलल
+                    </button>
+                    <button type="button" class="sig-align-btn" onclick="alignPage1SignatureCard('center')" title="हस्ताक्षर मध्य में रखें">
+                        <i class="fa-solid fa-align-center"></i> हस्ताक्षर मध्य
+                    </button>
+                    <button type="button" class="sig-align-btn" onclick="alignPage1SignatureCard('right')" title="हस्ताक्षर दायीं ओर रखें">
+                        <i class="fa-solid fa-align-right"></i> हस्ताक्षर दायें
+                    </button>
+                    <button type="button" class="sig-add-btn" onclick="addNewSignatoryCard()">
+                        <i class="fa-solid fa-plus"></i> नया हस्ताक्षर जोड़ें
+                    </button>
+                    <button type="button" class="sig-paste-btn" onclick="pasteSignatoryCard()" title="कॉपी किया गया हस्ताक्षर यहाँ जोड़ें">
+                        <i class="fa-regular fa-clipboard"></i> पेस्ट हस्ताक्षर
+                    </button>
                 </div>
             </div>
 
-            <!-- Pratilipi Section -->
-            <section class="pratilipi-section">
-                <h4 class="pratilipi-title">प्रतिलिपिः निम्नलिखित को सूचनार्थ एवं आवश्यक कार्यवाही हेतु प्रेषितः</h4>
-                <ol class="member-list">
-                    <li>1. श्री अजय कुमार यादव, सहायक सेनानायक, 25वीं वाहिनी पीएसी, रायबरेली।</li>
-                    <li>2. श्री आनंद शंकर तिवारी, शिविरपाल, 25वीं वाहिनी पीएसी, रायबरेली।</li>
-                    <li>3. श्री श्रीकृष्ण राय, आंकिक, 25वीं वाहिनी पीएसी, रायबरेली।</li>
-                    <li>4. श्री आलोक मिश्रा, प्रभारी, पुलिस मॉडर्न स्कूल, 25वीं वाहिनी पीएसी, रायबरेली।</li>
-                    <li>5. श्रीमती सविता सिंह, प्रभारी प्रधानाचार्या, पुलिस मॉडर्न स्कूल, 25वीं वाहिनी पीएसी, रायबरेली।</li>
-                </ol>
-            </section>
+            <!-- Single Unified Free Draggable Canvas for Both Pratilipi & Signatures -->
+            <div class="signatory-block free-canvas unified-order-canvas" id="page1SignatoryBlock" style="min-height: 260px;">
+                
+                <!-- Pratilipi Section (Draggable Card inside Canvas) -->
+                <section class="pratilipi-section pratilipi-card" id="pratilipiCard" style="left: 10px; top: 10px;" data-x="10" data-y="10">
+                    <div class="sig-card-controls no-print">
+                        <span class="sig-handle" title="माउस से पकड़कर कहीं भी रखें (Drag Pratilipi Anywhere)"><i class="fa-solid fa-arrows-up-down-left-right"></i> प्रतिलिपि ड्रैग</span>
+                        <div class="sig-card-actions">
+                            <button type="button" class="sig-card-btn sig-move-btn" onclick="moveElement(this, -1)" title="बायें खिसकाएँ"><i class="fa-solid fa-arrow-left"></i></button>
+                            <button type="button" class="sig-card-btn sig-move-btn" onclick="moveElement(this, 1)" title="दायें खिसकाएँ"><i class="fa-solid fa-arrow-right"></i></button>
+                            <button type="button" class="sig-card-btn sig-copy-btn" onclick="addNewPratilipiRow()" title="नई प्रतिलिपि पंक्ति जोड़ें"><i class="fa-solid fa-plus"></i> पंक्ति</button>
+                        </div>
+                    </div>
+                    <h4 class="pratilipi-title" contenteditable="true" spellcheck="false">प्रतिलिपिः निम्नलिखित को सूचनार्थ एवं आवश्यक कार्यवाही हेतु प्रेषितः</h4>
+                    <ol class="member-list" id="pratilipiList">
+                        <li contenteditable="true" spellcheck="false">1. श्री अजय कुमार यादव, सहायक सेनानायक, 25वीं वाहिनी पीएसी, रायबरेली।</li>
+                        <li contenteditable="true" spellcheck="false">2. श्री आनंद शंकर तिवारी, शिविरपाल, 25वीं वाहिनी पीएसी, रायबरेली।</li>
+                        <li contenteditable="true" spellcheck="false">3. श्री श्रीकृष्ण राय, आंकिक, 25वीं वाहिनी पीएसी, रायबरेली।</li>
+                        <li contenteditable="true" spellcheck="false">4. श्री आलोक मिश्रा, प्रभारी, पुलिस मॉडर्न स्कूल, 25वीं वाहिनी पीएसी, रायबरेली।</li>
+                        <li contenteditable="true" spellcheck="false">5. श्रीमती सविता सिंह, प्रभारी प्रधानाचार्या, पुलिस मॉडर्न स्कूल, 25वीं वाहिनी पीएसी, रायबरेली।</li>
+                    </ol>
+                </section>
+
+                <!-- Order Signatory Card (Draggable Card inside Canvas) -->
+                <div class="sig-card" id="page1MainSigCard" style="left: 530px; top: 10px;" data-x="530" data-y="10">
+                    <div class="sig-card-controls no-print">
+                        <span class="sig-handle" title="माउस से पकड़कर कहीं भी रखें (Drag &amp; Move Anywhere)"><i class="fa-solid fa-arrows-up-down-left-right"></i> ड्रैग</span>
+                        <div class="sig-card-actions">
+                            <button type="button" class="sig-card-btn sig-move-btn" onclick="moveSigCard(this, -1)" title="बायें खिसकाएँ"><i class="fa-solid fa-arrow-left"></i></button>
+                            <button type="button" class="sig-card-btn sig-move-btn" onclick="moveSigCard(this, 1)" title="दायें खिसकाएँ"><i class="fa-solid fa-arrow-right"></i></button>
+                            <button type="button" class="sig-card-btn sig-copy-btn" onclick="centerSigCard(this)" title="कार्ड को मध्य (Center) में अलाइन करें"><i class="fa-solid fa-align-center"></i></button>
+                            <button type="button" class="sig-card-btn sig-copy-btn" onclick="duplicateSignatureCard(this)" title="डुप्लिकेट बनाएं"><i class="fa-regular fa-clone"></i> डुप्लिकेट</button>
+                            <button type="button" class="sig-card-btn sig-copy-btn" onclick="copySignatureCard(this)" title="कॉपी करें"><i class="fa-regular fa-copy"></i> कॉपी</button>
+                            <button type="button" class="sig-card-btn sig-del-btn" onclick="deleteSignatureCard(this)" title="हटाएं"><i class="fa-regular fa-trash-can"></i></button>
+                        </div>
+                    </div>
+                    <div class="sig-sign-space"></div>
+                    <p class="sig-name" contenteditable="true" spellcheck="false">(श्री लाल भरत कुमार पाल)</p>
+                    <p class="sig-role" contenteditable="true" spellcheck="false">प्रबन्धक/सेनानायक</p>
+                    <p class="sig-dept" contenteditable="true" spellcheck="false">पुलिस मॉडर्न स्कूल</p>
+                    <p class="sig-dept" contenteditable="true" spellcheck="false">25वीं वाहिनी पीएसी, रायबरेली।</p>
+                </div>
+
+            </div>
         </article>
 
-        <!-- Divider / Page Break -->
-        <hr class="section-divider">
+        <!-- Specific Page Break after Pratilipi (पृष्ठ 1 समाप्त, यहाँ से पृष्ठ 2 समिति आख्या प्रारम्भ) -->
+        <div class="section-divider document-page-break" title="पृष्ठ 1 समाप्त - पृष्ठ 2 (समिति आख्या एवं तालिका) प्रारम्भ"></div>
 
         <!-- Committee Report Section -->
         <section class="report-section">
-            <h2 class="report-title">
+            <h2 class="report-title" id="docReportTitle" contenteditable="true" spellcheck="false">
                 वाहिनी स्तर पर पुलिस मॉडर्न स्कूल में फीस स्ट्रक्चर पुलिस परिवार के बच्चों एवं गरीब/वंचित परिवार के बच्चों के शिक्षण शुल्क में कमी करने हेतु विचार कर बच्चों की संख्या में वृद्धि हेतु गठित समिति की आख्या:-
             </h2>
 
             <div class="content-body">
-                <p>
+                <p id="docReportIntro" contenteditable="true" spellcheck="false">
                     पुलिस मॉडर्न स्कूल में फीस स्ट्रक्चर पुलिस परिवार के बच्चों, गरीब/वंचित परिवार के बच्चों के शिक्षण शुल्क में कमी हेतु विचार कर बच्चों की संख्या में वृद्धि की जाने के सम्बन्ध में सेनानायक की अध्यक्षता में सहायक सेनानायक, शिविरपाल, आंकिक एवं कार्यवाहक प्रधानाचार्या पुलिस मॉडर्न स्कूल की एक कमेटी का गठन किया गया था। कमेटी द्वारा निम्नलिखित गरीब/वंचित परिवार के 29 बच्चों की संस्तुति की जाती है। विवरण निम्नलिखित है:-
                 </p>
             </div>
 
+            <!-- Table Action Toolbar -->
+            <div class="table-action-bar no-print">
+                <div class="table-action-left">
+                    <i class="fa-solid fa-table-list text-blue-800"></i>
+                    <strong>विद्यार्थी विवरण तालिका</strong>
+                    <span class="bg-blue-100 text-blue-900 font-bold px-2.5 py-0.5 rounded text-xs">
+                        कुल छात्र: <span id="totalStudentsCount">29</span>
+                    </span>
+                </div>
+                <div class="table-action-right">
+                    <button type="button" class="add-row-btn" onclick="addNewStudentRow()">
+                        <i class="fa-solid fa-plus"></i> नई प्रविष्टि जोड़ें (Add Row)
+                    </button>
+                    <button type="button" class="renumber-btn" onclick="renumberTableRows()" title="सभी क्रम संख्या 1, 2, 3... अनुसार व्यवस्थित करें">
+                        <i class="fa-solid fa-arrow-down-1-9"></i> क्रम संख्या ठीक करें
+                    </button>
+                </div>
+            </div>
+
             <!-- Student Table -->
             <div class="table-container">
-                <table class="student-table">
+                <table class="student-table" id="studentTable">
                     <thead>
                         <tr>
-                            <th style="width: 6%;">क्रम सं0</th>
-                            <th style="width: 16%;">विद्यार्थी का नाम</th>
-                            <th style="width: 18%;">पिता का नाम</th>
-                            <th style="width: 12%;">कक्षा</th>
-                            <th style="width: 18%;">पता</th>
-                            <th style="width: 18%;">फीस में छूट</th>
-                            <th style="width: 12%;">कारण</th>
+                            <th style="width: 6%;" contenteditable="true" spellcheck="false">क्रम सं0</th>
+                            <th style="width: 16%;" contenteditable="true" spellcheck="false">विद्यार्थी का नाम</th>
+                            <th style="width: 17%;" contenteditable="true" spellcheck="false">पिता का नाम</th>
+                            <th style="width: 11%;" contenteditable="true" spellcheck="false">कक्षा</th>
+                            <th style="width: 17%;" contenteditable="true" spellcheck="false">पता</th>
+                            <th style="width: 18%;" contenteditable="true" spellcheck="false">फीस में छूट</th>
+                            <th style="width: 15%;" contenteditable="true" spellcheck="false">कारण</th>
+                            <th class="row-action-cell no-print" style="width: 65px;">कार्य</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="studentTableBody">
                         <tr>
-                            <td class="text-center font-bold">1.</td>
-                            <td class="font-bold">शौर्य पटेल</td>
-                            <td>श्री जय कुमार पटेल</td>
-                            <td class="text-center">कक्षा- के0जी0 1</td>
-                            <td>25वीं वाहिनी पीएसी रायबरेली|</td>
-                            <td class="fee-waiver-highlight">माह अप्रैल, मई, जून की मासिक फीस माफ़</td>
-                            <td class="text-center">जुलाई में एडमिशन</td>
+                            <td class="text-center font-bold" contenteditable="true">1.</td>
+                            <td class="font-bold" contenteditable="true">शौर्य पटेल</td>
+                            <td contenteditable="true">श्री जय कुमार पटेल</td>
+                            <td class="text-center" contenteditable="true">कक्षा- के0जी0 1</td>
+                            <td contenteditable="true">25वीं वाहिनी पीएसी रायबरेली|</td>
+                            <td class="fee-waiver-highlight" contenteditable="true">माह अप्रैल, मई, जून की मासिक फीस माफ़</td>
+                            <td class="text-center" contenteditable="true">जुलाई में एडमिशन</td>
+                            <td class="row-action-cell no-print">
+                                <button type="button" class="row-btn row-dup-btn" onclick="duplicateRow(this)" title="पंक्ति कॉपी करें"><i class="fa-regular fa-copy"></i></button>
+                                <button type="button" class="row-btn row-del-btn" onclick="deleteRow(this)" title="हटाएं"><i class="fa-regular fa-trash-can"></i></button>
+                            </td>
                         </tr>
                         <tr>
-                            <td class="text-center font-bold">2.</td>
-                            <td class="font-bold">अव्यान्शू</td>
-                            <td>श्री अरुण कुमार</td>
-                            <td class="text-center">कक्षा- के0जी0 1</td>
-                            <td>जरौला  रायबरेली।</td>
-                            <td class="fee-waiver-highlight">माह अप्रैल, मई, जून की मासिक फीस माफ़</td>
-                            <td class="text-center">जुलाई में एडमिशन</td>
+                            <td class="text-center font-bold" contenteditable="true">2.</td>
+                            <td class="font-bold" contenteditable="true">अव्यान्शू</td>
+                            <td contenteditable="true">श्री अरुण कुमार</td>
+                            <td class="text-center" contenteditable="true">कक्षा- के0जी0 1</td>
+                            <td contenteditable="true">जरौला  रायबरेली।</td>
+                            <td class="fee-waiver-highlight" contenteditable="true">माह अप्रैल, मई, जून की मासिक फीस माफ़</td>
+                            <td class="text-center" contenteditable="true">जुलाई में एडमिशन</td>
+                            <td class="row-action-cell no-print">
+                                <button type="button" class="row-btn row-dup-btn" onclick="duplicateRow(this)" title="पंक्ति कॉपी करें"><i class="fa-regular fa-copy"></i></button>
+                                <button type="button" class="row-btn row-del-btn" onclick="deleteRow(this)" title="हटाएं"><i class="fa-regular fa-trash-can"></i></button>
+                            </td>
                         </tr>
                         <tr>
-                            <td class="text-center font-bold">3.</td>
-                            <td class="font-bold">यश</td>
-                            <td>श्री आनंद कुमार शर्मा</td>
-                            <td class="text-center">कक्षा- के0जी0 1</td>
-                            <td>बेहटा खुर्द, रायबरेली</td>
-                            <td class="fee-waiver-highlight">माह अप्रैल, मई, जून की मासिक फीस माफ़</td>
-                            <td class="text-center">जुलाई में एडमिशन</td>
+                            <td class="text-center font-bold" contenteditable="true">3.</td>
+                            <td class="font-bold" contenteditable="true">यश</td>
+                            <td contenteditable="true">श्री आनंद कुमार शर्मा</td>
+                            <td class="text-center" contenteditable="true">कक्षा- के0जी0 1</td>
+                            <td contenteditable="true">बेहटा खुर्द, रायबरेली</td>
+                            <td class="fee-waiver-highlight" contenteditable="true">माह अप्रैल, मई, जून की मासिक फीस माफ़</td>
+                            <td class="text-center" contenteditable="true">जुलाई में एडमिशन</td>
+                            <td class="row-action-cell no-print">
+                                <button type="button" class="row-btn row-dup-btn" onclick="duplicateRow(this)" title="पंक्ति कॉपी करें"><i class="fa-regular fa-copy"></i></button>
+                                <button type="button" class="row-btn row-del-btn" onclick="deleteRow(this)" title="हटाएं"><i class="fa-regular fa-trash-can"></i></button>
+                            </td>
                         </tr>
                         <tr>
-                            <td class="text-center font-bold">4.</td>
-                            <td class="font-bold">इशान्क सिंह</td>
-                            <td>श्री अखिलेश सिंह</td>
-                            <td class="text-center">कक्षा- के0जी0 1</td>
-                            <td>सम्राट नगर, रायबरेली|</td>
-                            <td class="fee-waiver-highlight">माह अप्रैल, मई, जून की मासिक फीस माफ़</td>
-                            <td class="text-center">जुलाई में एडमिशन</td>
+                            <td class="text-center font-bold" contenteditable="true">4.</td>
+                            <td class="font-bold" contenteditable="true">इशान्क सिंह</td>
+                            <td contenteditable="true">श्री अखिलेश सिंह</td>
+                            <td class="text-center" contenteditable="true">कक्षा- के0जी0 1</td>
+                            <td contenteditable="true">सम्राट नगर, रायबरेली|</td>
+                            <td class="fee-waiver-highlight" contenteditable="true">माह अप्रैल, मई, जून की मासिक फीस माफ़</td>
+                            <td class="text-center" contenteditable="true">जुलाई में एडमिशन</td>
+                            <td class="row-action-cell no-print">
+                                <button type="button" class="row-btn row-dup-btn" onclick="duplicateRow(this)" title="पंक्ति कॉपी करें"><i class="fa-regular fa-copy"></i></button>
+                                <button type="button" class="row-btn row-del-btn" onclick="deleteRow(this)" title="हटाएं"><i class="fa-regular fa-trash-can"></i></button>
+                            </td>
                         </tr>
                         <tr>
-                            <td class="text-center font-bold">5.</td>
-                            <td class="font-bold">अथर्व शुक्ला</td>
-                            <td>श्री अभिषेक शुक्ला</td>
-                            <td class="text-center">कक्षा- के0जी0 1</td>
-                            <td>कैथन का पुरवा, रायबरेली|</td>
-                            <td class="fee-waiver-highlight">माह अप्रैल, मई, जून की मासिक फीस माफ़</td>
-                            <td class="text-center">जुलाई में एडमिशन</td>
+                            <td class="text-center font-bold" contenteditable="true">5.</td>
+                            <td class="font-bold" contenteditable="true">अथर्व शुक्ला</td>
+                            <td contenteditable="true">श्री अभिषेक शुक्ला</td>
+                            <td class="text-center" contenteditable="true">कक्षा- के0जी0 1</td>
+                            <td contenteditable="true">कैथन का पुरवा, रायबरेली|</td>
+                            <td class="fee-waiver-highlight" contenteditable="true">माह अप्रैल, मई, जून की मासिक फीस माफ़</td>
+                            <td class="text-center" contenteditable="true">जुलाई में एडमिशन</td>
+                            <td class="row-action-cell no-print">
+                                <button type="button" class="row-btn row-dup-btn" onclick="duplicateRow(this)" title="पंक्ति कॉपी करें"><i class="fa-regular fa-copy"></i></button>
+                                <button type="button" class="row-btn row-del-btn" onclick="deleteRow(this)" title="हटाएं"><i class="fa-regular fa-trash-can"></i></button>
+                            </td>
                         </tr>
                         <tr>
-                            <td class="text-center font-bold">6.</td>
-                            <td class="font-bold">रुद्र प्रताप सिंह</td>
-                            <td>श्री भानु प्रताप सिंह</td>
-                            <td class="text-center">कक्षा- के0जी0 1</td>
-                            <td>कैथन का पुरवा, रायबरेली|</td>
-                            <td class="fee-waiver-highlight">माह अप्रैल, मई, जून की मासिक फीस माफ़</td>
-                            <td class="text-center">जुलाई में एडमिशन</td>
+                            <td class="text-center font-bold" contenteditable="true">6.</td>
+                            <td class="font-bold" contenteditable="true">रुद्र प्रताप सिंह</td>
+                            <td contenteditable="true">श्री भानु प्रताप सिंह</td>
+                            <td class="text-center" contenteditable="true">कक्षा- के0जी0 1</td>
+                            <td contenteditable="true">कैथन का पुरवा, रायबरेली|</td>
+                            <td class="fee-waiver-highlight" contenteditable="true">माह अप्रैल, मई, जून की मासिक फीस माफ़</td>
+                            <td class="text-center" contenteditable="true">जुलाई में एडमिशन</td>
+                            <td class="row-action-cell no-print">
+                                <button type="button" class="row-btn row-dup-btn" onclick="duplicateRow(this)" title="पंक्ति कॉपी करें"><i class="fa-regular fa-copy"></i></button>
+                                <button type="button" class="row-btn row-del-btn" onclick="deleteRow(this)" title="हटाएं"><i class="fa-regular fa-trash-can"></i></button>
+                            </td>
                         </tr>
                         <tr>
-                            <td class="text-center font-bold">7.</td>
-                            <td class="font-bold">शिवांशी</td>
-                            <td>श्री आशीष कुमार</td>
-                            <td class="text-center">कक्षा- के0जी0 1</td>
-                            <td>अयाना, रायबरेली|</td>
-                            <td class="fee-waiver-highlight">माह अप्रैल, मई, जून की मासिक फीस माफ़</td>
-                            <td class="text-center">जुलाई में एडमिशन</td>
+                            <td class="text-center font-bold" contenteditable="true">7.</td>
+                            <td class="font-bold" contenteditable="true">शिवांशी</td>
+                            <td contenteditable="true">श्री आशीष कुमार</td>
+                            <td class="text-center" contenteditable="true">कक्षा- के0जी0 1</td>
+                            <td contenteditable="true">अयाना, रायबरेली|</td>
+                            <td class="fee-waiver-highlight" contenteditable="true">माह अप्रैल, मई, जून की मासिक फीस माफ़</td>
+                            <td class="text-center" contenteditable="true">जुलाई में एडमिशन</td>
+                            <td class="row-action-cell no-print">
+                                <button type="button" class="row-btn row-dup-btn" onclick="duplicateRow(this)" title="पंक्ति कॉपी करें"><i class="fa-regular fa-copy"></i></button>
+                                <button type="button" class="row-btn row-del-btn" onclick="deleteRow(this)" title="हटाएं"><i class="fa-regular fa-trash-can"></i></button>
+                            </td>
                         </tr>
                         <tr>
-                            <td class="text-center font-bold">8.</td>
-                            <td class="font-bold">मान्या श्रीवास्तव</td>
-                            <td>श्री प्रमोद श्रीवास्तव</td>
-                            <td class="text-center">कक्षा- के0जी0 1</td>
-                            <td>कैथन का पुरवा, रायबरेली|</td>
-                            <td class="fee-waiver-highlight">माह अप्रैल, मई, जून की मासिक फीस माफ़</td>
-                            <td class="text-center">जुलाई में एडमिशन</td>
+                            <td class="text-center font-bold" contenteditable="true">8.</td>
+                            <td class="font-bold" contenteditable="true">मान्या श्रीवास्तव</td>
+                            <td contenteditable="true">श्री प्रमोद श्रीवास्तव</td>
+                            <td class="text-center" contenteditable="true">कक्षा- के0जी0 1</td>
+                            <td contenteditable="true">कैथन का पुरवा, रायबरेली|</td>
+                            <td class="fee-waiver-highlight" contenteditable="true">माह अप्रैल, मई, जून की मासिक फीस माफ़</td>
+                            <td class="text-center" contenteditable="true">जुलाई में एडमिशन</td>
+                            <td class="row-action-cell no-print">
+                                <button type="button" class="row-btn row-dup-btn" onclick="duplicateRow(this)" title="पंक्ति कॉपी करें"><i class="fa-regular fa-copy"></i></button>
+                                <button type="button" class="row-btn row-del-btn" onclick="deleteRow(this)" title="हटाएं"><i class="fa-regular fa-trash-can"></i></button>
+                            </td>
                         </tr>
                         <tr>
-                            <td class="text-center font-bold">9.</td>
-                            <td class="font-bold">आयुषी यादव</td>
-                            <td>श्री अनुरुद्ध यादव</td>
-                            <td class="text-center">कक्षा- के0जी0 1</td>
-                            <td>बैरागीपुर, रायबरेली|</td>
-                            <td class="fee-waiver-highlight">माह अप्रैल, मई, जून की मासिक फीस माफ़</td>
-                            <td class="text-center">जुलाई में एडमिशन</td>
+                            <td class="text-center font-bold" contenteditable="true">9.</td>
+                            <td class="font-bold" contenteditable="true">आयुषी यादव</td>
+                            <td contenteditable="true">श्री अनुरुद्ध यादव</td>
+                            <td class="text-center" contenteditable="true">कक्षा- के0जी0 1</td>
+                            <td contenteditable="true">बैरागीपुर, रायबरेली|</td>
+                            <td class="fee-waiver-highlight" contenteditable="true">माह अप्रैल, मई, जून की मासिक फीस माफ़</td>
+                            <td class="text-center" contenteditable="true">जुलाई में एडमिशन</td>
+                            <td class="row-action-cell no-print">
+                                <button type="button" class="row-btn row-dup-btn" onclick="duplicateRow(this)" title="पंक्ति कॉपी करें"><i class="fa-regular fa-copy"></i></button>
+                                <button type="button" class="row-btn row-del-btn" onclick="deleteRow(this)" title="हटाएं"><i class="fa-regular fa-trash-can"></i></button>
+                            </td>
                         </tr>
                         <tr>
-                            <td class="text-center font-bold">10.</td>
-                            <td class="font-bold">इशिका राय</td>
-                            <td>श्री शनि राय</td>
-                            <td class="text-center">कक्षा- के0जी0 1</td>
-                            <td>किशुन का पुरवा, रायबरेली</td>
-                            <td class="fee-waiver-highlight">माह अप्रैल, मई, जून की मासिक फीस माफ़</td>
-                            <td class="text-center">जुलाई में एडमिशन</td>
+                            <td class="text-center font-bold" contenteditable="true">10.</td>
+                            <td class="font-bold" contenteditable="true">इशिका राय</td>
+                            <td contenteditable="true">श्री शनि राय</td>
+                            <td class="text-center" contenteditable="true">कक्षा- के0जी0 1</td>
+                            <td contenteditable="true">किशुन का पुरवा, रायबरेली</td>
+                            <td class="fee-waiver-highlight" contenteditable="true">माह अप्रैल, मई, जून की मासिक फीस माफ़</td>
+                            <td class="text-center" contenteditable="true">जुलाई में एडमिशन</td>
+                            <td class="row-action-cell no-print">
+                                <button type="button" class="row-btn row-dup-btn" onclick="duplicateRow(this)" title="पंक्ति कॉपी करें"><i class="fa-regular fa-copy"></i></button>
+                                <button type="button" class="row-btn row-del-btn" onclick="deleteRow(this)" title="हटाएं"><i class="fa-regular fa-trash-can"></i></button>
+                            </td>
                         </tr>
                         <tr>
-                            <td class="text-center font-bold">11.</td>
-                            <td class="font-bold">अभिनन्दन सिंह</td>
-                            <td>श्री गजेन्द्र सिंह</td>
-                            <td class="text-center">कक्षा- के0जी0 1</td>
-                            <td>तिलक नगर रायबरेली|</td>
-                            <td class="fee-waiver-highlight">माह अप्रैल, मई, जून की मासिक फीस माफ़</td>
-                            <td class="text-center">जुलाई में एडमिशन</td>
+                            <td class="text-center font-bold" contenteditable="true">11.</td>
+                            <td class="font-bold" contenteditable="true">अभिनन्दन सिंह</td>
+                            <td contenteditable="true">श्री गजेन्द्र सिंह</td>
+                            <td class="text-center" contenteditable="true">कक्षा- के0जी0 1</td>
+                            <td contenteditable="true">तिलक नगर रायबरेली|</td>
+                            <td class="fee-waiver-highlight" contenteditable="true">माह अप्रैल, मई, जून की मासिक फीस माफ़</td>
+                            <td class="text-center" contenteditable="true">जुलाई में एडमिशन</td>
+                            <td class="row-action-cell no-print">
+                                <button type="button" class="row-btn row-dup-btn" onclick="duplicateRow(this)" title="पंक्ति कॉपी करें"><i class="fa-regular fa-copy"></i></button>
+                                <button type="button" class="row-btn row-del-btn" onclick="deleteRow(this)" title="हटाएं"><i class="fa-regular fa-trash-can"></i></button>
+                            </td>
                         </tr>
                         <tr>
-                            <td class="text-center font-bold">12.</td>
-                            <td class="font-bold">जैकलिन देसाई</td>
-                            <td>श्री कृष्ण कुमार</td>
-                            <td class="text-center">कक्षा- के0जी0 1</td>
-                            <td>25वीं वाहिनी पीएसी रायबरेली|</td>
-                            <td class="fee-waiver-highlight">माह अप्रैल, मई, जून की मासिक फीस माफ़</td>
-                            <td class="text-center">जुलाई में एडमिशन</td>
+                            <td class="text-center font-bold" contenteditable="true">12.</td>
+                            <td class="font-bold" contenteditable="true">जैकलिन देसाई</td>
+                            <td contenteditable="true">श्री कृष्ण कुमार</td>
+                            <td class="text-center" contenteditable="true">कक्षा- के0जी0 1</td>
+                            <td contenteditable="true">25वीं वाहिनी पीएसी रायबरेली|</td>
+                            <td class="fee-waiver-highlight" contenteditable="true">माह अप्रैल, मई, जून की मासिक फीस माफ़</td>
+                            <td class="text-center" contenteditable="true">जुलाई में एडमिशन</td>
+                            <td class="row-action-cell no-print">
+                                <button type="button" class="row-btn row-dup-btn" onclick="duplicateRow(this)" title="पंक्ति कॉपी करें"><i class="fa-regular fa-copy"></i></button>
+                                <button type="button" class="row-btn row-del-btn" onclick="deleteRow(this)" title="हटाएं"><i class="fa-regular fa-trash-can"></i></button>
+                            </td>
                         </tr>
                         <tr>
-                            <td class="text-center font-bold">13.</td>
-                            <td class="font-bold">अथर्व यादव</td>
-                            <td>श्री नरेन्द्र कुमार</td>
-                            <td class="text-center">कक्षा- के0जी0 1</td>
-                            <td>बैरागीपुर, रायबरेली|</td>
-                            <td class="fee-waiver-highlight">माह अप्रैल, मई, जून की मासिक फीस माफ़</td>
-                            <td class="text-center">जुलाई में एडमिशन</td>
+                            <td class="text-center font-bold" contenteditable="true">13.</td>
+                            <td class="font-bold" contenteditable="true">अथर्व यादव</td>
+                            <td contenteditable="true">श्री नरेन्द्र कुमार</td>
+                            <td class="text-center" contenteditable="true">कक्षा- के0जी0 1</td>
+                            <td contenteditable="true">बैरागीपुर, रायबरेली|</td>
+                            <td class="fee-waiver-highlight" contenteditable="true">माह अप्रैल, मई, जून की मासिक फीस माफ़</td>
+                            <td class="text-center" contenteditable="true">जुलाई में एडमिशन</td>
+                            <td class="row-action-cell no-print">
+                                <button type="button" class="row-btn row-dup-btn" onclick="duplicateRow(this)" title="पंक्ति कॉपी करें"><i class="fa-regular fa-copy"></i></button>
+                                <button type="button" class="row-btn row-del-btn" onclick="deleteRow(this)" title="हटाएं"><i class="fa-regular fa-trash-can"></i></button>
+                            </td>
                         </tr>
                         <tr>
-                            <td class="text-center font-bold">14.</td>
-                            <td class="font-bold">आरव यादव</td>
-                            <td>श्री दिलीप कुमार</td>
-                            <td class="text-center">कक्षा- के0जी0 1</td>
-                            <td>बैरागिपुर, रायबरेली|</td>
-                            <td class="fee-waiver-highlight">माह अप्रैल, मई, जून की मासिक फीस माफ़</td>
-                            <td class="text-center">जुलाई में एडमिशन</td>
+                            <td class="text-center font-bold" contenteditable="true">14.</td>
+                            <td class="font-bold" contenteditable="true">आरव यादव</td>
+                            <td contenteditable="true">श्री दिलीप कुमार</td>
+                            <td class="text-center" contenteditable="true">कक्षा- के0जी0 1</td>
+                            <td contenteditable="true">बैरागिपुर, रायबरेली|</td>
+                            <td class="fee-waiver-highlight" contenteditable="true">माह अप्रैल, मई, जून की मासिक फीस माफ़</td>
+                            <td class="text-center" contenteditable="true">जुलाई में एडमिशन</td>
+                            <td class="row-action-cell no-print">
+                                <button type="button" class="row-btn row-dup-btn" onclick="duplicateRow(this)" title="पंक्ति कॉपी करें"><i class="fa-regular fa-copy"></i></button>
+                                <button type="button" class="row-btn row-del-btn" onclick="deleteRow(this)" title="हटाएं"><i class="fa-regular fa-trash-can"></i></button>
+                            </td>
                         </tr>
                         <tr>
-                            <td class="text-center font-bold">15.</td>
-                            <td class="font-bold">राधिका</td>
-                            <td>श्री धुन्नीलाल</td>
-                            <td class="text-center">कक्षा- के0जी0 1</td>
-                            <td>भवन का पुरवा, रायबरेली|</td>
-                            <td class="fee-waiver-highlight">प्रवेश शुल्क माफ़ व माह अप्रैल, मई, जून की मासिक फीस माफ़</td>
-                            <td class="text-center">आर्थिक स्थिति दयनीय एवं जुलाई में एडमिशन</td>
+                            <td class="text-center font-bold" contenteditable="true">15.</td>
+                            <td class="font-bold" contenteditable="true">राधिका</td>
+                            <td contenteditable="true">श्री धुन्नीलाल</td>
+                            <td class="text-center" contenteditable="true">कक्षा- के0जी0 1</td>
+                            <td contenteditable="true">भवन का पुरवा, रायबरेली|</td>
+                            <td class="fee-waiver-highlight" contenteditable="true">प्रवेश शुल्क माफ़ व माह अप्रैल, मई, जून की मासिक फीस माफ़</td>
+                            <td class="text-center" contenteditable="true">आर्थिक स्थिति दयनीय एवं जुलाई में एडमिशन</td>
+                            <td class="row-action-cell no-print">
+                                <button type="button" class="row-btn row-dup-btn" onclick="duplicateRow(this)" title="पंक्ति कॉपी करें"><i class="fa-regular fa-copy"></i></button>
+                                <button type="button" class="row-btn row-del-btn" onclick="deleteRow(this)" title="हटाएं"><i class="fa-regular fa-trash-can"></i></button>
+                            </td>
                         </tr>
                         <tr>
-                            <td class="text-center font-bold">16.</td>
-                            <td class="font-bold">वेदिका सिंह</td>
-                            <td>श्री अजय कुमार सिंह</td>
-                            <td class="text-center">कक्षा- के0जी0 1</td>
-                            <td>पहलवान नगर, रायबरेली|</td>
-                            <td class="fee-waiver-highlight">माह अप्रैल, मई, जून, जुलाई की मासिक फीस माफ़</td>
-                            <td class="text-center">जुलाई में एडमिशन</td>
+                            <td class="text-center font-bold" contenteditable="true">16.</td>
+                            <td class="font-bold" contenteditable="true">वेदिका सिंह</td>
+                            <td contenteditable="true">श्री अजय कुमार सिंह</td>
+                            <td class="text-center" contenteditable="true">कक्षा- के0जी0 1</td>
+                            <td contenteditable="true">पहलवान नगर, रायबरेली|</td>
+                            <td class="fee-waiver-highlight" contenteditable="true">माह अप्रैल, मई, जून, जुलाई की मासिक फीस माफ़</td>
+                            <td class="text-center" contenteditable="true">जुलाई में एडमिशन</td>
+                            <td class="row-action-cell no-print">
+                                <button type="button" class="row-btn row-dup-btn" onclick="duplicateRow(this)" title="पंक्ति कॉपी करें"><i class="fa-regular fa-copy"></i></button>
+                                <button type="button" class="row-btn row-del-btn" onclick="deleteRow(this)" title="हटाएं"><i class="fa-regular fa-trash-can"></i></button>
+                            </td>
                         </tr>
                         <tr>
-                            <td class="text-center font-bold">17.</td>
-                            <td class="font-bold">पृथा सिंह</td>
-                            <td>श्री नरेन्द्र कुमार सिंह</td>
-                            <td class="text-center">कक्षा- के0जी0 1</td>
-                            <td>वैष्णव नगर, रायबरेली|</td>
-                            <td class="fee-waiver-highlight">माह अप्रैल, मई, जून, जुलाई की मासिक फीस माफ़</td>
-                            <td class="text-center">जुलाई में एडमिशन</td>
+                            <td class="text-center font-bold" contenteditable="true">17.</td>
+                            <td class="font-bold" contenteditable="true">पृथा सिंह</td>
+                            <td contenteditable="true">श्री नरेन्द्र कुमार सिंह</td>
+                            <td class="text-center" contenteditable="true">कक्षा- के0जी0 1</td>
+                            <td contenteditable="true">वैष्णव नगर, रायबरेली|</td>
+                            <td class="fee-waiver-highlight" contenteditable="true">माह अप्रैल, मई, जून, जुलाई की मासिक फीस माफ़</td>
+                            <td class="text-center" contenteditable="true">जुलाई में एडमिशन</td>
+                            <td class="row-action-cell no-print">
+                                <button type="button" class="row-btn row-dup-btn" onclick="duplicateRow(this)" title="पंक्ति कॉपी करें"><i class="fa-regular fa-copy"></i></button>
+                                <button type="button" class="row-btn row-del-btn" onclick="deleteRow(this)" title="हटाएं"><i class="fa-regular fa-trash-can"></i></button>
+                            </td>
                         </tr>
                         <tr>
-                            <td class="text-center font-bold">18.</td>
-                            <td class="font-bold">अर्षित</td>
-                            <td>श्री रामकुमार</td>
-                            <td class="text-center">कक्षा- के0जी0 1</td>
-                            <td>भुएमऊ, रायबरेली|</td>
-                            <td class="fee-waiver-highlight">प्रवेश शुल्क माफ़ व माह अप्रैल, मई, जून, जुलाई की मासिक फीस माफ़</td>
-                            <td class="text-center">आर्थिक स्थिति दयनीय एवं जुलाई में एडमिशन</td>
+                            <td class="text-center font-bold" contenteditable="true">18.</td>
+                            <td class="font-bold" contenteditable="true">अर्षित</td>
+                            <td contenteditable="true">श्री रामकुमार</td>
+                            <td class="text-center" contenteditable="true">कक्षा- के0जी0 1</td>
+                            <td contenteditable="true">भुएमऊ, रायबरेली|</td>
+                            <td class="fee-waiver-highlight" contenteditable="true">प्रवेश शुल्क माफ़ व माह अप्रैल, मई, जून, जुलाई की मासिक फीस माफ़</td>
+                            <td class="text-center" contenteditable="true">आर्थिक स्थिति दयनीय एवं जुलाई में एडमिशन</td>
+                            <td class="row-action-cell no-print">
+                                <button type="button" class="row-btn row-dup-btn" onclick="duplicateRow(this)" title="पंक्ति कॉपी करें"><i class="fa-regular fa-copy"></i></button>
+                                <button type="button" class="row-btn row-del-btn" onclick="deleteRow(this)" title="हटाएं"><i class="fa-regular fa-trash-can"></i></button>
+                            </td>
                         </tr>
                         <tr>
-                            <td class="text-center font-bold">19.</td>
-                            <td class="font-bold">काशवी कौशल</td>
-                            <td>श्री आशीष कुमार</td>
-                            <td class="text-center">कक्षा- के0जी0 1</td>
-                            <td>वार्ड नं-4 पुरे काजी, रायबरेली|</td>
-                            <td class="fee-waiver-highlight">माह अप्रैल, मई, जून, जुलाई की मासिक फीस माफ़</td>
-                            <td class="text-center">जुलाई में एडमिशन</td>
+                            <td class="text-center font-bold" contenteditable="true">19.</td>
+                            <td class="font-bold" contenteditable="true">काशवी कौशल</td>
+                            <td contenteditable="true">श्री आशीष कुमार</td>
+                            <td class="text-center" contenteditable="true">कक्षा- के0जी0 1</td>
+                            <td contenteditable="true">वार्ड नं-4 पुरे काजी, रायबरेली|</td>
+                            <td class="fee-waiver-highlight" contenteditable="true">माह अप्रैल, मई, जून, जुलाई की मासिक फीस माफ़</td>
+                            <td class="text-center" contenteditable="true">जुलाई में एडमिशन</td>
+                            <td class="row-action-cell no-print">
+                                <button type="button" class="row-btn row-dup-btn" onclick="duplicateRow(this)" title="पंक्ति कॉपी करें"><i class="fa-regular fa-copy"></i></button>
+                                <button type="button" class="row-btn row-del-btn" onclick="deleteRow(this)" title="हटाएं"><i class="fa-regular fa-trash-can"></i></button>
+                            </td>
                         </tr>
                         <tr>
-                            <td class="text-center font-bold">20.</td>
-                            <td class="font-bold">अयांश मिश्रा</td>
-                            <td>श्री अवनीश मिश्रा</td>
-                            <td class="text-center">कक्षा- के0जी0 1</td>
-                            <td>बेहटा, रायबरेली|</td>
-                            <td class="fee-waiver-highlight">माह अप्रैल, मई, जून, जुलाई की मासिक फीस माफ़</td>
-                            <td class="text-center">जुलाई में एडमिशन</td>
+                            <td class="text-center font-bold" contenteditable="true">20.</td>
+                            <td class="font-bold" contenteditable="true">अयांश मिश्रा</td>
+                            <td contenteditable="true">श्री अवनीश मिश्रा</td>
+                            <td class="text-center" contenteditable="true">कक्षा- के0जी0 1</td>
+                            <td contenteditable="true">बेहटा, रायबरेली|</td>
+                            <td class="fee-waiver-highlight" contenteditable="true">माह अप्रैल, मई, जून, जुलाई की मासिक फीस माफ़</td>
+                            <td class="text-center" contenteditable="true">जुलाई में एडमिशन</td>
+                            <td class="row-action-cell no-print">
+                                <button type="button" class="row-btn row-dup-btn" onclick="duplicateRow(this)" title="पंक्ति कॉपी करें"><i class="fa-regular fa-copy"></i></button>
+                                <button type="button" class="row-btn row-del-btn" onclick="deleteRow(this)" title="हटाएं"><i class="fa-regular fa-trash-can"></i></button>
+                            </td>
                         </tr>
                         <tr>
-                            <td class="text-center font-bold">21.</td>
-                            <td class="font-bold">अनाया सिंह</td>
-                            <td>श्री हिमालय</td>
-                            <td class="text-center">कक्षा- के0जी0 2</td>
-                            <td>सम्राट नगर, रायबरेली|</td>
-                            <td class="fee-waiver-highlight">माह अप्रैल, मई, जून की मासिक फीस माफ़</td>
-                            <td class="text-center">जुलाई में एडमिशन</td>
+                            <td class="text-center font-bold" contenteditable="true">21.</td>
+                            <td class="font-bold" contenteditable="true">अनाया सिंह</td>
+                            <td contenteditable="true">श्री हिमालय</td>
+                            <td class="text-center" contenteditable="true">कक्षा- के0जी0 2</td>
+                            <td contenteditable="true">सम्राट नगर, रायबरेली|</td>
+                            <td class="fee-waiver-highlight" contenteditable="true">माह अप्रैल, मई, जून की मासिक फीस माफ़</td>
+                            <td class="text-center" contenteditable="true">जुलाई में एडमिशन</td>
+                            <td class="row-action-cell no-print">
+                                <button type="button" class="row-btn row-dup-btn" onclick="duplicateRow(this)" title="पंक्ति कॉपी करें"><i class="fa-regular fa-copy"></i></button>
+                                <button type="button" class="row-btn row-del-btn" onclick="deleteRow(this)" title="हटाएं"><i class="fa-regular fa-trash-can"></i></button>
+                            </td>
                         </tr>
                         <tr>
-                            <td class="text-center font-bold">22.</td>
-                            <td class="font-bold">आस्था यादव</td>
-                            <td>श्री नीलेश यादव</td>
-                            <td class="text-center">कक्षा- के0जी0 1</td>
-                            <td>बबुरिहा, रायबरेली|</td>
-                            <td class="fee-waiver-highlight">प्रवेश शुल्क माफ़ व माह अप्रैल, मई, जून की मासिक फीस माफ़</td>
-                            <td class="text-center">जुलाई में एडमिशन</td>
+                            <td class="text-center font-bold" contenteditable="true">22.</td>
+                            <td class="font-bold" contenteditable="true">आस्था यादव</td>
+                            <td contenteditable="true">श्री नीलेश यादव</td>
+                            <td class="text-center" contenteditable="true">कक्षा- के0जी0 1</td>
+                            <td contenteditable="true">बबुरिहा, रायबरेली|</td>
+                            <td class="fee-waiver-highlight" contenteditable="true">प्रवेश शुल्क माफ़ व माह अप्रैल, मई, जून की मासिक फीस माफ़</td>
+                            <td class="text-center" contenteditable="true">जुलाई में एडमिशन</td>
+                            <td class="row-action-cell no-print">
+                                <button type="button" class="row-btn row-dup-btn" onclick="duplicateRow(this)" title="पंक्ति कॉपी करें"><i class="fa-regular fa-copy"></i></button>
+                                <button type="button" class="row-btn row-del-btn" onclick="deleteRow(this)" title="हटाएं"><i class="fa-regular fa-trash-can"></i></button>
+                            </td>
                         </tr>
                         <tr>
-                            <td class="text-center font-bold">23.</td>
-                            <td class="font-bold">मारुत सिंह</td>
-                            <td>श्री राजन सिंह</td>
-                            <td class="text-center">कक्षा- के0जी0 1</td>
-                            <td>वैष्णव नगर, रायबरेली|</td>
-                            <td class="fee-waiver-highlight">माह अप्रैल, मई, जून की मासिक फीस माफ़</td>
-                            <td class="text-center">जुलाई में एडमिशन</td>
+                            <td class="text-center font-bold" contenteditable="true">23.</td>
+                            <td class="font-bold" contenteditable="true">मारुत सिंह</td>
+                            <td contenteditable="true">श्री राजन सिंह</td>
+                            <td class="text-center" contenteditable="true">कक्षा- के0जी0 1</td>
+                            <td contenteditable="true">वैष्णव नगर, रायबरेली|</td>
+                            <td class="fee-waiver-highlight" contenteditable="true">माह अप्रैल, मई, जून की मासिक फीस माफ़</td>
+                            <td class="text-center" contenteditable="true">जुलाई में एडमिशन</td>
+                            <td class="row-action-cell no-print">
+                                <button type="button" class="row-btn row-dup-btn" onclick="duplicateRow(this)" title="पंक्ति कॉपी करें"><i class="fa-regular fa-copy"></i></button>
+                                <button type="button" class="row-btn row-del-btn" onclick="deleteRow(this)" title="हटाएं"><i class="fa-regular fa-trash-can"></i></button>
+                            </td>
                         </tr>
                         <tr>
-                            <td class="text-center font-bold">24.</td>
-                            <td class="font-bold">अनुष्का मौर्या</td>
-                            <td>श्री तेजभान मौर्या</td>
-                            <td class="text-center">कक्षा- के0जी0 1</td>
-                            <td>25वीं वाहिनी, रायबरेली|</td>
-                            <td class="fee-waiver-highlight">माह अप्रैल, मई, की मासिक फीस माफ़</td>
-                            <td class="text-center">जुलाई में एडमिशन</td>
+                            <td class="text-center font-bold" contenteditable="true">24.</td>
+                            <td class="font-bold" contenteditable="true">अनुष्का मौर्या</td>
+                            <td contenteditable="true">श्री तेजभान मौर्या</td>
+                            <td class="text-center" contenteditable="true">कक्षा- के0जी0 1</td>
+                            <td contenteditable="true">25वीं वाहिनी, रायबरेली|</td>
+                            <td class="fee-waiver-highlight" contenteditable="true">माह अप्रैल, मई, की मासिक फीस माफ़</td>
+                            <td class="text-center" contenteditable="true">जुलाई में एडमिशन</td>
+                            <td class="row-action-cell no-print">
+                                <button type="button" class="row-btn row-dup-btn" onclick="duplicateRow(this)" title="पंक्ति कॉपी करें"><i class="fa-regular fa-copy"></i></button>
+                                <button type="button" class="row-btn row-del-btn" onclick="deleteRow(this)" title="हटाएं"><i class="fa-regular fa-trash-can"></i></button>
+                            </td>
                         </tr>
                         <tr>
-                            <td class="text-center font-bold">25.</td>
-                            <td class="font-bold">प्रान्शू</td>
-                            <td>श्री रमेश</td>
-                            <td class="text-center">कक्षा- के0जी0 1</td>
-                            <td>जरौला, रायबरेली|</td>
-                            <td class="fee-waiver-highlight">प्रवेश शुल्क माफ़ व माह अप्रैल, मई, जून की मासिक फीस माफ़</td>
-                            <td class="text-center">आर्थिक स्थिति दयनीय एवं जुलाई में एडमिशन</td>
+                            <td class="text-center font-bold" contenteditable="true">25.</td>
+                            <td class="font-bold" contenteditable="true">प्रान्शू</td>
+                            <td contenteditable="true">श्री रमेश</td>
+                            <td class="text-center" contenteditable="true">कक्षा- के0जी0 1</td>
+                            <td contenteditable="true">जरौला, रायबरेली|</td>
+                            <td class="fee-waiver-highlight" contenteditable="true">प्रवेश शुल्क माफ़ व माह अप्रैल, मई, जून की मासिक फीस माफ़</td>
+                            <td class="text-center" contenteditable="true">आर्थिक स्थिति दयनीय एवं जुलाई में एडमिशन</td>
+                            <td class="row-action-cell no-print">
+                                <button type="button" class="row-btn row-dup-btn" onclick="duplicateRow(this)" title="पंक्ति कॉपी करें"><i class="fa-regular fa-copy"></i></button>
+                                <button type="button" class="row-btn row-del-btn" onclick="deleteRow(this)" title="हटाएं"><i class="fa-regular fa-trash-can"></i></button>
+                            </td>
                         </tr>
                         <tr>
-                            <td class="text-center font-bold">26.</td>
-                            <td class="font-bold">आरव यादव</td>
-                            <td>श्री राकेश कुमार</td>
-                            <td class="text-center">कक्षा- के0जी0 1</td>
-                            <td>किशुन का पुरवा, रायबरेली|</td>
-                            <td class="fee-waiver-highlight">माह अप्रैल, मई, जून की मासिक फीस माफ़</td>
-                            <td class="text-center">जुलाई में एडमिशन</td>
+                            <td class="text-center font-bold" contenteditable="true">26.</td>
+                            <td class="font-bold" contenteditable="true">आरव यादव</td>
+                            <td contenteditable="true">श्री राकेश कुमार</td>
+                            <td class="text-center" contenteditable="true">कक्षा- के0जी0 1</td>
+                            <td contenteditable="true">किशुन का पुरवा, रायबरेली|</td>
+                            <td class="fee-waiver-highlight" contenteditable="true">माह अप्रैल, मई, जून की मासिक फीस माफ़</td>
+                            <td class="text-center" contenteditable="true">जुलाई में एडमिशन</td>
+                            <td class="row-action-cell no-print">
+                                <button type="button" class="row-btn row-dup-btn" onclick="duplicateRow(this)" title="पंक्ति कॉपी करें"><i class="fa-regular fa-copy"></i></button>
+                                <button type="button" class="row-btn row-del-btn" onclick="deleteRow(this)" title="हटाएं"><i class="fa-regular fa-trash-can"></i></button>
+                            </td>
                         </tr>
                         <tr>
-                            <td class="text-center font-bold">27.</td>
-                            <td class="font-bold">दीपान्शू</td>
-                            <td>श्री रमेश</td>
-                            <td class="text-center">कक्षा- के0जी0 1</td>
-                            <td>जरौला, रायबरेली|</td>
-                            <td class="fee-waiver-highlight">प्रवेश शुल्क माफ़ व माह अप्रैल, मई, जून की मासिक फीस माफ़</td>
-                            <td class="text-center">आर्थिक स्थिति दयनीय एवं जुलाई में एडमिशन</td>
+                            <td class="text-center font-bold" contenteditable="true">27.</td>
+                            <td class="font-bold" contenteditable="true">दीपान्शू</td>
+                            <td contenteditable="true">श्री रमेश</td>
+                            <td class="text-center" contenteditable="true">कक्षा- के0जी0 1</td>
+                            <td contenteditable="true">जरौला, रायबरेली|</td>
+                            <td class="fee-waiver-highlight" contenteditable="true">प्रवेश शुल्क माफ़ व माह अप्रैल, मई, जून की मासिक फीस माफ़</td>
+                            <td class="text-center" contenteditable="true">आर्थिक स्थिति दयनीय एवं जुलाई में एडमिशन</td>
+                            <td class="row-action-cell no-print">
+                                <button type="button" class="row-btn row-dup-btn" onclick="duplicateRow(this)" title="पंक्ति कॉपी करें"><i class="fa-regular fa-copy"></i></button>
+                                <button type="button" class="row-btn row-del-btn" onclick="deleteRow(this)" title="हटाएं"><i class="fa-regular fa-trash-can"></i></button>
+                            </td>
                         </tr>
                         <tr>
-                            <td class="text-center font-bold">28.</td>
-                            <td class="font-bold">आराध्या</td>
-                            <td>श्री जितेन्द्र  त्रिवेदी</td>
-                            <td class="text-center">कक्षा- के0जी0 1</td>
-                            <td>अयासपुर डीही, रायबरेली|</td>
-                            <td class="fee-waiver-highlight">प्रवेश शुल्क माफ़ व माह अप्रैल, मई, जून की मासिक फीस माफ़</td>
-                            <td class="text-center">आर्थिक स्थिति दयनीय एवं जुलाई में एडमिशन</td>
+                            <td class="text-center font-bold" contenteditable="true">28.</td>
+                            <td class="font-bold" contenteditable="true">आराध्या</td>
+                            <td contenteditable="true">श्री जितेन्द्र  त्रिवेदी</td>
+                            <td class="text-center" contenteditable="true">कक्षा- के0जी0 1</td>
+                            <td contenteditable="true">अयासपुर डीही, रायबरेली|</td>
+                            <td class="fee-waiver-highlight" contenteditable="true">प्रवेश शुल्क माफ़ व माह अप्रैल, मई, जून की मासिक फीस माफ़</td>
+                            <td class="text-center" contenteditable="true">आर्थिक स्थिति दयनीय एवं जुलाई में एडमिशन</td>
+                            <td class="row-action-cell no-print">
+                                <button type="button" class="row-btn row-dup-btn" onclick="duplicateRow(this)" title="पंक्ति कॉपी करें"><i class="fa-regular fa-copy"></i></button>
+                                <button type="button" class="row-btn row-del-btn" onclick="deleteRow(this)" title="हटाएं"><i class="fa-regular fa-trash-can"></i></button>
+                            </td>
                         </tr>
                         <tr>
-                            <td class="text-center font-bold">29.</td>
-                            <td class="font-bold">मोन्टी कोरी</td>
-                            <td>श्री मुकेश कोरी</td>
-                            <td class="text-center">कक्षा-</td>
-                            <td>भुएमऊ, रायबरेली</td>
-                            <td class="fee-waiver-highlight">माह अप्रैल, मई, जून की मासिक फीस माफ़</td>
-                            <td class="text-center">जुलाई में एडमिशन</td>
+                            <td class="text-center font-bold" contenteditable="true">29.</td>
+                            <td class="font-bold" contenteditable="true">मोन्टी कोरी</td>
+                            <td contenteditable="true">श्री मुकेश कोरी</td>
+                            <td class="text-center" contenteditable="true">कक्षा-</td>
+                            <td contenteditable="true">भुएमऊ, रायबरेली</td>
+                            <td class="fee-waiver-highlight" contenteditable="true">माह अप्रैल, मई, जून की मासिक फीस माफ़</td>
+                            <td class="text-center" contenteditable="true">जुलाई में एडमिशन</td>
+                            <td class="row-action-cell no-print">
+                                <button type="button" class="row-btn row-dup-btn" onclick="duplicateRow(this)" title="पंक्ति कॉपी करें"><i class="fa-regular fa-copy"></i></button>
+                                <button type="button" class="row-btn row-del-btn" onclick="deleteRow(this)" title="हटाएं"><i class="fa-regular fa-trash-can"></i></button>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
 
-            <!-- Committee Signature Grid -->
-            <div class="signature-grid">
-                <div class="sig-card">
-                    <p class="sig-name">(श्री आनंद शंकर तिवारी)</p>
-                    <p class="sig-role">शिविरपाल</p>
-                    <p class="sig-dept">पुलिस मॉडर्न स्कूल, 25वीं वाहिनी पीएसी</p>
+            <!-- Signature Section Toolbar -->
+            <div class="sig-section-toolbar no-print">
+                <div class="sig-section-title">
+                    <i class="fa-solid fa-signature"></i>
+                    <span>समिति हस्ताक्षर (Draggable & Editable Signature Grid)</span>
                 </div>
-                <div class="sig-card">
-                    <p class="sig-name">(श्री आलोक मिश्रा)</p>
-                    <p class="sig-role">प्रभारी</p>
-                    <p class="sig-dept">पुलिस मॉडर्न स्कूल, 25वीं वाहिनी पीएसी</p>
-                </div>
-                <div class="sig-card">
-                    <p class="sig-name">(श्रीमती सविता सिंह)</p>
-                    <p class="sig-role">प्रभारी प्रधानाचार्या</p>
-                    <p class="sig-dept">पुलिस मॉडर्न स्कूल, 25वीं वाहिनी पीएसी</p>
-                </div>
-                <div class="sig-card">
-                    <p class="sig-name">(श्री लाल भरत कुमार पाल)</p>
-                    <p class="sig-role">प्रबन्धक/सेनानायक</p>
-                    <p class="sig-dept">पुलिस मॉडर्न स्कूल, 25वीं वाहिनी पीएसी</p>
-                </div>
-                <div class="sig-card">
-                    <p class="sig-name">(श्री अजय कुमार यादव)</p>
-                    <p class="sig-role">सहायक सेनानायक</p>
-                    <p class="sig-dept">पुलिस मॉडर्न स्कूल, 25वीं वाहिनी पीएसी</p>
-                </div>
-                <div class="sig-card">
-                    <p class="sig-name">(श्री श्रीकृष्ण राय)</p>
-                    <p class="sig-role">आंकिक</p>
-                    <p class="sig-dept">पुलिस मॉडर्न स्कूल, 25वीं वाहिनी पीएसी</p>
+                <div class="sig-toolbar-buttons">
+                    <span class="sig-drag-hint">
+                        <i class="fa-solid fa-arrows-up-down-left-right text-blue-600"></i> माउस से पकड़कर कार्ड को कहीं भी रखें
+                    </span>
+                    <button type="button" class="sig-add-btn" onclick="addNewSignatureCard()">
+                        <i class="fa-solid fa-plus"></i> नया हस्ताक्षर जोड़ें
+                    </button>
+                    <button type="button" class="sig-paste-btn" id="sigPasteBtn" onclick="pasteSignatureCard()" disabled title="कॉपी किया गया हस्ताक्षर यहाँ जोड़ें">
+                        <i class="fa-regular fa-clipboard"></i> पेस्ट हस्ताक्षर
+                    </button>
                 </div>
             </div>
+
+            <!-- Movable & Resizable Signature Canvas Wrapper (Free Size & Drag Anywhere) -->
+            <div class="sig-canvas-wrapper" id="signatureCanvasWrapper">
+                <!-- Canvas Drag Header Controls -->
+                <div class="sig-canvas-header no-print" id="sigCanvasHeader" title="माउस से पकड़कर कहीं भी ले जाएं (Drag to Move Anywhere)">
+                    <div class="sig-canvas-drag-handle" id="sigCanvasDragHandle">
+                        <i class="fa-solid fa-arrows-up-down-left-right text-blue-400"></i>
+                        <span class="font-bold">हस्ताक्षर कैनवास (Canvas)</span>
+                        <span class="text-xs text-slate-400 font-normal hidden sm:inline">(माउस से पकड़कर कहीं भी ले जाएं | नीचे दायें कोने से फ्री साइज करें)</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button type="button" class="sig-canvas-btn" onclick="autoArrangeSignatureCards()" title="सभी हस्ताक्षर कार्ड्स को पंक्तिबद्ध (Auto Align) सजाएं">
+                            <i class="fa-solid fa-table-cells-large"></i> ऑटो अलाइन
+                        </button>
+                        <button type="button" class="sig-canvas-btn" onclick="resetCanvasPosition()" title="कैनवास की स्थिति एवं आकार सामान्य करें">
+                            <i class="fa-solid fa-rotate-left"></i> स्थिति रीसेट
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Committee Signature Grid (Free Placement Anywhere via Mouse Drag) -->
+                <div class="signature-grid" id="signatureGrid" style="min-height: 380px;">
+                    
+                    <!-- Card 1 -->
+                    <div class="sig-card" style="left: 12px; top: 12px;" data-x="12" data-y="12">
+                        <div class="sig-card-controls no-print">
+                            <span class="sig-handle" title="माउस से पकड़कर कहीं भी रखें (Drag & Move Anywhere)"><i class="fa-solid fa-arrows-up-down-left-right"></i> ड्रैग</span>
+                            <div class="sig-card-actions">
+                                <button type="button" class="sig-card-btn sig-move-btn" onclick="moveSigCard(this, -1)" title="बायें खिसकाएँ"><i class="fa-solid fa-arrow-left"></i></button>
+                                <button type="button" class="sig-card-btn sig-move-btn" onclick="moveSigCard(this, 1)" title="दायें खिसकाएँ"><i class="fa-solid fa-arrow-right"></i></button>
+                                <button type="button" class="sig-card-btn sig-copy-btn" onclick="duplicateSignatureCard(this)" title="डुप्लिकेट बनाएं"><i class="fa-regular fa-clone"></i> डुप्लिकेट</button>
+                                <button type="button" class="sig-card-btn sig-copy-btn" onclick="copySignatureCard(this)" title="कॉपी करें"><i class="fa-regular fa-copy"></i> कॉपी</button>
+                                <button type="button" class="sig-card-btn sig-del-btn" onclick="deleteSignatureCard(this)" title="हटाएं"><i class="fa-regular fa-trash-can"></i></button>
+                            </div>
+                        </div>
+                        <div class="sig-sign-space"></div>
+                        <p class="sig-name" contenteditable="true" spellcheck="false">(श्री आनंद शंकर तिवारी)</p>
+                        <p class="sig-role" contenteditable="true" spellcheck="false">शिविरपाल</p>
+                        <p class="sig-dept" contenteditable="true" spellcheck="false">पुलिस मॉडर्न स्कूल, 25वीं वाहिनी पीएसी</p>
+                    </div>
+
+                    <!-- Card 2 -->
+                    <div class="sig-card" style="left: 256px; top: 12px;" data-x="256" data-y="12">
+                        <div class="sig-card-controls no-print">
+                            <span class="sig-handle" title="माउस से पकड़कर कहीं भी रखें (Drag & Move Anywhere)"><i class="fa-solid fa-arrows-up-down-left-right"></i> ड्रैग</span>
+                            <div class="sig-card-actions">
+                                <button type="button" class="sig-card-btn sig-move-btn" onclick="moveSigCard(this, -1)" title="बायें खिसकाएँ"><i class="fa-solid fa-arrow-left"></i></button>
+                                <button type="button" class="sig-card-btn sig-move-btn" onclick="moveSigCard(this, 1)" title="दायें खिसकाएँ"><i class="fa-solid fa-arrow-right"></i></button>
+                                <button type="button" class="sig-card-btn sig-copy-btn" onclick="duplicateSignatureCard(this)" title="डुप्लिकेट बनाएं"><i class="fa-regular fa-clone"></i> डुप्लिकेट</button>
+                                <button type="button" class="sig-card-btn sig-copy-btn" onclick="copySignatureCard(this)" title="कॉपी करें"><i class="fa-regular fa-copy"></i> कॉपी</button>
+                                <button type="button" class="sig-card-btn sig-del-btn" onclick="deleteSignatureCard(this)" title="हटाएं"><i class="fa-regular fa-trash-can"></i></button>
+                            </div>
+                        </div>
+                        <div class="sig-sign-space"></div>
+                        <p class="sig-name" contenteditable="true" spellcheck="false">(श्री आलोक मिश्रा)</p>
+                        <p class="sig-role" contenteditable="true" spellcheck="false">प्रभारी</p>
+                        <p class="sig-dept" contenteditable="true" spellcheck="false">पुलिस मॉडर्न स्कूल, 25वीं वाहिनी पीएसी</p>
+                    </div>
+
+                    <!-- Card 3 -->
+                    <div class="sig-card" style="left: 500px; top: 12px;" data-x="500" data-y="12">
+                        <div class="sig-card-controls no-print">
+                            <span class="sig-handle" title="माउस से पकड़कर कहीं भी रखें (Drag & Move Anywhere)"><i class="fa-solid fa-arrows-up-down-left-right"></i> ड्रैग</span>
+                            <div class="sig-card-actions">
+                                <button type="button" class="sig-card-btn sig-move-btn" onclick="moveSigCard(this, -1)" title="बायें खिसकाएँ"><i class="fa-solid fa-arrow-left"></i></button>
+                                <button type="button" class="sig-card-btn sig-move-btn" onclick="moveSigCard(this, 1)" title="दायें खिसकाएँ"><i class="fa-solid fa-arrow-right"></i></button>
+                                <button type="button" class="sig-card-btn sig-copy-btn" onclick="duplicateSignatureCard(this)" title="डुप्लिकेट बनाएं"><i class="fa-regular fa-clone"></i> डुप्लिकेट</button>
+                                <button type="button" class="sig-card-btn sig-copy-btn" onclick="copySignatureCard(this)" title="कॉपी करें"><i class="fa-regular fa-copy"></i> कॉपी</button>
+                                <button type="button" class="sig-card-btn sig-del-btn" onclick="deleteSignatureCard(this)" title="हटाएं"><i class="fa-regular fa-trash-can"></i></button>
+                            </div>
+                        </div>
+                        <div class="sig-sign-space"></div>
+                        <p class="sig-name" contenteditable="true" spellcheck="false">(श्रीमती सविता सिंह)</p>
+                        <p class="sig-role" contenteditable="true" spellcheck="false">प्रभारी प्रधानाचार्या</p>
+                        <p class="sig-dept" contenteditable="true" spellcheck="false">पुलिस मॉडर्न स्कूल, 25वीं वाहिनी पीएसी</p>
+                    </div>
+
+                    <!-- Card 4 -->
+                    <div class="sig-card" style="left: 12px; top: 185px;" data-x="12" data-y="185">
+                        <div class="sig-card-controls no-print">
+                            <span class="sig-handle" title="माउस से पकड़कर कहीं भी रखें (Drag & Move Anywhere)"><i class="fa-solid fa-arrows-up-down-left-right"></i> ड्रैग</span>
+                            <div class="sig-card-actions">
+                                <button type="button" class="sig-card-btn sig-move-btn" onclick="moveSigCard(this, -1)" title="बायें खिसकाएँ"><i class="fa-solid fa-arrow-left"></i></button>
+                                <button type="button" class="sig-card-btn sig-move-btn" onclick="moveSigCard(this, 1)" title="दायें खिसकाएँ"><i class="fa-solid fa-arrow-right"></i></button>
+                                <button type="button" class="sig-card-btn sig-copy-btn" onclick="duplicateSignatureCard(this)" title="डुप्लिकेट बनाएं"><i class="fa-regular fa-clone"></i> डुप्लिकेट</button>
+                                <button type="button" class="sig-card-btn sig-copy-btn" onclick="copySignatureCard(this)" title="कॉपी करें"><i class="fa-regular fa-copy"></i> कॉपी</button>
+                                <button type="button" class="sig-card-btn sig-del-btn" onclick="deleteSignatureCard(this)" title="हटाएं"><i class="fa-regular fa-trash-can"></i></button>
+                            </div>
+                        </div>
+                        <div class="sig-sign-space"></div>
+                        <p class="sig-name" contenteditable="true" spellcheck="false">(श्री लाल भरत कुमार पाल)</p>
+                        <p class="sig-role" contenteditable="true" spellcheck="false">प्रबन्धक/सेनानायक</p>
+                        <p class="sig-dept" contenteditable="true" spellcheck="false">पुलिस मॉडर्न स्कूल, 25वीं वाहिनी पीएसी</p>
+                    </div>
+
+                    <!-- Card 5 -->
+                    <div class="sig-card" style="left: 256px; top: 185px;" data-x="256" data-y="185">
+                        <div class="sig-card-controls no-print">
+                            <span class="sig-handle" title="माउस से पकड़कर कहीं भी रखें (Drag & Move Anywhere)"><i class="fa-solid fa-arrows-up-down-left-right"></i> ड्रैग</span>
+                            <div class="sig-card-actions">
+                                <button type="button" class="sig-card-btn sig-move-btn" onclick="moveSigCard(this, -1)" title="बायें खिसकाएँ"><i class="fa-solid fa-arrow-left"></i></button>
+                                <button type="button" class="sig-card-btn sig-move-btn" onclick="moveSigCard(this, 1)" title="दायें खिसकाएँ"><i class="fa-solid fa-arrow-right"></i></button>
+                                <button type="button" class="sig-card-btn sig-copy-btn" onclick="duplicateSignatureCard(this)" title="डुप्लिकेट बनाएं"><i class="fa-regular fa-clone"></i> डुप्लिकेट</button>
+                                <button type="button" class="sig-card-btn sig-copy-btn" onclick="copySignatureCard(this)" title="कॉपी करें"><i class="fa-regular fa-copy"></i> कॉपी</button>
+                                <button type="button" class="sig-card-btn sig-del-btn" onclick="deleteSignatureCard(this)" title="हटाएं"><i class="fa-regular fa-trash-can"></i></button>
+                            </div>
+                        </div>
+                        <div class="sig-sign-space"></div>
+                        <p class="sig-name" contenteditable="true" spellcheck="false">(श्री अजय कुमार यादव)</p>
+                        <p class="sig-role" contenteditable="true" spellcheck="false">सहायक सेनानायक</p>
+                        <p class="sig-dept" contenteditable="true" spellcheck="false">पुलिस मॉडर्न स्कूल, 25वीं वाहिनी पीएसी</p>
+                    </div>
+
+                    <!-- Card 6 -->
+                    <div class="sig-card" style="left: 500px; top: 185px;" data-x="500" data-y="185">
+                        <div class="sig-card-controls no-print">
+                            <span class="sig-handle" title="माउस से पकड़कर कहीं भी रखें (Drag & Move Anywhere)"><i class="fa-solid fa-arrows-up-down-left-right"></i> ड्रैग</span>
+                            <div class="sig-card-actions">
+                                <button type="button" class="sig-card-btn sig-move-btn" onclick="moveSigCard(this, -1)" title="बायें खिसकाएँ"><i class="fa-solid fa-arrow-left"></i></button>
+                                <button type="button" class="sig-card-btn sig-move-btn" onclick="moveSigCard(this, 1)" title="दायें खिसकाएँ"><i class="fa-solid fa-arrow-right"></i></button>
+                                <button type="button" class="sig-card-btn sig-copy-btn" onclick="duplicateSignatureCard(this)" title="डुप्लिकेट बनाएं"><i class="fa-regular fa-clone"></i> डुप्लिकेट</button>
+                                <button type="button" class="sig-card-btn sig-copy-btn" onclick="copySignatureCard(this)" title="कॉपी करें"><i class="fa-regular fa-copy"></i> कॉपी</button>
+                                <button type="button" class="sig-card-btn sig-del-btn" onclick="deleteSignatureCard(this)" title="हटाएं"><i class="fa-regular fa-trash-can"></i></button>
+                            </div>
+                        </div>
+                        <div class="sig-sign-space"></div>
+                        <p class="sig-name" contenteditable="true" spellcheck="false">(श्री श्रीकृष्ण राय)</p>
+                        <p class="sig-role" contenteditable="true" spellcheck="false">आंकिक</p>
+                        <p class="sig-dept" contenteditable="true" spellcheck="false">पुलिस मॉडर्न स्कूल, 25वीं वाहिनी पीएसी</p>
+                    </div>
+
+                </div>
+
+                <!-- Canvas Resize Handle (Bottom-Right Corner for Free Size) -->
+                <div class="sig-canvas-resize-handle no-print" id="sigCanvasResizeHandle" title="माउस से खींचकर फ्री साइज करें (Resize Canvas)">
+                    <i class="fa-solid fa-up-right-and-down-left-from-center" style="font-size: 11px;"></i>
+                </div>
+            </div>
+
+            <!-- Page Break Immediately After Signature Grid (इसके तुरंत बाद से पृष्ठ विराम) -->
+            <div class="document-page-break"></div>
         </section>
 
     </main>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <!-- =========================================================================
+         MODAL 1: Save Order to Firestore Cloud Dialog
+         ========================================================================= -->
+    <div id="saveOrderModal" class="pms-modal-backdrop no-print">
+        <div class="pms-modal-box">
+            <!-- Modal Header -->
+            <div class="px-5 py-4 border-b border-slate-700 flex items-center justify-between bg-slate-900">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-sky-500/20 text-sky-400 flex items-center justify-center text-lg border border-sky-500/30">
+                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-base font-bold text-white">क्लाउड में आदेश सहेजें</h3>
+                        <p class="text-xs text-slate-400">फायरस्टोर डेटाबेस में सुरक्षित सहेजें ताकि बाद में कभी भी लोड व प्रिंट कर सकें</p>
+                    </div>
+                </div>
+                <button type="button" onclick="closeSaveOrderModal()" class="text-slate-400 hover:text-white p-1.5 rounded-lg hover:bg-slate-800 transition">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <!-- Modal Body Form -->
+            <div class="p-5 space-y-4 text-xs sm:text-sm overflow-y-auto">
+                <div id="saveModalStatusPill" class="p-2.5 rounded-lg bg-slate-950 border border-slate-800 flex items-center gap-2 text-xs">
+                    <i class="fa-solid fa-circle-info text-sky-400 flex-shrink-0"></i>
+                    <span id="saveModalStatusText" class="text-slate-300 font-medium">यह एक नए आदेश के रूप में सुरक्षित सहेजा जाएगा।</span>
+                </div>
+
+                <!-- Order Title -->
+                <div>
+                    <label for="saveModalTitle" class="block font-bold text-slate-300 mb-1">आदेश का नाम / विवरण (Title):</label>
+                    <input type="text" id="saveModalTitle" 
+                        class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3.5 py-2 text-white font-semibold focus:ring-2 focus:ring-sky-500 focus:outline-none" 
+                        placeholder="उदा: जुलाई 2026 - प्रवेश एवं शिक्षण शुल्क छूट आदेश (29 छात्र)" />
+                </div>
+
+                <!-- Dispatch No and Date -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label for="saveModalDispatch" class="block font-bold text-slate-300 mb-1">पत्र संख्या (Dispatch No):</label>
+                        <input type="text" id="saveModalDispatch" 
+                            class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-white font-mono focus:ring-2 focus:ring-sky-500 focus:outline-none" 
+                            placeholder="व-88/2017" />
+                    </div>
+                    <div>
+                        <label for="saveModalDate" class="block font-bold text-slate-300 mb-1">दिनांक (Date):</label>
+                        <input type="text" id="saveModalDate" 
+                            class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-white focus:ring-2 focus:ring-sky-500 focus:outline-none" 
+                            placeholder="__________/2026" />
+                    </div>
+                </div>
+
+                <!-- Summary Badges -->
+                <div class="flex items-center gap-2 p-2.5 rounded-lg bg-slate-950/70 border border-slate-800 text-xs">
+                    <span class="bg-blue-900/60 text-blue-300 px-2.5 py-1 rounded font-bold border border-blue-700/50">
+                        <i class="fa-solid fa-users mr-1"></i> कुल छात्र: <span id="saveModalStudentCount">29</span>
+                    </span>
+                    <span class="bg-indigo-900/60 text-indigo-300 px-2.5 py-1 rounded font-bold border border-indigo-700/50">
+                        <i class="fa-solid fa-signature mr-1"></i> हस्ताक्षरकर्ता: <span id="saveModalSigCount">6</span>
+                    </span>
+                </div>
+
+                <div class="text-[11.5px] text-slate-400 bg-slate-950/60 p-2.5 rounded-lg border border-slate-800 leading-relaxed">
+                    💡 <b>नोट:</b> आप जितनी चाहें उतनी बार अलग-अलग नाम से आदेश सहेज सकते हैं (जैसे 'जुलाई आदेश', 'संशोधित आदेश' आदि)। <b>"सहेजे गए आदेश"</b> बटन से किसी भी पुराने आदेश को 1-क्लिक में लोड या प्रिंट किया जा सकता है।
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="px-5 py-3 border-t border-slate-800 bg-slate-900/90 flex flex-wrap items-center justify-end gap-2 text-xs">
+                <button type="button" onclick="closeSaveOrderModal()" class="px-3.5 py-2 rounded-lg border border-slate-700 hover:bg-slate-800 text-slate-300 font-bold transition">
+                    रद्द करें
+                </button>
+                <button type="button" id="updateExistingOrderBtn" onclick="executeSaveOrder(false)" class="hidden px-3.5 py-2 rounded-lg bg-amber-600 hover:bg-amber-500 text-slate-950 font-black transition shadow flex items-center gap-1.5 border border-amber-400">
+                    <i class="fa-solid fa-rotate"></i>
+                    <span>मौजूदा आदेश अपडेट करें</span>
+                </button>
+                <button type="button" onclick="executeSaveOrder(true)" class="px-4 py-2 rounded-lg bg-sky-600 hover:bg-sky-500 text-white font-black transition shadow-lg flex items-center gap-1.5 border border-sky-400 hover:scale-[1.02]">
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                    <span>➕ नए आदेश के रूप में सहेजें</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- =========================================================================
+         MODAL 2: Saved Orders Archive & History Dialog (Load & Print)
+         ========================================================================= -->
+    <div id="ordersHistoryModal" class="pms-modal-backdrop no-print">
+        <div class="pms-modal-box max-w-4xl max-h-[90vh]">
+            <!-- Modal Header -->
+            <div class="px-5 py-4 border-b border-slate-700 flex items-center justify-between bg-slate-900">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-lg border border-indigo-500/30">
+                        <i class="fa-solid fa-folder-open"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-base sm:text-lg font-bold text-white flex items-center gap-2">
+                            <span>सहेजे गए आदेशों का संग्रह (Cloud Orders Archive)</span>
+                            <span id="historyModalCount" class="bg-indigo-600 text-white text-xs px-2.5 py-0.5 rounded-full font-bold">0</span>
+                        </h3>
+                        <p class="text-xs text-slate-400">क्लाउड डेटाबेस से किसी भी आदेश को सीधे लोड करें या तुरंत प्रिंट करें</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-1.5">
+                    <button type="button" onclick="fetchSavedOrders(true)" class="p-2 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-amber-400 transition" title="सूची रीफ्रेश करें">
+                        <i class="fa-solid fa-arrows-rotate"></i>
+                    </button>
+                    <button type="button" onclick="closeOrdersHistoryModal()" class="p-2 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition" title="बंद करें">
+                        <i class="fa-solid fa-xmark text-lg"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Search & Quick Action Bar -->
+            <div class="px-5 py-3 border-b border-slate-800 bg-slate-900/90 flex flex-wrap items-center justify-between gap-3">
+                <div class="relative flex-1 min-w-[220px]">
+                    <i class="fa-solid fa-magnifying-glass text-slate-500 absolute left-3 top-2.5"></i>
+                    <input type="text" id="ordersSearchInput" oninput="filterOrdersList()" placeholder="आदेश का नाम, पत्रांक संख्या या दिनांक से खोजें..." 
+                        class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3.5 py-2 pl-9 text-xs text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-sky-500 font-medium" />
+                </div>
+                <div class="flex items-center gap-2">
+                    <button type="button" onclick="openSaveOrderModal()" title="वर्तमान खुले आदेश को क्लाउड में सहेजें"
+                        class="px-3 py-2 rounded-lg bg-sky-600 hover:bg-sky-500 text-white font-bold text-xs flex items-center gap-1.5 transition shadow">
+                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                        <span>वर्तमान आदेश सहेजें</span>
+                    </button>
+                    <button type="button" onclick="createNewBlankOrder()" title="नया रिक्त आदेश प्रारंभ करें"
+                        class="px-3 py-2 rounded-lg bg-emerald-700 hover:bg-emerald-600 text-white font-bold text-xs flex items-center gap-1.5 transition shadow">
+                        <i class="fa-solid fa-file-circle-plus"></i>
+                        <span>+ नया आदेश</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Orders List Container -->
+            <div id="ordersListContainer" class="flex-1 overflow-y-auto p-4 sm:p-5 space-y-3 min-h-[280px]">
+                <div class="text-center py-12 text-slate-400 text-xs">
+                    <i class="fa-solid fa-spinner fa-spin text-2xl mb-2 text-sky-400"></i>
+                    <p>क्लाउड से आदेश लोड हो रहे हैं...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="pmsToast" class="pms-toast no-print">
+        <i class="fa-solid fa-circle-check text-green-400"></i>
+        <span id="pmsToastMsg">संदेश</span>
+    </div>
+
+    <!-- =========================================================================
+         Firebase SDK & Firestore Integration Module
+         ========================================================================= -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js';
+        import { 
+            initializeFirestore, 
+            collection, 
+            doc, 
+            setDoc, 
+            getDocs, 
+            deleteDoc, 
+            query, 
+            orderBy 
+        } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
+
+        // Official PMS Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDsVKuptdW4jRWQ5rLX_h_fn53xuFoYVMI",
+            authDomain: "abcreport-27dea.firebaseapp.com",
+            projectId: "abcreport-27dea",
+            storageBucket: "abcreport-27dea.firebasestorage.app",
+            messagingSenderId: "1422972209",
+            appId: "1:1422972209:web:82fbc39400d75566d8cc10"
+        };
+
+        const COLLECTION_NAME = 'pms_admission_fee_orders';
+        let app = null;
+        let db = null;
+        let cachedOrders = [];
+        let currentLoadedDocId = null;
+
+        // Initialize Firebase
+        try {
+            app = initializeApp(firebaseConfig);
+            db = initializeFirestore(app, { experimentalAutoDetectLongPolling: true });
+            updateCloudStatusUI(true);
+            // Pre-fetch saved orders
+            setTimeout(() => fetchSavedOrders(false), 300);
+        } catch (err) {
+            console.warn("Firestore Init Warning:", err);
+            updateCloudStatusUI(false);
+        }
+
+        function updateCloudStatusUI(isConnected) {
+            const badge = document.getElementById('cloudStatusBadge');
+            const text = document.getElementById('cloudStatusText');
+            if (!badge || !text) return;
+
+            if (isConnected) {
+                badge.className = "cloud-status-badge cloud-connected";
+                text.innerText = "क्लाउड सक्रिय";
+            } else {
+                badge.className = "cloud-status-badge cloud-offline";
+                text.innerText = "ऑफलाइन";
+            }
+        }
+
+        // Capture Document Payload
+        function captureOrderPayload(customTitle = '', customDispatch = '', customDate = '', forceNewId = false) {
+            const getCleanText = (id) => {
+                const el = document.getElementById(id);
+                return el ? el.innerText.trim() : '';
+            };
+
+            const dispatchNo = customDispatch || getCleanText('docDispatchNo') || 'व-88/2017';
+            const orderDate = customDate || getCleanText('docDate') || '__________/2026';
+            const orderTitle = customTitle || `प्रवेश एवं शिक्षण शुल्क छूट आदेश (${dispatchNo})`;
+
+            // Capture structured table rows
+            const tableRowsData = [];
+            const trs = document.querySelectorAll('#studentTableBody tr');
+            trs.forEach(tr => {
+                const cells = tr.querySelectorAll('td');
+                if (cells.length >= 7) {
+                    tableRowsData.push({
+                        srNo: cells[0].innerText.trim(),
+                        name: cells[1].innerText.trim(),
+                        fatherName: cells[2].innerText.trim(),
+                        studentClass: cells[3].innerText.trim(),
+                        address: cells[4].innerText.trim(),
+                        waiver: cells[5].innerText.trim(),
+                        reason: cells[6].innerText.trim()
+                    });
+                }
+            });
+
+            // Capture structured signature cards
+            const signaturesData = [];
+            const sigCards = document.querySelectorAll('#signatureGrid .sig-card');
+            sigCards.forEach(card => {
+                signaturesData.push({
+                    name: card.querySelector('.sig-name')?.innerText.trim() || '',
+                    role: card.querySelector('.sig-role')?.innerText.trim() || '',
+                    dept: card.querySelector('.sig-dept')?.innerText.trim() || ''
+                });
+            });
+
+            const paper = document.getElementById('editableDocumentPaper');
+            const contentHtml = paper ? paper.innerHTML : '';
+
+            let docId = currentLoadedDocId;
+            if (forceNewId || !docId) {
+                const sanitized = (orderTitle + '_' + dispatchNo).replace(/[^a-zA-Z0-9_\u0900-\u097F-]/g, '_').slice(0, 36);
+                docId = 'order_' + sanitized + '_' + Date.now().toString().slice(-6);
+            }
+
+            const nowFormatted = new Date().toLocaleString('hi-IN', {
+                timeZone: 'Asia/Kolkata',
+                day: '2-digit',
+                month: 'short',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: true
+            });
+
+            return {
+                id: docId,
+                title: orderTitle,
+                dispatchNo: dispatchNo,
+                orderDate: orderDate,
+                studentCount: tableRowsData.length,
+                sigCount: signaturesData.length,
+                contentHtml: contentHtml,
+                tableRowsData: tableRowsData,
+                signaturesData: signaturesData,
+                updatedAt: new Date().toISOString(),
+                updatedFormatted: nowFormatted,
+                timestamp: Date.now()
+            };
+        }
+
+        // Open Save Modal
+        window.openSaveOrderModal = function() {
+            const modal = document.getElementById('saveOrderModal');
+            if (!modal) return;
+
+            const dispatchNo = document.getElementById('docDispatchNo')?.innerText.trim() || 'व-88/2017';
+            const orderDate = document.getElementById('docDate')?.innerText.trim() || '';
+            const studentCount = document.querySelectorAll('#studentTableBody tr').length;
+            const sigCount = document.querySelectorAll('#signatureGrid .sig-card').length;
+
+            const titleInput = document.getElementById('saveModalTitle');
+            const dispatchInput = document.getElementById('saveModalDispatch');
+            const dateInput = document.getElementById('saveModalDate');
+            const countBadge = document.getElementById('saveModalStudentCount');
+            const sigBadge = document.getElementById('saveModalSigCount');
+            const statusText = document.getElementById('saveModalStatusText');
+            const updateBtn = document.getElementById('updateExistingOrderBtn');
+
+            if (countBadge) countBadge.innerText = studentCount;
+            if (sigBadge) sigBadge.innerText = sigCount;
+            if (dispatchInput) dispatchInput.value = dispatchNo;
+            if (dateInput) dateInput.value = orderDate;
+
+            if (currentLoadedDocId) {
+                const currentDoc = cachedOrders.find(d => d.id === currentLoadedDocId);
+                if (titleInput) titleInput.value = currentDoc ? currentDoc.title : `शुल्क छूट आदेश - ${dispatchNo}`;
+                if (statusText) statusText.innerHTML = `वर्तमान आदेश: <b class="text-amber-400">${currentDoc ? currentDoc.title : currentLoadedDocId}</b> लोड किया गया है।`;
+                if (updateBtn) updateBtn.classList.remove('hidden');
+            } else {
+                if (titleInput && !titleInput.value) titleInput.value = `जुलाई 2026 - प्रवेश एवं शिक्षण शुल्क छूट आदेश (${studentCount} छात्र)`;
+                if (statusText) statusText.innerText = "यह एक नए आदेश के रूप में सुरक्षित सहेजा जाएगा।";
+                if (updateBtn) updateBtn.classList.add('hidden');
+            }
+
+            modal.classList.add('flex-show');
+            setTimeout(() => titleInput && titleInput.focus(), 60);
+        };
+
+        window.closeSaveOrderModal = function() {
+            const modal = document.getElementById('saveOrderModal');
+            if (modal) modal.classList.remove('flex-show');
+        };
+
+        // Execute Save Order
+        window.executeSaveOrder = async function(isNewCopy = false) {
+            const titleInput = document.getElementById('saveModalTitle');
+            const dispatchInput = document.getElementById('saveModalDispatch');
+            const dateInput = document.getElementById('saveModalDate');
+
+            const title = titleInput?.value.trim() || 'प्रवेश शुल्क छूट आदेश';
+            const dispatchNo = dispatchInput?.value.trim() || 'व-88/2017';
+            const date = dateInput?.value.trim() || '';
+
+            // Update main document header with inputs
+            const docDispatch = document.getElementById('docDispatchNo');
+            const docDate = document.getElementById('docDate');
+            if (docDispatch && dispatchNo) docDispatch.innerText = dispatchNo;
+            if (docDate && date) docDate.innerText = date;
+
+            const payload = captureOrderPayload(title, dispatchNo, date, isNewCopy);
+
+            window.showToast("क्लाउड में सहेजा जा रहा है...", "fa-solid fa-spinner fa-spin text-sky-400");
+
+            try {
+                if (db) {
+                    await setDoc(doc(db, COLLECTION_NAME, payload.id), payload);
+                }
+
+                // Also update local cache
+                currentLoadedDocId = payload.id;
+                updateCurrentDocBadge(payload.title);
+                localStorage.setItem('PMS_ADMISSION_ORDER_STATE_V2', payload.contentHtml);
+                localStorage.setItem('PMS_LAST_SAVED_DOC_ID', payload.id);
+
+                // Register into dynamic document index if available
+                if (window.PMS_DOC_INDEX && typeof window.PMS_DOC_INDEX.registerDocument === 'function') {
+                    window.PMS_DOC_INDEX.registerDocument({
+                        id: payload.id,
+                        title: `आदेश: ${payload.title}`,
+                        category: "कार्यालय आदेश",
+                        desc: `पत्रांक: ${payload.dispatchNo} | छात्र: ${payload.studentCount} | दिनांक: ${payload.orderDate}`,
+                        url: "admission_fee_july.html"
+                    });
+                }
+
+                closeSaveOrderModal();
+                window.showToast(`"${payload.title}" सफलतापूर्वक सहेजा गया!`, 'fa-solid fa-cloud-arrow-up text-green-400');
+                await fetchSavedOrders(false);
+            } catch (err) {
+                console.error("Save error:", err);
+                // Fallback to local storage
+                localStorage.setItem('PMS_ADMISSION_ORDER_STATE_V2', payload.contentHtml);
+                window.showToast("क्लाउड विफल! स्थानीय रूप से सुरक्षित सहेजा गया।", 'fa-solid fa-triangle-exclamation text-amber-400');
+            }
+        };
+
+        // Fetch Saved Orders from Firestore
+        window.fetchSavedOrders = async function(showToastMsg = false) {
+            const countEl = document.getElementById('savedOrdersCount');
+            const historyCountEl = document.getElementById('historyModalCount');
+            const listContainer = document.getElementById('ordersListContainer');
+
+            if (showToastMsg) {
+                window.showToast("आदेश सूची रीफ्रेश की जा रही है...", "fa-solid fa-spinner fa-spin text-sky-400");
+            }
+
+            try {
+                if (!db) throw new Error("Database not connected");
+
+                const q = query(collection(db, COLLECTION_NAME), orderBy("timestamp", "desc"));
+                const querySnapshot = await getDocs(q);
+                const orders = [];
+                querySnapshot.forEach(docSnap => {
+                    orders.push({ id: docSnap.id, ...docSnap.data() });
+                });
+
+                cachedOrders = orders;
+                if (countEl) countEl.innerText = orders.length;
+                if (historyCountEl) historyCountEl.innerText = orders.length;
+
+                renderOrdersList(orders);
+                if (showToastMsg) {
+                    window.showToast(`कुल ${orders.length} आदेश लोड हुए!`);
+                }
+            } catch (err) {
+                console.warn("Fetch orders warning:", err);
+                if (listContainer) {
+                    listContainer.innerHTML = `
+                        <div class="text-center py-10 text-slate-400 text-xs">
+                            <i class="fa-solid fa-cloud-slash text-2xl text-rose-400 mb-2"></i>
+                            <p>क्लाउड कनेक्शन उपलब्ध नहीं है या अभी कोई आदेश सहेजा नहीं गया है।</p>
+                            <button onclick="fetchSavedOrders(true)" class="mt-3 px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded border border-slate-600 font-semibold cursor-pointer">
+                                पुनः प्रयास करें
+                            </button>
+                        </div>
+                    `;
+                }
+            }
+        };
+
+        // Render Orders List
+        function renderOrdersList(orders) {
+            const container = document.getElementById('ordersListContainer');
+            if (!container) return;
+
+            if (!orders || orders.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-12 text-slate-400 text-xs">
+                        <i class="fa-solid fa-folder-open text-3xl mb-2 text-slate-600"></i>
+                        <p class="font-bold text-slate-300">कोई सहेजा गया आदेश नहीं मिला</p>
+                        <p class="mt-1 text-slate-500">वर्तमान आदेश को सुरक्षित रखने के लिए ऊपर "वर्तमान आदेश सहेजें" बटन दबाएं।</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = orders.map(order => {
+                const isActive = currentLoadedDocId === order.id;
+                return `
+                    <div class="order-history-card ${isActive ? 'active-order' : ''}">
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center gap-2 flex-wrap mb-1">
+                                <h4 class="font-bold text-white text-sm truncate" title="${order.title}">${order.title}</h4>
+                                ${isActive ? '<span class="text-[10px] bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 px-2 py-0.5 rounded-full font-bold">✓ सक्रिय</span>' : ''}
+                            </div>
+                            <div class="flex items-center gap-3 text-xs text-slate-400 flex-wrap">
+                                <span><i class="fa-solid fa-hashtag text-slate-500 mr-1"></i>${order.dispatchNo || '-'}</span>
+                                <span><i class="fa-regular fa-calendar text-slate-500 mr-1"></i>${order.orderDate || '-'}</span>
+                                <span class="bg-blue-900/50 text-blue-300 px-2 py-0.5 rounded text-[11px] font-semibold"><i class="fa-solid fa-users mr-1"></i>${order.studentCount || 0} छात्र</span>
+                                <span class="bg-indigo-900/50 text-indigo-300 px-2 py-0.5 rounded text-[11px] font-semibold"><i class="fa-solid fa-signature mr-1"></i>${order.sigCount || 0} हस्ताक्षर</span>
+                                <span class="text-slate-500 text-[11px]"><i class="fa-regular fa-clock mr-1"></i>${order.updatedFormatted || ''}</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-1.5 flex-shrink-0">
+                            <button type="button" onclick="loadOrderFromCloud('${order.id}', false)" class="px-2.5 py-1.5 bg-sky-600 hover:bg-sky-500 text-white rounded text-xs font-bold transition flex items-center gap-1 cursor-pointer" title="इस आदेश को एडिटर में खोलें">
+                                <i class="fa-solid fa-folder-open"></i> लोड करें
+                            </button>
+                            <button type="button" onclick="loadOrderFromCloud('${order.id}', true)" class="px-2.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded text-xs font-bold transition flex items-center gap-1 cursor-pointer" title="लोड करके तुरंत प्रिंट करें">
+                                <i class="fa-solid fa-print"></i> प्रिंट
+                            </button>
+                            <button type="button" onclick="deleteOrderFromCloud('${order.id}', '${order.title.replace(/'/g, "\\'")}')" class="p-1.5 hover:bg-rose-900/40 text-slate-400 hover:text-rose-400 rounded transition cursor-pointer" title="हटाएं">
+                                <i class="fa-regular fa-trash-can"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Filter Orders in History Modal
+        window.filterOrdersList = function() {
+            const queryText = (document.getElementById('ordersSearchInput')?.value || '').toLowerCase().trim();
+            if (!queryText) {
+                renderOrdersList(cachedOrders);
+                return;
+            }
+
+            const filtered = cachedOrders.filter(o => {
+                return (o.title && o.title.toLowerCase().includes(queryText)) ||
+                       (o.dispatchNo && o.dispatchNo.toLowerCase().includes(queryText)) ||
+                       (o.orderDate && o.orderDate.toLowerCase().includes(queryText));
+            });
+
+            renderOrdersList(filtered);
+        };
+
+        // Load Order from Cloud
+        window.loadOrderFromCloud = function(docId, shouldPrintAfter = false) {
+            const order = cachedOrders.find(d => d.id === docId);
+            if (!order) return;
+
+            if (order.contentHtml) {
+                const paper = document.getElementById('editableDocumentPaper');
+                if (paper) {
+                    paper.innerHTML = order.contentHtml;
+                }
+            }
+
+            currentLoadedDocId = order.id;
+            updateCurrentDocBadge(order.title);
+            localStorage.setItem('PMS_ADMISSION_ORDER_STATE_V2', order.contentHtml);
+            localStorage.setItem('PMS_LAST_SAVED_DOC_ID', order.id);
+
+            // Re-initialize dynamic features
+            if (window.updateTotalStudentCount) window.updateTotalStudentCount();
+            if (window.setupDragAndDrop) window.setupDragAndDrop();
+            if (window.setupMovableCanvas) window.setupMovableCanvas();
+
+            closeOrdersHistoryModal();
+            window.showToast(`"${order.title}" लोड हो गया!`, 'fa-solid fa-circle-check text-green-400');
+
+            if (shouldPrintAfter) {
+                setTimeout(() => window.print(), 350);
+            }
+        };
+
+        // Delete Order from Cloud
+        window.deleteOrderFromCloud = async function(docId, title) {
+            if (!confirm(`क्या आप वाकई आदेश "${title}" को क्लाउड से हटाना चाहते हैं?`)) return;
+
+            try {
+                if (db) {
+                    await deleteDoc(doc(db, COLLECTION_NAME, docId));
+                }
+
+                cachedOrders = cachedOrders.filter(d => d.id !== docId);
+                renderOrdersList(cachedOrders);
+
+                const countEl = document.getElementById('savedOrdersCount');
+                const historyCountEl = document.getElementById('historyModalCount');
+                if (countEl) countEl.innerText = cachedOrders.length;
+                if (historyCountEl) historyCountEl.innerText = cachedOrders.length;
+
+                if (currentLoadedDocId === docId) {
+                    currentLoadedDocId = null;
+                    updateCurrentDocBadge("डिफ़ॉल्ट आदेश");
+                }
+
+                window.showToast('आदेश क्लाउड से हटा दिया गया!', 'fa-solid fa-trash-can text-red-400');
+            } catch (err) {
+                console.error("Delete error:", err);
+                window.showToast('हटाने में त्रुटि!', 'fa-solid fa-triangle-exclamation text-red-400');
+            }
+        };
+
+        // Open/Close History Modal
+        window.openOrdersHistoryModal = function() {
+            const modal = document.getElementById('ordersHistoryModal');
+            if (modal) {
+                modal.classList.add('flex-show');
+                fetchSavedOrders(false);
+            }
+        };
+
+        window.closeOrdersHistoryModal = function() {
+            const modal = document.getElementById('ordersHistoryModal');
+            if (modal) modal.classList.remove('flex-show');
+        };
+
+        // Create New Blank Order
+        window.createNewBlankOrder = function() {
+            if (confirm("क्या आप एक नया आदेश प्रारंभ करना चाहते हैं? (वर्तमान में किए गए बिना सहेजे परिवर्तन मिट जाएंगे)")) {
+                currentLoadedDocId = null;
+                localStorage.removeItem('PMS_ADMISSION_ORDER_STATE_V2');
+                localStorage.removeItem('PMS_LAST_SAVED_DOC_ID');
+                location.reload();
+            }
+        };
+
+        function updateCurrentDocBadge(title) {
+            const badge = document.getElementById('currentDocTitleText');
+            if (badge) badge.innerText = title || "डिफ़ॉल्ट आदेश";
+        }
+    </script>
+
+    <!-- Interactive Client Scripts -->
+    <script>
+        // LocalStorage Keys
+        const STORAGE_KEY = 'PMS_ADMISSION_ORDER_STATE_V8';
+        const CLIPBOARD_KEY = 'PMS_SIG_CLIPBOARD_V8';
+
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', () => {
+            loadDocumentFromStorage();
+            updateTotalStudentCount();
+            setupFreeSignatureCards();
+            setupMovableCanvas();
+            setupInputAutoSave();
+            checkStoredSignatureClipboard();
+        });
+
+        // Toast Message helper
+        function showToast(msg, iconClass = 'fa-solid fa-circle-check text-green-400') {
+            const toast = document.getElementById('pmsToast');
+            if (!toast) return;
+
+            toast.innerHTML = `<i class="${iconClass}"></i> <span>${msg}</span>`;
+            toast.classList.add('show');
+            clearTimeout(window.toastTimer);
+            window.toastTimer = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2600);
+        }
+
+        // Auto Save on typing with Debounce
+        let autoSaveTimer = null;
+        function setupInputAutoSave() {
+            const paper = document.getElementById('editableDocumentPaper');
+            if (paper) {
+                paper.addEventListener('input', () => {
+                    clearTimeout(autoSaveTimer);
+                    autoSaveTimer = setTimeout(() => {
+                        saveDocumentToStorage(false);
+                    }, 600);
+                });
+            }
+        }
+
+        // ==========================================
+        // STUDENT TABLE FUNCTIONS
+        // ==========================================
+
+        function updateTotalStudentCount() {
+            const tbody = document.getElementById('studentTableBody');
+            const countEl = document.getElementById('totalStudentsCount');
+            if (tbody && countEl) {
+                const count = tbody.querySelectorAll('tr').length;
+                countEl.innerText = count;
+            }
+        }
+
+        function addNewStudentRow() {
+            const tbody = document.getElementById('studentTableBody');
+            if (!tbody) return;
+
+            const nextIndex = tbody.querySelectorAll('tr').length + 1;
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td class="text-center font-bold" contenteditable="true">${nextIndex}.</td>
+                <td class="font-bold" contenteditable="true">नवीन विद्यार्थी</td>
+                <td contenteditable="true">श्री ...</td>
+                <td class="text-center" contenteditable="true">कक्षा- के0जी0 1</td>
+                <td contenteditable="true">रायबरेली</td>
+                <td class="fee-waiver-highlight" contenteditable="true">माह अप्रैल, मई, जून की मासिक फीस माफ़</td>
+                <td class="text-center" contenteditable="true">जुलाई में एडमिशन</td>
+                <td class="row-action-cell no-print">
+                    <button type="button" class="row-btn row-dup-btn" onclick="duplicateRow(this)" title="पंक्ति कॉपी करें"><i class="fa-regular fa-copy"></i></button>
+                    <button type="button" class="row-btn row-del-btn" onclick="deleteRow(this)" title="हटाएं"><i class="fa-regular fa-trash-can"></i></button>
+                </td>
+            `;
+
+            tbody.appendChild(tr);
+            updateTotalStudentCount();
+            saveDocumentToStorage(false);
+
+            // Focus on newly added student name
+            const nameCell = tr.querySelectorAll('td')[1];
+            if (nameCell) {
+                nameCell.focus();
+                const range = document.createRange();
+                range.selectNodeContents(nameCell);
+                const sel = window.getSelection();
+                sel.removeAllRanges();
+                sel.addRange(range);
+            }
+
+            tr.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            showToast(`नई छात्र प्रविष्टि #${nextIndex} जोड़ी गई!`);
+        }
+
+        function duplicateRow(btn) {
+            const tr = btn.closest('tr');
+            if (!tr) return;
+
+            const clone = tr.cloneNode(true);
+            tr.parentNode.insertBefore(clone, tr.nextSibling);
+            renumberTableRows();
+            saveDocumentToStorage(false);
+            showToast('छात्र प्रविष्टि की प्रतिलिपि बनाई गई!');
+        }
+
+        function deleteRow(btn) {
+            const tr = btn.closest('tr');
+            if (!tr) return;
+
+            const studentName = tr.querySelectorAll('td')[1]?.innerText.trim() || 'प्रविष्टि';
+            if (confirm(`क्या आप "${studentName}" की पंक्ति हटाना चाहते हैं?`)) {
+                tr.remove();
+                renumberTableRows();
+                updateTotalStudentCount();
+                saveDocumentToStorage(false);
+                showToast('प्रविष्टि हटा दी गई!', 'fa-solid fa-trash-can text-red-400');
+            }
+        }
+
+        function renumberTableRows() {
+            const tbody = document.getElementById('studentTableBody');
+            if (!tbody) return;
+
+            const rows = tbody.querySelectorAll('tr');
+            rows.forEach((row, index) => {
+                const firstCell = row.querySelector('td');
+                if (firstCell) {
+                    firstCell.innerText = `${index + 1}.`;
+                }
+            });
+            updateTotalStudentCount();
+            saveDocumentToStorage(false);
+            showToast('सभी पंक्तियाँ क्रमबद्ध कर दी गईं!');
+        }
+
+        // ==========================================
+        // SIGNATURE CARDS: FREE PLACEMENT & DRAGGING (कैनवास में कहीं भी रखें)
+        // ==========================================
+
+        function setupFreeSignatureCards(forceRealign = false) {
+            // Migrate legacy signatory-box to sig-card if present in DOM (e.g. from cached storage)
+            const legacyBox = document.querySelector('.signatory-box');
+            if (legacyBox && legacyBox.parentElement) {
+                const block = legacyBox.parentElement;
+                block.id = block.id || 'page1SignatoryBlock';
+                block.innerHTML = `
+                    <div class="sig-card" style="left: 10px; top: 10px;" data-x="10" data-y="10">
+                        <div class="sig-card-controls no-print">
+                            <span class="sig-handle" title="माउस से पकड़कर कहीं भी रखें (Drag & Move Anywhere)"><i class="fa-solid fa-arrows-up-down-left-right"></i> ड्रैग</span>
+                            <div class="sig-card-actions">
+                                <button type="button" class="sig-card-btn sig-move-btn" onclick="moveSigCard(this, -1)" title="बायें खिसकाएँ"><i class="fa-solid fa-arrow-left"></i></button>
+                                <button type="button" class="sig-card-btn sig-move-btn" onclick="moveSigCard(this, 1)" title="दायें खिसकाएँ"><i class="fa-solid fa-arrow-right"></i></button>
+                                <button type="button" class="sig-card-btn sig-copy-btn" onclick="centerSigCard(this)" title="मध्य में अलाइन करें"><i class="fa-solid fa-align-center"></i></button>
+                                <button type="button" class="sig-card-btn sig-copy-btn" onclick="duplicateSignatureCard(this)" title="डुप्लिकेट बनाएं"><i class="fa-regular fa-clone"></i> डुप्लिकेट</button>
+                                <button type="button" class="sig-card-btn sig-copy-btn" onclick="copySignatureCard(this)" title="कॉपी करें"><i class="fa-regular fa-copy"></i> कॉपी</button>
+                                <button type="button" class="sig-card-btn sig-del-btn" onclick="deleteSignatureCard(this)" title="हटाएं"><i class="fa-regular fa-trash-can"></i></button>
+                            </div>
+                        </div>
+                        <div class="sig-sign-space"></div>
+                        <p class="sig-name" contenteditable="true" spellcheck="false">(श्री लाल भरत कुमार पाल)</p>
+                        <p class="sig-role" contenteditable="true" spellcheck="false">प्रबन्धक/सेनानायक</p>
+                        <p class="sig-dept" contenteditable="true" spellcheck="false">पुलिस मॉडर्न स्कूल</p>
+                        <p class="sig-dept" contenteditable="true" spellcheck="false">25वीं वाहिनी पीएसी, रायबरेली।</p>
+                    </div>
+                `;
+                // Add toolbar if missing
+                if (!document.querySelector('.signatory-toolbar') && block.parentElement) {
+                    const tb = document.createElement('div');
+                    tb.className = 'signatory-toolbar no-print';
+                    tb.innerHTML = `
+                        <div class="sig-section-title">
+                            <i class="fa-solid fa-signature"></i>
+                            <span>आदेश हस्ताक्षर (Draggable & Editable Signature)</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="sig-drag-hint">
+                                <i class="fa-solid fa-arrows-up-down-left-right text-blue-600"></i> माउस से पकड़कर कहीं भी रखें
+                            </span>
+                            <button type="button" class="sig-add-btn" onclick="addNewSignatoryCard()">
+                                <i class="fa-solid fa-plus"></i> नया हस्ताक्षर जोड़ें
+                            </button>
+                            <button type="button" class="sig-paste-btn" onclick="pasteSignatoryCard()" title="कॉपी किया गया हस्ताक्षर यहाँ जोड़ें">
+                                <i class="fa-regular fa-clipboard"></i> पेस्ट हस्ताक्षर
+                            </button>
+                        </div>
+                    `;
+                    block.parentElement.insertBefore(tb, block);
+                }
+            }
+
+            const grid = document.getElementById('signatureGrid');
+            if (grid) {
+                grid.classList.add('free-canvas');
+                const cards = Array.from(grid.querySelectorAll('.sig-card'));
+                if (cards.length > 0) {
+                    const hasPositionedCards = cards.some(c => c.style.left && c.style.top);
+
+                    if (!hasPositionedCards || forceRealign) {
+                        const containerWidth = grid.clientWidth || 740;
+                        const cardWidth = 230;
+                        const gapX = 14;
+                        const gapY = 20;
+
+                        let cols = Math.floor((containerWidth + gapX) / (cardWidth + gapX));
+                        if (cols < 1) cols = 1;
+                        if (cols > 3) cols = 3;
+
+                        const totalRowWidth = (cols * cardWidth) + ((cols - 1) * gapX);
+                        const startX = Math.max(10, Math.floor((containerWidth - totalRowWidth) / 2));
+
+                        let maxBottom = 0;
+                        cards.forEach((card, index) => {
+                            const col = index % cols;
+                            const row = Math.floor(index / cols);
+
+                            const x = startX + col * (cardWidth + gapX);
+                            const y = 12 + row * (155 + gapY);
+
+                            card.style.left = `${x}px`;
+                            card.style.top = `${y}px`;
+                            card.dataset.x = x;
+                            card.dataset.y = y;
+
+                            const cardH = card.offsetHeight || 155;
+                            if (y + cardH > maxBottom) {
+                                maxBottom = y + cardH;
+                            }
+                        });
+
+                        grid.style.minHeight = `${Math.max(380, maxBottom + 25)}px`;
+                    } else {
+                        updateGridCanvasHeight();
+                    }
+                }
+            }
+
+            // Check signatory block height without overriding card coordinates
+            const sigBlock = document.getElementById('page1SignatoryBlock') || document.querySelector('.signatory-block');
+            if (sigBlock) {
+                updateContainerHeight(sigBlock);
+            }
+
+            // Attach free drag events to all cards across document (Page 1 Pratilipi & Signatures, Page 2 Committee)
+            document.querySelectorAll('.sig-card, .pratilipi-card').forEach(card => attachCardFreeDrag(card));
+        }
+
+        window.setupDragAndDrop = setupFreeSignatureCards;
+        window.setupFreeSignatureCards = setupFreeSignatureCards;
+
+        function updateContainerHeight(container) {
+            if (!container) return;
+            const items = container.querySelectorAll('.sig-card, .pratilipi-card');
+            let maxBottom = 0;
+            items.forEach(el => {
+                const top = parseFloat(el.style.top) || parseFloat(el.dataset.y) || 0;
+                const h = el.offsetHeight || 155;
+                if (top + h > maxBottom) {
+                    maxBottom = top + h;
+                }
+            });
+            const baseMinH = container.classList.contains('signatory-block') ? 220 : 380;
+            container.style.minHeight = `${Math.max(baseMinH, Math.round(maxBottom + 25))}px`;
+        }
+        window.updateContainerHeight = updateContainerHeight;
+
+        function updateGridCanvasHeight() {
+            const grid = document.getElementById('signatureGrid');
+            if (!grid) return;
+
+            const cards = grid.querySelectorAll('.sig-card');
+            let maxBottom = 0;
+            cards.forEach(card => {
+                const top = parseFloat(card.style.top) || parseFloat(card.dataset.y) || 0;
+                const h = card.offsetHeight || 155;
+                if (top + h > maxBottom) {
+                    maxBottom = top + h;
+                }
+            });
+
+            grid.style.minHeight = `${Math.max(380, Math.round(maxBottom + 25))}px`;
+        }
+        window.updateGridCanvasHeight = updateGridCanvasHeight;
+
+        function autoArrangeSignatureCards() {
+            setupFreeSignatureCards(true);
+            saveDocumentToStorage(false);
+            showToast('सभी हस्ताक्षर कार्ड्स को पंक्तिबद्ध (Auto Aligned) सजाया गया!', 'fa-solid fa-table-cells-large text-green-400');
+        }
+        window.autoArrangeSignatureCards = autoArrangeSignatureCards;
+
+        function attachCardFreeDrag(card) {
+            const container = card.closest('.signature-grid, .signatory-block') || card.parentElement;
+            if (!container) return;
+
+            card.removeAttribute('draggable');
+
+            const handle = card.querySelector('.sig-handle');
+            const controls = card.querySelector('.sig-card-controls');
+            const dragTarget = handle || controls || card;
+
+            let isDragging = false;
+            let startMouseX = 0, startMouseY = 0;
+            let startCardX = 0, startCardY = 0;
+
+            dragTarget.onpointerdown = function(e) {
+                // Do not drag if clicking button, contenteditable, or link
+                if (e.target.closest('button') || e.target.isContentEditable || e.target.closest('[contenteditable="true"]')) {
+                    return;
+                }
+
+                e.preventDefault();
+                e.stopPropagation();
+
+                isDragging = true;
+                dragTarget.setPointerCapture(e.pointerId);
+
+                startMouseX = e.clientX;
+                startMouseY = e.clientY;
+
+                startCardX = parseFloat(card.style.left) || card.offsetLeft || 0;
+                startCardY = parseFloat(card.style.top) || card.offsetTop || 0;
+
+                card.classList.add('is-card-moving');
+                document.body.style.userSelect = 'none';
+            };
+
+            dragTarget.onpointermove = function(e) {
+                if (!isDragging) return;
+                e.preventDefault();
+                e.stopPropagation();
+
+                const dx = e.clientX - startMouseX;
+                const dy = e.clientY - startMouseY;
+
+                let newX = Math.round(startCardX + dx);
+                let newY = Math.round(startCardY + dy);
+
+                // Allow moving anywhere (prevent negative coordinates)
+                newX = Math.max(0, newX);
+                newY = Math.max(0, newY);
+
+                card.style.left = `${newX}px`;
+                card.style.top = `${newY}px`;
+                card.dataset.x = newX;
+                card.dataset.y = newY;
+
+                // Expand container height dynamically if dragged downwards
+                const cardH = card.offsetHeight || 155;
+                const baseMinH = container.classList.contains('signatory-block') ? 180 : 380;
+                const curMinH = parseFloat(container.style.minHeight) || baseMinH;
+                if (newY + cardH + 25 > curMinH) {
+                    container.style.minHeight = `${newY + cardH + 25}px`;
+                }
+            };
+
+            dragTarget.onpointerup = dragTarget.onpointercancel = function(e) {
+                if (isDragging) {
+                    isDragging = false;
+                    card.classList.remove('is-card-moving');
+                    document.body.style.userSelect = '';
+                    try { dragTarget.releasePointerCapture(e.pointerId); } catch (_) {}
+
+                    if (container.id === 'signatureGrid') {
+                        updateGridCanvasHeight();
+                    } else {
+                        updateContainerHeight(container);
+                    }
+                    saveDocumentToStorage(false);
+                    const name = card.querySelector('.sig-name')?.innerText.trim() || 'हस्ताक्षर कार्ड';
+                    showToast(`"${name}" का नया स्थान सुरक्षित हो गया!`, 'fa-solid fa-location-dot text-sky-400');
+                }
+            };
+        }
+        window.attachCardFreeDrag = attachCardFreeDrag;
+
+        function moveSigCard(btn, direction) {
+            const card = btn.closest('.sig-card, .pratilipi-card');
+            if (!card) return;
+
+            const curX = parseFloat(card.style.left) || 0;
+            const newX = Math.max(0, Math.round(curX + direction * 25));
+
+            card.style.left = `${newX}px`;
+            card.dataset.x = newX;
+            saveDocumentToStorage(false);
+            showToast(direction > 0 ? 'दायीं ओर खिसकाया गया!' : 'बायीं ओर खिसकाया गया!');
+        }
+
+        window.moveElement = moveSigCard;
+
+        function centerSigCard(btn) {
+            const card = btn.closest('.sig-card');
+            if (!card) return;
+            const container = card.closest('.signature-grid, .signatory-block') || card.parentElement;
+            if (!container) return;
+            const containerW = container.clientWidth || 800;
+            const cardW = card.offsetWidth || 240;
+            const newX = Math.max(0, Math.round((containerW - cardW) / 2));
+            card.style.left = `${newX}px`;
+            card.dataset.x = newX;
+            saveDocumentToStorage(false);
+            showToast('हस्ताक्षर कार्ड को मध्य (Center) में अलाइन किया गया!', 'fa-solid fa-align-center text-sky-400');
+        }
+        window.centerSigCard = centerSigCard;
+
+        function alignPage1SignatureCard(pos) {
+            const block = document.getElementById('page1SignatoryBlock') || document.querySelector('.signatory-block');
+            if (!block) return;
+            const card = block.querySelector('.sig-card');
+            if (!card) return;
+            const blockW = block.clientWidth || 800;
+            const cardW = card.offsetWidth || 240;
+
+            let newX = 10;
+            if (pos === 'center') {
+                newX = Math.max(0, Math.round((blockW - cardW) / 2));
+            } else if (pos === 'right') {
+                newX = Math.max(0, Math.round(blockW - cardW - 20));
+            } else {
+                newX = 10;
+            }
+
+            card.style.left = `${newX}px`;
+            card.dataset.x = newX;
+            saveDocumentToStorage(false);
+            const label = pos === 'center' ? 'मध्य (Center)' : (pos === 'right' ? 'दायें (Right)' : 'बायें (Left)');
+            showToast(`हस्ताक्षर कार्ड को ${label} अलाइन किया गया!`, 'fa-solid fa-arrows-left-right-to-line text-sky-400');
+        }
+        window.alignPage1SignatureCard = alignPage1SignatureCard;
+
+        function layoutParallelSideBySide() {
+            const block = document.getElementById('page1SignatoryBlock');
+            if (!block) return;
+
+            const pratilipi = block.querySelector('.pratilipi-card');
+            const sigCard = block.querySelector('.sig-card');
+
+            if (pratilipi) {
+                pratilipi.style.left = '10px';
+                pratilipi.style.top = '10px';
+                pratilipi.dataset.x = 10;
+                pratilipi.dataset.y = 10;
+            }
+
+            if (sigCard) {
+                const blockW = block.clientWidth || 800;
+                const sigW = sigCard.offsetWidth || 240;
+                const newLeft = Math.max(480, blockW - sigW - 20);
+                sigCard.style.left = `${newLeft}px`;
+                sigCard.style.top = '10px';
+                sigCard.dataset.x = newLeft;
+                sigCard.dataset.y = 10;
+            }
+
+            updateContainerHeight(block);
+            saveDocumentToStorage(false);
+            showToast('प्रतिलिपि एवं हस्ताक्षर को समानांतर (Side-by-Side Parallel) सजाया गया!', 'fa-solid fa-table-columns text-green-400');
+        }
+        window.layoutParallelSideBySide = layoutParallelSideBySide;
+
+        function addNewPratilipiRow() {
+            const list = document.getElementById('pratilipiList');
+            if (!list) return;
+            const count = list.querySelectorAll('li').length + 1;
+            const li = document.createElement('li');
+            li.contentEditable = "true";
+            li.spellcheck = false;
+            li.innerText = `${count}. श्री / पद, 25वीं वाहिनी पीएसी, रायबरेली।`;
+            list.appendChild(li);
+            const block = document.getElementById('page1SignatoryBlock');
+            if (block) updateContainerHeight(block);
+            saveDocumentToStorage(false);
+            showToast('प्रतिलिपि में नई पंक्ति जोड़ी गई!', 'fa-solid fa-plus text-sky-400');
+        }
+        window.addNewPratilipiRow = addNewPratilipiRow;
+
+        function addNewSignatureCard(data = null) {
+            const grid = document.getElementById('signatureGrid');
+            if (!grid) return;
+
+            const name = data?.name || '(श्री / श्रीमती का नाम)';
+            const role = data?.role || 'पद / दायित्व';
+            const dept = data?.dept || 'पुलिस मॉडर्न स्कूल, 25वीं वाहिनी पीएसी';
+
+            // Find bottom position for the new card
+            const cards = grid.querySelectorAll('.sig-card');
+            let maxBottom = 10;
+            cards.forEach(c => {
+                const b = (parseFloat(c.style.top) || 0) + (c.offsetHeight || 155);
+                if (b > maxBottom) maxBottom = b;
+            });
+
+            const card = document.createElement('div');
+            card.className = 'sig-card';
+            const newTop = maxBottom + 16;
+            card.style.left = '20px';
+            card.style.top = `${newTop}px`;
+            card.dataset.x = 20;
+            card.dataset.y = newTop;
+
+            card.innerHTML = `
+                <div class="sig-card-controls no-print">
+                    <span class="sig-handle" title="माउस से पकड़कर कहीं भी रखें (Drag & Move Anywhere)"><i class="fa-solid fa-arrows-up-down-left-right"></i> ड्रैग</span>
+                    <div class="sig-card-actions">
+                        <button type="button" class="sig-card-btn sig-move-btn" onclick="moveSigCard(this, -1)" title="बायें खिसकाएँ"><i class="fa-solid fa-arrow-left"></i></button>
+                        <button type="button" class="sig-card-btn sig-move-btn" onclick="moveSigCard(this, 1)" title="दायें खिसकाएँ"><i class="fa-solid fa-arrow-right"></i></button>
+                        <button type="button" class="sig-card-btn sig-copy-btn" onclick="duplicateSignatureCard(this)" title="डुप्लिकेट बनाएं"><i class="fa-regular fa-clone"></i> डुप्लिकेट</button>
+                        <button type="button" class="sig-card-btn sig-copy-btn" onclick="copySignatureCard(this)" title="कॉपी करें"><i class="fa-regular fa-copy"></i> कॉपी</button>
+                        <button type="button" class="sig-card-btn sig-del-btn" onclick="deleteSignatureCard(this)" title="हटाएं"><i class="fa-regular fa-trash-can"></i></button>
+                    </div>
+                </div>
+                <div class="sig-sign-space"></div>
+                <p class="sig-name" contenteditable="true" spellcheck="false">${name}</p>
+                <p class="sig-role" contenteditable="true" spellcheck="false">${role}</p>
+                <p class="sig-dept" contenteditable="true" spellcheck="false">${dept}</p>
+            `;
+
+            grid.appendChild(card);
+            attachCardFreeDrag(card);
+            updateGridCanvasHeight();
+            saveDocumentToStorage(false);
+
+            card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            const nameEl = card.querySelector('.sig-name');
+            if (nameEl) nameEl.focus();
+
+            showToast('नया हस्ताक्षर कार्ड जोड़ा गया! माउस से कहीं भी खिसकाएं।');
+            return card;
+        }
+
+        function addNewSignatoryCard(data = null) {
+            const block = document.getElementById('page1SignatoryBlock') || document.querySelector('.signatory-block');
+            if (!block) return;
+
+            const name = data?.name || '(श्री लाल भरत कुमार पाल)';
+            const role = data?.role || 'प्रबन्धक/सेनानायक';
+            const dept = data?.dept || 'पुलिस मॉडर्न स्कूल';
+            const dept2 = data?.dept2 || '25वीं वाहिनी पीएसी, रायबरेली।';
+
+            const cards = block.querySelectorAll('.sig-card');
+            let maxBottom = 10;
+            cards.forEach(c => {
+                const b = (parseFloat(c.style.top) || 0) + (c.offsetHeight || 155);
+                if (b > maxBottom) maxBottom = b;
+            });
+
+            const newTop = cards.length === 0 ? 10 : maxBottom + 12;
+            const blockW = block.clientWidth || 800;
+            const newLeft = Math.max(10, blockW - 260);
+
+            const card = document.createElement('div');
+            card.className = 'sig-card';
+            card.style.left = `${newLeft}px`;
+            card.style.top = `${newTop}px`;
+            card.dataset.x = newLeft;
+            card.dataset.y = newTop;
+
+            card.innerHTML = `
+                <div class="sig-card-controls no-print">
+                    <span class="sig-handle" title="माउस से पकड़कर कहीं भी रखें (Drag & Move Anywhere)"><i class="fa-solid fa-arrows-up-down-left-right"></i> ड्रैग</span>
+                    <div class="sig-card-actions">
+                        <button type="button" class="sig-card-btn sig-move-btn" onclick="moveSigCard(this, -1)" title="बायें खिसकाएँ"><i class="fa-solid fa-arrow-left"></i></button>
+                        <button type="button" class="sig-card-btn sig-move-btn" onclick="moveSigCard(this, 1)" title="दायें खिसकाएँ"><i class="fa-solid fa-arrow-right"></i></button>
+                        <button type="button" class="sig-card-btn sig-copy-btn" onclick="centerSigCard(this)" title="मध्य में अलाइन करें"><i class="fa-solid fa-align-center"></i></button>
+                        <button type="button" class="sig-card-btn sig-copy-btn" onclick="duplicateSignatureCard(this)" title="डुप्लिकेट बनाएं"><i class="fa-regular fa-clone"></i> डुप्लिकेट</button>
+                        <button type="button" class="sig-card-btn sig-copy-btn" onclick="copySignatureCard(this)" title="कॉपी करें"><i class="fa-regular fa-copy"></i> कॉपी</button>
+                        <button type="button" class="sig-card-btn sig-del-btn" onclick="deleteSignatureCard(this)" title="हटाएं"><i class="fa-regular fa-trash-can"></i></button>
+                    </div>
+                </div>
+                <div class="sig-sign-space"></div>
+                <p class="sig-name" contenteditable="true" spellcheck="false">${name}</p>
+                <p class="sig-role" contenteditable="true" spellcheck="false">${role}</p>
+                <p class="sig-dept" contenteditable="true" spellcheck="false">${dept}</p>
+                <p class="sig-dept" contenteditable="true" spellcheck="false">${dept2}</p>
+            `;
+
+            block.appendChild(card);
+            attachCardFreeDrag(card);
+            updateContainerHeight(block);
+            saveDocumentToStorage(false);
+
+            card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            showToast('नया हस्ताक्षर कार्ड जोड़ा गया! माउस से कहीं भी खिसकाएं।');
+            return card;
+        }
+        window.addNewSignatoryCard = addNewSignatoryCard;
+
+        function duplicateSignatureCard(btn) {
+            const card = btn.closest('.sig-card');
+            if (!card) return;
+            const container = card.closest('.signature-grid, .signatory-block') || card.parentElement;
+            if (!container) return;
+
+            const name = card.querySelector('.sig-name')?.innerText.trim() || '';
+            const curX = parseFloat(card.style.left) || 20;
+            const curY = parseFloat(card.style.top) || 20;
+
+            const clone = card.cloneNode(true);
+            const newX = curX + 25;
+            const newY = curY + 25;
+
+            clone.style.left = `${newX}px`;
+            clone.style.top = `${newY}px`;
+            clone.dataset.x = newX;
+            clone.dataset.y = newY;
+
+            container.appendChild(clone);
+            attachCardFreeDrag(clone);
+            if (container.id === 'signatureGrid') {
+                updateGridCanvasHeight();
+            } else {
+                updateContainerHeight(container);
+            }
+            saveDocumentToStorage(false);
+
+            showToast(`"${name}" की प्रतिलिपि (Duplicate) जोड़ी गई! माउस से कहीं भी रखें।`, 'fa-solid fa-clone text-green-400');
+        }
+
+        function copySignatureCard(btn) {
+            const card = btn.closest('.sig-card');
+            if (!card) return;
+
+            const name = card.querySelector('.sig-name')?.innerText.trim() || '';
+            const role = card.querySelector('.sig-role')?.innerText.trim() || '';
+            const dept = card.querySelector('.sig-dept')?.innerText.trim() || '';
+
+            const sigData = { name, role, dept };
+            localStorage.setItem(CLIPBOARD_KEY, JSON.stringify(sigData));
+
+            const pasteBtns = document.querySelectorAll('.sig-paste-btn');
+            pasteBtns.forEach(b => b.disabled = false);
+
+            showToast(`"${name}" कॉपी हो गया! 'पेस्ट हस्ताक्षर' बटन से पेस्ट करें।`, 'fa-solid fa-copy text-sky-400');
+        }
+
+        function checkStoredSignatureClipboard() {
+            try {
+                const stored = localStorage.getItem(CLIPBOARD_KEY);
+                if (stored) {
+                    const pasteBtns = document.querySelectorAll('.sig-paste-btn');
+                    pasteBtns.forEach(b => b.disabled = false);
+                }
+            } catch (e) {}
+        }
+
+        function pasteSignatureCard() {
+            try {
+                const stored = localStorage.getItem(CLIPBOARD_KEY);
+                if (!stored) {
+                    showToast('पहले किसी हस्ताक्षर कार्ड का "कॉपी" बटन दबाएं!', 'fa-solid fa-circle-exclamation text-amber-400');
+                    return;
+                }
+
+                const data = JSON.parse(stored);
+                addNewSignatureCard(data);
+                showToast(`कॉपी किया गया हस्ताक्षर "${data.name}" पेस्ट हो गया!`, 'fa-solid fa-clipboard-check text-green-400');
+            } catch (e) {
+                showToast('पेस्ट करने में त्रुटि!', 'fa-solid fa-triangle-exclamation text-red-400');
+            }
+        }
+
+        function pasteSignatoryCard() {
+            try {
+                const stored = localStorage.getItem(CLIPBOARD_KEY);
+                if (!stored) {
+                    showToast('पहले किसी हस्ताक्षर कार्ड का "कॉपी" बटन दबाएं!', 'fa-solid fa-circle-exclamation text-amber-400');
+                    return;
+                }
+
+                const data = JSON.parse(stored);
+                addNewSignatoryCard(data);
+                showToast(`कॉपी किया गया हस्ताक्षर "${data.name}" पेस्ट हो गया!`, 'fa-solid fa-clipboard-check text-green-400');
+            } catch (e) {
+                showToast('पेस्ट करने में त्रुटि!', 'fa-solid fa-triangle-exclamation text-red-400');
+            }
+        }
+        window.pasteSignatoryCard = pasteSignatoryCard;
+
+        function deleteSignatureCard(btn) {
+            const card = btn.closest('.sig-card');
+            if (!card) return;
+            const container = card.closest('.signature-grid, .signatory-block') || card.parentElement;
+
+            const name = card.querySelector('.sig-name')?.innerText.trim() || 'कार्ड';
+            if (confirm(`क्या आप "${name}" का हस्ताक्षर कार्ड हटाना चाहते हैं?`)) {
+                card.remove();
+                if (container && container.id === 'signatureGrid') {
+                    updateGridCanvasHeight();
+                } else if (container) {
+                    updateContainerHeight(container);
+                }
+                saveDocumentToStorage(false);
+                showToast('हस्ताक्षर कार्ड हटा दिया गया!', 'fa-solid fa-trash-can text-red-400');
+            }
+        }
+
+        // ==========================================
+        // MOVABLE & RESIZABLE SIGNATURE CANVAS (FREE SIZE & DRAG ANYWHERE)
+        // ==========================================
+
+        function setupMovableCanvas() {
+            const wrapper = document.getElementById('signatureCanvasWrapper');
+            if (!wrapper) return;
+
+            const header = document.getElementById('sigCanvasHeader');
+            const resizeHandle = document.getElementById('sigCanvasResizeHandle');
+
+            // Restore saved transform & width if dataset is present
+            if (wrapper.dataset.tx !== undefined && wrapper.dataset.ty !== undefined) {
+                wrapper.style.transform = `translate(${wrapper.dataset.tx}px, ${wrapper.dataset.ty}px)`;
+            }
+            if (wrapper.dataset.w) {
+                wrapper.style.width = `${wrapper.dataset.w}px`;
+            }
+
+            // Helper to get current translation
+            function getCanvasTranslation() {
+                const curTx = parseFloat(wrapper.dataset.tx) || 0;
+                const curTy = parseFloat(wrapper.dataset.ty) || 0;
+                return { x: curTx, y: curTy };
+            }
+
+            // 1. POINTER DRAG (MOVE ANYWHERE VIA MOUSE/TOUCH)
+            if (header) {
+                let isDragging = false;
+                let startX = 0, startY = 0;
+                let initTx = 0, initTy = 0;
+
+                header.onpointerdown = function(e) {
+                    if (e.target.closest('button')) return;
+                    e.preventDefault();
+                    isDragging = true;
+                    header.setPointerCapture(e.pointerId);
+
+                    startX = e.clientX;
+                    startY = e.clientY;
+
+                    const cur = getCanvasTranslation();
+                    initTx = cur.x;
+                    initTy = cur.y;
+
+                    wrapper.classList.add('is-moving');
+                };
+
+                header.onpointermove = function(e) {
+                    if (!isDragging) return;
+                    const dx = e.clientX - startX;
+                    const dy = e.clientY - startY;
+
+                    const newTx = Math.round(initTx + dx);
+                    const newTy = Math.round(initTy + dy);
+
+                    wrapper.style.transform = `translate(${newTx}px, ${newTy}px)`;
+                    wrapper.dataset.tx = newTx;
+                    wrapper.dataset.ty = newTy;
+                };
+
+                header.onpointerup = header.onpointercancel = function(e) {
+                    if (isDragging) {
+                        isDragging = false;
+                        wrapper.classList.remove('is-moving');
+                        try { header.releasePointerCapture(e.pointerId); } catch (_) {}
+                        saveDocumentToStorage(false);
+                    }
+                };
+            }
+
+            // 2. POINTER RESIZE (FREE SIZE VIA MOUSE/TOUCH)
+            if (resizeHandle) {
+                let isResizing = false;
+                let startX = 0, startY = 0;
+                let initW = 0;
+
+                resizeHandle.onpointerdown = function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    isResizing = true;
+                    resizeHandle.setPointerCapture(e.pointerId);
+
+                    startX = e.clientX;
+                    startY = e.clientY;
+                    initW = wrapper.getBoundingClientRect().width;
+
+                    wrapper.classList.add('is-moving');
+                };
+
+                resizeHandle.onpointermove = function(e) {
+                    if (!isResizing) return;
+                    const dx = e.clientX - startX;
+                    const newW = Math.max(260, Math.round(initW + dx));
+
+                    wrapper.style.width = `${newW}px`;
+                    wrapper.dataset.w = newW;
+                };
+
+                resizeHandle.onpointerup = resizeHandle.onpointercancel = function(e) {
+                    if (isResizing) {
+                        isResizing = false;
+                        wrapper.classList.remove('is-moving');
+                        try { resizeHandle.releasePointerCapture(e.pointerId); } catch (_) {}
+                        saveDocumentToStorage(false);
+                    }
+                };
+            }
+        }
+
+        window.setupMovableCanvas = setupMovableCanvas;
+
+        window.resetCanvasPosition = function() {
+            const wrapper = document.getElementById('signatureCanvasWrapper');
+            if (wrapper) {
+                wrapper.style.transform = '';
+                wrapper.style.width = '';
+                wrapper.style.minHeight = '';
+                delete wrapper.dataset.tx;
+                delete wrapper.dataset.ty;
+                delete wrapper.dataset.w;
+            }
+            if (window.autoArrangeSignatureCards) {
+                window.autoArrangeSignatureCards();
+            } else {
+                saveDocumentToStorage(false);
+            }
+            showToast('कैनवास एवं सभी हस्ताक्षर कार्ड्स मूल स्थान पर रीसेट हो गए!', 'fa-solid fa-rotate-left text-sky-400');
+        };
+
+        // ==========================================
+        // LOCAL PERSISTENCE FALLBACK
+        // ==========================================
+
+        function saveDocumentToStorage(isExplicit = false) {
+            try {
+                const paper = document.getElementById('editableDocumentPaper');
+                if (!paper) return;
+
+                const contentHtml = paper.innerHTML;
+                localStorage.setItem(STORAGE_KEY, contentHtml);
+
+                if (isExplicit) {
+                    showToast('दस्तावेज़ स्थानीय रूप से सहेज लिया गया!', 'fa-solid fa-floppy-disk text-green-400');
+                }
+            } catch (e) {
+                console.error('Storage error:', e);
+            }
+        }
+
+        function loadDocumentFromStorage() {
+            try {
+                const saved = localStorage.getItem(STORAGE_KEY);
+                if (saved) {
+                    const paper = document.getElementById('editableDocumentPaper');
+                    if (paper) {
+                        paper.innerHTML = saved;
+                    }
+                }
+            } catch (e) {
+                console.error('Load error:', e);
+            }
+        }
+
+        function resetDocumentToDefault() {
+            if (confirm('क्या आप सभी परिवर्तनों को रीसेट करके मूल दस्तावेज़ पर वापस जाना चाहते हैं?')) {
+                localStorage.removeItem(STORAGE_KEY);
+                localStorage.removeItem(CLIPBOARD_KEY);
+                localStorage.removeItem('PMS_LAST_SAVED_DOC_ID');
+                location.reload();
+            }
+        }
+    </script>
+
+    <!-- PMS Navigation Search Script -->
     <script src="js/pms_nav_search.js"></script>
 </body>
 

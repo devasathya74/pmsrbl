@@ -452,10 +452,138 @@
             border-color: #c4b5fd;
         }
 
+        .btn-dark-pdf {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            color: #ffffff;
+            border: 1px solid #334155;
+            box-shadow: 0 2px 8px rgba(15, 23, 42, 0.25);
+            font-weight: 700;
+        }
+
+        .btn-dark-pdf:hover {
+            background: #000000;
+            color: #ffffff;
+            border-color: #000000;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
+            transform: translateY(-1px);
+        }
+
         .btn-sm {
             padding: 6px 12px;
             font-size: 0.76rem;
             border-radius: var(--radius-sm);
+        }
+
+        /* Mode Status Pill for Table Header */
+        .mode-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.76rem;
+            font-weight: 700;
+            letter-spacing: 0.01em;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            animation: fadeInMode 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: all 0.2s ease;
+        }
+
+        .mode-pill.morning {
+            background: #fffbeb;
+            color: #b45309;
+            border: 1px solid #fde68a;
+        }
+
+        .mode-pill.return {
+            background: #f0fdf4;
+            color: #15803d;
+            border: 1px solid #bbf7d0;
+        }
+
+        .mode-pill.all {
+            background: #f8fafc;
+            color: #334155;
+            border: 1px solid #cbd5e1;
+        }
+
+        .mode-subnote {
+            font-weight: 600;
+            font-size: 0.7rem;
+            opacity: 0.85;
+            margin-left: 2px;
+        }
+
+        @keyframes fadeInMode {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Count Badge inside Filter Buttons */
+        .filter-count-badge {
+            background: rgba(0, 0, 0, 0.07);
+            color: inherit;
+            font-size: 0.72rem;
+            font-weight: 800;
+            padding: 1px 7px;
+            border-radius: 12px;
+            margin-left: 4px;
+            line-height: 1.3;
+            display: inline-block;
+        }
+
+        .seg-btn.active .filter-count-badge {
+            background: var(--primary-light);
+            color: var(--primary);
+        }
+
+        /* Phone Link */
+        .phone-link {
+            color: var(--slate-700);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-weight: 600;
+            padding: 2px 6px;
+            border-radius: 6px;
+            transition: all 0.15s ease;
+        }
+
+        .phone-link:hover {
+            background: var(--primary-light);
+            color: var(--primary);
+        }
+
+        /* Search Clear Button */
+        #search-clear-btn {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #e2e8f0;
+            border: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            color: var(--slate-600);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 11px;
+            transition: all 0.15s ease;
+        }
+
+        #search-clear-btn:hover {
+            background: var(--slate-300);
+            color: var(--slate-900);
         }
 
         /* Filter Pills Row */
@@ -526,36 +654,91 @@
         /* ─── Main Content Tabs ──────────────────────────────────────────── */
         .view-tabs {
             display: flex;
-            gap: 10px;
+            gap: 6px;
             border-bottom: 2px solid var(--slate-200);
             padding-bottom: 0;
             margin-bottom: -4px;
+            overflow-x: auto;
+            scrollbar-width: thin;
+            white-space: nowrap;
         }
 
         .view-tab-btn {
             background: transparent;
             border: none;
             border-bottom: 3px solid transparent;
-            padding: 12px 20px;
-            font-size: 0.9rem;
+            padding: 11px 16px;
+            font-size: 0.88rem;
             font-weight: 700;
             color: var(--slate-500);
             cursor: pointer;
-            display: flex;
+            display: inline-flex;
             align-items: center;
             gap: 8px;
             transition: all 0.2s ease;
             position: relative;
             top: 2px;
+            flex-shrink: 0;
+            border-top-left-radius: 6px;
+            border-top-right-radius: 6px;
         }
 
         .view-tab-btn:hover {
             color: var(--slate-800);
+            background: rgba(241, 245, 249, 0.7);
         }
 
         .view-tab-btn.active {
             color: var(--primary);
             border-bottom-color: var(--primary);
+            background: #ffffff;
+        }
+
+        .tab-count-pill {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 1px 7px;
+            border-radius: 999px;
+            background: var(--slate-100);
+            color: var(--slate-600);
+            min-width: 18px;
+            line-height: 1.3;
+            transition: all 0.2s ease;
+        }
+
+        .view-tab-btn.active .tab-count-pill {
+            background: #e0e7ff;
+            color: var(--primary);
+        }
+
+        .view-tab-btn.tab-morning.active {
+            color: #d97706;
+            border-bottom-color: #d97706;
+        }
+        .view-tab-btn.tab-morning.active .tab-count-pill {
+            background: #fef3c7;
+            color: #b45309;
+        }
+
+        .view-tab-btn.tab-drop-prm.active {
+            color: #2563eb;
+            border-bottom-color: #2563eb;
+        }
+        .view-tab-btn.tab-drop-prm.active .tab-count-pill {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .view-tab-btn.tab-drop-kg.active {
+            color: #16a34a;
+            border-bottom-color: #16a34a;
+        }
+        .view-tab-btn.tab-drop-kg.active .tab-count-pill {
+            background: #dcfce7;
+            color: #15803d;
         }
 
         /* ─── Table Container & Card ─────────────────────────────────────── */
@@ -1147,8 +1330,11 @@
                 <div class="toolbar-top">
                     <div class="search-box-wrap">
                         <i class="fa-solid fa-magnifying-glass"></i>
-                        <input type="text" id="search-input" oninput="applyFiltersAndRender()" class="search-input"
+                        <input type="text" id="search-input" oninput="handleSearchInput()" class="search-input"
                             placeholder="छात्र, पिता का नाम, कक्षा, स्टॉप या फोन नंबर खोजें...">
+                        <button id="search-clear-btn" onclick="clearSearch()" style="display:none;" title="खोज साफ़ करें">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
                     </div>
 
                     <div class="btn-group">
@@ -1162,9 +1348,9 @@
                         <button onclick="openRecycleBin()" class="btn btn-danger-outline" title="डिलीट किए गए छात्र">
                             <i class="fa-solid fa-trash-can"></i> Recycle Bin
                         </button>
-                        <button onclick="downloadStudentListPDF()" id="dl-pdf-btn" class="btn btn-violet"
-                            title="Student List PDF Download">
-                            <i class="fa-solid fa-file-pdf"></i> PDF सूची
+                        <button onclick="downloadStudentListPDF()" id="dl-pdf-btn" class="btn btn-dark-pdf"
+                            title="Dark Black & White PDF Download">
+                            <i class="fa-solid fa-file-pdf"></i> B&W PDF सूची
                         </button>
                         <button onclick="openAddStudentModal()" class="btn btn-primary">
                             <i class="fa-solid fa-plus"></i> + नया छात्र जोड़ें
@@ -1179,14 +1365,23 @@
                             style="font-size:0.75rem; font-weight:700; color:var(--slate-500); text-transform:uppercase;">वाहन
                             एवं शिफ्ट फ़िल्टर:</span>
                         <div class="segmented-filters">
-                            <button class="seg-btn active" onclick="setFilter('all')" id="filter-btn-all">All
-                                (सभी)</button>
-                            <button class="seg-btn" onclick="setFilter('v1')" id="filter-btn-v1">Morning V1</button>
-                            <button class="seg-btn" onclick="setFilter('v2')" id="filter-btn-v2">Morning V2</button>
+                            <button class="seg-btn active" onclick="setFilter('all')" id="filter-btn-all">
+                                <i class="fa-solid fa-users"></i> All (सभी) <span class="filter-count-badge" id="btn-count-all">0</span>
+                            </button>
+                            <button class="seg-btn" onclick="setFilter('v1')" id="filter-btn-v1">
+                                <i class="fa-solid fa-bus"></i> Morning V1 <span class="filter-count-badge" id="btn-count-v1">0</span>
+                            </button>
+                            <button class="seg-btn" onclick="setFilter('v2')" id="filter-btn-v2">
+                                <i class="fa-solid fa-van-shuttle"></i> Morning V2 <span class="filter-count-badge" id="btn-count-v2">0</span>
+                            </button>
                             <button class="seg-btn" onclick="setFilter('ret-kg')" id="filter-btn-ret-kg"
-                                title="12:30 PM Drop (KG-I, KG-II by Vehicle 2)">12:30 PM KG (V2)</button>
+                                title="12:30 PM Drop (KG-I, KG-II by Vehicle 2)">
+                                <i class="fa-solid fa-clock-rotate-left"></i> 12:30 PM KG (V2) <span class="filter-count-badge" id="btn-count-ret-kg">0</span>
+                            </button>
                             <button class="seg-btn" onclick="setFilter('ret-prm')" id="filter-btn-ret-prm"
-                                title="01:30 PM Drop (Class 1-8 by Vehicle 1)">01:30 PM Primary (V1)</button>
+                                title="01:30 PM Drop (Class 1-8 by Vehicle 1)">
+                                <i class="fa-solid fa-clock"></i> 01:30 PM Primary (V1) <span class="filter-count-badge" id="btn-count-ret-prm">0</span>
+                            </button>
                         </div>
                     </div>
 
@@ -1210,13 +1405,42 @@
                 </div>
             </section>
 
-            <!-- Navigation Views (Student List & Live Print Preview) -->
-            <div class="view-tabs">
-                <button onclick="switchTab('list')" id="tab-btn-list" class="view-tab-btn active">
-                    <i class="fa-solid fa-users"></i> छात्र प्रबंधन सूची (Manage Students)
+            <!-- Navigation Views (Student List & Live Print Preview Shift-wise) -->
+            <div class="view-tabs" id="main-view-tabs">
+                <button onclick="switchTab('list')" id="tab-btn-list" class="view-tab-btn active" title="छात्र सूची व संपादन">
+                    <i class="fa-solid fa-users"></i>
+                    <span>छात्र प्रबंधन सूची (Manage Students)</span>
+                    <span class="tab-count-pill" id="tab-badge-list">0</span>
                 </button>
-                <button onclick="switchTab('preview')" id="tab-btn-preview" class="view-tab-btn">
-                    <i class="fa-solid fa-print"></i> A4 उपस्थिति पत्रक लाइव प्रीव्यू (Live Print Sheet)
+
+                <button onclick="switchTab('preview', 'v1')" id="tab-btn-preview-v1" class="view-tab-btn tab-morning" title="Morning Vehicle 1 उपस्थिति पत्रक">
+                    <i class="fa-solid fa-bus" style="color: #d97706;"></i>
+                    <span id="tab-title-v1">Morning Vehicle 1</span>
+                    <span class="tab-count-pill" id="tab-badge-v1">0</span>
+                </button>
+
+                <button onclick="switchTab('preview', 'v2')" id="tab-btn-preview-v2" class="view-tab-btn tab-morning" title="Morning Vehicle 2 उपस्थिति पत्रक">
+                    <i class="fa-solid fa-van-shuttle" style="color: #d97706;"></i>
+                    <span id="tab-title-v2">Morning Vehicle 2</span>
+                    <span class="tab-count-pill" id="tab-badge-v2">0</span>
+                </button>
+
+                <button onclick="switchTab('preview', 'ret-prm')" id="tab-btn-preview-ret-prm" class="view-tab-btn tab-drop-prm" title="Drop Vehicle 1 (01:30 PM Class 1-8) उपस्थिति पत्रक">
+                    <i class="fa-solid fa-clock" style="color: #2563eb;"></i>
+                    <span id="tab-title-ret-prm">Drop Vehicle 1</span>
+                    <span class="tab-count-pill" id="tab-badge-ret-prm">0</span>
+                </button>
+
+                <button onclick="switchTab('preview', 'ret-kg')" id="tab-btn-preview-ret-kg" class="view-tab-btn tab-drop-kg" title="Drop Vehicle 2 (12:30 PM KG) उपस्थिति पत्रक">
+                    <i class="fa-solid fa-clock-rotate-left" style="color: #16a34a;"></i>
+                    <span id="tab-title-ret-kg">Drop Vehicle 2</span>
+                    <span class="tab-count-pill" id="tab-badge-ret-kg">0</span>
+                </button>
+
+                <button onclick="switchTab('preview', 'all')" id="tab-btn-preview-all" class="view-tab-btn" title="सभी छात्रों का उपस्थिति पत्रक">
+                    <i class="fa-solid fa-layer-group" style="color: #6366f1;"></i>
+                    <span>All Sheets (समस्त छात्र)</span>
+                    <span class="tab-count-pill" id="tab-badge-all">0</span>
                 </button>
             </div>
 
@@ -1227,6 +1451,7 @@
                         <i class="fa-solid fa-table-list text-primary"></i>
                         <span>पंजीकृत छात्र सूची</span>
                         <span class="count-pill" id="rendered-count">0</span>
+                        <span id="table-mode-badge" class="mode-pill all"></span>
                     </div>
 
                     <div style="display:flex; align-items:center; gap:8px; font-size:0.75rem; color:var(--slate-500);">
@@ -1237,7 +1462,7 @@
 
                 <div class="tbl-responsive">
                     <table class="modern-table">
-                        <thead>
+                        <thead id="student-table-head">
                             <tr>
                                 <th style="width: 36px; text-align: center;"></th>
                                 <th style="width: 50px; text-align: center;">क्र.</th>
@@ -1304,16 +1529,14 @@
                             </div>
 
                             <div style="display:flex; align-items:center; gap:6px;">
-                                <label style="font-size:0.78rem; font-weight:700;">फ़िल्टर:</label>
+                                <label style="font-size:0.78rem; font-weight:700;">वाहन / शिफ्ट:</label>
                                 <select id="print-vehicle-filter" onchange="generatePrintPreview()"
                                     class="filter-select">
-                                    <option value="all">All Students (सभी छात्र)</option>
-                                    <option value="v1" id="print-filter-v1-label">Morning: Vehicle 1 Only</option>
+                                    <option value="v1" id="print-filter-v1-label" selected>Morning: Vehicle 1 Only</option>
                                     <option value="v2" id="print-filter-v2-label">Morning: Vehicle 2 Only</option>
-                                    <option value="ret-kg" id="print-filter-ret-kg-label">Return: 12:30 PM (KG-I &amp;
-                                        KG-II by Vehicle 2)</option>
-                                    <option value="ret-prm" id="print-filter-ret-prm-label">Return: 01:30 PM (Class 1-8
-                                        by Vehicle 1)</option>
+                                    <option value="ret-prm" id="print-filter-ret-prm-label">Drop: 01:30 PM (Class 1-8 by Vehicle 1)</option>
+                                    <option value="ret-kg" id="print-filter-ret-kg-label">Drop: 12:30 PM (KG-I &amp; KG-II by Vehicle 2)</option>
+                                    <option value="all">All Students (सभी छात्र)</option>
                                     <option value="cls-KG-I">Class: KG-I Only</option>
                                     <option value="cls-KG-II">Class: KG-II Only</option>
                                     <option value="cls-1st">Class: 1st Only</option>
@@ -1327,6 +1550,26 @@
                                 </select>
                             </div>
 
+                            <div style="display:flex; align-items:center; gap:6px;">
+                                <label style="font-size:0.78rem; font-weight:700;">उपस्थिति प्रकार:</label>
+                                <select id="print-att-mode" onchange="generatePrintPreview()" class="filter-select">
+                                    <option value="auto" selected>Auto (शिफ्ट अनुसार: Pickup / Drop)</option>
+                                    <option value="single">केवल 1 कॉलम (Single Shift)</option>
+                                    <option value="both">दोनों कॉलम (Both P &amp; D)</option>
+                                </select>
+                            </div>
+
+                            <div style="display:flex; align-items:center; gap:6px;">
+                                <label style="font-size:0.78rem; font-weight:700;">दिन रेंज:</label>
+                                <select id="print-day-range" onchange="generatePrintPreview()" class="filter-select">
+                                    <option value="auto" selected>Auto (पूरा माह / 15 दिन)</option>
+                                    <option value="full">पूरा माह (Days 1 to End)</option>
+                                    <option value="1-15">दिन 1 से 15 (First Half)</option>
+                                    <option value="16-end">दिन 16 से अंत (Second Half)</option>
+                                    <option value="chunk-15">15-15 दिन अलग पेज</option>
+                                </select>
+                            </div>
+
                             <input type="hidden" id="print-sheet-title"
                                 value="POLICE MODERN SCHOOL, RAEBARELI - ATTENDANCE SHEET">
 
@@ -1334,6 +1577,25 @@
                                 <i class="fa-solid fa-print"></i> A4 Landscape PDF डाउनलोड
                             </button>
                         </div>
+                    </div>
+
+                    <div class="segmented-filters" style="margin-top: 12px; width: 100%; border-top: 1px solid var(--slate-100); padding-top: 10px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                        <span style="font-size:0.75rem; font-weight:700; color:var(--slate-500); text-transform:uppercase;">वाहन शिफ्ट त्वरित चयन:</span>
+                        <button class="seg-btn active" onclick="switchTab('preview', 'v1')" id="prev-seg-v1">
+                            <i class="fa-solid fa-bus" style="color: #d97706;"></i> Morning <span id="prev-seg-v1-lbl">Vehicle 1</span>
+                        </button>
+                        <button class="seg-btn" onclick="switchTab('preview', 'v2')" id="prev-seg-v2">
+                            <i class="fa-solid fa-van-shuttle" style="color: #d97706;"></i> Morning <span id="prev-seg-v2-lbl">Vehicle 2</span>
+                        </button>
+                        <button class="seg-btn" onclick="switchTab('preview', 'ret-prm')" id="prev-seg-ret-prm">
+                            <i class="fa-solid fa-clock" style="color: #2563eb;"></i> Drop <span id="prev-seg-prm-lbl">Vehicle 1</span> (01:30 PM)
+                        </button>
+                        <button class="seg-btn" onclick="switchTab('preview', 'ret-kg')" id="prev-seg-ret-kg">
+                            <i class="fa-solid fa-clock-rotate-left" style="color: #16a34a;"></i> Drop <span id="prev-seg-kg-lbl">Vehicle 2</span> (12:30 PM KG)
+                        </button>
+                        <button class="seg-btn" onclick="switchTab('preview', 'all')" id="prev-seg-all">
+                            <i class="fa-solid fa-layer-group" style="color: #6366f1;"></i> All Students (समस्त)
+                        </button>
                     </div>
                 </div>
 
@@ -1406,6 +1668,37 @@
                         <div class="form-group">
                             <label class="form-label">सुबह पिकअप समय</label>
                             <input type="text" id="form-specific-time" class="form-input" placeholder="उदा. 07:30 AM">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label"><i class="fa-solid fa-van-shuttle text-primary"></i> दोपहर वापसी गाड़ी (Return Vehicle)</label>
+                            <select id="form-return-vehicle" class="form-select" onchange="updateModalSchedulePreview()">
+                                <option value="auto">ऑटो (कक्षा नियम: KG=V2, 1st-8th=V1)</option>
+                                <option value="v1" id="form-ret-v1-label">Vehicle 1</option>
+                                <option value="v2" id="form-ret-v2-label">Vehicle 2</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label"><i class="fa-regular fa-clock text-primary"></i> दोपहर वापसी ड्रॉप समय (Return Drop Time)</label>
+                            <input type="text" id="form-drop-time" list="dropTimeOptions" class="form-input"
+                                placeholder="उदा. 12:30 PM या 01:30 PM" oninput="updateModalSchedulePreview()">
+                            <datalist id="dropTimeOptions">
+                                <option value="12:30 PM (KG स्कूल प्रस्थान)"></option>
+                                <option value="12:40 PM (वैष्णव नगर)"></option>
+                                <option value="12:45 PM (सम्राट नगर)"></option>
+                                <option value="12:55 PM (पुरे मेहरबान)"></option>
+                                <option value="01:00 PM (किशुन का पुरवा)"></option>
+                                <option value="01:10 PM (बेहटा)"></option>
+                                <option value="01:15 PM (जगदीशपुर)"></option>
+                                <option value="01:25 PM (पूरे कराइन)"></option>
+                                <option value="01:30 PM (भुएमऊ / Class 1-8 प्रस्थान)"></option>
+                                <option value="01:35 PM (जरौला)"></option>
+                                <option value="01:40 PM (कैथन का पुरवा)"></option>
+                                <option value="01:45 PM (बैरागीपुर)"></option>
+                                <option value="01:50 PM (हनुमानगंज)"></option>
+                                <option value="01:55 PM (बबुरिहा / गोंदवारा)"></option>
+                            </datalist>
                         </div>
 
                         <div class="form-group col-span-2">
@@ -1489,20 +1782,9 @@
                 <!-- Live KG Students Schedule List -->
                 <div>
                     <div
-                        style="font-size:0.85rem; font-weight:800; color:var(--slate-900); margin-bottom:10px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+                        style="font-size:0.85rem; font-weight:800; color:var(--slate-900); margin-bottom:10px; display:flex; justify-content:space-between; align-items:center;">
                         <span><i class="fa-solid fa-users text-primary"></i> 12:30 PM जाने वाले पंजीकृत KG छात्र</span>
-                        <div style="display:flex; align-items:center; gap:6px;">
-                            <span id="kg-modal-count-badge" class="count-pill">0 छात्र</span>
-                            <button onclick="downloadKGSchedulePDF()" class="btn btn-sm btn-outline" style="padding:3px 8px; font-size:0.75rem; border-color:#d97706; color:#b45309; background:#fffbeb;" title="PDF डाउनलोड करें">
-                                <i class="fa-solid fa-file-pdf"></i> PDF
-                            </button>
-                            <button onclick="printKGScheduleSheet()" class="btn btn-sm btn-outline" style="padding:3px 8px; font-size:0.75rem; border-color:#4f46e5; color:#4f46e5; background:#eef2ff;" title="प्रिंट निकालें">
-                                <i class="fa-solid fa-print"></i> प्रिंट
-                            </button>
-                            <button onclick="exportKGScheduleCSV()" class="btn btn-sm btn-outline" style="padding:3px 8px; font-size:0.75rem; border-color:#16a34a; color:#16a34a; background:#f0fdf4;" title="Excel / CSV डाउनलोड करें">
-                                <i class="fa-solid fa-file-excel"></i> Excel
-                            </button>
-                        </div>
+                        <span id="kg-modal-count-badge" class="count-pill">0 छात्र</span>
                     </div>
                     <div id="kg-schedule-body">
                         <!-- Populated dynamically -->
@@ -1510,18 +1792,7 @@
                 </div>
             </div>
 
-            <div class="modal-footer" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
-                <div style="display:flex; gap:8px; flex-wrap:wrap;">
-                    <button onclick="downloadKGSchedulePDF()" id="kg-dl-pdf-btn" class="btn btn-primary" style="background:#d97706; border-color:#d97706; display:inline-flex; align-items:center; gap:6px;">
-                        <i class="fa-solid fa-file-pdf"></i> PDF डाउनलोड
-                    </button>
-                    <button onclick="printKGScheduleSheet()" class="btn btn-primary" style="background:#4f46e5; border-color:#4f46e5; display:inline-flex; align-items:center; gap:6px;">
-                        <i class="fa-solid fa-print"></i> प्रिंट निकालें
-                    </button>
-                    <button onclick="exportKGScheduleCSV()" class="btn btn-outline" style="border-color:#16a34a; color:#16a34a; display:inline-flex; align-items:center; gap:6px;">
-                        <i class="fa-solid fa-file-excel text-emerald-600"></i> Excel / CSV
-                    </button>
-                </div>
+            <div class="modal-footer">
                 <button onclick="closeKGScheduleModal()" class="btn btn-outline">बंद करें</button>
             </div>
         </div>
@@ -1625,7 +1896,7 @@
     <!-- ─── Firebase Modular SDK Script ──────────────────────────────── -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
-        import { getAuth, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+        import { getAuth, signInWithCustomToken, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
         import { initializeFirestore, doc, setDoc, updateDoc, deleteDoc, onSnapshot, collection, getDocs, writeBatch } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 
         // ─── Constants ───────────────────────────────────────────────────────────
@@ -1657,6 +1928,7 @@
         let students = [];            // active transport students (sortOrder sorted)
         let currentVehicleFilter = 'all';
         let currentTab = 'list';
+        let activePreviewShift = 'v1';
         let vehicleNames = { v1: "Vehicle 1", v2: "Vehicle 2" };
         let deleteCandidateId = null;
         let dragSrcId = null;         // drag-and-drop state
@@ -1672,24 +1944,28 @@
             try {
                 if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
                     await signInWithCustomToken(auth, __initial_auth_token);
+                    console.log("Firebase signed in with custom token.");
                 } else {
-                    console.log("No custom token. Using offline fallback.");
-                    initSampleOfflineData();
+                    try {
+                        await signInAnonymously(auth);
+                        console.log("Firebase signed in anonymously.");
+                    } catch (anonErr) {
+                        console.warn("Anonymous auth failed, attempting direct sync:", anonErr);
+                        syncVehicleNames();
+                        syncStudentsData();
+                    }
                 }
             } catch (authError) {
-                console.warn("Auth failed. Using offline fallback:", authError);
-                initSampleOfflineData();
+                console.warn("Auth initialization note:", authError);
+                syncVehicleNames();
+                syncStudentsData();
             }
         }
 
         if (isFirebaseAvailable) {
             onAuthStateChanged(auth, (user) => {
-                if (user) {
-                    syncVehicleNames();
-                    syncStudentsData();
-                } else {
-                    if (students.length === 0) initSampleOfflineData();
-                }
+                syncVehicleNames();
+                syncStudentsData();
             });
         } else {
             initSampleOfflineData();
@@ -1791,12 +2067,18 @@
             const morningTime = student.specificTime || '07:30 AM';
 
             // Return schedule rules:
-            // KG1 & KG2 leave at 12:30 PM by Vehicle 2 with stop-wise drop time
-            // Class 1 to 8 leave at 01:30 PM (13:30) by Vehicle 1
-            const returnVehicle = isKG ? 'v2' : 'v1';
+            // Custom returnVehicle if selected, otherwise auto rule (KG=v2, 1st-8th=v1)
+            const returnVehicle = (student.returnVehicle && student.returnVehicle !== 'auto')
+                ? student.returnVehicle
+                : (isKG ? 'v2' : 'v1');
             const returnVehicleName = returnVehicle === 'v1' ? vehicleNames.v1 : vehicleNames.v2;
             const kgStopInfo = isKG ? getKGReturnEstimatedTime(student) : null;
-            const returnTime = isKG ? (kgStopInfo.time || '12:30 PM') : '01:30 PM (13:30)';
+            const defaultReturnTime = isKG ? (kgStopInfo.time || '12:30 PM') : '01:30 PM (13:30)';
+            
+            // Custom dropTime takes highest precedence
+            const returnTime = student.dropTime || student.returnTime || defaultReturnTime;
+            const hasCustomDropTime = !!(student.dropTime || student.returnTime);
+
             const returnShiftLabel = isKG ? '12:30 PM (KG-I, KG-II)' : '01:30 PM (Class 1-8)';
             const returnStopName = isKG ? kgStopInfo.stopName : (student.address || 'स्टॉप');
 
@@ -1809,7 +2091,8 @@
                 returnVehicleName,
                 returnTime,
                 returnShiftLabel,
-                returnStopName
+                returnStopName,
+                hasCustomDropTime
             };
         }
 
@@ -1839,6 +2122,8 @@
                                 address: d.address || '',
                                 specificTime: d.specificTime || d.stopTime || d.pickupTime || '',
                                 vehicle: d.vehicle || 'v1',
+                                returnVehicle: d.returnVehicle || 'auto',
+                                dropTime: d.dropTime || d.returnTime || '',
                                 sortOrder: typeof d.sortOrder === 'number' ? d.sortOrder : 9999,
                                 sourceId: d.sourceId || null,
                                 active: true
@@ -1927,7 +2212,7 @@
 
         // ─── SAVE (Add / Edit) → transport_students only ─────────────────────────
         window.saveStudentToFirestore = async function (studentData) {
-            if (!isFirebaseAvailable || !auth.currentUser) {
+            if (!isFirebaseAvailable) {
                 saveOfflineStudent(studentData); return;
             }
             try {
@@ -1948,6 +2233,8 @@
                     address: studentData.address || '',
                     specificTime: studentData.specificTime || '',
                     vehicle: studentData.vehicle,
+                    returnVehicle: studentData.returnVehicle || 'auto',
+                    dropTime: studentData.dropTime || '',
                     sortOrder: typeof sortOrder === 'number' ? sortOrder : 9999,
                     sourceId: studentData.sourceId || null,
                     active: true,
@@ -1957,13 +2244,14 @@
                 closeStudentModal();
             } catch (err) {
                 console.error("Save error:", err);
-                showCustomDialog("त्रुटि", "छात्र का डेटा सहेजने में विफल।", "error");
+                saveOfflineStudent(studentData);
+                showCustomDialog("सूचना", "डेटा सुरक्षित कर दिया गया (ऑफ़लाइन बैकअप)।", "info");
             }
         }
 
         // ─── SOFT DELETE → active:false (goes to Recycle Bin) ────────────────────
         window.deleteStudentFromFirestore = async function (id) {
-            if (!isFirebaseAvailable || !auth.currentUser) {
+            if (!isFirebaseAvailable) {
                 deleteOfflineStudent(id); closeDialog(); return;
             }
             try {
@@ -1974,13 +2262,14 @@
                 closeDialog();
             } catch (err) {
                 console.error("Delete error:", err);
-                showCustomDialog("त्रुटि", "छात्र डिलीट करने में विफल।", "error");
+                deleteOfflineStudent(id);
+                closeDialog();
             }
         }
 
         // ─── VEHICLE NAMES (shared settings) ────────────────────────────────────
         window.updateVehicleNamesInFirestore = async function (v1, v2) {
-            if (!isFirebaseAvailable || !auth.currentUser) return;
+            if (!isFirebaseAvailable) return;
             try {
                 await setDoc(doc(db, 'settings', 'transport'), { v1, v2 }, { merge: true });
             } catch (err) {
@@ -2004,7 +2293,7 @@
             applyFiltersAndRender();
             generatePrintPreview();
 
-            if (isFirebaseAvailable && auth.currentUser) {
+            if (isFirebaseAvailable) {
                 try {
                     const batch = writeBatch(db);
                     reordered.forEach((s, i) => {
@@ -2151,7 +2440,7 @@
             body.innerHTML = '<div style="text-align:center;padding:30px;color:var(--slate-400);"><i class="fa-solid fa-spinner fa-spin"></i> Loading...</div>';
             importCandidates = [];
 
-            if (!isFirebaseAvailable || !auth.currentUser) {
+            if (!isFirebaseAvailable) {
                 body.innerHTML = '<div style="text-align:center;padding:30px;color:var(--slate-400);">Offline mode — Import unavailable.</div>';
                 return;
             }
@@ -2347,322 +2636,6 @@
             if (modal) modal.classList.remove('active');
         };
 
-        // ─── DOWNLOAD & PRINT 12:30 PM KG SCHEDULE LIST ─────────────────────────
-        window.exportKGScheduleCSV = function () {
-            const kgStudents = students.filter(s => isKGStudent(s.class));
-            if (kgStudents.length === 0) {
-                showCustomDialog("सूचना", "डाउनलोड करने के लिए कोई KG छात्र उपलब्ध नहीं है।", "warning");
-                return;
-            }
-
-            const headers = [
-                "क्र. (Sr)",
-                "छात्र का नाम (Student Name)",
-                "पिता का नाम (Father Name)",
-                "कक्षा (Class)",
-                "सुबह वाहन (Morning Vehicle)",
-                "सुबह पिकअप समय (Pickup Time)",
-                "दोपहर वापसी वाहन (Return Vehicle)",
-                "वापसी स्टॉप (Return Stop)",
-                "वापसी संभावित समय (Estimated Drop Time)",
-                "पता (Address)",
-                "मोबाइल (Mobile)"
-            ];
-
-            const rows = kgStudents.map((s, idx) => {
-                const sched = getStudentSchedule(s);
-                return [
-                    idx + 1,
-                    `"${(s.name || '').replace(/"/g, '""')}"`,
-                    `"${(s.fatherName || '').replace(/"/g, '""')}"`,
-                    `"${(s.class || '').replace(/"/g, '""')}"`,
-                    `"${(sched.morningVehicleName || '').replace(/"/g, '""')}"`,
-                    `"${(s.specificTime || '').replace(/"/g, '""')}"`,
-                    `"${(sched.returnVehicleName || '').replace(/"/g, '""')}"`,
-                    `"${(sched.returnStopName || '').replace(/"/g, '""')}"`,
-                    `"${(sched.returnTime || '').replace(/"/g, '""')}"`,
-                    `"${(s.address || '').replace(/"/g, '""')}"`,
-                    `"${(s.mobile || '').replace(/"/g, '""')}"`
-                ];
-            });
-
-            const csvContent = "\uFEFF" + [headers.join(","), ...rows.map(r => r.join(","))].join("\r\n");
-            const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement("a");
-            link.setAttribute("href", url);
-            link.setAttribute("download", `PMS_KG_1230PM_Route_Schedule_${new Date().toISOString().slice(0, 10)}.csv`);
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            URL.revokeObjectURL(url);
-        };
-
-        window.printKGScheduleSheet = function () {
-            const kgStudents = students.filter(s => isKGStudent(s.class));
-            if (kgStudents.length === 0) {
-                showCustomDialog("सूचना", "प्रिंट करने के लिए कोई KG छात्र उपलब्ध नहीं है।", "warning");
-                return;
-            }
-
-            const todayStr = new Date().toLocaleDateString('hi-IN', { day: '2-digit', month: 'short', year: 'numeric' });
-            const printWindow = window.open('', '_blank', 'width=900,height=750');
-            if (!printWindow) {
-                showCustomDialog("पॉपअप ब्लॉक", "कृपया ब्राउज़र में पॉपअप की अनुमति दें ताकि प्रिंट विंडो खुल सके।", "warning");
-                return;
-            }
-
-            let stopsGridHtml = '';
-            KG_RETURN_STOPS.forEach(s => {
-                stopsGridHtml += `
-                    <div style="background:#fefce8; border:1px solid #fde047; border-radius:6px; padding:6px 10px; font-size:11px;">
-                        <div style="font-weight:700; color:#854d0e;">${s.stop}</div>
-                        <div style="color:#b45309; font-weight:800; font-size:12px;">${s.time}</div>
-                    </div>
-                `;
-            });
-
-            let studentsRowsHtml = '';
-            kgStudents.forEach((s, idx) => {
-                const sched = getStudentSchedule(s);
-                studentsRowsHtml += `
-                    <tr style="border-bottom:1px solid #e2e8f0; ${idx % 2 === 1 ? 'background:#f8fafc;' : ''}">
-                        <td style="text-align:center; padding:8px 6px; font-weight:bold;">${idx + 1}</td>
-                        <td style="padding:8px 6px;">
-                            <div style="font-weight:bold; color:#0f172a;">${s.name}</div>
-                            <div style="font-size:11px; color:#64748b;">पिता: ${s.fatherName || '-'}</div>
-                        </td>
-                        <td style="text-align:center; padding:8px 6px; font-weight:bold;">${s.class}</td>
-                        <td style="text-align:center; padding:8px 6px; font-size:11px;">
-                            <div>${sched.morningVehicleName}</div>
-                            <div style="color:#64748b;">${s.specificTime || '-'}</div>
-                        </td>
-                        <td style="padding:8px 6px; background:#fefce8;">
-                            <div style="font-weight:bold; color:#b45309;">${sched.returnTime}</div>
-                            <div style="font-size:11px; color:#854d0e;">${sched.returnStopName}</div>
-                        </td>
-                        <td style="padding:8px 6px; font-size:11px;">
-                            <div>${s.address || '-'}</div>
-                            ${s.mobile ? `<div style="color:#4f46e5; font-weight:600;">Ph: ${s.mobile}</div>` : ''}
-                        </td>
-                        <td style="border:1px dashed #cbd5e1; width:70px;"></td>
-                    </tr>
-                `;
-            });
-
-            const docHtml = `
-            <!DOCTYPE html>
-            <html lang="hi">
-            <head>
-                <meta charset="UTF-8">
-                <title>दोपहर 12:30 बजे KG वापसी समय-सारणी - Police Modern School</title>
-                <style>
-                    @page { size: A4 portrait; margin: 12mm 10mm; }
-                    body { font-family: 'Noto Sans Devanagari', 'Segoe UI', Arial, sans-serif; color: #1e293b; margin: 0; padding: 10px; }
-                    .header-box { text-align: center; border-bottom: 2px solid #0f172a; padding-bottom: 10px; margin-bottom: 14px; }
-                    .header-title { font-size: 18px; font-weight: 800; color: #1e1b4b; text-transform: uppercase; margin-bottom: 2px; }
-                    .header-sub { font-size: 13px; font-weight: 700; color: #92400e; }
-                    .meta-bar { display: flex; justify-content: space-between; font-size: 11px; font-weight: bold; color: #475569; margin-top: 6px; }
-                    .section-title { font-size: 12px; font-weight: 800; color: #854d0e; margin-bottom: 6px; text-transform: uppercase; }
-                    .grid-container { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 14px; }
-                    table { width: 100%; border-collapse: collapse; font-size: 11px; margin-top: 8px; }
-                    th { background: #4338ca; color: white; padding: 7px 6px; font-size: 11px; text-align: left; }
-                    td { vertical-align: top; }
-                    .signature-row { display: flex; justify-content: space-between; margin-top: 24px; padding-top: 8px; font-size: 11px; font-weight: bold; }
-                    .sign-box { border-top: 1px solid #334155; width: 28%; text-align: center; padding-top: 4px; }
-                    @media print {
-                        .no-print { display: none !important; }
-                        body { padding: 0; }
-                    }
-                </style>
-            </head>
-            <body>
-                <div class="no-print" style="margin-bottom:12px; display:flex; justify-content:flex-end; gap:8px;">
-                    <button onclick="window.print()" style="background:#4f46e5; color:white; border:none; padding:8px 16px; border-radius:6px; cursor:pointer; font-weight:bold;">🖨️ अभी प्रिंट करें</button>
-                    <button onclick="window.close()" style="background:#e2e8f0; color:#334155; border:none; padding:8px 16px; border-radius:6px; cursor:pointer;">बंद करें</button>
-                </div>
-
-                <div class="header-box">
-                    <div class="header-title">POLICE MODERN SCHOOL, RAEBARELI</div>
-                    <div class="header-sub">दोपहर 12:30 बजे (KG-I व KG-II) वाहन 2 वापसी स्टॉप समय-सारणी</div>
-                    <div class="meta-bar">
-                        <span>वाहन: <b>${vehicleNames.v2}</b> (KG Shift)</span>
-                        <span>कुल पंजीकृत KG छात्र: <b>${kgStudents.length}</b></span>
-                        <span>दिनांक: <b>${todayStr}</b></span>
-                    </div>
-                </div>
-
-                <div class="section-title">📍 वाहन 2 स्टॉप-वार संभावित समय सारणी (14 स्टॉप्स)</div>
-                <div class="grid-container">
-                    ${stopsGridHtml}
-                </div>
-
-                <div class="section-title" style="margin-top:10px; color:#1e1b4b;">👥 12:30 PM पंजीकृत KG छात्र सूची एवं अभिभावक विवरण</div>
-                <table>
-                    <thead>
-                        <tr>
-                            <th style="width:30px; text-align:center;">क्र.</th>
-                            <th>छात्र एवं पिता का नाम</th>
-                            <th style="width:55px; text-align:center;">कक्षा</th>
-                            <th style="text-align:center; width:90px;">सुबह पिकअप</th>
-                            <th style="background:#fef3c7; color:#92400e; width:150px;">12:30 PM वापसी स्टॉप/समय</th>
-                            <th>पता / मोबाइल</th>
-                            <th style="text-align:center; width:65px;">हस्ताक्षर</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${studentsRowsHtml}
-                    </tbody>
-                </table>
-
-                <div class="signature-row">
-                    <div class="sign-box">वाहन चालक (Driver Signature)</div>
-                    <div class="sign-box">परिवहन प्रभारी (Transport In-charge)</div>
-                    <div class="sign-box">प्रधानाचार्य / मोहर (Principal)</div>
-                </div>
-            </body>
-            </html>
-            `;
-
-            printWindow.document.open();
-            printWindow.document.write(docHtml);
-            printWindow.document.close();
-            printWindow.focus();
-            setTimeout(() => {
-                printWindow.print();
-            }, 400);
-        };
-
-        window.downloadKGSchedulePDF = async function () {
-            const kgStudents = students.filter(s => isKGStudent(s.class));
-            if (kgStudents.length === 0) {
-                showCustomDialog("सूचना", "डाउनलोड करने के लिए कोई KG छात्र उपलब्ध नहीं है।", "warning");
-                return;
-            }
-
-            const btn = document.getElementById('kg-dl-pdf-btn');
-            const origHtml = btn ? btn.innerHTML : '';
-            if (btn) {
-                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> PDF तैयार हो रहा है...';
-                btn.disabled = true;
-            }
-
-            try {
-                if (window.jspdf && window.jspdf.jsPDF) {
-                    const { jsPDF } = window.jspdf;
-                    const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
-                    const todayStr = new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
-
-                    // Title
-                    pdf.setFontSize(14);
-                    pdf.setFont('helvetica', 'bold');
-                    pdf.setTextColor(30, 27, 75);
-                    pdf.text('POLICE MODERN SCHOOL, RAEBARELI', 105, 12, { align: 'center' });
-
-                    pdf.setFontSize(10.5);
-                    pdf.setFont('helvetica', 'bold');
-                    pdf.setTextColor(180, 83, 9);
-                    pdf.text('12:30 PM KG-I & KG-II Route & Stop Timetable (' + vehicleNames.v2 + ')', 105, 18, { align: 'center' });
-
-                    pdf.setFontSize(8);
-                    pdf.setFont('helvetica', 'normal');
-                    pdf.setTextColor(71, 85, 105);
-                    pdf.text(`Vehicle: ${vehicleNames.v2}   |   Registered KG Students: ${kgStudents.length}   |   Date: ${todayStr}`, 105, 23, { align: 'center' });
-
-                    pdf.setLineWidth(0.4);
-                    pdf.setDrawColor(203, 213, 225);
-                    pdf.line(10, 25, 200, 25);
-
-                    // Stoptable Grid in 2 columns
-                    const stopHead = [['Stop Name (English / Hindi)', 'Drop Time', 'Stop Name (English / Hindi)', 'Drop Time']];
-                    const stopRows = [];
-                    for (let i = 0; i < KG_RETURN_STOPS.length; i += 2) {
-                        const s1 = KG_RETURN_STOPS[i];
-                        const s2 = KG_RETURN_STOPS[i + 1] || { stop: '', time: '' };
-                        stopRows.push([s1.stop, s1.time, s2.stop, s2.time]);
-                    }
-
-                    pdf.autoTable({
-                        head: stopHead,
-                        body: stopRows,
-                        startY: 27,
-                        margin: { left: 10, right: 10 },
-                        styles: { fontSize: 7, cellPadding: 1.5, valign: 'middle' },
-                        headStyles: { fillColor: [245, 158, 11], textColor: [255, 255, 255], fontStyle: 'bold' },
-                        columnStyles: {
-                            0: { cellWidth: 70 },
-                            1: { cellWidth: 25, halign: 'center', fontStyle: 'bold' },
-                            2: { cellWidth: 70 },
-                            3: { cellWidth: 25, halign: 'center', fontStyle: 'bold' }
-                        }
-                    });
-
-                    const studentTableStartY = pdf.lastAutoTable.finalY + 6;
-
-                    pdf.setFontSize(9);
-                    pdf.setFont('helvetica', 'bold');
-                    pdf.setTextColor(30, 27, 75);
-                    pdf.text('Registered KG Students (12:30 PM Departure Schedule)', 10, studentTableStartY);
-
-                    const studHead = [['Sr.', 'Student Name', "Father's Name", 'Class', 'Morning Pickup', '12:30 PM Drop Stop & Time', 'Address / Mobile']];
-                    const studBody = kgStudents.map((s, idx) => {
-                        const sched = getStudentSchedule(s);
-                        return [
-                            idx + 1,
-                            s.name || '-',
-                            s.fatherName || '-',
-                            s.class || '-',
-                            `${sched.morningVehicleName}${s.specificTime ? ' (' + s.specificTime + ')' : ''}`,
-                            `${sched.returnTime} @ ${sched.returnStopName}`,
-                            `${s.address || '-'}${s.mobile ? '\nPh: ' + s.mobile : ''}`
-                        ];
-                    });
-
-                    pdf.autoTable({
-                        head: studHead,
-                        body: studBody,
-                        startY: studentTableStartY + 2,
-                        margin: { left: 10, right: 10 },
-                        styles: { fontSize: 7.5, cellPadding: 2, valign: 'middle', overflow: 'linebreak' },
-                        headStyles: { fillColor: [79, 70, 229], textColor: [255, 255, 255], fontStyle: 'bold' },
-                        alternateRowStyles: { fillColor: [248, 250, 252] },
-                        columnStyles: {
-                            0: { halign: 'center', cellWidth: 8 },
-                            1: { cellWidth: 30, fontStyle: 'bold' },
-                            2: { cellWidth: 28 },
-                            3: { halign: 'center', cellWidth: 14, fontStyle: 'bold' },
-                            4: { halign: 'center', cellWidth: 28 },
-                            5: { cellWidth: 42, fontStyle: 'bold' },
-                            6: { cellWidth: 'auto' }
-                        },
-                        didDrawPage: function (data) {
-                            const pageCount = pdf.internal.getNumberOfPages();
-                            pdf.setFontSize(7);
-                            pdf.setTextColor(148, 163, 184);
-                            pdf.text(
-                                `Page ${data.pageNumber} of ${pageCount}  |  PMS Raebareli - 12:30 PM KG Route Timetable  |  Vehicle: ${vehicleNames.v2}`,
-                                105,
-                                pdf.internal.pageSize.getHeight() - 4,
-                                { align: 'center' }
-                            );
-                        }
-                    });
-
-                    pdf.save(`PMS_KG_1230PM_Route_Schedule_${todayStr.replace(/[^a-zA-Z0-9]/g, '_')}.pdf`);
-                } else {
-                    window.printKGScheduleSheet();
-                }
-            } catch (err) {
-                console.error("downloadKGSchedulePDF error:", err);
-                window.printKGScheduleSheet();
-            } finally {
-                if (btn) {
-                    btn.innerHTML = origHtml;
-                    btn.disabled = false;
-                }
-            }
-        };
-
         // ─── VEHICLE RENAME MODAL ───────────────────────────────────────────────
         window.openVehicleRenameModal = function () {
             document.getElementById('v1-name-input').value = vehicleNames.v1;
@@ -2692,11 +2665,11 @@
             updateVehicleLabelsUI();
 
             students = [
-                { id: "1", name: "राहुल शर्मा", fatherName: "श्री विजय शर्मा", class: "8th", address: "सिविल लाइंस, बाराबंकी", specificTime: "07:30 AM", vehicle: "v1", sortOrder: 0 },
-                { id: "2", name: "अमित वर्मा", fatherName: "श्री रमेश वर्मा", class: "5th", address: "पटेल चौराहा, बाराबंकी", specificTime: "07:40 AM", vehicle: "v1", sortOrder: 1 },
-                { id: "3", name: "प्रिया गुप्ता", fatherName: "श्री अरुण गुप्ता", class: "KG-I", address: "लखपेड़ाबाग, बाराबंकी", specificTime: "07:15 AM", vehicle: "v2", sortOrder: 2 },
-                { id: "4", name: "किरण यादव", fatherName: "श्री लालजी यादव", class: "KG-II", address: "मुंशीगंज, बाराबंकी", specificTime: "07:25 AM", vehicle: "v2", sortOrder: 3 },
-                { id: "5", name: "सुमित दीक्षित", fatherName: "श्री आलोक दीक्षित", class: "1st", address: "छाया चौराहा, बाराबंकी", specificTime: "07:50 AM", vehicle: "v1", sortOrder: 4 }
+                { id: "1", name: "राहुल शर्मा", fatherName: "श्री विजय शर्मा", class: "8th", address: "सिविल लाइंस, बाराबंकी", specificTime: "07:30 AM", vehicle: "v1", returnVehicle: "v1", dropTime: "01:30 PM", sortOrder: 0 },
+                { id: "2", name: "अमित वर्मा", fatherName: "श्री रमेश वर्मा", class: "5th", address: "पटेल चौराहा, बाराबंकी", specificTime: "07:40 AM", vehicle: "v1", returnVehicle: "v1", dropTime: "01:45 PM", sortOrder: 1 },
+                { id: "3", name: "प्रिया गुप्ता", fatherName: "श्री अरुण गुप्ता", class: "KG-I", address: "लखपेड़ाबाग, बाराबंकी", specificTime: "07:15 AM", vehicle: "v2", returnVehicle: "v2", dropTime: "12:30 PM", sortOrder: 2 },
+                { id: "4", name: "किरण यादव", fatherName: "श्री लालजी यादव", class: "KG-II", address: "मुंशीगंज, बाराबंकी", specificTime: "07:25 AM", vehicle: "v2", returnVehicle: "v2", dropTime: "12:45 PM", sortOrder: 3 },
+                { id: "5", name: "सुमित दीक्षित", fatherName: "श्री आलोक दीक्षित", class: "1st", address: "छाया चौराहा, बाराबंकी", specificTime: "07:50 AM", vehicle: "v1", returnVehicle: "v1", dropTime: "01:30 PM", sortOrder: 4 }
             ];
             calculateStats();
             applyFiltersAndRender();
@@ -2706,7 +2679,7 @@
         function saveOfflineStudent(studentData) {
             if (studentData.id) {
                 const index = students.findIndex(s => s.id === studentData.id);
-                if (index !== -1) students[index] = studentData;
+                if (index !== -1) students[index] = { ...students[index], ...studentData };
             } else {
                 studentData.id = crypto.randomUUID();
                 studentData.sortOrder = students.length;
@@ -2736,8 +2709,14 @@
             const total = students.length;
             const v1Count = students.filter(s => s.vehicle === 'v1').length;
             const v2Count = students.filter(s => s.vehicle === 'v2').length;
-            const retKgCount = students.filter(s => isKGStudent(s.class)).length;
-            const retPrmCount = students.filter(s => !isKGStudent(s.class)).length;
+            const retKgCount = students.filter(s => {
+                const sched = getStudentSchedule(s);
+                return sched.returnVehicle === 'v2';
+            }).length;
+            const retPrmCount = students.filter(s => {
+                const sched = getStudentSchedule(s);
+                return sched.returnVehicle === 'v1';
+            }).length;
 
             const badge = document.getElementById('total-student-badge');
             if (badge) badge.innerText = total;
@@ -2753,6 +2732,32 @@
 
             const retPrmEl = document.getElementById('ret-prm-count');
             if (retPrmEl) retPrmEl.innerText = `${retPrmCount} छात्र`;
+
+            // Filter button badges (secondary ribbon)
+            const bAll = document.getElementById('btn-count-all');
+            const bV1 = document.getElementById('btn-count-v1');
+            const bV2 = document.getElementById('btn-count-v2');
+            const bRetKg = document.getElementById('btn-count-ret-kg');
+            const bRetPrm = document.getElementById('btn-count-ret-prm');
+            if (bAll) bAll.innerText = total;
+            if (bV1) bV1.innerText = v1Count;
+            if (bV2) bV2.innerText = v2Count;
+            if (bRetKg) bRetKg.innerText = retKgCount;
+            if (bRetPrm) bRetPrm.innerText = retPrmCount;
+
+            // Shift Navigation Tabs count badges
+            const bTabList = document.getElementById('tab-badge-list');
+            const bTabV1 = document.getElementById('tab-badge-v1');
+            const bTabV2 = document.getElementById('tab-badge-v2');
+            const bTabRetPrm = document.getElementById('tab-badge-ret-prm');
+            const bTabRetKg = document.getElementById('tab-badge-ret-kg');
+            const bTabAll = document.getElementById('tab-badge-all');
+            if (bTabList) bTabList.innerText = total;
+            if (bTabV1) bTabV1.innerText = v1Count;
+            if (bTabV2) bTabV2.innerText = v2Count;
+            if (bTabRetPrm) bTabRetPrm.innerText = retPrmCount;
+            if (bTabRetKg) bTabRetKg.innerText = retKgCount;
+            if (bTabAll) bTabAll.innerText = total;
         }
 
         function updateVehicleLabelsUI() {
@@ -2768,8 +2773,10 @@
 
             const fv1 = document.getElementById('filter-btn-v1');
             const fv2 = document.getElementById('filter-btn-v2');
-            if (fv1) fv1.innerText = `Morning ${vehicleNames.v1}`;
-            if (fv2) fv2.innerText = `Morning ${vehicleNames.v2}`;
+            const v1Count = students.filter(s => s.vehicle === 'v1').length;
+            const v2Count = students.filter(s => s.vehicle === 'v2').length;
+            if (fv1) fv1.innerHTML = `<i class="fa-solid fa-bus"></i> Morning ${vehicleNames.v1} <span class="filter-count-badge" id="btn-count-v1">${v1Count}</span>`;
+            if (fv2) fv2.innerHTML = `<i class="fa-solid fa-van-shuttle"></i> Morning ${vehicleNames.v2} <span class="filter-count-badge" id="btn-count-v2">${v2Count}</span>`;
 
             const retKgVName = document.getElementById('ret-kg-vname');
             const retPrmVName = document.getElementById('ret-prm-vname');
@@ -2782,37 +2789,151 @@
             const pRetPrm = document.getElementById('print-filter-ret-prm-label');
             if (pv1) pv1.innerText = `Morning: केवल ${vehicleNames.v1}`;
             if (pv2) pv2.innerText = `Morning: केवल ${vehicleNames.v2}`;
-            if (pRetKg) pRetKg.innerText = `Return: 12:30 PM (KG-I & KG-II by ${vehicleNames.v2})`;
-            if (pRetPrm) pRetPrm.innerText = `Return: 01:30 PM (Class 1-8 by ${vehicleNames.v1})`;
+            if (pRetPrm) pRetPrm.innerText = `Drop: 01:30 PM (Class 1-8 by ${vehicleNames.v1})`;
+            if (pRetKg) pRetKg.innerText = `Drop: 12:30 PM (KG-I & KG-II by ${vehicleNames.v2})`;
+
+            // View Tabs labels
+            const tabV1 = document.getElementById('tab-title-v1');
+            const tabV2 = document.getElementById('tab-title-v2');
+            const tabRetPrm = document.getElementById('tab-title-ret-prm');
+            const tabRetKg = document.getElementById('tab-title-ret-kg');
+            if (tabV1) tabV1.innerText = `Morning ${vehicleNames.v1}`;
+            if (tabV2) tabV2.innerText = `Morning ${vehicleNames.v2}`;
+            if (tabRetPrm) tabRetPrm.innerText = `Drop ${vehicleNames.v1}`;
+            if (tabRetKg) tabRetKg.innerText = `Drop ${vehicleNames.v2}`;
+
+            // Preview segmented pills labels
+            const prevV1 = document.getElementById('prev-seg-v1-lbl');
+            const prevV2 = document.getElementById('prev-seg-v2-lbl');
+            const prevPrm = document.getElementById('prev-seg-prm-lbl');
+            const prevKg = document.getElementById('prev-seg-kg-lbl');
+            if (prevV1) prevV1.innerText = vehicleNames.v1;
+            if (prevV2) prevV2.innerText = vehicleNames.v2;
+            if (prevPrm) prevPrm.innerText = vehicleNames.v1;
+            if (prevKg) prevKg.innerText = vehicleNames.v2;
 
             const formv1 = document.getElementById('form-v1-label');
             const formv2 = document.getElementById('form-v2-label');
             if (formv1) formv1.innerText = vehicleNames.v1;
             if (formv2) formv2.innerText = vehicleNames.v2;
 
+            const retFormv1 = document.getElementById('form-ret-v1-label');
+            const retFormv2 = document.getElementById('form-ret-v2-label');
+            if (retFormv1) retFormv1.innerText = vehicleNames.v1;
+            if (retFormv2) retFormv2.innerText = vehicleNames.v2;
+
             updateModalSchedulePreview();
         }
 
         window.updateModalSchedulePreview = function () {
             const clsInput = document.getElementById('form-class');
+            const retVehInput = document.getElementById('form-return-vehicle');
+            const dropTimeInput = document.getElementById('form-drop-time');
             const hintBox = document.getElementById('modal-schedule-hint');
             if (!hintBox) return;
 
             const cls = clsInput ? clsInput.value.trim() : '';
-            if (isKGStudent(cls)) {
+            const isKG = isKGStudent(cls);
+            const customRetVeh = retVehInput ? retVehInput.value : 'auto';
+            const effectiveRetVeh = customRetVeh !== 'auto' ? customRetVeh : (isKG ? 'v2' : 'v1');
+            const effectiveRetVehName = effectiveRetVeh === 'v1' ? vehicleNames.v1 : vehicleNames.v2;
+
+            const customDropTime = dropTimeInput ? dropTimeInput.value.trim() : '';
+            const effectiveDropTime = customDropTime || (isKG ? '12:30 PM' : '01:30 PM (13:30)');
+
+            if (isKG) {
                 hintBox.style.background = '#fef3c7';
                 hintBox.style.color = '#92400e';
                 hintBox.style.borderColor = '#fde68a';
-                hintBox.innerHTML = `<i class="fa-solid fa-clock-rotate-left"></i> <b>KG वापसी शेड्यूल:</b> यह छात्र <b>दोपहर 12:30 बजे ${vehicleNames.v2}</b> से घर जाएगा।`;
+                hintBox.innerHTML = `<i class="fa-solid fa-clock-rotate-left"></i> <b>KG वापसी शेड्यूल:</b> गाड़ी: <b>${effectiveRetVehName}</b> | निर्धारित ड्रॉप समय: <b>${effectiveDropTime}</b> ${customDropTime ? '<span style="background:#ea580c;color:#fff;padding:2px 6px;border-radius:4px;font-size:11px;margin-left:6px;font-weight:700;">कस्टम ड्रॉप</span>' : ''}`;
             } else {
                 hintBox.style.background = '#e0e7ff';
                 hintBox.style.color = '#3730a3';
                 hintBox.style.borderColor = '#c7d2fe';
-                hintBox.innerHTML = `<i class="fa-solid fa-clock-rotate-left"></i> <b>कक्षा 1-8 वापसी शेड्यूल:</b> यह छात्र <b>दोपहर 01:30 बजे (13:30) ${vehicleNames.v1}</b> से घर जाएगा।`;
+                hintBox.innerHTML = `<i class="fa-solid fa-clock-rotate-left"></i> <b>कक्षा 1-8 वापसी शेड्यूल:</b> गाड़ी: <b>${effectiveRetVehName}</b> | निर्धारित ड्रॉप समय: <b>${effectiveDropTime}</b> ${customDropTime ? '<span style="background:#4f46e5;color:#fff;padding:2px 6px;border-radius:4px;font-size:11px;margin-left:6px;font-weight:700;">कस्टम ड्रॉप</span>' : ''}`;
             }
         };
 
+        // ─── DYNAMIC TABLE HEADER ────────────────────────────────────────────────
+        function updateTableHeader() {
+            const thead = document.getElementById('student-table-head');
+            if (!thead) return;
+
+            const isMorning = (currentVehicleFilter === 'v1' || currentVehicleFilter === 'v2');
+            const isReturn = (currentVehicleFilter === 'ret-kg' || currentVehicleFilter === 'ret-prm');
+
+            // Morning lists: REMOVE 'दोपहर वापसी (Return Drop)'
+            // Return lists: REMOVE 'सुबह लाते समय (Pickup)'
+            // All: Show both
+            const showPickup = !isReturn;
+            const showDrop = !isMorning;
+
+            let pickupTh = showPickup
+                ? `<th style="min-width:130px;"><i class="fa-solid fa-sun" style="color:#d97706; margin-right:4px;"></i> सुबह लाते समय (Pickup)</th>`
+                : '';
+            let dropTh = showDrop
+                ? `<th style="min-width:150px;"><i class="fa-solid fa-clock-rotate-left" style="color:#0284c7; margin-right:4px;"></i> दोपहर वापसी (Return Drop)</th>`
+                : '';
+
+            thead.innerHTML = `
+                <tr>
+                    <th style="width: 36px; text-align: center;"></th>
+                    <th style="width: 50px; text-align: center;">क्र.</th>
+                    <th>छात्र एवं पिता का नाम</th>
+                    <th style="text-align: center;">कक्षा</th>
+                    <th>मोबाइल नंबर</th>
+                    ${pickupTh}
+                    ${dropTh}
+                    <th>पता / निर्धारित स्टॉप</th>
+                    <th style="text-align: right; width: 90px;">कार्य</th>
+                </tr>
+            `;
+
+            // Update UI mode badge pill
+            const modeBadge = document.getElementById('table-mode-badge');
+            if (modeBadge) {
+                if (currentVehicleFilter === 'v1') {
+                    modeBadge.innerHTML = `<i class="fa-solid fa-sun" style="color:#f59e0b;"></i> सुबह ${vehicleNames.v1} सूची <span class="mode-subnote">(दोपहर वापसी छिपाई गई)</span>`;
+                    modeBadge.className = 'mode-pill morning';
+                    modeBadge.style.display = 'inline-flex';
+                } else if (currentVehicleFilter === 'v2') {
+                    modeBadge.innerHTML = `<i class="fa-solid fa-sun" style="color:#f59e0b;"></i> सुबह ${vehicleNames.v2} सूची <span class="mode-subnote">(दोपहर वापसी छिपाई गई)</span>`;
+                    modeBadge.className = 'mode-pill morning';
+                    modeBadge.style.display = 'inline-flex';
+                } else if (currentVehicleFilter === 'ret-kg') {
+                    modeBadge.innerHTML = `<i class="fa-solid fa-clock-rotate-left" style="color:#16a34a;"></i> दोपहर 12:30 वापसी (${vehicleNames.v2}) <span class="mode-subnote">(सुबह पिकअप छिपाई गई)</span>`;
+                    modeBadge.className = 'mode-pill return';
+                    modeBadge.style.display = 'inline-flex';
+                } else if (currentVehicleFilter === 'ret-prm') {
+                    modeBadge.innerHTML = `<i class="fa-solid fa-clock-rotate-left" style="color:#16a34a;"></i> दोपहर 01:30 वापसी (${vehicleNames.v1}) <span class="mode-subnote">(सुबह पिकअप छिपाई गई)</span>`;
+                    modeBadge.className = 'mode-pill return';
+                    modeBadge.style.display = 'inline-flex';
+                } else {
+                    modeBadge.innerHTML = `<i class="fa-solid fa-layer-group" style="color:#6366f1;"></i> सभी छात्र (सुबह व दोपहर विवरण)`;
+                    modeBadge.className = 'mode-pill all';
+                    modeBadge.style.display = 'inline-flex';
+                }
+            }
+        }
+
         // ─── Filter & Search Handlers ────────────────────────────────────────────
+        window.handleSearchInput = function () {
+            const searchInput = document.getElementById('search-input');
+            const clearBtn = document.getElementById('search-clear-btn');
+            if (clearBtn) {
+                clearBtn.style.display = searchInput && searchInput.value.trim() ? 'inline-flex' : 'none';
+            }
+            applyFiltersAndRender();
+        };
+
+        window.clearSearch = function () {
+            const searchInput = document.getElementById('search-input');
+            const clearBtn = document.getElementById('search-clear-btn');
+            if (searchInput) searchInput.value = '';
+            if (clearBtn) clearBtn.style.display = 'none';
+            applyFiltersAndRender();
+        };
+
         window.setFilter = function (filterVal) {
             currentVehicleFilter = filterVal;
 
@@ -2862,18 +2983,26 @@
 
         // ─── Render Table ────────────────────────────────────────────────────────
         function renderStudentTable(studentList) {
+            updateTableHeader();
+
             const tableBody = document.getElementById('student-table-body');
             const rCount = document.getElementById('rendered-count');
             if (rCount) rCount.innerText = `${studentList.length} छात्र`;
             if (!tableBody) return;
 
+            const isMorning = (currentVehicleFilter === 'v1' || currentVehicleFilter === 'v2');
+            const isReturn = (currentVehicleFilter === 'ret-kg' || currentVehicleFilter === 'ret-prm');
+            const showPickup = !isReturn;
+            const showDrop = !isMorning;
+            const totalCols = 6 + (showPickup ? 1 : 0) + (showDrop ? 1 : 0);
+
             if (studentList.length === 0) {
                 tableBody.innerHTML = `
                     <tr>
-                        <td colspan="9" style="text-align:center; padding:50px 20px; color:var(--slate-400);">
-                            <i class="fa-solid fa-users-slash" style="font-size:32px; margin-bottom:12px; color:var(--slate-300);"></i>
-                            <p style="font-weight:600; font-size:0.9rem; color:var(--slate-600);">कोई छात्र नहीं मिला</p>
-                            <p style="font-size:0.78rem; margin-top:4px;">कृपया फ़िल्टर बदलें या नया छात्र जोड़ें।</p>
+                        <td colspan="${totalCols}" style="text-align:center; padding:50px 20px; color:var(--slate-400);">
+                            <i class="fa-solid fa-users-slash" style="font-size:36px; margin-bottom:12px; color:var(--slate-300);"></i>
+                            <p style="font-weight:700; font-size:0.95rem; color:var(--slate-600);">कोई छात्र नहीं मिला</p>
+                            <p style="font-size:0.8rem; margin-top:4px;">कृपया फ़िल्टर बदलें या नया छात्र जोड़ें।</p>
                         </td>
                     </tr>
                 `;
@@ -2891,6 +3020,32 @@
                 const classBadge = sched.isKG
                     ? `<span class="shift-badge v2">${student.class || '-'}</span>`
                     : `<span style="font-weight:700; color:var(--slate-800);">${student.class || '-'}</span>`;
+
+                const pickupCell = showPickup ? `
+                    <td>
+                        <div style="display:flex; flex-direction:column; gap:3px;">
+                            <span class="shift-badge ${mBadgeClass}">
+                                <i class="fa-solid fa-van-shuttle" style="font-size:10px;"></i> ${sched.morningVehicleName}
+                            </span>
+                            ${student.specificTime ? `<span style="font-size:0.72rem; color:var(--slate-600); display:flex; align-items:center; gap:4px; font-weight:600;"><i class="fa-regular fa-clock" style="font-size:9px; color:#d97706;"></i> ${student.specificTime}</span>` : ''}
+                        </div>
+                    </td>
+                ` : '';
+
+                const dropCell = showDrop ? `
+                    <td>
+                        <div style="display:flex; flex-direction:column; gap:3px;">
+                            <span class="shift-badge ${rBadgeClass}">
+                                <i class="fa-solid fa-clock-rotate-left" style="font-size:10px;"></i> ${sched.returnVehicleName} &bull; ${sched.returnTime}
+                            </span>
+                            ${sched.hasCustomDropTime
+                                ? `<span style="font-size:0.72rem; color:#0284c7; font-weight:700; display:flex; align-items:center; gap:4px;"><i class="fa-solid fa-clock" style="font-size:9px;"></i> निर्धारित ड्रॉप: ${sched.returnTime}</span>`
+                                : (sched.isKG
+                                    ? `<span style="font-size:0.72rem; color:#c2410c; font-weight:700; display:flex; align-items:center; gap:4px;" title="${sched.returnStopName}"><i class="fa-solid fa-location-dot" style="font-size:9px;"></i> ${sched.returnStopName}</span>`
+                                    : `<span style="font-size:0.72rem; color:#15803d; font-weight:700;">★ 01:30 PM (Class 1-8)</span>`)}
+                        </div>
+                    </td>
+                ` : '';
 
                 return `
                     <tr draggable="true"
@@ -2921,39 +3076,22 @@
                                 <div class="avatar-initial">${initial}</div>
                                 <div>
                                     <div class="student-info-name">${student.name}</div>
-                                    <div class="student-info-father"><span style="background:var(--slate-100); padding:1px 4px; border-radius:3px;">पिता</span> ${student.fatherName}</div>
+                                    <div class="student-info-father"><span style="background:var(--slate-100); padding:1px 5px; border-radius:3px; font-weight:600; font-size:0.7rem;">पिता</span> ${student.fatherName || '-'}</div>
                                 </div>
                             </div>
                         </td>
                         <td style="text-align: center;">${classBadge}</td>
                         <td>
                             ${student.mobile
-                        ? `<a href="tel:${student.mobile}" style="color:var(--slate-700); text-decoration:none; display:inline-flex; align-items:center; gap:4px; font-weight:600;" title="कॉल करें"><i class="fa-solid fa-phone" style="font-size:10px; color:var(--primary);"></i> ${student.mobile}</a>`
+                        ? `<a href="tel:${student.mobile}" class="phone-link" title="कॉल करें"><i class="fa-solid fa-phone" style="font-size:10px; color:var(--primary);"></i> ${student.mobile}</a>`
                         : '<span style="color:var(--slate-300);">-</span>'
                     }
                         </td>
+                        ${pickupCell}
+                        ${dropCell}
                         <td>
-                            <div style="display:flex; flex-direction:column; gap:2px;">
-                                <span class="shift-badge ${mBadgeClass}">
-                                    <i class="fa-solid fa-van-shuttle" style="font-size:10px;"></i> ${sched.morningVehicleName}
-                                </span>
-                                ${student.specificTime ? `<span style="font-size:0.72rem; color:var(--slate-500); display:flex; align-items:center; gap:3px;"><i class="fa-regular fa-clock" style="font-size:9px;"></i> ${student.specificTime}</span>` : ''}
-                            </div>
-                        </td>
-                        <td>
-                            <div style="display:flex; flex-direction:column; gap:2px;">
-                                <span class="shift-badge ${rBadgeClass}">
-                                    <i class="fa-solid fa-clock-rotate-left" style="font-size:10px;"></i> ${sched.returnVehicleName} &bull; ${sched.returnTime}
-                                </span>
-                                ${sched.isKG
-                        ? `<span style="font-size:0.72rem; color:#c2410c; font-weight:700; display:flex; align-items:center; gap:3px;" title="${sched.returnStopName}"><i class="fa-solid fa-location-dot" style="font-size:9px;"></i> ${sched.returnStopName}</span>`
-                        : `<span style="font-size:0.72rem; color:#15803d; font-weight:700;">★ 01:30 PM (Class 1-8)</span>`
-                    }
-                            </div>
-                        </td>
-                        <td>
-                            <div style="font-size:0.78rem; color:var(--slate-600); max-width:200px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="${student.address || ''}">
-                                ${student.address || '<span style="color:var(--slate-300);">-</span>'}
+                            <div style="font-size:0.78rem; color:var(--slate-700); max-width:210px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="${student.address || ''}">
+                                ${student.address ? `<i class="fa-solid fa-location-dot" style="font-size:10px; color:var(--slate-400); margin-right:3px;"></i>${student.address}` : '<span style="color:var(--slate-300);">-</span>'}
                             </div>
                         </td>
                         <td>
@@ -2993,24 +3131,81 @@
             moveToPosition(id, newPos);
         };
 
-        // Navigation Tab Switching
-        window.switchTab = function (tabName) {
+        // Navigation Tab Switching (Shift-Wise & Student List)
+        window.switchTab = function (tabName, shiftFilter) {
             currentTab = tabName;
             const tabList = document.getElementById('tab-btn-list');
-            const tabPreview = document.getElementById('tab-btn-preview');
             const contentList = document.getElementById('tab-content-list');
             const contentPreview = document.getElementById('tab-content-preview');
 
+            const shiftTabConfigs = [
+                { id: 'tab-btn-preview-v1', shift: 'v1' },
+                { id: 'tab-btn-preview-v2', shift: 'v2' },
+                { id: 'tab-btn-preview-ret-prm', shift: 'ret-prm' },
+                { id: 'tab-btn-preview-ret-kg', shift: 'ret-kg' },
+                { id: 'tab-btn-preview-all', shift: 'all' }
+            ];
+
+            const previewPillConfigs = [
+                { id: 'prev-seg-v1', shift: 'v1' },
+                { id: 'prev-seg-v2', shift: 'v2' },
+                { id: 'prev-seg-ret-prm', shift: 'ret-prm' },
+                { id: 'prev-seg-ret-kg', shift: 'ret-kg' },
+                { id: 'prev-seg-all', shift: 'all' }
+            ];
+
             if (tabName === 'list') {
                 if (tabList) tabList.classList.add('active');
-                if (tabPreview) tabPreview.classList.remove('active');
+                shiftTabConfigs.forEach(t => {
+                    const el = document.getElementById(t.id);
+                    if (el) el.classList.remove('active');
+                });
+                const legacyTab = document.getElementById('tab-btn-preview');
+                if (legacyTab) legacyTab.classList.remove('active');
+
                 if (contentList) contentList.classList.remove('hidden');
                 if (contentPreview) contentPreview.classList.add('hidden');
             } else {
-                if (tabPreview) tabPreview.classList.add('active');
+                // 'preview'
                 if (tabList) tabList.classList.remove('active');
+
+                // Determine active shift filter
+                if (shiftFilter) {
+                    activePreviewShift = shiftFilter;
+                } else if (!activePreviewShift) {
+                    activePreviewShift = 'v1';
+                }
+
+                // Sync select dropdown in preview toolbar
+                const filterSelect = document.getElementById('print-vehicle-filter');
+                if (filterSelect && filterSelect.value !== activePreviewShift) {
+                    filterSelect.value = activePreviewShift;
+                }
+
+                // Update active state on top shift tabs
+                shiftTabConfigs.forEach(t => {
+                    const el = document.getElementById(t.id);
+                    if (el) {
+                        if (t.shift === activePreviewShift) el.classList.add('active');
+                        else el.classList.remove('active');
+                    }
+                });
+
+                // Update active state on preview toolbar pills
+                previewPillConfigs.forEach(p => {
+                    const el = document.getElementById(p.id);
+                    if (el) {
+                        if (p.shift === activePreviewShift) el.classList.add('active');
+                        else el.classList.remove('active');
+                    }
+                });
+
+                const legacyTab = document.getElementById('tab-btn-preview');
+                if (legacyTab) legacyTab.classList.add('active');
+
                 if (contentPreview) contentPreview.classList.remove('hidden');
                 if (contentList) contentList.classList.add('hidden');
+
                 generatePrintPreview();
             }
         };
@@ -3021,6 +3216,8 @@
             document.getElementById('form-submit-text').innerText = "सुरक्षित करें";
             document.getElementById('student-id-field').value = "";
             document.getElementById('form-specific-time').value = "";
+            document.getElementById('form-return-vehicle').value = "auto";
+            document.getElementById('form-drop-time').value = "";
             document.getElementById('student-form').reset();
             updateModalSchedulePreview();
 
@@ -3034,11 +3231,13 @@
             document.getElementById('modal-title').innerHTML = `<i class="fa-solid fa-pen-to-square text-primary"></i> छात्र विवरण संपादित करें`;
             document.getElementById('form-submit-text').innerText = "अपडेट करें";
             document.getElementById('student-id-field').value = student.id;
-            document.getElementById('form-student-name').value = student.name;
-            document.getElementById('form-father-name').value = student.fatherName;
+            document.getElementById('form-student-name').value = student.name || '';
+            document.getElementById('form-father-name').value = student.fatherName || '';
             document.getElementById('form-class').value = student.class || '';
             document.getElementById('form-mobile').value = student.mobile || '';
             document.getElementById('form-vehicle').value = student.vehicle || 'v1';
+            document.getElementById('form-return-vehicle').value = student.returnVehicle || 'auto';
+            document.getElementById('form-drop-time').value = student.dropTime || student.returnTime || '';
             document.getElementById('form-address').value = student.address || '';
             document.getElementById('form-specific-time').value = student.specificTime || '';
 
@@ -3061,6 +3260,8 @@
             const className = document.getElementById('form-class').value.trim();
             const mobile = document.getElementById('form-mobile').value.trim();
             const vehicle = document.getElementById('form-vehicle').value;
+            const returnVehicle = document.getElementById('form-return-vehicle').value;
+            const dropTime = document.getElementById('form-drop-time').value.trim();
             const address = document.getElementById('form-address').value.trim();
             const specificTime = document.getElementById('form-specific-time').value.trim();
 
@@ -3076,7 +3277,7 @@
                 id: id || undefined,
                 name, fatherName,
                 class: className,
-                mobile, vehicle, address, specificTime,
+                mobile, vehicle, returnVehicle, dropTime, address, specificTime,
                 sortOrder: existingSortOrder,
                 sourceId: existingSourceId
             };
@@ -3141,16 +3342,47 @@
             const selectedYear = document.getElementById('print-year').value;
             const printFilter = document.getElementById('print-vehicle-filter').value;
             const titleText = document.getElementById('print-sheet-title').value || "ATTENDANCE SHEET";
+            const rawAttMode = document.getElementById('print-att-mode') ? document.getElementById('print-att-mode').value : 'auto';
+            const rawDayRange = document.getElementById('print-day-range') ? document.getElementById('print-day-range').value : 'auto';
 
             const totalDays = getDaysInMonth(selectedMonthIndex, selectedYear);
             const monthName = monthNamesHindi[selectedMonthIndex];
 
+            // Determine if this is a Single Shift (Pickup only or Drop only) vs Combined (Both P & D)
+            let isSingleShift = false;
+            let isMorning = false;
+            let isDrop = false;
+
+            if (rawAttMode === 'both') {
+                isSingleShift = false;
+            } else if (rawAttMode === 'single') {
+                isSingleShift = true;
+                if (printFilter === 'ret-prm' || printFilter === 'drop-v1' || printFilter === 'ret-kg' || printFilter === 'drop-v2') {
+                    isDrop = true;
+                } else {
+                    isMorning = true;
+                }
+            } else {
+                // 'auto': Morning shifts get Pickup only; Drop shifts get Drop only; All gets both
+                if (printFilter === 'v1' || printFilter === 'v2') {
+                    isSingleShift = true;
+                    isMorning = true;
+                } else if (printFilter === 'ret-prm' || printFilter === 'drop-v1' || printFilter === 'ret-kg' || printFilter === 'drop-v2') {
+                    isSingleShift = true;
+                    isDrop = true;
+                } else {
+                    // 'all' or class-wise default to combined both
+                    isSingleShift = false;
+                }
+            }
+
             const printStudents = students.filter(student => {
+                const sched = getStudentSchedule(student);
                 if (printFilter === 'all') return true;
-                if (printFilter === 'v1') return student.vehicle === 'v1';
-                if (printFilter === 'v2') return student.vehicle === 'v2';
-                if (printFilter === 'ret-kg') return isKGStudent(student.class);
-                if (printFilter === 'ret-prm') return !isKGStudent(student.class);
+                if (printFilter === 'v1') return sched.morningVehicle === 'v1';
+                if (printFilter === 'v2') return sched.morningVehicle === 'v2';
+                if (printFilter === 'ret-kg' || printFilter === 'drop-v2') return sched.returnVehicle === 'v2';
+                if (printFilter === 'ret-prm' || printFilter === 'drop-v1') return sched.returnVehicle === 'v1';
                 if (printFilter.startsWith('cls-')) {
                     const targetCls = printFilter.replace('cls-', '');
                     return normalizeClassName(student.class) === normalizeClassName(targetCls);
@@ -3159,23 +3391,72 @@
             });
 
             if (printStudents.length === 0) {
-                return '<div style="text-align:center; padding:50px; color: var(--slate-500); font-weight: bold;">इस फ़िल्टर के लिए कोई छात्र उपलब्ध नहीं है।</div>';
+                return '<div style="text-align:center; padding:50px; color: var(--slate-500); font-weight: bold;"><i class="fa-solid fa-triangle-exclamation" style="font-size:24px; color:#f59e0b; margin-bottom:8px; display:block;"></i>इस वाहन / शिफ्ट फ़िल्टर के लिए कोई छात्र पंजीकृत नहीं है।</div>';
             }
 
             let filterTitleDesc = 'All Students (सभी छात्र)';
-            if (printFilter === 'v1') filterTitleDesc = `Morning: ${vehicleNames.v1} Only`;
-            else if (printFilter === 'v2') filterTitleDesc = `Morning: ${vehicleNames.v2} Only`;
-            else if (printFilter === 'ret-kg') filterTitleDesc = `Return 12:30 PM: KG-I & KG-II by ${vehicleNames.v2}`;
-            else if (printFilter === 'ret-prm') filterTitleDesc = `Return 01:30 PM: Class 1-8 by ${vehicleNames.v1}`;
-            else if (printFilter.startsWith('cls-')) filterTitleDesc = `Class: ${printFilter.replace('cls-', '')} Only`;
+            let shiftBadgeText = 'ALL VEHICLES & SHIFTS';
+            let shiftSubtitleHTML = `<b>Return Schedule:</b> KG1 &amp; KG2 Drop @ 12:30 PM by ${vehicleNames.v2} &nbsp;|&nbsp; Class 1-8 Drop @ 01:30 PM (13:30) by ${vehicleNames.v1}`;
+
+            if (printFilter === 'v1') {
+                filterTitleDesc = `Morning: ${vehicleNames.v1} Only (सुबह पिकअप)`;
+                shiftBadgeText = `MORNING PICKUP: ${vehicleNames.v1} (केवल सुबह उपस्थिति)`;
+                shiftSubtitleHTML = `<b>Shift Timing:</b> Pickup: 07:00 AM - 08:00 AM | Vehicle: <b>${vehicleNames.v1}</b> | Attendance: <b>केवल सुबह पिकअप (Morning Pickup)</b>`;
+            } else if (printFilter === 'v2') {
+                filterTitleDesc = `Morning: ${vehicleNames.v2} Only (सुबह पिकअप)`;
+                shiftBadgeText = `MORNING PICKUP: ${vehicleNames.v2} (केवल सुबह उपस्थिति)`;
+                shiftSubtitleHTML = `<b>Shift Timing:</b> Pickup: 07:00 AM - 08:00 AM | Vehicle: <b>${vehicleNames.v2}</b> | Attendance: <b>केवल सुबह पिकअप (Morning Pickup)</b>`;
+            } else if (printFilter === 'ret-prm' || printFilter === 'drop-v1') {
+                filterTitleDesc = `Drop Shift: 01:30 PM (Class 1-8 by ${vehicleNames.v1})`;
+                shiftBadgeText = `DROP SHIFT: 01:30 PM (${vehicleNames.v1} - CLASS 1-8 केवल दोपहर वापसी)`;
+                shiftSubtitleHTML = `<b>Shift Timing:</b> Departure @ 01:30 PM (13:30) | Vehicle: <b>${vehicleNames.v1}</b> (Class 1-8) | Attendance: <b>केवल दोपहर वापसी (Return Drop)</b>`;
+            } else if (printFilter === 'ret-kg' || printFilter === 'drop-v2') {
+                filterTitleDesc = `Drop Shift: 12:30 PM (KG-I & KG-II by ${vehicleNames.v2})`;
+                shiftBadgeText = `DROP SHIFT: 12:30 PM (${vehicleNames.v2} - KG-I & KG-II केवल दोपहर वापसी)`;
+                shiftSubtitleHTML = `<b>Shift Timing:</b> Departure @ 12:30 PM | Vehicle: <b>${vehicleNames.v2}</b> (KG-I &amp; KG-II) | Attendance: <b>केवल दोपहर वापसी (Return Drop)</b>`;
+            } else if (printFilter.startsWith('cls-')) {
+                filterTitleDesc = `Class: ${printFilter.replace('cls-', '')} Only`;
+                shiftBadgeText = `CLASS: ${printFilter.replace('cls-', '')}`;
+                shiftSubtitleHTML = `<b>Class Attendance Register:</b> Class ${printFilter.replace('cls-', '')} | Vehicle Route Attendance`;
+            }
+
+            // Determine Day Ranges (Full Month or 15-day chunks)
+            let dayRanges = [];
+            if (rawDayRange === '1-15') {
+                dayRanges.push({ start: 1, end: Math.min(15, totalDays) });
+            } else if (rawDayRange === '16-end') {
+                dayRanges.push({ start: 16, end: totalDays });
+            } else if (rawDayRange === 'chunk-15') {
+                const dayChunkSize = 15;
+                for (let s = 1; s <= totalDays; s += dayChunkSize) {
+                    dayRanges.push({ start: s, end: Math.min(s + dayChunkSize - 1, totalDays) });
+                }
+            } else if (rawDayRange === 'full') {
+                dayRanges.push({ start: 1, end: totalDays });
+            } else {
+                // 'auto'
+                if (isSingleShift) {
+                    // Single shift: 1 column per day -> all 30/31 days fit comfortably on 1 page!
+                    dayRanges.push({ start: 1, end: totalDays });
+                } else {
+                    // Dual shift (Both P & D): 2 columns per day -> 15 days chunking
+                    const dayChunkSize = 15;
+                    for (let s = 1; s <= totalDays; s += dayChunkSize) {
+                        dayRanges.push({ start: s, end: Math.min(s + dayChunkSize - 1, totalDays) });
+                    }
+                }
+            }
 
             let html = '<div style="display: flex; flex-direction: column; gap: 30px; align-items: center; background: #f1f5f9; padding: 20px; border-radius: 8px;">';
 
-            const dayChunkSize = 15;
             const studentChunkSize = 15;
 
-            for (let startDay = 1; startDay <= totalDays; startDay += dayChunkSize) {
-                let endDay = Math.min(startDay + dayChunkSize - 1, totalDays);
+            for (let dIdx = 0; dIdx < dayRanges.length; dIdx++) {
+                const startDay = dayRanges[dIdx].start;
+                const endDay = dayRanges[dIdx].end;
+                const numDays = endDay - startDay + 1;
+                const isFullMonth = (numDays === totalDays && startDay === 1);
+                const dayRangeText = isFullMonth ? `Days: 1-${totalDays} (Full Month)` : `Days: ${startDay}-${endDay}`;
 
                 for (let startStud = 0; startStud < printStudents.length; startStud += studentChunkSize) {
                     let endStud = Math.min(startStud + studentChunkSize, printStudents.length);
@@ -3186,34 +3467,60 @@
                     // Fixed Height Header Area
                     html += '<div style="flex: 0 0 auto; display:flex; justify-content:space-between; align-items:flex-end; border-bottom: 2px solid black; padding-bottom: 8px; margin-bottom: 12px;">';
                     html += '<div>';
-                    html += '<h1 style="margin:0; font-size: 17px; text-transform: uppercase; font-weight: bold; letter-spacing: 0.5px;">' + titleText + '</h1>';
-                    html += '<p style="margin:4px 0 0 0; font-size: 11px; font-weight: bold; color: #1e293b;">Month: ' + monthName + ' ' + selectedYear + ' | Days: ' + startDay + '-' + endDay + ' | Filter: ' + filterTitleDesc + '</p>';
-                    html += '<p style="margin:2px 0 0 0; font-size: 9.5px; color: #475569;"><b>Return Schedule:</b> KG1 &amp; KG2 Drop @ 12:30 PM by ' + vehicleNames.v2 + ' &nbsp;|&nbsp; Class 1-8 Drop @ 01:30 PM (13:30) by ' + vehicleNames.v1 + '</p>';
+                    html += '<h1 style="margin:0; font-size: 16px; text-transform: uppercase; font-weight: bold; letter-spacing: 0.5px; color: #000000;">' + titleText + '</h1>';
+                    html += '<div style="margin:3px 0 0 0; display:flex; align-items:center; gap:8px;">';
+                    html += '<span style="display:inline-block; border: 1.5px solid #000; background:#f8fafc; color:#000; font-size:10px; font-weight:bold; padding:2px 8px; border-radius:3px; text-transform:uppercase;">' + shiftBadgeText + '</span>';
+                    html += '<span style="font-size: 11px; font-weight: bold; color: #000000;">Month: ' + monthName + ' ' + selectedYear + ' | ' + dayRangeText + '</span>';
                     html += '</div>';
-                    html += '<div style="text-align: right; font-size: 11px; font-weight: bold;">';
+                    html += '<p style="margin:3px 0 0 0; font-size: 9px; color: #000000;">' + shiftSubtitleHTML + '</p>';
+                    html += '</div>';
+                    html += '<div style="text-align: right; font-size: 11px; font-weight: bold; color: #000000;">';
                     html += '<span>Page Students: ' + (startStud + 1) + ' to ' + endStud + ' of ' + printStudents.length + '</span><br>';
-                    html += '<span style="font-size: 10px; color: #475569;">Printed: ' + new Date().toLocaleDateString('hi-IN') + '</span>';
+                    html += '<span style="font-size: 10px; color: #000000;">Printed: ' + new Date().toLocaleDateString('hi-IN') + '</span>';
                     html += '</div></div>';
 
-                    // Flexible Table Block
+                    // Flexible Table Block (Dark Black & White)
                     html += '<div style="flex: 1 1 auto; display: flex; flex-direction: column; min-height: 0;">';
-                    html += '<table style="width: 100%; height: 100%; border-collapse: collapse; font-size: 10px; table-layout: fixed;">';
+                    html += '<table style="width: 100%; height: 100%; border-collapse: collapse; font-size: 10px; table-layout: fixed; color: #000000;">';
                     html += '<thead>';
-                    html += '<tr style="height: 24px; background: #f8fafc;">';
-                    html += '<th rowspan="2" style="border: 1px solid black; padding: 2px; width: 4%; text-align: center;">Sr.</th>';
-                    html += '<th rowspan="2" style="border: 1px solid black; padding: 2px; width: 23%; text-align: left;">Student &amp; Father Name</th>';
-                    html += '<th rowspan="2" style="border: 1px solid black; padding: 2px; width: 6%; text-align: center;">Class</th>';
-                    html += '<th rowspan="2" style="border: 1px solid black; padding: 2px; width: 9%; text-align: center;">Shift &bull; Veh</th>';
 
-                    for (let i = startDay; i <= endDay; i++) {
-                        html += '<th colspan="2" style="border: 1px solid black; padding: 2px; text-align: center; font-weight: bold;">' + i + '</th>';
+                    if (isSingleShift) {
+                        const col4Title = isMorning ? 'Pick Time &amp; Stop' : (isDrop ? 'Drop Time &amp; Stop' : 'Time &amp; Stop');
+                        const shiftAttHeading = isMorning
+                            ? 'MORNING PICKUP ATTENDANCE (सुबह पिकअप उपस्थिति - P)'
+                            : 'AFTERNOON DROP ATTENDANCE (दोपहर वापसी उपस्थिति - D)';
+
+                        html += '<tr style="height: 24px; background: #e2e8f0; color: #000000;">';
+                        html += '<th rowspan="2" style="border: 1px solid black; padding: 2px; width: 3.5%; text-align: center; color: #000000;">Sr.</th>';
+                        html += '<th rowspan="2" style="border: 1px solid black; padding: 2px; width: 22%; text-align: left; color: #000000;">Student &amp; Father Name</th>';
+                        html += '<th rowspan="2" style="border: 1px solid black; padding: 2px; width: 5.5%; text-align: center; color: #000000;">Class</th>';
+                        html += '<th rowspan="2" style="border: 1px solid black; padding: 2px; width: 11%; text-align: center; color: #000000;">' + col4Title + '</th>';
+                        html += '<th colspan="' + numDays + '" style="border: 1px solid black; padding: 2px; text-align: center; font-weight: bold; background: #e2e8f0; font-size: 10px; color: #000000; letter-spacing: 0.5px;">' + shiftAttHeading + '</th>';
+                        html += '</tr>';
+
+                        html += '<tr style="height: 18px; background: #e2e8f0; color: #000000;">';
+                        for (let i = startDay; i <= endDay; i++) {
+                            html += '<th style="border: 1px solid black; padding: 1px; font-size: 9px; text-align: center; font-weight: bold; color: #000000;">' + i + '</th>';
+                        }
+                        html += '</tr>';
+                    } else {
+                        // Dual Columns (Both P & D)
+                        html += '<tr style="height: 24px; background: #e2e8f0; color: #000000;">';
+                        html += '<th rowspan="2" style="border: 1px solid black; padding: 2px; width: 4%; text-align: center; color: #000000;">Sr.</th>';
+                        html += '<th rowspan="2" style="border: 1px solid black; padding: 2px; width: 23%; text-align: left; color: #000000;">Student &amp; Father Name</th>';
+                        html += '<th rowspan="2" style="border: 1px solid black; padding: 2px; width: 6%; text-align: center; color: #000000;">Class</th>';
+                        html += '<th rowspan="2" style="border: 1px solid black; padding: 2px; width: 9%; text-align: center; color: #000000;">Shift &bull; Veh</th>';
+                        for (let i = startDay; i <= endDay; i++) {
+                            html += '<th colspan="2" style="border: 1px solid black; padding: 2px; text-align: center; font-weight: bold; color: #000000;">' + i + '</th>';
+                        }
+                        html += '</tr><tr style="height: 18px; background: #e2e8f0; color: #000000;">';
+                        for (let i = startDay; i <= endDay; i++) {
+                            html += '<th style="border: 1px solid black; padding: 1px; font-size: 8px; text-align: center; color: #000000;">P</th>';
+                            html += '<th style="border: 1px solid black; padding: 1px; font-size: 8px; text-align: center; color: #000000;">D</th>';
+                        }
+                        html += '</tr>';
                     }
-                    html += '</tr><tr style="height: 18px; background: #f8fafc;">';
-                    for (let i = startDay; i <= endDay; i++) {
-                        html += '<th style="border: 1px solid black; padding: 1px; font-size: 8px; text-align: center;">M</th>';
-                        html += '<th style="border: 1px solid black; padding: 1px; font-size: 8px; text-align: center;">E</th>';
-                    }
-                    html += '</tr></thead><tbody>';
+                    html += '</thead><tbody>';
 
                     chunkedStudents.forEach((student, index) => {
                         const globalIndex = startStud + index + 1;
@@ -3222,28 +3529,55 @@
                         const rShort = sched.returnVehicle === 'v1' ? 'V1' : 'V2';
                         const rTimeShort = sched.isKG ? '12:30' : '1:30';
 
-                        html += '<tr style="height: 28px;">';
-                        html += '<td style="border: 1px solid black; padding: 2px 4px; text-align: center;">' + globalIndex + '</td>';
-                        html += '<td style="border: 1px solid black; padding: 2px 4px;"><div style="font-weight:bold; font-size:11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">' + student.name + '</div><div style="font-size:8px; color: #475569; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">F: ' + student.fatherName + (student.specificTime ? ' | Pick: ' + student.specificTime : '') + ' | Drop: ' + (sched.isKG ? '12:30 PM (V2)' : '01:30 PM (V1)') + '</div></td>';
-                        html += '<td style="border: 1px solid black; padding: 2px 4px; text-align: center; font-weight:bold;">' + (student.class || '-') + '</td>';
-                        html += '<td style="border: 1px solid black; padding: 2px 4px; text-align: center; font-size:9px; line-height:1.2;"><div>M: <b>' + mShort + '</b></div><div style="color:' + (sched.isKG ? '#c2410c' : '#1d4ed8') + ';">R: <b>' + rShort + '</b> (' + rTimeShort + ')</div></td>';
-                        for (let i = startDay; i <= endDay; i++) {
-                            html += '<td style="border: 1px solid black; padding: 1px;"></td>';
-                            html += '<td style="border: 1px solid black; padding: 1px;"></td>';
+                        html += '<tr style="height: 28px; color: #000000;">';
+                        html += '<td style="border: 1px solid black; padding: 2px 4px; text-align: center; color: #000000;">' + globalIndex + '</td>';
+
+                        if (isSingleShift) {
+                            const timeDisplay = isMorning ? (student.specificTime || '07:30 AM') : sched.returnTime;
+                            const stopDisplay = isMorning ? (student.address || 'स्टॉप') : (sched.returnStopName || student.address || 'स्टॉप');
+
+                            html += '<td style="border: 1px solid black; padding: 2px 4px; color: #000000;">' +
+                                '<div style="font-weight:bold; font-size:11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #000000;">' + student.name + '</div>' +
+                                '<div style="font-size:8px; color: #1e293b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">F: ' + student.fatherName + (student.mobile ? ' | Mob: ' + student.mobile : '') + '</div>' +
+                                '</td>';
+                            html += '<td style="border: 1px solid black; padding: 2px 4px; text-align: center; font-weight:bold; color: #000000;">' + (student.class || '-') + '</td>';
+                            html += '<td style="border: 1px solid black; padding: 2px 4px; text-align: center; font-size:9px; line-height:1.2; color: #000000;">' +
+                                '<div><b>' + timeDisplay + '</b></div>' +
+                                '<div style="font-size:7.5px; color:#334155; line-height:1.1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="' + stopDisplay + '">' + stopDisplay + '</div>' +
+                                '</td>';
+
+                            for (let i = startDay; i <= endDay; i++) {
+                                html += '<td style="border: 1px solid black; padding: 1px; text-align: center;"></td>';
+                            }
+                        } else {
+                            html += '<td style="border: 1px solid black; padding: 2px 4px; color: #000000;"><div style="font-weight:bold; font-size:11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #000000;">' + student.name + '</div><div style="font-size:8px; color: #1e293b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">F: ' + student.fatherName + (student.specificTime ? ' | Pick: ' + student.specificTime : '') + ' | Drop: ' + (sched.isKG ? '12:30 PM (V2)' : '01:30 PM (V1)') + '</div></td>';
+                            html += '<td style="border: 1px solid black; padding: 2px 4px; text-align: center; font-weight:bold; color: #000000;">' + (student.class || '-') + '</td>';
+                            html += '<td style="border: 1px solid black; padding: 2px 4px; text-align: center; font-size:9px; line-height:1.2; color: #000000;"><div>M: <b>' + mShort + '</b></div><div>R: <b>' + rShort + '</b> (' + rTimeShort + ')</div></td>';
+                            for (let i = startDay; i <= endDay; i++) {
+                                html += '<td style="border: 1px solid black; padding: 1px;"></td>';
+                                html += '<td style="border: 1px solid black; padding: 1px;"></td>';
+                            }
                         }
                         html += '</tr>';
                     });
 
                     const emptyRowsCount = studentChunkSize - chunkedStudents.length;
                     for (let r = 0; r < emptyRowsCount; r++) {
-                        html += '<tr style="height: 28px; background: #fafafa;">';
-                        html += '<td style="border: 1px solid black; padding: 2px 4px; text-align: center; color: #cbd5e1;">-</td>';
-                        html += '<td style="border: 1px solid black; padding: 2px 4px; color: #cbd5e1;">-</td>';
-                        html += '<td style="border: 1px solid black; padding: 2px 4px; text-align: center; color: #cbd5e1;">-</td>';
-                        html += '<td style="border: 1px solid black; padding: 2px 4px; text-align: center; color: #cbd5e1;">-</td>';
-                        for (let i = startDay; i <= endDay; i++) {
-                            html += '<td style="border: 1px solid black; padding: 1px; background: #fafafa;"></td>';
-                            html += '<td style="border: 1px solid black; padding: 1px; background: #fafafa;"></td>';
+                        html += '<tr style="height: 28px; background: #ffffff;">';
+                        html += '<td style="border: 1px solid black; padding: 2px 4px; text-align: center; color: #888888;">-</td>';
+                        html += '<td style="border: 1px solid black; padding: 2px 4px; color: #888888;">-</td>';
+                        html += '<td style="border: 1px solid black; padding: 2px 4px; text-align: center; color: #888888;">-</td>';
+                        html += '<td style="border: 1px solid black; padding: 2px 4px; text-align: center; color: #888888;">-</td>';
+
+                        if (isSingleShift) {
+                            for (let i = startDay; i <= endDay; i++) {
+                                html += '<td style="border: 1px solid black; padding: 1px; background: #ffffff;"></td>';
+                            }
+                        } else {
+                            for (let i = startDay; i <= endDay; i++) {
+                                html += '<td style="border: 1px solid black; padding: 1px; background: #ffffff;"></td>';
+                                html += '<td style="border: 1px solid black; padding: 1px; background: #ffffff;"></td>';
+                            }
                         }
                         html += '</tr>';
                     }
@@ -3251,12 +3585,12 @@
                     html += '</tbody></table>';
                     html += '</div>';
 
-                    // Fixed Height Signature Block
-                    html += '<div style="flex: 0 0 auto; display:flex; justify-content:space-between; margin-top: 14px; font-size: 11px; font-weight: bold;">';
-                    html += '<div style="border-top: 1px solid black; padding-top: 5px; text-align: center; width: 22%;">Driver Signature</div>';
-                    html += '<div style="border-top: 1px solid black; padding-top: 5px; text-align: center; width: 22%;">Transport In-charge</div>';
-                    html += '<div style="border-top: 1px solid black; padding-top: 5px; text-align: center; width: 22%;">Principal Signature</div>';
-                    html += '<div style="border-top: 1px solid black; padding-top: 5px; text-align: center; width: 22%;">Date &amp; Seal</div>';
+                    // Fixed Height Signature Block (Pure Solid Black Lines)
+                    html += '<div style="flex: 0 0 auto; display:flex; justify-content:space-between; margin-top: 14px; font-size: 11px; font-weight: bold; color: #000000;">';
+                    html += '<div style="border-top: 1.5px solid black; padding-top: 5px; text-align: center; width: 22%; color: #000000;">Driver Signature</div>';
+                    html += '<div style="border-top: 1.5px solid black; padding-top: 5px; text-align: center; width: 22%; color: #000000;">Transport In-charge</div>';
+                    html += '<div style="border-top: 1.5px solid black; padding-top: 5px; text-align: center; width: 22%; color: #000000;">Principal Signature</div>';
+                    html += '<div style="border-top: 1.5px solid black; padding-top: 5px; text-align: center; width: 22%; color: #000000;">Date &amp; Seal</div>';
                     html += '</div></div>';
                 }
             }
@@ -3265,6 +3599,48 @@
         }
 
         window.generatePrintPreview = function () {
+            const filterSelect = document.getElementById('print-vehicle-filter');
+            const currentFilter = filterSelect ? filterSelect.value : (activePreviewShift || 'v1');
+            activePreviewShift = currentFilter;
+
+            // Sync active state on top shift tabs
+            const shiftTabConfigs = [
+                { id: 'tab-btn-preview-v1', shift: 'v1' },
+                { id: 'tab-btn-preview-v2', shift: 'v2' },
+                { id: 'tab-btn-preview-ret-prm', shift: 'ret-prm' },
+                { id: 'tab-btn-preview-ret-kg', shift: 'ret-kg' },
+                { id: 'tab-btn-preview-all', shift: 'all' }
+            ];
+            shiftTabConfigs.forEach(t => {
+                const el = document.getElementById(t.id);
+                if (el) {
+                    if (currentTab === 'preview' && (t.shift === currentFilter || (t.shift === 'all' && currentFilter.startsWith('cls-')))) {
+                        el.classList.add('active');
+                    } else {
+                        el.classList.remove('active');
+                    }
+                }
+            });
+
+            // Sync preview toolbar pills
+            const previewPillConfigs = [
+                { id: 'prev-seg-v1', shift: 'v1' },
+                { id: 'prev-seg-v2', shift: 'v2' },
+                { id: 'prev-seg-ret-prm', shift: 'ret-prm' },
+                { id: 'prev-seg-ret-kg', shift: 'ret-kg' },
+                { id: 'prev-seg-all', shift: 'all' }
+            ];
+            previewPillConfigs.forEach(p => {
+                const el = document.getElementById(p.id);
+                if (el) {
+                    if (p.shift === currentFilter || (p.shift === 'all' && currentFilter.startsWith('cls-'))) {
+                        el.classList.add('active');
+                    } else {
+                        el.classList.remove('active');
+                    }
+                }
+            });
+
             const previewContainer = document.getElementById('live-preview-container');
             const printArea = document.getElementById('print-area');
             const htmlContent = buildAttendanceHTML(false);
@@ -3285,10 +3661,10 @@
 
             const printBtn = document.querySelector('button[onclick="triggerPrint()"]');
             const originalText = printBtn.innerHTML;
-            printBtn.innerHTML = "<i class='fa-solid fa-spinner fa-spin'></i> Generating PDF...";
+            printBtn.innerHTML = "<i class='fa-solid fa-spinner fa-spin'></i> B&W PDF तैयार हो रहा है...";
             printBtn.disabled = true;
 
-            switchTab('preview');
+            switchTab('preview', activePreviewShift);
             await new Promise(resolve => setTimeout(resolve, 150));
 
             try {
@@ -3307,7 +3683,7 @@
                     chunk.style.border = 'none';
 
                     const canvas = await html2canvas(chunk, {
-                        scale: 2,
+                        scale: 2.2,
                         useCORS: true,
                         backgroundColor: "#ffffff"
                     });
@@ -3345,8 +3721,16 @@
                     pdf.addImage(imgData, 'PNG', x, y, finalW, finalH);
                 }
 
+                let pdfFileName = 'PMS_Transport_Attendance_Sheet.pdf';
+                const currentFilter = document.getElementById('print-vehicle-filter')?.value || activePreviewShift || 'v1';
+                if (currentFilter === 'v1') pdfFileName = `PMS_Attendance_Morning_${vehicleNames.v1.replace(/\s+/g, '_')}.pdf`;
+                else if (currentFilter === 'v2') pdfFileName = `PMS_Attendance_Morning_${vehicleNames.v2.replace(/\s+/g, '_')}.pdf`;
+                else if (currentFilter === 'ret-prm') pdfFileName = `PMS_Attendance_Drop_0130PM_${vehicleNames.v1.replace(/\s+/g, '_')}.pdf`;
+                else if (currentFilter === 'ret-kg') pdfFileName = `PMS_Attendance_Drop_1230PM_${vehicleNames.v2.replace(/\s+/g, '_')}.pdf`;
+                else pdfFileName = `PMS_Attendance_All_Students.pdf`;
+
                 if (pdf) {
-                    pdf.save('PMS_Transport_Attendance_Sheet.pdf');
+                    pdf.save(pdfFileName);
                 } else {
                     throw new Error("Unable to capture pages into PDF document context.");
                 }
@@ -3360,7 +3744,7 @@
             }
         };
 
-        // ─── DOWNLOAD STUDENT LIST AS PDF ─────────────────────────────────────────
+        // ─── DOWNLOAD STUDENT LIST AS PDF (DARK BLACK & WHITE) ────────────────────
         window.downloadStudentListPDF = function () {
             if (!window.jspdf) {
                 showCustomDialog("सिस्टम एरर", "PDF library load नहीं हुई। Internet connection जांचें।", "error");
@@ -3373,7 +3757,7 @@
 
             const btn = document.getElementById('dl-pdf-btn');
             const origHtml = btn.innerHTML;
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> ...';
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> B&W PDF तैयार हो रहा है...';
             btn.disabled = true;
 
             try {
@@ -3387,8 +3771,8 @@
                 let vFilterLabel = 'All Students';
                 if (currentVehicleFilter === 'v1') vFilterLabel = `Morning: ${vehicleNames.v1}`;
                 else if (currentVehicleFilter === 'v2') vFilterLabel = `Morning: ${vehicleNames.v2}`;
-                else if (currentVehicleFilter === 'ret-kg') vFilterLabel = `Return 12:30 PM (KG-I, KG-II by ${vehicleNames.v2})`;
-                else if (currentVehicleFilter === 'ret-prm') vFilterLabel = `Return 01:30 PM (Class 1-8 by ${vehicleNames.v1})`;
+                else if (currentVehicleFilter === 'ret-kg') vFilterLabel = `Return: 12:30 PM (KG-I, KG-II by ${vehicleNames.v2})`;
+                else if (currentVehicleFilter === 'ret-prm') vFilterLabel = `Return: 01:30 PM (Class 1-8 by ${vehicleNames.v1})`;
 
                 if (classFilter) {
                     vFilterLabel += ` | Class: ${classFilter}`;
@@ -3404,89 +3788,147 @@
                     return true;
                 });
 
-                const kgCount = printStudents.filter(s => isKGStudent(s.class)).length;
-                const prmCount = printStudents.filter(s => !isKGStudent(s.class)).length;
-                const countStr = printStudents.length === students.length ? `${students.length}` : `${printStudents.length} of ${students.length}`;
+                if (printStudents.length === 0) {
+                    showCustomDialog("सूचना", "इस फ़िल्टर के लिए कोई छात्र उपलब्ध नहीं है।", "warning");
+                    return;
+                }
 
-                pdf.setFontSize(13);
+                const isMorning = (currentVehicleFilter === 'v1' || currentVehicleFilter === 'v2');
+                const isReturn = (currentVehicleFilter === 'ret-kg' || currentVehicleFilter === 'ret-prm');
+                const showPickup = !isReturn;
+                const showDrop = !isMorning;
+
+                // PDF Title & Header Section (Pure Dark Black & White)
+                pdf.setFontSize(14);
                 pdf.setFont('helvetica', 'bold');
+                pdf.setTextColor(0, 0, 0);
                 pdf.text('POLICE MODERN SCHOOL, RAEBARELI', 105, 12, { align: 'center' });
 
                 pdf.setFontSize(9.5);
                 pdf.setFont('helvetica', 'bold');
-                pdf.text('Transport Student List & Shift Schedule', 105, 17, { align: 'center' });
+                pdf.setTextColor(0, 0, 0);
+                let titleDesc = 'TRANSPORT STUDENT REGISTER';
+                if (isMorning) titleDesc += ` - MORNING PICKUP (${currentVehicleFilter === 'v1' ? vehicleNames.v1 : vehicleNames.v2})`;
+                else if (isReturn) titleDesc += ` - RETURN DROP (${currentVehicleFilter === 'ret-kg' ? '12:30 PM KG' : '01:30 PM PRIMARY'})`;
+                else titleDesc += ' - ALL VEHICLES & SHIFTS';
+                pdf.text(titleDesc, 105, 17, { align: 'center' });
 
                 pdf.setFontSize(7.5);
                 pdf.setFont('helvetica', 'normal');
-                pdf.text(`Filter: ${vFilterLabel}   |   Students: ${countStr} (KG @ 12:30 PM: ${kgCount}, Class 1-8 @ 01:30 PM: ${prmCount})   |   Date: ${today}`, 105, 22, { align: 'center' });
+                pdf.setTextColor(30, 30, 30);
+                pdf.text(`Filter: ${vFilterLabel}   |   Total Students: ${printStudents.length} of ${students.length}   |   Date: ${today}`, 105, 22, { align: 'center' });
 
-                pdf.setLineWidth(0.4);
-                pdf.setDrawColor(100, 116, 139);
+                // Dark Black Horizontal Rule
+                pdf.setLineWidth(0.6);
+                pdf.setDrawColor(0, 0, 0);
                 pdf.line(10, 24, 200, 24);
 
-                const head = [['Sr.', 'Student Name', "Father's Name", 'Class', 'Mobile', 'Morning (Pickup)', 'Return (Drop)', 'Address']];
+                // Build Table Head & Body conditionally
+                const headRow = ['Sr.', 'Student Name', "Father's Name", 'Class', 'Mobile'];
+                if (showPickup) {
+                    headRow.push(isMorning ? `Morning (${vehicleNames[currentVehicleFilter]})` : 'Morning (Pickup)');
+                }
+                if (showDrop) {
+                    headRow.push(isReturn ? (currentVehicleFilter === 'ret-kg' ? `Return (12:30 PM ${vehicleNames.v2})` : `Return (01:30 PM ${vehicleNames.v1})`) : 'Return (Drop)');
+                }
+                headRow.push('Address / Stop');
+
+                const head = [headRow];
+
                 const body = printStudents.map((s, i) => {
                     const sched = getStudentSchedule(s);
-                    return [
+                    const row = [
                         i + 1,
                         s.name || '-',
                         s.fatherName || '-',
                         s.class || '-',
-                        s.mobile || '-',
-                        `${sched.morningVehicleName}${s.specificTime ? ' (' + s.specificTime + ')' : ''}`,
-                        `${sched.returnVehicleName} @ ${sched.returnTime}${sched.isKG ? ' (' + sched.returnStopName + ')' : ''}`,
-                        s.address || '-'
+                        s.mobile || '-'
                     ];
+                    if (showPickup) {
+                        row.push(`${sched.morningVehicleName}${s.specificTime ? '\n' + s.specificTime : ''}`);
+                    }
+                    if (showDrop) {
+                        row.push(sched.isKG 
+                            ? `${sched.returnVehicleName} @ ${sched.returnTime}${sched.returnStopName ? '\n' + sched.returnStopName : ''}`
+                            : `${sched.returnVehicleName} @ ${sched.returnTime}`
+                        );
+                    }
+                    row.push(s.address || '-');
+                    return row;
                 });
+
+                // Calculate column styles dynamically for 7 or 8 columns
+                let dynamicColStyles = {};
+                if (!showPickup || !showDrop) {
+                    // 7 Columns (Fits 190mm on A4)
+                    dynamicColStyles = {
+                        0: { halign: 'center', cellWidth: 8 },
+                        1: { cellWidth: 33, fontStyle: 'bold' },
+                        2: { cellWidth: 31 },
+                        3: { halign: 'center', cellWidth: 15, fontStyle: 'bold' },
+                        4: { halign: 'center', cellWidth: 23 },
+                        5: { halign: 'center', cellWidth: 35 },
+                        6: { cellWidth: 'auto' }
+                    };
+                } else {
+                    // 8 Columns (Both Pickup & Drop)
+                    dynamicColStyles = {
+                        0: { halign: 'center', cellWidth: 7 },
+                        1: { cellWidth: 28, fontStyle: 'bold' },
+                        2: { cellWidth: 26 },
+                        3: { halign: 'center', cellWidth: 14, fontStyle: 'bold' },
+                        4: { halign: 'center', cellWidth: 20 },
+                        5: { halign: 'center', cellWidth: 26 },
+                        6: { halign: 'center', cellWidth: 28 },
+                        7: { cellWidth: 'auto' }
+                    };
+                }
 
                 pdf.autoTable({
                     head: head,
                     body: body,
-                    startY: 27,
+                    startY: 26,
                     margin: { left: 10, right: 10 },
                     tableWidth: 'auto',
+                    theme: 'plain',
                     styles: {
                         fontSize: 7.5,
-                        cellPadding: 2,
+                        cellPadding: 2.2,
                         overflow: 'linebreak',
                         valign: 'middle',
-                        lineColor: [203, 213, 225],
-                        lineWidth: 0.3
+                        textColor: [0, 0, 0],
+                        lineColor: [0, 0, 0],
+                        lineWidth: 0.2
                     },
                     headStyles: {
-                        fillColor: [79, 70, 229],
-                        textColor: 255,
+                        fillColor: [0, 0, 0], // Pure dark black header
+                        textColor: [255, 255, 255], // Pure white text
                         fontStyle: 'bold',
-                        fontSize: 8
+                        fontSize: 8,
+                        halign: 'center',
+                        lineWidth: 0.2,
+                        lineColor: [0, 0, 0]
                     },
                     alternateRowStyles: {
-                        fillColor: [248, 250, 252]
+                        fillColor: [246, 246, 246] // High-contrast clean B&W alternate row
                     },
-                    columnStyles: {
-                        0: { halign: 'center', cellWidth: 7 },
-                        1: { cellWidth: 28 },
-                        2: { cellWidth: 26 },
-                        3: { halign: 'center', cellWidth: 14 },
-                        4: { halign: 'center', cellWidth: 20 },
-                        5: { halign: 'center', cellWidth: 26 },
-                        6: { halign: 'center', cellWidth: 30 },
-                        7: { cellWidth: 'auto' }
-                    },
+                    columnStyles: dynamicColStyles,
                     didDrawPage: function (data) {
                         const pageCount = pdf.internal.getNumberOfPages();
                         pdf.setFontSize(7);
-                        pdf.setTextColor(148, 163, 184);
+                        pdf.setFont('helvetica', 'normal');
+                        pdf.setTextColor(0, 0, 0);
+                        pdf.line(10, pdf.internal.pageSize.getHeight() - 7, 200, pdf.internal.pageSize.getHeight() - 7);
                         pdf.text(
-                            `Page ${data.pageNumber} of ${pageCount}   |   transport_students   |   Return Rules: KG1 & KG2 @ 12:30 PM (${vehicleNames.v2}), Class 1-8 @ 01:30 PM (${vehicleNames.v1})`,
+                            `Page ${data.pageNumber} of ${pageCount}   |   Police Modern School, Raebareli - Transport Dept. (B&W Verified Register)   |   ${vFilterLabel}`,
                             105,
                             pdf.internal.pageSize.getHeight() - 4,
                             { align: 'center' }
                         );
-                        pdf.setTextColor(0);
                     }
                 });
 
-                pdf.save(`Transport_Student_List_${vFilterLabel.replace(/[^a-zA-Z0-9]/g, '_')}.pdf`);
+                pdf.save(`PMS_Transport_Register_${vFilterLabel.replace(/[^a-zA-Z0-9]/g, '_')}_BW.pdf`);
 
             } catch (err) {
                 console.error('downloadStudentListPDF error:', err);
@@ -3498,7 +3940,6 @@
         };
 
     </script>
-    <script src="js/pms_nav_search.js"></script>
 </body>
 
 </html>

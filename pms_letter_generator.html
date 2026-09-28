@@ -9,10 +9,15 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=Martel:wght@400;600;700;800;900&family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=Tiro+Devanagari+Hindi:ital@0;1&family=Inter:wght@400;500;600;700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Karma:wght@400;500;600;700&family=Martel:wght@400;600;700;800;900&family=Noto+Sans+Devanagari:wght@400;500;600;700;800;900&family=Noto+Serif+Devanagari:wght@400;500;600;700;800;900&family=Sahitya:wght@400;700&family=Tiro+Devanagari+Hindi:ital@0;1&display=swap"
     rel="stylesheet">
 
   <style>
+    :root {
+      --letter-font-body: 'Mangal', 'Noto Sans Devanagari', 'Segoe UI', sans-serif;
+      --letter-font-heading: 'Mangal', 'Martel', 'Noto Serif Devanagari', serif;
+    }
+
     * {
       box-sizing: border-box;
       -webkit-print-color-adjust: exact !important;
@@ -28,11 +33,11 @@
     }
 
     .hindi-heading {
-      font-family: 'Martel', 'Noto Sans Devanagari', serif;
+      font-family: var(--letter-font-heading), 'Mangal', 'Martel', serif;
     }
 
     .hindi-body {
-      font-family: 'Noto Sans Devanagari', 'Tiro Devanagari Hindi', sans-serif;
+      font-family: var(--letter-font-body), 'Mangal', 'Noto Sans Devanagari', sans-serif;
     }
 
     /* Strict A4 Document Specifications */
@@ -251,17 +256,26 @@
         <span>🏠 Dashboard</span>
       </a>
 
-      <!-- Font Size Scaler -->
-      <div class="flex items-center bg-slate-900 rounded border border-slate-700 p-0.5 text-xs font-bold">
-        <button id="fontDecBtn" title="Decrease Font Size"
-          class="hover:bg-slate-800 text-slate-300 hover:text-white px-2 py-1 rounded transition">
-          A-
-        </button>
-        <span id="fontScaleDisplay" class="px-2 text-amber-300 text-[11px]">100%</span>
-        <button id="fontIncBtn" title="Increase Font Size"
-          class="hover:bg-slate-800 text-slate-300 hover:text-white px-2 py-1 rounded transition">
-          A+
-        </button>
+      <!-- Official Hindi Font Selector (Header) -->
+      <div class="flex items-center bg-slate-900 rounded border border-slate-700 px-2 py-1 text-xs">
+        <label for="fontSelectTop" class="text-slate-300 mr-1.5 font-bold flex items-center gap-1 cursor-pointer">
+          <span class="text-amber-400">🔤</span>
+          <span class="hidden sm:inline">फॉन्ट:</span>
+        </label>
+        <select id="fontSelectTop"
+          class="bg-slate-800 text-amber-300 font-semibold border border-slate-600 rounded px-2 py-0.5 text-xs focus:outline-none focus:ring-1 focus:ring-blue-500 cursor-pointer"
+          title="शासकीय हिंदी फॉन्ट बदलें">
+          <option value="mangal" selected>1. मंगल (Mangal - शासकीय मानक)</option>
+          <option value="aparajita">2. अपराजिता (Aparajita - शासकीय सेरिफ)</option>
+          <option value="kokila">3. कोकिला (Kokila - औपचारिक)</option>
+          <option value="noto_serif">4. नोटो सेरिफ (Noto Serif - राजपत्र छपाई)</option>
+          <option value="noto_sans">5. नोटो सेन्स (Noto Sans - आधुनिक)</option>
+          <option value="tiro">6. तिरो देवनागरी (Tiro Devanagari)</option>
+          <option value="martel">7. मार्टेल (Martel Bold)</option>
+          <option value="sahitya">8. साहित्य (Sahitya)</option>
+          <option value="karma">9. कर्मा (Karma)</option>
+          <option value="utsaah">10. उत्साह (Utsaah)</option>
+        </select>
       </div>
 
       <button id="toggleHighlightBtn"
@@ -280,6 +294,13 @@
             d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
         </svg>
         <span>आज की तिथि</span>
+      </button>
+
+      <button id="headerSanlagnakBtn" type="button"
+        class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1.5 rounded transition flex items-center gap-1.5 font-medium border border-slate-700"
+        title="संलग्नक (Enclosures) जोड़ें या हटाएं">
+        <span class="text-amber-400">📎</span>
+        <span id="headerSanlagnakText">संलग्नक</span>
       </button>
 
       <button id="openLetterHistoryBtn"
@@ -345,6 +366,41 @@
         </select>
       </div>
 
+      <!-- Official Hindi Font Card in Sidebar -->
+      <div class="bg-slate-800/80 rounded-lg p-3 border border-slate-700 space-y-2">
+        <div class="flex items-center justify-between">
+          <label class="text-xs font-bold text-amber-400 uppercase tracking-wider flex items-center gap-1.5">
+            <span class="text-amber-400 text-sm">🔤</span>
+            <span>शासकीय हिंदी फॉन्ट (Font)</span>
+          </label>
+          <span id="fontFamilyBadge" class="text-[10px] bg-blue-950 text-blue-300 font-mono px-2 py-0.5 rounded border border-blue-800 font-bold">Mangal</span>
+        </div>
+
+        <div>
+          <select id="fontSelectSidebar"
+            class="w-full bg-slate-900 text-amber-300 font-semibold border border-slate-600 rounded px-2.5 py-1.5 text-xs focus:ring-2 focus:ring-blue-500 focus:outline-none cursor-pointer">
+            <option value="mangal" selected>1. मंगल (Mangal - उत्तर प्रदेश पुलिस/शासकीय मानक)</option>
+            <option value="aparajita">2. अपराजिता (Aparajita - शासकीय सेरिफ/बुक स्टाइल)</option>
+            <option value="kokila">3. कोकिला (Kokila - औपचारिक सौम्य देवनागरी)</option>
+            <option value="noto_serif">4. नोटो सेरिफ (Noto Serif - राजपत्र छपाई प्रेस)</option>
+            <option value="noto_sans">5. नोटो सेन्स (Noto Sans - आधुनिक स्पष्ट डिजिटल)</option>
+            <option value="tiro">6. तिरो देवनागरी (Tiro Devanagari Hindi)</option>
+            <option value="martel">7. मार्टेल (Martel - गहरा बोल्ड व आधिकारिक)</option>
+            <option value="sahitya">8. साहित्य (Sahitya - क्लासिक प्रशासनिक)</option>
+            <option value="karma">9. कर्मा (Karma - सुरुचिपूर्ण देवनागरी)</option>
+            <option value="utsaah">10. उत्साह (Utsaah - संकुचित कॉम्पैक्ट)</option>
+          </select>
+        </div>
+
+        <!-- Font Sample Live Preview -->
+        <div class="bg-slate-950/80 p-2 rounded border border-slate-800 text-xs">
+          <div class="text-[10px] text-slate-400 mb-0.5">पूर्वावलोकन (Preview):</div>
+          <div id="fontSampleText" class="text-[13.5px] font-semibold text-amber-200 truncate">
+            कार्यालय पुलिस मॉडर्न स्कूल, 25वीं वाहिनी पीएसी, रायबरेली।
+          </div>
+        </div>
+      </div>
+
       <!-- Main Controls Form -->
       <div class="space-y-3.5 text-xs">
 
@@ -400,6 +456,19 @@
               पत्र से छिपा हुआ
             </div>
           </div>
+        </div>
+
+        <!-- Letter Identifier Title (For Identification) -->
+        <div class="bg-indigo-950/40 border border-indigo-800/50 rounded-lg p-2.5 space-y-1">
+          <label class="block text-[11px] font-bold text-amber-300 flex items-center justify-between">
+            <span class="flex items-center gap-1">
+              <span>🏷️ पत्र पहचान शीर्षक (Backup Title / Tag)</span>
+            </span>
+            <span class="text-[10px] text-indigo-300 font-normal">क्लाउड बैकअप पहचान हेतु</span>
+          </label>
+          <input type="text" id="in-letter-title" value="विद्यालय में खराब आर.ओ. की मरम्मत"
+            placeholder="जैसे: आरओ मरम्मत भुगतान / खेल सामग्री"
+            class="w-full bg-slate-900 border border-indigo-700/60 rounded px-2.5 py-1.5 text-white text-xs font-semibold focus:ring-1 focus:ring-indigo-400 focus:outline-none" />
         </div>
 
         <!-- Salutation & Closing -->
@@ -576,6 +645,81 @@
             class="w-full bg-slate-800 border border-slate-700 rounded px-2 py-1 text-white text-xs focus:outline-none" />
         </div>
 
+        <!-- ================= SANLAGNAK (ENCLOSURES) BUILDER ================= -->
+        <div class="bg-slate-800/90 rounded-lg p-3 border border-slate-700 space-y-2.5">
+          <div class="flex items-center justify-between">
+            <label class="flex items-center gap-2 cursor-pointer select-none">
+              <input type="checkbox" id="toggleSanlagnakCheckbox"
+                class="w-4 h-4 rounded bg-slate-900 text-blue-600 focus:ring-0 cursor-pointer">
+              <span class="text-xs font-bold text-amber-400 uppercase tracking-wider flex items-center gap-1.5">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13">
+                  </path>
+                </svg>
+                <span>संलग्नक (Enclosures)</span>
+              </span>
+            </label>
+            <span id="sanlagnakStatusBadge"
+              class="text-[10px] bg-slate-900 text-slate-400 font-medium px-2 py-0.5 rounded border border-slate-700">बंद (Off)</span>
+          </div>
+
+          <!-- Sanlagnak Controls Area (Collapsible) -->
+          <div id="sanlagnakControlsArea" class="space-y-2.5 pt-2 border-t border-slate-700/80 hidden">
+            <!-- Position / Alignment Selector -->
+            <div>
+              <label class="block text-[11px] font-semibold text-slate-300 mb-1">संलग्नक की स्थिति (Position / Align)</label>
+              <div class="grid grid-cols-2 gap-1.5 text-xs">
+                <button type="button" id="btnSanlagnakAlignLeft"
+                  class="px-2 py-1.5 bg-blue-600 text-white rounded border border-blue-500 font-medium transition flex items-center justify-center gap-1">
+                  ◀ बायां (Left - मानक)
+                </button>
+                <button type="button" id="btnSanlagnakAlignRight"
+                  class="px-2 py-1.5 bg-slate-900 hover:bg-slate-700 text-slate-300 rounded border border-slate-600 font-medium transition flex items-center justify-center gap-1">
+                  ▶ दायां (Right - हस्ताक्षर के पास)
+                </button>
+              </div>
+            </div>
+
+            <!-- Quick Preset Chips -->
+            <div>
+              <label class="block text-[10px] text-slate-400 mb-1">त्वरित प्रारूप (Quick Presets)</label>
+              <div class="flex flex-wrap gap-1">
+                <button type="button" class="sanlagnak-preset-btn text-[10px] bg-slate-900 hover:bg-slate-700 text-slate-200 border border-slate-700 px-2 py-1 rounded transition cursor-pointer" data-text="यथोक्त।">
+                  यथोक्त।
+                </button>
+                <button type="button" class="sanlagnak-preset-btn text-[10px] bg-slate-900 hover:bg-slate-700 text-slate-200 border border-slate-700 px-2 py-1 rounded transition cursor-pointer" data-text="उपरोक्तानुसार।">
+                  उपरोक्तानुसार।
+                </button>
+                <button type="button" class="sanlagnak-preset-btn text-[10px] bg-slate-900 hover:bg-slate-700 text-slate-200 border border-slate-700 px-2 py-1 rounded transition cursor-pointer" data-text="1. मूल बिल एवं वाउचर&#10;2. कोटेशन प्रपत्र">
+                  बिल व कोटेशन
+                </button>
+                <button type="button" class="sanlagnak-preset-btn text-[10px] bg-slate-900 hover:bg-slate-700 text-slate-200 border border-slate-700 px-2 py-1 rounded transition cursor-pointer" data-text="1. निरीक्षण/जांच आख्या&#10;2. तकनीकी संस्तुति">
+                  जाँच आख्या
+                </button>
+              </div>
+            </div>
+
+            <!-- Custom Input Textarea -->
+            <div>
+              <div class="flex items-center justify-between mb-1">
+                <label class="block text-[11px] font-semibold text-slate-300">संलग्नक विवरण (Items List)</label>
+                <button type="button" id="btnAddSanlagnakItem"
+                  class="text-[10px] text-blue-400 hover:text-blue-300 underline font-medium cursor-pointer">
+                  + अगला क्र.सं. जोड़ें
+                </button>
+              </div>
+              <textarea id="in-sanlagnak" rows="3"
+                placeholder="जैसे: यथोक्त। अथवा&#10;1. मूल बिल / वाउचर&#10;2. कोटेशन"
+                class="w-full bg-slate-900 border border-slate-700 rounded px-2.5 py-1.5 text-white text-xs leading-relaxed focus:ring-1 focus:ring-blue-500 focus:outline-none font-sans">यथोक्त।</textarea>
+            </div>
+
+            <p class="text-[10px] text-slate-400 italic">
+              💡 आप सीधे दाईं ओर A4 लेटर पेपर पर भी "संलग्नक" पर क्लिक करके टाइप कर सकते हैं।
+            </p>
+          </div>
+        </div>
+
         <!-- Options: Show / Hide Subject & Noting Stamp -->
         <div class="border-t border-slate-800 pt-2 space-y-1.5">
           <div class="flex items-center justify-between">
@@ -722,20 +866,54 @@
               </p>
             </div>
 
-            <!-- SIGNATURE & NOTING BLOCK (Directly Under Body Text) -->
+            <!-- SIGNATURE & NOTING & SANLAGNAK BLOCK (Directly Under Body Text) -->
             <div id="signature-container" class="mt-8 mb-2">
-              <div class="flex justify-between items-end">
+              <div class="flex justify-between items-end gap-4">
 
-                <!-- Left Endorsement / Noting (Optional) -->
-                <div id="doc-noting-block" class="hidden pl-2 pb-1">
-                  <div class="font-mono text-xs font-black tracking-wider text-slate-700">
-                    <div class="border-b border-black pb-0.5 mb-1 inline-block">IC. P.M.S</div>
-                    <div class="text-[11.5px] text-gray-800">Date: ____/____/2026</div>
+                <!-- Left Section: Endorsement / Noting & Sanlagnak (Left Aligned) -->
+                <div class="flex flex-col justify-end items-start text-left min-w-[200px] max-w-[55%]">
+                  <!-- Left Endorsement / Noting (Optional) -->
+                  <div id="doc-noting-block" class="hidden pl-2 pb-1 mb-2">
+                    <div class="font-mono text-xs font-black tracking-wider text-slate-700">
+                      <div class="border-b border-black pb-0.5 mb-1 inline-block">IC. P.M.S</div>
+                      <div class="text-[11.5px] text-gray-800">Date: ____/____/2026</div>
+                    </div>
+                  </div>
+
+                  <!-- Quick on-paper button to add Sanlagnak when hidden -->
+                  <button type="button" id="docQuickSanlagnakBtn"
+                    class="no-print text-[11px] text-slate-500 hover:text-blue-600 border border-dashed border-slate-300 hover:border-blue-400 bg-white/80 hover:bg-blue-50/80 rounded px-2 py-0.5 mb-1 transition flex items-center gap-1 cursor-pointer font-medium"
+                    title="पत्र में संलग्नक जोड़ें">
+                    <span>📎 + संलग्नक जोड़ें</span>
+                  </button>
+
+                  <!-- Left Sanlagnak Block (Standard Official Position) -->
+                  <div id="doc-sanlagnak-block-left" class="hidden text-black hindi-body text-[14.5px] leading-snug pl-1">
+                    <div class="font-bold flex items-center gap-1.5">
+                      <span class="border-b border-black pb-0.5">संलग्नक:</span>
+                      <button type="button" id="docSanlagnakRemoveBtnLeft"
+                        class="no-print text-[10px] text-rose-500 hover:text-rose-700 hover:underline cursor-pointer font-sans"
+                        title="संलग्नक हटाएं">✕ हटाएं</button>
+                    </div>
+                    <div id="doc-sanlagnak-content-left" contenteditable="true"
+                      class="mt-1 whitespace-pre-line font-medium text-[14px] text-black focus:outline-none">यथोक्त।</div>
                   </div>
                 </div>
 
                 <!-- Right Official Signature Block -->
                 <div class="text-center min-w-[210px] ml-auto">
+                  <!-- Right Sanlagnak Block (When Right Aligned) -->
+                  <div id="doc-sanlagnak-block-right" class="hidden mb-2 text-right text-black hindi-body text-[13.5px] leading-snug">
+                    <div class="font-bold inline-flex items-center gap-1.5 border-b border-black pb-0.5">
+                      <span>संलग्नक:</span>
+                      <button type="button" id="docSanlagnakRemoveBtnRight"
+                        class="no-print text-[10px] text-rose-500 hover:text-rose-700 hover:underline cursor-pointer font-sans"
+                        title="संलग्नक हटाएं">✕ हटाएं</button>
+                    </div>
+                    <div id="doc-sanlagnak-content-right" contenteditable="true"
+                      class="mt-0.5 whitespace-pre-line font-medium text-[13.5px] text-black focus:outline-none text-right">यथोक्त।</div>
+                  </div>
+
                   <!-- Signature Line -->
                   <div class="h-10 flex items-end justify-center pb-1">
                     <div class="w-40 border-b border-black"></div>
@@ -875,6 +1053,12 @@
         document.getElementById('in-subject').value = data.subject;
         document.getElementById('doc-subject').innerText = data.subject;
 
+        const inLetterTitle = document.getElementById('in-letter-title');
+        if (inLetterTitle) {
+          inLetterTitle.value = data.subject;
+          inLetterTitle.dataset.customized = "";
+        }
+
         document.getElementById('in-body1').value = data.body1;
         document.getElementById('doc-body1').innerText = data.body1;
 
@@ -1006,6 +1190,320 @@
       });
     }
 
+    // ================= SANLAGNAK (ENCLOSURE) CONTROLLER =================
+    let isSanlagnakEnabled = false;
+    let sanlagnakAlign = 'left'; // 'left' | 'right'
+    window.isSanlagnakEnabled = false;
+    window.sanlagnakAlign = 'left';
+
+    const toggleSanlagnakCheckbox = document.getElementById('toggleSanlagnakCheckbox');
+    const sanlagnakStatusBadge = document.getElementById('sanlagnakStatusBadge');
+    const sanlagnakControlsArea = document.getElementById('sanlagnakControlsArea');
+    const btnSanlagnakAlignLeft = document.getElementById('btnSanlagnakAlignLeft');
+    const btnSanlagnakAlignRight = document.getElementById('btnSanlagnakAlignRight');
+    const inSanlagnak = document.getElementById('in-sanlagnak');
+    const docSanlagnakBlockLeft = document.getElementById('doc-sanlagnak-block-left');
+    const docSanlagnakBlockRight = document.getElementById('doc-sanlagnak-block-right');
+    const docSanlagnakContentLeft = document.getElementById('doc-sanlagnak-content-left');
+    const docSanlagnakContentRight = document.getElementById('doc-sanlagnak-content-right');
+    const docQuickSanlagnakBtn = document.getElementById('docQuickSanlagnakBtn');
+    const docSanlagnakRemoveBtnLeft = document.getElementById('docSanlagnakRemoveBtnLeft');
+    const docSanlagnakRemoveBtnRight = document.getElementById('docSanlagnakRemoveBtnRight');
+    const headerSanlagnakBtn = document.getElementById('headerSanlagnakBtn');
+    const btnAddSanlagnakItem = document.getElementById('btnAddSanlagnakItem');
+
+    window.setSanlagnakState = function (enabled, align, text) {
+      isSanlagnakEnabled = !!enabled;
+      window.isSanlagnakEnabled = isSanlagnakEnabled;
+
+      if (align) {
+        sanlagnakAlign = (align === 'right' ? 'right' : 'left');
+        window.sanlagnakAlign = sanlagnakAlign;
+      }
+
+      if (toggleSanlagnakCheckbox) {
+        toggleSanlagnakCheckbox.checked = isSanlagnakEnabled;
+      }
+
+      if (sanlagnakStatusBadge) {
+        if (isSanlagnakEnabled) {
+          sanlagnakStatusBadge.textContent = 'सक्रिय (ON)';
+          sanlagnakStatusBadge.className = 'text-[10px] bg-emerald-950/70 text-emerald-300 font-semibold px-2 py-0.5 rounded border border-emerald-800/40';
+        } else {
+          sanlagnakStatusBadge.textContent = 'बंद (Off)';
+          sanlagnakStatusBadge.className = 'text-[10px] bg-slate-900 text-slate-400 font-medium px-2 py-0.5 rounded border border-slate-700';
+        }
+      }
+
+      if (sanlagnakControlsArea) {
+        if (isSanlagnakEnabled) {
+          sanlagnakControlsArea.classList.remove('hidden');
+        } else {
+          sanlagnakControlsArea.classList.add('hidden');
+        }
+      }
+
+      if (headerSanlagnakBtn) {
+        if (isSanlagnakEnabled) {
+          headerSanlagnakBtn.classList.add('bg-blue-900/60', 'border-blue-500', 'text-blue-200');
+          headerSanlagnakBtn.classList.remove('bg-slate-800', 'border-slate-700', 'text-slate-200');
+        } else {
+          headerSanlagnakBtn.classList.remove('bg-blue-900/60', 'border-blue-500', 'text-blue-200');
+          headerSanlagnakBtn.classList.add('bg-slate-800', 'border-slate-700', 'text-slate-200');
+        }
+      }
+
+      if (docQuickSanlagnakBtn) {
+        if (isSanlagnakEnabled) {
+          docQuickSanlagnakBtn.classList.add('hidden');
+        } else {
+          docQuickSanlagnakBtn.classList.remove('hidden');
+        }
+      }
+
+      // Alignment button active state
+      if (btnSanlagnakAlignLeft && btnSanlagnakAlignRight) {
+        if (sanlagnakAlign === 'left') {
+          btnSanlagnakAlignLeft.className = 'px-2 py-1.5 bg-blue-600 text-white rounded border border-blue-500 font-medium transition flex items-center justify-center gap-1';
+          btnSanlagnakAlignRight.className = 'px-2 py-1.5 bg-slate-900 hover:bg-slate-700 text-slate-300 rounded border border-slate-600 font-medium transition flex items-center justify-center gap-1';
+        } else {
+          btnSanlagnakAlignRight.className = 'px-2 py-1.5 bg-blue-600 text-white rounded border border-blue-500 font-medium transition flex items-center justify-center gap-1';
+          btnSanlagnakAlignLeft.className = 'px-2 py-1.5 bg-slate-900 hover:bg-slate-700 text-slate-300 rounded border border-slate-600 font-medium transition flex items-center justify-center gap-1';
+        }
+      }
+
+      // Document elements visibility
+      if (docSanlagnakBlockLeft && docSanlagnakBlockRight) {
+        if (isSanlagnakEnabled) {
+          if (sanlagnakAlign === 'left') {
+            docSanlagnakBlockLeft.classList.remove('hidden');
+            docSanlagnakBlockRight.classList.add('hidden');
+          } else {
+            docSanlagnakBlockLeft.classList.add('hidden');
+            docSanlagnakBlockRight.classList.remove('hidden');
+          }
+        } else {
+          docSanlagnakBlockLeft.classList.add('hidden');
+          docSanlagnakBlockRight.classList.add('hidden');
+        }
+      }
+
+      // Content syncing
+      if (typeof text === 'string') {
+        if (inSanlagnak) inSanlagnak.value = text;
+        if (docSanlagnakContentLeft) docSanlagnakContentLeft.innerText = text;
+        if (docSanlagnakContentRight) docSanlagnakContentRight.innerText = text;
+      }
+    };
+
+    if (toggleSanlagnakCheckbox) {
+      toggleSanlagnakCheckbox.addEventListener('change', () => {
+        window.setSanlagnakState(toggleSanlagnakCheckbox.checked, sanlagnakAlign);
+      });
+    }
+
+    if (headerSanlagnakBtn) {
+      headerSanlagnakBtn.addEventListener('click', () => {
+        window.setSanlagnakState(!isSanlagnakEnabled, sanlagnakAlign);
+      });
+    }
+
+    if (btnSanlagnakAlignLeft) {
+      btnSanlagnakAlignLeft.addEventListener('click', () => {
+        window.setSanlagnakState(isSanlagnakEnabled, 'left');
+      });
+    }
+
+    if (btnSanlagnakAlignRight) {
+      btnSanlagnakAlignRight.addEventListener('click', () => {
+        window.setSanlagnakState(isSanlagnakEnabled, 'right');
+      });
+    }
+
+    if (docQuickSanlagnakBtn) {
+      docQuickSanlagnakBtn.addEventListener('click', () => {
+        window.setSanlagnakState(true, 'left');
+        setTimeout(() => {
+          if (docSanlagnakContentLeft) docSanlagnakContentLeft.focus();
+        }, 100);
+      });
+    }
+
+    if (docSanlagnakRemoveBtnLeft) {
+      docSanlagnakRemoveBtnLeft.addEventListener('click', () => {
+        window.setSanlagnakState(false);
+      });
+    }
+
+    if (docSanlagnakRemoveBtnRight) {
+      docSanlagnakRemoveBtnRight.addEventListener('click', () => {
+        window.setSanlagnakState(false);
+      });
+    }
+
+    // 2-Way Text Syncing
+    if (inSanlagnak) {
+      inSanlagnak.addEventListener('input', () => {
+        const val = inSanlagnak.value;
+        if (docSanlagnakContentLeft) docSanlagnakContentLeft.innerText = val;
+        if (docSanlagnakContentRight) docSanlagnakContentRight.innerText = val;
+      });
+    }
+
+    if (docSanlagnakContentLeft) {
+      docSanlagnakContentLeft.addEventListener('input', () => {
+        const val = docSanlagnakContentLeft.innerText;
+        if (inSanlagnak) inSanlagnak.value = val;
+        if (docSanlagnakContentRight) docSanlagnakContentRight.innerText = val;
+      });
+    }
+
+    if (docSanlagnakContentRight) {
+      docSanlagnakContentRight.addEventListener('input', () => {
+        const val = docSanlagnakContentRight.innerText;
+        if (inSanlagnak) inSanlagnak.value = val;
+        if (docSanlagnakContentLeft) docSanlagnakContentLeft.innerText = val;
+      });
+    }
+
+    // Preset Buttons
+    document.querySelectorAll('.sanlagnak-preset-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const txt = btn.getAttribute('data-text');
+        window.setSanlagnakState(true, sanlagnakAlign, txt);
+      });
+    });
+
+    // Add Item helper
+    if (btnAddSanlagnakItem) {
+      btnAddSanlagnakItem.addEventListener('click', () => {
+        const current = (inSanlagnak ? inSanlagnak.value : '').trim();
+        let nextVal = '';
+        if (!current || current === 'यथोक्त।' || current === 'उपरोक्तानुसार।') {
+          nextVal = '1. ';
+        } else {
+          const lines = current.split('\n');
+          const count = lines.length;
+          nextVal = current + '\n' + (count + 1) + '. ';
+        }
+        window.setSanlagnakState(true, sanlagnakAlign, nextVal);
+        if (inSanlagnak) {
+          inSanlagnak.focus();
+          inSanlagnak.setSelectionRange(inSanlagnak.value.length, inSanlagnak.value.length);
+        }
+      });
+    }
+
+    // ================= OFFICIAL HINDI FONTS CONTROLLER =================
+    const HINDI_FONTS = {
+      mangal: {
+        name: 'Mangal (मंगल)',
+        cssBody: "'Mangal', 'Noto Sans Devanagari', 'Segoe UI', sans-serif",
+        cssHeading: "'Mangal', 'Martel', 'Noto Serif Devanagari', serif",
+        badge: "Mangal"
+      },
+      aparajita: {
+        name: 'Aparajita (अपराजिता)',
+        cssBody: "'Aparajita', 'Noto Serif Devanagari', 'Mangal', serif",
+        cssHeading: "'Aparajita', 'Martel', 'Noto Serif Devanagari', serif",
+        badge: "Aparajita"
+      },
+      kokila: {
+        name: 'Kokila (कोकिला)',
+        cssBody: "'Kokila', 'Noto Sans Devanagari', 'Mangal', sans-serif",
+        cssHeading: "'Kokila', 'Martel', 'Noto Sans Devanagari', serif",
+        badge: "Kokila"
+      },
+      noto_serif: {
+        name: 'Noto Serif (नोटो सेरिफ)',
+        cssBody: "'Noto Serif Devanagari', 'Martel', serif",
+        cssHeading: "'Noto Serif Devanagari', 'Martel', serif",
+        badge: "Noto Serif"
+      },
+      noto_sans: {
+        name: 'Noto Sans (नोटो सेन्स)',
+        cssBody: "'Noto Sans Devanagari', 'Mangal', sans-serif",
+        cssHeading: "'Noto Sans Devanagari', 'Martel', sans-serif",
+        badge: "Noto Sans"
+      },
+      tiro: {
+        name: 'Tiro Devanagari (तिरो)',
+        cssBody: "'Tiro Devanagari Hindi', 'Noto Serif Devanagari', serif",
+        cssHeading: "'Tiro Devanagari Hindi', 'Martel', serif",
+        badge: "Tiro Hindi"
+      },
+      martel: {
+        name: 'Martel (मार्टेल)',
+        cssBody: "'Martel', 'Noto Serif Devanagari', serif",
+        cssHeading: "'Martel', serif",
+        badge: "Martel"
+      },
+      sahitya: {
+        name: 'Sahitya (साहित्य)',
+        cssBody: "'Sahitya', 'Noto Serif Devanagari', serif",
+        cssHeading: "'Sahitya', 'Martel', serif",
+        badge: "Sahitya"
+      },
+      karma: {
+        name: 'Karma (कर्मा)',
+        cssBody: "'Karma', 'Noto Serif Devanagari', serif",
+        cssHeading: "'Karma', 'Martel', serif",
+        badge: "Karma"
+      },
+      utsaah: {
+        name: 'Utsaah (उत्साह)',
+        cssBody: "'Utsaah', 'Noto Sans Devanagari', 'Mangal', sans-serif",
+        cssHeading: "'Utsaah', 'Martel', 'Noto Sans Devanagari', sans-serif",
+        badge: "Utsaah"
+      }
+    };
+
+    let currentLetterFont = 'mangal';
+    window.currentLetterFont = 'mangal';
+
+    const fontSelectTop = document.getElementById('fontSelectTop');
+    const fontSelectSidebar = document.getElementById('fontSelectSidebar');
+    const fontFamilyBadge = document.getElementById('fontFamilyBadge');
+    const fontSampleText = document.getElementById('fontSampleText');
+
+    window.setLetterFont = function (fontKey) {
+      if (!HINDI_FONTS[fontKey]) fontKey = 'mangal';
+      currentLetterFont = fontKey;
+      window.currentLetterFont = fontKey;
+
+      const f = HINDI_FONTS[fontKey];
+
+      // Update CSS variables on root and document
+      document.documentElement.style.setProperty('--letter-font-body', f.cssBody);
+      document.documentElement.style.setProperty('--letter-font-heading', f.cssHeading);
+
+      const letterDoc = document.getElementById('letterDocument');
+      if (letterDoc) {
+        letterDoc.style.fontFamily = f.cssBody;
+      }
+
+      // Sync dropdowns & badges
+      if (fontSelectTop) fontSelectTop.value = fontKey;
+      if (fontSelectSidebar) fontSelectSidebar.value = fontKey;
+      if (fontFamilyBadge) fontFamilyBadge.textContent = f.badge;
+      if (fontSampleText) fontSampleText.style.fontFamily = f.cssBody;
+
+      // Save locally
+      localStorage.setItem('pms_letter_font', fontKey);
+    };
+
+    if (fontSelectTop) {
+      fontSelectTop.addEventListener('change', (e) => {
+        window.setLetterFont(e.target.value);
+      });
+    }
+
+    if (fontSelectSidebar) {
+      fontSelectSidebar.addEventListener('change', (e) => {
+        window.setLetterFont(e.target.value);
+      });
+    }
+
     // Font Size Scaler
     let currentFontScale = 100;
     const letterDoc = document.getElementById('letterDocument');
@@ -1038,6 +1536,8 @@
       presetSelect.value = 'ro_repair';
       presetSelect.dispatchEvent(new Event('change'));
       window.setSubjectVisibility(true);
+      window.setSanlagnakState(false, 'left', 'यथोक्त।');
+      window.setLetterFont('mangal');
       document.getElementById('todayDateBtn').click();
     });
 
@@ -1357,14 +1857,24 @@
         signTitle: document.getElementById('in-sign-title').value,
         signOrg: document.getElementById('in-sign-org').value,
         signLocation: document.getElementById('in-sign-location').value,
+        sanlagnakEnabled: isSanlagnakEnabled,
+        sanlagnakAlign: sanlagnakAlign,
+        sanlagnakText: document.getElementById('in-sanlagnak') ? document.getElementById('in-sanlagnak').value : 'यथोक्त।',
+        fontKey: currentLetterFont,
+        letterTitle: document.getElementById('in-letter-title') ? document.getElementById('in-letter-title').value : '',
         tableState: window.captureTableState()
       };
       localStorage.setItem('pms_letter_draft', JSON.stringify(draft));
       alert('पत्र प्रारूप एवं तालिका सफलतापूर्वक सहेज ली गई (Draft Saved)!');
     });
 
-    // Auto load current date and draft on startup
+    // Auto load current date, draft and font on startup
     window.addEventListener('load', () => {
+      const savedFont = localStorage.getItem('pms_letter_font') || 'mangal';
+      if (typeof window.setLetterFont === 'function') {
+        window.setLetterFont(savedFont);
+      }
+
       const saved = localStorage.getItem('pms_letter_draft');
       if (saved) {
         try {
@@ -1377,8 +1887,17 @@
             document.getElementById('in-subject').value = d.subject;
             document.getElementById('doc-subject').innerText = d.subject;
           }
+          if (d.letterTitle && document.getElementById('in-letter-title')) {
+            document.getElementById('in-letter-title').value = d.letterTitle;
+          }
           if (typeof d.subjectVisible !== 'undefined') {
             window.setSubjectVisibility(d.subjectVisible);
+          }
+          if (typeof d.sanlagnakEnabled !== 'undefined' && typeof window.setSanlagnakState === 'function') {
+            window.setSanlagnakState(d.sanlagnakEnabled, d.sanlagnakAlign || 'left', d.sanlagnakText || 'यथोक्त।');
+          }
+          if (d.fontKey && typeof window.setLetterFont === 'function') {
+            window.setLetterFont(d.fontKey);
           }
           if (d.tableState) {
             window.restoreTableState(d.tableState);
@@ -1389,6 +1908,100 @@
       }
     });
   </script>
+
+  <!-- ================= CLOUD SAVE TITLE / IDENTIFICATION MODAL ================= -->
+  <div id="saveLetterModal"
+    class="no-print fixed inset-0 z-[110] bg-slate-950/85 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+    <div
+      class="bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden text-slate-100 font-sans">
+      
+      <!-- Modal Header -->
+      <div class="px-6 py-4 border-b border-slate-800 flex items-center justify-between bg-slate-950/60">
+        <div class="flex items-center gap-3">
+          <div class="bg-blue-600/20 text-blue-400 p-2 rounded-xl border border-blue-500/30">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path>
+            </svg>
+          </div>
+          <div>
+            <h3 class="text-base font-bold text-white flex items-center gap-2">
+              <span>पत्र क्लाउड बैकअप पहचान (Save Letter)</span>
+            </h3>
+            <p class="text-xs text-slate-400">पत्र को भविष्य में आसानी से पहचानने हेतु शीर्षक दर्ज करें</p>
+          </div>
+        </div>
+        <button id="closeSaveLetterModalBtn"
+          class="p-2 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition cursor-pointer">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="p-6 space-y-4 text-xs">
+        <!-- Letter Title / Identifier -->
+        <div>
+          <label class="block text-xs font-bold text-amber-300 mb-1 flex items-center justify-between">
+            <span>🏷️ पत्र पहचान शीर्षक (Letter Title / Search Tag)</span>
+            <span class="text-rose-400 font-bold">* आवश्यक</span>
+          </label>
+          <input type="text" id="modal-letter-title"
+            placeholder="जैसे: आरओ मरम्मत भुगतान / खेल सामग्री मांग / अर्द्धवार्षिक परीक्षा"
+            class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-white font-semibold text-xs focus:ring-2 focus:ring-blue-500 focus:outline-none" />
+          <p class="text-[11px] text-slate-400 mt-1">यह शीर्षक पुराने बैकअप में सबसे ऊपर बड़े सुनहरे अक्षरों में दिखेगा।</p>
+        </div>
+
+        <!-- Quick Tag Chips -->
+        <div>
+          <label class="block text-[10px] text-slate-400 mb-1">त्वरित पहचान टैग (क्लिक करें):</label>
+          <div class="flex flex-wrap gap-1.5" id="saveTagChipsContainer">
+            <button type="button" class="save-tag-chip text-[10px] bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 px-2 py-0.5 rounded cursor-pointer transition" data-title="RO मरम्मत">RO मरम्मत</button>
+            <button type="button" class="save-tag-chip text-[10px] bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 px-2 py-0.5 rounded cursor-pointer transition" data-title="विद्युत व वायरिंग">विद्युत व वायरिंग</button>
+            <button type="button" class="save-tag-chip text-[10px] bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 px-2 py-0.5 rounded cursor-pointer transition" data-title="बीएसएनएल इंटरनेट">बीएसएनएल इंटरनेट</button>
+            <button type="button" class="save-tag-chip text-[10px] bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 px-2 py-0.5 rounded cursor-pointer transition" data-title="पानी टंकी सफाई">पानी टंकी सफाई</button>
+            <button type="button" class="save-tag-chip text-[10px] bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 px-2 py-0.5 rounded cursor-pointer transition" data-title="रजिस्टर व फाइलें मांग">रजिस्टर व फाइलें</button>
+            <button type="button" class="save-tag-chip text-[10px] bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 px-2 py-0.5 rounded cursor-pointer transition" data-title="स्टेशनरी मांग">स्टेशनरी मांग</button>
+            <button type="button" class="save-tag-chip text-[10px] bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 px-2 py-0.5 rounded cursor-pointer transition" data-title="खेलकूद सामग्री">खेलकूद सामग्री</button>
+            <button type="button" class="save-tag-chip text-[10px] bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 px-2 py-0.5 rounded cursor-pointer transition" data-title="रंगाई-पुताई">रंगाई-पुताई</button>
+          </div>
+        </div>
+
+        <!-- Reference & Subject Summary -->
+        <div class="grid grid-cols-2 gap-2 bg-slate-950/60 p-3 rounded-lg border border-slate-800">
+          <div>
+            <span class="text-[10px] text-slate-400 block">पत्रांक:</span>
+            <span id="modal-summary-ref" class="font-mono text-indigo-400 font-semibold text-xs">-</span>
+          </div>
+          <div>
+            <span class="text-[10px] text-slate-400 block">दिनांक:</span>
+            <span id="modal-summary-date" class="text-slate-300 font-medium text-xs">-</span>
+          </div>
+          <div class="col-span-2 pt-1.5 border-t border-slate-800/80">
+            <span class="text-[10px] text-slate-400 block">पत्र का मूल विषय (Subject):</span>
+            <span id="modal-summary-subject" class="text-slate-200 font-medium text-xs line-clamp-2 mt-0.5">-</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="px-6 py-3.5 bg-slate-950/80 border-t border-slate-800 flex items-center justify-between">
+        <button type="button" id="cancelSaveLetterModalBtn"
+          class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-xs font-semibold transition cursor-pointer">
+          रद्द करें (Cancel)
+        </button>
+        <button type="button" id="confirmSaveLetterModalBtn"
+          class="px-5 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs font-bold transition flex items-center gap-1.5 shadow-lg shadow-blue-600/30 cursor-pointer">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+          </svg>
+          <span id="confirmSaveBtnText">हाँ, क्लाउड पर सहेजें</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
 
   <!-- ================= LETTER BACKUPS & ARCHIVE MODAL ================= -->
   <div id="letterHistoryModal"
@@ -1522,7 +2135,7 @@
     }
 
     // Capture Letter Data
-    function captureLetterPayload() {
+    function captureLetterPayload(customTitle = null) {
       const getVal = (id) => {
         const el = document.getElementById(id);
         return el ? el.value.trim() : '';
@@ -1532,6 +2145,7 @@
       const dateVal = getVal('in-date');
       const recipient = getVal('in-recipient');
       const subject = getVal('in-subject');
+      const letterTitle = (customTitle && customTitle.trim()) || getVal('in-letter-title') || subject || ('पत्र - ' + refNo);
       const salutation = getVal('in-salutation');
       const body1 = getVal('in-body1');
       const body2 = getVal('in-body2');
@@ -1550,6 +2164,7 @@
         date: dateVal,
         recipient: recipient,
         subject: subject,
+        letterTitle: letterTitle,
         salutation: salutation,
         body1: body1,
         body2: body2,
@@ -1558,6 +2173,10 @@
         signOrg: signOrg,
         signLocation: signLocation,
         notingEnabled: notingChecked,
+        sanlagnakEnabled: (typeof window.isSanlagnakEnabled !== 'undefined') ? window.isSanlagnakEnabled : false,
+        sanlagnakAlign: (typeof window.sanlagnakAlign !== 'undefined') ? window.sanlagnakAlign : 'left',
+        sanlagnakText: document.getElementById('in-sanlagnak') ? document.getElementById('in-sanlagnak').value : 'यथोक्त।',
+        fontKey: (typeof window.currentLetterFont !== 'undefined') ? window.currentLetterFont : 'mangal',
         subjectVisible: (typeof window.isSubjectVisible !== 'undefined') ? window.isSubjectVisible : true,
         tableState: (typeof window.captureTableState === 'function') ? window.captureTableState() : null,
         savedAt: new Date().toLocaleString('hi-IN', { timeZone: 'Asia/Kolkata' }),
@@ -1566,7 +2185,7 @@
     }
 
     // Save To Firestore
-    async function saveLetterToFirestore(triggerPrint = false) {
+    async function saveLetterToFirestore(customTitle = null, triggerPrint = false) {
       if (!db) {
         showLetterToast('क्लाउड कनेक्ट नहीं हो सका, कृपया नेटवर्क जांचें', 'error');
         if (triggerPrint) window.print();
@@ -1579,7 +2198,7 @@
       if (printBtn) printBtn.classList.add('opacity-50', 'pointer-events-none');
 
       try {
-        const payload = captureLetterPayload();
+        const payload = captureLetterPayload(customTitle);
         const docRef = doc(db, COLLECTION_NAME, payload.id);
         await setDoc(docRef, payload, { merge: true });
 
@@ -1589,15 +2208,15 @@
         if (window.PMS_DOC_INDEX) {
           window.PMS_DOC_INDEX.registerDocument({
             id: `letter_${payload.id || payload.refNo}`,
-            title: `पत्र: ${payload.subject || payload.refNo}`,
+            title: `पत्र: ${payload.letterTitle || payload.subject || payload.refNo}`,
             category: "सहेजे गए पत्र (Letters)",
-            desc: `पत्रांक: ${payload.refNo} | सेवा में: ${payload.recipientDept || 'विभागीय'} | दिनांक: ${payload.date}`,
+            desc: `शीर्षक: ${payload.letterTitle || '-'} | पत्रांक: ${payload.refNo} | सेवा में: ${payload.recipient || 'विभागीय'} | दिनांक: ${payload.date}`,
             url: "pms_letter_generator.html",
             icon: "fa-solid fa-file-signature"
           });
         }
 
-        showLetterToast(`पत्र क्लाउड पर सहेजा गया: ${payload.refNo}`, 'success');
+        showLetterToast(`पत्र सहेजा गया: "${payload.letterTitle}" (${payload.refNo})`, 'success');
         fetchLetterBackups();
 
         if (triggerPrint) {
@@ -1666,23 +2285,29 @@
               <span class="font-mono font-bold text-indigo-400 text-xs bg-indigo-950/60 px-2 py-0.5 rounded border border-indigo-800/40">${item.refNo || 'बिना पत्रांक'}</span>
               <span class="text-xs text-slate-400 font-medium">${item.date || '-'}</span>
               ${item.tableState && item.tableState.enabled ? '<span class="text-[10px] bg-emerald-950/80 border border-emerald-800 text-emerald-300 px-1.5 py-0.2 rounded">📊 तालिका शामिल</span>' : ''}
+              ${item.sanlagnakEnabled ? '<span class="text-[10px] bg-purple-950/80 border border-purple-800 text-purple-300 px-1.5 py-0.2 rounded">📎 संलग्नक</span>' : ''}
+              ${item.fontKey ? `<span class="text-[10px] bg-slate-900 border border-slate-700 text-slate-300 px-1.5 py-0.2 rounded font-mono">🔤 ${item.fontKey}</span>` : ''}
             </div>
-            <h4 class="font-bold text-white text-sm line-clamp-1 mt-1">${item.subject || 'कोई विषय नहीं'}</h4>
+            <h4 class="font-extrabold text-amber-300 text-sm line-clamp-1 mt-1 flex items-center gap-1.5">
+              <span class="text-amber-400">🏷️</span>
+              <span>${item.letterTitle || item.subject || 'बिना शीर्षक पत्र'}</span>
+            </h4>
+            ${item.letterTitle && item.letterTitle !== item.subject ? `<div class="text-xs text-slate-300 mt-0.5 line-clamp-1"><b>विषय:</b> ${item.subject || '-'}</div>` : ''}
             <div class="text-xs text-slate-400 mt-1.5 flex flex-wrap gap-x-4 gap-y-1">
               <span><b>सेवा में:</b> ${(item.recipient || '').split('\n')[0] || '-'}</span>
               <span><b>सहेजा गया:</b> <span class="text-slate-500 font-mono">${item.savedAt || '-'}</span></span>
             </div>
           </div>
           <div class="flex items-center gap-2 self-end md:self-center flex-shrink-0">
-            <button class="load-letter-btn bg-slate-800 hover:bg-indigo-600 text-slate-200 hover:text-white px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 border border-slate-700 hover:border-indigo-500" data-id="${item.docId}">
+            <button class="load-letter-btn bg-slate-800 hover:bg-indigo-600 text-slate-200 hover:text-white px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 border border-slate-700 hover:border-indigo-500 cursor-pointer" data-id="${item.docId}">
               <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
               <span>लोड करें</span>
             </button>
-            <button class="reprint-letter-btn bg-indigo-600 hover:bg-indigo-500 text-white px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 shadow" data-id="${item.docId}">
+            <button class="reprint-letter-btn bg-indigo-600 hover:bg-indigo-500 text-white px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 shadow cursor-pointer" data-id="${item.docId}">
               <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
               <span>रीप्रिंट (Reprint)</span>
             </button>
-            <button class="delete-letter-btn bg-slate-800 hover:bg-rose-900/60 text-slate-400 hover:text-rose-300 p-1.5 rounded-lg transition border border-slate-700 hover:border-rose-700" data-id="${item.docId}" title="डिलीट करें">
+            <button class="delete-letter-btn bg-slate-800 hover:bg-rose-900/60 text-slate-400 hover:text-rose-300 p-1.5 rounded-lg transition border border-slate-700 hover:border-rose-700 cursor-pointer" data-id="${item.docId}" title="डिलीट करें">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
             </button>
           </div>
@@ -1729,6 +2354,12 @@
       setBoth('in-sign-org', 'doc-sign-org', data.signOrg);
       setBoth('in-sign-location', 'doc-sign-location', data.signLocation);
 
+      const inLetterTitle = document.getElementById('in-letter-title');
+      if (inLetterTitle) {
+        inLetterTitle.value = data.letterTitle || data.subject || '';
+        inLetterTitle.dataset.customized = "true";
+      }
+
       const toggleNoting = document.getElementById('toggleNoting');
       if (toggleNoting) {
         toggleNoting.checked = !!data.notingEnabled;
@@ -1737,6 +2368,14 @@
 
       if (typeof window.setSubjectVisibility === 'function') {
         window.setSubjectVisibility(data.subjectVisible !== false);
+      }
+
+      if (typeof window.setSanlagnakState === 'function') {
+        window.setSanlagnakState(!!data.sanlagnakEnabled, data.sanlagnakAlign || 'left', data.sanlagnakText || 'यथोक्त।');
+      }
+
+      if (typeof window.setLetterFont === 'function') {
+        window.setLetterFont(data.fontKey || 'mangal');
       }
 
       if (data.tableState && typeof window.restoreTableState === 'function') {
@@ -1748,7 +2387,7 @@
       const modal = document.getElementById('letterHistoryModal');
       if (modal) modal.classList.add('hidden');
 
-      showLetterToast(`पत्र लोड किया गया: ${data.refNo}`, 'success');
+      showLetterToast(`पत्र लोड किया गया: ${data.letterTitle || data.refNo}`, 'success');
 
       if (triggerPrint) {
         setTimeout(() => {
@@ -1779,6 +2418,111 @@
     const letterSearchInput = document.getElementById('letterSearchInput');
     const saveDraftBtn = document.getElementById('saveDraftBtn');
     const printSaveLetterBtn = document.getElementById('printSaveLetterBtn');
+
+    // Save Confirmation Modal Elements
+    const saveLetterModal = document.getElementById('saveLetterModal');
+    const closeSaveLetterModalBtn = document.getElementById('closeSaveLetterModalBtn');
+    const cancelSaveLetterModalBtn = document.getElementById('cancelSaveLetterModalBtn');
+    const confirmSaveLetterModalBtn = document.getElementById('confirmSaveLetterModalBtn');
+    const modalLetterTitle = document.getElementById('modal-letter-title');
+    const modalSummaryRef = document.getElementById('modal-summary-ref');
+    const modalSummaryDate = document.getElementById('modal-summary-date');
+    const modalSummarySubject = document.getElementById('modal-summary-subject');
+    const confirmSaveBtnText = document.getElementById('confirmSaveBtnText');
+    const inLetterTitle = document.getElementById('in-letter-title');
+
+    let pendingTriggerPrint = false;
+
+    window.openSaveLetterModal = function(triggerPrint = false) {
+      pendingTriggerPrint = triggerPrint;
+
+      const refNo = document.getElementById('in-ref-no') ? document.getElementById('in-ref-no').value.trim() : '';
+      const dateVal = document.getElementById('in-date') ? document.getElementById('in-date').value.trim() : '';
+      const subjectVal = document.getElementById('in-subject') ? document.getElementById('in-subject').value.trim() : '';
+      const sidebarTitle = inLetterTitle ? inLetterTitle.value.trim() : '';
+
+      if (modalSummaryRef) modalSummaryRef.textContent = refNo || '-';
+      if (modalSummaryDate) modalSummaryDate.textContent = dateVal || '-';
+      if (modalSummarySubject) modalSummarySubject.textContent = subjectVal || 'कोई विषय नहीं';
+
+      if (modalLetterTitle) {
+        modalLetterTitle.value = sidebarTitle || subjectVal || `पत्र - ${refNo}`;
+      }
+
+      if (confirmSaveBtnText) {
+        confirmSaveBtnText.textContent = triggerPrint ? 'हाँ, सहेजें व प्रिंट करें' : 'हाँ, क्लाउड पर सहेजें';
+      }
+
+      if (saveLetterModal) {
+        saveLetterModal.classList.remove('hidden');
+        setTimeout(() => {
+          if (modalLetterTitle) {
+            modalLetterTitle.focus();
+            modalLetterTitle.select();
+          }
+        }, 120);
+      }
+    };
+
+    if (closeSaveLetterModalBtn) {
+      closeSaveLetterModalBtn.addEventListener('click', () => {
+        if (saveLetterModal) saveLetterModal.classList.add('hidden');
+      });
+    }
+
+    if (cancelSaveLetterModalBtn) {
+      cancelSaveLetterModalBtn.addEventListener('click', () => {
+        if (saveLetterModal) saveLetterModal.classList.add('hidden');
+      });
+    }
+
+    if (saveLetterModal) {
+      saveLetterModal.addEventListener('click', (e) => {
+        if (e.target === saveLetterModal) saveLetterModal.classList.add('hidden');
+      });
+    }
+
+    // Modal tag chips
+    document.querySelectorAll('.save-tag-chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        const titleTag = chip.getAttribute('data-title');
+        if (modalLetterTitle && titleTag) {
+          modalLetterTitle.value = titleTag;
+          if (inLetterTitle) inLetterTitle.value = titleTag;
+        }
+      });
+    });
+
+    if (confirmSaveLetterModalBtn) {
+      confirmSaveLetterModalBtn.addEventListener('click', () => {
+        const titleVal = (modalLetterTitle ? modalLetterTitle.value.trim() : '') || (inLetterTitle ? inLetterTitle.value.trim() : '') || 'पत्र';
+        if (inLetterTitle) inLetterTitle.value = titleVal;
+        if (saveLetterModal) saveLetterModal.classList.add('hidden');
+        saveLetterToFirestore(titleVal, pendingTriggerPrint);
+      });
+    }
+
+    if (modalLetterTitle) {
+      modalLetterTitle.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          if (confirmSaveLetterModalBtn) confirmSaveLetterModalBtn.click();
+        }
+      });
+    }
+
+    // Two-way sync between in-subject and in-letter-title
+    const inSubject = document.getElementById('in-subject');
+    if (inSubject && inLetterTitle) {
+      inSubject.addEventListener('input', () => {
+        if (!inLetterTitle.dataset.customized) {
+          inLetterTitle.value = inSubject.value;
+        }
+      });
+      inLetterTitle.addEventListener('input', () => {
+        inLetterTitle.dataset.customized = "true";
+      });
+    }
 
     if (openLetterHistoryBtn) {
       openLetterHistoryBtn.addEventListener('click', () => {
@@ -1812,6 +2556,7 @@
           return;
         }
         const filtered = cachedLetters.filter(l =>
+          (l.letterTitle && l.letterTitle.toLowerCase().includes(q)) ||
           (l.refNo && l.refNo.toLowerCase().includes(q)) ||
           (l.subject && l.subject.toLowerCase().includes(q)) ||
           (l.recipient && l.recipient.toLowerCase().includes(q)) ||
@@ -1822,15 +2567,17 @@
     }
 
     if (saveDraftBtn) {
-      // Replace existing local-only save listener with Firestore save
       saveDraftBtn.addEventListener('click', (e) => {
         e.stopImmediatePropagation();
-        saveLetterToFirestore(false);
+        window.openSaveLetterModal(false);
       });
     }
 
     if (printSaveLetterBtn) {
-      printSaveLetterBtn.addEventListener('click', () => saveLetterToFirestore(true));
+      printSaveLetterBtn.addEventListener('click', (e) => {
+        e.stopImmediatePropagation();
+        window.openSaveLetterModal(true);
+      });
     }
 
     window.addEventListener('DOMContentLoaded', () => {

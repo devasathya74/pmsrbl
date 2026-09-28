@@ -347,6 +347,137 @@ body {
   line-height: 1.52;
 }
 
+/* Committee Toolbar & Member Controls */
+.committee-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #f8fafc;
+  border: 1px dashed #cbd5e1;
+  border-radius: 6px;
+  padding: 5px 12px;
+  margin: 6px 0 10px 0;
+}
+
+.committee-toolbar-title {
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: #1e3a8a;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.committee-toolbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cm-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 5px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all 0.15s ease;
+  font-family: inherit;
+}
+
+.cm-btn-add {
+  background: #16a34a;
+  color: #ffffff;
+  box-shadow: 0 1px 4px rgba(22, 163, 74, 0.25);
+}
+
+.cm-btn-add:hover {
+  background: #15803d;
+  transform: translateY(-1px);
+}
+
+.cm-btn-renumber {
+  background: #f1f5f9;
+  color: #334155;
+  border: 1px solid #cbd5e1;
+}
+
+.cm-btn-renumber:hover {
+  background: #e2e8f0;
+}
+
+.member-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  border-radius: 4px;
+  padding: 2px 6px;
+  transition: background 0.15s ease;
+  position: relative;
+}
+
+.member-item:hover {
+  background: rgba(241, 245, 249, 0.75);
+}
+
+.member-content {
+  flex: 1;
+  min-width: 0;
+  outline: none;
+}
+
+.member-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  opacity: 0.35;
+  transition: opacity 0.15s ease;
+  flex-shrink: 0;
+}
+
+.member-item:hover .member-actions {
+  opacity: 1;
+}
+
+.member-action-btn {
+  border: none;
+  border-radius: 4px;
+  width: 24px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.72rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.member-dup-btn {
+  color: #0284c7;
+  background: #e0f2fe;
+  border: 1px solid #bae6fd;
+}
+
+.member-dup-btn:hover {
+  background: #0284c7;
+  color: #ffffff;
+}
+
+.member-del-btn {
+  color: #dc2626;
+  background: #fee2e2;
+  border: 1px solid #fca5a5;
+}
+
+.member-del-btn:hover {
+  background: #ef4444;
+  color: #ffffff;
+}
+
 .section-subheading {
   font-size: 1.1rem;
   font-weight: 700;
@@ -1364,6 +1495,16 @@ body {
     font-size: 10.2pt !important;
     line-height: 1.48 !important;
     margin-bottom: 4.5px !important;
+  }
+
+  .member-item {
+    display: block !important;
+    padding: 0 !important;
+    background: transparent !important;
+  }
+
+  .member-content {
+    display: inline !important;
   }
 
   .section-subheading {

@@ -34,6 +34,9 @@
             <button type="button" onclick="addNewStudentRow()" class="tb-btn tb-btn-success" title="तालिका में नया छात्र जोड़ें">
                 <i class="fa-solid fa-user-plus"></i> छात्र जोड़ें
             </button>
+            <button type="button" onclick="addNewCommitteeMember()" class="tb-btn tb-btn-secondary" title="चयन समिति में नया सदस्य जोड़ें">
+                <i class="fa-solid fa-users"></i> समिति सदस्य जोड़ें
+            </button>
             <button type="button" onclick="addNewSignatureCard()" class="tb-btn tb-btn-primary" title="नया हस्ताक्षर कार्ड जोड़ें">
                 <i class="fa-solid fa-signature"></i> हस्ताक्षर जोड़ें
             </button>
@@ -110,14 +113,63 @@
                 उपरोक्त निर्देशों के प्रभावी एवं पारदर्शी क्रियान्वयन तथा पात्र अभिभावकों को नियमानुसार शुल्क में छूट प्रदान किये जाने हेतु निम्न चयन समिति का गठन किया जाता हैः
             </p>
 
+            <!-- Committee Member Toolbar (Add / Renumber) -->
+            <div class="committee-toolbar no-print">
+                <span class="committee-toolbar-title"><i class="fa-solid fa-users-gear text-blue-700"></i> चयन समिति सदस्य प्रबंधन:</span>
+                <div class="committee-toolbar-actions">
+                    <button type="button" class="cm-btn cm-btn-add" onclick="addNewCommitteeMember()" title="समिति में नया सदस्य जोड़ें">
+                        <i class="fa-solid fa-user-plus"></i> सदस्य जोड़ें
+                    </button>
+                    <button type="button" class="cm-btn cm-btn-renumber" onclick="renumberCommitteeMembers()" title="सभी सदस्यों की क्रम संख्या (1, 2, 3...) ठीक करें">
+                        <i class="fa-solid fa-arrow-down-1-9"></i> क्रमबद्ध करें
+                    </button>
+                </div>
+            </div>
+
             <!-- Committee Member List -->
             <ul class="member-list" id="committeeMemberList">
-                <li contenteditable="true" spellcheck="false">1. श्री लाल भरत कुमार पाल, सेनानायक, 25वीं वाहिनी पीएसी, रायबरेली - <strong>अध्यक्ष</strong></li>
-                <li contenteditable="true" spellcheck="false">2. श्री अजय कुमार यादव, सहायक सेनानायक, 25वीं वाहिनी पीएसी, रायबरेली - <strong>सदस्य</strong></li>
-                <li contenteditable="true" spellcheck="false">3. श्री आनंद शंकर तिवारी, शिविरपाल, 25वीं वाहिनी पीएसी, रायबरेली - <strong>सदस्य</strong></li>
-                <li contenteditable="true" spellcheck="false">4. श्री श्रीकृष्ण राय, आंकिक शाखा, 25वीं वाहिनी पीएसी, रायबरेली - <strong>सदस्य</strong></li>
-                <li contenteditable="true" spellcheck="false">5. श्री आलोक मिश्रा, प्रभारी, पुलिस मॉडर्न स्कूल, 25वीं वाहिनी पीएसी, रायबरेली - <strong>सदस्य</strong></li>
-                <li contenteditable="true" spellcheck="false">6. श्रीमती सविता सिंह, प्रभारी प्रधानाचार्या, पुलिस मॉडर्न स्कूल, 25वीं वाहिनी पीएसी, रायबरेली - <strong>सदस्य</strong></li>
+                <li class="member-item">
+                    <span class="member-content" contenteditable="true" spellcheck="false">1. श्री लाल भरत कुमार पाल, सेनानायक, 25वीं वाहिनी पीएसी, रायबरेली - <strong>अध्यक्ष</strong></span>
+                    <span class="member-actions no-print">
+                        <button type="button" class="member-action-btn member-dup-btn" onclick="duplicateCommitteeMember(this)" title="प्रतिलिपि बनाएँ"><i class="fa-regular fa-copy"></i></button>
+                        <button type="button" class="member-action-btn member-del-btn" onclick="removeCommitteeMember(this)" title="सदस्य हटाएँ"><i class="fa-regular fa-trash-can"></i></button>
+                    </span>
+                </li>
+                <li class="member-item">
+                    <span class="member-content" contenteditable="true" spellcheck="false">2. श्री अजय कुमार यादव, सहायक सेनानायक, 25वीं वाहिनी पीएसी, रायबरेली - <strong>सदस्य</strong></span>
+                    <span class="member-actions no-print">
+                        <button type="button" class="member-action-btn member-dup-btn" onclick="duplicateCommitteeMember(this)" title="प्रतिलिपि बनाएँ"><i class="fa-regular fa-copy"></i></button>
+                        <button type="button" class="member-action-btn member-del-btn" onclick="removeCommitteeMember(this)" title="सदस्य हटाएँ"><i class="fa-regular fa-trash-can"></i></button>
+                    </span>
+                </li>
+                <li class="member-item">
+                    <span class="member-content" contenteditable="true" spellcheck="false">3. श्री आनंद शंकर तिवारी, शिविरपाल, 25वीं वाहिनी पीएसी, रायबरेली - <strong>सदस्य</strong></span>
+                    <span class="member-actions no-print">
+                        <button type="button" class="member-action-btn member-dup-btn" onclick="duplicateCommitteeMember(this)" title="प्रतिलिपि बनाएँ"><i class="fa-regular fa-copy"></i></button>
+                        <button type="button" class="member-action-btn member-del-btn" onclick="removeCommitteeMember(this)" title="सदस्य हटाएँ"><i class="fa-regular fa-trash-can"></i></button>
+                    </span>
+                </li>
+                <li class="member-item">
+                    <span class="member-content" contenteditable="true" spellcheck="false">4. श्री श्रीकृष्ण राय, आंकिक शाखा, 25वीं वाहिनी पीएसी, रायबरेली - <strong>सदस्य</strong></span>
+                    <span class="member-actions no-print">
+                        <button type="button" class="member-action-btn member-dup-btn" onclick="duplicateCommitteeMember(this)" title="प्रतिलिपि बनाएँ"><i class="fa-regular fa-copy"></i></button>
+                        <button type="button" class="member-action-btn member-del-btn" onclick="removeCommitteeMember(this)" title="सदस्य हटाएँ"><i class="fa-regular fa-trash-can"></i></button>
+                    </span>
+                </li>
+                <li class="member-item">
+                    <span class="member-content" contenteditable="true" spellcheck="false">5. श्री आलोक मिश्रा, प्रभारी, पुलिस मॉडर्न स्कूल, 25वीं वाहिनी पीएसी, रायबरेली - <strong>सदस्य</strong></span>
+                    <span class="member-actions no-print">
+                        <button type="button" class="member-action-btn member-dup-btn" onclick="duplicateCommitteeMember(this)" title="प्रतिलिपि बनाएँ"><i class="fa-regular fa-copy"></i></button>
+                        <button type="button" class="member-action-btn member-del-btn" onclick="removeCommitteeMember(this)" title="सदस्य हटाएँ"><i class="fa-regular fa-trash-can"></i></button>
+                    </span>
+                </li>
+                <li class="member-item">
+                    <span class="member-content" contenteditable="true" spellcheck="false">6. श्रीमती सविता सिंह, प्रभारी प्रधानाचार्या, पुलिस मॉडर्न स्कूल, 25वीं वाहिनी पीएसी, रायबरेली - <strong>सदस्य</strong></span>
+                    <span class="member-actions no-print">
+                        <button type="button" class="member-action-btn member-dup-btn" onclick="duplicateCommitteeMember(this)" title="प्रतिलिपि बनाएँ"><i class="fa-regular fa-copy"></i></button>
+                        <button type="button" class="member-action-btn member-del-btn" onclick="removeCommitteeMember(this)" title="सदस्य हटाएँ"><i class="fa-regular fa-trash-can"></i></button>
+                    </span>
+                </li>
             </ul>
 
             <h3 class="section-subheading" contenteditable="true" spellcheck="false">समिति द्वारा निम्न बिन्दुओं पर कार्यवाही की जाएगीः</h3>
@@ -1381,8 +1433,8 @@
     <!-- Interactive Client Scripts -->
     <script>
         // LocalStorage Keys
-        const STORAGE_KEY = 'PMS_ADMISSION_ORDER_STATE_V8';
-        const CLIPBOARD_KEY = 'PMS_SIG_CLIPBOARD_V8';
+        const STORAGE_KEY = 'PMS_ADMISSION_ORDER_STATE_V9';
+        const CLIPBOARD_KEY = 'PMS_SIG_CLIPBOARD_V9';
 
         // Initialize on load
         document.addEventListener('DOMContentLoaded', () => {
@@ -1390,6 +1442,7 @@
             updateTotalStudentCount();
             setupFreeSignatureCards();
             setupMovableCanvas();
+            ensureCommitteeMemberControls();
             setupInputAutoSave();
             checkStoredSignatureClipboard();
         });
@@ -1513,6 +1566,111 @@
             saveDocumentToStorage(false);
             showToast('सभी पंक्तियाँ क्रमबद्ध कर दी गईं!');
         }
+
+        // ==========================================
+        // COMMITTEE MEMBERS MANAGEMENT (समिति सदस्य जोड़ना/हटाना/क्रमबद्ध करना)
+        // ==========================================
+
+        function addNewCommitteeMember() {
+            const list = document.getElementById('committeeMemberList');
+            if (!list) return;
+            const nextIndex = list.querySelectorAll('li').length + 1;
+
+            const li = document.createElement('li');
+            li.className = 'member-item';
+            li.innerHTML = `
+                <span class="member-content" contenteditable="true" spellcheck="false">${nextIndex}. श्री / श्रीमती ... , पद, 25वीं वाहिनी पीएसी, रायबरेली - <strong>सदस्य</strong></span>
+                <span class="member-actions no-print">
+                    <button type="button" class="member-action-btn member-dup-btn" onclick="duplicateCommitteeMember(this)" title="प्रतिलिपि बनाएँ"><i class="fa-regular fa-copy"></i></button>
+                    <button type="button" class="member-action-btn member-del-btn" onclick="removeCommitteeMember(this)" title="सदस्य हटाएँ"><i class="fa-regular fa-trash-can"></i></button>
+                </span>
+            `;
+            list.appendChild(li);
+            saveDocumentToStorage(false);
+
+            const contentSpan = li.querySelector('.member-content');
+            if (contentSpan) {
+                contentSpan.focus();
+                const range = document.createRange();
+                range.selectNodeContents(contentSpan);
+                const sel = window.getSelection();
+                sel.removeAllRanges();
+                sel.addRange(range);
+            }
+            li.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            showToast(`समिति में नया सदस्य #${nextIndex} जोड़ा गया!`, 'fa-solid fa-user-plus text-green-400');
+        }
+        window.addNewCommitteeMember = addNewCommitteeMember;
+
+        function removeCommitteeMember(btn) {
+            const li = btn.closest('li');
+            if (!li) return;
+            const contentSpan = li.querySelector('.member-content');
+            const memberText = (contentSpan ? contentSpan.innerText : li.innerText).trim();
+
+            if (confirm(`क्या आप इस समिति सदस्य को हटाना चाहते हैं?\n"${memberText.substring(0, 45)}..."`)) {
+                li.remove();
+                renumberCommitteeMembers(false);
+                saveDocumentToStorage(false);
+                showToast('समिति सदस्य हटा दिया गया!', 'fa-solid fa-trash-can text-red-400');
+            }
+        }
+        window.removeCommitteeMember = removeCommitteeMember;
+
+        function duplicateCommitteeMember(btn) {
+            const li = btn.closest('li');
+            if (!li) return;
+            const clone = li.cloneNode(true);
+            li.parentNode.insertBefore(clone, li.nextSibling);
+            renumberCommitteeMembers(false);
+            saveDocumentToStorage(false);
+            showToast('समिति सदस्य की प्रतिलिपि बनाई गई!', 'fa-regular fa-copy text-sky-400');
+        }
+        window.duplicateCommitteeMember = duplicateCommitteeMember;
+
+        function renumberCommitteeMembers(showFeedback = true) {
+            const list = document.getElementById('committeeMemberList');
+            if (!list) return;
+            const items = list.querySelectorAll('li');
+            items.forEach((li, idx) => {
+                const target = li.querySelector('.member-content') || li;
+                const currentHtml = target.innerHTML;
+                const newNum = `${idx + 1}. `;
+                if (/^\s*\d+[\.\)]\s*/.test(target.innerText.trim())) {
+                    target.innerHTML = currentHtml.replace(/^\s*\d+[\.\)]\s*/, newNum);
+                } else {
+                    target.innerHTML = newNum + currentHtml;
+                }
+            });
+            saveDocumentToStorage(false);
+            if (showFeedback) {
+                showToast('समिति सदस्यों की क्रम संख्या व्यवस्थित कर दी गई!', 'fa-solid fa-arrow-down-1-9 text-green-400');
+            }
+        }
+        window.renumberCommitteeMembers = renumberCommitteeMembers;
+
+        function ensureCommitteeMemberControls() {
+            const list = document.getElementById('committeeMemberList');
+            if (!list) return;
+            const items = list.querySelectorAll('li');
+            items.forEach(li => {
+                if (!li.classList.contains('member-item')) {
+                    li.classList.add('member-item');
+                }
+                if (!li.querySelector('.member-actions')) {
+                    const currentHtml = li.innerHTML;
+                    li.innerHTML = `
+                        <span class="member-content" contenteditable="true" spellcheck="false">${currentHtml}</span>
+                        <span class="member-actions no-print">
+                            <button type="button" class="member-action-btn member-dup-btn" onclick="duplicateCommitteeMember(this)" title="प्रतिलिपि बनाएँ"><i class="fa-regular fa-copy"></i></button>
+                            <button type="button" class="member-action-btn member-del-btn" onclick="removeCommitteeMember(this)" title="सदस्य हटाएँ"><i class="fa-regular fa-trash-can"></i></button>
+                        </span>
+                    `;
+                    li.removeAttribute('contenteditable');
+                }
+            });
+        }
+        window.ensureCommitteeMemberControls = ensureCommitteeMemberControls;
 
         // ==========================================
         // SIGNATURE CARDS: FREE PLACEMENT & DRAGGING (कैनवास में कहीं भी रखें)

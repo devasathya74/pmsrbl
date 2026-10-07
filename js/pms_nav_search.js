@@ -80,6 +80,36 @@
       badge: "स्थायी पेज",
       keywords: "shastri detailed essay lal bahadur shastri comprehensive essay nibandh"
     },
+    {
+      id: "gandhi_shastri_program_schedule",
+      title: "गांधी-शास्त्री जयंती 2026: कार्यक्रम रूपरेखा एवं प्रतिभागी विवरण (Schedule & Contestants)",
+      category: "2 अक्टूबर विशेष आयोजन",
+      desc: "12 चरणबद्ध कार्यक्रम, सरस्वती वंदना, के.जी. स्किट, 4 हाउस क्विज़ टीमें (शिवाजी, अशोका, रमन, टैगोर) + स्कोर शीट",
+      url: "gandhi_shastri_program_schedule.html",
+      icon: "fa-solid fa-clipboard-list",
+      badge: "आधिकारिक सूची",
+      keywords: "program schedule contestant list gandhi shastri jayanti saraswati vandana act skit kg shivaji ashoka raman tagore house quiz"
+    },
+    {
+      id: "gandhi_shastri_20_mcq_quiz",
+      title: "गांधी जी एवं शास्त्री जी - 30 MCQ क्विज़ प्रतियोगिता (3 Rounds)",
+      category: "2 अक्टूबर विशेष प्रतियोगिता",
+      desc: "तीनों राउंड्स (10+10+10 प्रश्न) की पृथक उत्तर कुंजी, लाइव स्कोरिंग व A4 प्रिंट शीट",
+      url: "gandhi_shastri_20_mcq_quiz.html",
+      icon: "fa-solid fa-graduation-cap",
+      badge: "प्रतियोगिता स्पेशल",
+      keywords: "30 mcq 3 rounds gandhi shastri quiz competition exam police modern school raebareli"
+    },
+    {
+      id: "vama_khel_editor",
+      title: "वामा खेलोत्सव 2026 - खेल रिकॉर्ड संपादक (MS Office Table Editor)",
+      category: "खेलकूद एवं प्रतियोगिता",
+      desc: "विजेता व उपविजेता सूची, पूर्ण MS Office टेबल फीचर्स (मर्ज/अनमर्ज, पंक्ति/कॉलम जोड़ें/हटाएं, A4 प्रिंट व Excel)",
+      url: "khel_record_editor.html",
+      icon: "fa-solid fa-trophy",
+      badge: "MS Office एडिटर",
+      keywords: "vama khel khelotsav sports 2026 pac raebareli vijeta upvijeta table editor merge unmerge"
+    },
 
     // --- Official Letters & Reports ---
     {
@@ -91,6 +121,16 @@
       icon: "fa-solid fa-file-signature",
       badge: "स्थायी पेज",
       keywords: "letter generator patra prathna patra application drafting pms"
+    },
+    {
+      id: "monthly_progress_report",
+      title: "मासिक प्रगति आख्या प्रपत्र (स्तम्भ 1 से 40 + छात्र विवरण)",
+      category: "आधिकारिक पत्राचार",
+      desc: "सचिव उ०प्र० पुलिस शिक्षा समिति / आईजी पीएसी हेतु मासिक संशोधित प्रारूप (40 स्तम्भ + छात्र विवरण)",
+      url: "pms_monthly_report.html",
+      icon: "fa-solid fa-file-invoice",
+      badge: "मासिक रिपोर्ट",
+      keywords: "monthly progress report masik suchna sanshodhit praroop 40 stambh police shiksha samiti ig pac up police education"
     },
     {
       id: "anupalan_akhya",

@@ -1,0 +1,1336 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mahatma Gandhi 3-Round Quiz Competition (30 MCQs) - Police Modern School, 25th Bn PAC, Raebareli</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Google Fonts: Cinzel, Martel, Poppins, Noto Sans Devanagari, Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800;900&family=Martel:wght@700;800;900&family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=Poppins:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+
+    body {
+      font-family: 'Poppins', 'Noto Sans Devanagari', 'Inter', sans-serif;
+      background-color: #0f172a;
+      color: #000000;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .font-heading {
+      font-family: 'Cinzel', 'Martel', serif;
+    }
+
+    .hindi-text {
+      font-family: 'Noto Sans Devanagari', sans-serif;
+      color: #000000 !important;
+      font-weight: 700 !important;
+    }
+
+    /* Standard A4 Paper Sheet */
+    .paper-sheet {
+      background: #ffffff;
+      color: #000000 !important;
+      width: 210mm;
+      min-height: 297mm;
+      margin: 18px auto;
+      padding: 10mm 15mm 10mm 15mm;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      position: relative;
+      border-radius: 4px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .quiz-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 7px 14px;
+    }
+
+    .q-item {
+      background: #ffffff;
+      border: 1.5px solid #0f172a;
+      border-radius: 7px;
+      padding: 6px 9px;
+      font-size: 11px;
+      line-height: 1.32;
+      color: #000000 !important;
+      page-break-inside: avoid;
+      break-inside: avoid;
+      transition: all 0.15s ease;
+    }
+
+    .q-item:hover {
+      border-color: #000000;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .q-item:hover {
+      border-color: #f59e0b;
+      box-shadow: 0 2px 5px rgba(245, 158, 11, 0.1);
+    }
+
+    .opt-label {
+      display: flex;
+      align-items: flex-start;
+      gap: 4px;
+      padding: 1.5px 5px;
+      margin-top: 2px;
+      border-radius: 4px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      color: #000000 !important;
+      font-weight: 600 !important;
+      transition: all 0.12s ease;
+    }
+
+    .opt-label span.font-bold {
+      font-weight: 900 !important;
+      color: #000000 !important;
+    }
+
+    .opt-label:hover {
+      background-color: #f1f5f9;
+      border-color: #cbd5e1;
+    }
+
+    .opt-label.selected {
+      background-color: #eff6ff;
+      border-color: #3b82f6;
+      font-weight: 600;
+    }
+
+    /* Evaluated Answers */
+    .q-item.evaluated .opt-correct {
+      background-color: #ecfdf5 !important;
+      border-color: #10b981 !important;
+      color: #065f46 !important;
+      font-weight: 700;
+    }
+
+    .q-item.evaluated .opt-wrong-selected {
+      background-color: #fef2f2 !important;
+      border-color: #ef4444 !important;
+      color: #991b1b !important;
+      text-decoration: line-through;
+    }
+
+    /* Key Tables */
+    .key-table th,
+    .key-table td {
+      border: 1.5px solid #000000 !important;
+      padding: 2.5px 4px;
+      text-align: center;
+      font-size: 10.5px;
+      color: #000000 !important;
+    }
+
+    .key-table th {
+      background-color: #f1f5f9;
+      font-weight: 800 !important;
+      color: #000000 !important;
+    }
+
+    .key-table td {
+      font-weight: 900 !important;
+      color: #000000 !important;
+    }
+
+    /* Tab switcher pill */
+    .round-tab {
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 11.5px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+      border: 1px solid #334155;
+      background: #1e293b;
+      color: #cbd5e1;
+    }
+
+    .round-tab:hover {
+      background: #334155;
+      color: #fff;
+    }
+
+    .round-tab.active {
+      background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+      color: #fff;
+      border-color: #f59e0b;
+      box-shadow: 0 2px 8px rgba(217, 119, 6, 0.4);
+    }
+
+    /* Screen view filtering */
+    body.show-r1 .sheet-r2,
+    body.show-r1 .sheet-r3 {
+      display: none !important;
+    }
+
+    body.show-r2 .sheet-r1,
+    body.show-r2 .sheet-r3 {
+      display: none !important;
+    }
+
+    body.show-r3 .sheet-r1,
+    body.show-r3 .sheet-r2 {
+      display: none !important;
+    }
+
+    /* Print Styles: 3 distinct pages */
+    @media print {
+      body, .paper-sheet, .q-item, .hindi-text, .opt-label, p, div, span, table, td, th {
+        color: #000000 !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+
+      body {
+        background-color: #ffffff !important;
+        padding: 0 !important;
+      }
+
+      .no-print {
+        display: none !important;
+      }
+
+      .paper-sheet {
+        display: flex !important;
+        width: 100% !important;
+        min-height: 297mm !important;
+        margin: 0 !important;
+        padding: 8mm 10mm 8mm 10mm !important;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+        color: #000000 !important;
+        page-break-after: always;
+        break-after: page;
+      }
+
+      .quiz-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 6px 10px;
+      }
+
+      .q-item {
+        border: 1.5px solid #000000 !important;
+        padding: 5px 8px !important;
+        font-size: 10.5px !important;
+        line-height: 1.28 !important;
+        color: #000000 !important;
+      }
+
+      .hindi-text {
+        color: #000000 !important;
+        font-weight: 700 !important;
+      }
+
+      .opt-label {
+        padding: 1px 3px !important;
+        margin-top: 1px !important;
+        color: #000000 !important;
+        font-weight: 600 !important;
+      }
+
+      .opt-label span.font-bold {
+        font-weight: 900 !important;
+        color: #000000 !important;
+      }
+
+      .key-table th,
+      .key-table td {
+        border: 1.5px solid #000000 !important;
+        color: #000000 !important;
+      }
+
+      .page-break {
+        page-break-before: always;
+        break-before: page;
+      }
+    }
+  </style>
+</head>
+
+<body class="p-0 md:py-6 show-all">
+
+  <!-- ================= TOP CONTROL TOOLBAR (No Print) ================= -->
+  <header
+    class="no-print max-w-[210mm] mx-auto mb-4 bg-slate-900 border border-slate-700 text-white rounded-xl p-4 shadow-xl flex flex-wrap items-center justify-between gap-3 sticky top-2 z-50">
+    <div class="flex items-center gap-3">
+      <div
+        class="w-10 h-10 rounded-lg bg-gradient-to-tr from-amber-600 to-orange-500 flex items-center justify-center font-bold text-white shadow">
+        <i class="fa-solid fa-trophy text-lg"></i>
+      </div>
+      <div>
+        <h1 class="font-bold text-base md:text-lg leading-tight">महात्मा गांधी 3-राउंड क्विज़ प्रतियोगिता (30 MCQs)</h1>
+        <p class="text-xs text-slate-300">तीन अलग-अलग दौर (10 + 10 + 10 प्रश्न) &bull; पुलिस मॉडर्न स्कूल, 25वीं वाहिनी पीएसी</p>
+      </div>
+    </div>
+
+    <!-- Actions & Round View Filters -->
+    <div class="flex flex-wrap items-center gap-2">
+      <!-- Evaluate / Submit -->
+      <button onclick="evaluateQuiz()" id="evalBtn"
+        class="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-lg flex items-center gap-1.5 transition shadow">
+        <i class="fa-solid fa-check-double"></i>
+        <span>उत्तर जांचें (Score)</span>
+      </button>
+
+      <!-- Toggle Answer Key -->
+      <button onclick="toggleAnswerKey()" id="toggleAnsBtn"
+        class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-600 text-amber-300 text-xs font-semibold rounded-lg flex items-center gap-1.5 transition">
+        <i class="fa-solid fa-eye"></i>
+        <span>उत्तर दिखाएं / छिपाएं</span>
+      </button>
+
+      <!-- Reset -->
+      <button onclick="resetQuiz()"
+        class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-600 text-slate-300 text-xs font-semibold rounded-lg flex items-center gap-1 transition">
+        <i class="fa-solid fa-rotate-left"></i>
+        <span>रीसेट</span>
+      </button>
+
+      <!-- Print Button -->
+      <button onclick="window.print()"
+        class="px-4 py-2 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white text-xs md:text-sm font-bold rounded-lg shadow-lg flex items-center gap-2 transition transform active:scale-95">
+        <i class="fa-solid fa-print"></i>
+        <span>प्रिंट / PDF सेव करें</span>
+      </button>
+    </div>
+
+    <!-- Round Selector Bar (Screen Only) -->
+    <div class="w-full pt-3 mt-2 border-t border-black flex flex-wrap items-center justify-between gap-2">
+      <div class="flex items-center gap-2">
+        <span class="text-xs text-slate-400 font-semibold mr-1">राउंड चुनें (Round View):</span>
+        <button class="round-tab active" id="tabAll" onclick="setRoundView('all')">
+          <i class="fa-solid fa-layer-group"></i> तीनों राउंड (30 Qs)
+        </button>
+        <button class="round-tab" id="tabR1" onclick="setRoundView('r1')">
+          <i class="fa-solid fa-circle-1 text-amber-400"></i> राउंड 1 (Q1–10)
+        </button>
+        <button class="round-tab" id="tabR2" onclick="setRoundView('r2')">
+          <i class="fa-solid fa-circle-2 text-sky-400"></i> राउंड 2 (Q11–20)
+        </button>
+        <button class="round-tab" id="tabR3" onclick="setRoundView('r3')">
+          <i class="fa-solid fa-circle-3 text-emerald-400"></i> राउंड 3 (Q21–30)
+        </button>
+      </div>
+
+      <div class="flex items-center gap-2 text-xs">
+        <a href="gandhi_shastri_program_schedule.html" class="text-sky-300 hover:underline flex items-center gap-1 font-bold">
+          <i class="fa-solid fa-clipboard-list"></i> कार्यक्रम व प्रतिभागी सूची
+        </a>
+        <span class="text-slate-600">|</span>
+        <a href="mahatma_gandhi_10_lines.html" class="text-amber-400 hover:underline flex items-center gap-1">
+          <i class="fa-solid fa-file-lines"></i> 10 Lines Essay
+        </a>
+        <span class="text-slate-600">|</span>
+        <a href="index.html" class="text-slate-300 hover:underline flex items-center gap-1">
+          <i class="fa-solid fa-house"></i> मुख्य पोर्टल
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Live Score Banner (Initially Hidden) -->
+  <div id="scoreBanner"
+    class="no-print max-w-[210mm] mx-auto mb-3 hidden bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 border-2 border-amber-400 text-white p-3.5 rounded-xl shadow-xl flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <span class="text-3xl" id="scoreEmoji">🏆</span>
+      <div>
+        <h3 class="font-bold text-sm md:text-base text-amber-300" id="scoreHeading">प्रतियोगिता परिणाम (Competition Result)</h3>
+        <p class="text-xs text-slate-200" id="scoreText">आपने 30 में से 0 अंक प्राप्त किए हैं।</p>
+      </div>
+    </div>
+    <div class="text-right">
+      <span class="text-2xl font-black text-amber-400" id="scoreDisplay">0 / 30</span>
+      <span class="block text-[11px] text-slate-400 font-semibold" id="scorePercent">0%</span>
+    </div>
+  </div>
+
+  <!-- ================= PRINTABLE DOCUMENT CONTAINER (3 ROUNDS / 3 SHEETS) ================= -->
+  <main id="quizDocument">
+
+    <!-- ========================================================================= -->
+    <!-- ROUND 1: PRELIMINARY ROUND (QUESTIONS 1 TO 10)                           -->
+    <!-- ========================================================================= -->
+    <div class="paper-sheet sheet-r1" id="sheetRound1">
+      
+      <!-- HEADER -->
+      <div class="border-b-2 border-black pb-2 mb-2">
+        <div class="flex items-center justify-between">
+          <div class="w-16 h-16 flex-shrink-0 flex items-center justify-center">
+            <img src="pms-logo.png" alt="PMS Crest" class="w-full h-full object-contain"
+              onerror="this.src='logo.png'" />
+          </div>
+
+          <div class="flex-1 text-center px-2">
+            <h1 class="font-heading text-xl md:text-2xl font-black text-black tracking-tight leading-none">
+              POLICE MODERN SCHOOL
+            </h1>
+            <h2 class="text-xs md:text-sm font-black text-black tracking-wide mt-0.5">
+              25TH BN. P.A.C., RAEBARELI (U.P.)
+            </h2>
+            <div
+              class="mt-1 inline-flex items-center gap-1.5 bg-amber-100 text-amber-950 border border-amber-300 px-3 py-0.5 rounded-full text-[11px] font-black uppercase tracking-wider">
+              <span>🇮🇳</span> Mahatma Gandhi Jayanti Quiz Competition - 2026 <span>🇮🇳</span>
+            </div>
+            <p class="text-[11px] font-extrabold text-black mt-0.5">
+              3-Round Inter-Class Championship &bull; <b>ROUND 1: PRELIMINARY ROUND (प्रश्न 1 से 10)</b>
+            </p>
+          </div>
+
+          <div class="w-16 h-16 flex-shrink-0 flex items-center justify-center">
+            <img src="pac_logo.png" alt="PAC Logo" class="w-full h-full object-contain"
+              onerror="this.src='logo1.png'" />
+          </div>
+        </div>
+
+        <!-- CANDIDATE INFO BOX -->
+        <div
+          class="mt-2 pt-1.5 border-t border-slate-800 grid grid-cols-4 gap-2 text-[11px] font-semibold text-slate-800 bg-slate-50 px-2.5 py-1 rounded border-2 border-black text-black">
+          <div><span class="text-black font-extrabold">Student Name:</span> _______________</div>
+          <div><span class="text-black font-extrabold">Class &amp; Sec:</span> _________</div>
+          <div><span class="text-black font-extrabold">Roll No:</span> _______</div>
+          <div class="text-right"><span class="text-black font-extrabold">Round 1 Marks:</span> <b>10</b> &bull; <span class="text-black font-extrabold">Time:</span> <b>15 Mins</b></div>
+        </div>
+      </div>
+
+      <!-- ROUND 1 BADGE -->
+      <div
+        class="bg-amber-600 text-white px-3 py-1 rounded font-bold text-xs uppercase tracking-wider mb-2 flex items-center justify-between shadow-xs">
+        <span><i class="fa-solid fa-flag text-amber-200 mr-1.5"></i> ROUND 1: PRELIMINARY ROUND &bull; प्रारम्भिक दौर (Q.1 – Q.10)</span>
+        <span class="text-[10.5px] bg-amber-800/80 px-2 py-0.5 rounded text-amber-200 font-semibold">10 Marks &bull; 1 Mark Each</span>
+      </div>
+
+      <!-- ROUND 1 QUESTIONS GRID (1-10) -->
+      <div class="quiz-grid flex-1">
+
+        <!-- Q1 -->
+        <div class="q-item" data-qid="1" data-ans="A">
+          <div class="font-extrabold text-black leading-tight text-[11.5px]">
+            1. When was Mahatma Gandhi born?
+          </div>
+          <div class="hindi-text text-[11px] font-bold text-black mt-0.5">
+            (महात्मा गांधी का जन्म कब हुआ था?)
+          </div>
+          <div class="mt-1 space-y-0.5 text-[11px] font-semibold text-black">
+            <label class="opt-label opt-correct" onclick="selectOpt(this, 1, 'A')"><span class="font-bold mr-1">a)</span> 2 Oct 1869 (2 अक्टूबर 1869)</label>
+            <label class="opt-label" onclick="selectOpt(this, 1, 'B')"><span class="font-bold mr-1">b)</span> 15 Aug 1870 (15 अगस्त 1870)</label>
+            <label class="opt-label" onclick="selectOpt(this, 1, 'C')"><span class="font-bold mr-1">c)</span> 26 Jan 1869 (26 जनवरी 1869)</label>
+            <label class="opt-label" onclick="selectOpt(this, 1, 'D')"><span class="font-bold mr-1">d)</span> 14 Nov 1869 (14 नवम्बर 1869)</label>
+          </div>
+        </div>
+
+        <!-- Q2 -->
+        <div class="q-item" data-qid="2" data-ans="A">
+          <div class="font-extrabold text-black leading-tight text-[11.5px]">
+            2. What was the full name of Mahatma Gandhi?
+          </div>
+          <div class="hindi-text text-[11px] font-bold text-black mt-0.5">
+            (महात्मा गांधी का पूरा नाम क्या था?)
+          </div>
+          <div class="mt-1 space-y-0.5 text-[11px] font-semibold text-black">
+            <label class="opt-label opt-correct" onclick="selectOpt(this, 2, 'A')"><span class="font-bold mr-1">a)</span> Mohan Das Karamchand Gandhi (मोहनदास करमचंद गांधी)</label>
+            <label class="opt-label" onclick="selectOpt(this, 2, 'B')"><span class="font-bold mr-1">b)</span> Mahatma Karamchand Gandhi (महात्मा करमचंद गांधी)</label>
+            <label class="opt-label" onclick="selectOpt(this, 2, 'C')"><span class="font-bold mr-1">c)</span> Mohandas Ramdas Gandhi (मोहनदास रामदास गांधी)</label>
+            <label class="opt-label" onclick="selectOpt(this, 2, 'D')"><span class="font-bold mr-1">d)</span> Karamchand Mohandas Gandhi (करमचंद मोहनदास गांधी)</label>
+          </div>
+        </div>
+
+        <!-- Q3 -->
+        <div class="q-item" data-qid="3" data-ans="B">
+          <div class="font-extrabold text-black leading-tight text-[11.5px]">
+            3. What is the birthplace of Mahatma Gandhi?
+          </div>
+          <div class="hindi-text text-[11px] font-bold text-black mt-0.5">
+            (महात्मा गांधी का जन्म स्थान कौन सा है?)
+          </div>
+          <div class="mt-1 space-y-0.5 text-[11px] font-semibold text-black">
+            <label class="opt-label" onclick="selectOpt(this, 3, 'A')"><span class="font-bold mr-1">a)</span> Rajkot (राजकोट)</label>
+            <label class="opt-label opt-correct" onclick="selectOpt(this, 3, 'B')"><span class="font-bold mr-1">b)</span> Porbandar (पोरबंदर)</label>
+            <label class="opt-label" onclick="selectOpt(this, 3, 'C')"><span class="font-bold mr-1">c)</span> Surat (सूरत)</label>
+            <label class="opt-label" onclick="selectOpt(this, 3, 'D')"><span class="font-bold mr-1">d)</span> Ahmedabad (अहमदाबाद)</label>
+          </div>
+        </div>
+
+        <!-- Q4 -->
+        <div class="q-item" data-qid="4" data-ans="D">
+          <div class="font-extrabold text-black leading-tight text-[11.5px]">
+            4. In which year did the Dandi March begin?
+          </div>
+          <div class="hindi-text text-[11px] font-bold text-black mt-0.5">
+            (प्रसिद्ध दांडी मार्च किस वर्ष शुरू हुआ था?)
+          </div>
+          <div class="mt-1 space-y-0.5 text-[11px] font-semibold text-black">
+            <label class="opt-label" onclick="selectOpt(this, 4, 'A')"><span class="font-bold mr-1">a)</span> 1942</label>
+            <label class="opt-label" onclick="selectOpt(this, 4, 'B')"><span class="font-bold mr-1">b)</span> 1919</label>
+            <label class="opt-label" onclick="selectOpt(this, 4, 'C')"><span class="font-bold mr-1">c)</span> 1920</label>
+            <label class="opt-label opt-correct" onclick="selectOpt(this, 4, 'D')"><span class="font-bold mr-1">d)</span> 1930</label>
+          </div>
+        </div>
+
+        <!-- Q5 -->
+        <div class="q-item" data-qid="5" data-ans="D">
+          <div class="font-extrabold text-black leading-tight text-[11.5px]">
+            5. What was the name of Gandhi Ji's mother?
+          </div>
+          <div class="hindi-text text-[11px] font-bold text-black mt-0.5">
+            (गांधी जी की माता का क्या नाम था?)
+          </div>
+          <div class="mt-1 space-y-0.5 text-[11px] font-semibold text-black">
+            <label class="opt-label" onclick="selectOpt(this, 5, 'A')"><span class="font-bold mr-1">a)</span> Lakshmibai (लक्ष्मीबाई)</label>
+            <label class="opt-label" onclick="selectOpt(this, 5, 'B')"><span class="font-bold mr-1">b)</span> Kasturba Gandhi (कस्तूरबा गांधी)</label>
+            <label class="opt-label" onclick="selectOpt(this, 5, 'C')"><span class="font-bold mr-1">c)</span> Anandibai (आनंदीबाई)</label>
+            <label class="opt-label opt-correct" onclick="selectOpt(this, 5, 'D')"><span class="font-bold mr-1">d)</span> Putlibai (पुतलीबाई)</label>
+          </div>
+        </div>
+
+        <!-- Q6 -->
+        <div class="q-item" data-qid="6" data-ans="C">
+          <div class="font-extrabold text-black leading-tight text-[11.5px]">
+            6. What was the name of Mahatma Gandhi's father?
+          </div>
+          <div class="hindi-text text-[11px] font-bold text-black mt-0.5">
+            (महात्मा गांधी के पिता का क्या नाम था?)
+          </div>
+          <div class="mt-1 space-y-0.5 text-[11px] font-semibold text-black">
+            <label class="opt-label" onclick="selectOpt(this, 6, 'A')"><span class="font-bold mr-1">a)</span> Devdas Gandhi (देवदास गांधी)</label>
+            <label class="opt-label" onclick="selectOpt(this, 6, 'B')"><span class="font-bold mr-1">b)</span> Harilal Gandhi (हरीलाल गांधी)</label>
+            <label class="opt-label opt-correct" onclick="selectOpt(this, 6, 'C')"><span class="font-bold mr-1">c)</span> Karamchand Gandhi (करमचंद गांधी)</label>
+            <label class="opt-label" onclick="selectOpt(this, 6, 'D')"><span class="font-bold mr-1">d)</span> Motilal Gandhi (मोतीलाल गांधी)</label>
+          </div>
+        </div>
+
+        <!-- Q7 -->
+        <div class="q-item" data-qid="7" data-ans="A">
+          <div class="font-extrabold text-black leading-tight text-[11.5px]">
+            7. What was the name of Gandhi Ji's wife?
+          </div>
+          <div class="hindi-text text-[11px] font-bold text-black mt-0.5">
+            (गांधी जी की धर्मपत्नी का क्या नाम था?)
+          </div>
+          <div class="mt-1 space-y-0.5 text-[11px] font-semibold text-black">
+            <label class="opt-label opt-correct" onclick="selectOpt(this, 7, 'A')"><span class="font-bold mr-1">a)</span> Kasturba Gandhi (कस्तूरबा गांधी)</label>
+            <label class="opt-label" onclick="selectOpt(this, 7, 'B')"><span class="font-bold mr-1">b)</span> Sarojini Devi (सरोजिनी देवी)</label>
+            <label class="opt-label" onclick="selectOpt(this, 7, 'C')"><span class="font-bold mr-1">c)</span> Kamla Devi (कमला देवी)</label>
+            <label class="opt-label" onclick="selectOpt(this, 7, 'D')"><span class="font-bold mr-1">d)</span> Laxmi Bai (लक्ष्मी बाई)</label>
+          </div>
+        </div>
+
+        <!-- Q8 -->
+        <div class="q-item" data-qid="8" data-ans="D">
+          <div class="font-extrabold text-black leading-tight text-[11.5px]">
+            8. In which year was the Non-Cooperation Movement started?
+          </div>
+          <div class="hindi-text text-[11px] font-bold text-black mt-0.5">
+            (असहयोग आंदोलन किस वर्ष प्रारंभ किया गया था?)
+          </div>
+          <div class="mt-1 space-y-0.5 text-[11px] font-semibold text-black">
+            <label class="opt-label" onclick="selectOpt(this, 8, 'A')"><span class="font-bold mr-1">a)</span> 1930</label>
+            <label class="opt-label" onclick="selectOpt(this, 8, 'B')"><span class="font-bold mr-1">b)</span> 1942</label>
+            <label class="opt-label" onclick="selectOpt(this, 8, 'C')"><span class="font-bold mr-1">c)</span> 1915</label>
+            <label class="opt-label opt-correct" onclick="selectOpt(this, 8, 'D')"><span class="font-bold mr-1">d)</span> 1920</label>
+          </div>
+        </div>
+
+        <!-- Q9 -->
+        <div class="q-item" data-qid="9" data-ans="C">
+          <div class="font-extrabold text-black leading-tight text-[11.5px]">
+            9. In which year was the Quit India Movement launched?
+          </div>
+          <div class="hindi-text text-[11px] font-bold text-black mt-0.5">
+            (भारत छोड़ो आंदोलन किस वर्ष शुरू किया गया था?)
+          </div>
+          <div class="mt-1 space-y-0.5 text-[11px] font-semibold text-black">
+            <label class="opt-label" onclick="selectOpt(this, 9, 'A')"><span class="font-bold mr-1">a)</span> 1922</label>
+            <label class="opt-label" onclick="selectOpt(this, 9, 'B')"><span class="font-bold mr-1">b)</span> 1930</label>
+            <label class="opt-label opt-correct" onclick="selectOpt(this, 9, 'C')"><span class="font-bold mr-1">c)</span> 1942</label>
+            <label class="opt-label" onclick="selectOpt(this, 9, 'D')"><span class="font-bold mr-1">d)</span> 1915</label>
+          </div>
+        </div>
+
+        <!-- Q10 -->
+        <div class="q-item" data-qid="10" data-ans="A">
+          <div class="font-extrabold text-black leading-tight text-[11.5px]">
+            10. What was the primary goal of the Non-Cooperation Movement?
+          </div>
+          <div class="hindi-text text-[11px] font-bold text-black mt-0.5">
+            (असहयोग आंदोलन का मुख्य उद्देश्य क्या था?)
+          </div>
+          <div class="mt-1 space-y-0.5 text-[11px] font-semibold text-black">
+            <label class="opt-label opt-correct" onclick="selectOpt(this, 10, 'A')"><span class="font-bold mr-1">a)</span> End cooperation with British administration (ब्रिटिश प्रशासन से असहयोग)</label>
+            <label class="opt-label" onclick="selectOpt(this, 10, 'B')"><span class="font-bold mr-1">b)</span> Increase foreign exports (विदेशी निर्यात बढ़ाना)</label>
+            <label class="opt-label" onclick="selectOpt(this, 10, 'C')"><span class="font-bold mr-1">c)</span> Restore monarchical rule (राजशाही पुनः स्थापित करना)</label>
+            <label class="opt-label" onclick="selectOpt(this, 10, 'D')"><span class="font-bold mr-1">d)</span> Expand the British Empire (ब्रिटिश साम्राज्य विस्तार)</label>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ROUND 1 ANSWER KEY & EVALUATION -->
+      <div class="mt-2 pt-2 border-t-2 border-black">
+        <div class="flex items-center justify-between mb-1">
+          <span class="font-bold text-xs text-black uppercase tracking-wide flex items-center gap-1.5">
+            <i class="fa-solid fa-key text-amber-600"></i> ROUND 1 ANSWER KEY (उत्तर कुंजी) &bull; Q.1 TO Q.10
+          </span>
+          <span class="text-[10px] text-black font-bold">Max Marks: 10</span>
+        </div>
+
+        <table class="key-table w-full mb-1.5">
+          <thead>
+            <tr class="bg-amber-100 text-amber-950 font-bold">
+              <th>Q.1</th><th>Q.2</th><th>Q.3</th><th>Q.4</th><th>Q.5</th>
+              <th>Q.6</th><th>Q.7</th><th>Q.8</th><th>Q.9</th><th>Q.10</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="font-black text-black bg-amber-50/60">
+              <td>a</td><td>a</td><td>b</td><td>d</td><td>d</td>
+              <td>c</td><td>a</td><td>d</td><td>c</td><td>a</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- Signature block -->
+        <div class="grid grid-cols-3 gap-2 text-[10.5px] font-semibold text-slate-800 bg-slate-50 p-1.5 rounded border-2 border-black">
+          <div class="text-center border-r border-slate-800">
+            <span class="text-black font-black block text-[9px]">ROUND 1 SCORE</span>
+            <span class="text-sm font-black text-black" id="r1ScoreBox">____ / 10</span>
+          </div>
+          <div class="text-center border-r border-slate-800">
+            <span class="text-black font-black block text-[9px]">ROUND 1 EVALUATOR</span>
+            <span class="text-[11px] font-black text-black block">Sign: ____________</span>
+          </div>
+          <div class="text-center">
+            <span class="text-black font-black block text-[9px]">QUALIFICATION STATUS</span>
+            <span class="text-[11px] font-bold text-amber-700 block">Qualified for Round 2 [ &nbsp; ]</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- PAGE FOOTER -->
+      <div class="mt-1 pt-1 border-t border-slate-800 flex items-center justify-between text-[9.5px] text-black font-bold">
+        <span>Police Modern School, 25th Bn PAC Raebareli</span>
+        <span class="text-black font-black">Round 1 (Page 1 of 3) &bull; Please Proceed to Round 2</span>
+        <span>Date: 02 October 2026</span>
+      </div>
+
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- ROUND 2: QUALIFIER ROUND (QUESTIONS 11 TO 20)                            -->
+    <!-- ========================================================================= -->
+    <div class="paper-sheet sheet-r2 page-break" id="sheetRound2">
+      
+      <!-- HEADER COMPACT -->
+      <div class="border-b-2 border-black pb-2 mb-2">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <img src="pms-logo.png" alt="PMS Logo" class="w-12 h-12 object-contain" onerror="this.src='logo.png'" />
+            <div class="text-left">
+              <h2 class="font-heading text-sm md:text-base font-black text-black leading-tight">POLICE MODERN SCHOOL</h2>
+              <p class="text-[10.5px] font-extrabold text-black">25TH BN. PAC, RAEBARELI &bull; GANDHI JAYANTI QUIZ CHAMPIONSHIP</p>
+            </div>
+          </div>
+          <div class="text-right">
+            <span class="bg-sky-100 text-sky-900 border border-sky-300 px-2.5 py-0.5 rounded text-[10px] font-black uppercase">
+              Round 2: Qualifier (Page 2)
+            </span>
+          </div>
+        </div>
+
+        <!-- CANDIDATE SHORT ROW -->
+        <div
+          class="mt-1.5 pt-1 border-t border-slate-800 grid grid-cols-4 gap-2 text-[10.5px] font-semibold text-slate-800 bg-slate-50 px-2.5 py-0.5 rounded border-2 border-black text-black">
+          <div><span class="text-black font-extrabold">Name:</span> _______________</div>
+          <div><span class="text-black font-extrabold">Class/Sec:</span> _________</div>
+          <div><span class="text-black font-extrabold">Roll No:</span> _______</div>
+          <div class="text-right"><span class="text-black font-extrabold">Round 2 Marks:</span> <b>10</b></div>
+        </div>
+      </div>
+
+      <!-- ROUND 2 BADGE -->
+      <div
+        class="bg-sky-700 text-white px-3 py-1 rounded font-bold text-xs uppercase tracking-wider mb-2 flex items-center justify-between shadow-xs">
+        <span><i class="fa-solid fa-medal text-sky-200 mr-1.5"></i> ROUND 2: QUALIFIER ROUND &bull; मध्यम दौर (Q.11 – Q.20)</span>
+        <span class="text-[10.5px] bg-sky-900/80 px-2 py-0.5 rounded text-sky-200 font-semibold">10 Marks &bull; 1 Mark Each</span>
+      </div>
+
+      <!-- ROUND 2 QUESTIONS GRID (11-20) -->
+      <div class="quiz-grid flex-1">
+
+        <!-- Q11 -->
+        <div class="q-item" data-qid="11" data-ans="A">
+          <div class="font-extrabold text-black leading-tight text-[11.5px]">
+            11. What was Gandhi Ji's primary method during India's freedom struggle?
+          </div>
+          <div class="hindi-text text-[11px] font-bold text-black mt-0.5">
+            (स्वतंत्रता संग्राम में गांधी जी का प्रमुख तरीका क्या था?)
+          </div>
+          <div class="mt-1 space-y-0.5 text-[11px] font-semibold text-black">
+            <label class="opt-label opt-correct" onclick="selectOpt(this, 11, 'A')"><span class="font-bold mr-1">a)</span> Non-violent mass civil movement (अहिंसक जन नागरिक आंदोलन)</label>
+            <label class="opt-label" onclick="selectOpt(this, 11, 'B')"><span class="font-bold mr-1">b)</span> Armed military insurrection (सशस्त्र सैन्य विद्रोह)</label>
+            <label class="opt-label" onclick="selectOpt(this, 11, 'C')"><span class="font-bold mr-1">c)</span> Establishing an autocracy (निरंकुश तंत्र स्थापित करना)</label>
+            <label class="opt-label" onclick="selectOpt(this, 11, 'D')"><span class="font-bold mr-1">d)</span> Violent force fighting (हिंसक संघर्ष)</label>
+          </div>
+        </div>
+
+        <!-- Q12 -->
+        <div class="q-item" data-qid="12" data-ans="B">
+          <div class="font-extrabold text-black leading-tight text-[11.5px]">
+            12. During which movement did Gandhi Ji give the call "Do or Die"?
+          </div>
+          <div class="hindi-text text-[11px] font-bold text-black mt-0.5">
+            (गांधी जी ने "करो या मरो" का आह्वान किस आंदोलन में दिया था?)
+          </div>
+          <div class="mt-1 space-y-0.5 text-[11px] font-semibold text-black">
+            <label class="opt-label" onclick="selectOpt(this, 12, 'A')"><span class="font-bold mr-1">a)</span> Non-Cooperation Movement (असहयोग आंदोलन)</label>
+            <label class="opt-label opt-correct" onclick="selectOpt(this, 12, 'B')"><span class="font-bold mr-1">b)</span> Quit India Movement (भारत छोड़ो आंदोलन)</label>
+            <label class="opt-label" onclick="selectOpt(this, 12, 'C')"><span class="font-bold mr-1">c)</span> Champaran Satyagraha (चंपारण सत्याग्रह)</label>
+            <label class="opt-label" onclick="selectOpt(this, 12, 'D')"><span class="font-bold mr-1">d)</span> Salt Satyagraha (नमक सत्याग्रह)</label>
+          </div>
+        </div>
+
+        <!-- Q13 -->
+        <div class="q-item" data-qid="13" data-ans="C">
+          <div class="font-extrabold text-black leading-tight text-[11.5px]">
+            13. What was the iconic slogan of the Quit India Movement in 1942?
+          </div>
+          <div class="hindi-text text-[11px] font-bold text-black mt-0.5">
+            (1942 के भारत छोड़ो आंदोलन का प्रसिद्ध नारा क्या था?)
+          </div>
+          <div class="mt-1 space-y-0.5 text-[11px] font-semibold text-black">
+            <label class="opt-label" onclick="selectOpt(this, 13, 'A')"><span class="font-bold mr-1">a)</span> Jai Jawan Jai Kisan (जय जवान जय किसान)</label>
+            <label class="opt-label" onclick="selectOpt(this, 13, 'B')"><span class="font-bold mr-1">b)</span> Inquilab Zindabad (इंकलाब जिंदाबाद)</label>
+            <label class="opt-label opt-correct" onclick="selectOpt(this, 13, 'C')"><span class="font-bold mr-1">c)</span> Do or Die (करो या मरो)</label>
+            <label class="opt-label" onclick="selectOpt(this, 13, 'D')"><span class="font-bold mr-1">d)</span> Give me blood and I will give you freedom (तुम मुझे खून दो)</label>
+          </div>
+        </div>
+
+        <!-- Q14 -->
+        <div class="q-item" data-qid="14" data-ans="D">
+          <div class="font-extrabold text-black leading-tight text-[11.5px]">
+            14. In which year did Mahatma Gandhi pass away?
+          </div>
+          <div class="hindi-text text-[11px] font-bold text-black mt-0.5">
+            (महात्मा गांधी जी का निधन किस वर्ष हुआ था?)
+          </div>
+          <div class="mt-1 space-y-0.5 text-[11px] font-semibold text-black">
+            <label class="opt-label" onclick="selectOpt(this, 14, 'A')"><span class="font-bold mr-1">a)</span> 1947</label>
+            <label class="opt-label" onclick="selectOpt(this, 14, 'B')"><span class="font-bold mr-1">b)</span> 1950</label>
+            <label class="opt-label" onclick="selectOpt(this, 14, 'C')"><span class="font-bold mr-1">c)</span> 1962</label>
+            <label class="opt-label opt-correct" onclick="selectOpt(this, 14, 'D')"><span class="font-bold mr-1">d)</span> 1948 (30 January 1948)</label>
+          </div>
+        </div>
+
+        <!-- Q15 -->
+        <div class="q-item" data-qid="15" data-ans="A">
+          <div class="font-extrabold text-black leading-tight text-[11.5px]">
+            15. In which city was Gandhi Ji's Sabarmati Ashram situated?
+          </div>
+          <div class="hindi-text text-[11px] font-bold text-black mt-0.5">
+            (गांधी जी का साबरमती आश्रम किस शहर में स्थित था?)
+          </div>
+          <div class="mt-1 space-y-0.5 text-[11px] font-semibold text-black">
+            <label class="opt-label opt-correct" onclick="selectOpt(this, 15, 'A')"><span class="font-bold mr-1">a)</span> Ahmedabad (अहमदाबाद)</label>
+            <label class="opt-label" onclick="selectOpt(this, 15, 'B')"><span class="font-bold mr-1">b)</span> Patna (पटना)</label>
+            <label class="opt-label" onclick="selectOpt(this, 15, 'C')"><span class="font-bold mr-1">c)</span> Delhi (दिल्ली)</label>
+            <label class="opt-label" onclick="selectOpt(this, 15, 'D')"><span class="font-bold mr-1">d)</span> Pune (पुणे)</label>
+          </div>
+        </div>
+
+        <!-- Q16 -->
+        <div class="q-item" data-qid="16" data-ans="A">
+          <div class="font-extrabold text-black leading-tight text-[11.5px]">
+            16. In which city was Quit India resolution officially adopted by AICC?
+          </div>
+          <div class="hindi-text text-[11px] font-bold text-black mt-0.5">
+            (AICC द्वारा भारत छोड़ो प्रस्ताव किस शहर में पारित किया गया?)
+          </div>
+          <div class="mt-1 space-y-0.5 text-[11px] font-semibold text-black">
+            <label class="opt-label opt-correct" onclick="selectOpt(this, 16, 'A')"><span class="font-bold mr-1">a)</span> Mumbai (मुंबई - ग्वालिया टैंक)</label>
+            <label class="opt-label" onclick="selectOpt(this, 16, 'B')"><span class="font-bold mr-1">b)</span> Lucknow (लखनऊ)</label>
+            <label class="opt-label" onclick="selectOpt(this, 16, 'C')"><span class="font-bold mr-1">c)</span> Delhi (दिल्ली)</label>
+            <label class="opt-label" onclick="selectOpt(this, 16, 'D')"><span class="font-bold mr-1">d)</span> Kolkata (कोलकाता)</label>
+          </div>
+        </div>
+
+        <!-- Q17 -->
+        <div class="q-item" data-qid="17" data-ans="D">
+          <div class="font-extrabold text-black leading-tight text-[11.5px]">
+            17. With which organization was Gandhi Ji deeply associated as chief leader?
+          </div>
+          <div class="hindi-text text-[11px] font-bold text-black mt-0.5">
+            (गांधी जी प्रमुख नेता के रूप में किस संगठन से गहराई से जुड़े थे?)
+          </div>
+          <div class="mt-1 space-y-0.5 text-[11px] font-semibold text-black">
+            <label class="opt-label" onclick="selectOpt(this, 17, 'A')"><span class="font-bold mr-1">a)</span> All India Muslim League (मुस्लिम लीग)</label>
+            <label class="opt-label" onclick="selectOpt(this, 17, 'B')"><span class="font-bold mr-1">b)</span> Arya Samaj (आर्य समाज)</label>
+            <label class="opt-label" onclick="selectOpt(this, 17, 'C')"><span class="font-bold mr-1">c)</span> Hindu Mahasabha (हिंदू महासभा)</label>
+            <label class="opt-label opt-correct" onclick="selectOpt(this, 17, 'D')"><span class="font-bold mr-1">d)</span> Indian National Congress (भारतीय राष्ट्रीय कांग्रेस)</label>
+          </div>
+        </div>
+
+        <!-- Q18 -->
+        <div class="q-item" data-qid="18" data-ans="B">
+          <div class="font-extrabold text-black leading-tight text-[11.5px]">
+            18. According to Gandhi Ji, what was relation between Truth and Non-Violence?
+          </div>
+          <div class="hindi-text text-[11px] font-bold text-black mt-0.5">
+            (गांधी जी के अनुसार सत्य और अहिंसा के बीच क्या संबंध था?)
+          </div>
+          <div class="mt-1 space-y-0.5 text-[11px] font-semibold text-black">
+            <label class="opt-label" onclick="selectOpt(this, 18, 'A')"><span class="font-bold mr-1">a)</span> Fundamentally opposed to each other (परस्पर विरोधी)</label>
+            <label class="opt-label opt-correct" onclick="selectOpt(this, 18, 'B')"><span class="font-bold mr-1">b)</span> Both were inseparable (दोनों एक दूसरे से अभिन्न/अविभाज्य)</label>
+            <label class="opt-label" onclick="selectOpt(this, 18, 'C')"><span class="font-bold mr-1">c)</span> They were core pillars of his philosophy (मुख्य स्तंभ)</label>
+            <label class="opt-label" onclick="selectOpt(this, 18, 'D')"><span class="font-bold mr-1">d)</span> Non-violence had no place in his thought (कोई स्थान नहीं)</label>
+          </div>
+        </div>
+
+        <!-- Q19 -->
+        <div class="q-item" data-qid="19" data-ans="C">
+          <div class="font-extrabold text-black leading-tight text-[11.5px]">
+            19. From which place did Gandhi Ji launch his first major Satyagraha in India?
+          </div>
+          <div class="hindi-text text-[11px] font-bold text-black mt-0.5">
+            (गांधी जी ने भारत में अपना पहला बड़ा सत्याग्रह कहाँ से प्रारंभ किया?)
+          </div>
+          <div class="mt-1 space-y-0.5 text-[11px] font-semibold text-black">
+            <label class="opt-label" onclick="selectOpt(this, 19, 'A')"><span class="font-bold mr-1">a)</span> Mumbai (मुंबई)</label>
+            <label class="opt-label" onclick="selectOpt(this, 19, 'B')"><span class="font-bold mr-1">b)</span> Delhi (दिल्ली)</label>
+            <label class="opt-label opt-correct" onclick="selectOpt(this, 19, 'C')"><span class="font-bold mr-1">c)</span> Champaran (चंपारण - 1917)</label>
+            <label class="opt-label" onclick="selectOpt(this, 19, 'D')"><span class="font-bold mr-1">d)</span> Amritsar (अमृतसर)</label>
+          </div>
+        </div>
+
+        <!-- Q20 -->
+        <div class="q-item" data-qid="20" data-ans="C">
+          <div class="font-extrabold text-black leading-tight text-[11.5px]">
+            20. In which state did the Kheda Satyagraha take place?
+          </div>
+          <div class="hindi-text text-[11px] font-bold text-black mt-0.5">
+            (खेड़ा सत्याग्रह किस राज्य में घटित हुआ था?)
+          </div>
+          <div class="mt-1 space-y-0.5 text-[11px] font-semibold text-black">
+            <label class="opt-label" onclick="selectOpt(this, 20, 'A')"><span class="font-bold mr-1">a)</span> Bihar (बिहार)</label>
+            <label class="opt-label" onclick="selectOpt(this, 20, 'B')"><span class="font-bold mr-1">b)</span> Punjab (पंजाब)</label>
+            <label class="opt-label opt-correct" onclick="selectOpt(this, 20, 'C')"><span class="font-bold mr-1">c)</span> Gujarat (गुजरात)</label>
+            <label class="opt-label" onclick="selectOpt(this, 20, 'D')"><span class="font-bold mr-1">d)</span> Bengal (बंगाल)</label>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ROUND 2 ANSWER KEY & EVALUATION -->
+      <div class="mt-2 pt-2 border-t-2 border-black">
+        <div class="flex items-center justify-between mb-1">
+          <span class="font-bold text-xs text-black uppercase tracking-wide flex items-center gap-1.5">
+            <i class="fa-solid fa-key text-sky-600"></i> ROUND 2 ANSWER KEY (उत्तर कुंजी) &bull; Q.11 TO Q.20
+          </span>
+          <span class="text-[10px] text-black font-bold">Max Marks: 10</span>
+        </div>
+
+        <table class="key-table w-full mb-1.5">
+          <thead>
+            <tr class="bg-sky-100 text-sky-950 font-bold">
+              <th>Q.11</th><th>Q.12</th><th>Q.13</th><th>Q.14</th><th>Q.15</th>
+              <th>Q.16</th><th>Q.17</th><th>Q.18</th><th>Q.19</th><th>Q.20</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="font-black text-black bg-sky-50/60">
+              <td>a</td><td>b</td><td>c</td><td>d</td><td>a</td>
+              <td>a</td><td>d</td><td>b</td><td>c</td><td>c</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- Signature block -->
+        <div class="grid grid-cols-3 gap-2 text-[10.5px] font-semibold text-slate-800 bg-slate-50 p-1.5 rounded border-2 border-black">
+          <div class="text-center border-r border-slate-800">
+            <span class="text-black font-black block text-[9px]">ROUND 2 SCORE</span>
+            <span class="text-sm font-black text-black" id="r2ScoreBox">____ / 10</span>
+          </div>
+          <div class="text-center border-r border-slate-800">
+            <span class="text-black font-black block text-[9px]">ROUND 2 EVALUATOR</span>
+            <span class="text-[11px] font-black text-black block">Sign: ____________</span>
+          </div>
+          <div class="text-center">
+            <span class="text-black font-black block text-[9px]">QUALIFICATION STATUS</span>
+            <span class="text-[11px] font-bold text-sky-700 block">Finalist for Round 3 [ &nbsp; ]</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- PAGE FOOTER -->
+      <div class="mt-1 pt-1 border-t border-slate-800 flex items-center justify-between text-[9.5px] text-black font-bold">
+        <span>Police Modern School, 25th Bn PAC Raebareli</span>
+        <span class="text-black font-black">Round 2 (Page 2 of 3) &bull; Please Proceed to Final Round</span>
+        <span>Date: 02 October 2026</span>
+      </div>
+
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- ROUND 3: GRAND FINALE ROUND (QUESTIONS 21 TO 30)                         -->
+    <!-- ========================================================================= -->
+    <div class="paper-sheet sheet-r3 page-break" id="sheetRound3">
+      
+      <!-- HEADER COMPACT -->
+      <div class="border-b-2 border-black pb-2 mb-2">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <img src="pms-logo.png" alt="PMS Logo" class="w-12 h-12 object-contain" onerror="this.src='logo.png'" />
+            <div class="text-left">
+              <h2 class="font-heading text-sm md:text-base font-black text-black leading-tight">POLICE MODERN SCHOOL</h2>
+              <p class="text-[10.5px] font-extrabold text-black">25TH BN. PAC, RAEBARELI &bull; GRAND FINALE CHAMPIONSHIP ROUND</p>
+            </div>
+          </div>
+          <div class="text-right">
+            <span class="bg-emerald-100 text-emerald-900 border border-emerald-300 px-2.5 py-0.5 rounded text-[10px] font-black uppercase">
+              Round 3: Grand Finale (Page 3)
+            </span>
+          </div>
+        </div>
+
+        <!-- CANDIDATE SHORT ROW -->
+        <div
+          class="mt-1.5 pt-1 border-t border-slate-800 grid grid-cols-4 gap-2 text-[10.5px] font-semibold text-slate-800 bg-slate-50 px-2.5 py-0.5 rounded border-2 border-black text-black">
+          <div><span class="text-black font-extrabold">Name:</span> _______________</div>
+          <div><span class="text-black font-extrabold">Class/Sec:</span> _________</div>
+          <div><span class="text-black font-extrabold">Roll No:</span> _______</div>
+          <div class="text-right"><span class="text-black font-extrabold">Round 3 Marks:</span> <b>10</b></div>
+        </div>
+      </div>
+
+      <!-- ROUND 3 BADGE -->
+      <div
+        class="bg-emerald-700 text-white px-3 py-1 rounded font-bold text-xs uppercase tracking-wider mb-2 flex items-center justify-between shadow-xs">
+        <span><i class="fa-solid fa-crown text-emerald-200 mr-1.5"></i> ROUND 3: GRAND FINALE &bull; अंतिम निर्णायक दौर (Q.21 – Q.30)</span>
+        <span class="text-[10.5px] bg-emerald-900/80 px-2 py-0.5 rounded text-emerald-200 font-semibold">10 Marks &bull; 1 Mark Each</span>
+      </div>
+
+      <!-- ROUND 3 QUESTIONS GRID (21-30) -->
+      <div class="quiz-grid flex-1">
+
+        <!-- Q21 -->
+        <div class="q-item" data-qid="21" data-ans="A">
+          <div class="font-extrabold text-black leading-tight text-[11.5px]">
+            21. What did Gandhi Ji promote as substitute for foreign textiles?
+          </div>
+          <div class="hindi-text text-[11px] font-bold text-black mt-0.5">
+            (विदेशी वस्त्रों के विकल्प के रूप में गांधी जी ने क्या बढ़ावा दिया?)
+          </div>
+          <div class="mt-1 space-y-0.5 text-[11px] font-semibold text-black">
+            <label class="opt-label opt-correct" onclick="selectOpt(this, 21, 'A')"><span class="font-bold mr-1">a)</span> Khadi (खादी)</label>
+            <label class="opt-label" onclick="selectOpt(this, 21, 'B')"><span class="font-bold mr-1">b)</span> Imported silk (आयातित रेशम)</label>
+            <label class="opt-label" onclick="selectOpt(this, 21, 'C')"><span class="font-bold mr-1">c)</span> Foreign clothes (विदेशी कपड़े)</label>
+            <label class="opt-label" onclick="selectOpt(this, 21, 'D')"><span class="font-bold mr-1">d)</span> Machine-made imports (मशीनी आयातित सामान)</label>
+          </div>
+        </div>
+
+        <!-- Q22 -->
+        <div class="q-item" data-qid="22" data-ans="D">
+          <div class="font-extrabold text-black leading-tight text-[11.5px]">
+            22. After which violent incident did Gandhi Ji suspend Non-Cooperation?
+          </div>
+          <div class="hindi-text text-[11px] font-bold text-black mt-0.5">
+            (किस घटना के बाद गांधी जी ने असहयोग आंदोलन वापस लिया था?)
+          </div>
+          <div class="mt-1 space-y-0.5 text-[11px] font-semibold text-black">
+            <label class="opt-label" onclick="selectOpt(this, 22, 'A')"><span class="font-bold mr-1">a)</span> Dandi March (दांडी मार्च)</label>
+            <label class="opt-label" onclick="selectOpt(this, 22, 'B')"><span class="font-bold mr-1">b)</span> Arrival of Simon Commission (साइमन कमीशन)</label>
+            <label class="opt-label" onclick="selectOpt(this, 22, 'C')"><span class="font-bold mr-1">c)</span> Jallianwala Bagh (जलियांवाला बाग)</label>
+            <label class="opt-label opt-correct" onclick="selectOpt(this, 22, 'D')"><span class="font-bold mr-1">d)</span> Chauri Chaura incident (चौरी चौरा कांड)</label>
+          </div>
+        </div>
+
+        <!-- Q23 -->
+        <div class="q-item" data-qid="23" data-ans="B">
+          <div class="font-extrabold text-black leading-tight text-[11.5px]">
+            23. Which famous historic march did Gandhi Ji undertake against Salt Tax?
+          </div>
+          <div class="hindi-text text-[11px] font-bold text-black mt-0.5">
+            (नमक कर के विरोध में गांधी जी ने कौन सा प्रसिद्ध मार्च किया?)
+          </div>
+          <div class="mt-1 space-y-0.5 text-[11px] font-semibold text-black">
+            <label class="opt-label" onclick="selectOpt(this, 23, 'A')"><span class="font-bold mr-1">a)</span> Champaran March (चंपारण मार्च)</label>
+            <label class="opt-label opt-correct" onclick="selectOpt(this, 23, 'B')"><span class="font-bold mr-1">b)</span> Dandi March (दांडी मार्च)</label>
+            <label class="opt-label" onclick="selectOpt(this, 23, 'C')"><span class="font-bold mr-1">c)</span> Kheda March (खेड़ा मार्च)</label>
+            <label class="opt-label" onclick="selectOpt(this, 23, 'D')"><span class="font-bold mr-1">d)</span> Delhi March (दिल्ली मार्च)</label>
+          </div>
+        </div>
+
+        <!-- Q24 -->
+        <div class="q-item" data-qid="24" data-ans="C">
+          <div class="font-extrabold text-black leading-tight text-[11.5px]">
+            24. The Champaran Satyagraha was primarily related to which problem?
+          </div>
+          <div class="hindi-text text-[11px] font-bold text-black mt-0.5">
+            (चंपारण सत्याग्रह मुख्य रूप से किस समस्या से संबंधित था?)
+          </div>
+          <div class="mt-1 space-y-0.5 text-[11px] font-semibold text-black">
+            <label class="opt-label" onclick="selectOpt(this, 24, 'A')"><span class="font-bold mr-1">a)</span> Salt Tax (नमक कर)</label>
+            <label class="opt-label" onclick="selectOpt(this, 24, 'B')"><span class="font-bold mr-1">b)</span> Textile mill workers (कपड़ा मिल मजदूर)</label>
+            <label class="opt-label opt-correct" onclick="selectOpt(this, 24, 'C')"><span class="font-bold mr-1">c)</span> Indigo cultivation (नील की खेती - तीनकठिया)</label>
+            <label class="opt-label" onclick="selectOpt(this, 24, 'D')"><span class="font-bold mr-1">d)</span> Forest revenue taxes (वन राजस्व कर)</label>
+          </div>
+        </div>
+
+        <!-- Q25 -->
+        <div class="q-item" data-qid="25" data-ans="A">
+          <div class="font-extrabold text-black leading-tight text-[11.5px]">
+            25. For Gandhi Ji, what was the spinning wheel (Charkha) symbol of?
+          </div>
+          <div class="hindi-text text-[11px] font-bold text-black mt-0.5">
+            (गांधी जी के लिए चरखा किसका प्रतीक था?)
+          </div>
+          <div class="mt-1 space-y-0.5 text-[11px] font-semibold text-black">
+            <label class="opt-label opt-correct" onclick="selectOpt(this, 25, 'A')"><span class="font-bold mr-1">a)</span> Self-reliance and Swadeshi (आत्मनिर्भरता व स्वदेशी)</label>
+            <label class="opt-label" onclick="selectOpt(this, 25, 'B')"><span class="font-bold mr-1">b)</span> Military strength (सैन्य शक्ति)</label>
+            <label class="opt-label" onclick="selectOpt(this, 25, 'C')"><span class="font-bold mr-1">c)</span> Heavy industrial warfare (औद्योगिक युद्ध)</label>
+            <label class="opt-label" onclick="selectOpt(this, 25, 'D')"><span class="font-bold mr-1">d)</span> Foreign trade dominance (विदेशी व्यापार प्रभुत्व)</label>
+          </div>
+        </div>
+
+        <!-- Q26 -->
+        <div class="q-item" data-qid="26" data-ans="C">
+          <div class="font-extrabold text-black leading-tight text-[11.5px]">
+            26. In which year did the Chauri Chaura incident take place?
+          </div>
+          <div class="hindi-text text-[11px] font-bold text-black mt-0.5">
+            (चौरी चौरा की घटना किस वर्ष घटित हुई थी?)
+          </div>
+          <div class="mt-1 space-y-0.5 text-[11px] font-semibold text-black">
+            <label class="opt-label" onclick="selectOpt(this, 26, 'A')"><span class="font-bold mr-1">a)</span> 1919</label>
+            <label class="opt-label" onclick="selectOpt(this, 26, 'B')"><span class="font-bold mr-1">b)</span> 1920</label>
+            <label class="opt-label opt-correct" onclick="selectOpt(this, 26, 'C')"><span class="font-bold mr-1">c)</span> 1922 (4 February 1922)</label>
+            <label class="opt-label" onclick="selectOpt(this, 26, 'D')"><span class="font-bold mr-1">d)</span> 1942</label>
+          </div>
+        </div>
+
+        <!-- Q27 -->
+        <div class="q-item" data-qid="27" data-ans="A">
+          <div class="font-extrabold text-black leading-tight text-[11.5px]">
+            27. In which country did Gandhi Ji live &amp; struggle before India return?
+          </div>
+          <div class="hindi-text text-[11px] font-bold text-black mt-0.5">
+            (भारत लौटने से पहले गांधी जी मुख्य रूप से किस देश में रहे?)
+          </div>
+          <div class="mt-1 space-y-0.5 text-[11px] font-semibold text-black">
+            <label class="opt-label opt-correct" onclick="selectOpt(this, 27, 'A')"><span class="font-bold mr-1">a)</span> South Africa (दक्षिण अफ्रीका)</label>
+            <label class="opt-label" onclick="selectOpt(this, 27, 'B')"><span class="font-bold mr-1">b)</span> Sri Lanka (श्रीलंका)</label>
+            <label class="opt-label" onclick="selectOpt(this, 27, 'C')"><span class="font-bold mr-1">c)</span> Japan (जापान)</label>
+            <label class="opt-label" onclick="selectOpt(this, 27, 'D')"><span class="font-bold mr-1">d)</span> England (इंग्लैंड)</label>
+          </div>
+        </div>
+
+        <!-- Q28 -->
+        <div class="q-item" data-qid="28" data-ans="A">
+          <div class="font-extrabold text-black leading-tight text-[11.5px]">
+            28. What is the title of Mahatma Gandhi's famous autobiography?
+          </div>
+          <div class="hindi-text text-[11px] font-bold text-black mt-0.5">
+            (महात्मा गांधी की प्रसिद्ध आत्मकथा का शीर्षक क्या है?)
+          </div>
+          <div class="mt-1 space-y-0.5 text-[11px] font-semibold text-black">
+            <label class="opt-label opt-correct" onclick="selectOpt(this, 28, 'A')"><span class="font-bold mr-1">a)</span> The Story of My Experiments with Truth</label>
+            <label class="opt-label" onclick="selectOpt(this, 28, 'B')"><span class="font-bold mr-1">b)</span> Discovery of India (भारत की खोज)</label>
+            <label class="opt-label" onclick="selectOpt(this, 28, 'C')"><span class="font-bold mr-1">c)</span> Hind Swaraj (हिंद स्वराज)</label>
+            <label class="opt-label" onclick="selectOpt(this, 28, 'D')"><span class="font-bold mr-1">d)</span> Wings of Fire (अग्नि की उड़ान)</label>
+          </div>
+        </div>
+
+        <!-- Q29 -->
+        <div class="q-item" data-qid="29" data-ans="C">
+          <div class="font-extrabold text-black leading-tight text-[11.5px]">
+            29. By what respectful title is Gandhi Ji commonly addressed in India?
+          </div>
+          <div class="hindi-text text-[11px] font-bold text-black mt-0.5">
+            (भारत में गांधी जी को किस आदरणीय उपाधि से पुकारा जाता है?)
+          </div>
+          <div class="mt-1 space-y-0.5 text-[11px] font-semibold text-black">
+            <label class="opt-label" onclick="selectOpt(this, 29, 'A')"><span class="font-bold mr-1">a)</span> Netaji (नेताजी)</label>
+            <label class="opt-label" onclick="selectOpt(this, 29, 'B')"><span class="font-bold mr-1">b)</span> Lokmanya Gandhi (लोकमान्य गांधी)</label>
+            <label class="opt-label opt-correct" onclick="selectOpt(this, 29, 'C')"><span class="font-bold mr-1">c)</span> Mahatma Gandhi (महात्मा गांधी)</label>
+            <label class="opt-label" onclick="selectOpt(this, 29, 'D')"><span class="font-bold mr-1">d)</span> Sardar Gandhi (सरदार गांधी)</label>
+          </div>
+        </div>
+
+        <!-- Q30 -->
+        <div class="q-item" data-qid="30" data-ans="C">
+          <div class="font-extrabold text-black leading-tight text-[11.5px]">
+            30. In which country did Gandhi Ji study law?
+          </div>
+          <div class="hindi-text text-[11px] font-bold text-black mt-0.5">
+            (गांधी जी ने वकालत (कानून) की पढ़ाई किस देश में की थी?)
+          </div>
+          <div class="mt-1 space-y-0.5 text-[11px] font-semibold text-black">
+            <label class="opt-label" onclick="selectOpt(this, 30, 'A')"><span class="font-bold mr-1">a)</span> South Africa (दक्षिण अफ्रीका)</label>
+            <label class="opt-label" onclick="selectOpt(this, 30, 'B')"><span class="font-bold mr-1">b)</span> United States (संयुक्त राज्य अमेरिका)</label>
+            <label class="opt-label opt-correct" onclick="selectOpt(this, 30, 'C')"><span class="font-bold mr-1">c)</span> England (इंग्लैंड - लंदन)</label>
+            <label class="opt-label" onclick="selectOpt(this, 30, 'D')"><span class="font-bold mr-1">d)</span> France (फ्रांस)</label>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ROUND 3 ANSWER KEY & FINAL CONSOLIDATED SUMMARY -->
+      <div class="mt-2 pt-2 border-t-2 border-black">
+        <div class="flex items-center justify-between mb-1">
+          <span class="font-bold text-xs text-black uppercase tracking-wide flex items-center gap-1.5">
+            <i class="fa-solid fa-key text-emerald-600"></i> ROUND 3 ANSWER KEY (उत्तर कुंजी) &bull; Q.21 TO Q.30
+          </span>
+          <span class="text-[10px] text-black font-bold">Max Marks: 10</span>
+        </div>
+
+        <table class="key-table w-full mb-1.5">
+          <thead>
+            <tr class="bg-emerald-100 text-emerald-950 font-bold">
+              <th>Q.21</th><th>Q.22</th><th>Q.23</th><th>Q.24</th><th>Q.25</th>
+              <th>Q.26</th><th>Q.27</th><th>Q.28</th><th>Q.29</th><th>Q.30</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="font-black text-black bg-emerald-50/60">
+              <td>a</td><td>d</td><td>b</td><td>c</td><td>a</td>
+              <td>c</td><td>a</td><td>a</td><td>c</td><td>c</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- Consolidated Championship Result Box -->
+        <div class="grid grid-cols-4 gap-2 text-[10px] font-semibold text-slate-800 bg-slate-50 p-1.5 rounded border-2 border-black">
+          <div class="text-center border-r border-slate-800">
+            <span class="text-black font-black block text-[9px]">ROUND 1</span>
+            <span class="text-xs font-bold text-amber-700" id="r1Summary">___ / 10</span>
+          </div>
+          <div class="text-center border-r border-slate-800">
+            <span class="text-black font-black block text-[9px]">ROUND 2</span>
+            <span class="text-xs font-bold text-sky-700" id="r2Summary">___ / 10</span>
+          </div>
+          <div class="text-center border-r border-slate-800">
+            <span class="text-black font-black block text-[9px]">ROUND 3</span>
+            <span class="text-xs font-bold text-emerald-700" id="r3Summary">___ / 10</span>
+          </div>
+          <div class="text-center bg-amber-100/60 rounded py-0.5">
+            <span class="text-amber-900 font-extrabold block text-[9px]">GRAND TOTAL</span>
+            <span class="text-sm font-black text-black" id="grandSummary">___ / 30</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- PAGE FOOTER -->
+      <div class="mt-1 pt-1 border-t border-slate-800 flex items-center justify-between text-[9.5px] text-black font-bold">
+        <span>Police Modern School, 25th Bn PAC Raebareli</span>
+        <span class="text-black font-black">Round 3 (Page 3 of 3) &bull; End of 30 MCQ Competition Examination</span>
+        <span>Date: 02 October 2026</span>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- ================= JAVASCRIPT LOGIC ================= -->
+  <script>
+    // User selections
+    const userAnswers = {};
+    let isEvaluated = false;
+    let answersRevealed = false;
+
+    // Official 30 Answer Keys
+    const correctAnswers = {
+      // Round 1 (1 - 10)
+      1: 'A', 2: 'A', 3: 'B', 4: 'D', 5: 'D',
+      6: 'C', 7: 'A', 8: 'D', 9: 'C', 10: 'A',
+      // Round 2 (11 - 20)
+      11: 'A', 12: 'B', 13: 'C', 14: 'D', 15: 'A',
+      16: 'A', 17: 'D', 18: 'B', 19: 'C', 20: 'C',
+      // Round 3 (21 - 30)
+      21: 'A', 22: 'D', 23: 'B', 24: 'C', 25: 'A',
+      26: 'C', 27: 'A', 28: 'A', 29: 'C', 30: 'C'
+    };
+
+    // Option Selection
+    function selectOpt(labelEl, qid, optKey) {
+      if (isEvaluated) return;
+
+      userAnswers[qid] = optKey;
+
+      const qItem = labelEl.closest('.q-item');
+      qItem.querySelectorAll('.opt-label').forEach(el => el.classList.remove('selected'));
+      labelEl.classList.add('selected');
+    }
+
+    // Evaluate Entire Quiz (Scores for R1, R2, R3, and Total)
+    function evaluateQuiz() {
+      let r1Score = 0;
+      let r2Score = 0;
+      let r3Score = 0;
+
+      document.querySelectorAll('.q-item').forEach(qItem => {
+        const qid = parseInt(qItem.getAttribute('data-qid'));
+        const correct = correctAnswers[qid];
+        const selected = userAnswers[qid];
+
+        qItem.classList.add('evaluated');
+
+        if (selected) {
+          const isCorrect = (selected === correct);
+          if (isCorrect) {
+            if (qid <= 10) r1Score++;
+            else if (qid <= 20) r2Score++;
+            else r3Score++;
+          } else {
+            qItem.querySelectorAll('.opt-label').forEach(opt => {
+              const text = opt.textContent.trim().toLowerCase();
+              if (text.startsWith(selected.toLowerCase() + ')')) {
+                opt.classList.add('opt-wrong-selected');
+              }
+            });
+          }
+        }
+      });
+
+      isEvaluated = true;
+      const totalScore = r1Score + r2Score + r3Score;
+      const percentage = Math.round((totalScore / 30) * 100);
+
+      // Update in-page score boxes
+      document.getElementById('r1ScoreBox').innerText = `${r1Score} / 10`;
+      document.getElementById('r2ScoreBox').innerText = `${r2Score} / 10`;
+      document.getElementById('r1Summary').innerText = `${r1Score} / 10`;
+      document.getElementById('r2Summary').innerText = `${r2Score} / 10`;
+      document.getElementById('r3Summary').innerText = `${r3Score} / 10`;
+      document.getElementById('grandSummary').innerText = `${totalScore} / 30`;
+
+      // Show Banner
+      const banner = document.getElementById('scoreBanner');
+      banner.classList.remove('hidden');
+
+      document.getElementById('scoreDisplay').innerText = `${totalScore} / 30`;
+      document.getElementById('scorePercent').innerText = `${percentage}%`;
+
+      const scoreHeading = document.getElementById('scoreHeading');
+      const scoreText = document.getElementById('scoreText');
+      const emojiEl = document.getElementById('scoreEmoji');
+
+      if (totalScore >= 27) {
+        emojiEl.innerText = '🏆';
+        scoreHeading.innerText = 'उत्कृष्ट प्रदर्शन! 1st Rank Champion!';
+        scoreText.innerText = `अद्भुत! आपने 30 में से ${totalScore} अंक प्राप्त किए हैं। (R1: ${r1Score}, R2: ${r2Score}, R3: ${r3Score})`;
+      } else if (totalScore >= 21) {
+        emojiEl.innerText = '🥈';
+        scoreHeading.innerText = 'शानदार प्रदर्शन! Outstanding Performer!';
+        scoreText.innerText = `बहुत बढ़िया! आपने 30 में से ${totalScore} अंक प्राप्त किए हैं। (R1: ${r1Score}, R2: ${r2Score}, R3: ${r3Score})`;
+      } else {
+        emojiEl.innerText = '📖';
+        scoreHeading.innerText = 'प्रयास जारी रखें! Keep Practicing!';
+        scoreText.innerText = `आपने 30 में से ${totalScore} अंक प्राप्त किए हैं। (R1: ${r1Score}, R2: ${r2Score}, R3: ${r3Score})। पुनः प्रयास करें।`;
+      }
+
+      banner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    // Toggle Answer Key
+    function toggleAnswerKey() {
+      answersRevealed = !answersRevealed;
+      const btn = document.getElementById('toggleAnsBtn');
+
+      document.querySelectorAll('.q-item').forEach(qItem => {
+        if (answersRevealed) {
+          qItem.classList.add('evaluated');
+        } else if (!isEvaluated) {
+          qItem.classList.remove('evaluated');
+        }
+      });
+
+      if (answersRevealed) {
+        btn.classList.add('bg-amber-600', 'text-white');
+        btn.classList.remove('bg-slate-800', 'text-amber-300');
+        btn.innerHTML = '<i class="fa-solid fa-eye-slash"></i> <span>उत्तर छिपाएं</span>';
+      } else {
+        btn.classList.remove('bg-amber-600', 'text-white');
+        btn.classList.add('bg-slate-800', 'text-amber-300');
+        btn.innerHTML = '<i class="fa-solid fa-eye"></i> <span>उत्तर दिखाएं / छिपाएं</span>';
+      }
+    }
+
+    // Set Round Filter View (Screen Only)
+    function setRoundView(view) {
+      document.body.classList.remove('show-all', 'show-r1', 'show-r2', 'show-r3');
+      document.querySelectorAll('.round-tab').forEach(t => t.classList.remove('active'));
+
+      if (view === 'r1') {
+        document.body.classList.add('show-r1');
+        document.getElementById('tabR1').classList.add('active');
+        document.getElementById('sheetRound1').scrollIntoView({ behavior: 'smooth' });
+      } else if (view === 'r2') {
+        document.body.classList.add('show-r2');
+        document.getElementById('tabR2').classList.add('active');
+        document.getElementById('sheetRound2').scrollIntoView({ behavior: 'smooth' });
+      } else if (view === 'r3') {
+        document.body.classList.add('show-r3');
+        document.getElementById('tabR3').classList.add('active');
+        document.getElementById('sheetRound3').scrollIntoView({ behavior: 'smooth' });
+      } else {
+        document.body.classList.add('show-all');
+        document.getElementById('tabAll').classList.add('active');
+      }
+    }
+
+    // Reset Quiz
+    function resetQuiz() {
+      isEvaluated = false;
+      answersRevealed = false;
+
+      for (let k in userAnswers) delete userAnswers[k];
+
+      document.querySelectorAll('.q-item').forEach(qItem => {
+        qItem.classList.remove('evaluated');
+        qItem.querySelectorAll('.opt-label').forEach(opt => {
+          opt.classList.remove('selected', 'opt-wrong-selected');
+        });
+      });
+
+      document.getElementById('scoreBanner').classList.add('hidden');
+      document.getElementById('r1ScoreBox').innerText = '____ / 10';
+      document.getElementById('r2ScoreBox').innerText = '____ / 10';
+      document.getElementById('r1Summary').innerText = '___ / 10';
+      document.getElementById('r2Summary').innerText = '___ / 10';
+      document.getElementById('r3Summary').innerText = '___ / 10';
+      document.getElementById('grandSummary').innerText = '___ / 30';
+
+      const btn = document.getElementById('toggleAnsBtn');
+      btn.classList.remove('bg-amber-600', 'text-white');
+      btn.classList.add('bg-slate-800', 'text-amber-300');
+      btn.innerHTML = '<i class="fa-solid fa-eye"></i> <span>उत्तर दिखाएं / छिपाएं</span>';
+    }
+  </script>
+</body>
+
+</html>

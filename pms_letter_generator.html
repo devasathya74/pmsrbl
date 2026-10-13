@@ -47,6 +47,7 @@
       --letter-font-body: 'Mangal', 'Noto Sans Devanagari', 'Segoe UI', sans-serif;
       --letter-font-heading: 'Mangal', 'Martel', 'Noto Serif Devanagari', serif;
       --letter-font-scale: 1;
+      --letter-base-font-size: 15.5px;
       --letter-line-height: 1.7;
       --canvas-zoom: 1;
     }
@@ -353,9 +354,12 @@
     /* Proportional Table Drag-Resize System (Mouse + Mobile Touch) */
     #doc-table-wrapper {
       position: relative;
-      display: block;
       width: 100%;
       max-width: 100%;
+    }
+
+    #doc-table-wrapper.hidden {
+      display: none !important;
     }
 
     /* Table Edge Drag Handle - Right (Width Proportional Scaling) */
@@ -503,7 +507,7 @@
       line-height: var(--doc-line-height, 1.6) !important;
     }
 
-    #doc-body-container > * + * {
+    #doc-body-container>*+* {
       margin-top: var(--doc-para-spacing, 12px) !important;
     }
 
@@ -644,6 +648,14 @@
         border-color: transparent !important;
       }
 
+      #doc-table-wrapper.hidden {
+        display: none !important;
+        visibility: hidden !important;
+        height: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+
       [contenteditable="true"] {
         background-color: transparent !important;
         box-shadow: none !important;
@@ -686,16 +698,16 @@
     <!-- Center Quick Tools (Font, Scaling, Zoom, Shortcuts) -->
     <div class="flex items-center gap-1.5 flex-wrap text-xs">
 
-      <!-- Official Hindi Font Selector -->
+      <!-- Official Hindi Font Selector (Global Universal) -->
       <div
         class="flex items-center bg-slate-900/90 rounded-lg border border-slate-700/80 px-2 py-1 text-xs shadow-inner">
         <label for="fontSelectTop" class="text-slate-300 mr-1.5 font-bold flex items-center gap-1 cursor-pointer">
           <span class="text-amber-400 font-bold">🔤</span>
           <span class="hidden md:inline text-[11px]">फॉन्ट:</span>
         </label>
-        <select id="fontSelectTop"
+        <select id="fontSelectTop" onchange="applyUniversalFontFamily(this.value)"
           class="bg-slate-800 text-amber-300 font-semibold border border-slate-600 rounded px-2 py-0.5 text-xs focus:outline-none focus:ring-1 focus:ring-blue-500 cursor-pointer max-w-[130px] sm:max-w-none"
-          title="शासकीय हिंदी फॉन्ट बदलें">
+          title="शासकीय हिंदी फॉन्ट बदलें (सम्पूर्ण पत्र पर तुरंत लागू होगा)">
           <option value="mangal" selected>1. मंगल (Mangal - शासकीय मानक)</option>
           <option value="aparajita">2. अपराजिता (Aparajita - शासकीय सेरिफ)</option>
           <option value="kokila">3. कोकिला (Kokila - औपचारिक)</option>
@@ -706,6 +718,10 @@
           <option value="sahitya">8. साहित्य (Sahitya)</option>
           <option value="karma">9. कर्मा (Karma)</option>
           <option value="utsaah">10. उत्साह (Utsaah)</option>
+          <option value="arial">11. Arial (अंग्रेजी मानक)</option>
+          <option value="times">12. Times New Roman</option>
+          <option value="georgia">13. Georgia</option>
+          <option value="calibri">14. Calibri</option>
         </select>
       </div>
 
@@ -719,19 +735,21 @@
         </button>
         <span id="fontScaleDisplay"
           class="px-1.5 text-[11px] font-mono font-bold text-amber-400 select-none min-w-[38px] text-center"
-          title="वर्तमान फॉन्ट स्केल या आकार">100%</span>
+          title="वर्तमान फॉन्ट स्केल या आकार">15.5px</span>
         <button id="fontIncBtn" type="button" onmousedown="event.preventDefault()" onclick="smartChangeFontSize(1)"
           class="px-2 py-1 text-slate-300 hover:text-white hover:bg-slate-800 rounded font-bold transition flex items-center gap-1 cursor-pointer"
           title="फॉन्ट बड़ा करें (A+) [चयनित टेक्स्ट या सम्पूर्ण पत्र]">
           <span class="text-xs">A+</span>
         </button>
-        <select id="fontSizeSelectTop" onmousedown="event.stopPropagation()" onchange="smartSetExactFontSize(parseFloat(this.value))"
+        <select id="fontSizeSelectTop" onmousedown="event.stopPropagation()"
+          onchange="smartSetExactFontSize(parseFloat(this.value))"
           class="hidden sm:inline-block bg-slate-800 text-amber-300 font-semibold border-l border-slate-700 px-1.5 py-0.5 text-[11px] focus:outline-none cursor-pointer rounded-r"
-          title="फॉन्ट साइज सीधे चुनें">
+          title="फॉन्ट साइज सीधे चुनें (सम्पूर्ण पत्र पर तुरंत लागू होगा)">
           <option value="12">12px</option>
           <option value="13">13px</option>
           <option value="14">14px</option>
-          <option value="15" selected>15px (मानक)</option>
+          <option value="15">15px</option>
+          <option value="15.5" selected>15.5px (मानक)</option>
           <option value="16">16px</option>
           <option value="17">17px</option>
           <option value="18">18px (बड़ा)</option>
@@ -740,6 +758,15 @@
           <option value="24">24px (शीर्षक)</option>
         </select>
       </div>
+
+      <!-- Universal Apply All Button (Header) -->
+      <button id="topUniversalApplyBtn" type="button" onclick="applyUniversalFontAndSize()"
+        class="px-2.5 py-1 bg-gradient-to-r from-blue-600 via-indigo-600 to-sky-600 hover:from-blue-500 hover:to-sky-500 text-white rounded-lg font-bold text-xs shadow-md border border-blue-400/40 flex items-center gap-1.5 transition active:scale-95 cursor-pointer"
+        title="यूनिवर्सल फॉण्ट स्टाइल व साइज़: सम्पूर्ण पत्र पर एक-साथ लागू करें (Apply to All Globally)">
+        <i class="fa-solid fa-wand-magic-sparkles text-amber-300 text-[11px]"></i>
+        <span class="hidden sm:inline">ग्लोबल अप्लाई</span>
+        <span class="sm:hidden">ग्लोबल</span>
+      </button>
 
       <!-- Preview Canvas Zoom Controller -->
       <div class="hidden lg:flex items-center bg-slate-900/90 rounded-lg border border-slate-700/80 p-0.5 shadow-inner"
@@ -810,25 +837,38 @@
         <span class="hidden sm:inline">टेक्स्ट कॉपी</span>
       </button>
 
+      <!-- Active Document Status Indicator -->
+      <div id="activeDocBadge" class="hidden items-center gap-1.5 px-2.5 py-1 bg-emerald-950/80 border border-emerald-500/50 rounded-lg text-[11px] text-emerald-300 font-medium" title="वर्तमान में यह पत्र क्लाउड पर खुला हुआ है">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span class="text-[10px] text-emerald-400 font-bold uppercase tracking-wider hidden md:inline">क्लाउड सक्रिय:</span>
+        <span id="activeDocBadgeTitle" class="font-bold text-white max-w-[120px] truncate">-</span>
+        <button id="clearActiveDocBtn" type="button" class="ml-1 text-slate-400 hover:text-rose-300 p-0.5 rounded cursor-pointer transition" title="सक्रिय लिंक हटाएं (नए पत्र के रूप में कार्य करें)">
+          <i class="fa-solid fa-xmark text-[10px]"></i>
+        </button>
+      </div>
+
       <!-- Letter History / Archive -->
       <button id="openLetterHistoryBtn" type="button"
-        class="bg-indigo-950/80 hover:bg-indigo-900 text-indigo-200 hover:text-white px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 font-bold shadow-md border border-indigo-700/60 cursor-pointer">
+        class="bg-indigo-950/80 hover:bg-indigo-900 text-indigo-200 hover:text-white px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 font-bold shadow-md border border-indigo-700/60 cursor-pointer"
+        title="पूर्व में सहेजे गए पत्रों का संग्रह देखें">
         <i class="fa-solid fa-box-archive text-xs text-indigo-400"></i>
         <span>पुराने बैकअप</span>
         <span id="letterBackupCountBadge"
           class="bg-indigo-700 text-white text-[10px] px-1.5 py-0.2 rounded-full font-mono font-bold">0</span>
       </button>
 
-      <!-- Cloud Backup Save Button -->
+      <!-- Cloud Backup Save Button (Opens Save / Update Modal) -->
       <button id="saveDraftBtn" type="button"
-        class="bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-white px-3.5 py-1.5 rounded-lg transition flex items-center gap-1.5 font-extrabold shadow-lg shadow-amber-600/20 cursor-pointer">
+        class="bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-white px-3.5 py-1.5 rounded-lg transition flex items-center gap-1.5 font-extrabold shadow-lg shadow-amber-600/20 cursor-pointer"
+        title="क्लाउड पर सहेजें या मौजूदा पत्र अपडेट करें (Ctrl+S)">
         <i class="fa-solid fa-cloud-arrow-up text-xs"></i>
         <span>सहेजें (Save)</span>
       </button>
 
-      <!-- Print / PDF Button -->
+      <!-- Direct Print / PDF Button (Only Opens PDF Print Dialog) -->
       <button id="printSaveLetterBtn" type="button"
-        class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white px-4 py-1.5 rounded-lg font-black transition flex items-center gap-1.5 shadow-lg shadow-blue-600/30 cursor-pointer">
+        class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white px-4 py-1.5 rounded-lg font-black transition flex items-center gap-1.5 shadow-lg shadow-blue-600/30 cursor-pointer"
+        title="सीधे प्रिंट या पीडीएफ डायलॉग खोलें (Ctrl+P)">
         <i class="fa-solid fa-print text-xs"></i>
         <span>प्रिंट व पीडीएफ</span>
       </button>
@@ -1035,6 +1075,19 @@
               class="w-full bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-2 text-white text-xs leading-relaxed focus:ring-1 focus:ring-blue-500 focus:outline-none">अतः श्रीमान जी से सादर अनुरोध है कि खराब आर.ओ. की आवश्यक मरम्मत तत्काल कराए जाने हेतु संबंधित को आदेशित करने की कृपा करें, जिससे विद्यालय में पेयजल की व्यवस्था सुचारु रूप से संचालित हो सके।</textarea>
           </div>
 
+          <!-- Extra Paragraphs Container in Sidebar -->
+          <div id="extraParagraphsContainer" class="space-y-3"></div>
+
+          <!-- Add New Paragraph Button -->
+          <div class="pt-1">
+            <button type="button" id="btnAddParagraph"
+              class="w-full py-2.5 px-3 bg-gradient-to-r from-blue-600/30 via-indigo-600/30 to-purple-600/30 hover:from-blue-600 hover:to-indigo-600 text-blue-200 hover:text-white rounded-lg border border-blue-500/50 hover:border-blue-400 font-bold text-xs flex items-center justify-center gap-2 transition-all shadow-md cursor-pointer group">
+              <i
+                class="fa-solid fa-plus-circle text-sky-400 group-hover:text-white text-sm transition-transform group-hover:scale-110"></i>
+              <span>+ नया पैराग्राफ जोड़ें (Add New Paragraph)</span>
+            </button>
+          </div>
+
           <!-- Signatory Details -->
           <div class="bg-slate-800/80 rounded-xl p-3 border border-slate-700 space-y-2">
             <label class="block text-[11px] font-bold text-amber-300 flex items-center gap-1.5">
@@ -1073,8 +1126,8 @@
 
           <!-- TABLE BUILDER SECTION -->
           <div class="bg-slate-800/90 rounded-xl p-3.5 border border-slate-700 space-y-3 shadow-md">
-            <div class="flex items-center justify-between">
-              <label class="flex items-center gap-2 cursor-pointer select-none">
+            <div class="flex items-center justify-between gap-2">
+              <label class="flex items-center gap-2 cursor-pointer select-none flex-1">
                 <input type="checkbox" id="toggleTableCheckbox"
                   class="w-4 h-4 rounded bg-slate-900 text-blue-600 focus:ring-0 cursor-pointer">
                 <span class="text-xs font-black text-amber-400 uppercase tracking-wider flex items-center gap-1.5">
@@ -1082,9 +1135,12 @@
                   <span>पत्र में तालिका जोड़ें (Table Builder)</span>
                 </span>
               </label>
-              <span id="tableStatusBadge"
-                class="text-[10px] bg-slate-900 text-slate-400 font-medium px-2 py-0.5 rounded border border-slate-700">बंद
-                (Off)</span>
+              <button type="button" id="tableStatusBadge"
+                class="text-[10px] bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-white font-semibold px-2.5 py-1 rounded border border-slate-700 transition cursor-pointer flex items-center gap-1.5"
+                title="तालिका दिखाएं या छिपाएं">
+                <i class="fa-solid fa-power-off text-[9px]"></i>
+                <span id="tableStatusBadgeText">बंद (Off)</span>
+              </button>
             </div>
 
             <!-- Table Controls Area -->
@@ -1174,7 +1230,9 @@
               <div class="space-y-2.5 pt-2 border-t border-slate-700/80">
                 <div class="text-[11px] font-bold text-sky-400 flex items-center justify-between">
                   <span class="flex items-center gap-1"><i class="fa-solid fa-bars"></i> पंक्ति प्रबंधन (Rows):</span>
-                  <span class="text-[10px] text-slate-400 font-mono bg-slate-950 px-2 py-0.5 rounded border border-slate-700" id="tableRowCountBadge">3 पंक्तियाँ</span>
+                  <span
+                    class="text-[10px] text-slate-400 font-mono bg-slate-950 px-2 py-0.5 rounded border border-slate-700"
+                    id="tableRowCountBadge">3 पंक्तियाँ</span>
                 </div>
                 <div class="grid grid-cols-3 gap-1.5">
                   <button type="button" onclick="insertTableRowAbove()"
@@ -1195,8 +1253,11 @@
                 </div>
 
                 <div class="text-[11px] font-bold text-emerald-400 flex items-center justify-between pt-1">
-                  <span class="flex items-center gap-1"><i class="fa-solid fa-table-columns"></i> कॉलम प्रबंधन (Columns):</span>
-                  <span class="text-[10px] text-slate-400 font-mono bg-slate-950 px-2 py-0.5 rounded border border-slate-700" id="tableColCountBadge">3 कॉलम</span>
+                  <span class="flex items-center gap-1"><i class="fa-solid fa-table-columns"></i> कॉलम प्रबंधन
+                    (Columns):</span>
+                  <span
+                    class="text-[10px] text-slate-400 font-mono bg-slate-950 px-2 py-0.5 rounded border border-slate-700"
+                    id="tableColCountBadge">3 कॉलम</span>
                 </div>
                 <div class="grid grid-cols-3 gap-1.5">
                   <button type="button" onclick="insertTableColLeft()"
@@ -1233,7 +1294,9 @@
                 <!-- Table Scale & Proportional Drag Controls -->
                 <div class="space-y-1.5 pt-2 border-t border-slate-700/80">
                   <div class="text-[11px] font-bold text-amber-400 flex items-center justify-between">
-                    <span class="flex items-center gap-1"><i class="fa-solid fa-up-right-and-down-left-from-center rotate-90 text-[10px]"></i> तालिका आकार व स्केलिंग (Scale):</span>
+                    <span class="flex items-center gap-1"><i
+                        class="fa-solid fa-up-right-and-down-left-from-center rotate-90 text-[10px]"></i> तालिका आकार व
+                      स्केलिंग (Scale):</span>
                   </div>
                   <!-- Width Presets -->
                   <div class="flex items-center gap-1">
@@ -1264,8 +1327,10 @@
                       class="px-2 py-1 bg-slate-900 hover:bg-slate-700 text-emerald-300 rounded border border-slate-700 text-[10px] font-bold cursor-pointer ml-auto"
                       title="पंक्ति ऊँचाई बढ़ाएं">+ऊँचाई</button>
                   </div>
-                  <div class="text-[10px] text-sky-400 bg-sky-950/40 p-2 rounded border border-sky-900/60 leading-tight">
-                    💡 <b>टिप:</b> मोबाइल या माउस से तालिका के निचले-दाएं कोने <b>(⤡)</b> या किनारों को ड्रैग करके सभी पंक्तियों और कॉलमों का साइज सापेक्षिक (proportional) रूप से बढ़ा या घटा सकते हैं।
+                  <div
+                    class="text-[10px] text-sky-400 bg-sky-950/40 p-2 rounded border border-sky-900/60 leading-tight">
+                    💡 <b>टिप:</b> मोबाइल या माउस से तालिका के निचले-दाएं कोने <b>(⤡)</b> या किनारों को ड्रैग करके सभी
+                    पंक्तियों और कॉलमों का साइज सापेक्षिक (proportional) रूप से बढ़ा या घटा सकते हैं।
                   </div>
                 </div>
               </div>
@@ -1273,6 +1338,19 @@
               <p class="text-[10px] text-slate-400 italic">
                 💡 आप सीधे दाईं ओर A4 लेटर पेपर पर तालिका के किसी भी सेल पर क्लिक करके तुरंत लिख व एडिट कर सकते हैं।
               </p>
+
+              <!-- Quick Add Paragraph Shortcut in Table Builder -->
+              <div
+                class="pt-2 border-t border-slate-700/80 flex items-center justify-between bg-slate-950/70 p-2.5 rounded-lg border border-slate-800">
+                <span class="text-[11px] text-slate-300 font-semibold flex items-center gap-1.5">
+                  <i class="fa-solid fa-paragraph text-sky-400"></i>
+                  <span>पत्र में अतिरिक्त पैराग्राफ:</span>
+                </span>
+                <button type="button" onclick="addNewParagraph('', true)"
+                  class="px-2.5 py-1 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white rounded text-[11px] font-bold flex items-center gap-1 shadow-sm transition cursor-pointer">
+                  <i class="fa-solid fa-plus text-[10px]"></i> नया पैराग्राफ जोड़ें
+                </button>
+              </div>
             </div>
           </div>
 
@@ -1364,30 +1442,68 @@
         <!-- ================= TAB 4: TYPOGRAPHY & LAYOUT ================= -->
         <div id="tabContentLayout" class="space-y-4 hidden">
 
+          <!-- Universal Apply Master Card (One-Click Global Apply) -->
+          <div class="bg-gradient-to-r from-blue-900/60 via-indigo-950/80 to-slate-900 rounded-xl p-3.5 border border-indigo-500/40 shadow-lg space-y-2.5">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-amber-300 flex items-center gap-1.5 uppercase tracking-wider">
+                <i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i>
+                <span>यूनिवर्सल फॉण्ट मास्टर कंट्रोल</span>
+              </span>
+              <span class="text-[10px] bg-blue-600/40 text-blue-200 px-2 py-0.5 rounded border border-blue-400/30 font-bold">ग्लोबल</span>
+            </div>
+            <p class="text-[11px] text-slate-300 leading-snug">
+              चयनित फॉन्ट स्टाइल और फॉन्ट साइज़ को एक-क्लिक में <b>सम्पूर्ण पत्र (Letter)</b> पर ग्लोबली लागू करें।
+            </p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
+              <button type="button" onclick="applyUniversalFontAndSize()"
+                class="py-2.5 px-3 bg-gradient-to-r from-blue-600 via-indigo-600 to-sky-600 hover:from-blue-500 hover:to-sky-500 text-white font-bold text-xs rounded-lg shadow-md border border-blue-400/40 flex items-center justify-center gap-1.5 transition active:scale-95 cursor-pointer">
+                <i class="fa-solid fa-wand-magic-sparkles text-amber-300 text-xs"></i>
+                <span>सम्पूर्ण पत्र पर लागू करें</span>
+              </button>
+              <button type="button" onclick="resetUniversalFontAndSize()"
+                class="py-2.5 px-3 bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white font-semibold text-xs rounded-lg border border-slate-700 flex items-center justify-center gap-1.5 transition active:scale-95 cursor-pointer"
+                title="मानक 15.5px मंगल फॉन्ट पर रीसेट करें">
+                <i class="fa-solid fa-rotate-left text-xs text-sky-400"></i>
+                <span>मानक रीसेट (15.5px)</span>
+              </button>
+            </div>
+          </div>
+
           <!-- Font Selector Card -->
           <div class="bg-slate-800/80 rounded-xl p-3.5 border border-slate-700 space-y-2.5">
             <div class="flex items-center justify-between">
               <label class="text-xs font-bold text-amber-400 uppercase tracking-wider flex items-center gap-1.5">
                 <i class="fa-solid fa-font text-amber-400"></i>
-                <span>शासकीय हिंदी फॉन्ट</span>
+                <span>शासकीय हिंदी व आधिकारिक फॉन्ट</span>
               </label>
               <span id="fontFamilyBadge"
                 class="text-[10px] bg-blue-950 text-blue-300 font-mono px-2 py-0.5 rounded border border-blue-800 font-bold">Mangal</span>
             </div>
 
-            <select id="fontSelectSidebar"
-              class="w-full bg-slate-900 text-amber-300 font-semibold border border-slate-600 rounded px-2.5 py-1.5 text-xs focus:ring-2 focus:ring-blue-500 focus:outline-none cursor-pointer">
-              <option value="mangal" selected>1. मंगल (Mangal - उत्तर प्रदेश पुलिस/शासकीय मानक)</option>
-              <option value="aparajita">2. अपराजिता (Aparajita - शासकीय सेरिफ/बुक स्टाइल)</option>
-              <option value="kokila">3. कोकिला (Kokila - औपचारिक सौम्य देवनागरी)</option>
-              <option value="noto_serif">4. नोटो सेरिफ (Noto Serif - राजपत्र छपाई प्रेस)</option>
-              <option value="noto_sans">5. नोटो सेन्स (Noto Sans - आधुनिक स्पष्ट डिजिटल)</option>
-              <option value="tiro">6. तिरो देवनागरी (Tiro Devanagari Hindi)</option>
-              <option value="martel">7. मार्टेल (Martel - गहरा बोल्ड व आधिकारिक)</option>
-              <option value="sahitya">8. साहित्य (Sahitya - क्लासिक प्रशासनिक)</option>
-              <option value="karma">9. कर्मा (Karma - सुरुचिपूर्ण देवनागरी)</option>
-              <option value="utsaah">10. उत्साह (Utsaah - संकुचित कॉम्पैक्ट)</option>
-            </select>
+            <div class="flex items-center gap-1.5">
+              <select id="fontSelectSidebar" onchange="applyUniversalFontFamily(this.value)"
+                class="flex-1 bg-slate-900 text-amber-300 font-semibold border border-slate-600 rounded px-2.5 py-1.5 text-xs focus:ring-2 focus:ring-blue-500 focus:outline-none cursor-pointer">
+                <option value="mangal" selected>1. मंगल (Mangal - उत्तर प्रदेश पुलिस/शासकीय मानक)</option>
+                <option value="aparajita">2. अपराजिता (Aparajita - शासकीय सेरिफ/बुक स्टाइल)</option>
+                <option value="kokila">3. कोकिला (Kokila - औपचारिक सौम्य देवनागरी)</option>
+                <option value="noto_serif">4. नोटो सेरिफ (Noto Serif - राजपत्र छपाई प्रेस)</option>
+                <option value="noto_sans">5. नोटो सेन्स (Noto Sans - आधुनिक स्पष्ट डिजिटल)</option>
+                <option value="tiro">6. तिरो देवनागरी (Tiro Devanagari Hindi)</option>
+                <option value="martel">7. मार्टेल (Martel - गहरा बोल्ड व आधिकारिक)</option>
+                <option value="sahitya">8. साहित्य (Sahitya - क्लासिक प्रशासनिक)</option>
+                <option value="karma">9. कर्मा (Karma - सुरुचिपूर्ण देवनागरी)</option>
+                <option value="utsaah">10. उत्साह (Utsaah - संकुचित कॉम्पैक्ट)</option>
+                <option value="arial">11. Arial (अंग्रेजी मानक)</option>
+                <option value="times">12. Times New Roman (टाइम्स)</option>
+                <option value="georgia">13. Georgia (जॉर्जिया)</option>
+                <option value="calibri">14. Calibri (कैलिबरी)</option>
+              </select>
+              <button type="button" onclick="applyUniversalFontFamily(document.getElementById('fontSelectSidebar').value)"
+                class="px-2.5 py-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded text-xs font-bold transition flex items-center gap-1 shadow-sm cursor-pointer whitespace-nowrap"
+                title="यह फॉन्ट सम्पूर्ण पत्र पर तुरंत लागू करें">
+                <span>ग्लोबल</span>
+              </button>
+            </div>
 
             <!-- Font Preview Box -->
             <div class="bg-slate-950/90 p-2.5 rounded-lg border border-slate-800 text-xs">
@@ -1403,7 +1519,7 @@
             <div class="flex items-center justify-between">
               <label class="text-xs font-bold text-sky-400 uppercase tracking-wider flex items-center gap-1.5">
                 <i class="fa-solid fa-text-height text-sky-400"></i>
-                <span>फॉन्ट आकार (Font Size & Scale)</span>
+                <span>यूनिवर्सल फॉन्ट आकार (Global Font Size)</span>
               </label>
               <span id="sidebarFontSizeBadge"
                 class="text-[11px] bg-slate-950 text-amber-300 font-mono px-2 py-0.5 rounded border border-slate-700 font-bold">15.5px</span>
@@ -1413,28 +1529,29 @@
             <div class="grid grid-cols-2 gap-2">
               <button type="button" onmousedown="event.preventDefault()" onclick="smartChangeFontSize(-1)"
                 class="flex items-center justify-center gap-2 py-2 bg-slate-900 hover:bg-slate-700 text-slate-200 hover:text-white rounded-lg border border-slate-700 font-bold text-sm transition shadow-sm cursor-pointer"
-                title="चयनित टेक्स्ट या सम्पूर्ण पत्र का फॉन्ट छोटा करें">
+                title="फॉन्ट छोटा करें (A-) [चयनित टेक्स्ट या सम्पूर्ण पत्र]">
                 <span class="text-base font-black">A−</span>
                 <span class="text-xs">छोटा करें</span>
               </button>
               <button type="button" onmousedown="event.preventDefault()" onclick="smartChangeFontSize(1)"
                 class="flex items-center justify-center gap-2 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg border border-blue-500 font-bold text-sm transition shadow-sm cursor-pointer"
-                title="चयनित टेक्स्ट या सम्पूर्ण पत्र का फॉन्ट बड़ा करें">
+                title="फॉन्ट बड़ा करें (A+) [चयनित टेक्स्ट या सम्पूर्ण पत्र]">
                 <span class="text-base font-black">A+</span>
                 <span class="text-xs">बड़ा करें</span>
               </button>
             </div>
 
-            <!-- Quick Size Presets -->
+            <!-- Quick Size Presets (Global Apply on Click) -->
             <div>
               <div class="text-[11px] text-slate-400 mb-1 flex items-center justify-between">
-                <span>त्वरित साइज (Quick Presets):</span>
+                <span>त्वरित साइज (क्लिक करते ही सम्पूर्ण पत्र पर लागू):</span>
                 <select id="fontSizeSelectSidebar" onchange="smartSetExactFontSize(parseFloat(this.value))"
                   class="bg-slate-900 text-amber-300 border border-slate-700 rounded px-1.5 py-0.5 text-[10px] cursor-pointer">
                   <option value="12">12px</option>
                   <option value="13">13px</option>
                   <option value="14">14px</option>
-                  <option value="15" selected>15px</option>
+                  <option value="15">15px</option>
+                  <option value="15.5" selected>15.5px (मानक)</option>
                   <option value="16">16px</option>
                   <option value="17">17px</option>
                   <option value="18">18px</option>
@@ -1443,21 +1560,37 @@
                   <option value="24">24px</option>
                 </select>
               </div>
-              <div class="grid grid-cols-4 gap-1">
+              <div class="grid grid-cols-4 gap-1.5">
                 <button type="button" onmousedown="event.preventDefault()" onclick="smartSetExactFontSize(13)"
-                  class="px-1.5 py-1 bg-slate-900 hover:bg-slate-700 text-slate-300 rounded border border-slate-700 text-[11px] font-semibold text-center cursor-pointer">
+                  class="px-1.5 py-1.5 bg-slate-900 hover:bg-slate-700 text-slate-300 rounded border border-slate-700 text-[11px] font-semibold text-center cursor-pointer transition active:scale-95">
                   13px
                 </button>
+                <button type="button" onmousedown="event.preventDefault()" onclick="smartSetExactFontSize(14)"
+                  class="px-1.5 py-1.5 bg-slate-900 hover:bg-slate-700 text-slate-300 rounded border border-slate-700 text-[11px] font-semibold text-center cursor-pointer transition active:scale-95">
+                  14px
+                </button>
                 <button type="button" onmousedown="event.preventDefault()" onclick="smartSetExactFontSize(15)"
-                  class="px-1.5 py-1 bg-slate-900 hover:bg-slate-700 text-amber-300 rounded border border-slate-700 text-[11px] font-semibold text-center cursor-pointer">
-                  15px <span class="text-[9px] text-slate-400">मानक</span>
+                  class="px-1.5 py-1.5 bg-slate-900 hover:bg-slate-700 text-slate-300 rounded border border-slate-700 text-[11px] font-semibold text-center cursor-pointer transition active:scale-95">
+                  15px
+                </button>
+                <button type="button" onmousedown="event.preventDefault()" onclick="smartSetExactFontSize(15.5)"
+                  class="px-1.5 py-1.5 bg-blue-950 hover:bg-blue-900 text-amber-300 rounded border border-blue-700 text-[11px] font-bold text-center cursor-pointer transition active:scale-95 shadow-sm">
+                  15.5px <span class="text-[9px] text-sky-400 font-normal">मानक</span>
+                </button>
+                <button type="button" onmousedown="event.preventDefault()" onclick="smartSetExactFontSize(16)"
+                  class="px-1.5 py-1.5 bg-slate-900 hover:bg-slate-700 text-slate-300 rounded border border-slate-700 text-[11px] font-semibold text-center cursor-pointer transition active:scale-95">
+                  16px
                 </button>
                 <button type="button" onmousedown="event.preventDefault()" onclick="smartSetExactFontSize(17)"
-                  class="px-1.5 py-1 bg-slate-900 hover:bg-slate-700 text-slate-300 rounded border border-slate-700 text-[11px] font-semibold text-center cursor-pointer">
+                  class="px-1.5 py-1.5 bg-slate-900 hover:bg-slate-700 text-slate-300 rounded border border-slate-700 text-[11px] font-semibold text-center cursor-pointer transition active:scale-95">
                   17px <span class="text-[9px] text-slate-400">बड़ा</span>
                 </button>
+                <button type="button" onmousedown="event.preventDefault()" onclick="smartSetExactFontSize(18)"
+                  class="px-1.5 py-1.5 bg-slate-900 hover:bg-slate-700 text-slate-300 rounded border border-slate-700 text-[11px] font-semibold text-center cursor-pointer transition active:scale-95">
+                  18px
+                </button>
                 <button type="button" onmousedown="event.preventDefault()" onclick="smartSetExactFontSize(20)"
-                  class="px-1.5 py-1 bg-slate-900 hover:bg-slate-700 text-slate-300 rounded border border-slate-700 text-[11px] font-semibold text-center cursor-pointer">
+                  class="px-1.5 py-1.5 bg-slate-900 hover:bg-slate-700 text-slate-300 rounded border border-slate-700 text-[11px] font-semibold text-center cursor-pointer transition active:scale-95">
                   20px <span class="text-[9px] text-slate-400">शीर्षक</span>
                 </button>
               </div>
@@ -1480,8 +1613,8 @@
               </div>
             </div>
 
-            <div class="text-[10px] text-slate-400 bg-slate-950/60 p-2 rounded border border-slate-800 leading-relaxed">
-              💡 <b>सुझाव:</b> पत्र में किसी भी शब्द या पंक्ति को सेलेक्ट करके <b>A+</b> या <b>A−</b> दबाएं, केवल वही टेक्स्ट बड़ा या छोटा होगा!
+            <div class="text-[10px] text-slate-300 bg-slate-950/70 p-2.5 rounded-lg border border-slate-800 leading-relaxed">
+              💡 <b>सुझाव:</b> बिना सेलेक्ट किए <b>A+ / A−</b> या साइज़ दबाने पर सम्पूर्ण पत्र का फॉन्ट एक-साथ बदलेगा। यदि किसी विशिष्ट शब्द को बदलना हो, तो पहले उसे सेलेक्ट करके A+/A− दबाएं!
             </div>
           </div>
 
@@ -1504,7 +1637,7 @@
                 <span id="lineSpacingDisplayBadge"
                   class="text-[11px] bg-sky-950 text-sky-300 font-mono font-bold px-2 py-0.5 rounded border border-sky-800">1.60x</span>
               </div>
-              
+
               <!-- Stepper & Slider -->
               <div class="flex items-center gap-2">
                 <button type="button" onclick="changeLineSpacing(-0.05)"
@@ -1548,7 +1681,7 @@
                 <span id="paraSpacingDisplayBadge"
                   class="text-[11px] bg-emerald-950 text-emerald-300 font-mono font-bold px-2 py-0.5 rounded border border-emerald-800">12px</span>
               </div>
-              
+
               <!-- Stepper & Slider -->
               <div class="flex items-center gap-2">
                 <button type="button" onclick="changeParagraphSpacing(-2)"
@@ -1659,20 +1792,29 @@
 
         <div class="h-4 w-px bg-slate-700"></div>
 
-        <!-- Canvas Quick Font Size (A- / A+) -->
-        <div class="flex items-center bg-slate-950/80 rounded-full border border-slate-700 px-1 py-0.5 text-xs shadow-inner"
+        <!-- Canvas Quick Font Size (A- / A+) with Universal Action -->
+        <div
+          class="flex items-center bg-slate-950/80 rounded-full border border-slate-700 px-1.5 py-0.5 text-xs shadow-inner"
           title="फॉन्ट आकार कम/ज्यादा करें (A- / A+)">
-          <button id="canvasFontDecBtn" type="button" onmousedown="event.preventDefault()" onclick="smartChangeFontSize(-1)"
+          <button id="canvasFontDecBtn" type="button" onmousedown="event.preventDefault()"
+            onclick="smartChangeFontSize(-1)"
             class="w-6 h-6 flex items-center justify-center rounded-full hover:bg-slate-800 text-slate-300 hover:text-white font-bold transition cursor-pointer"
             title="फॉन्ट छोटा करें (A-)">
             <span>A−</span>
           </button>
           <span id="canvasFontSizeBadge"
-            class="px-2 text-[11px] font-mono font-bold text-amber-300 select-none">15.5px</span>
-          <button id="canvasFontIncBtn" type="button" onmousedown="event.preventDefault()" onclick="smartChangeFontSize(1)"
+            class="px-1.5 text-[11px] font-mono font-bold text-amber-300 select-none">15.5px</span>
+          <button id="canvasFontIncBtn" type="button" onmousedown="event.preventDefault()"
+            onclick="smartChangeFontSize(1)"
             class="w-6 h-6 flex items-center justify-center rounded-full hover:bg-slate-800 text-slate-300 hover:text-white font-bold transition cursor-pointer"
             title="फॉन्ट बड़ा करें (A+)">
             <span>A+</span>
+          </button>
+          <button type="button" onclick="applyUniversalFontAndSize()"
+            class="ml-1 px-2 py-0.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white rounded-full text-[10px] font-bold flex items-center gap-1 shadow-sm transition active:scale-95 cursor-pointer"
+            title="यूनिवर्सल फॉण्ट व साइज़: सम्पूर्ण पत्र पर लागू करें (Apply to All Globally)">
+            <i class="fa-solid fa-wand-magic-sparkles text-[9px] text-amber-300"></i>
+            <span>ग्लोबल</span>
           </button>
         </div>
 
@@ -1695,9 +1837,9 @@
         <div class="h-4 w-px bg-slate-700"></div>
 
         <!-- Quick Print Button -->
-        <button onclick="document.getElementById('printSaveLetterBtn').click()" type="button"
+        <button onclick="if(typeof window.triggerPrintLetter==='function'){window.triggerPrintLetter();}else{window.print();}" type="button"
           class="text-blue-400 hover:text-blue-300 font-bold flex items-center gap-1 cursor-pointer"
-          title="प्रिंट व पीडीएफ">
+          title="सीधे प्रिंट या पीडीएफ डायलॉग खोलें (Ctrl+P)">
           <i class="fa-solid fa-print"></i>
           <span class="hidden sm:inline">प्रिंट</span>
         </button>
@@ -1727,11 +1869,12 @@
           </button>
         </div>
 
-        <!-- Group 2: Font & Size -->
-        <div class="flex items-center gap-1 bg-slate-950/80 p-1 rounded-lg border border-slate-800">
-          <select id="ribbonFontFamily" onchange="applyFontFamilyToSelection(this.value)" onmousedown="event.stopPropagation()"
+        <!-- Group 2: Font & Size with Universal Global Controls -->
+        <div class="flex items-center gap-1.5 bg-slate-950/80 p-1 rounded-lg border border-slate-800">
+          <select id="ribbonFontFamily" onchange="applyFontFamilyToSelection(this.value)"
+            onmousedown="event.stopPropagation()"
             class="bg-slate-900 text-amber-300 border border-slate-700 rounded px-2 py-0.5 text-xs font-semibold focus:outline-none cursor-pointer max-w-[125px]"
-            title="फॉन्ट बदलें">
+            title="फॉन्ट स्टाइल चुनें (चयनित टेक्स्ट या सम्पूर्ण पत्र)">
             <option value="mangal" selected>मंगल (Mangal)</option>
             <option value="aparajita">अपराजिता (Aparajita)</option>
             <option value="kokila">कोकिला (Kokila)</option>
@@ -1741,6 +1884,10 @@
             <option value="tiro">तिरो देवनागरी</option>
             <option value="karma">कर्मा (Karma)</option>
             <option value="utsaah">उत्साह (Utsaah)</option>
+            <option value="arial">Arial</option>
+            <option value="times">Times New Roman</option>
+            <option value="georgia">Georgia</option>
+            <option value="calibri">Calibri</option>
           </select>
 
           <!-- A- / Size / A+ -->
@@ -1748,19 +1895,22 @@
             <button type="button" onmousedown="event.preventDefault()" onclick="smartChangeFontSize(-1)"
               class="px-1.5 py-0.5 text-slate-300 hover:text-white hover:bg-slate-800 rounded-l font-bold cursor-pointer"
               title="फॉन्ट छोटा करें (A-)">A−</button>
-            <span id="ribbonFontSizeDisplay" class="px-1.5 text-[11px] font-mono text-amber-300 font-bold select-none">15.5px</span>
+            <span id="ribbonFontSizeDisplay"
+              class="px-1.5 text-[11px] font-mono text-amber-300 font-bold select-none min-w-[36px] text-center">15.5px</span>
             <button type="button" onmousedown="event.preventDefault()" onclick="smartChangeFontSize(1)"
               class="px-1.5 py-0.5 text-slate-300 hover:text-white hover:bg-slate-800 rounded-r font-bold cursor-pointer"
               title="फॉन्ट बड़ा करें (A+)">A+</button>
           </div>
 
-          <select id="ribbonFontSizeSelect" onchange="smartSetExactFontSize(parseFloat(this.value))" onmousedown="event.stopPropagation()"
+          <select id="ribbonFontSizeSelect" onchange="smartSetExactFontSize(parseFloat(this.value))"
+            onmousedown="event.stopPropagation()"
             class="bg-slate-900 text-slate-200 border border-slate-700 rounded px-1.5 py-0.5 text-[11px] cursor-pointer"
             title="फॉन्ट साइज सीधे चुनें">
             <option value="12">12</option>
             <option value="13">13</option>
             <option value="14">14</option>
-            <option value="15" selected>15</option>
+            <option value="15">15</option>
+            <option value="15.5" selected>15.5</option>
             <option value="16">16</option>
             <option value="17">17</option>
             <option value="18">18</option>
@@ -1768,6 +1918,21 @@
             <option value="22">22</option>
             <option value="24">24</option>
           </select>
+
+          <!-- Universal Action Buttons -->
+          <button type="button" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded px-2 py-0.5 text-xs flex items-center gap-1 shadow-sm transition active:scale-95 cursor-pointer"
+            onclick="applyUniversalFontAndSize()" title="फॉन्ट स्टाइल और साइज़ दोनों सम्पूर्ण पत्र पर लागू करें (Apply to All)">
+            <i class="fa-solid fa-wand-magic-sparkles text-amber-300 text-[10px]"></i>
+            <span>Apply to All</span>
+          </button>
+          <button type="button" class="text-sky-300 hover:text-white hover:bg-slate-800 rounded px-1.5 py-0.5 text-[11px] font-medium border border-slate-700 transition cursor-pointer"
+            onclick="applyUniversalFontFamily(document.getElementById('ribbonFontFamily').value)" title="केवल चयनित फ़ॉन्ट स्टाइल सम्पूर्ण पत्र पर लागू करें">
+            फ़ॉन्ट सभी
+          </button>
+          <button type="button" class="text-amber-300 hover:text-white hover:bg-slate-800 rounded px-1.5 py-0.5 text-[11px] font-medium border border-slate-700 transition cursor-pointer"
+            onclick="applyUniversalFontSize(document.getElementById('ribbonFontSizeSelect').value)" title="केवल चयनित फ़ॉन्ट साइज़ सम्पूर्ण पत्र पर लागू करें">
+            साइज़ सभी
+          </button>
         </div>
 
         <!-- Group 3: Character Formatting (Bold, Italic, Underline, Strike, Color, Highlight) -->
@@ -1791,7 +1956,8 @@
           <div class="relative flex items-center" title="टेक्स्ट रंग (Font Color)">
             <label class="cursor-pointer flex items-center gap-0.5 px-1 py-0.5 hover:bg-slate-800 rounded">
               <span class="font-bold text-[11px] text-slate-200 border-b-2 border-red-500">A</span>
-              <input type="color" id="ribbonTextColorPicker" value="#000000" onchange="letterRichExec('foreColor', this.value)"
+              <input type="color" id="ribbonTextColorPicker" value="#000000"
+                onchange="letterRichExec('foreColor', this.value)"
                 class="w-4 h-4 bg-transparent border-0 p-0 cursor-pointer opacity-0 absolute inset-0">
             </label>
           </div>
@@ -1858,12 +2024,14 @@
         <div class="flex items-center gap-1 bg-slate-950/80 p-1 rounded-lg border border-slate-800"
           title="सम्पूर्ण पत्र लाइन व पैराग्राफ अंतराल (Line & Paragraph Spacing)">
           <!-- Line Spacing Control -->
-          <div class="flex items-center bg-slate-900 rounded border border-slate-700" title="लाइन अंतराल (Line Spacing)">
+          <div class="flex items-center bg-slate-900 rounded border border-slate-700"
+            title="लाइन अंतराल (Line Spacing)">
             <i class="fa-solid fa-arrows-up-down text-[10px] text-sky-400 pl-1.5 pr-0.5"></i>
             <button type="button" onmousedown="event.preventDefault()" onclick="changeLineSpacing(-0.05)"
               class="px-1 py-0.5 text-slate-300 hover:text-white hover:bg-slate-800 rounded-l font-bold cursor-pointer"
               title="लाइन स्पेसिंग घटाएं (−)">−</button>
-            <select id="ribbonLineSpacingSelect" onchange="setLineSpacing(this.value)" onmousedown="event.stopPropagation()"
+            <select id="ribbonLineSpacingSelect" onchange="setLineSpacing(this.value)"
+              onmousedown="event.stopPropagation()"
               class="bg-transparent text-amber-300 font-mono text-[11px] font-bold py-0.5 px-0.5 cursor-pointer focus:outline-none"
               title="लाइन स्पेसिंग चुनें">
               <option value="1.0">1.0x</option>
@@ -1881,12 +2049,14 @@
           </div>
 
           <!-- Paragraph Spacing Control -->
-          <div class="flex items-center bg-slate-900 rounded border border-slate-700" title="पैराग्राफ अंतराल (Paragraph Spacing)">
+          <div class="flex items-center bg-slate-900 rounded border border-slate-700"
+            title="पैराग्राफ अंतराल (Paragraph Spacing)">
             <i class="fa-solid fa-paragraph text-[10px] text-emerald-400 pl-1.5 pr-0.5"></i>
             <button type="button" onmousedown="event.preventDefault()" onclick="changeParagraphSpacing(-2)"
               class="px-1 py-0.5 text-slate-300 hover:text-white hover:bg-slate-800 rounded-l font-bold cursor-pointer"
               title="पैराग्राफ अंतर घटाएं (−2px)">−</button>
-            <span id="ribbonParaSpacingDisplay" class="px-1 text-[11px] font-mono text-emerald-300 font-bold select-none"
+            <span id="ribbonParaSpacingDisplay"
+              class="px-1 text-[11px] font-mono text-emerald-300 font-bold select-none"
               title="वर्तमान पैराग्राफ अंतर">12px</span>
             <button type="button" onmousedown="event.preventDefault()" onclick="changeParagraphSpacing(2)"
               class="px-1 py-0.5 text-slate-300 hover:text-white hover:bg-slate-800 rounded-r font-bold cursor-pointer"
@@ -1898,7 +2068,7 @@
         <div class="flex items-center gap-1 bg-blue-950/60 p-1 rounded-lg border border-blue-800/80"
           title="MS Word तालिका टूल्स (Rows & Columns)">
           <span class="text-[10px] text-blue-300 font-bold px-1 hidden md:inline">तालिका:</span>
-          
+
           <!-- Add Row Above / Below -->
           <button type="button" onmousedown="event.preventDefault()" onclick="insertTableRowAbove()"
             class="px-1.5 py-0.5 bg-slate-900 hover:bg-blue-600 text-blue-200 hover:text-white rounded border border-slate-700 text-[11px] font-semibold transition cursor-pointer flex items-center gap-0.5"
@@ -1991,17 +2161,21 @@
               <!-- 1. SCHOOL CONTACT & EMAIL CONTAINER -->
               <div
                 class="flex justify-between items-center py-1.5 px-1 border-b border-black text-[12px] font-medium text-black hindi-body">
-                <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-slate-50 border border-slate-300 rounded shadow-xs"
+                <div
+                  class="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-slate-50 border border-slate-300 rounded shadow-xs"
                   title="विद्यालय आधिकारिक ई-मेल">
                   <i class="fa-regular fa-envelope text-[11px] text-blue-900 no-print"></i>
                   <span class="font-bold text-black">ई-मेल:</span>
-                  <span class="font-mono text-[11.5px] font-bold text-black select-all" contenteditable="true" id="doc-school-email">pms25bnraebareli@gmail.com</span>
+                  <span class="font-mono text-[11.5px] font-bold text-black select-all" contenteditable="true"
+                    id="doc-school-email">pms25bnraebareli@gmail.com</span>
                 </div>
-                <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-slate-50 border border-slate-300 rounded shadow-xs"
+                <div
+                  class="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-slate-50 border border-slate-300 rounded shadow-xs"
                   title="विद्यालय हेल्पलाइन व संपर्क नंबर">
                   <i class="fa-solid fa-phone text-[10px] text-blue-900 no-print"></i>
                   <span class="font-bold text-black">मो०/संपर्क:</span>
-                  <span class="font-mono text-[11.5px] font-bold text-black select-all" contenteditable="true" id="doc-school-contact">+91 9454 4188 41</span>
+                  <span class="font-mono text-[11.5px] font-bold text-black select-all" contenteditable="true"
+                    id="doc-school-contact">+91 9454 4188 41</span>
                 </div>
               </div>
 
@@ -2050,7 +2224,15 @@
                 </p>
 
                 <!-- OPTIONAL EMBEDDED TABLE -->
-                <div id="doc-table-wrapper" class="hidden my-2 relative max-w-full">
+                <div id="doc-table-wrapper" class="hidden my-2 relative max-w-full" style="display: none;">
+                  <!-- Table Quick Hide Action on Paper -->
+                  <div class="no-print absolute -top-3 right-0 z-30">
+                    <button type="button" onclick="updateTableVisibility(false)"
+                      class="bg-rose-700/90 hover:bg-rose-800 text-white text-[10px] font-bold px-2 py-0.5 rounded shadow flex items-center gap-1 transition cursor-pointer"
+                      title="तालिका हटाएं / छिपाएं">
+                      <i class="fa-solid fa-eye-slash text-[9px]"></i> तालिका हटाएं
+                    </button>
+                  </div>
                   <table id="doc-custom-table" class="pms-letter-table">
                     <thead>
                       <tr id="doc-table-thead-tr">
@@ -2079,9 +2261,12 @@
                   </table>
 
                   <!-- Table Edge & Corner Drag-Resize Handles (Mobile Touch + Mouse) -->
-                  <div id="tableRightEdgeResizer" class="table-edge-resizer-right no-print" title="तालिका चौड़ाई बदलें (माउस या टच से खींचें)"></div>
-                  <div id="tableBottomEdgeResizer" class="table-edge-resizer-bottom no-print" title="तालिका पंक्ति ऊँचाई बदलें (माउस या टच से खींचें)"></div>
-                  <div id="tableCornerResizer" class="table-corner-resizer no-print" title="तालिका आकार बदलें (माउस या टच से खींचें)"></div>
+                  <div id="tableRightEdgeResizer" class="table-edge-resizer-right no-print"
+                    title="तालिका चौड़ाई बदलें (माउस या टच से खींचें)"></div>
+                  <div id="tableBottomEdgeResizer" class="table-edge-resizer-bottom no-print"
+                    title="तालिका पंक्ति ऊँचाई बदलें (माउस या टच से खींचें)"></div>
+                  <div id="tableCornerResizer" class="table-corner-resizer no-print"
+                    title="तालिका आकार बदलें (माउस या टच से खींचें)"></div>
 
                   <!-- Live Drag HUD Tooltip -->
                   <div id="tableResizeTooltip" class="table-resize-tooltip no-print hidden"></div>
@@ -2093,6 +2278,19 @@
                   आदेशित
                   करने की कृपा करें, जिससे विद्यालय में पेयजल की व्यवस्था सुचारु रूप से संचालित हो सके।
                 </p>
+
+                <!-- Extra Dynamic Paragraphs on Paper -->
+                <div id="doc-extra-paragraphs" class="space-y-3"></div>
+
+                <!-- On-paper Add Paragraph Quick Action -->
+                <div class="no-print pt-0.5 flex justify-end">
+                  <button type="button" onclick="addNewParagraph('', true)"
+                    class="text-[11px] bg-sky-50 hover:bg-sky-100 text-sky-800 border border-sky-300 hover:border-sky-400 px-2.5 py-1 rounded shadow-xs flex items-center gap-1.5 font-semibold transition cursor-pointer"
+                    title="पत्र में नया पैराग्राफ जोड़ें">
+                    <i class="fa-solid fa-plus-circle text-sky-600 text-xs"></i>
+                    <span>+ नया पैराग्राफ जोड़ें</span>
+                  </button>
+                </div>
 
                 <!-- Closing Line -->
                 <p class="indent-10 font-semibold" contenteditable="true" id="doc-closing">
@@ -2156,9 +2354,7 @@
                     </div>
 
                     <!-- Signature Line -->
-                    <div class="h-9 flex items-end justify-center pb-1">
-                      <div class="w-40 border-b border-black"></div>
-                    </div>
+
 
                     <div class="text-[15.5px] font-extrabold text-black hindi-heading mt-1" contenteditable="true"
                       id="doc-sign-title">
@@ -2202,7 +2398,7 @@
             <h3 class="text-base font-bold text-white flex items-center gap-2">
               <span>पत्र क्लाउड बैकअप (Cloud Save)</span>
             </h3>
-            <p class="text-xs text-slate-400">पत्र को भविष्य में खोजने व पुनः प्रिंट हेतु पहचान शीर्षक दें</p>
+            <p class="text-xs text-slate-400">पत्र को क्लाउड पर सुरक्षित करें या मौजूदा रिकॉर्ड अपडेट करें</p>
           </div>
         </div>
         <button id="closeSaveLetterModalBtn" type="button"
@@ -2213,6 +2409,45 @@
 
       <!-- Modal Body -->
       <div class="p-6 space-y-4 text-xs">
+
+        <!-- Save Mode Option: Update Existing vs Save New -->
+        <div class="bg-slate-950/70 p-3 rounded-xl border border-slate-800 space-y-2">
+          <label class="block text-[11px] font-bold text-slate-300 uppercase tracking-wider">
+            सहेजने का विकल्प चुनें (Save Option):
+          </label>
+          <div class="grid grid-cols-2 gap-2">
+            <!-- Option 1: Update Existing -->
+            <label id="saveModeUpdateLabel" class="save-mode-option flex flex-col p-2.5 rounded-xl border-2 border-emerald-500 bg-emerald-950/40 cursor-pointer transition select-none shadow-sm">
+              <div class="flex items-center gap-2">
+                <input type="radio" name="saveModeRadio" id="saveModeUpdate" value="update" checked class="text-emerald-500 focus:ring-0 cursor-pointer">
+                <span class="font-bold text-xs text-emerald-200">🔄 मौजूदा अपडेट करें</span>
+              </div>
+              <span class="text-[10px] text-slate-400 mt-1 leading-tight">उसी फाइल में बदलाव सहेजें (नई फाइल नहीं बनेगी)</span>
+            </label>
+
+            <!-- Option 2: Save as New Copy -->
+            <label id="saveModeNewLabel" class="save-mode-option flex flex-col p-2.5 rounded-xl border border-slate-700 bg-slate-900/60 hover:border-slate-600 cursor-pointer transition select-none">
+              <div class="flex items-center gap-2">
+                <input type="radio" name="saveModeRadio" id="saveModeNew" value="new" class="text-blue-500 focus:ring-0 cursor-pointer">
+                <span class="font-bold text-xs text-slate-300">➕ नई प्रतिलिपि सहेजें</span>
+              </div>
+              <span class="text-[10px] text-slate-400 mt-1 leading-tight">क्लाउड पर अलग नई फाइल के रूप में सहेजें</span>
+            </label>
+          </div>
+
+          <!-- Existing Linked Document Banner -->
+          <div id="existingDocBanner" class="mt-2 text-[11px] bg-slate-900/90 border border-slate-700/80 rounded-lg p-2.5 flex items-center justify-between text-slate-300">
+            <div class="flex items-center gap-2 min-w-0">
+              <i class="fa-solid fa-link text-indigo-400 text-xs flex-shrink-0"></i>
+              <div class="truncate">
+                <span class="text-slate-400 text-[10px] block">सक्रिय क्लाउड फाइल (Target File):</span>
+                <span id="existingDocTitleDisplay" class="font-semibold text-white truncate">-</span>
+              </div>
+            </div>
+            <span class="text-[9px] bg-indigo-950 text-indigo-300 border border-indigo-700/50 px-2 py-0.5 rounded font-mono font-bold flex-shrink-0">सक्रिय</span>
+          </div>
+        </div>
+
         <!-- Letter Title / Identifier -->
         <div>
           <label class="block text-xs font-bold text-amber-300 mb-1 flex items-center justify-between">
@@ -2280,9 +2515,9 @@
           रद्द करें (Cancel)
         </button>
         <button type="button" id="confirmSaveLetterModalBtn"
-          class="px-5 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white rounded-lg text-xs font-bold transition flex items-center gap-1.5 shadow-lg shadow-blue-600/30 cursor-pointer">
-          <i class="fa-solid fa-check"></i>
-          <span id="confirmSaveBtnText">हाँ, क्लाउड पर सहेजें</span>
+          class="px-5 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white rounded-xl text-xs font-bold transition flex items-center gap-2 shadow-lg shadow-emerald-600/30 cursor-pointer">
+          <i id="confirmSaveBtnIcon" class="fa-solid fa-arrows-rotate"></i>
+          <span id="confirmSaveBtnText">मौजूदा पत्र अपडेट करें (Update)</span>
         </button>
       </div>
 
@@ -2375,8 +2610,12 @@
     <button type="button" onmousedown="event.preventDefault()" onclick="smartChangeFontSize(1)"
       title="चयनित फॉन्ट बड़ा करें (A+)">A+</button>
     <span class="mini-bar-sep"></span>
-    <select id="miniBarFontFamily" onchange="applyFontFamilyToSelection(this.value)" onmousedown="event.stopPropagation()"
-      title="चयनित टेक्स्ट का फॉन्ट बदलें">
+    <button type="button" onmousedown="event.preventDefault()" onclick="applySelectionFontAndSizeToAll()"
+      class="text-sky-300 hover:text-white px-1 text-[10px] font-bold"
+      title="यह फ़ॉन्ट व साइज़ सम्पूर्ण पत्र पर लागू करें (Apply to All Globally)">🌐 All</button>
+    <span class="mini-bar-sep"></span>
+    <select id="miniBarFontFamily" onchange="applyFontFamilyToSelection(this.value)"
+      onmousedown="event.stopPropagation()" title="चयनित टेक्स्ट का फॉन्ट बदलें">
       <option value="mangal">Mangal (मंगल)</option>
       <option value="aparajita">Aparajita (अपराजिता)</option>
       <option value="kokila">Kokila (कोकिला)</option>
@@ -2388,32 +2627,48 @@
       <option value="utsaah">Utsaah (उत्साह)</option>
     </select>
     <span class="mini-bar-sep"></span>
-    <button type="button" onmousedown="event.preventDefault()" onclick="letterRichExec('bold')" title="बोल्ड (Ctrl+B)"><b>B</b></button>
-    <button type="button" onmousedown="event.preventDefault()" onclick="letterRichExec('italic')" title="इटैलिक (Ctrl+I)"><i>I</i></button>
-    <button type="button" onmousedown="event.preventDefault()" onclick="letterRichExec('underline')" title="अंडरलाइन (Ctrl+U)"><u>U</u></button>
-    <button type="button" onmousedown="event.preventDefault()" onclick="letterApplyHighlight('#fef08a')" title="हाइलाइट (Highlight)" style="color: #facc15;">★</button>
-    <button type="button" onmousedown="event.preventDefault()" onclick="letterRichExec('removeFormat')" title="फॉर्मेटिंग हटाएं (Clear Formatting)" style="color: #94a3b8; font-size: 10px;">Tx</button>
+    <button type="button" onmousedown="event.preventDefault()" onclick="letterRichExec('bold')"
+      title="बोल्ड (Ctrl+B)"><b>B</b></button>
+    <button type="button" onmousedown="event.preventDefault()" onclick="letterRichExec('italic')"
+      title="इटैलिक (Ctrl+I)"><i>I</i></button>
+    <button type="button" onmousedown="event.preventDefault()" onclick="letterRichExec('underline')"
+      title="अंडरलाइन (Ctrl+U)"><u>U</u></button>
+    <button type="button" onmousedown="event.preventDefault()" onclick="letterApplyHighlight('#fef08a')"
+      title="हाइलाइट (Highlight)" style="color: #facc15;">★</button>
+    <button type="button" onmousedown="event.preventDefault()" onclick="letterRichExec('removeFormat')"
+      title="फॉर्मेटिंग हटाएं (Clear Formatting)" style="color: #94a3b8; font-size: 10px;">Tx</button>
   </div>
 
   <!-- Floating Table Quick Action Bar (Appears when table cell is clicked) -->
   <div id="tableQuickBar" class="table-quick-bar no-print">
     <div class="flex items-center gap-1">
       <span class="text-[10px] font-bold text-sky-400 px-1">तालिका:</span>
-      <button type="button" onmousedown="event.preventDefault()" onclick="insertTableRowAbove()" title="पंक्ति ऊपर जोड़ें">⬆️ +पंक्ति ऊपर</button>
-      <button type="button" onmousedown="event.preventDefault()" onclick="insertTableRowBelow()" title="पंक्ति नीचे जोड़ें">⬇️ +पंक्ति नीचे</button>
-      <button type="button" onmousedown="event.preventDefault()" onclick="deleteCurrentTableRow()" class="btn-del" title="पंक्ति हटाएं">🗑️ पंक्ति हटाएं</button>
+      <button type="button" onmousedown="event.preventDefault()" onclick="insertTableRowAbove()"
+        title="पंक्ति ऊपर जोड़ें">⬆️ +पंक्ति ऊपर</button>
+      <button type="button" onmousedown="event.preventDefault()" onclick="insertTableRowBelow()"
+        title="पंक्ति नीचे जोड़ें">⬇️ +पंक्ति नीचे</button>
+      <button type="button" onmousedown="event.preventDefault()" onclick="deleteCurrentTableRow()" class="btn-del"
+        title="पंक्ति हटाएं">🗑️ पंक्ति हटाएं</button>
       <span class="mini-bar-sep"></span>
-      <button type="button" onmousedown="event.preventDefault()" onclick="insertTableColLeft()" title="कॉलम बाएं जोड़ें">⬅️ +कॉलम बाएं</button>
-      <button type="button" onmousedown="event.preventDefault()" onclick="insertTableColRight()" title="कॉलम दाएं जोड़ें">➡️ +कॉलम दाएं</button>
-      <button type="button" onmousedown="event.preventDefault()" onclick="deleteCurrentTableCol()" class="btn-del" title="कॉलम हटाएं">🗑️ कॉलम हटाएं</button>
+      <button type="button" onmousedown="event.preventDefault()" onclick="insertTableColLeft()"
+        title="कॉलम बाएं जोड़ें">⬅️ +कॉलम बाएं</button>
+      <button type="button" onmousedown="event.preventDefault()" onclick="insertTableColRight()"
+        title="कॉलम दाएं जोड़ें">➡️ +कॉलम दाएं</button>
+      <button type="button" onmousedown="event.preventDefault()" onclick="deleteCurrentTableCol()" class="btn-del"
+        title="कॉलम हटाएं">🗑️ कॉलम हटाएं</button>
       <span class="mini-bar-sep"></span>
-      <button type="button" onmousedown="event.preventDefault()" onclick="autoRenumberTableRows()" title="क्रमांक 1, 2, 3... सही करें">🔢 ऑटो-नंबर</button>
+      <button type="button" onmousedown="event.preventDefault()" onclick="autoRenumberTableRows()"
+        title="क्रमांक 1, 2, 3... सही करें">🔢 ऑटो-नंबर</button>
       <span class="mini-bar-sep"></span>
       <span class="text-[10px] text-amber-300 font-bold px-0.5">साइज:</span>
-      <button type="button" onmousedown="event.preventDefault()" onclick="scaleTableWidth(-5)" title="टेबल चौड़ाई 5% घटाएं">↔ −5%</button>
-      <button type="button" onmousedown="event.preventDefault()" onclick="scaleTableWidth(5)" title="टेबल चौड़ाई 5% बढ़ाएं">↔ +5%</button>
-      <button type="button" onmousedown="event.preventDefault()" onclick="changeTableRowHeight(-3)" title="पंक्ति ऊँचाई घटाएं">↕ −ऊँचाई</button>
-      <button type="button" onmousedown="event.preventDefault()" onclick="changeTableRowHeight(3)" title="पंक्ति ऊँचाई बढ़ाएं">↕ +ऊँचाई</button>
+      <button type="button" onmousedown="event.preventDefault()" onclick="scaleTableWidth(-5)"
+        title="टेबल चौड़ाई 5% घटाएं">↔ −5%</button>
+      <button type="button" onmousedown="event.preventDefault()" onclick="scaleTableWidth(5)"
+        title="टेबल चौड़ाई 5% बढ़ाएं">↔ +5%</button>
+      <button type="button" onmousedown="event.preventDefault()" onclick="changeTableRowHeight(-3)"
+        title="पंक्ति ऊँचाई घटाएं">↕ −ऊँचाई</button>
+      <button type="button" onmousedown="event.preventDefault()" onclick="changeTableRowHeight(3)"
+        title="पंक्ति ऊँचाई बढ़ाएं">↕ +ऊँचाई</button>
     </div>
   </div>
 
@@ -2570,6 +2825,152 @@
         });
       }
     });
+
+    // ================= DYNAMIC PARAGRAPH MANAGEMENT SYSTEM =================
+    let extraParagraphs = []; // Array of { id, text }
+    window.extraParagraphs = extraParagraphs;
+
+    window.getExtraParagraphsData = function () {
+      extraParagraphs.forEach(p => {
+        const inEl = document.getElementById('in-extra-' + p.id);
+        const docEl = document.getElementById('doc-extra-' + p.id);
+        if (inEl) {
+          p.text = inEl.value;
+        } else if (docEl) {
+          p.text = docEl.innerText;
+        }
+      });
+      return extraParagraphs.map(p => ({ id: p.id, text: p.text }));
+    };
+
+    window.restoreExtraParagraphs = function (list) {
+      if (!Array.isArray(list)) return;
+      extraParagraphs = [];
+      list.forEach(item => {
+        if (item && typeof item.text !== 'undefined') {
+          const id = item.id || ('para_' + Date.now() + '_' + Math.floor(Math.random() * 1000));
+          extraParagraphs.push({ id: id, text: item.text });
+        }
+      });
+      renderExtraParagraphs();
+      triggerA4Check();
+    };
+
+    window.addNewParagraph = function (initialText = '', autoFocus = true) {
+      const id = 'para_' + Date.now() + '_' + Math.floor(Math.random() * 1000);
+      extraParagraphs.push({ id: id, text: initialText });
+      renderExtraParagraphs();
+
+      if (autoFocus) {
+        const tabBtnBody = document.getElementById('tabBtnBody');
+        if (tabBtnBody) tabBtnBody.click();
+
+        setTimeout(() => {
+          const newIn = document.getElementById('in-extra-' + id);
+          if (newIn) {
+            newIn.focus();
+            newIn.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+        }, 120);
+
+        if (typeof showLetterToast === 'function') {
+          showLetterToast('नया पैराग्राफ जोड़ा गया (+ New Paragraph Added)', 'success');
+        }
+      }
+
+      triggerA4Check();
+      return id;
+    };
+
+    window.removeParagraph = function (id) {
+      extraParagraphs = extraParagraphs.filter(p => p.id !== id);
+      renderExtraParagraphs();
+      triggerA4Check();
+      if (typeof showLetterToast === 'function') {
+        showLetterToast('पैराग्राफ हटाया गया (Paragraph Removed)', 'info');
+      }
+    };
+
+    function renderExtraParagraphs() {
+      const containerSidebar = document.getElementById('extraParagraphsContainer');
+      const containerDoc = document.getElementById('doc-extra-paragraphs');
+
+      if (!containerSidebar || !containerDoc) return;
+
+      extraParagraphs.forEach(p => {
+        const inEl = document.getElementById('in-extra-' + p.id);
+        if (inEl) p.text = inEl.value;
+      });
+
+      containerSidebar.innerHTML = '';
+      containerDoc.innerHTML = '';
+
+      extraParagraphs.forEach((p, index) => {
+        const paraNum = index + 3;
+
+        // Sidebar Card
+        const card = document.createElement('div');
+        card.className = "bg-slate-800/80 rounded-xl p-3 border border-slate-700/80 space-y-2 shadow-xs transition-all";
+        card.id = `card-extra-${p.id}`;
+        card.innerHTML = `
+          <div class="flex items-center justify-between">
+            <label class="block text-[11px] font-bold text-sky-300 flex items-center gap-1.5">
+              <i class="fa-solid fa-paragraph text-sky-400"></i>
+              <span>पैरा ${paraNum}: अतिरिक्त विवरण</span>
+            </label>
+            <button type="button" onclick="removeParagraph('${p.id}')"
+              class="text-[10px] bg-rose-950/60 hover:bg-rose-600 text-rose-300 hover:text-white px-2 py-0.5 rounded border border-rose-800/60 transition cursor-pointer flex items-center gap-1"
+              title="यह पैराग्राफ हटाएं">
+              <i class="fa-solid fa-trash-can text-[9px]"></i> हटाएं
+            </button>
+          </div>
+          <textarea id="in-extra-${p.id}" rows="3"
+            class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-2 text-white text-xs leading-relaxed focus:ring-1 focus:ring-blue-500 focus:outline-none"
+            placeholder="यहाँ अतिरिक्त पैराग्राफ का विवरण दर्ज करें...">${p.text}</textarea>
+        `;
+        containerSidebar.appendChild(card);
+
+        // Document Paragraph on Paper
+        const docWrap = document.createElement('div');
+        docWrap.className = "relative group";
+        docWrap.id = `doc-wrap-${p.id}`;
+        docWrap.innerHTML = `
+          <p class="indent-10" contenteditable="true" id="doc-extra-${p.id}">
+            ${p.text || 'यहाँ अतिरिक्त पैराग्राफ का विवरण दर्ज करें...'}
+          </p>
+          <button type="button" onclick="removeParagraph('${p.id}')"
+            class="no-print hidden group-hover:flex absolute -right-3 top-0 bg-rose-600 hover:bg-rose-700 text-white rounded-full w-5 h-5 items-center justify-center text-[10px] shadow cursor-pointer transition font-bold"
+            title="पैराग्राफ हटाएं">
+            ✕
+          </button>
+        `;
+        containerDoc.appendChild(docWrap);
+
+        const inEl = card.querySelector(`#in-extra-${p.id}`);
+        const docEl = docWrap.querySelector(`#doc-extra-${p.id}`);
+
+        if (inEl && docEl) {
+          inEl.addEventListener('input', () => {
+            p.text = inEl.value;
+            docEl.innerText = inEl.value;
+            triggerA4Check();
+          });
+
+          docEl.addEventListener('input', () => {
+            p.text = docEl.innerText;
+            inEl.value = docEl.innerText;
+            triggerA4Check();
+          });
+        }
+      });
+    }
+
+    const btnAddParagraph = document.getElementById('btnAddParagraph');
+    if (btnAddParagraph) {
+      btnAddParagraph.addEventListener('click', () => {
+        addNewParagraph('', true);
+      });
+    }
 
     // Sidebar Tab Switcher
     const tabButtons = {
@@ -3022,23 +3423,119 @@
         cssBody: "'Utsaah', 'Noto Sans Devanagari', 'Mangal', sans-serif",
         cssHeading: "'Utsaah', 'Martel', 'Noto Sans Devanagari', sans-serif",
         badge: "Utsaah"
+      },
+      arial: {
+        name: 'Arial (अंग्रेजी मानक)',
+        cssBody: "Arial, sans-serif",
+        cssHeading: "Arial, sans-serif",
+        badge: "Arial"
+      },
+      times: {
+        name: 'Times New Roman (टाइम्स)',
+        cssBody: "'Times New Roman', Times, serif",
+        cssHeading: "'Times New Roman', Times, serif",
+        badge: "Times"
+      },
+      georgia: {
+        name: 'Georgia (जॉर्जिया)',
+        cssBody: "Georgia, serif",
+        cssHeading: "Georgia, serif",
+        badge: "Georgia"
+      },
+      calibri: {
+        name: 'Calibri (कैलिबरी)',
+        cssBody: "Calibri, sans-serif",
+        cssHeading: "Calibri, sans-serif",
+        badge: "Calibri"
       }
     };
 
     let currentLetterFont = 'mangal';
     window.currentLetterFont = 'mangal';
+    window.currentUniversalFontSize = 15.5;
+    let currentFontScale = 100;
+    let activeLetterSelection = null;
+    let activeLetterTarget = null;
+    window.activeLetterSelection = null;
+    window.activeLetterTarget = null;
 
-    const fontSelectTop = document.getElementById('fontSelectTop');
-    const fontSelectSidebar = document.getElementById('fontSelectSidebar');
-    const fontFamilyBadge = document.getElementById('fontFamilyBadge');
-    const fontSampleText = document.getElementById('fontSampleText');
+    // Helper: Sync all Font Family dropdowns & badges across the application
+    function syncAllFontFamilySelects(fontKey, fontObj) {
+      if (!fontObj) fontObj = HINDI_FONTS[fontKey] || { name: fontKey, badge: fontKey };
+      const selects = [
+        document.getElementById('fontSelectTop'),
+        document.getElementById('fontSelectSidebar'),
+        document.getElementById('ribbonFontFamily'),
+        document.getElementById('miniBarFontFamily')
+      ];
+      selects.forEach(sel => {
+        if (sel) {
+          if (![...sel.options].some(o => o.value === fontKey)) {
+            const opt = document.createElement('option');
+            opt.value = fontKey;
+            opt.textContent = fontObj.name || fontKey;
+            sel.appendChild(opt);
+          }
+          sel.value = fontKey;
+        }
+      });
 
-    window.setLetterFont = function (fontKey) {
-      if (!HINDI_FONTS[fontKey]) fontKey = 'mangal';
+      const fontFamilyBadge = document.getElementById('fontFamilyBadge');
+      if (fontFamilyBadge) fontFamilyBadge.textContent = fontObj.badge || fontKey;
+
+      const fontSampleText = document.getElementById('fontSampleText');
+      if (fontSampleText) fontSampleText.style.fontFamily = fontObj.cssBody || fontKey;
+    }
+
+    // Helper: Sync all Font Size displays & selectors across the application
+    function syncAllFontSizeControls(size) {
+      const num = typeof size === 'number' ? size : parseFloat(size);
+      const str = isNaN(num) ? String(size) : (num + 'px');
+
+      const fontScaleDisplay = document.getElementById('fontScaleDisplay');
+      const canvasFontSizeBadge = document.getElementById('canvasFontSizeBadge');
+      const miniBarFontSize = document.getElementById('miniBarFontSize');
+      const sidebarFontSizeBadge = document.getElementById('sidebarFontSizeBadge');
+      const ribbonFontSizeDisplay = document.getElementById('ribbonFontSizeDisplay');
+
+      if (fontScaleDisplay) fontScaleDisplay.innerText = str;
+      if (canvasFontSizeBadge) canvasFontSizeBadge.innerText = str;
+      if (miniBarFontSize) miniBarFontSize.innerText = str;
+      if (sidebarFontSizeBadge) sidebarFontSizeBadge.innerText = str;
+      if (ribbonFontSizeDisplay) ribbonFontSizeDisplay.innerText = str;
+
+      if (!isNaN(num)) {
+        const rounded = String(Math.round(num * 10) / 10);
+        const intVal = String(Math.round(num));
+        const selectIds = ['fontSizeSelectTop', 'fontSizeSelectSidebar', 'ribbonFontSizeSelect'];
+        selectIds.forEach(id => {
+          const sel = document.getElementById(id);
+          if (sel) {
+            if ([...sel.options].some(o => o.value === rounded)) {
+              sel.value = rounded;
+            } else if ([...sel.options].some(o => o.value === intVal)) {
+              sel.value = intVal;
+            }
+          }
+        });
+      }
+    }
+
+    // 1. APPLY UNIVERSAL FONT FAMILY TO ENTIRE LETTER
+    window.applyUniversalFontFamily = function (fontKey) {
+      if (!fontKey) fontKey = currentLetterFont || 'mangal';
+      let f = HINDI_FONTS[fontKey];
+      if (!f) {
+        f = {
+          name: fontKey,
+          cssBody: `"${fontKey}", 'Mangal', 'Noto Sans Devanagari', sans-serif`,
+          cssHeading: `"${fontKey}", 'Martel', 'Noto Serif Devanagari', serif`,
+          badge: fontKey
+        };
+      }
+
       currentLetterFont = fontKey;
       window.currentLetterFont = fontKey;
-
-      const f = HINDI_FONTS[fontKey];
 
       // Update CSS variables
       document.documentElement.style.setProperty('--letter-font-body', f.cssBody);
@@ -3047,94 +3544,226 @@
       const letterDoc = document.getElementById('letterDocument');
       if (letterDoc) {
         letterDoc.style.fontFamily = f.cssBody;
+
+        // Set on all direct sections & editable blocks
+        const allTextNodes = letterDoc.querySelectorAll('p, div, span, h1, h2, h3, table, th, td, [contenteditable="true"]');
+        allTextNodes.forEach(el => {
+          if (el.classList.contains('hindi-heading') || el.tagName === 'H1' || el.tagName === 'H2') {
+            el.style.fontFamily = f.cssHeading;
+          } else {
+            el.style.fontFamily = f.cssBody;
+          }
+        });
+
+        // Clean inner custom-font-text spans so everything adopts the document font
+        letterDoc.querySelectorAll('.custom-font-text, span[style*="font-family"]').forEach(sp => {
+          sp.style.fontFamily = '';
+        });
       }
 
-      // Sync dropdowns & badges
-      if (fontSelectTop) fontSelectTop.value = fontKey;
-      if (fontSelectSidebar) fontSelectSidebar.value = fontKey;
-      const ribbonFontFamily = document.getElementById('ribbonFontFamily');
-      const miniBarFontFamily = document.getElementById('miniBarFontFamily');
-      if (ribbonFontFamily) ribbonFontFamily.value = fontKey;
-      if (miniBarFontFamily) miniBarFontFamily.value = fontKey;
-      if (fontFamilyBadge) fontFamilyBadge.textContent = f.badge;
-      if (fontSampleText) fontSampleText.style.fontFamily = f.cssBody;
-
-      // Save locally
+      syncAllFontFamilySelects(fontKey, f);
       localStorage.setItem('pms_letter_font', fontKey);
-      triggerA4Check();
+      localStorage.setItem('pms_letter_universal_font_family', fontKey);
+
+      if (typeof triggerA4Check === 'function') triggerA4Check();
+      if (window.showLetterToast) {
+        window.showLetterToast(`✅ यूनिवर्सल फ़ॉन्ट: '${f.name}' सम्पूर्ण पत्र पर लागू!`, 'success');
+      }
     };
 
-    if (fontSelectTop) {
-      fontSelectTop.addEventListener('change', (e) => {
-        window.setLetterFont(e.target.value);
+    // Alias for backward compatibility
+    window.setLetterFont = function (fontKey) {
+      window.applyUniversalFontFamily(fontKey);
+    };
+
+    // Attach event listeners for font dropdowns if elements exist
+    const fontSelectTopEl = document.getElementById('fontSelectTop');
+    if (fontSelectTopEl) {
+      fontSelectTopEl.addEventListener('change', (e) => {
+        window.applyUniversalFontFamily(e.target.value);
       });
     }
 
-    if (fontSelectSidebar) {
-      fontSelectSidebar.addEventListener('change', (e) => {
-        window.setLetterFont(e.target.value);
+    const fontSelectSidebarEl = document.getElementById('fontSelectSidebar');
+    if (fontSelectSidebarEl) {
+      fontSelectSidebarEl.addEventListener('change', (e) => {
+        window.applyUniversalFontFamily(e.target.value);
       });
     }
 
-    // ================= SMART FONT SIZE SCALER & SELECTION FORMATTING =================
-    let currentFontScale = 100;
-    let activeLetterSelection = null;
-    let activeLetterTarget = null;
+    // 2. APPLY UNIVERSAL FONT SIZE TO ENTIRE LETTER
+    window.applyUniversalFontSize = function (sizePx) {
+      if (sizePx === null || sizePx === undefined || isNaN(sizePx)) {
+        sizePx = window.currentUniversalFontSize || 15.5;
+      }
+      sizePx = Math.max(10, Math.min(32, Math.round(parseFloat(sizePx) * 10) / 10));
+      window.currentUniversalFontSize = sizePx;
 
-    const fontScaleDisplay = document.getElementById('fontScaleDisplay');
-    const fontIncBtn = document.getElementById('fontIncBtn');
-    const fontDecBtn = document.getElementById('fontDecBtn');
+      const baseStd = 15.5;
+      const scaleRatio = sizePx / baseStd;
+      window.currentFontScale = Math.round(scaleRatio * 100);
+
+      // Update CSS variables
+      document.documentElement.style.setProperty('--letter-font-scale', scaleRatio);
+      document.documentElement.style.setProperty('--letter-base-font-size', sizePx + 'px');
+
+      const letterDoc = document.getElementById('letterDocument');
+      if (letterDoc) {
+        letterDoc.style.fontSize = sizePx + 'px';
+
+        // Recipient, Salutation, Body, Closing, Signatures
+        const baseBlocks = [
+          '#doc-recipient',
+          '#doc-salutation',
+          '#doc-body-container',
+          '#doc-closing',
+          '#doc-sign-title'
+        ];
+        baseBlocks.forEach(sel => {
+          const el = letterDoc.querySelector(sel);
+          if (el) el.style.fontSize = sizePx + 'px';
+        });
+
+        // All paragraphs in body
+        letterDoc.querySelectorAll('#doc-body-container p').forEach(p => {
+          p.style.fontSize = sizePx + 'px';
+        });
+
+        // Subject container & text
+        const subjCont = letterDoc.querySelector('#doc-subject-container');
+        if (subjCont) subjCont.style.fontSize = (sizePx + 0.5) + 'px';
+        const subj = letterDoc.querySelector('#doc-subject');
+        if (subj) subj.style.fontSize = (sizePx + 0.5) + 'px';
+
+        // Dispatch No & Date
+        const refDateCont = letterDoc.querySelector('#doc-ref-no')?.parentElement?.parentElement;
+        if (refDateCont) refDateCont.style.fontSize = Math.max(11, Math.round(15 * scaleRatio * 10) / 10) + 'px';
+
+        // School Headings
+        const schoolName = letterDoc.querySelector('#doc-school-name');
+        if (schoolName) schoolName.style.fontSize = Math.round(28 * scaleRatio) + 'px';
+        const schoolUnit = letterDoc.querySelector('#doc-school-unit');
+        if (schoolUnit) schoolUnit.style.fontSize = Math.round(19 * scaleRatio) + 'px';
+
+        // School Contact & Email
+        const contactCont = letterDoc.querySelector('#doc-school-email')?.parentElement?.parentElement;
+        if (contactCont) contactCont.style.fontSize = Math.max(10, Math.round(12 * scaleRatio * 10) / 10) + 'px';
+
+        // Signature Subtitle & Location
+        const signSub = letterDoc.querySelector('#doc-sign-sub');
+        if (signSub) signSub.style.fontSize = Math.max(11, Math.round(14.5 * scaleRatio * 10) / 10) + 'px';
+        const signLoc = letterDoc.querySelector('#doc-sign-location');
+        if (signLoc) signLoc.style.fontSize = Math.max(11, Math.round(14.5 * scaleRatio * 10) / 10) + 'px';
+
+        // Sanlagnak blocks
+        const sanlagnakLeft = letterDoc.querySelector('#doc-sanlagnak-block-left');
+        if (sanlagnakLeft) sanlagnakLeft.style.fontSize = Math.max(11, Math.round(14 * scaleRatio * 10) / 10) + 'px';
+        const sanlagnakRight = letterDoc.querySelector('#doc-sanlagnak-block-right');
+        if (sanlagnakRight) sanlagnakRight.style.fontSize = Math.max(11, Math.round(13 * scaleRatio * 10) / 10) + 'px';
+
+        // Table cells
+        letterDoc.querySelectorAll('#doc-custom-table th').forEach(th => {
+          th.style.fontSize = Math.max(10, Math.round(14 * scaleRatio * 10) / 10) + 'px';
+        });
+        letterDoc.querySelectorAll('#doc-custom-table td').forEach(td => {
+          td.style.fontSize = Math.max(10, Math.round(13.5 * scaleRatio * 10) / 10) + 'px';
+        });
+
+        // Clean inner custom-sized spans so entire letter is uniform
+        letterDoc.querySelectorAll('.custom-sized-text, span[style*="font-size"]').forEach(sp => {
+          sp.style.fontSize = '';
+        });
+      }
+
+      syncAllFontSizeControls(sizePx);
+      localStorage.setItem('pms_letter_universal_font_size', sizePx);
+
+      if (typeof triggerA4Check === 'function') triggerA4Check();
+      if (window.showLetterToast) {
+        window.showLetterToast(`✅ यूनिवर्सल फॉन्ट साइज़: ${sizePx}px सम्पूर्ण पत्र पर लागू!`, 'success');
+      }
+    };
+
+    // 3. UNIVERSAL STEP CHANGER (A+ / A-)
+    window.universalChangeFontSize = function (delta) {
+      const current = window.currentUniversalFontSize || 15.5;
+      const next = Math.max(11, Math.min(26, Math.round((current + delta) * 10) / 10));
+      window.applyUniversalFontSize(next);
+    };
+
+    // 4. APPLY BOTH FONT FAMILY AND FONT SIZE TO ALL
+    window.applyUniversalFontAndSize = function () {
+      const topFont = document.getElementById('fontSelectTop');
+      const sideFont = document.getElementById('fontSelectSidebar');
+      const ribFont = document.getElementById('ribbonFontFamily');
+      const selectedFont = (topFont && topFont.value) || (sideFont && sideFont.value) || (ribFont && ribFont.value) || currentLetterFont || 'mangal';
+
+      const topSize = document.getElementById('fontSizeSelectTop');
+      const sideSize = document.getElementById('fontSizeSelectSidebar');
+      const ribSize = document.getElementById('ribbonFontSizeSelect');
+      const selectedSize = (topSize && topSize.value) || (sideSize && sideSize.value) || (ribSize && ribSize.value) || window.currentUniversalFontSize || 15.5;
+
+      window.applyUniversalFontFamily(selectedFont);
+      window.applyUniversalFontSize(parseFloat(selectedSize));
+
+      const fObj = HINDI_FONTS[selectedFont] || { name: selectedFont };
+      if (window.showLetterToast) {
+        window.showLetterToast(`✨ यूनिवर्सल फ़ॉन्ट (${fObj.name}) व साइज़ (${selectedSize}px) सम्पूर्ण पत्र पर लागू!`, 'success');
+      }
+    };
+
+    // 5. APPLY SELECTION FORMATTING TO ALL
+    window.applySelectionFontAndSizeToAll = function () {
+      let targetFamily = currentLetterFont || 'mangal';
+      let targetSize = window.currentUniversalFontSize || 15.5;
+
+      if (activeLetterSelection && !activeLetterSelection.collapsed) {
+        let parent = activeLetterSelection.commonAncestorContainer;
+        if (parent.nodeType === 3) parent = parent.parentElement;
+        if (parent) {
+          const comp = window.getComputedStyle(parent);
+          targetFamily = parent.style.fontFamily || comp.fontFamily || targetFamily;
+          targetSize = parseFloat(parent.style.fontSize) || parseFloat(comp.fontSize) || targetSize;
+        }
+      } else if (activeLetterTarget) {
+        const comp = window.getComputedStyle(activeLetterTarget);
+        targetFamily = activeLetterTarget.style.fontFamily || comp.fontFamily || targetFamily;
+        targetSize = parseFloat(activeLetterTarget.style.fontSize) || parseFloat(comp.fontSize) || targetSize;
+      }
+
+      // Check if targetFamily matches any HINDI_FONTS key
+      let matchedKey = null;
+      for (const [k, v] of Object.entries(HINDI_FONTS)) {
+        if (targetFamily.includes(k) || (v.name && targetFamily.includes(v.name))) {
+          matchedKey = k;
+          break;
+        }
+      }
+      if (!matchedKey) matchedKey = targetFamily.split(',')[0].replace(/['"]/g, '').trim();
+
+      window.applyUniversalFontFamily(matchedKey);
+      window.applyUniversalFontSize(targetSize);
+    };
+
+    // 6. RESET TO OFFICIAL STANDARD (15.5px Mangal)
+    window.resetUniversalFontAndSize = function () {
+      window.applyUniversalFontFamily('mangal');
+      window.applyUniversalFontSize(15.5);
+      if (window.showLetterToast) {
+        window.showLetterToast('🔄 मानक शासकीय फॉन्ट (15.5px Mangal) पर रीसेट कर दिया गया!', 'info');
+      }
+    };
 
     // Update all font size & scale indicators across toolbars and sidebar
     function updateAllFontSizeDisplays(size, isPercentage = false) {
-      const fontScaleDisplay = document.getElementById('fontScaleDisplay');
-      const canvasFontSizeBadge = document.getElementById('canvasFontSizeBadge');
-      const miniBarFontSize = document.getElementById('miniBarFontSize');
-      const sidebarFontSizeBadge = document.getElementById('sidebarFontSizeBadge');
-      const fontSizeSelectTop = document.getElementById('fontSizeSelectTop');
-      const fontSizeSelectSidebar = document.getElementById('fontSizeSelectSidebar');
-
-      if (isPercentage) {
-        if (fontScaleDisplay) fontScaleDisplay.innerText = size + '%';
-        if (canvasFontSizeBadge) canvasFontSizeBadge.innerText = Math.round(15.5 * (size / 100) * 10) / 10 + 'px';
-        if (sidebarFontSizeBadge) sidebarFontSizeBadge.innerText = Math.round(15.5 * (size / 100) * 10) / 10 + 'px';
-        return;
-      }
-
-      const num = typeof size === 'number' ? size : parseFloat(size);
-      const str = isNaN(num) ? String(size) : (num + 'px');
-
-      if (canvasFontSizeBadge) canvasFontSizeBadge.innerText = str;
-      if (miniBarFontSize) miniBarFontSize.innerText = str;
-      if (sidebarFontSizeBadge) sidebarFontSizeBadge.innerText = str;
-      if (fontScaleDisplay) fontScaleDisplay.innerText = str;
-      const ribbonFontSizeDisplay = document.getElementById('ribbonFontSizeDisplay');
-      const ribbonFontSizeSelect = document.getElementById('ribbonFontSizeSelect');
-      if (ribbonFontSizeDisplay) ribbonFontSizeDisplay.innerText = str;
-      if (ribbonFontSizeSelect && !isNaN(num)) {
-        const rounded = String(Math.round(num));
-        if ([...ribbonFontSizeSelect.options].some(o => o.value === rounded)) {
-          ribbonFontSizeSelect.value = rounded;
-        }
-      }
-
-      if (!isNaN(num)) {
-        const rounded = String(Math.round(num));
-        if (fontSizeSelectTop && [...fontSizeSelectTop.options].some(o => o.value === rounded)) {
-          fontSizeSelectTop.value = rounded;
-        }
-        if (fontSizeSelectSidebar && [...fontSizeSelectSidebar.options].some(o => o.value === rounded)) {
-          fontSizeSelectSidebar.value = rounded;
-        }
-      }
+      syncAllFontSizeControls(size);
     }
 
     // Set Document-wide Font Scale (%)
     window.setFontScale = function (scalePercent) {
       currentFontScale = Math.max(80, Math.min(130, scalePercent));
-      document.documentElement.style.setProperty('--letter-font-scale', (currentFontScale / 100));
-      updateAllFontSizeDisplays(currentFontScale, true);
-      triggerA4Check();
+      const sizePx = Math.round(15.5 * (currentFontScale / 100) * 10) / 10;
+      window.applyUniversalFontSize(sizePx);
     };
 
     // Apply font size directly to a DOM selection Range
@@ -3192,7 +3821,7 @@
       }
     }
 
-    // Smart Font Size Changer: Adjusts selected text if selected, else focused block, else whole letter
+    // Smart Font Size Changer: If text selected, adjust selection; else adjust whole letter globally!
     window.smartChangeFontSize = function (deltaPx) {
       let sel = window.getSelection();
       let range = null;
@@ -3207,7 +3836,7 @@
         } catch (e) { }
       }
 
-      // 1. If active selection inside #letterDocument
+      // 1. If active selection inside #letterDocument, adjust selected text
       if (range && !range.collapsed) {
         const common = range.commonAncestorContainer.nodeType === 3 ? range.commonAncestorContainer.parentElement : range.commonAncestorContainer;
         const letterDoc = document.getElementById('letterDocument');
@@ -3217,25 +3846,11 @@
         }
       }
 
-      // 2. If a specific editable element is focused inside #letterDocument
-      if (activeLetterTarget && document.contains(activeLetterTarget)) {
-        const comp = window.getComputedStyle(activeLetterTarget);
-        const curSize = parseFloat(activeLetterTarget.style.fontSize) || parseFloat(comp.fontSize) || 15.5;
-        const newSize = Math.max(9, Math.min(48, Math.round(curSize + deltaPx)));
-        activeLetterTarget.style.fontSize = newSize + 'px';
-        updateAllFontSizeDisplays(newSize);
-        triggerA4Check();
-        if (window.showLetterToast) window.showLetterToast(`ब्लॉक फॉन्ट: ${newSize}px`, 'info');
-        return;
-      }
-
-      // 3. Fallback: Scale the entire letter document
-      const nextScale = deltaPx > 0 ? (currentFontScale + 5) : (currentFontScale - 5);
-      window.setFontScale(nextScale);
-      if (window.showLetterToast) window.showLetterToast(`सम्पूर्ण पत्र स्केल: ${currentFontScale}%`, 'info');
+      // 2. Otherwise (no active range selection), universally change the whole letter font size!
+      window.universalChangeFontSize(deltaPx);
     };
 
-    // Set Exact Font Size (px)
+    // Set Exact Font Size (px): If text selected, apply to selection; else apply globally!
     window.smartSetExactFontSize = function (px) {
       let sel = window.getSelection();
       let range = null;
@@ -3259,15 +3874,8 @@
         }
       }
 
-      if (activeLetterTarget && document.contains(activeLetterTarget)) {
-        activeLetterTarget.style.fontSize = px + 'px';
-        updateAllFontSizeDisplays(px);
-        triggerA4Check();
-        if (window.showLetterToast) window.showLetterToast(`ब्लॉक फॉन्ट: ${px}px`, 'info');
-        return;
-      }
-
-      if (window.showLetterToast) window.showLetterToast('पहले टेक्स्ट चुनें जिसका फॉन्ट साइज बदलना है', 'info');
+      // No range selection: apply universally to the whole letter
+      window.applyUniversalFontSize(px);
     };
 
     // Apply Specific Font Family to Selection or Document
@@ -3318,9 +3926,8 @@
         }
       }
 
-      // If no text selected, change whole document font
-      window.setLetterFont(fontFamilyKey);
-      if (window.showLetterToast) window.showLetterToast(`सम्पूर्ण पत्र फ़ॉन्ट बदला गया`, 'info');
+      // If no text selected, change whole document font universally
+      window.applyUniversalFontFamily(fontFamilyKey);
     };
 
     // Mini-Bar Rich Text Exec (Bold, Italic, Underline, Format Clear)
@@ -3417,12 +4024,12 @@
     // Hide mini-bar when clicking outside
     document.addEventListener('mousedown', (e) => {
       if (e.target.closest('#selectionMiniBar') ||
-          e.target.closest('#fontDecBtn') ||
-          e.target.closest('#fontIncBtn') ||
-          e.target.closest('#canvasFontDecBtn') ||
-          e.target.closest('#canvasFontIncBtn') ||
-          e.target.closest('#fontSizeSelectTop') ||
-          e.target.closest('#tabContentLayout')) {
+        e.target.closest('#fontDecBtn') ||
+        e.target.closest('#fontIncBtn') ||
+        e.target.closest('#canvasFontDecBtn') ||
+        e.target.closest('#canvasFontIncBtn') ||
+        e.target.closest('#fontSizeSelectTop') ||
+        e.target.closest('#tabContentLayout')) {
         return;
       }
       const miniBar = document.getElementById('selectionMiniBar');
@@ -3431,13 +4038,13 @@
       }
     });
 
-    if (fontIncBtn) {
+    if (fontIncBtn && !fontIncBtn.getAttribute('onclick')) {
       fontIncBtn.addEventListener('click', () => {
         window.smartChangeFontSize(1);
       });
     }
 
-    if (fontDecBtn) {
+    if (fontDecBtn && !fontDecBtn.getAttribute('onclick')) {
       fontDecBtn.addEventListener('click', () => {
         window.smartChangeFontSize(-1);
       });
@@ -3518,6 +4125,9 @@
     if (resetBtn) {
       resetBtn.addEventListener('click', () => {
         if (!confirm('क्या आप सभी पत्र विवरण व सेटिंग्स को डिफ़ॉल्ट पर रीसेट करना चाहते हैं?')) return;
+        if (typeof window.clearActiveDocument === 'function') {
+          window.clearActiveDocument();
+        }
         if (presetSelect) {
           presetSelect.value = 'ro_repair';
           presetSelect.dispatchEvent(new Event('change'));
@@ -3601,33 +4211,58 @@
 
     function updateTableVisibility(enable) {
       tableConfig.enabled = !!enable;
-      if (toggleTableCheckbox) toggleTableCheckbox.checked = tableConfig.enabled;
-      if (tableControlsArea) {
+      const chk = document.getElementById('toggleTableCheckbox');
+      if (chk) chk.checked = tableConfig.enabled;
+
+      const ctrl = document.getElementById('tableControlsArea');
+      if (ctrl) {
         if (tableConfig.enabled) {
-          tableControlsArea.classList.remove('hidden');
-          if (tableStatusBadge) {
-            tableStatusBadge.className = "text-[10px] bg-emerald-950 text-emerald-400 font-bold px-2 py-0.5 rounded border border-emerald-800";
-            tableStatusBadge.innerText = "सक्रिय (On)";
-          }
-          if (docTableWrapper) docTableWrapper.classList.remove('hidden');
+          ctrl.classList.remove('hidden');
         } else {
-          tableControlsArea.classList.add('hidden');
-          if (tableStatusBadge) {
-            tableStatusBadge.className = "text-[10px] bg-slate-900 text-slate-400 font-medium px-2 py-0.5 rounded border border-slate-700";
-            tableStatusBadge.innerText = "बंद (Off)";
-          }
-          if (docTableWrapper) docTableWrapper.classList.add('hidden');
+          ctrl.classList.add('hidden');
         }
       }
+
+      const badge = document.getElementById('tableStatusBadge');
+      if (badge) {
+        if (tableConfig.enabled) {
+          badge.className = "text-[10px] bg-emerald-950 hover:bg-emerald-900 text-emerald-400 font-bold px-2.5 py-1 rounded border border-emerald-700 shadow-xs transition cursor-pointer flex items-center gap-1.5";
+          badge.innerHTML = '<i class="fa-solid fa-circle-check text-[10px]"></i><span>सक्रिय (On)</span>';
+        } else {
+          badge.className = "text-[10px] bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-white font-semibold px-2.5 py-1 rounded border border-slate-700 transition cursor-pointer flex items-center gap-1.5";
+          badge.innerHTML = '<i class="fa-solid fa-power-off text-[9px]"></i><span>बंद (Off)</span>';
+        }
+      }
+
+      const wrapper = document.getElementById('doc-table-wrapper');
+      if (wrapper) {
+        if (tableConfig.enabled) {
+          wrapper.classList.remove('hidden');
+          wrapper.style.display = 'block';
+        } else {
+          wrapper.classList.add('hidden');
+          wrapper.style.display = 'none';
+        }
+      }
+
       if (typeof window.updateTableResizeHandles === 'function') {
         window.updateTableResizeHandles();
       }
       triggerA4Check();
     }
+    window.updateTableVisibility = updateTableVisibility;
 
     if (toggleTableCheckbox) {
       toggleTableCheckbox.addEventListener('change', () => {
         updateTableVisibility(toggleTableCheckbox.checked);
+      });
+    }
+
+    const tableStatusBadgeBtn = document.getElementById('tableStatusBadge');
+    if (tableStatusBadgeBtn) {
+      tableStatusBadgeBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        updateTableVisibility(!tableConfig.enabled);
       });
     }
 
@@ -3755,7 +4390,7 @@
       });
     }
 
-        // ================= MS WORD TABLE & ROW / COLUMN MANAGEMENT =================
+    // ================= MS WORD TABLE & ROW / COLUMN MANAGEMENT =================
     let activeTableCell = null;
     let activeTableRow = null;
     let activeTableColIndex = 0;
@@ -4276,7 +4911,7 @@
     }
 
     // Helper functions for Table Scaling
-    window.scaleTableWidth = function(deltaPercent) {
+    window.scaleTableWidth = function (deltaPercent) {
       if (!docCustomTable || !docTableWrapper) return;
       const wrapperW = docTableWrapper.clientWidth || 650;
       if (deltaPercent === 0) {
@@ -4292,7 +4927,7 @@
       window.saveLocalDraft(true);
     };
 
-    window.scaleTableRowPadding = function(targetPadY) {
+    window.scaleTableRowPadding = function (targetPadY) {
       if (!docCustomTable) return;
       const pad = Math.max(1, Math.min(24, parseInt(targetPadY) || 5));
       docCustomTable.style.setProperty('--table-cell-pad-y', pad + 'px');
@@ -4305,7 +4940,7 @@
       window.saveLocalDraft(true);
     };
 
-    window.changeTableRowHeight = function(deltaPx) {
+    window.changeTableRowHeight = function (deltaPx) {
       if (!docCustomTable) return;
       const trs = docCustomTable.querySelectorAll('tbody tr, thead tr');
       trs.forEach(tr => {
@@ -4618,6 +5253,10 @@
         const signLoc = get('doc-sign-location');
         const sanlagnak = window.isSanlagnakEnabled ? `संलग्नक: ${get('doc-sanlagnak-content-left') || get('doc-sanlagnak-content-right')}` : '';
 
+        const extraTexts = (typeof window.getExtraParagraphsData === 'function')
+          ? window.getExtraParagraphsData().map(p => (p.text || '').trim()).filter(Boolean)
+          : [];
+
         const fullText = [
           schoolName,
           schoolUnit,
@@ -4633,6 +5272,7 @@
           salutation,
           body1,
           body2,
+          ...extraTexts,
           closing,
           '',
           sanlagnak ? sanlagnak + '\n' : '',
@@ -4666,6 +5306,7 @@
         salutation: getVal('in-salutation'),
         body1: getVal('in-body1'),
         body2: getVal('in-body2'),
+        extraParagraphs: (typeof window.getExtraParagraphsData === 'function') ? window.getExtraParagraphsData() : [],
         closing: getVal('in-closing'),
         signTitle: getVal('in-sign-title'),
         signOrg: getVal('in-sign-org'),
@@ -4675,6 +5316,8 @@
         sanlagnakText: getVal('in-sanlagnak') || 'यथोक्त।',
         fontKey: currentLetterFont,
         fontScale: currentFontScale,
+        universalFontSize: window.currentUniversalFontSize || 15.5,
+        universalFontFamily: currentLetterFont || 'mangal',
         letterTitle: getVal('in-letter-title') || '',
         schoolEmail: document.getElementById('doc-school-email') ? document.getElementById('doc-school-email').innerText.trim() : 'pms25bnraebareli@gmail.com',
         schoolContact: document.getElementById('doc-school-contact') ? document.getElementById('doc-school-contact').innerText.trim() : '+91 9454 4188 41',
@@ -4696,15 +5339,23 @@
 
     // Initial Load & Restore
     window.addEventListener('DOMContentLoaded', () => {
-      const savedFont = localStorage.getItem('pms_letter_font') || 'mangal';
-      if (typeof window.setLetterFont === 'function') {
-        window.setLetterFont(savedFont);
+      // Restore Universal Font Family & Size
+      const savedFont = localStorage.getItem('pms_letter_universal_font_family') || localStorage.getItem('pms_letter_font') || 'mangal';
+      if (typeof window.applyUniversalFontFamily === 'function') {
+        window.applyUniversalFontFamily(savedFont);
+      }
+      const savedUniversalSize = localStorage.getItem('pms_letter_universal_font_size');
+      if (savedUniversalSize && typeof window.applyUniversalFontSize === 'function') {
+        window.applyUniversalFontSize(parseFloat(savedUniversalSize));
       }
 
       const saved = localStorage.getItem('pms_letter_draft');
       if (saved) {
         try {
           const d = JSON.parse(saved);
+          if (d.id && typeof window.setActiveDocument === 'function') {
+            window.setActiveDocument(d.id, d);
+          }
           if (d.refNo) {
             document.getElementById('in-ref-no').value = d.refNo;
             document.getElementById('doc-ref-no').innerText = d.refNo;
@@ -4744,8 +5395,13 @@
           } else if (typeof window.setParagraphSpacing === 'function') {
             window.setParagraphSpacing(12, false);
           }
-          if (d.tableState) {
+          if (Array.isArray(d.extraParagraphs) && typeof window.restoreExtraParagraphs === 'function') {
+            window.restoreExtraParagraphs(d.extraParagraphs);
+          }
+          if (d.tableState && typeof window.restoreTableState === 'function') {
             window.restoreTableState(d.tableState);
+          } else if (typeof updateTableVisibility === 'function') {
+            updateTableVisibility(false);
           }
         } catch (e) {
           console.warn("Draft restore error:", e);
@@ -4753,6 +5409,7 @@
       } else {
         if (typeof window.setLineSpacing === 'function') window.setLineSpacing(1.6, false);
         if (typeof window.setParagraphSpacing === 'function') window.setParagraphSpacing(12, false);
+        if (typeof updateTableVisibility === 'function') updateTableVisibility(false);
         const todayBtn = document.getElementById('todayDateBtn');
         if (todayBtn) todayBtn.click();
       }
@@ -4786,6 +5443,70 @@
     const COLLECTION_NAME = 'pms_letters_backup';
     let cachedLetters = [];
 
+    // Active Loaded / Saved Letter State
+    let currentActiveDocId = null;
+    let currentActiveLetterMeta = null;
+
+    window.setActiveDocument = function (docId, meta = {}) {
+      currentActiveDocId = docId;
+      currentActiveLetterMeta = {
+        docId: docId,
+        letterTitle: meta.letterTitle || meta.subject || docId,
+        refNo: meta.refNo || ''
+      };
+      updateActiveDocBadgeUI();
+    };
+
+    window.clearActiveDocument = function () {
+      currentActiveDocId = null;
+      currentActiveLetterMeta = null;
+      updateActiveDocBadgeUI();
+    };
+
+    function updateActiveDocBadgeUI() {
+      const badge = document.getElementById('activeDocBadge');
+      const titleSpan = document.getElementById('activeDocBadgeTitle');
+      if (!badge) return;
+      if (currentActiveDocId) {
+        badge.classList.remove('hidden');
+        badge.classList.add('flex');
+        if (titleSpan) {
+          const displayTitle = (currentActiveLetterMeta && currentActiveLetterMeta.letterTitle) || (currentActiveLetterMeta && currentActiveLetterMeta.refNo) || 'पत्र';
+          titleSpan.textContent = displayTitle;
+          titleSpan.title = `${displayTitle} (ID: ${currentActiveDocId})`;
+        }
+      } else {
+        badge.classList.add('hidden');
+        badge.classList.remove('flex');
+      }
+    }
+
+    // Direct Print Function: Decoupled completely from cloud save
+    window.triggerPrintLetter = function () {
+      // Hide any open modals
+      const saveModal = document.getElementById('saveLetterModal');
+      if (saveModal && !saveModal.classList.contains('hidden')) {
+        saveModal.classList.add('hidden');
+      }
+      const historyModal = document.getElementById('letterHistoryModal');
+      if (historyModal && !historyModal.classList.contains('hidden')) {
+        historyModal.classList.add('hidden');
+      }
+
+      // Auto-save local draft to localStorage so offline work is never lost
+      if (typeof window.saveLocalDraft === 'function') {
+        window.saveLocalDraft(true);
+      }
+
+      // Check A4 page overflow warning if available
+      if (typeof window.checkLetterPageOverflow === 'function') {
+        window.checkLetterPageOverflow();
+      }
+
+      // Open browser PDF / Print dialogue directly
+      window.print();
+    };
+
     // Global Toast Notification Helper
     window.showLetterToast = function (msg, type = 'success') {
       const container = document.getElementById('letterToastContainer');
@@ -4811,7 +5532,7 @@
     };
 
     // Capture Letter Data Payload
-    function captureLetterPayload(customTitle = null) {
+    function captureLetterPayload(customTitle = null, forceNew = false) {
       const getVal = (id) => {
         const el = document.getElementById(id);
         return el ? el.value.trim() : '';
@@ -4831,7 +5552,13 @@
       const signLocation = getVal('in-sign-location');
       const notingChecked = document.getElementById('toggleNoting') ? document.getElementById('toggleNoting').checked : false;
 
-      const docId = ('letter_' + refNo).replace(/[^a-zA-Z0-9_\u0900-\u097F-]/g, '_') + '_' + Date.now().toString().slice(-4);
+      // Keep currentActiveDocId if updating, otherwise generate unique timestamped ID
+      let docId;
+      if (!forceNew && currentActiveDocId) {
+        docId = currentActiveDocId;
+      } else {
+        docId = ('letter_' + refNo).replace(/[^a-zA-Z0-9_\u0900-\u097F-]/g, '_') + '_' + Date.now().toString().slice(-4);
+      }
 
       return {
         id: docId,
@@ -4843,6 +5570,7 @@
         salutation: salutation,
         body1: body1,
         body2: body2,
+        extraParagraphs: (typeof window.getExtraParagraphsData === 'function') ? window.getExtraParagraphsData() : [],
         closing: closing,
         signTitle: signTitle,
         signOrg: signOrg,
@@ -4861,27 +5589,28 @@
       };
     }
 
-    // Save To Firestore
-    async function saveLetterToFirestore(customTitle = null, triggerPrint = false) {
-      const payload = captureLetterPayload(customTitle);
+    // Save To Firestore (Supports updating existing doc without creating duplicate records)
+    async function saveLetterToFirestore(customTitle = null, forceNew = false) {
+      const isUpdating = !forceNew && !!currentActiveDocId;
+      const payload = captureLetterPayload(customTitle, forceNew);
 
       // Save local backup immediately as failsafe
       localStorage.setItem('pms_letter_draft', JSON.stringify(payload));
 
       if (!db) {
-        showLetterToast('क्लाउड कनेक्ट नहीं हो सका (लोकल ड्राफ्ट सहेज लिया गया)', 'info');
-        if (triggerPrint) window.print();
+        showLetterToast('क्लाउड कनेक्ट नहीं हो सका (लोकल ड्राफ्ट सुरक्षित)', 'info');
         return;
       }
 
       const saveBtn = document.getElementById('saveDraftBtn');
-      const printBtn = document.getElementById('printSaveLetterBtn');
       if (saveBtn) saveBtn.classList.add('opacity-50', 'pointer-events-none');
-      if (printBtn) printBtn.classList.add('opacity-50', 'pointer-events-none');
 
       try {
         const docRef = doc(db, COLLECTION_NAME, payload.id);
         await setDoc(docRef, payload, { merge: true });
+
+        // Update active document reference so future saves update this document
+        window.setActiveDocument(payload.id, payload);
 
         // Register in Universal Portal Index
         if (window.PMS_DOC_INDEX) {
@@ -4895,21 +5624,16 @@
           });
         }
 
-        showLetterToast(`पत्र सहेजा गया: "${payload.letterTitle}" (${payload.refNo})`, 'success');
+        const successMsg = isUpdating
+          ? `पत्र सफलतापूर्वक अपडेट किया गया: "${payload.letterTitle}" (${payload.refNo})`
+          : `नया पत्र क्लाउड पर सहेजा गया: "${payload.letterTitle}" (${payload.refNo})`;
+        showLetterToast(successMsg, 'success');
         fetchLetterBackups();
-
-        if (triggerPrint) {
-          setTimeout(() => {
-            window.print();
-          }, 350);
-        }
       } catch (err) {
         console.error("Error saving letter backup:", err);
         showLetterToast(`क्लाउड बैकअप त्रुटि: ${err.message} (लोकल सुरक्षित)`, 'error');
-        if (triggerPrint) window.print();
       } finally {
         if (saveBtn) saveBtn.classList.remove('opacity-50', 'pointer-events-none');
-        if (printBtn) printBtn.classList.remove('opacity-50', 'pointer-events-none');
       }
     }
 
@@ -4951,7 +5675,7 @@
           <div class="text-center py-14 text-slate-500">
             <i class="fa-regular fa-folder-open text-4xl mb-3 opacity-40 text-slate-400"></i>
             <p class="font-semibold text-sm text-slate-300">कोई पत्र बैकअप नहीं मिला</p>
-            <p class="text-xs text-slate-500 mt-1">'प्रिंट व पीडीएफ' या 'सहेजें (Save)' बटन दबाकर नया बैकअप बनाएं</p>
+            <p class="text-xs text-slate-500 mt-1">'सहेजें (Save)' बटन दबाकर नया बैकअप बनाएं</p>
           </div>
         `;
         return;
@@ -4966,6 +5690,7 @@
               ${item.tableState && item.tableState.enabled ? '<span class="text-[10px] bg-emerald-950/80 border border-emerald-800 text-emerald-300 px-2 py-0.5 rounded font-semibold">📊 तालिका शामिल</span>' : ''}
               ${item.sanlagnakEnabled ? '<span class="text-[10px] bg-purple-950/80 border border-purple-800 text-purple-300 px-2 py-0.5 rounded font-semibold">📎 संलग्नक</span>' : ''}
               ${item.fontKey ? `<span class="text-[10px] bg-slate-900 border border-slate-700 text-slate-300 px-2 py-0.5 rounded font-mono font-bold">🔤 ${item.fontKey}</span>` : ''}
+              ${currentActiveDocId === item.docId ? '<span class="text-[10px] bg-emerald-900/80 border border-emerald-500 text-emerald-300 px-2 py-0.5 rounded font-bold animate-pulse">✓ वर्तमान सक्रिय</span>' : ''}
             </div>
             <h4 class="font-black text-amber-300 text-sm line-clamp-1 mt-1 flex items-center gap-1.5">
               <span class="text-amber-400">🏷️</span>
@@ -5028,6 +5753,13 @@
       setBoth('in-salutation', 'doc-salutation', data.salutation);
       setBoth('in-body1', 'doc-body1', data.body1);
       setBoth('in-body2', 'doc-body2', data.body2);
+
+      if (Array.isArray(data.extraParagraphs) && typeof window.restoreExtraParagraphs === 'function') {
+        window.restoreExtraParagraphs(data.extraParagraphs);
+      } else if (typeof window.restoreExtraParagraphs === 'function') {
+        window.restoreExtraParagraphs([]);
+      }
+
       setBoth('in-closing', 'doc-closing', data.closing);
       setBoth('in-sign-title', 'doc-sign-title', data.signTitle);
       setBoth('in-sign-org', 'doc-sign-org', data.signOrg);
@@ -5070,6 +5802,9 @@
         window.restoreTableState({ enabled: false });
       }
 
+      // Mark this document as active for updating
+      window.setActiveDocument(data.docId, data);
+
       const modal = document.getElementById('letterHistoryModal');
       if (modal) modal.classList.add('hidden');
 
@@ -5077,7 +5812,7 @@
 
       if (triggerPrint) {
         setTimeout(() => {
-          window.print();
+          window.triggerPrintLetter();
         }, 400);
       }
     }
@@ -5088,6 +5823,9 @@
       if (!db) return;
       try {
         await deleteDoc(doc(db, COLLECTION_NAME, docId));
+        if (currentActiveDocId === docId) {
+          window.clearActiveDocument();
+        }
         showLetterToast('बैकअप सफलतापूर्वक हटा दिया गया', 'info');
         fetchLetterBackups();
       } catch (err) {
@@ -5114,7 +5852,7 @@
       });
     }
 
-    // Modal Handlers
+    // Modal UI & Controller
     const saveLetterModal = document.getElementById('saveLetterModal');
     const closeSaveLetterModalBtn = document.getElementById('closeSaveLetterModalBtn');
     const cancelSaveLetterModalBtn = document.getElementById('cancelSaveLetterModalBtn');
@@ -5124,13 +5862,53 @@
     const modalSummaryDate = document.getElementById('modal-summary-date');
     const modalSummarySubject = document.getElementById('modal-summary-subject');
     const confirmSaveBtnText = document.getElementById('confirmSaveBtnText');
+    const confirmSaveBtnIcon = document.getElementById('confirmSaveBtnIcon');
     const inLetterTitle = document.getElementById('in-letter-title');
 
-    let pendingTriggerPrint = false;
+    function updateSaveModalModeUI(mode) {
+      const updateLabel = document.getElementById('saveModeUpdateLabel');
+      const newLabel = document.getElementById('saveModeNewLabel');
+      const confirmBtn = document.getElementById('confirmSaveLetterModalBtn');
+      const confirmText = document.getElementById('confirmSaveBtnText');
+      const confirmIcon = document.getElementById('confirmSaveBtnIcon');
 
-    window.openSaveLetterModal = function (triggerPrint = false) {
-      pendingTriggerPrint = triggerPrint;
+      if (mode === 'update') {
+        if (updateLabel) {
+          updateLabel.className = 'save-mode-option flex flex-col p-2.5 rounded-xl border-2 border-emerald-500 bg-emerald-950/40 cursor-pointer transition select-none shadow-sm';
+        }
+        if (newLabel) {
+          newLabel.className = 'save-mode-option flex flex-col p-2.5 rounded-xl border border-slate-700 bg-slate-900/60 hover:border-slate-600 cursor-pointer transition select-none';
+        }
+        if (confirmBtn) {
+          confirmBtn.className = 'px-5 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white rounded-xl text-xs font-bold transition flex items-center gap-2 shadow-lg shadow-emerald-600/30 cursor-pointer';
+        }
+        if (confirmIcon) {
+          confirmIcon.className = 'fa-solid fa-arrows-rotate';
+        }
+        if (confirmText) {
+          confirmText.textContent = 'मौजूदा पत्र अपडेट करें (Update)';
+        }
+      } else {
+        if (updateLabel) {
+          updateLabel.className = 'save-mode-option flex flex-col p-2.5 rounded-xl border border-slate-700 bg-slate-900/60 hover:border-slate-600 cursor-pointer transition select-none';
+        }
+        if (newLabel) {
+          newLabel.className = 'save-mode-option flex flex-col p-2.5 rounded-xl border-2 border-blue-500 bg-blue-950/40 cursor-pointer transition select-none shadow-sm';
+        }
+        if (confirmBtn) {
+          confirmBtn.className = 'px-5 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white rounded-xl text-xs font-bold transition flex items-center gap-2 shadow-lg shadow-blue-600/30 cursor-pointer';
+        }
+        if (confirmIcon) {
+          confirmIcon.className = 'fa-solid fa-cloud-arrow-up';
+        }
+        if (confirmText) {
+          confirmText.textContent = 'नया पत्र सहेजें (Save as New)';
+        }
+      }
+    }
 
+    // Open Save Letter Modal
+    window.openSaveLetterModal = function () {
       const refNo = document.getElementById('in-ref-no') ? document.getElementById('in-ref-no').value.trim() : '';
       const dateVal = document.getElementById('in-date') ? document.getElementById('in-date').value.trim() : '';
       const subjectVal = document.getElementById('in-subject') ? document.getElementById('in-subject').value.trim() : '';
@@ -5140,12 +5918,50 @@
       if (modalSummaryDate) modalSummaryDate.textContent = dateVal || '-';
       if (modalSummarySubject) modalSummarySubject.textContent = subjectVal || 'कोई विषय नहीं';
 
-      if (modalLetterTitle) {
-        modalLetterTitle.value = sidebarTitle || subjectVal || `पत्र - ${refNo}`;
+      // Check if current letter matches any cached backup
+      let matchingExisting = null;
+      if (currentActiveDocId) {
+        matchingExisting = cachedLetters.find(l => l.docId === currentActiveDocId) || currentActiveLetterMeta;
+      } else if (refNo && cachedLetters && cachedLetters.length > 0) {
+        matchingExisting = cachedLetters.find(l => l.refNo && l.refNo.trim().toLowerCase() === refNo.toLowerCase());
+        if (matchingExisting) {
+          window.setActiveDocument(matchingExisting.docId, matchingExisting);
+        }
       }
 
-      if (confirmSaveBtnText) {
-        confirmSaveBtnText.textContent = triggerPrint ? 'हाँ, सहेजें व प्रिंट करें' : 'हाँ, क्लाउड पर सहेजें';
+      const saveModeUpdate = document.getElementById('saveModeUpdate');
+      const saveModeNew = document.getElementById('saveModeNew');
+      const existingDocBanner = document.getElementById('existingDocBanner');
+      const existingDocTitleDisplay = document.getElementById('existingDocTitleDisplay');
+
+      if (currentActiveDocId && matchingExisting) {
+        // Existing document is linked
+        if (saveModeUpdate) {
+          saveModeUpdate.disabled = false;
+          saveModeUpdate.checked = true;
+        }
+        if (existingDocBanner) existingDocBanner.classList.remove('hidden');
+        if (existingDocTitleDisplay) {
+          existingDocTitleDisplay.textContent = `${matchingExisting.letterTitle || matchingExisting.subject || 'पत्र'} (${matchingExisting.refNo || matchingExisting.docId})`;
+        }
+        if (modalLetterTitle) {
+          modalLetterTitle.value = matchingExisting.letterTitle || sidebarTitle || subjectVal || `पत्र - ${refNo}`;
+        }
+        updateSaveModalModeUI('update');
+      } else {
+        // Brand new letter, no existing backup
+        if (saveModeUpdate) {
+          saveModeUpdate.disabled = true;
+          saveModeUpdate.checked = false;
+        }
+        if (saveModeNew) {
+          saveModeNew.checked = true;
+        }
+        if (existingDocBanner) existingDocBanner.classList.add('hidden');
+        if (modalLetterTitle) {
+          modalLetterTitle.value = sidebarTitle || subjectVal || `पत्र - ${refNo}`;
+        }
+        updateSaveModalModeUI('new');
       }
 
       if (saveLetterModal) {
@@ -5158,6 +5974,23 @@
         }, 120);
       }
     };
+
+    // Modal Radio Buttons
+    document.querySelectorAll('input[name="saveModeRadio"]').forEach(radio => {
+      radio.addEventListener('change', (e) => {
+        updateSaveModalModeUI(e.target.value);
+      });
+    });
+
+    // Unlink / Clear Active Document button on header badge
+    const clearActiveDocBtn = document.getElementById('clearActiveDocBtn');
+    if (clearActiveDocBtn) {
+      clearActiveDocBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        window.clearActiveDocument();
+        showLetterToast('सक्रिय क्लाउड लिंक हटा दिया गया (अब यह नए पत्र के रूप में सहेजा जाएगा)', 'info');
+      });
+    }
 
     if (closeSaveLetterModalBtn) {
       closeSaveLetterModalBtn.addEventListener('click', () => {
@@ -5192,8 +6025,12 @@
       confirmSaveLetterModalBtn.addEventListener('click', () => {
         const titleVal = (modalLetterTitle ? modalLetterTitle.value.trim() : '') || (inLetterTitle ? inLetterTitle.value.trim() : '') || 'पत्र';
         if (inLetterTitle) inLetterTitle.value = titleVal;
+
+        const isNewSelected = document.getElementById('saveModeNew') && document.getElementById('saveModeNew').checked;
+        const forceNew = isNewSelected || !currentActiveDocId;
+
         if (saveLetterModal) saveLetterModal.classList.add('hidden');
-        saveLetterToFirestore(titleVal, pendingTriggerPrint);
+        saveLetterToFirestore(titleVal, forceNew);
       });
     }
 
@@ -5268,26 +6105,27 @@
     if (saveDraftBtn) {
       saveDraftBtn.addEventListener('click', (e) => {
         e.preventDefault();
-        window.openSaveLetterModal(false);
+        window.openSaveLetterModal();
       });
     }
 
+    // Print Button: Opens print/PDF dialogue ONLY
     if (printSaveLetterBtn) {
       printSaveLetterBtn.addEventListener('click', (e) => {
         e.preventDefault();
-        window.openSaveLetterModal(true);
+        window.triggerPrintLetter();
       });
     }
 
-    // Keyboard Shortcuts (Ctrl+S, Ctrl+P, Esc)
+    // Keyboard Shortcuts (Ctrl+S for Cloud Save, Ctrl+P for Print, Esc for Modals)
     window.addEventListener('keydown', (e) => {
       if ((e.ctrlKey || e.metaKey) && e.key === 's') {
         e.preventDefault();
-        window.openSaveLetterModal(false);
+        window.openSaveLetterModal();
       }
       if ((e.ctrlKey || e.metaKey) && e.key === 'p') {
         e.preventDefault();
-        window.openSaveLetterModal(true);
+        window.triggerPrintLetter();
       }
       if (e.key === 'Escape') {
         if (saveLetterModal && !saveLetterModal.classList.contains('hidden')) {

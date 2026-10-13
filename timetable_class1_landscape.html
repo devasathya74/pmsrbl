@@ -1,0 +1,1296 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Class 1 Time Table - Police Modern School (Session 2026-27) - 1-Page Landscape Fit</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800;900&family=Noto+Sans+Devanagari:wght@500;600;700;800;900&family=Outfit:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    /* =========================================================
+       ROOT TOKENS & SIZING VARIABLES (A4 LANDSCAPE RATIO)
+       ========================================================= */
+    :root {
+      --primary: #1e3a8a;
+      --primary-dark: #0f172a;
+      --accent-blue: #0284c7;
+      --border-black: #000000;
+      --font-hindi: 'Noto Sans Devanagari', sans-serif;
+      --font-eng: 'Outfit', sans-serif;
+      --font-title: 'Cinzel', 'Noto Sans Devanagari', serif;
+      
+      /* Landscape A4 Dimensions */
+      --a4-land-w: 297mm;
+      --a4-land-h: 210mm;
+      --sheet-pad: 3.5mm 5mm;
+      --cell-py: 2.8px;
+      --cell-px: 2px;
+      --sheet-scale: 1;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      background-color: #0f172a;
+      background-image: 
+        radial-gradient(circle at 15% 15%, rgba(59, 130, 246, 0.12) 0%, transparent 40%),
+        radial-gradient(circle at 85% 85%, rgba(14, 165, 233, 0.1) 0%, transparent 40%);
+      font-family: var(--font-eng), var(--font-hindi), sans-serif;
+      color: #000000;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-bottom: 40px;
+    }
+
+    /* =========================================================
+       TOP CONTROL BAR (SCREEN ONLY - HIDDEN ON PRINT)
+       ========================================================= */
+    .top-toolbar {
+      width: 100%;
+      background: #1e293b;
+      border-bottom: 1px solid #334155;
+      color: #ffffff;
+      padding: 10px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+    }
+
+    .toolbar-inner {
+      max-width: 1300px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .toolbar-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .toolbar-brand img {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: #ffffff;
+      padding: 2px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+
+    .toolbar-title h1 {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: #f8fafc;
+      letter-spacing: 0.01em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .toolbar-title p {
+      font-size: 0.76rem;
+      color: #94a3b8;
+      font-weight: 500;
+    }
+
+    .badge-landscape-pill {
+      background: #0284c7;
+      color: #ffffff;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 20px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
+
+    .toolbar-actions {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .control-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #0f172a;
+      padding: 5px 12px;
+      border-radius: 6px;
+      border: 1px solid #334155;
+      font-size: 0.78rem;
+      color: #cbd5e1;
+    }
+
+    .slider-compact {
+      width: 90px;
+      cursor: pointer;
+      accent-color: #0284c7;
+    }
+
+    .btn {
+      padding: 7px 15px;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      transition: all 0.15s ease;
+      text-decoration: none;
+      user-select: none;
+    }
+
+    .btn-autofit {
+      background: #059669;
+      color: #ffffff;
+      box-shadow: 0 2px 6px rgba(5, 150, 105, 0.35);
+    }
+    .btn-autofit:hover {
+      background: #10b981;
+      transform: translateY(-1px);
+    }
+
+    .btn-print {
+      background: #2563eb;
+      color: #ffffff;
+      box-shadow: 0 2px 8px rgba(37, 99, 235, 0.4);
+    }
+    .btn-print:hover {
+      background: #3b82f6;
+      transform: translateY(-1px);
+    }
+
+    .btn-reset {
+      background: #475569;
+      color: #ffffff;
+    }
+    .btn-reset:hover {
+      background: #64748b;
+    }
+
+    .btn-back {
+      background: #334155;
+      color: #e2e8f0;
+    }
+    .btn-back:hover {
+      background: #475569;
+    }
+
+    /* Info Bar under Toolbar */
+    .preview-tip-banner {
+      width: 100%;
+      max-width: 1140px;
+      margin: 12px auto 6px auto;
+      background: rgba(30, 41, 59, 0.85);
+      border: 1px solid #334155;
+      padding: 6px 16px;
+      border-radius: 8px;
+      color: #94a3b8;
+      font-size: 0.78rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      backdrop-filter: blur(8px);
+    }
+
+    .preview-tip-banner b {
+      color: #38bdf8;
+    }
+
+    /* =========================================================
+       PAPER VIEWPORT / CONTAINER (SIMULATES A4 LANDSCAPE)
+       ========================================================= */
+    .paper-canvas-wrap {
+      width: 100%;
+      max-width: 1150px;
+      display: flex;
+      justify-content: center;
+      padding: 8px 10px;
+      overflow-x: auto;
+    }
+
+    /* =========================================================
+       TIMETABLE SHEET - EXACT LANDSCAPE SHRINK-TO-FIT CARD
+       ========================================================= */
+    .timetable-sheet {
+      background: #ffffff;
+      width: 100%;
+      max-width: 1120px;
+      min-height: 740px;
+      max-height: 760px;
+      box-shadow: 0 16px 38px rgba(0,0,0,0.4), 0 2px 10px rgba(0,0,0,0.15);
+      border-radius: 4px;
+      border: 2px solid #000000;
+      padding: 7px 10px 8px 10px;
+      color: #000000;
+      position: relative;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transform-origin: top center;
+      transition: transform 0.15s ease;
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+
+    /* Editable focus highlight */
+    [contenteditable="plaintext-only"]:focus {
+      outline: 2px solid #0284c7;
+      background-color: #f0f9ff;
+      border-radius: 2px;
+    }
+
+    /* 1. Sheet Header Center */
+    .sheet-header-center {
+      text-align: center;
+      margin-bottom: 3px;
+      line-height: 1.15;
+    }
+
+    .sheet-title-main {
+      font-size: 1.18rem;
+      font-weight: 900;
+      color: #000000;
+      font-family: var(--font-hindi), serif;
+      letter-spacing: 0.015em;
+      line-height: 1.2;
+      margin: 0;
+    }
+
+    .sheet-title-sub {
+      font-size: 0.88rem;
+      font-weight: 800;
+      color: #1e293b;
+      margin-top: 1px;
+      font-family: var(--font-hindi), var(--font-eng), sans-serif;
+      letter-spacing: 0.02em;
+    }
+
+    /* 2. Top Meta Bar */
+    .sheet-meta-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1.5px solid #000000;
+      border-bottom: 1.5px solid #000000;
+      padding: 2.5px 8px;
+      font-size: 0.77rem;
+      font-weight: 800;
+      margin-bottom: 3px;
+      background: #fafafa;
+      line-height: 1.2;
+      color: #000000;
+    }
+
+    .sheet-meta-bar span {
+      white-space: nowrap;
+    }
+
+    .meta-ct {
+      color: #1e3a8a;
+      background: #e0e7ff;
+      padding: 1px 7px;
+      border-radius: 4px;
+      border: 1px solid #c7d2fe;
+    }
+
+    .teacher-input-field {
+      font-weight: 900;
+      color: #1e3a8a;
+      padding: 0 2px;
+      border-bottom: 1px dashed #3b82f6;
+      cursor: text;
+    }
+
+    /* 3. Secondary Box & Subinfo */
+    .sheet-banner-box {
+      border: 1.5px solid #000000;
+      border-bottom: none;
+      padding: 2.5px 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #ffffff;
+      line-height: 1.2;
+    }
+
+    .banner-title {
+      font-size: 0.84rem;
+      font-weight: 900;
+      font-family: var(--font-hindi), var(--font-eng), sans-serif;
+      color: #000000;
+    }
+
+    .banner-time {
+      font-size: 0.80rem;
+      font-weight: 800;
+      color: #000000;
+    }
+
+    .banner-subinfo {
+      border-left: 1.5px solid #000000;
+      border-right: 1.5px solid #000000;
+      border-bottom: 1px solid #000000;
+      padding: 2px 8px;
+      font-size: 0.73rem;
+      font-weight: 700;
+      color: #1e293b;
+      background: #f8fafc;
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 3px;
+      line-height: 1.2;
+    }
+
+    /* 4. Timetable Grid Table */
+    .timetable-grid {
+      width: 100%;
+      border-collapse: collapse;
+      border: 1.5px solid #000000;
+      text-align: center;
+      font-size: 0.79rem;
+      table-layout: fixed;
+      flex: 1 1 auto;
+      margin-bottom: 2px;
+    }
+
+    .timetable-grid th, 
+    .timetable-grid td {
+      border: 1px solid #000000;
+      padding: var(--cell-py) var(--cell-px);
+      vertical-align: middle;
+      box-sizing: border-box;
+    }
+
+    .timetable-grid thead th {
+      background: #ffffff;
+      color: #000000;
+      font-weight: 900;
+      font-size: 0.78rem;
+      line-height: 1.15;
+      padding: 3px 2px;
+    }
+
+    .timetable-grid thead th .en-day {
+      display: block;
+      font-size: 0.77rem;
+      font-weight: 900;
+      letter-spacing: 0.02em;
+    }
+
+    .timetable-grid thead th .hi-day {
+      display: block;
+      font-size: 0.70rem;
+      font-weight: 700;
+      color: #475569;
+    }
+
+    /* Fixed Column Width Ratios for Stable Landscape Grid */
+    .col-pd   { width: 7.2%; }
+    .col-time { width: 14.8%; }
+    .col-day  { width: 13.0%; }
+
+    /* Badges */
+    .pd-badge {
+      display: inline-block;
+      width: 34px;
+      height: 20px;
+      line-height: 19px;
+      border-radius: 10px;
+      background: #000000;
+      color: #ffffff;
+      font-weight: 900;
+      font-size: 0.73rem;
+      text-align: center;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    }
+
+    .pd-badge.badge-assembly {
+      background: #1e3a8a;
+      width: 48px;
+      font-size: 0.68rem;
+    }
+
+    .pd-badge.badge-lunch {
+      background: #9a3412;
+      width: 40px;
+      font-size: 0.69rem;
+    }
+
+    .pd-badge.badge-departure {
+      background: #065f46;
+      width: 48px;
+      font-size: 0.68rem;
+    }
+
+    .time-slot {
+      font-size: 0.73rem;
+      font-weight: 800;
+      line-height: 1.15;
+      color: #000000;
+    }
+
+    .time-dur {
+      font-size: 0.64rem;
+      color: #475569;
+      font-weight: 700;
+    }
+
+    .subj-cell {
+      font-weight: 800;
+      font-size: 0.81rem;
+      color: #000000;
+      line-height: 1.18;
+      cursor: text;
+    }
+
+    .subj-cell span:first-child {
+      display: block;
+      font-weight: 800;
+    }
+
+    .teacher-subtag {
+      display: block;
+      font-size: 0.67rem;
+      font-weight: 700;
+      color: #3730a3;
+      margin-top: 1px;
+      line-height: 1.05;
+      letter-spacing: 0.01em;
+    }
+
+    .special-row td {
+      background: #fbfbfb;
+      font-weight: 800;
+      font-size: 0.78rem;
+      padding: 2.5px 6px;
+    }
+
+    .assembly-text {
+      color: #1e3a8a;
+      font-weight: 900;
+      letter-spacing: 0.01em;
+      text-align: center;
+      cursor: text;
+    }
+
+    .lunch-text {
+      color: #9a3412;
+      font-weight: 900;
+      letter-spacing: 0.02em;
+      text-align: center;
+      cursor: text;
+    }
+
+    .departure-text {
+      color: #065f46;
+      font-weight: 900;
+      letter-spacing: 0.01em;
+      text-align: center;
+      cursor: text;
+    }
+
+    /* 5. Bottom Signatures */
+    .sheet-signatures {
+      margin-top: 4px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      padding: 0 20px;
+      font-size: 0.76rem;
+      font-weight: 800;
+      color: #000000;
+      flex-shrink: 0;
+    }
+
+    .sig-block {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+    }
+
+    .sig-line {
+      width: 135px;
+      border-top: 1.5px dashed #475569;
+    }
+
+    .sig-title {
+      font-size: 0.74rem;
+      font-weight: 800;
+    }
+
+    /* Notification Toast */
+    .toast-msg {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #0f172a;
+      color: #ffffff;
+      padding: 10px 18px;
+      border-radius: 8px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+      border-left: 4px solid #10b981;
+      font-size: 0.82rem;
+      font-weight: 700;
+      display: none;
+      align-items: center;
+      gap: 10px;
+      z-index: 2000;
+      animation: fadeIn 0.2s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* =========================================================
+       PRINT OPTIMIZATION: 100% 1-PAGE A4 LANDSCAPE GUARANTEED
+       ========================================================= */
+    @page {
+      size: A4 landscape;
+      margin: 4mm 5mm;
+    }
+
+    @media print {
+      html, body {
+        background: #ffffff !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        overflow: hidden !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+
+      .no-print {
+        display: none !important;
+      }
+
+      .paper-canvas-wrap {
+        padding: 0 !important;
+        margin: 0 !important;
+        max-width: 100% !important;
+        width: 100% !important;
+        height: 100% !important;
+        display: block !important;
+      }
+
+      .timetable-sheet {
+        box-shadow: none !important;
+        border: 2px solid #000000 !important;
+        border-radius: 0 !important;
+        padding: 3mm 4.5mm !important;
+        margin: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        height: 100% !important;
+        max-height: calc(210mm - 8mm) !important;
+        box-sizing: border-box !important;
+        page-break-after: avoid !important;
+        break-after: avoid !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: space-between !important;
+        zoom: var(--sheet-scale, 1) !important;
+      }
+
+      /* Compact table in print */
+      .timetable-grid {
+        flex: 1 1 auto !important;
+        height: 100% !important;
+        border: 1.5px solid #000000 !important;
+      }
+
+      .timetable-grid tbody tr {
+        height: calc((100% - 28px) / 11) !important;
+      }
+
+      .timetable-grid th, 
+      .timetable-grid td {
+        padding: 2.2px 1.5px !important;
+      }
+
+      .teacher-input-field {
+        border-bottom: none !important;
+        color: #000000 !important;
+      }
+
+      .meta-ct {
+        background: transparent !important;
+        border: 1px solid #000000 !important;
+        color: #000000 !important;
+      }
+
+      .pd-badge {
+        box-shadow: none !important;
+        -webkit-print-color-adjust: exact !important;
+      }
+
+      .sheet-signatures {
+        margin-top: 3px !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Fixed Action Toolbar -->
+  <header class="top-toolbar no-print">
+    <div class="toolbar-inner">
+      <div class="toolbar-brand">
+        <img src="pms_round_logo_clean.png" alt="PMS Logo" onerror="this.src='logo1.png'">
+        <div class="toolbar-title">
+          <h1>
+            <span>पुलिस मॉडर्न स्कूल, 25वीं वाहिनी पीएसी</span>
+            <span class="badge-landscape-pill"><i class="fa-solid fa-file-invoice fa-rotate-90"></i> A4 Landscape 1-Page Fit</span>
+          </h1>
+          <p>दैनिक कक्षावार समय-सारणी • Session 2026-27 • 1-क्लिक प्रिंट व पीडीएफ</p>
+        </div>
+      </div>
+
+      <div class="toolbar-actions">
+        <!-- Scale / Zoom Control -->
+        <div class="control-item">
+          <span><i class="fa-solid fa-magnifying-glass"></i> स्केल:</span>
+          <input type="range" class="slider-compact" id="scaleSlider" min="80" max="110" step="1" value="100" oninput="window.setSheetScale(this.value)">
+          <span id="scaleLabel" style="font-weight:700;color:#38bdf8;min-width:36px;">100%</span>
+        </div>
+
+        <!-- Auto-Fit 1-Page Button -->
+        <button class="btn btn-autofit" onclick="window.autoFitLandscape()" title="पेज की ऊंचाई के अनुसार ऑटोमैटिक 1-पेज पर फिट करें">
+          <i class="fa-solid fa-compress"></i> ⚡ ऑटो-फिट (1-Page)
+        </button>
+
+        <!-- Print Button -->
+        <button class="btn btn-print" onclick="window.triggerPrintLandscape()" title="A4 लैंडस्केप में प्रिंट या PDF सेव करें">
+          <i class="fa-solid fa-print"></i> 🖨️ प्रिंट (Landscape)
+        </button>
+
+        <!-- Reset Button -->
+        <button class="btn btn-reset" onclick="window.resetDefaults()" title="डिफ़ॉल्ट समय-सारणी डेटा पर वापस जाएं">
+          <i class="fa-solid fa-rotate-left"></i> रीसेट
+        </button>
+
+        <!-- Main Portal Back Link -->
+        <a href="timetable/index.html" class="btn btn-back" title="पूर्ण समय-सारणी पोर्टल पर जाएं">
+          <i class="fa-solid fa-arrow-left"></i> पोर्टल
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Helpful Tip Banner -->
+  <div class="preview-tip-banner no-print">
+    <span>💡 <b>प्रिंट टिप:</b> यह शीट <b>A4 Landscape (297×210 mm)</b> में सिंगल पेज पर 100% फिट रहने के लिए लॉक है। प्रिंट डायलॉग में लेआउट <b>Landscape</b> चुनें।</span>
+    <span>📝 सभी विषय, कक्ष संख्या व अध्यापक नाम पर क्लिक करके सीधे एडिट कर सकते हैं।</span>
+  </div>
+
+  <!-- Main Canvas Wrapper -->
+  <main class="paper-canvas-wrap">
+    
+    <!-- TIMETABLE SHEET CONTAINER -->
+    <div class="timetable-sheet" id="sheet-class1">
+      
+      <!-- 1. Sheet Header -->
+      <div class="sheet-header-center">
+        <h2 class="sheet-title-main">पुलिस मॉडर्न स्कूल, 25वीं वाहिनी पीएसी, रायबरेली (उ.प्र.)</h2>
+        <div class="sheet-title-sub">दैनिक कक्षावार समय-सारणी (Class Time Table Session: 2026-27)</div>
+      </div>
+
+      <!-- 2. Top Meta Bar with STABLE Teacher Name Input -->
+      <div class="sheet-meta-bar">
+        <span>कक्षा - 1st (Class 1) (समय: 08:00 AM - 01:30 PM (13:30))</span>
+        <span>कक्ष: <b contenteditable="plaintext-only" onblur="window.updateRoomNo('class1', this.innerText)" id="field-room">Room No. 03</b></span>
+        <span class="meta-ct">कक्षा अध्यापक: <span class="teacher-input-field teacher-val-class1" contenteditable="plaintext-only" onblur="window.updateClassTeacher('class1', this.innerText)" id="field-teacher">Anchal ma'am</span></span>
+        <span>दैनिक समय: 08:00 AM - 01:30 PM (13:30) | कुल अवधि: 5.5 घंटे</span>
+      </div>
+
+      <!-- 3. Secondary Box -->
+      <div class="sheet-banner-box">
+        <span class="banner-title">कक्षा - 1st (Class 1) - समय सारणी</span>
+        <span class="banner-time">08:00 AM - 01:30 PM (13:30)</span>
+      </div>
+      <div class="banner-subinfo">
+        <span>कक्ष: <span id="subinfo-room">Room No. 03</span> | समय: 08:00 AM - 01:30 PM (13:30) (8 Periods प्रतिदिन)</span>
+        <span>सत्र: 2026-27</span>
+      </div>
+
+      <!-- 4. Grid Table -->
+      <table class="timetable-grid">
+        <thead>
+          <tr>
+            <th class="col-pd">पीरियड</th>
+            <th class="col-time">समय</th>
+            <th class="col-day"><span class="en-day">MONDAY</span><span class="hi-day">सोमवार</span></th>
+            <th class="col-day"><span class="en-day">TUESDAY</span><span class="hi-day">मंगलवार</span></th>
+            <th class="col-day"><span class="en-day">WEDNESDAY</span><span class="hi-day">बुधवार</span></th>
+            <th class="col-day"><span class="en-day">THURSDAY</span><span class="hi-day">गुरूवार</span></th>
+            <th class="col-day"><span class="en-day">FRIDAY</span><span class="hi-day">शुक्रवार</span></th>
+            <th class="col-day"><span class="en-day">SATURDAY</span><span class="hi-day">शनिवार</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          
+          <!-- Assembly Row -->
+          <tr class="special-row">
+            <td>
+              <span class="pd-badge badge-assembly">प्रार्थना</span>
+            </td>
+            <td class="time-slot">
+              <div>08:00 AM - 08:20 AM</div>
+              <div class="time-dur">20 min</div>
+            </td>
+            <td colspan="6" class="assembly-text" contenteditable="plaintext-only" onblur="window.updateSpecialText('assembly', this.innerText)">
+              🔔 प्रार्थना सभा, राष्ट्रगान व प्रतिज्ञा (Morning Assembly, National Anthem &amp; Pledge)
+            </td>
+          </tr>
+        
+          <!-- 1st Period -->
+          <tr>
+            <td>
+              <span class="pd-badge">1st</span>
+            </td>
+            <td class="time-slot">
+              <div>08:20 AM - 08:55 AM</div>
+              <div class="time-dur">35 min</div>
+            </td>
+            
+            <td class="subj-cell" contenteditable="plaintext-only" onblur="window.updateSubject('class1', '1', 0, this.innerText)">
+              <span>E.V.S</span>
+              <span class="teacher-subtag">Anchal ma'am</span>
+            </td>
+          
+            <td class="subj-cell" contenteditable="plaintext-only" onblur="window.updateSubject('class1', '1', 1, this.innerText)">
+              <span>E.V.S</span>
+              <span class="teacher-subtag">Anchal ma'am</span>
+            </td>
+          
+            <td class="subj-cell" contenteditable="plaintext-only" onblur="window.updateSubject('class1', '1', 2, this.innerText)">
+              <span>E.V.S</span>
+              <span class="teacher-subtag">Anchal ma'am</span>
+            </td>
+          
+            <td class="subj-cell" contenteditable="plaintext-only" onblur="window.updateSubject('class1', '1', 3, this.innerText)">
+              <span>E.V.S</span>
+              <span class="teacher-subtag">Anchal ma'am</span>
+            </td>
+          
+            <td class="subj-cell" contenteditable="plaintext-only" onblur="window.updateSubject('class1', '1', 4, this.innerText)">
+              <span>E.V.S</span>
+              <span class="teacher-subtag">Anchal ma'am</span>
+            </td>
+          
+            <td class="subj-cell" contenteditable="plaintext-only" onblur="window.updateSubject('class1', '1', 5, this.innerText)">
+              <span>E.V.S</span>
+              <span class="teacher-subtag">Anchal ma'am</span>
+            </td>
+          </tr>
+        
+          <!-- 2nd Period -->
+          <tr>
+            <td>
+              <span class="pd-badge">2nd</span>
+            </td>
+            <td class="time-slot">
+              <div>08:55 AM - 09:30 AM</div>
+              <div class="time-dur">35 min</div>
+            </td>
+            
+            <td class="subj-cell" contenteditable="plaintext-only" onblur="window.updateSubject('class1', '2', 0, this.innerText)">
+              <span>Maths</span>
+              <span class="teacher-subtag">Anjali ma'am</span>
+            </td>
+          
+            <td class="subj-cell" contenteditable="plaintext-only" onblur="window.updateSubject('class1', '2', 1, this.innerText)">
+              <span>Maths</span>
+              <span class="teacher-subtag">Anjali ma'am</span>
+            </td>
+          
+            <td class="subj-cell" contenteditable="plaintext-only" onblur="window.updateSubject('class1', '2', 2, this.innerText)">
+              <span>Maths</span>
+              <span class="teacher-subtag">Anjali ma'am</span>
+            </td>
+          
+            <td class="subj-cell" contenteditable="plaintext-only" onblur="window.updateSubject('class1', '2', 3, this.innerText)">
+              <span>Maths</span>
+              <span class="teacher-subtag">Anjali ma'am</span>
+            </td>
+          
+            <td class="subj-cell" contenteditable="plaintext-only" onblur="window.updateSubject('class1', '2', 4, this.innerText)">
+              <span>Maths</span>
+              <span class="teacher-subtag">Anjali ma'am</span>
+            </td>
+          
+            <td class="subj-cell" contenteditable="plaintext-only" onblur="window.updateSubject('class1', '2', 5, this.innerText)">
+              <span>Maths</span>
+              <span class="teacher-subtag">Anjali ma'am</span>
+            </td>
+          </tr>
+        
+          <!-- 3rd Period -->
+          <tr>
+            <td>
+              <span class="pd-badge">3rd</span>
+            </td>
+            <td class="time-slot">
+              <div>09:30 AM - 10:05 AM</div>
+              <div class="time-dur">35 min</div>
+            </td>
+            
+            <td class="subj-cell" contenteditable="plaintext-only" onblur="window.updateSubject('class1', '3', 0, this.innerText)">
+              <span>Eng - Reader</span>
+              <span class="teacher-subtag">Anchal ma'am</span>
+            </td>
+          
+            <td class="subj-cell" contenteditable="plaintext-only" onblur="window.updateSubject('class1', '3', 1, this.innerText)">
+              <span>Eng - Reader</span>
+              <span class="teacher-subtag">Anchal ma'am</span>
+            </td>
+          
+            <td class="subj-cell" contenteditable="plaintext-only" onblur="window.updateSubject('class1', '3', 2, this.innerText)">
+              <span>Eng - Reader</span>
+              <span class="teacher-subtag">Anchal ma'am</span>
+            </td>
+          
+            <td class="subj-cell" contenteditable="plaintext-only" onblur="window.updateSubject('class1', '3', 3, this.innerText)">
+              <span>Eng - Grammar</span>
+              <span class="teacher-subtag">Anchal ma'am</span>
+            </td>
+          
+            <td class="subj-cell" contenteditable="plaintext-only" onblur="window.updateSubject('class1', '3', 4, this.innerText)">
+              <span>Eng - Grammar</span>
+              <span class="teacher-subtag">Anchal ma'am</span>
+            </td>
+          
+            <td class="subj-cell" contenteditable="plaintext-only" onblur="window.updateSubject('class1', '3', 5, this.innerText)">
+              <span>Eng - Grammar</span>
+              <span class="teacher-subtag">Anchal ma'am</span>
+            </td>
+          </tr>
+        
+          <!-- 4th Period -->
+          <tr>
+            <td>
+              <span class="pd-badge">4th</span>
+            </td>
+            <td class="time-slot">
+              <div>10:05 AM - 10:40 AM</div>
+              <div class="time-dur">35 min</div>
+            </td>
+            
+            <td class="subj-cell" contenteditable="plaintext-only" onblur="window.updateSubject('class1', '4', 0, this.innerText)">
+              <span>Hindi - Reader</span>
+              <span class="teacher-subtag">Anchal ma'am</span>
+            </td>
+          
+            <td class="subj-cell" contenteditable="plaintext-only" onblur="window.updateSubject('class1', '4', 1, this.innerText)">
+              <span>Hindi - Reader</span>
+              <span class="teacher-subtag">Anchal ma'am</span>
+            </td>
+          
+            <td class="subj-cell" contenteditable="plaintext-only" onblur="window.updateSubject('class1', '4', 2, this.innerText)">
+              <span>Hindi - Reader</span>
+              <span class="teacher-subtag">Anchal ma'am</span>
+            </td>
+          
+            <td class="subj-cell" contenteditable="plaintext-only" onblur="window.updateSubject('class1', '4', 3, this.innerText)">
+              <span>Hindi - Grammar</span>
+              <span class="teacher-subtag">Anchal ma'am</span>
+            </td>
+          
+            <td class="subj-cell" contenteditable="plaintext-only" onblur="window.updateSubject('class1', '4', 4, this.innerText)">
+              <span>Hindi - Grammar</span>
+              <span class="teacher-subtag">Anchal ma'am</span>
+            </td>
+          
+            <td class="subj-cell" contenteditable="plaintext-only" onblur="window.updateSubject('class1', '4', 5, this.innerText)">
+              <span>Hindi - Grammar</span>
+              <span class="teacher-subtag">Anchal ma'am</span>
+            </td>
+          </tr>
+        
+          <!-- Lunch Break -->
+          <tr class="special-row">
+            <td>
+              <span class="pd-badge badge-lunch">लंच</span>
+            </td>
+            <td class="time-slot">
+              <div>10:40 AM - 11:10 AM</div>
+              <div class="time-dur">30 min</div>
+            </td>
+            <td colspan="6" class="lunch-text" contenteditable="plaintext-only" onblur="window.updateSpecialText('lunch', this.innerText)">
+              🍽️ LUNCH BREAK (मध्य भोजन) (10:40 AM - 11:10 AM)
+            </td>
+          </tr>
+        
+          <!-- 5th Period -->
+          <tr>
+            <td>
+              <span class="pd-badge">5th</span>
+            </td>
+            <td class="time-slot">
+              <div>11:10 AM - 11:45 AM</div>
+              <div class="time-dur">35 min</div>
+            </td>
+            
+            <td class="subj-cell" contenteditable="plaintext-only" onblur="window.updateSubject('class1', '5', 0, this.innerText)">
+              <span>Eng - Grammar</span>
+              <span class="teacher-subtag">Anjali ma'am</span>
+            </td>
+          
+            <td class="subj-cell" contenteditable="plaintext-only" onblur="window.updateSubject('class1', '5', 1, this.innerText)">
+              <span>Eng - Grammar</span>
+              <span class="teacher-subtag">Anjali ma'am</span>
+            </td>
+          
+            <td class="subj-cell" contenteditable="plaintext-only" onblur="window.updateSubject('class1', '5', 2, this.innerText)">
+              <span>Eng - Grammar</span>
+              <span class="teacher-subtag">Anjali ma'am</span>
+            </td>
+          
+            <td class="subj-cell" contenteditable="plaintext-only" onblur="window.updateSubject('class1', '5', 3, this.innerText)">
+              <span>Eng - Grammar</span>
+              <span class="teacher-subtag">Anjali ma'am</span>
+            </td>
+          
+            <td class="subj-cell" contenteditable="plaintext-only" onblur="window.updateSubject('class1', '5', 4, this.innerText)">
+              <span>Eng - Grammar</span>
+              <span class="teacher-subtag">Anjali ma'am</span>
+            </td>
+          
+            <td class="subj-cell" contenteditable="plaintext-only" onblur="window.updateSubject('class1', '5', 5, this.innerText)">
+              <span>Eng - Grammar</span>
+              <span class="teacher-subtag">Anjali ma'am</span>
+            </td>
+          </tr>
+        
+          <!-- 6th Period -->
+          <tr>
+            <td>
+              <span class="pd-badge">6th</span>
+            </td>
+            <td class="time-slot">
+              <div>11:45 AM - 12:20 PM</div>
+              <div class="time-dur">35 min</div>
+            </td>
+            
+            <td class="subj-cell" contenteditable="plaintext-only" onblur="window.updateSubject('class1', '6', 0, this.innerText)">
+              <span>Hindi Grammar</span>
+              <span class="teacher-subtag">Anchal ma'am</span>
+            </td>
+          
+            <td class="subj-cell" contenteditable="plaintext-only" onblur="window.updateSubject('class1', '6', 1, this.innerText)">
+              <span>Hindi Grammar</span>
+              <span class="teacher-subtag">Anchal ma'am</span>
+            </td>
+          
+            <td class="subj-cell" contenteditable="plaintext-only" onblur="window.updateSubject('class1', '6', 2, this.innerText)">
+              <span>Hindi Grammar</span>
+              <span class="teacher-subtag">Anchal ma'am</span>
+            </td>
+          
+            <td class="subj-cell" contenteditable="plaintext-only" onblur="window.updateSubject('class1', '6', 3, this.innerText)">
+              <span>Hindi Grammar</span>
+              <span class="teacher-subtag">Anchal ma'am</span>
+            </td>
+          
+            <td class="subj-cell" contenteditable="plaintext-only" onblur="window.updateSubject('class1', '6', 4, this.innerText)">
+              <span>Hindi Grammar</span>
+              <span class="teacher-subtag">Anchal ma'am</span>
+            </td>
+          
+            <td class="subj-cell" contenteditable="plaintext-only" onblur="window.updateSubject('class1', '6', 5, this.innerText)">
+              <span>Hindi Grammar</span>
+              <span class="teacher-subtag">Anchal ma'am</span>
+            </td>
+          </tr>
+        
+          <!-- 7th Period -->
+          <tr>
+            <td>
+              <span class="pd-badge">7th</span>
+            </td>
+            <td class="time-slot">
+              <div>12:20 PM - 12:55 PM</div>
+              <div class="time-dur">35 min</div>
+            </td>
+            
+            <td class="subj-cell" contenteditable="plaintext-only" onblur="window.updateSubject('class1', '7', 0, this.innerText)">
+              <span>G.K</span>
+              <span class="teacher-subtag">Anjali ma'am</span>
+            </td>
+          
+            <td class="subj-cell" contenteditable="plaintext-only" onblur="window.updateSubject('class1', '7', 1, this.innerText)">
+              <span>G.K</span>
+              <span class="teacher-subtag">Anjali ma'am</span>
+            </td>
+          
+            <td class="subj-cell" contenteditable="plaintext-only" onblur="window.updateSubject('class1', '7', 2, this.innerText)">
+              <span>G.K</span>
+              <span class="teacher-subtag">Anjali ma'am</span>
+            </td>
+          
+            <td class="subj-cell" contenteditable="plaintext-only" onblur="window.updateSubject('class1', '7', 3, this.innerText)">
+              <span>Computer</span>
+              <span class="teacher-subtag">Anjali ma'am</span>
+            </td>
+          
+            <td class="subj-cell" contenteditable="plaintext-only" onblur="window.updateSubject('class1', '7', 4, this.innerText)">
+              <span>Computer</span>
+              <span class="teacher-subtag">Anjali ma'am</span>
+            </td>
+          
+            <td class="subj-cell" contenteditable="plaintext-only" onblur="window.updateSubject('class1', '7', 5, this.innerText)">
+              <span>Computer</span>
+              <span class="teacher-subtag">Anjali ma'am</span>
+            </td>
+          </tr>
+        
+          <!-- 8th Period -->
+          <tr>
+            <td>
+              <span class="pd-badge">8th</span>
+            </td>
+            <td class="time-slot">
+              <div>12:55 PM - 01:25 PM</div>
+              <div class="time-dur">30 min</div>
+            </td>
+            
+            <td class="subj-cell" contenteditable="plaintext-only" onblur="window.updateSubject('class1', '8', 0, this.innerText)">
+              <span>सुलेख</span>
+              <span class="teacher-subtag">Anchal / Anjali</span>
+            </td>
+          
+            <td class="subj-cell" contenteditable="plaintext-only" onblur="window.updateSubject('class1', '8', 1, this.innerText)">
+              <span>Conversation</span>
+              <span class="teacher-subtag">Anchal / Anjali</span>
+            </td>
+          
+            <td class="subj-cell" contenteditable="plaintext-only" onblur="window.updateSubject('class1', '8', 2, this.innerText)">
+              <span>सुलेख</span>
+              <span class="teacher-subtag">Anchal / Anjali</span>
+            </td>
+          
+            <td class="subj-cell" contenteditable="plaintext-only" onblur="window.updateSubject('class1', '8', 3, this.innerText)">
+              <span>Conversation</span>
+              <span class="teacher-subtag">Anchal / Anjali</span>
+            </td>
+          
+            <td class="subj-cell" contenteditable="plaintext-only" onblur="window.updateSubject('class1', '8', 4, this.innerText)">
+              <span>सुलेख</span>
+              <span class="teacher-subtag">Anchal / Anjali</span>
+            </td>
+          
+            <td class="subj-cell" contenteditable="plaintext-only" onblur="window.updateSubject('class1', '8', 5, this.innerText)">
+              <span>Conversation</span>
+              <span class="teacher-subtag">Anchal / Anjali</span>
+            </td>
+          </tr>
+        
+          <!-- Departure Row -->
+          <tr class="special-row">
+            <td>
+              <span class="pd-badge badge-departure">प्रस्थान</span>
+            </td>
+            <td class="time-slot">
+              <div>01:25 PM - 01:30 PM</div>
+              <div class="time-dur">05 min</div>
+            </td>
+            <td colspan="6" class="departure-text" contenteditable="plaintext-only" onblur="window.updateSpecialText('departure', this.innerText)">
+              🔔 डायरी चेकिंग, पंक्तिबद्ध विसर्जन एवं विद्यालय छुट्टी (01:30 PM Departure)
+            </td>
+          </tr>
+        
+        </tbody>
+      </table>
+
+      <!-- 5. Bottom Signatures -->
+      <div class="sheet-signatures">
+        <div class="sig-block">
+          <div class="sig-line"></div>
+          <div class="sig-title">कक्षा अध्यापक: <span class="teacher-input-field teacher-val-class1" contenteditable="plaintext-only" onblur="window.updateClassTeacher('class1', this.innerText)" id="field-sig-teacher">Anchal ma'am</span></div>
+        </div>
+        <div class="sig-block">
+          <div class="sig-line"></div>
+          <div class="sig-title">प्रभारी समय-सारणी (Time Table In-charge)</div>
+        </div>
+        <div class="sig-block">
+          <div class="sig-line"></div>
+          <div class="sig-title">हस्ताक्षर प्रधानाचार्य (Principal)</div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Auto-save Toast Notification -->
+  <div class="toast-msg" id="toastMsg">
+    <i class="fa-solid fa-circle-check" style="color:#10b981;font-size:1.1rem;"></i>
+    <span id="toastText">परिवर्तन स्वतः सहेज लिए गए हैं (Auto-saved)</span>
+  </div>
+
+  <script>
+    // ─── INTERACTIVE CONTROLS & SMART AUTO-SHRINK ENGINE ────────────────────
+
+    // Toast feedback helper
+    function showToast(msg) {
+      const toast = document.getElementById('toastMsg');
+      const text = document.getElementById('toastText');
+      if (toast && text) {
+        text.innerText = msg;
+        toast.style.display = 'flex';
+        clearTimeout(window.toastTimer);
+        window.toastTimer = setTimeout(() => {
+          toast.style.display = 'none';
+        }, 2200);
+      }
+    }
+
+    // Set Sheet Scale / Zoom
+    window.setSheetScale = function(val) {
+      const sheet = document.getElementById('sheet-class1');
+      const label = document.getElementById('scaleLabel');
+      const slider = document.getElementById('scaleSlider');
+      if (sheet) {
+        document.documentElement.style.setProperty('--sheet-scale', (val / 100));
+        sheet.style.zoom = (val / 100);
+      }
+      if (label) label.innerText = val + '%';
+      if (slider && slider.value !== val) slider.value = val;
+    };
+
+    // Auto-Fit Function: Mathematically calculates and scales to guarantee 100% 1-page fit
+    window.autoFitLandscape = function() {
+      const sheet = document.getElementById('sheet-class1');
+      if (!sheet) return;
+
+      // Temporarily reset zoom to measure true unconstrained height
+      sheet.style.zoom = '1';
+      document.documentElement.style.setProperty('--sheet-scale', 1);
+
+      // Target maximum height for A4 landscape at 96 DPI: ~745px (allowing margins)
+      const targetHeight = 745;
+      const actualHeight = sheet.scrollHeight;
+
+      let factor = 100;
+      if (actualHeight > targetHeight) {
+        // Calculate exact reduction percentage needed with a 2% safety buffer
+        factor = Math.floor((targetHeight / actualHeight) * 98);
+        if (factor < 80) factor = 80;
+      }
+
+      window.setSheetScale(factor);
+      showToast(`⚡ 1-Page Landscape Auto-Fit लागू: ${factor}%`);
+    };
+
+    // Print Trigger with Pre-Flight Auto-Fit Check
+    window.triggerPrintLandscape = function() {
+      // Ensure fit before opening system print dialog
+      window.autoFitLandscape();
+      setTimeout(() => {
+        window.print();
+      }, 150);
+    };
+
+    // Update Room Number in both Meta Bar and Subinfo Bar
+    window.updateRoomNo = function(classKey, newText) {
+      const trimmed = newText.trim();
+      const subinfo = document.getElementById('subinfo-room');
+      if (subinfo) subinfo.innerText = trimmed;
+      localStorage.setItem('pms_room_' + classKey, trimmed);
+      showToast('कक्ष संख्या अपडेट हो गई');
+    };
+
+    // Update Class Teacher in both Meta Bar and Signature Block
+    window.updateClassTeacher = function(classKey, newText) {
+      const trimmed = newText.trim();
+      const elements = document.querySelectorAll('.teacher-val-' + classKey);
+      elements.forEach(el => {
+        if (el.innerText.trim() !== trimmed) el.innerText = trimmed;
+      });
+      localStorage.setItem('pms_teacher_' + classKey, trimmed);
+      showToast('कक्षा अध्यापक नाम अपडेट हो गया');
+    };
+
+    // Update Special Rows Text (Assembly, Lunch, Departure)
+    window.updateSpecialText = function(key, newText) {
+      const trimmed = newText.trim();
+      localStorage.setItem('pms_special_' + key, trimmed);
+      showToast('टेक्स्ट सहेज लिया गया');
+    };
+
+    // Update Subject Cell
+    window.updateSubject = function(classKey, period, dayIdx, newText) {
+      const trimmed = newText.trim();
+      const key = `pms_subj_${classKey}_p${period}_d${dayIdx}`;
+      localStorage.setItem(key, trimmed);
+      showToast('विषय सहेज लिया गया');
+    };
+
+    // Reset to defaults
+    window.resetDefaults = function() {
+      if (confirm('क्या आप समय-सारणी को मूल डिफ़ॉल्ट डेटा पर रीसेट करना चाहते हैं?')) {
+        const keysToRemove = [];
+        for (let i = 0; i < localStorage.length; i++) {
+          const k = localStorage.key(i);
+          if (k && k.startsWith('pms_')) keysToRemove.push(k);
+        }
+        keysToRemove.forEach(k => localStorage.removeItem(k));
+        window.setSheetScale(100);
+        location.reload();
+      }
+    };
+
+    // Load saved edits from LocalStorage on initial boot
+    window.addEventListener('DOMContentLoaded', () => {
+      const savedTeacher = localStorage.getItem('pms_teacher_class1');
+      if (savedTeacher) {
+        document.querySelectorAll('.teacher-val-class1').forEach(el => el.innerText = savedTeacher);
+      }
+
+      const savedRoom = localStorage.getItem('pms_room_class1');
+      if (savedRoom) {
+        const rField = document.getElementById('field-room');
+        const sField = document.getElementById('subinfo-room');
+        if (rField) rField.innerText = savedRoom;
+        if (sField) sField.innerText = savedRoom;
+      }
+
+      // Check height and auto-fit on initial load
+      setTimeout(() => {
+        window.autoFitLandscape();
+      }, 200);
+    });
+  </script>
+</body>
+</html>

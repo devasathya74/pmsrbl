@@ -9,6 +9,17 @@
 (function () {
   // Built-in Static Portal Pages
   const staticPortalPages = [
+    // --- School Timetable & Administration ---
+    {
+      id: "school_timetable",
+      title: "दैनिक कक्षावार समय-सारणी (Class Time Table Session: 2026-27)",
+      category: "प्रशासनिक व शैक्षणिक",
+      desc: "KG-1, KG-2, 1st, 2nd, 3rd, 4th, 5th, 6th एवं टीचर रोटेशन की पूरी समय-सारणी",
+      url: "timetable.html",
+      icon: "fa-solid fa-calendar-days",
+      badge: "सत्र 2026-27",
+      keywords: "timetable time table समय सारणी samay sarni class 1 2 3 4 5 6 kg-1 kg-2 rotation periods"
+    },
     // --- National Events & Competitions ---
     {
       id: "gandhi_quiz_hi",

@@ -2653,23 +2653,11 @@
               id: '5',
               badge: '5TH',
               days: [
-                { main: 'Dance', sub: '' },
-                { main: 'Dance', sub: '' },
+                { main: 'Dance / Oral', sub: '' },
+                { main: 'Dance / Oral', sub: '' },
                 { main: 'Activity', sub: '' },
-                { main: 'Dance', sub: '' },
-                { main: 'Dance', sub: '' },
-                { main: 'Drawing', sub: '' }
-              ]
-            },
-            {
-              id: '6',
-              badge: '6TH',
-              days: [
-                { main: 'Oral', sub: '' },
-                { main: 'Oral', sub: '' },
-                { main: 'Activity', sub: '' },
-                { main: 'Oral', sub: '' },
-                { main: 'Oral', sub: '' },
+                { main: 'Dance / Oral', sub: '' },
+                { main: 'Dance / Oral', sub: '' },
                 { main: 'Drawing', sub: '' }
               ]
             }
@@ -2740,23 +2728,11 @@
               id: '5',
               badge: '5TH',
               days: [
-                { main: 'Dance', sub: '' },
-                { main: 'Dance', sub: '' },
+                { main: 'Dance / Oral', sub: '' },
+                { main: 'Dance / Oral', sub: '' },
                 { main: 'Activity', sub: '' },
-                { main: 'Dance', sub: '' },
-                { main: 'Dance', sub: '' },
-                { main: 'Drawing', sub: '' }
-              ]
-            },
-            {
-              id: '6',
-              badge: '6TH',
-              days: [
-                { main: 'Oral', sub: '' },
-                { main: 'Oral', sub: '' },
-                { main: 'Activity', sub: '' },
-                { main: 'Oral', sub: '' },
-                { main: 'Oral', sub: '' },
+                { main: 'Dance / Oral', sub: '' },
+                { main: 'Dance / Oral', sub: '' },
                 { main: 'Drawing', sub: '' }
               ]
             }
@@ -2963,8 +2939,8 @@
           },
           {
             pd: '6',
-            kg1: 'Anita ma\'am',
-            kg2: 'Vaishnavi ma\'am',
+            kg1: '-',
+            kg2: '-',
             c1: { teacher: 'Anchal ma\'am', subject: 'Hindi Grammar' },
             c2: { teacher: 'Anjali ma\'am', subject: 'Hindi Grammar' },
             c3: { teacher: 'Anjali ma\'am', subject: 'Hindi Grammar' },
@@ -2974,8 +2950,8 @@
           },
           {
             pd: '7',
-            kg1: 'Anita ma\'am',
-            kg2: 'Vaishnavi ma\'am',
+            kg1: '-',
+            kg2: '-',
             c1: { teacher: 'Anjali ma\'am', subject: 'G.K./ Computer' },
             c2: { teacher: 'Anchal ma\'am', subject: 'G.K./ Computer' },
             c3: { teacher: 'Savita ma\'am', subject: 'G.K./ Computer' },
@@ -2985,8 +2961,8 @@
           },
           {
             pd: '8',
-            kg1: 'Anita ma\'am',
-            kg2: 'Vaishnavi ma\'am',
+            kg1: '-',
+            kg2: '-',
             c1: { teacher: '', subject: 'सुलेख/ Conversation' },
             c2: { teacher: '', subject: 'Cursive/ Conversation' },
             c3: { teacher: '', subject: 'सुलेख/ Conversation' },
@@ -3016,13 +2992,29 @@
       isPanelOpen: true
     };
 
-    // Ensure KG structure is up to date with photo format
+    // Ensure KG structure is up to date with photo format (5 periods only)
     if (!timetableData.classes['kg1'] || !timetableData.classes['kg1'].layoutType || timetableData.classes['kg1'].layoutType !== 'kg_ornate') {
       timetableData.classes['kg1'] = JSON.parse(JSON.stringify(DEFAULT_TIMETABLE.classes['kg1']));
     }
     if (!timetableData.classes['kg2'] || !timetableData.classes['kg2'].layoutType || timetableData.classes['kg2'].layoutType !== 'kg_ornate') {
       timetableData.classes['kg2'] = JSON.parse(JSON.stringify(DEFAULT_TIMETABLE.classes['kg2']));
     }
+    ['kg1', 'kg2'].forEach(k => {
+      if (timetableData.classes[k] && Array.isArray(timetableData.classes[k].periods)) {
+        timetableData.classes[k].periods = timetableData.classes[k].periods.filter(p => p.id !== '6' && p.badge !== '6TH');
+      }
+    });
+    if (timetableData.teacherRotation && Array.isArray(timetableData.teacherRotation.rows)) {
+      timetableData.teacherRotation.rows.forEach(r => {
+        if (!r.isLunch && parseInt(r.pd, 10) > 5) {
+          r.kg1 = '-';
+          r.kg2 = '-';
+        }
+      });
+    }
+    try {
+      localStorage.setItem('pms_timetable_data_v3', JSON.stringify(timetableData));
+    } catch (e) {}
 
     // Safe HTML Escaping Helper (Prevents XSS / Template Injection)
     function escapeHTML(str) {

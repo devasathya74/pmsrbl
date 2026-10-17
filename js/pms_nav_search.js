@@ -124,6 +124,16 @@
 
     // --- Official Letters & Reports ---
     {
+      id: "notice_generator",
+      title: "पुलिस माडर्न स्कूल - नोटिस एवं स्पष्टीकरण पत्र जनरेटर",
+      category: "आधिकारिक पत्राचार",
+      desc: "अनुपस्थिति स्पष्टीकरण, कारण बताओ नोटिस, चेतावनी व कार्यालय आदेश जनरेटर (A4 प्रिंट)",
+      url: "pms_notice_generator.html",
+      icon: "fa-solid fa-bullhorn",
+      badge: "नया जनरेटर",
+      keywords: "notice generator spashtikaran karan batao chetavani karyalaya aadesh patra notice pms ragini"
+    },
+    {
       id: "letter_generator",
       title: "पुलिस मॉडर्न स्कूल - पत्र एवं प्रार्थना पत्र जनरेटर",
       category: "आधिकारिक पत्राचार",

@@ -520,6 +520,30 @@
         }
       } catch (e) {}
 
+      // 5. Scan Saved Notices (Notice Generator)
+      try {
+        const noticesHistory = localStorage.getItem("pms_saved_notices_history");
+        if (noticesHistory) {
+          const list = JSON.parse(noticesHistory);
+          if (Array.isArray(list)) {
+            list.slice(0, 15).forEach(n => {
+              if (n.title || n.subject) {
+                detected.push({
+                  id: `notice_${n.id || n.refNo || Date.now()}`,
+                  title: `नोटिस: ${n.title || n.subject || n.refNo}`,
+                  category: "सहेजे गए नोटिस (Notices)",
+                  desc: `पत्रांक: ${n.refNo || '-'} | संबंधित: ${(n.recipient || '').split('\n')[0] || '-'} | दिनांक: ${n.date || '-'}`,
+                  url: `pms_notice_generator.html?id=${encodeURIComponent(n.id || '')}`,
+                  icon: "fa-solid fa-bullhorn",
+                  badge: "सहेजा गया नोटिस",
+                  keywords: `notice स्पष्टीकरण warning show cause ${n.title || ''} ${n.refNo || ''} ${n.subject || ''}`
+                });
+              }
+            });
+          }
+        }
+      } catch (e) {}
+
       // Merge scanned items into dynamic docs registry
       detected.forEach(item => {
         this.registerDocument(item);

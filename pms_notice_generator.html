@@ -32,7 +32,7 @@
     }
   </script>
 
-  <!-- Google Fonts: Official Hindi & Interface Fonts (Identical to Letter Generator) -->
+  <!-- Google Fonts: Official Hindi & Interface Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -54,6 +54,7 @@
       --letter-line-height: 1.65;
       --canvas-zoom: 1;
       --table-cell-pad-y: 5px;
+      --doc-para-spacing: 12px;
     }
 
     * {
@@ -79,7 +80,7 @@
       font-family: var(--letter-font-body), 'Mangal', 'Noto Sans Devanagari', sans-serif;
     }
 
-    /* Strict A4 Document Specifications (210mm x 297mm) - EXACT REPLICA OF LETTER GENERATOR */
+    /* Strict A4 Document Specifications (210mm x 297mm) */
     .a4-document {
       width: 210mm;
       min-height: 297mm;
@@ -87,7 +88,7 @@
       background: #ffffff;
       padding: 14mm 19mm 14mm 19mm;
       position: relative;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(255, 255, 255, 0.1);
+      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(255, 255, 255, 0.12);
       overflow: hidden;
       display: flex;
       flex-direction: column;
@@ -99,13 +100,12 @@
       font-size: calc(15px * var(--letter-font-scale));
     }
 
-    /* Page scale preview container */
     .preview-viewport {
       display: flex;
       justify-content: center;
       align-items: flex-start;
       min-height: calc(100vh - 58px);
-      padding: 24px 16px 48px;
+      padding: 20px 16px 48px;
       transition: all 0.2s ease;
     }
 
@@ -123,12 +123,12 @@
     }
 
     body.highlight-editable [contenteditable="true"]:hover {
-      background-color: #fef08a !important;
+      background-color: #fef9c3 !important;
       box-shadow: 0 0 0 1px #ca8a04;
     }
 
     body.highlight-editable [contenteditable="true"]:focus {
-      background-color: #fde047 !important;
+      background-color: #fef08a !important;
       box-shadow: 0 0 0 1.5px #a16207;
     }
 
@@ -137,12 +137,12 @@
       padding-left: 8px;
     }
 
-    /* Letter Custom Table Styles (Exact Replica) */
+    /* Table Styles */
     .pms-letter-table {
       width: 100%;
       border-collapse: collapse;
       margin: 8px 0;
-      font-size: 14px;
+      font-size: 13.5px;
       line-height: 1.45;
       table-layout: fixed;
     }
@@ -156,7 +156,7 @@
 
     .pms-letter-table th {
       font-weight: 700;
-      background-color: transparent;
+      background-color: #f8fafc;
     }
 
     /* Selection Mini-Bar */
@@ -166,11 +166,11 @@
       display: none;
       align-items: center;
       gap: 3px;
-      padding: 4px 6px;
+      padding: 5px 8px;
       background: rgba(15, 23, 42, 0.96);
       border: 1px solid #38bdf8;
-      border-radius: 9px;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.55), 0 0 12px rgba(56, 189, 248, 0.25);
+      border-radius: 10px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 14px rgba(56, 189, 248, 0.3);
       backdrop-filter: blur(12px);
       pointer-events: auto;
       opacity: 0;
@@ -188,7 +188,7 @@
       background: #1e293b;
       border: 1px solid #334155;
       color: #e2e8f0;
-      border-radius: 5px;
+      border-radius: 6px;
       padding: 2px 7px;
       font-size: 11px;
       font-weight: 700;
@@ -198,7 +198,7 @@
       justify-content: center;
       min-width: 24px;
       height: 24px;
-      transition: background 0.15s, border-color 0.15s, color 0.15s;
+      transition: all 0.15s;
     }
 
     .selection-mini-bar button:hover {
@@ -211,9 +211,9 @@
       background: #1e293b;
       border: 1px solid #334155;
       color: #e2e8f0;
-      border-radius: 5px;
+      border-radius: 6px;
       padding: 2px 5px;
-      font-size: 10px;
+      font-size: 11px;
       height: 24px;
       outline: none;
       cursor: pointer;
@@ -232,12 +232,12 @@
       z-index: 9998;
       display: none;
       align-items: center;
-      gap: 3px;
-      padding: 4px 8px;
+      gap: 4px;
+      padding: 5px 9px;
       background: rgba(15, 23, 42, 0.96);
       border: 1px solid #38bdf8;
-      border-radius: 9px;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.55), 0 0 12px rgba(56, 189, 248, 0.25);
+      border-radius: 10px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 12px rgba(56, 189, 248, 0.25);
       backdrop-filter: blur(12px);
       pointer-events: auto;
       opacity: 0;
@@ -255,7 +255,7 @@
       background: #1e293b;
       border: 1px solid #334155;
       color: #e2e8f0;
-      border-radius: 5px;
+      border-radius: 6px;
       padding: 2px 7px;
       font-size: 11px;
       font-weight: 700;
@@ -264,7 +264,7 @@
       align-items: center;
       justify-content: center;
       height: 24px;
-      transition: background 0.15s, border-color 0.15s, color 0.15s;
+      transition: all 0.15s;
     }
 
     .table-quick-bar button:hover {
@@ -280,11 +280,6 @@
     }
 
     /* Global Dynamic Letter Line Height & Spacing */
-    #noticeDocument {
-      --doc-line-height: 1.65;
-      --doc-para-spacing: 12px;
-    }
-
     #noticeDocument,
     #noticeDocument p,
     #noticeDocument .hindi-body,
@@ -292,7 +287,7 @@
     #noticeDocument #doc-subject-container,
     #noticeDocument #doc-salutation,
     #noticeDocument #doc-closing {
-      line-height: var(--doc-line-height, 1.65) !important;
+      line-height: var(--letter-line-height, 1.65) !important;
     }
 
     #doc-body-container>*+* {
@@ -338,7 +333,25 @@
       border-bottom: 2px solid #38bdf8;
     }
 
-    /* PRINT RULES - STRICT REPLICA OF PMS_LETTER_GENERATOR */
+    /* Custom Scrollbar for sidebar */
+    aside::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    aside::-webkit-scrollbar-track {
+      background: #090e17;
+    }
+
+    aside::-webkit-scrollbar-thumb {
+      background: #1e293b;
+      border-radius: 3px;
+    }
+
+    aside::-webkit-scrollbar-thumb:hover {
+      background: #334155;
+    }
+
+    /* PRINT RULES */
     @media print {
       * {
         box-shadow: none !important;
@@ -385,7 +398,6 @@
         width: 100% !important;
         height: 100% !important;
         background: #ffffff !important;
-        background-color: #ffffff !important;
         border: none !important;
       }
 
@@ -397,7 +409,6 @@
         width: 210mm !important;
         height: 297mm !important;
         background: #ffffff !important;
-        background-color: #ffffff !important;
         overflow: visible !important;
       }
 
@@ -470,7 +481,8 @@
               नोटिस व स्पष्टीकरण जनरेटर
             </span>
           </div>
-          <div class="text-[11px] text-slate-400 font-medium">25वीं वाहिनी पीएसी, रायबरेली &bull; शासकीय प्रारूप</div>
+          <div class="text-[11px] text-slate-400 font-medium">25वीं वाहिनी पीएसी, रायबरेली &bull; शासकीय प्रारूप
+            स्टूडियो</div>
         </div>
       </a>
     </div>
@@ -478,7 +490,7 @@
     <!-- Center Quick Tools (Font, Scaling, Zoom, Shortcuts) -->
     <div class="flex items-center gap-1.5 flex-wrap text-xs">
 
-      <!-- Official Hindi Font Selector (Global Universal) -->
+      <!-- Official Hindi Font Selector -->
       <div
         class="flex items-center bg-slate-900/90 rounded-lg border border-slate-700/80 px-2 py-1 text-xs shadow-inner">
         <label for="fontSelectTop" class="text-slate-300 mr-1.5 font-bold flex items-center gap-1 cursor-pointer">
@@ -505,7 +517,7 @@
         </select>
       </div>
 
-      <!-- Letter Font Size Scaler (A- / 100% / A+ / Exact px) -->
+      <!-- Letter Font Size Scaler -->
       <div class="flex items-center bg-slate-900/90 rounded-lg border border-slate-700/80 p-0.5 shadow-inner"
         title="फॉन्ट आकार: A- / A+">
         <button id="fontDecBtn" type="button" onmousedown="event.preventDefault()" onclick="smartChangeFontSize(-1)"
@@ -514,7 +526,7 @@
           <span class="text-xs">A−</span>
         </button>
         <span id="fontScaleDisplay"
-          class="px-1.5 text-[11px] font-mono font-bold text-amber-400 select-none min-w-[38px] text-center"
+          class="px-1.5 text-[11px] font-mono font-bold text-amber-400 select-none min-w-[42px] text-center"
           title="वर्तमान फॉन्ट आकार">15.5px</span>
         <button id="fontIncBtn" type="button" onmousedown="event.preventDefault()" onclick="smartChangeFontSize(1)"
           class="px-2 py-1 text-slate-300 hover:text-white hover:bg-slate-800 rounded font-bold transition flex items-center gap-1 cursor-pointer"
@@ -542,7 +554,7 @@
       <!-- Universal Apply All Button -->
       <button id="topUniversalApplyBtn" type="button" onclick="applyUniversalFontAndSize()"
         class="px-2.5 py-1 bg-gradient-to-r from-blue-600 via-indigo-600 to-sky-600 hover:from-blue-500 hover:to-sky-500 text-white rounded-lg font-bold text-xs shadow-md border border-blue-400/40 flex items-center gap-1.5 transition active:scale-95 cursor-pointer"
-        title="यूनिवर्सल फॉण्ट स्टाइल व साइज़: सम्पूर्ण नोटिस पर लागू करें">
+        title="यूनिवर्सल फॉण्ट स्टाइल व साइज़ सम्पूर्ण नोटिस पर लागू करें">
         <i class="fa-solid fa-wand-magic-sparkles text-amber-300 text-[11px]"></i>
         <span class="hidden sm:inline">ग्लोबल अप्लाई</span>
         <span class="sm:hidden">ग्लोबल</span>
@@ -580,9 +592,34 @@
         <span class="hidden sm:inline">आज की तिथि</span>
       </button>
 
+      <!-- Active Cloud Notice Status Indicator -->
+      <div id="activeNoticeBadge"
+        class="hidden items-center gap-1.5 px-2.5 py-1 bg-emerald-950/80 border border-emerald-500/50 rounded-lg text-[11px] text-emerald-300 font-medium"
+        title="वर्तमान में यह नोटिस क्लाउड पर खुला हुआ है">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span class="text-[10px] text-emerald-400 font-bold uppercase tracking-wider hidden md:inline">क्लाउड
+          सक्रिय:</span>
+        <span id="activeNoticeBadgeTitle" class="font-bold text-white max-w-[120px] truncate">-</span>
+        <button id="clearActiveNoticeBtn" type="button" onclick="window.clearActiveDocument()"
+          class="ml-1 text-slate-400 hover:text-rose-300 p-0.5 rounded cursor-pointer transition"
+          title="सक्रिय लिंक हटाएं (नए नोटिस के रूप में कार्य करें)">
+          <i class="fa-solid fa-xmark text-[10px]"></i>
+        </button>
+      </div>
+
+      <!-- Cloud Backups Archive Button -->
+      <button id="openNoticeHistoryBtn" type="button" onclick="window.openNoticeHistoryModal()"
+        class="bg-indigo-950/80 hover:bg-indigo-900 text-indigo-200 hover:text-white px-2.5 py-1.5 rounded-lg transition flex items-center gap-1.5 font-bold shadow-md border border-indigo-700/60 cursor-pointer text-xs"
+        title="क्लाउड पर पूर्व में सहेजे गए सभी नोटिस देखें">
+        <i class="fa-solid fa-box-archive text-xs text-amber-400"></i>
+        <span class="hidden md:inline">क्लाउड बैकअप</span>
+        <span id="noticeBackupCountBadge"
+          class="bg-indigo-700 text-white text-[10px] px-1.5 py-0.2 rounded-full font-mono font-bold">0</span>
+      </button>
+
       <!-- Switch to Letter Generator Button -->
       <a href="pms_letter_generator.html"
-        class="bg-indigo-950/80 hover:bg-indigo-900 text-indigo-300 hover:text-white px-2.5 py-1.5 rounded-lg transition flex items-center gap-1.5 font-bold shadow-md border border-indigo-700/60 cursor-pointer text-xs"
+        class="bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white px-2.5 py-1.5 rounded-lg transition flex items-center gap-1.5 font-bold shadow-sm border border-slate-700/80 cursor-pointer text-xs"
         title="पत्र जनरेटर पर जाएं">
         <i class="fa-solid fa-envelope-open-text text-xs text-indigo-400"></i>
         <span class="hidden md:inline">पत्र जनरेटर</span>
@@ -590,29 +627,26 @@
 
     </div>
 
-    <!-- Right Action Buttons (Print, PDF, Save, History) -->
+    <!-- Right Action Buttons (Print, PDF, Save) -->
     <div class="flex items-center gap-2">
-      <!-- Save to LocalStorage / History -->
-      <button id="saveDraftBtn" type="button" onclick="openSaveModal()"
-        class="px-3 py-1.5 bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-white rounded-lg font-bold text-xs transition flex items-center gap-1.5 shadow-md shadow-amber-600/20 cursor-pointer"
-        title="नोटिस सहेजें (Save Notice)">
+      <button id="saveDraftBtn" type="button" onclick="window.openSaveModal()"
+        class="px-3.5 py-1.5 bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-white rounded-lg font-extrabold text-xs transition flex items-center gap-1.5 shadow-md shadow-amber-600/20 cursor-pointer"
+        title="क्लाउड पर सहेजें या मौजूदा नोटिस अपडेट करें (Ctrl+S)">
         <i class="fa-solid fa-cloud-arrow-up text-xs"></i>
         <span>सहेजें (Save)</span>
       </button>
 
-      <!-- Direct PDF Download -->
       <button id="downloadPdfBtn" type="button" onclick="downloadPdfDirectly()"
         class="px-3 py-1.5 bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 text-white font-bold rounded-lg text-xs transition flex items-center gap-1.5 shadow-md border border-rose-400/40 cursor-pointer"
         title="सीधे PDF डाउनलोड करें">
         <i class="fa-solid fa-file-pdf text-white"></i>
-        <span class="hidden sm:inline">PDF डाउनलोड</span>
+        <span class="hidden sm:inline">PDF</span>
       </button>
 
-      <!-- Direct Print Button -->
       <button id="printBtn" type="button" onclick="triggerPrintNotice()"
         class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white px-4 py-1.5 rounded-lg font-black transition flex items-center gap-1.5 shadow-lg shadow-blue-600/30 cursor-pointer">
         <i class="fa-solid fa-print text-xs"></i>
-        <span>प्रिंट व पीडीएफ</span>
+        <span>प्रिंट</span>
       </button>
     </div>
 
@@ -623,7 +657,7 @@
 
     <!-- ================= LEFT COLLAPSIBLE SIDEBAR ================= -->
     <aside
-      class="no-print w-full lg:w-[410px] xl:w-[460px] bg-slate-900/95 border-r border-slate-800 flex flex-col flex-shrink-0 h-auto lg:h-[calc(100vh-58px)] overflow-y-auto">
+      class="no-print w-full lg:w-[420px] xl:w-[470px] bg-slate-900/95 border-r border-slate-800 flex flex-col flex-shrink-0 h-auto lg:h-[calc(100vh-58px)] overflow-y-auto">
 
       <!-- Sidebar Tabs Navigation -->
       <div
@@ -663,9 +697,10 @@
           <div class="flex items-center justify-between pb-1 border-b border-slate-800">
             <span class="font-bold text-amber-400 text-xs uppercase tracking-wider flex items-center gap-1.5">
               <i class="fa-solid fa-list-check text-amber-400"></i>
-              <span>आधिकारिक नोटिस प्रारूप (Notice Presets)</span>
+              <span>आधिकारिक नोटिस प्रारूप (Official Presets)</span>
             </span>
-            <span class="text-[10px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded font-mono">16 प्रारूप</span>
+            <span class="text-[10px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded font-mono" id="presetCountBadge">10
+              प्रारूप</span>
           </div>
 
           <!-- Featured: Photo Exact Preset -->
@@ -674,18 +709,19 @@
             <div class="flex items-center justify-between">
               <span class="text-amber-300 font-bold text-xs flex items-center gap-1.5">
                 <i class="fa-solid fa-star text-amber-400"></i>
-                <span>फोटो प्रारूप: अनुपस्थिति स्पष्टीकरण पत्र</span>
+                <span>मूल प्रारूप: अनुपस्थिति स्पष्टीकरण पत्र</span>
               </span>
-              <span class="text-[9px] bg-amber-500 text-slate-950 px-1.5 py-0.5 rounded font-bold uppercase">मूल
+              <span class="text-[9px] bg-amber-500 text-slate-950 px-1.5 py-0.5 rounded font-bold uppercase">फोटो
                 प्रारूप</span>
             </div>
             <p class="text-[11px] text-slate-300">
-              कु0 रागिनी (सहायक अध्यापिका) - बिना पूर्व सूचना विद्यालय अनुपस्थित रहने के संबंध में लिखित स्पष्टीकरण।
+              कु0 रागिनी (सहायक अध्यापिका) - बिना पूर्व सूचना विद्यालय अनुपस्थित रहने के संबंध में लिखित स्पष्टीकरण
+              आदेश।
             </p>
             <button type="button" onclick="loadNoticePreset('uninformed_absence')"
               class="w-full py-1.5 px-3 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black rounded-lg text-xs flex items-center justify-center gap-1.5 transition shadow cursor-pointer">
               <i class="fa-solid fa-file-circle-check"></i>
-              <span>यह प्रारूप लोड करें (Load Photo Preset)</span>
+              <span>यह मूल प्रारूप लोड करें</span>
             </button>
           </div>
 
@@ -751,7 +787,7 @@
                 <label class="block text-[11px] text-slate-300 mb-0.5">पत्रांक संख्या:</label>
                 <input type="text" id="in-ref-no"
                   class="w-full bg-slate-900 border border-slate-700 rounded px-2 py-1.5 text-white font-mono focus:ring-1 focus:ring-blue-500 focus:outline-none"
-                  value="पीएमएस/2026/142">
+                  value="पीएमएस / 2026">
               </div>
               <div>
                 <div class="flex items-center justify-between mb-0.5">
@@ -762,699 +798,708 @@
                 </div>
                 <input type="text" id="in-date"
                   class="w-full bg-slate-900 border border-slate-700 rounded px-2 py-1.5 text-white focus:ring-1 focus:ring-blue-500 focus:outline-none"
-                  value="जून, 3, 2026">
+                  value="जून, 3 , 2026">
               </div>
             </div>
           </div>
 
-          <!-- Recipient Section -->
-          <!-- Quick Recipient Presets -->
-          <div class="flex items-center gap-1">
-            <button type="button" onclick="setRecipientPreset('ragini')"
-              class="text-[10px] bg-slate-900 hover:bg-slate-700 text-blue-300 px-1.5 py-0.5 rounded border border-slate-700 cursor-pointer">
-              कु0 रागिनी
-            </button>
-            <button type="button" onclick="setRecipientPreset('all_teachers')"
-              class="text-[10px] bg-slate-900 hover:bg-slate-700 text-blue-300 px-1.5 py-0.5 rounded border border-slate-700 cursor-pointer">
-              समस्त शिक्षक
-            </button>
-          </div>
-        </div>
-        <textarea id="in-recipient" rows="5"
-          class="w-full bg-slate-900 border border-slate-700 rounded px-2.5 py-2 text-white font-medium focus:ring-1 focus:ring-blue-500 focus:outline-none leading-relaxed">कु0 रागिनी
+          <!-- Recipient Section (Fixed missing structure) -->
+          <div class="bg-slate-800/80 rounded-xl p-3 border border-slate-700 space-y-2.5 shadow-sm">
+            <div class="flex items-center justify-between">
+              <label class="text-xs font-bold text-sky-400 uppercase tracking-wider flex items-center gap-1.5">
+                <i class="fa-solid fa-user-tag text-sky-400"></i>
+                <span>प्राप्तकर्ता / संबोधित व्यक्ति (Recipient)</span>
+              </label>
+              <!-- Quick Recipient Presets -->
+              <div class="flex items-center gap-1">
+                <button type="button" onclick="setRecipientPreset('ragini')"
+                  class="text-[10px] bg-slate-900 hover:bg-slate-700 text-blue-300 px-1.5 py-0.5 rounded border border-slate-700 cursor-pointer">
+                  कु0 रागिनी
+                </button>
+                <button type="button" onclick="setRecipientPreset('all_teachers')"
+                  class="text-[10px] bg-slate-900 hover:bg-slate-700 text-blue-300 px-1.5 py-0.5 rounded border border-slate-700 cursor-pointer">
+                  समस्त शिक्षक
+                </button>
+              </div>
+            </div>
+            <textarea id="in-recipient" rows="5"
+              class="w-full bg-slate-900 border border-slate-700 rounded px-2.5 py-2 text-white font-medium focus:ring-1 focus:ring-blue-500 focus:outline-none leading-relaxed">कु0 रागिनी
 सहायक अध्यापिका
 पुलिस माडर्न स्कूल
 25वीं वाहिनी पीएसी
 रायबरेली।</textarea>
-      </div>
-
-      <!-- Signatory Details -->
-      <div class="bg-slate-800/80 rounded-xl p-3 border border-slate-700 space-y-2.5 shadow-sm">
-        <div class="flex items-center justify-between">
-          <label class="text-xs font-bold text-purple-400 uppercase tracking-wider flex items-center gap-1.5">
-            <i class="fa-solid fa-signature text-purple-400"></i>
-            <span>हस्ताक्षर एवं जारीकर्ता (Signatory)</span>
-          </label>
-          <!-- Toggle Signature Graphic -->
-          <label class="flex items-center gap-1.5 cursor-pointer select-none">
-            <input type="checkbox" id="toggleSignatureCheckbox" checked
-              onchange="toggleSignatureVisibility(this.checked)"
-              class="w-3.5 h-3.5 rounded bg-slate-800 text-blue-600 focus:ring-0 cursor-pointer">
-            <span class="text-[10px] text-slate-300 font-semibold">हस्ताक्षर दिखाएं</span>
-          </label>
-        </div>
-
-        <div>
-          <label class="block text-[11px] text-slate-300 mb-0.5">हस्ताक्षर पदनाम (Designation):</label>
-          <select id="select-sign-title" onchange="setSignatoryTitle(this.value)"
-            class="w-full bg-slate-900 border border-slate-700 rounded px-2.5 py-1.5 text-white font-semibold focus:ring-1 focus:ring-blue-500 focus:outline-none mb-1.5 cursor-pointer">
-            <option value="प्रभारी प्रधानाचार्या" selected>प्रभारी प्रधानाचार्या (फोटो जैसा)</option>
-            <option value="प्रभारी प्रधानाचार्य">प्रभारी प्रधानाचार्य</option>
-            <option value="प्रधानाचार्या">प्रधानाचार्या</option>
-            <option value="प्रधानाचार्य">प्रधानाचार्य</option>
-            <option value="व्यवस्थापक">व्यवस्थापक, पुलिस मॉडर्न स्कूल</option>
-            <option value="सेनानायक / अध्यक्ष">सेनानायक / अध्यक्ष (25वीं वाहिनी पीएसी)</option>
-          </select>
-          <input type="text" id="in-sign-title"
-            class="w-full bg-slate-900 border border-slate-700 rounded px-2 py-1.5 text-white font-semibold focus:ring-1 focus:ring-blue-500 focus:outline-none"
-            value="प्रभारी प्रधानाचार्या">
-        </div>
-        <div class="grid grid-cols-2 gap-2">
-          <div>
-            <label class="block text-[11px] text-slate-300 mb-0.5">विद्यालय/संस्था:</label>
-            <input type="text" id="in-sign-org"
-              class="w-full bg-slate-900 border border-slate-700 rounded px-2 py-1.5 text-white focus:ring-1 focus:ring-blue-500 focus:outline-none"
-              value="पुलिस माडर्न स्कूल">
           </div>
-          <div>
-            <label class="block text-[11px] text-slate-300 mb-0.5">वाहिनी व स्थान:</label>
-            <input type="text" id="in-sign-location"
-              class="w-full bg-slate-900 border border-slate-700 rounded px-2 py-1.5 text-white focus:ring-1 focus:ring-blue-500 focus:outline-none"
-              value="25वीं वाहिनी पीएसी, रायबरेली">
+
+          <!-- Signatory Details -->
+          <div class="bg-slate-800/80 rounded-xl p-3 border border-slate-700 space-y-2.5 shadow-sm">
+            <div class="flex items-center justify-between">
+              <label class="text-xs font-bold text-purple-400 uppercase tracking-wider flex items-center gap-1.5">
+                <i class="fa-solid fa-signature text-purple-400"></i>
+                <span>हस्ताक्षर एवं जारीकर्ता (Signatory)</span>
+              </label>
+              <!-- Toggle Signature Graphic -->
+              <label class="flex items-center gap-1.5 cursor-pointer select-none">
+                <input type="checkbox" id="toggleSignatureCheckbox" checked
+                  onchange="toggleSignatureVisibility(this.checked)"
+                  class="w-3.5 h-3.5 rounded bg-slate-800 text-blue-600 focus:ring-0 cursor-pointer">
+                <span class="text-[10px] text-slate-300 font-semibold">हस्ताक्षर दिखाएं</span>
+              </label>
+            </div>
+
+            <div>
+              <label class="block text-[11px] text-slate-300 mb-0.5">हस्ताक्षर पदनाम (Designation):</label>
+              <select id="select-sign-title" onchange="setSignatoryTitle(this.value)"
+                class="w-full bg-slate-900 border border-slate-700 rounded px-2.5 py-1.5 text-white font-semibold focus:ring-1 focus:ring-blue-500 focus:outline-none mb-1.5 cursor-pointer">
+                <option value="प्रभारी प्रधानाचार्या" selected>प्रभारी प्रधानाचार्या</option>
+                <option value="प्रभारी प्रधानाचार्य">प्रभारी प्रधानाचार्य</option>
+                <option value="प्रधानाचार्या">प्रधानाचार्या</option>
+                <option value="प्रधानाचार्य">प्रधानाचार्य</option>
+                <option value="व्यवस्थापक">व्यवस्थापक, पुलिस मॉडर्न स्कूल</option>
+                <option value="सेनानायक / अध्यक्ष">सेनानायक / अध्यक्ष (25वीं वाहिनी पीएसी)</option>
+              </select>
+              <input type="text" id="in-sign-title"
+                class="w-full bg-slate-900 border border-slate-700 rounded px-2 py-1.5 text-white font-semibold focus:ring-1 focus:ring-blue-500 focus:outline-none"
+                value="प्रभारी प्रधानाचार्या">
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="block text-[11px] text-slate-300 mb-0.5">विद्यालय/संस्था:</label>
+                <input type="text" id="in-sign-org"
+                  class="w-full bg-slate-900 border border-slate-700 rounded px-2 py-1.5 text-white focus:ring-1 focus:ring-blue-500 focus:outline-none"
+                  value="पुलिस माडर्न स्कूल">
+              </div>
+              <div>
+                <label class="block text-[11px] text-slate-300 mb-0.5">वाहिनी व स्थान:</label>
+                <input type="text" id="in-sign-location"
+                  class="w-full bg-slate-900 border border-slate-700 rounded px-2 py-1.5 text-white focus:ring-1 focus:ring-blue-500 focus:outline-none"
+                  value="25वीं वाहिनी पीएसी, रायबरेली">
+              </div>
+            </div>
           </div>
+
         </div>
-      </div>
 
-  </div>
+        <!-- ================= TAB 3: NOTICE BODY & PARAGRAPHS ================= -->
+        <div id="tabContentBody" class="space-y-4 hidden">
 
-  <!-- ================= TAB 3: NOTICE BODY & PARAGRAPHS ================= -->
-  <div id="tabContentBody" class="space-y-4 hidden">
+          <!-- Subject Line -->
+          <div class="bg-slate-800/80 rounded-xl p-3 border border-slate-700 space-y-2 shadow-sm">
+            <div class="flex items-center justify-between">
+              <label class="text-xs font-bold text-amber-400 uppercase tracking-wider flex items-center gap-1.5">
+                <i class="fa-solid fa-tag text-amber-400"></i>
+                <span>विषय (Subject)</span>
+              </label>
+              <span class="text-[10px] text-slate-400">पत्र का मुख्य विषय</span>
+            </div>
+            <textarea id="in-subject" rows="2"
+              class="w-full bg-slate-900 border border-slate-700 rounded px-2.5 py-1.5 text-white font-bold focus:ring-1 focus:ring-blue-500 focus:outline-none leading-relaxed">बिना पूर्व सूचना विद्यालय अनुपस्थित रहने के संबन्ध में स्पष्टीकरण।</textarea>
+          </div>
 
-    <!-- Subject Line -->
-    <div class="bg-slate-800/80 rounded-xl p-3 border border-slate-700 space-y-2 shadow-sm">
-      <div class="flex items-center justify-between">
-        <label class="text-xs font-bold text-amber-400 uppercase tracking-wider flex items-center gap-1.5">
-          <i class="fa-solid fa-tag text-amber-400"></i>
-          <span>विषय (Subject)</span>
-        </label>
-        <span class="text-[10px] text-slate-400">पत्र का मुख्य विषय</span>
-      </div>
-      <textarea id="in-subject" rows="2"
-        class="w-full bg-slate-900 border border-slate-700 rounded px-2.5 py-1.5 text-white font-bold focus:ring-1 focus:ring-blue-500 focus:outline-none leading-relaxed">बिना पूर्व सूचना विद्यालय अनुपस्थित रहने के संबन्ध में स्पष्टीकरण।</textarea>
-    </div>
+          <!-- Salutation Input -->
+          <div class="bg-slate-800/80 rounded-xl p-3 border border-slate-700 space-y-1.5 shadow-sm">
+            <label class="text-xs font-bold text-indigo-400 uppercase tracking-wider flex items-center gap-1.5">
+              <i class="fa-solid fa-comment-dots text-indigo-400"></i>
+              <span>संबोधन (Salutation)</span>
+            </label>
+            <input type="text" id="in-salutation"
+              class="w-full bg-slate-900 border border-slate-700 rounded px-2 py-1.5 text-white font-semibold focus:ring-1 focus:ring-blue-500 focus:outline-none"
+              value="महोदया,">
+          </div>
 
-    <!-- Notice Body Paragraph 1 -->
-    <div class="bg-slate-800/80 rounded-xl p-3 border border-slate-700 space-y-2 shadow-sm">
-      <div class="flex items-center justify-between">
-        <label class="text-xs font-bold text-sky-400 uppercase tracking-wider flex items-center gap-1.5">
-          <i class="fa-solid fa-paragraph text-sky-400"></i>
-          <span>पैराग्राफ 1 (विवरण / पृष्ठभूमि)</span>
-        </label>
-        <span class="text-[10px] bg-slate-900 text-sky-300 px-1.5 py-0.5 rounded font-mono">अंश 1</span>
-      </div>
-      <textarea id="in-body1" rows="4"
-        class="w-full bg-slate-900 border border-slate-700 rounded px-2.5 py-2 text-white focus:ring-1 focus:ring-blue-500 focus:outline-none leading-relaxed">अवगत कराना है कि आप दिनाँक 01.06.2026 को बिना किसी पूर्व सूचना अथवा अनुमति के विद्यालय से अनुपस्थित रही हैं। आपका यह आचरण विद्यालय के अनुशासन एवं सेवा नियमों के विपरीत हैं।</textarea>
-    </div>
+          <!-- Notice Body Paragraph 1 -->
+          <div class="bg-slate-800/80 rounded-xl p-3 border border-slate-700 space-y-2 shadow-sm">
+            <div class="flex items-center justify-between">
+              <label class="text-xs font-bold text-sky-400 uppercase tracking-wider flex items-center gap-1.5">
+                <i class="fa-solid fa-paragraph text-sky-400"></i>
+                <span>पैराग्राफ 1 (विवरण / पृष्ठभूमि)</span>
+              </label>
+              <span class="text-[10px] bg-slate-900 text-sky-300 px-1.5 py-0.5 rounded font-mono">अंश 1</span>
+            </div>
+            <textarea id="in-body1" rows="4"
+              class="w-full bg-slate-900 border border-slate-700 rounded px-2.5 py-2 text-white focus:ring-1 focus:ring-blue-500 focus:outline-none leading-relaxed">अवगत कराना है कि आप दिनाँक 01.06.2026 को बिना किसी पूर्व सूचना अथवा अनुमति के विद्यालय से अनुपस्थित रही हैं। आपका यह आचरण विद्यालय के अनुशासन एवं सेवा नियमों के विपरीत हैं।</textarea>
+          </div>
 
-    <!-- Notice Body Paragraph 2 (Action / Direction) -->
-    <div class="bg-slate-800/80 rounded-xl p-3 border border-slate-700 space-y-2 shadow-sm">
-      <div class="flex items-center justify-between">
-        <label class="text-xs font-bold text-emerald-400 uppercase tracking-wider flex items-center gap-1.5">
-          <i class="fa-solid fa-gavel text-emerald-400"></i>
-          <span>पैराग्राफ 2 (निर्देश / समय-सीमा)</span>
-        </label>
-        <span class="text-[10px] bg-slate-900 text-emerald-300 px-1.5 py-0.5 rounded font-mono">निर्देश</span>
-      </div>
-      <textarea id="in-body2" rows="5"
-        class="w-full bg-slate-900 border border-slate-700 rounded px-2.5 py-2 text-white focus:ring-1 focus:ring-blue-500 focus:outline-none leading-relaxed">अतः आपको निर्देशित किया जाता है कि इस पत्र प्राप्ति के 03 दिवस के भीतर अपने अनुपस्थित रहने के संबन्ध में लिखित स्पष्टीकरण कार्यालय में प्रस्तुत करें। निर्धारित समयावधि में संतोषजनक स्पष्टीकरण प्राप्त न होने पर आपके विरुद्ध नियमानुसार कार्यवाही की जाएगी।</textarea>
-    </div>
+          <!-- Notice Body Paragraph 2 (Action / Direction) -->
+          <div class="bg-slate-800/80 rounded-xl p-3 border border-slate-700 space-y-2 shadow-sm">
+            <div class="flex items-center justify-between">
+              <label class="text-xs font-bold text-emerald-400 uppercase tracking-wider flex items-center gap-1.5">
+                <i class="fa-solid fa-gavel text-emerald-400"></i>
+                <span>पैराग्राफ 2 (निर्देश / समय-सीमा)</span>
+              </label>
+              <span class="text-[10px] bg-slate-900 text-emerald-300 px-1.5 py-0.5 rounded font-mono">निर्देश</span>
+            </div>
+            <textarea id="in-body2" rows="5"
+              class="w-full bg-slate-900 border border-slate-700 rounded px-2.5 py-2 text-white focus:ring-1 focus:ring-blue-500 focus:outline-none leading-relaxed">अतः आपको निर्देशित किया जाता है कि इस पत्र प्राप्ति के 03 दिवस के भीतर अपने अनुपस्थित रहने के संबन्ध में लिखित स्पष्टीकरण कार्यालय में प्रस्तुत करें। निर्धारित समयावधि में संतोषजनक स्पष्टीकरण प्राप्त न होने पर आपके विरुद्ध नियमानुसार कार्यवाही की जाएगी।</textarea>
+          </div>
 
-    <!-- On-paper Add Paragraph Quick Action -->
-    <div class="flex justify-end pt-1">
-      <button type="button" onclick="addNewParagraph('', true)"
-        class="px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs font-bold transition flex items-center gap-1.5 shadow cursor-pointer">
-        <i class="fa-solid fa-plus-circle text-xs"></i>
-        <span>+ नया पैराग्राफ जोड़ें</span>
-      </button>
-    </div>
+          <!-- On-paper Add Paragraph Quick Action -->
+          <div class="flex justify-end pt-1">
+            <button type="button" onclick="addNewParagraph('', true)"
+              class="px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs font-bold transition flex items-center gap-1.5 shadow cursor-pointer">
+              <i class="fa-solid fa-plus-circle text-xs"></i>
+              <span>+ नया पैराग्राफ जोड़ें</span>
+            </button>
+          </div>
 
-  </div>
+        </div>
 
-  <!-- ================= TAB 4: PRATILIPI & TABLE ================= -->
-  <div id="tabContentPratilipiTable" class="space-y-4 hidden">
+        <!-- ================= TAB 4: PRATILIPI & TABLE ================= -->
+        <div id="tabContentPratilipiTable" class="space-y-4 hidden">
 
-    <!-- Pratilipi (Copy To - प्रतिलिपि) Section -->
-    <div class="bg-slate-800/80 rounded-xl p-3.5 border border-slate-700 space-y-3 shadow-md">
-      <div class="flex items-center justify-between">
-        <label class="flex items-center gap-2 cursor-pointer select-none">
-          <input type="checkbox" id="togglePratilipiCheckbox" onchange="togglePratilipiVisibility(this.checked)"
-            class="w-4 h-4 rounded bg-slate-900 text-blue-600 focus:ring-0 cursor-pointer">
-          <span class="text-xs font-black text-amber-400 uppercase tracking-wider flex items-center gap-1.5">
-            <i class="fa-solid fa-share-nodes text-amber-400"></i>
-            <span>प्रतिलिपि (Copy To) जोड़ें</span>
-          </span>
-        </label>
-        <span id="pratilipiStatusBadge"
-          class="text-[10px] bg-slate-900 text-slate-400 font-medium px-2 py-0.5 rounded border border-slate-700">बंद
-          (Off)</span>
-      </div>
+          <!-- Pratilipi (Copy To - प्रतिलिपि) Section -->
+          <div class="bg-slate-800/80 rounded-xl p-3.5 border border-slate-700 space-y-3 shadow-md">
+            <div class="flex items-center justify-between">
+              <label class="flex items-center gap-2 cursor-pointer select-none">
+                <input type="checkbox" id="togglePratilipiCheckbox" onchange="togglePratilipiVisibility(this.checked)"
+                  class="w-4 h-4 rounded bg-slate-900 text-blue-600 focus:ring-0 cursor-pointer">
+                <span class="text-xs font-black text-amber-400 uppercase tracking-wider flex items-center gap-1.5">
+                  <i class="fa-solid fa-share-nodes text-amber-400"></i>
+                  <span>प्रतिलिपि (Copy To) जोड़ें</span>
+                </span>
+              </label>
+              <span id="pratilipiStatusBadge"
+                class="text-[10px] bg-slate-900 text-slate-400 font-medium px-2 py-0.5 rounded border border-slate-700">बंद
+                (Off)</span>
+            </div>
 
-      <div id="pratilipiControlsArea" class="space-y-2.5 pt-2 border-t border-slate-700/80 hidden">
-        <div>
-          <label class="block text-[11px] font-semibold text-slate-300 mb-1">प्रतिलिपि सूची:</label>
-          <textarea id="in-pratilipi-list" rows="5"
-            class="w-full bg-slate-900 border border-slate-700 rounded px-2.5 py-1.5 text-white text-xs leading-relaxed focus:ring-1 focus:ring-blue-500 focus:outline-none">1. श्रीमान सेनानायक महोदय/व्यवस्थापक, 25वीं वाहिनी पीएसी रायबरेली।
+            <div id="pratilipiControlsArea" class="space-y-2.5 pt-2 border-t border-slate-700/80 hidden">
+              <div>
+                <label class="block text-[11px] font-semibold text-slate-300 mb-1">प्रतिलिपि सूची:</label>
+                <textarea id="in-pratilipi-list" rows="5"
+                  class="w-full bg-slate-900 border border-slate-700 rounded px-2.5 py-1.5 text-white text-xs leading-relaxed focus:ring-1 focus:ring-blue-500 focus:outline-none">1. श्रीमान सेनानायक महोदय/व्यवस्थापक, 25वीं वाहिनी पीएसी रायबरेली।
 2. नोडल अधिकारी (शिक्षा), 25वीं वाहिनी पीएसी।
 3. संबंधित कर्मचारी की व्यक्तिगत सेवा पत्रावली।
 4. विद्यालय नोटिस बोर्ड / कार्यालय प्रति।</textarea>
-        </div>
-      </div>
-    </div>
-
-    <!-- Embedded Table Section -->
-    <div class="bg-slate-800/80 rounded-xl p-3.5 border border-slate-700 space-y-3 shadow-md">
-      <div class="flex items-center justify-between">
-        <label class="flex items-center gap-2 cursor-pointer select-none">
-          <input type="checkbox" id="toggleTableCheckbox" onchange="toggleTableVisibility(this.checked)"
-            class="w-4 h-4 rounded bg-slate-900 text-emerald-500 focus:ring-0 cursor-pointer">
-          <span class="text-xs font-black text-emerald-400 uppercase tracking-wider flex items-center gap-1.5">
-            <i class="fa-solid fa-table-cells text-emerald-400"></i>
-            <span>तालिका (Table) जोड़ें</span>
-          </span>
-        </label>
-        <span id="tableStatusBadge"
-          class="text-[10px] bg-slate-900 text-slate-400 font-medium px-2 py-0.5 rounded border border-slate-700">बंद
-          (Off)</span>
-      </div>
-
-      <div id="tableControlsArea" class="space-y-2.5 pt-2 border-t border-slate-700/80 hidden">
-        <div class="flex items-center gap-2">
-          <button type="button" onclick="insertTableRowBelow()"
-            class="flex-1 py-1.5 px-2 bg-slate-900 hover:bg-slate-700 text-slate-200 border border-slate-600 rounded text-xs font-semibold flex items-center justify-center gap-1 cursor-pointer">
-            <i class="fa-solid fa-plus text-[10px]"></i> + पंक्ति (Row)
-          </button>
-          <button type="button" onclick="deleteCurrentTableRow()"
-            class="flex-1 py-1.5 px-2 bg-slate-900 hover:bg-rose-950 text-rose-300 border border-slate-600 rounded text-xs font-semibold flex items-center justify-center gap-1 cursor-pointer">
-            <i class="fa-solid fa-trash-can text-[10px]"></i> - पंक्ति हटाएं
-          </button>
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- ================= TAB 5: TYPOGRAPHY & LAYOUT ================= -->
-  <div id="tabContentLayout" class="space-y-4 hidden">
-    <!-- Universal Master Card -->
-    <div
-      class="bg-gradient-to-r from-blue-900/60 via-indigo-950/80 to-slate-900 rounded-xl p-3.5 border border-indigo-500/40 shadow-lg space-y-2.5">
-      <span class="text-xs font-bold text-amber-300 flex items-center gap-1.5 uppercase tracking-wider">
-        <i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i>
-        <span>यूनिवर्सल फॉण्ट मास्टर कंट्रोल</span>
-      </span>
-      <p class="text-[11px] text-slate-300 leading-snug">
-        चयनित फॉन्ट स्टाइल और फॉन्ट साइज़ को एक-क्लिक में <b>सम्पूर्ण नोटिस</b> पर ग्लोबली लागू करें।
-      </p>
-      <div class="grid grid-cols-2 gap-2 pt-1">
-        <button type="button" onclick="applyUniversalFontAndSize()"
-          class="py-2 px-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 text-white font-bold text-xs rounded-lg shadow-md border border-blue-400/40 flex items-center justify-center gap-1.5 transition active:scale-95 cursor-pointer">
-          <i class="fa-solid fa-wand-magic-sparkles text-amber-300 text-xs"></i>
-          <span>सम्पूर्ण पर लागू</span>
-        </button>
-        <button type="button" onclick="resetUniversalFontAndSize()"
-          class="py-2 px-3 bg-slate-900 hover:bg-slate-800 text-slate-300 font-semibold text-xs rounded-lg border border-slate-700 flex items-center justify-center gap-1.5 transition active:scale-95 cursor-pointer">
-          <i class="fa-solid fa-rotate-left text-xs text-sky-400"></i>
-          <span>मानक रीसेट (15.5px)</span>
-        </button>
-      </div>
-    </div>
-
-    <!-- Page Fit Status Indicator -->
-    <div class="bg-slate-800/90 rounded-xl p-3 border border-slate-700 space-y-2 shadow-sm">
-      <div class="flex items-center justify-between">
-        <span class="text-xs font-bold text-slate-200 uppercase tracking-wider flex items-center gap-1.5">
-          <i class="fa-solid fa-file-circle-check text-sky-400"></i>
-          <span>A4 पृष्ठ स्थिति (Page Height Meter)</span>
-        </span>
-        <span id="sidebarFitBadge" class="text-[10px] fit-badge-ok px-2 py-0.5 rounded-full border font-bold">100%
-          Fit</span>
-      </div>
-      <div class="w-full bg-slate-950 h-2.5 rounded-full overflow-hidden border border-slate-700">
-        <div id="pageHeightProgressBar" class="bg-emerald-500 h-full transition-all duration-300" style="width: 82%;">
-        </div>
-      </div>
-      <div class="flex justify-between items-center text-[10px] text-slate-400 font-mono">
-        <span id="pageHeightText">ऊंचाई: 245mm / 297mm</span>
-        <button type="button" onclick="autoFitToSinglePage()"
-          class="text-emerald-400 hover:text-emerald-300 underline font-sans font-bold cursor-pointer">
-          ऑटो-फिट करें
-        </button>
-      </div>
-    </div>
-  </div>
-
-  </div>
-
-  <!-- Sidebar Footer Help Card -->
-  <div class="p-3 bg-slate-950 border-t border-slate-800 text-[11px] text-slate-400 flex items-center justify-between">
-    <span>💡 <b>टिप:</b> सीधे दाईं ओर A4 नोटिस पेपर पर भी टाइप कर सकते हैं।</span>
-    <button type="button" onclick="autoFitToSinglePage()"
-      class="text-blue-400 hover:text-blue-300 font-bold underline cursor-pointer">
-      1-पेज ऑटो-फिट
-    </button>
-  </div>
-
-  </aside>
-
-  <!-- ================= RIGHT PANEL: A4 LIVE DOCUMENT PREVIEW CANVAS ================= -->
-  <main class="flex-1 bg-slate-950/90 overflow-y-auto flex flex-col items-center relative">
-
-    <!-- FLOATING CANVAS TOP BAR (Status & Quick Controls) - EXACT REPLICA -->
-    <div
-      class="preview-floating-bar sticky top-2 z-30 flex items-center gap-2 flex-wrap bg-slate-900/90 backdrop-blur-md border border-slate-700/80 px-3.5 py-1.5 rounded-full shadow-2xl mt-2 text-xs">
-
-      <!-- A4 Page Fit Indicator -->
-      <div id="pageFitBadge"
-        class="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border transition-colors fit-badge-ok">
-        <i id="pageFitIcon" class="fa-solid fa-circle-check text-xs"></i>
-        <span id="pageFitText">1 पृष्ठ में सटीक फिट (Fits 1 Page)</span>
-      </div>
-
-      <!-- Auto-Fit 1 Page Action Button -->
-      <button id="canvasAutoFitBtn" type="button" onclick="autoFitToSinglePage()"
-        class="bg-blue-600/30 hover:bg-blue-600 text-blue-200 hover:text-white px-2.5 py-1 rounded-full font-bold border border-blue-500/40 transition flex items-center gap-1 cursor-pointer"
-        title="फॉन्ट और स्पेसिंग को स्वतः सेट करें ताकि नोटिस 1 पेज पर समा जाए">
-        <i class="fa-solid fa-wand-magic-sparkles text-amber-300 text-xs"></i>
-        <span>1-पेज ऑटो-फिट</span>
-      </button>
-
-      <div class="h-4 w-px bg-slate-700"></div>
-
-      <!-- Canvas Quick Font Size (A- / A+) with Universal Action -->
-      <div
-        class="flex items-center bg-slate-950/80 rounded-full border border-slate-700 px-1.5 py-0.5 text-xs shadow-inner"
-        title="फॉन्ट आकार कम/ज्यादा करें (A- / A+)">
-        <button id="canvasFontDecBtn" type="button" onmousedown="event.preventDefault()"
-          onclick="smartChangeFontSize(-1)"
-          class="w-6 h-6 flex items-center justify-center rounded-full hover:bg-slate-800 text-slate-300 hover:text-white font-bold transition cursor-pointer"
-          title="फॉन्ट छोटा करें (A-)">
-          <span>A−</span>
-        </button>
-        <span id="canvasFontSizeBadge"
-          class="px-1.5 text-[11px] font-mono font-bold text-amber-300 select-none">15.5px</span>
-        <button id="canvasFontIncBtn" type="button" onmousedown="event.preventDefault()"
-          onclick="smartChangeFontSize(1)"
-          class="w-6 h-6 flex items-center justify-center rounded-full hover:bg-slate-800 text-slate-300 hover:text-white font-bold transition cursor-pointer"
-          title="फॉन्ट बड़ा करें (A+)">
-          <span>A+</span>
-        </button>
-        <button type="button" onclick="applyUniversalFontAndSize()"
-          class="ml-1 px-2 py-0.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white rounded-full text-[10px] font-bold flex items-center gap-1 shadow-sm transition active:scale-95 cursor-pointer"
-          title="यूनिवर्सल फॉण्ट व साइज़: सम्पूर्ण नोटिस पर लागू करें (Apply to All Globally)">
-          <i class="fa-solid fa-wand-magic-sparkles text-[9px] text-amber-300"></i>
-          <span>ग्लोबल</span>
-        </button>
-      </div>
-
-      <div class="h-4 w-px bg-slate-700"></div>
-
-      <!-- Document Zoom Quick Buttons -->
-      <div class="flex items-center gap-1">
-        <button onclick="setZoom(0.85)" type="button"
-          class="px-2 py-0.5 rounded text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold cursor-pointer"
-          title="Fit to Screen">
-          Fit
-        </button>
-        <button onclick="setZoom(1.0)" type="button"
-          class="px-2 py-0.5 rounded text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold cursor-pointer"
-          title="100% Zoom">
-          100%
-        </button>
-      </div>
-
-      <div class="h-4 w-px bg-slate-700"></div>
-
-      <!-- Quick Print Button -->
-      <button onclick="triggerPrintNotice()" type="button"
-        class="text-blue-400 hover:text-blue-300 font-bold flex items-center gap-1 cursor-pointer"
-        title="सीधे प्रिंट या पीडीएफ डायलॉग खोलें (Ctrl+P)">
-        <i class="fa-solid fa-print"></i>
-        <span class="hidden sm:inline">प्रिंट</span>
-      </button>
-    </div>
-
-    <!-- ================= MS WORD OFFICE FORMATTING RIBBON - EXACT REPLICA ================= -->
-    <div id="officeRibbonToolbar"
-      class="no-print w-full max-w-[880px] mx-auto bg-slate-900/95 backdrop-blur-md border border-slate-700/90 rounded-2xl p-2 shadow-2xl mt-2 mb-1 flex items-center justify-between gap-1.5 flex-wrap text-xs select-none">
-
-      <!-- Group 1: Undo / Redo / Clear -->
-      <div class="flex items-center gap-0.5 bg-slate-950/80 p-1 rounded-lg border border-slate-800">
-        <button type="button" onmousedown="event.preventDefault()" onclick="letterRichExec('undo')"
-          class="px-2 py-1 text-slate-300 hover:text-white hover:bg-slate-800 rounded transition cursor-pointer"
-          title="पूर्ववत करें (Undo - Ctrl+Z)">
-          <i class="fa-solid fa-rotate-left"></i>
-        </button>
-        <button type="button" onmousedown="event.preventDefault()" onclick="letterRichExec('redo')"
-          class="px-2 py-1 text-slate-300 hover:text-white hover:bg-slate-800 rounded transition cursor-pointer"
-          title="पुनः करें (Redo - Ctrl+Y)">
-          <i class="fa-solid fa-rotate-right"></i>
-        </button>
-        <div class="w-px h-4 bg-slate-700 mx-0.5"></div>
-        <button type="button" onmousedown="event.preventDefault()" onclick="letterRichExec('removeFormat')"
-          class="px-1.5 py-1 text-slate-400 hover:text-rose-300 hover:bg-slate-800 rounded transition cursor-pointer font-bold text-[11px]"
-          title="फॉर्मेटिंग हटाएं (Clear Formatting)">
-          <span>T✕</span>
-        </button>
-      </div>
-
-      <!-- Group 2: Font & Size with Universal Global Controls -->
-      <div class="flex items-center gap-1.5 bg-slate-950/80 p-1 rounded-lg border border-slate-800">
-        <select id="ribbonFontFamily" onchange="applyUniversalFontFamily(this.value)"
-          onmousedown="event.stopPropagation()"
-          class="bg-slate-900 text-amber-300 border border-slate-700 rounded px-2 py-0.5 text-xs font-semibold focus:outline-none cursor-pointer max-w-[125px]"
-          title="फॉन्ट स्टाइल चुनें">
-          <option value="mangal" selected>मंगल (Mangal)</option>
-          <option value="aparajita">अपराजिता (Aparajita)</option>
-          <option value="kokila">कोकिला (Kokila)</option>
-          <option value="noto_serif">नोटो सेरिफ</option>
-          <option value="noto_sans">नोटो सेन्स</option>
-          <option value="martel">मार्टेल (Martel)</option>
-          <option value="tiro">तिरो देवनागरी</option>
-          <option value="karma">कर्मा (Karma)</option>
-          <option value="utsaah">उत्साह (Utsaah)</option>
-          <option value="arial">Arial</option>
-          <option value="times">Times New Roman</option>
-          <option value="georgia">Georgia</option>
-          <option value="calibri">Calibri</option>
-        </select>
-
-        <!-- A- / Size / A+ -->
-        <div class="flex items-center bg-slate-900 rounded border border-slate-700">
-          <button type="button" onmousedown="event.preventDefault()" onclick="smartChangeFontSize(-1)"
-            class="px-1.5 py-0.5 text-slate-300 hover:text-white hover:bg-slate-800 rounded-l font-bold cursor-pointer"
-            title="फॉन्ट छोटा करें (A-)">A−</button>
-          <span id="ribbonFontSizeDisplay"
-            class="px-1.5 text-[11px] font-mono text-amber-300 font-bold select-none min-w-[36px] text-center">15.5px</span>
-          <button type="button" onmousedown="event.preventDefault()" onclick="smartChangeFontSize(1)"
-            class="px-1.5 py-0.5 text-slate-300 hover:text-white hover:bg-slate-800 rounded-r font-bold cursor-pointer"
-            title="फॉन्ट बड़ा करें (A+)">A+</button>
-        </div>
-
-        <button type="button"
-          class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded px-2 py-0.5 text-xs flex items-center gap-1 shadow-sm transition active:scale-95 cursor-pointer"
-          onclick="applyUniversalFontAndSize()"
-          title="फॉन्ट स्टाइल और साइज़ दोनों सम्पूर्ण नोटिस पर लागू करें (Apply to All)">
-          <i class="fa-solid fa-wand-magic-sparkles text-amber-300 text-[10px]"></i>
-          <span>Apply to All</span>
-        </button>
-      </div>
-
-      <!-- Group 3: Character Formatting -->
-      <div class="flex items-center gap-0.5 bg-slate-950/80 p-1 rounded-lg border border-slate-800">
-        <button type="button" onmousedown="event.preventDefault()" onclick="letterRichExec('bold')"
-          class="w-7 h-6 flex items-center justify-center font-black text-slate-200 hover:text-white hover:bg-slate-800 rounded cursor-pointer"
-          title="बोल्ड (Ctrl+B)"><b>B</b></button>
-        <button type="button" onmousedown="event.preventDefault()" onclick="letterRichExec('italic')"
-          class="w-7 h-6 flex items-center justify-center font-serif italic text-slate-200 hover:text-white hover:bg-slate-800 rounded cursor-pointer"
-          title="इटैलिक (Ctrl+I)"><i>I</i></button>
-        <button type="button" onmousedown="event.preventDefault()" onclick="letterRichExec('underline')"
-          class="w-7 h-6 flex items-center justify-center underline text-slate-200 hover:text-white hover:bg-slate-800 rounded cursor-pointer"
-          title="अंडरलाइन (Ctrl+U)"><u>U</u></button>
-        <button type="button" onmousedown="event.preventDefault()" onclick="letterApplyHighlight('#fef08a')"
-          class="w-6 h-6 flex items-center justify-center text-amber-300 hover:bg-slate-800 rounded cursor-pointer"
-          title="हाइलाइट (Highlight)">
-          <i class="fa-solid fa-highlighter text-xs"></i>
-        </button>
-      </div>
-
-      <!-- Group 4: Paragraph & Line Spacing -->
-      <div class="flex items-center gap-1 bg-slate-950/80 p-1 rounded-lg border border-slate-800"
-        title="लाइन व पैराग्राफ अंतराल">
-        <div class="flex items-center bg-slate-900 rounded border border-slate-700" title="लाइन अंतराल">
-          <i class="fa-solid fa-arrows-up-down text-[10px] text-sky-400 pl-1.5 pr-0.5"></i>
-          <button type="button" onmousedown="event.preventDefault()" onclick="changeLineSpacing(-0.05)"
-            class="px-1 py-0.5 text-slate-300 hover:text-white hover:bg-slate-800 rounded-l font-bold cursor-pointer">−</button>
-          <select id="ribbonLineSpacingSelect" onchange="setLineSpacing(this.value)"
-            onmousedown="event.stopPropagation()"
-            class="bg-transparent text-amber-300 font-mono text-[11px] font-bold py-0.5 px-0.5 cursor-pointer focus:outline-none">
-            <option value="1.4">1.4x</option>
-            <option value="1.5">1.5x</option>
-            <option value="1.65" selected>1.65x</option>
-            <option value="1.8">1.8x</option>
-            <option value="2.0">2.0x</option>
-          </select>
-          <button type="button" onmousedown="event.preventDefault()" onclick="changeLineSpacing(0.05)"
-            class="px-1 py-0.5 text-slate-300 hover:text-white hover:bg-slate-800 rounded-r font-bold cursor-pointer">+</button>
-        </div>
-
-        <div class="flex items-center bg-slate-900 rounded border border-slate-700" title="पैराग्राफ अंतराल">
-          <i class="fa-solid fa-paragraph text-[10px] text-emerald-400 pl-1.5 pr-0.5"></i>
-          <button type="button" onmousedown="event.preventDefault()" onclick="changeParagraphSpacing(-2)"
-            class="px-1 py-0.5 text-slate-300 hover:text-white hover:bg-slate-800 rounded-l font-bold cursor-pointer">−</button>
-          <span id="ribbonParaSpacingDisplay"
-            class="px-1 text-[11px] font-mono text-emerald-300 font-bold select-none">12px</span>
-          <button type="button" onmousedown="event.preventDefault()" onclick="changeParagraphSpacing(2)"
-            class="px-1 py-0.5 text-slate-300 hover:text-white hover:bg-slate-800 rounded-r font-bold cursor-pointer">+</button>
-        </div>
-      </div>
-
-      <!-- Group 5: Table Tools -->
-      <div class="flex items-center gap-1 bg-blue-950/60 p-1 rounded-lg border border-blue-800/80">
-        <span class="text-[10px] text-blue-300 font-bold px-1 hidden md:inline">तालिका:</span>
-        <button type="button" onmousedown="event.preventDefault()" onclick="insertTableRowBelow()"
-          class="px-1.5 py-0.5 bg-slate-900 hover:bg-blue-600 text-blue-200 hover:text-white rounded border border-slate-700 text-[11px] font-semibold transition cursor-pointer flex items-center gap-0.5">
-          <i class="fa-solid fa-arrow-down text-[9px]"></i>
-          <span>+पंक्ति</span>
-        </button>
-        <button type="button" onmousedown="event.preventDefault()" onclick="deleteCurrentTableRow()"
-          class="px-1.5 py-0.5 bg-rose-950/60 hover:bg-rose-600 text-rose-300 hover:text-white rounded border border-rose-800/60 text-[11px] font-semibold transition cursor-pointer flex items-center gap-0.5">
-          <i class="fa-solid fa-trash-can text-[9px]"></i>
-          <span>-पंक्ति</span>
-        </button>
-      </div>
-
-    </div>
-
-    <!-- ================= VIEWPORT & A4 PHYSICAL DOCUMENT PAPER ================= -->
-    <div class="preview-viewport">
-      <div class="preview-wrapper" id="previewWrapper">
-
-        <!-- A4 PHYSICAL DOCUMENT PAPER - EXACT REPLICA OF LETTER GENERATOR -->
-        <div class="a4-document" id="noticeDocument">
-
-          <!-- TOP LETTERHEAD (School Title & Logos - EXACT REPLICA) -->
-          <div>
-            <div class="flex items-center justify-between pb-2">
-              <!-- Left Official Logo -->
-              <div class="w-24 h-24 flex-shrink-0 flex items-center justify-center p-1">
-                <img src="logo.png" alt="पुलिस मॉडर्न स्कूल लोगो" class="w-full h-full object-contain"
-                  onerror="this.src='logo1.png'" />
-              </div>
-
-              <!-- Center Title Header -->
-              <div class="flex-1 text-center px-2">
-                <h1 class="hindi-heading text-[28px] font-black text-black tracking-tight leading-tight"
-                  contenteditable="true" id="doc-school-name">
-                  कार्यालय पुलिस मॉडर्न स्कूल
-                </h1>
-                <h2 class="hindi-heading text-[19px] font-bold text-black mt-1 tracking-wide" contenteditable="true"
-                  id="doc-school-unit">
-                  25वीं वाहिनी पीएसी, रायबरेली
-                </h2>
-              </div>
-
-              <!-- Right PAC Emblem / Logo -->
-              <div class="w-24 h-24 flex-shrink-0 flex items-center justify-center p-1">
-                <img src="pac_logo.png" alt="पीएसी लोगो" class="w-full h-full object-contain"
-                  onerror="this.src='logo.png'" />
               </div>
             </div>
+          </div>
 
-            <!-- 1. SCHOOL CONTACT & EMAIL CONTAINER - EXACT REPLICA -->
-            <div
-              class="flex justify-between items-center py-1.5 px-1 border-b border-black text-[12px] font-medium text-black hindi-body">
-              <div
-                class="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-slate-50 border border-slate-300 rounded shadow-xs"
-                title="विद्यालय आधिकारिक ई-मेल">
-                <i class="fa-regular fa-envelope text-[11px] text-blue-900 no-print"></i>
-                <span class="font-bold text-black">ई-मेल:</span>
-                <span class="font-mono text-[11.5px] font-bold text-black select-all" contenteditable="true"
-                  id="doc-school-email">PolicemodernSchoolBnpacrbl@gmail.com</span>
-              </div>
-              <div
-                class="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-slate-50 border border-slate-300 rounded shadow-xs"
-                title="विद्यालय हेल्पलाइन व संपर्क नंबर">
-                <i class="fa-solid fa-phone text-[10px] text-blue-900 no-print"></i>
-                <span class="font-bold text-black">मो०/संपर्क:</span>
-                <span class="font-mono text-[11.5px] font-bold text-black select-all" contenteditable="true"
-                  id="doc-school-contact">+91 9454 4188 41</span>
-              </div>
+          <!-- Embedded Table Section -->
+          <div class="bg-slate-800/80 rounded-xl p-3.5 border border-slate-700 space-y-3 shadow-md">
+            <div class="flex items-center justify-between">
+              <label class="flex items-center gap-2 cursor-pointer select-none">
+                <input type="checkbox" id="toggleTableCheckbox" onchange="toggleTableVisibility(this.checked)"
+                  class="w-4 h-4 rounded bg-slate-900 text-emerald-500 focus:ring-0 cursor-pointer">
+                <span class="text-xs font-black text-emerald-400 uppercase tracking-wider flex items-center gap-1.5">
+                  <i class="fa-solid fa-table-cells text-emerald-400"></i>
+                  <span>तालिका (Table) जोड़ें</span>
+                </span>
+              </label>
+              <span id="tableStatusBadge"
+                class="text-[10px] bg-slate-900 text-slate-400 font-medium px-2 py-0.5 rounded border border-slate-700">बंद
+                (Off)</span>
             </div>
 
-            <!-- 2. DISPATCH NO & DATE CONTAINER - EXACT REPLICA -->
-            <div
-              class="flex justify-between items-center py-2 px-1 border-b border-black text-[15px] font-semibold text-black hindi-body">
-              <div>
-                <span>पत्रांक संख्या: </span>
-                <span contenteditable="true" id="doc-ref-no">पीएमएस / 2026</span>
-              </div>
-              <div>
-                <span>दिनांक: </span>
-                <span contenteditable="true" id="doc-date">जून, 3 , 2026</span>
-              </div>
-            </div>
-
-            <!-- 3. NOTICE TITLE / HEADING (CENTERED) -->
-            <div class="text-center my-3.5">
-              <span class="hindi-heading text-[19px] font-black text-black tracking-wide" contenteditable="true"
-                id="doc-notice-heading">-:नोटिस/ स्पष्टीकरण पत्र:-</span>
-            </div>
-
-            <!-- 4. RECIPIENT SECTION (प्रति / संबंधित) -->
-            <div class="mt-2 text-[15.5px] leading-relaxed text-black hindi-body">
-
-              <div class="pl-6 mt-0.5 font-semibold whitespace-pre-line leading-snug" contenteditable="true"
-                id="doc-recipient">कु0 रागिनी
-                सहायक अध्यापिका
-                पुलिस माडर्न स्कूल
-                25वीं वाहिनी पीएसी
-                रायबरेली।</div>
-            </div>
-
-            <!-- 5. SUBJECT LINE WITH EXACT SUBJECT-BAR -->
-            <div id="doc-subject-container" class="mt-4 text-[16px] font-bold text-black hindi-body subject-bar">
-              <span>विषय: </span>
-              <span contenteditable="true" id="doc-subject">बिना पूर्व सूचना विद्यालय अनुपस्थित रहने के संबन्ध में
-                स्पष्टीकरण।</span>
-            </div>
-
-            <!-- 6. SALUTATION -->
-            <div class="mt-3.5 text-[15.5px] font-bold text-black hindi-body" contenteditable="true"
-              id="doc-salutation">
-              महोदया,
-            </div>
-
-            <!-- 7. BODY PARAGRAPHS (EXACT REPLICA STYLING) -->
-            <div class="mt-2 text-[15.5px] text-justify text-black hindi-body space-y-3" id="doc-body-container">
-
-              <!-- Body Paragraph 1 -->
-              <p class="indent-10" contenteditable="true" id="doc-body1">
-                अवगत कराना है कि आप दिनाँक 01.06.2026 को बिना किसी पूर्व सूचना अथवा अनुमति के विद्यालय से अनुपस्थित रही
-                हैं। आपका यह आचरण विद्यालय के अनुशासन एवं सेवा नियमों के विपरीत हैं।
-              </p>
-
-              <!-- OPTIONAL EMBEDDED TABLE (pms-letter-table) -->
-              <div id="doc-table-wrapper" class="hidden my-2 relative max-w-full">
-                <table id="doc-custom-table" class="pms-letter-table">
-                  <thead>
-                    <tr>
-                      <th contenteditable="true" style="width: 12%;">क्र.सं.</th>
-                      <th contenteditable="true" style="width: 55%;">विवरण / संबंधित अध्यापक</th>
-                      <th contenteditable="true" style="width: 33%;">कक्षा / दायित्व</th>
-                    </tr>
-                  </thead>
-                  <tbody id="doc-table-tbody">
-                    <tr>
-                      <td contenteditable="true">1.</td>
-                      <td contenteditable="true">कु0 रागिनी (सहायक अध्यापिका)</td>
-                      <td contenteditable="true">कक्षा 3 - गणित व सामान्य ज्ञान</td>
-                    </tr>
-                    <tr>
-                      <td contenteditable="true">2.</td>
-                      <td contenteditable="true">अध्यापक प्रतिनिधि</td>
-                      <td contenteditable="true">प्रातः 08:00 बजे से 01:30 बजे तक</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-
-              <!-- Body Paragraph 2 -->
-              <p class="indent-10" contenteditable="true" id="doc-body2">
-                अतः आपको निर्देशित किया जाता है कि इस पत्र प्राप्ति के 03 दिवस के भीतर अपने अनुपस्थित रहने के संबन्ध में
-                लिखित स्पष्टीकरण कार्यालय में प्रस्तुत करें। निर्धारित समयावधि में संतोषजनक स्पष्टीकरण प्राप्त न होने पर
-                आपके विरुद्ध नियमानुसार कार्यवाही की जाएगी।
-              </p>
-
-              <!-- Extra Dynamic Paragraphs on Paper -->
-              <div id="doc-extra-paragraphs" class="space-y-3"></div>
-
-              <!-- On-paper Add Paragraph Quick Action -->
-              <div class="no-print pt-0.5 flex justify-end">
-                <button type="button" onclick="addNewParagraph('', true)"
-                  class="text-[11px] bg-sky-50 hover:bg-sky-100 text-sky-800 border border-sky-300 hover:border-sky-400 px-2.5 py-1 rounded shadow-xs flex items-center gap-1.5 font-semibold transition cursor-pointer"
-                  title="नोटिस में नया पैराग्राफ जोड़ें">
-                  <i class="fa-solid fa-plus-circle text-sky-600 text-xs"></i>
-                  <span>+ नया पैराग्राफ जोड़ें</span>
+            <div id="tableControlsArea" class="space-y-2.5 pt-2 border-t border-slate-700/80 hidden">
+              <div class="flex items-center gap-2">
+                <button type="button" onclick="insertTableRowBelow()"
+                  class="flex-1 py-1.5 px-2 bg-slate-900 hover:bg-slate-700 text-slate-200 border border-slate-600 rounded text-xs font-semibold flex items-center justify-center gap-1 cursor-pointer">
+                  <i class="fa-solid fa-plus text-[10px]"></i> + पंक्ति (Row)
+                </button>
+                <button type="button" onclick="deleteCurrentTableRow()"
+                  class="flex-1 py-1.5 px-2 bg-slate-900 hover:bg-rose-950 text-rose-300 border border-slate-600 rounded text-xs font-semibold flex items-center justify-center gap-1 cursor-pointer">
+                  <i class="fa-solid fa-trash-can text-[10px]"></i> - पंक्ति हटाएं
                 </button>
               </div>
-
             </div>
-
-            <!-- 8. SIGNATURE & PRATILIPI / SANLAGNAK BLOCK - EXACT REPLICA -->
-            <div id="signature-container" class="mt-6 mb-2">
-              <div class="flex justify-between items-end gap-4">
-
-                <!-- Left Section: Pratilipi (Copy To) Block -->
-                <div class="flex flex-col justify-end items-start text-left min-w-[200px] max-w-[55%]">
-
-                  <!-- Quick On-Paper Button to Add Pratilipi When Hidden -->
-                  <button type="button" id="docQuickPratilipiBtn" onclick="togglePratilipiVisibility(true)"
-                    class="no-print text-[11px] text-slate-500 hover:text-blue-600 border border-dashed border-slate-300 hover:border-blue-400 bg-white/80 hover:bg-blue-50/80 rounded px-2 py-0.5 mb-1 transition flex items-center gap-1 cursor-pointer font-medium"
-                    title="प्रतिलिपि जोड़ें">
-                    <span>📎 + प्रतिलिपि जोड़ें</span>
-                  </button>
-
-                  <!-- Left Pratilipi Block -->
-                  <div id="doc-pratilipi-block" class="hidden text-black hindi-body text-[13.5px] leading-snug pl-1">
-                    <div class="font-bold flex items-center gap-1.5">
-                      <span class="border-b border-black pb-0.5">प्रतिलिपि:</span>
-                      <button type="button" onclick="togglePratilipiVisibility(false)"
-                        class="no-print text-[10px] text-rose-500 hover:text-rose-700 hover:underline cursor-pointer font-sans"
-                        title="प्रतिलिपि हटाएं">✕ हटाएं</button>
-                    </div>
-                    <div id="doc-pratilipi-content" contenteditable="true"
-                      class="mt-1 whitespace-pre-line font-medium text-[13px] text-black focus:outline-none">1. श्रीमान
-                      सेनानायक महोदय/व्यवस्थापक, 25वीं वाहिनी पीएसी रायबरेली।
-                      2. नोडल अधिकारी (शिक्षा), 25वीं वाहिनी पीएसी।
-                      3. संबंधित कर्मचारी की व्यक्तिगत सेवा पत्रावली।
-                      4. विद्यालय नोटिस बोर्ड / कार्यालय प्रति।</div>
-                  </div>
-                </div>
-
-                <!-- Right Section: Official Signature Block -->
-                <div class="text-center min-w-[210px] ml-auto">
-
-                  <!-- Signature Graphic (Realistic Singh 3/6/26 from photo) -->
-                  <div id="doc-signature-graphic" class="h-14 flex items-center justify-center relative mb-0.5">
-                    <svg class="w-32 h-12" viewBox="0 0 160 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path
-                        d="M15 38 C 25 15, 35 10, 42 20 C 48 30, 30 45, 45 42 C 55 40, 60 25, 68 32 C 72 35, 75 30, 80 34 C 84 37, 88 32, 92 35"
-                        stroke="#0f172a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
-                      <path d="M35 18 L 38 48" stroke="#0f172a" stroke-width="2" stroke-linecap="round" />
-                      <path d="M42 24 L 54 22" stroke="#0f172a" stroke-width="1.8" stroke-linecap="round" />
-                      <path d="M25 46 Q 70 48, 135 38" stroke="#0f172a" stroke-width="1.8" stroke-linecap="round" />
-                      <text x="85" y="22" font-family="'Caveat', cursive, sans-serif" font-size="16" font-weight="bold"
-                        fill="#0f172a" transform="rotate(-6 85 22)">3/6/26</text>
-                    </svg>
-                  </div>
-
-                  <div class="text-[15.5px] font-extrabold text-black hindi-heading mt-0.5" contenteditable="true"
-                    id="doc-sign-title">
-                    प्रभारी प्रधानाचार्या
-                  </div>
-                  <div class="text-[14.5px] font-bold text-black hindi-body mt-0.5" contenteditable="true"
-                    id="doc-sign-org">
-                    पुलिस माडर्न स्कूल
-                  </div>
-                  <div class="text-[13px] font-semibold text-black hindi-body mt-0.5" contenteditable="true"
-                    id="doc-sign-location">
-                    25वीं वाहिनी पीएसी, रायबरेली
-                  </div>
-                </div>
-
-              </div>
-            </div>
-
           </div>
 
         </div>
-      </div>
-    </div>
 
-  </main>
+        <!-- ================= TAB 5: TYPOGRAPHY & LAYOUT ================= -->
+        <div id="tabContentLayout" class="space-y-4 hidden">
+          <!-- Universal Master Card -->
+          <div
+            class="bg-gradient-to-r from-blue-900/60 via-indigo-950/80 to-slate-900 rounded-xl p-3.5 border border-indigo-500/40 shadow-lg space-y-2.5">
+            <span class="text-xs font-bold text-amber-300 flex items-center gap-1.5 uppercase tracking-wider">
+              <i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i>
+              <span>यूनिवर्सल फॉण्ट मास्टर कंट्रोल</span>
+            </span>
+            <p class="text-[11px] text-slate-300 leading-snug">
+              चयनित फॉन्ट स्टाइल और फॉन्ट साइज़ को एक-क्लिक में <b>सम्पूर्ण नोटिस</b> पर ग्लोबली लागू करें।
+            </p>
+            <div class="grid grid-cols-2 gap-2 pt-1">
+              <button type="button" onclick="applyUniversalFontAndSize()"
+                class="py-2 px-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 text-white font-bold text-xs rounded-lg shadow-md border border-blue-400/40 flex items-center justify-center gap-1.5 transition active:scale-95 cursor-pointer">
+                <i class="fa-solid fa-wand-magic-sparkles text-amber-300 text-xs"></i>
+                <span>सम्पूर्ण पर लागू</span>
+              </button>
+              <button type="button" onclick="resetUniversalFontAndSize()"
+                class="py-2 px-3 bg-slate-900 hover:bg-slate-800 text-slate-300 font-semibold text-xs rounded-lg border border-slate-700 flex items-center justify-center gap-1.5 transition active:scale-95 cursor-pointer">
+                <i class="fa-solid fa-rotate-left text-xs text-sky-400"></i>
+                <span>मानक रीसेट (15.5px)</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Page Fit Status Indicator -->
+          <div class="bg-slate-800/90 rounded-xl p-3 border border-slate-700 space-y-2 shadow-sm">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-slate-200 uppercase tracking-wider flex items-center gap-1.5">
+                <i class="fa-solid fa-file-circle-check text-sky-400"></i>
+                <span>A4 पृष्ठ स्थिति (Page Height Meter)</span>
+              </span>
+              <span id="sidebarFitBadge" class="text-[10px] fit-badge-ok px-2 py-0.5 rounded-full border font-bold">100%
+                Fit</span>
+            </div>
+            <div class="w-full bg-slate-950 h-2.5 rounded-full overflow-hidden border border-slate-700">
+              <div id="pageHeightProgressBar" class="bg-emerald-500 h-full transition-all duration-300"
+                style="width: 82%;">
+              </div>
+            </div>
+            <div class="flex justify-between items-center text-[10px] text-slate-400 font-mono">
+              <span id="pageHeightText">ऊंचाई: 245mm / 297mm</span>
+              <button type="button" onclick="autoFitToSinglePage()"
+                class="text-emerald-400 hover:text-emerald-300 underline font-sans font-bold cursor-pointer">
+                ऑटो-फिट करें
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Sidebar Footer Help Card -->
+      <div
+        class="p-3 bg-slate-950 border-t border-slate-800 text-[11px] text-slate-400 flex items-center justify-between">
+        <span>💡 <b>टिप:</b> सीधे दाईं ओर A4 नोटिस पेपर पर भी टाइप कर सकते हैं।</span>
+        <button type="button" onclick="autoFitToSinglePage()"
+          class="text-blue-400 hover:text-blue-300 font-bold underline cursor-pointer">
+          1-पेज ऑटो-फिट
+        </button>
+      </div>
+
+    </aside>
+
+    <!-- ================= RIGHT PANEL: A4 LIVE DOCUMENT PREVIEW CANVAS ================= -->
+    <main class="flex-1 bg-slate-950/90 overflow-y-auto flex flex-col items-center relative">
+
+      <!-- FLOATING CANVAS TOP BAR (Status & Quick Controls) -->
+      <div
+        class="preview-floating-bar sticky top-2 z-30 flex items-center gap-2 flex-wrap bg-slate-900/90 backdrop-blur-md border border-slate-700/80 px-3.5 py-1.5 rounded-full shadow-2xl mt-2 text-xs">
+
+        <!-- A4 Page Fit Indicator -->
+        <div id="pageFitBadge"
+          class="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border transition-colors fit-badge-ok">
+          <i id="pageFitIcon" class="fa-solid fa-circle-check text-xs"></i>
+          <span id="pageFitText">1 पृष्ठ में सटीक फिट (Fits 1 Page)</span>
+        </div>
+
+        <!-- Auto-Fit 1 Page Action Button -->
+        <button id="canvasAutoFitBtn" type="button" onclick="autoFitToSinglePage()"
+          class="bg-blue-600/30 hover:bg-blue-600 text-blue-200 hover:text-white px-2.5 py-1 rounded-full font-bold border border-blue-500/40 transition flex items-center gap-1 cursor-pointer"
+          title="फॉन्ट और स्पेसिंग को स्वतः सेट करें ताकि नोटिस 1 पेज पर समा जाए">
+          <i class="fa-solid fa-wand-magic-sparkles text-amber-300 text-xs"></i>
+          <span>1-पेज ऑटो-फिट</span>
+        </button>
+
+        <div class="h-4 w-px bg-slate-700"></div>
+
+        <!-- Canvas Quick Font Size (A- / A+) -->
+        <div
+          class="flex items-center bg-slate-950/80 rounded-full border border-slate-700 px-1.5 py-0.5 text-xs shadow-inner"
+          title="फॉन्ट आकार कम/ज्यादा करें (A- / A+)">
+          <button id="canvasFontDecBtn" type="button" onmousedown="event.preventDefault()"
+            onclick="smartChangeFontSize(-1)"
+            class="w-6 h-6 flex items-center justify-center rounded-full hover:bg-slate-800 text-slate-300 hover:text-white font-bold transition cursor-pointer"
+            title="फॉन्ट छोटा करें (A-)">
+            <span>A−</span>
+          </button>
+          <span id="canvasFontSizeBadge"
+            class="px-1.5 text-[11px] font-mono font-bold text-amber-300 select-none">15.5px</span>
+          <button id="canvasFontIncBtn" type="button" onmousedown="event.preventDefault()"
+            onclick="smartChangeFontSize(1)"
+            class="w-6 h-6 flex items-center justify-center rounded-full hover:bg-slate-800 text-slate-300 hover:text-white font-bold transition cursor-pointer"
+            title="फॉन्ट बड़ा करें (A+)">
+            <span>A+</span>
+          </button>
+          <button type="button" onclick="applyUniversalFontAndSize()"
+            class="ml-1 px-2 py-0.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white rounded-full text-[10px] font-bold flex items-center gap-1 shadow-sm transition active:scale-95 cursor-pointer"
+            title="यूनिवर्सल फॉण्ट व साइज़ सम्पूर्ण नोटिस पर लागू करें">
+            <i class="fa-solid fa-wand-magic-sparkles text-[9px] text-amber-300"></i>
+            <span>ग्लोबल</span>
+          </button>
+        </div>
+
+        <div class="h-4 w-px bg-slate-700"></div>
+
+        <!-- Document Zoom Quick Buttons -->
+        <div class="flex items-center gap-1">
+          <button onclick="setZoom(0.85)" type="button"
+            class="px-2 py-0.5 rounded text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold cursor-pointer"
+            title="Fit to Screen">
+            Fit
+          </button>
+          <button onclick="setZoom(1.0)" type="button"
+            class="px-2 py-0.5 rounded text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold cursor-pointer"
+            title="100% Zoom">
+            100%
+          </button>
+        </div>
+
+        <div class="h-4 w-px bg-slate-700"></div>
+
+        <!-- Quick Print Button -->
+        <button onclick="triggerPrintNotice()" type="button"
+          class="text-blue-400 hover:text-blue-300 font-bold flex items-center gap-1 cursor-pointer"
+          title="सीधे प्रिंट या पीडीएफ डायलॉग खोलें (Ctrl+P)">
+          <i class="fa-solid fa-print"></i>
+          <span class="hidden sm:inline">प्रिंट</span>
+        </button>
+      </div>
+
+      <!-- ================= MS WORD OFFICE FORMATTING RIBBON ================= -->
+      <div id="officeRibbonToolbar"
+        class="no-print w-full max-w-[900px] mx-auto bg-slate-900/95 backdrop-blur-md border border-slate-700/90 rounded-2xl p-2 shadow-2xl mt-2 mb-1 flex items-center justify-between gap-1.5 flex-wrap text-xs select-none">
+
+        <!-- Group 1: Undo / Redo / Clear -->
+        <div class="flex items-center gap-0.5 bg-slate-950/80 p-1 rounded-lg border border-slate-800">
+          <button type="button" onmousedown="event.preventDefault()" onclick="letterRichExec('undo')"
+            class="px-2 py-1 text-slate-300 hover:text-white hover:bg-slate-800 rounded transition cursor-pointer"
+            title="पूर्ववत करें (Undo - Ctrl+Z)">
+            <i class="fa-solid fa-rotate-left"></i>
+          </button>
+          <button type="button" onmousedown="event.preventDefault()" onclick="letterRichExec('redo')"
+            class="px-2 py-1 text-slate-300 hover:text-white hover:bg-slate-800 rounded transition cursor-pointer"
+            title="पुनः करें (Redo - Ctrl+Y)">
+            <i class="fa-solid fa-rotate-right"></i>
+          </button>
+          <div class="w-px h-4 bg-slate-700 mx-0.5"></div>
+          <button type="button" onmousedown="event.preventDefault()" onclick="letterRichExec('removeFormat')"
+            class="px-1.5 py-1 text-slate-400 hover:text-rose-300 hover:bg-slate-800 rounded transition cursor-pointer font-bold text-[11px]"
+            title="फॉर्मेटिंग हटाएं (Clear Formatting)">
+            <span>T✕</span>
+          </button>
+        </div>
+
+        <!-- Group 2: Font & Size Controls -->
+        <div class="flex items-center gap-1.5 bg-slate-950/80 p-1 rounded-lg border border-slate-800">
+          <select id="ribbonFontFamily" onchange="applyUniversalFontFamily(this.value)"
+            onmousedown="event.stopPropagation()"
+            class="bg-slate-900 text-amber-300 border border-slate-700 rounded px-2 py-0.5 text-xs font-semibold focus:outline-none cursor-pointer max-w-[125px]"
+            title="फॉन्ट स्टाइल चुनें">
+            <option value="mangal" selected>मंगल (Mangal)</option>
+            <option value="aparajita">अपराजिता (Aparajita)</option>
+            <option value="kokila">कोकिला (Kokila)</option>
+            <option value="noto_serif">नोटो सेरिफ</option>
+            <option value="noto_sans">नोटो सेन्स</option>
+            <option value="martel">मार्टेल (Martel)</option>
+            <option value="tiro">तिरो देवनागरी</option>
+            <option value="karma">कर्मा (Karma)</option>
+            <option value="utsaah">उत्साह (Utsaah)</option>
+            <option value="arial">Arial</option>
+            <option value="times">Times New Roman</option>
+            <option value="georgia">Georgia</option>
+            <option value="calibri">Calibri</option>
+          </select>
+
+          <!-- A- / Size / A+ -->
+          <div class="flex items-center bg-slate-900 rounded border border-slate-700">
+            <button type="button" onmousedown="event.preventDefault()" onclick="smartChangeFontSize(-1)"
+              class="px-1.5 py-0.5 text-slate-300 hover:text-white hover:bg-slate-800 rounded-l font-bold cursor-pointer"
+              title="फॉन्ट छोटा करें (A-)">A−</button>
+            <span id="ribbonFontSizeDisplay"
+              class="px-1.5 text-[11px] font-mono text-amber-300 font-bold select-none min-w-[36px] text-center">15.5px</span>
+            <button type="button" onmousedown="event.preventDefault()" onclick="smartChangeFontSize(1)"
+              class="px-1.5 py-0.5 text-slate-300 hover:text-white hover:bg-slate-800 rounded-r font-bold cursor-pointer"
+              title="फॉन्ट बड़ा करें (A+)">A+</button>
+          </div>
+
+          <button type="button"
+            class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded px-2 py-0.5 text-xs flex items-center gap-1 shadow-sm transition active:scale-95 cursor-pointer"
+            onclick="applyUniversalFontAndSize()" title="फॉन्ट स्टाइल और साइज़ दोनों सम्पूर्ण नोटिस पर लागू करें">
+            <i class="fa-solid fa-wand-magic-sparkles text-amber-300 text-[10px]"></i>
+            <span>Apply to All</span>
+          </button>
+        </div>
+
+        <!-- Group 3: Character Formatting -->
+        <div class="flex items-center gap-0.5 bg-slate-950/80 p-1 rounded-lg border border-slate-800">
+          <button type="button" onmousedown="event.preventDefault()" onclick="letterRichExec('bold')"
+            class="w-7 h-6 flex items-center justify-center font-black text-slate-200 hover:text-white hover:bg-slate-800 rounded cursor-pointer"
+            title="बोल्ड (Ctrl+B)"><b>B</b></button>
+          <button type="button" onmousedown="event.preventDefault()" onclick="letterRichExec('italic')"
+            class="w-7 h-6 flex items-center justify-center font-serif italic text-slate-200 hover:text-white hover:bg-slate-800 rounded cursor-pointer"
+            title="इटैलिक (Ctrl+I)"><i>I</i></button>
+          <button type="button" onmousedown="event.preventDefault()" onclick="letterRichExec('underline')"
+            class="w-7 h-6 flex items-center justify-center underline text-slate-200 hover:text-white hover:bg-slate-800 rounded cursor-pointer"
+            title="अंडरलाइन (Ctrl+U)"><u>U</u></button>
+          <button type="button" onmousedown="event.preventDefault()" onclick="letterApplyHighlight('#fef08a')"
+            class="w-6 h-6 flex items-center justify-center text-amber-300 hover:bg-slate-800 rounded cursor-pointer"
+            title="हाइलाइट (Highlight)">
+            <i class="fa-solid fa-highlighter text-xs"></i>
+          </button>
+        </div>
+
+        <!-- Group 4: Paragraph & Line Spacing -->
+        <div class="flex items-center gap-1 bg-slate-950/80 p-1 rounded-lg border border-slate-800"
+          title="लाइन व पैराग्राफ अंतराल">
+          <div class="flex items-center bg-slate-900 rounded border border-slate-700" title="लाइन अंतराल">
+            <i class="fa-solid fa-arrows-up-down text-[10px] text-sky-400 pl-1.5 pr-0.5"></i>
+            <button type="button" onmousedown="event.preventDefault()" onclick="changeLineSpacing(-0.05)"
+              class="px-1 py-0.5 text-slate-300 hover:text-white hover:bg-slate-800 rounded-l font-bold cursor-pointer">−</button>
+            <select id="ribbonLineSpacingSelect" onchange="setLineSpacing(this.value)"
+              onmousedown="event.stopPropagation()"
+              class="bg-transparent text-amber-300 font-mono text-[11px] font-bold py-0.5 px-0.5 cursor-pointer focus:outline-none">
+              <option value="1.4">1.4x</option>
+              <option value="1.5">1.5x</option>
+              <option value="1.65" selected>1.65x</option>
+              <option value="1.8">1.8x</option>
+              <option value="2.0">2.0x</option>
+            </select>
+            <button type="button" onmousedown="event.preventDefault()" onclick="changeLineSpacing(0.05)"
+              class="px-1 py-0.5 text-slate-300 hover:text-white hover:bg-slate-800 rounded-r font-bold cursor-pointer">+</button>
+          </div>
+
+          <div class="flex items-center bg-slate-900 rounded border border-slate-700" title="पैराग्राफ अंतराल">
+            <i class="fa-solid fa-paragraph text-[10px] text-emerald-400 pl-1.5 pr-0.5"></i>
+            <button type="button" onmousedown="event.preventDefault()" onclick="changeParagraphSpacing(-2)"
+              class="px-1 py-0.5 text-slate-300 hover:text-white hover:bg-slate-800 rounded-l font-bold cursor-pointer">−</button>
+            <span id="ribbonParaSpacingDisplay"
+              class="px-1 text-[11px] font-mono text-emerald-300 font-bold select-none">12px</span>
+            <button type="button" onmousedown="event.preventDefault()" onclick="changeParagraphSpacing(2)"
+              class="px-1 py-0.5 text-slate-300 hover:text-white hover:bg-slate-800 rounded-r font-bold cursor-pointer">+</button>
+          </div>
+        </div>
+
+        <!-- Group 5: Table Tools -->
+        <div class="flex items-center gap-1 bg-blue-950/60 p-1 rounded-lg border border-blue-800/80">
+          <span class="text-[10px] text-blue-300 font-bold px-1 hidden md:inline">तालिका:</span>
+          <button type="button" onmousedown="event.preventDefault()" onclick="insertTableRowBelow()"
+            class="px-1.5 py-0.5 bg-slate-900 hover:bg-blue-600 text-blue-200 hover:text-white rounded border border-slate-700 text-[11px] font-semibold transition cursor-pointer flex items-center gap-0.5">
+            <i class="fa-solid fa-arrow-down text-[9px]"></i>
+            <span>+पंक्ति</span>
+          </button>
+          <button type="button" onmousedown="event.preventDefault()" onclick="deleteCurrentTableRow()"
+            class="px-1.5 py-0.5 bg-rose-950/60 hover:bg-rose-600 text-rose-300 hover:text-white rounded border border-rose-800/60 text-[11px] font-semibold transition cursor-pointer flex items-center gap-0.5">
+            <i class="fa-solid fa-trash-can text-[9px]"></i>
+            <span>-पंक्ति</span>
+          </button>
+        </div>
+
+      </div>
+
+      <!-- ================= VIEWPORT & A4 PHYSICAL DOCUMENT PAPER ================= -->
+      <div class="preview-viewport">
+        <div class="preview-wrapper" id="previewWrapper">
+
+          <!-- A4 PHYSICAL DOCUMENT PAPER -->
+          <div class="a4-document" id="noticeDocument">
+
+            <!-- TOP LETTERHEAD (School Title & Logos) -->
+            <div>
+              <div class="flex items-center justify-between pb-2">
+                <!-- Left Official Logo -->
+                <div class="w-24 h-24 flex-shrink-0 flex items-center justify-center p-1">
+                  <img src="logo.png" alt="पुलिस मॉडर्न स्कूल लोगो" class="w-full h-full object-contain"
+                    onerror="this.src='logo1.png'" />
+                </div>
+
+                <!-- Center Title Header -->
+                <div class="flex-1 text-center px-2">
+                  <h1 class="hindi-heading text-[28px] font-black text-black tracking-tight leading-tight"
+                    contenteditable="true" id="doc-school-name">
+                    कार्यालय पुलिस मॉडर्न स्कूल
+                  </h1>
+                  <h2 class="hindi-heading text-[19px] font-bold text-black mt-1 tracking-wide" contenteditable="true"
+                    id="doc-school-unit">
+                    25वीं वाहिनी पीएसी, रायबरेली
+                  </h2>
+                </div>
+
+                <!-- Right PAC Emblem / Logo -->
+                <div class="w-24 h-24 flex-shrink-0 flex items-center justify-center p-1">
+                  <img src="pac_logo.png" alt="पीएसी लोगो" class="w-full h-full object-contain"
+                    onerror="this.src='logo.png'" />
+                </div>
+              </div>
+
+              <!-- 1. SCHOOL CONTACT & EMAIL CONTAINER -->
+              <div
+                class="flex justify-between items-center py-1.5 px-1 border-b border-black text-[12px] font-medium text-black hindi-body">
+                <div
+                  class="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-slate-50 border border-slate-300 rounded shadow-xs"
+                  title="विद्यालय आधिकारिक ई-मेल">
+                  <i class="fa-regular fa-envelope text-[11px] text-blue-900 no-print"></i>
+                  <span class="font-bold text-black">ई-मेल:</span>
+                  <span class="font-mono text-[11.5px] font-bold text-black select-all" contenteditable="true"
+                    id="doc-school-email">PolicemodernSchoolBnpacrbl@gmail.com</span>
+                </div>
+                <div
+                  class="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-slate-50 border border-slate-300 rounded shadow-xs"
+                  title="विद्यालय हेल्पलाइन व संपर्क नंबर">
+                  <i class="fa-solid fa-phone text-[10px] text-blue-900 no-print"></i>
+                  <span class="font-bold text-black">मो०/संपर्क:</span>
+                  <span class="font-mono text-[11.5px] font-bold text-black select-all" contenteditable="true"
+                    id="doc-school-contact">+91 9454 4188 41</span>
+                </div>
+              </div>
+
+              <!-- 2. DISPATCH NO & DATE CONTAINER -->
+              <div
+                class="flex justify-between items-center py-2 px-1 border-b border-black text-[15px] font-semibold text-black hindi-body">
+                <div>
+                  <span>पत्रांक संख्या: </span>
+                  <span contenteditable="true" id="doc-ref-no">पीएमएस / 2026</span>
+                </div>
+                <div>
+                  <span>दिनांक: </span>
+                  <span contenteditable="true" id="doc-date">जून, 3 , 2026</span>
+                </div>
+              </div>
+
+              <!-- 3. NOTICE TITLE / HEADING (CENTERED) -->
+              <div class="text-center my-3.5">
+                <span class="hindi-heading text-[19px] font-black text-black tracking-wide" contenteditable="true"
+                  id="doc-notice-heading">-:नोटिस/ स्पष्टीकरण पत्र:-</span>
+              </div>
+
+              <!-- 4. RECIPIENT SECTION -->
+              <div class="mt-2 text-[15.5px] leading-relaxed text-black hindi-body">
+                <div class="pl-6 mt-0.5 font-semibold whitespace-pre-line leading-snug" contenteditable="true"
+                  id="doc-recipient">कु0 रागिनी
+                  सहायक अध्यापिका
+                  पुलिस माडर्न स्कूल
+                  25वीं वाहिनी पीएसी
+                  रायबरेली।</div>
+              </div>
+
+              <!-- 5. SUBJECT LINE WITH EXACT SUBJECT-BAR -->
+              <div id="doc-subject-container" class="mt-4 text-[16px] font-bold text-black hindi-body subject-bar">
+                <span>विषय: </span>
+                <span contenteditable="true" id="doc-subject">बिना पूर्व सूचना विद्यालय अनुपस्थित रहने के संबन्ध में
+                  स्पष्टीकरण।</span>
+              </div>
+
+              <!-- 6. SALUTATION -->
+              <div class="mt-3.5 text-[15.5px] font-bold text-black hindi-body" contenteditable="true"
+                id="doc-salutation">
+                महोदया,
+              </div>
+
+              <!-- 7. BODY PARAGRAPHS -->
+              <div class="mt-2 text-[15.5px] text-justify text-black hindi-body space-y-3" id="doc-body-container">
+
+                <!-- Body Paragraph 1 -->
+                <p class="indent-10" contenteditable="true" id="doc-body1">
+                  अवगत कराना है कि आप दिनाँक 01.06.2026 को बिना किसी पूर्व सूचना अथवा अनुमति के विद्यालय से अनुपस्थित
+                  रही
+                  हैं। आपका यह आचरण विद्यालय के अनुशासन एवं सेवा नियमों के विपरीत हैं।
+                </p>
+
+                <!-- OPTIONAL EMBEDDED TABLE -->
+                <div id="doc-table-wrapper" class="hidden my-2 relative max-w-full">
+                  <table id="doc-custom-table" class="pms-letter-table">
+                    <thead>
+                      <tr>
+                        <th contenteditable="true" style="width: 12%;">क्र.सं.</th>
+                        <th contenteditable="true" style="width: 55%;">विवरण / संबंधित अध्यापक</th>
+                        <th contenteditable="true" style="width: 33%;">कक्षा / दायित्व</th>
+                      </tr>
+                    </thead>
+                    <tbody id="doc-table-tbody">
+                      <tr>
+                        <td contenteditable="true">1.</td>
+                        <td contenteditable="true">कु0 रागिनी (सहायक अध्यापिका)</td>
+                        <td contenteditable="true">कक्षा 3 - गणित व सामान्य ज्ञान</td>
+                      </tr>
+                      <tr>
+                        <td contenteditable="true">2.</td>
+                        <td contenteditable="true">अध्यापक प्रतिनिधि</td>
+                        <td contenteditable="true">प्रातः 08:00 बजे से 01:30 बजे तक</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <!-- Body Paragraph 2 -->
+                <p class="indent-10" contenteditable="true" id="doc-body2">
+                  अतः आपको निर्देशित किया जाता है कि इस पत्र प्राप्ति के 03 दिवस के भीतर अपने अनुपस्थित रहने के संबन्ध
+                  में
+                  लिखित स्पष्टीकरण कार्यालय में प्रस्तुत करें। निर्धारित समयावधि में संतोषजनक स्पष्टीकरण प्राप्त न होने
+                  पर
+                  आपके विरुद्ध नियमानुसार कार्यवाही की जाएगी।
+                </p>
+
+                <!-- Extra Dynamic Paragraphs on Paper -->
+                <div id="doc-extra-paragraphs" class="space-y-3"></div>
+
+                <!-- On-paper Add Paragraph Quick Action -->
+                <div class="no-print pt-0.5 flex justify-end">
+                  <button type="button" onclick="addNewParagraph('', true)"
+                    class="text-[11px] bg-sky-50 hover:bg-sky-100 text-sky-800 border border-sky-300 hover:border-sky-400 px-2.5 py-1 rounded shadow-xs flex items-center gap-1.5 font-semibold transition cursor-pointer"
+                    title="नोटिस में नया पैराग्राफ जोड़ें">
+                    <i class="fa-solid fa-plus-circle text-sky-600 text-xs"></i>
+                    <span>+ नया पैराग्राफ जोड़ें</span>
+                  </button>
+                </div>
+
+              </div>
+
+              <!-- 8. SIGNATURE & PRATILIPI / SANLAGNAK BLOCK -->
+              <div id="signature-container" class="mt-6 mb-2">
+                <div class="flex justify-between items-end gap-4">
+
+                  <!-- Left Section: Pratilipi Block -->
+                  <div class="flex flex-col justify-end items-start text-left min-w-[200px] max-w-[55%]">
+
+                    <!-- Quick Button to Add Pratilipi When Hidden -->
+                    <button type="button" id="docQuickPratilipiBtn" onclick="togglePratilipiVisibility(true)"
+                      class="no-print text-[11px] text-slate-500 hover:text-blue-600 border border-dashed border-slate-300 hover:border-blue-400 bg-white/80 hover:bg-blue-50/80 rounded px-2 py-0.5 mb-1 transition flex items-center gap-1 cursor-pointer font-medium"
+                      title="प्रतिलिपि जोड़ें">
+                      <span>📎 + प्रतिलिपि जोड़ें</span>
+                    </button>
+
+                    <!-- Left Pratilipi Block Content -->
+                    <div id="doc-pratilipi-block" class="hidden text-black hindi-body text-[13.5px] leading-snug pl-1">
+                      <div class="font-bold flex items-center gap-1.5">
+                        <span class="border-b border-black pb-0.5">प्रतिलिपि:</span>
+                        <button type="button" onclick="togglePratilipiVisibility(false)"
+                          class="no-print text-[10px] text-rose-500 hover:text-rose-700 hover:underline cursor-pointer font-sans"
+                          title="प्रतिलिपि हटाएं">✕ हटाएं</button>
+                      </div>
+                      <div id="doc-pratilipi-content" contenteditable="true"
+                        class="mt-1 whitespace-pre-line font-medium text-[13px] text-black focus:outline-none">1.
+                        श्रीमान सेनानायक महोदय/व्यवस्थापक, 25वीं वाहिनी पीएसी रायबरेली।
+                        2. नोडल अधिकारी (शिक्षा), 25वीं वाहिनी पीएसी।
+                        3. संबंधित कर्मचारी की व्यक्तिगत सेवा पत्रावली।
+                        4. विद्यालय नोटिस बोर्ड / कार्यालय प्रति।</div>
+                    </div>
+                  </div>
+
+                  <!-- Right Section: Official Signature Block -->
+                  <div class="text-center min-w-[210px] ml-auto">
+
+                    <!-- Signature Graphic -->
+
+
+                    <div class="text-[15.5px] font-extrabold text-black hindi-heading mt-0.5" contenteditable="true"
+                      id="doc-sign-title">
+                      प्रभारी प्रधानाचार्या
+                    </div>
+                    <div class="text-[14.5px] font-bold text-black hindi-body mt-0.5" contenteditable="true"
+                      id="doc-sign-org">
+                      पुलिस माडर्न स्कूल
+                    </div>
+                    <div class="text-[13px] font-semibold text-black hindi-body mt-0.5" contenteditable="true"
+                      id="doc-sign-location">
+                      25वीं वाहिनी पीएसी, रायबरेली
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </main>
   </div>
 
-  <!-- ================= FLOATING SELECTION MINI-BAR (EXACT REPLICA) ================= -->
+  <!-- ================= FLOATING SELECTION MINI-BAR ================= -->
   <div id="selectionMiniBar" class="selection-mini-bar no-print">
     <button type="button" onmousedown="event.preventDefault()" onclick="smartChangeFontSize(-1)"
       title="चयनित फॉन्ट छोटा करें (A-)">A−</button>
@@ -1507,37 +1552,231 @@
     </div>
   </div>
 
-  <!-- ================= SAVE DRAFT MODAL ================= -->
+  <!-- ================= CLOUD SAVE / BACKUP MODAL ================= -->
   <div id="saveNoticeModal"
     class="no-print fixed inset-0 z-[110] bg-slate-950/85 backdrop-blur-sm flex items-center justify-center p-4 hidden">
     <div
-      class="bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl w-full max-w-md overflow-hidden text-slate-100">
-      <div class="px-5 py-3.5 border-b border-slate-800 flex items-center justify-between bg-slate-950/60">
-        <h3 class="text-sm font-bold text-white flex items-center gap-2">
-          <i class="fa-solid fa-bookmark text-amber-400"></i>
-          <span>नोटिस सहेजें (Save Notice Draft)</span>
-        </h3>
+      class="bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden text-slate-100 font-sans">
+
+      <!-- Modal Header -->
+      <div class="px-6 py-4 border-b border-slate-800 flex items-center justify-between bg-slate-950/60">
+        <div class="flex items-center gap-3">
+          <div class="bg-amber-600/20 text-amber-400 p-2.5 rounded-xl border border-amber-500/30">
+            <i class="fa-solid fa-cloud-arrow-up text-lg"></i>
+          </div>
+          <div>
+            <h3 class="text-base font-bold text-white flex items-center gap-2">
+              <span>नोटिस क्लाउड बैकअप (Cloud Save)</span>
+            </h3>
+            <p class="text-xs text-slate-400">नोटिस को क्लाउड पर सुरक्षित करें या मौजूदा रिकॉर्ड अपडेट करें</p>
+          </div>
+        </div>
         <button type="button" onclick="closeSaveModal()"
-          class="text-slate-400 hover:text-white text-base cursor-pointer">✕</button>
+          class="p-2 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition cursor-pointer">
+          <i class="fa-solid fa-xmark text-base"></i>
+        </button>
       </div>
-      <div class="p-5 space-y-3.5">
+
+      <!-- Modal Body -->
+      <div class="p-6 space-y-4 text-xs">
+
+        <!-- Save Mode Option: Update Existing vs Save New -->
+        <div id="saveModeContainer" class="bg-slate-950/70 p-3 rounded-xl border border-slate-800 space-y-2">
+          <label class="block text-[11px] font-bold text-slate-300 uppercase tracking-wider">
+            सहेजने का विकल्प चुनें (Save Option):
+          </label>
+          <div class="grid grid-cols-2 gap-2">
+            <!-- Option 1: Update Existing -->
+            <label id="saveModeUpdateLabel"
+              class="save-mode-option flex flex-col p-2.5 rounded-xl border-2 border-emerald-500 bg-emerald-950/40 cursor-pointer transition select-none shadow-sm">
+              <div class="flex items-center gap-2">
+                <input type="radio" name="noticeSaveModeRadio" id="saveModeUpdate" value="update" checked
+                  class="text-emerald-500 focus:ring-0 cursor-pointer">
+                <span class="font-bold text-xs text-emerald-200">🔄 मौजूदा अपडेट करें</span>
+              </div>
+              <span class="text-[10px] text-slate-400 mt-1 leading-tight">उसी फाइल में बदलाव सहेजें (नई फाइल नहीं
+                बनेगी)</span>
+            </label>
+
+            <!-- Option 2: Save as New Copy -->
+            <label id="saveModeNewLabel"
+              class="save-mode-option flex flex-col p-2.5 rounded-xl border border-slate-700 bg-slate-900/60 hover:border-slate-600 cursor-pointer transition select-none">
+              <div class="flex items-center gap-2">
+                <input type="radio" name="noticeSaveModeRadio" id="saveModeNew" value="new"
+                  class="text-blue-500 focus:ring-0 cursor-pointer">
+                <span class="font-bold text-xs text-slate-300">➕ नया नोटिस सहेजें</span>
+              </div>
+              <span class="text-[10px] text-slate-400 mt-1 leading-tight">क्लाउड पर अलग नई फाइल के रूप में सहेजें</span>
+            </label>
+          </div>
+
+          <!-- Existing Linked Document Banner -->
+          <div id="existingNoticeBanner"
+            class="mt-2 text-[11px] bg-slate-900/90 border border-slate-700/80 rounded-lg p-2.5 flex items-center justify-between text-slate-300">
+            <div class="flex items-center gap-2 min-w-0">
+              <i class="fa-solid fa-link text-indigo-400 text-xs flex-shrink-0"></i>
+              <div class="truncate">
+                <span class="text-slate-400 text-[10px] block">सक्रिय क्लाउड फाइल (Target File):</span>
+                <span id="existingNoticeTitleDisplay" class="font-semibold text-white truncate">-</span>
+              </div>
+            </div>
+            <span
+              class="text-[9px] bg-indigo-950 text-indigo-300 border border-indigo-700/50 px-2 py-0.5 rounded font-mono font-bold flex-shrink-0">सक्रिय</span>
+          </div>
+        </div>
+
+        <!-- Notice Title / Identifier -->
         <div>
-          <label class="block text-xs text-slate-300 font-semibold mb-1">नोटिस का शीर्षक / नाम (Title):</label>
-          <input type="text" id="in-save-title"
-            class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-white font-medium text-xs focus:ring-1 focus:ring-blue-500 focus:outline-none"
-            placeholder="उदा. कु0 रागिनी अनुपस्थिति स्पष्टीकरण">
+          <label class="block text-xs font-bold text-amber-300 mb-1 flex items-center justify-between">
+            <span>🏷️ नोटिस पहचान शीर्षक (Search Tag / Notice Title)</span>
+            <span class="text-rose-400 font-bold">* आवश्यक</span>
+          </label>
+          <input type="text" id="modal-notice-title"
+            placeholder="जैसे: कु0 रागिनी - अनुपस्थिति स्पष्टीकरण / शिक्षक डायरी अपूर्ण नोटिस"
+            class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-white font-semibold text-xs focus:ring-2 focus:ring-blue-500 focus:outline-none" />
+          <p class="text-[11px] text-slate-400 mt-1">यह शीर्षक क्लाउड बैकअप में सबसे ऊपर सुनहरे अक्षरों में दिखेगा।</p>
         </div>
-        <div class="flex items-center justify-end gap-2 pt-2">
-          <button type="button" onclick="closeSaveModal()"
-            class="px-3.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-xs font-semibold cursor-pointer">
-            रद्द करें
+
+        <!-- Quick Tag Chips -->
+        <div>
+          <label class="block text-[10px] text-slate-400 mb-1">त्वरित पहचान टैग (क्लिक करें):</label>
+          <div class="flex flex-wrap gap-1.5" id="noticeTagChipsContainer">
+            <button type="button" onclick="setSaveNoticeTag('कु0 रागिनी स्पष्टीकरण')"
+              class="text-[10px] bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 px-2 py-0.5 rounded cursor-pointer transition">कु0
+              रागिनी स्पष्टीकरण</button>
+            <button type="button" onclick="setSaveNoticeTag('अनुपस्थिति स्पष्टीकरण')"
+              class="text-[10px] bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 px-2 py-0.5 rounded cursor-pointer transition">अनुपस्थिति
+              स्पष्टीकरण</button>
+            <button type="button" onclick="setSaveNoticeTag('कारण बताओ नोटिस')"
+              class="text-[10px] bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 px-2 py-0.5 rounded cursor-pointer transition">कारण
+              बताओ नोटिस</button>
+            <button type="button" onclick="setSaveNoticeTag('कठोर चेतावनी पत्र')"
+              class="text-[10px] bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 px-2 py-0.5 rounded cursor-pointer transition">कठोर
+              चेतावनी पत्र</button>
+            <button type="button" onclick="setSaveNoticeTag('समयपालन व विलंब')"
+              class="text-[10px] bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 px-2 py-0.5 rounded cursor-pointer transition">समयपालन
+              व विलंब</button>
+            <button type="button" onclick="setSaveNoticeTag('परीक्षा ड्यूटी निर्देश')"
+              class="text-[10px] bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 px-2 py-0.5 rounded cursor-pointer transition">परीक्षा
+              ड्यूटी निर्देश</button>
+            <button type="button" onclick="setSaveNoticeTag('शीतकालीन अवकाश')"
+              class="text-[10px] bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 px-2 py-0.5 rounded cursor-pointer transition">शीतकालीन
+              अवकाश</button>
+            <button type="button" onclick="setSaveNoticeTag('स्टाफ आपात बैठक')"
+              class="text-[10px] bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 px-2 py-0.5 rounded cursor-pointer transition">स्टाफ
+              आपात बैठक</button>
+          </div>
+        </div>
+
+        <!-- Reference & Subject Summary -->
+        <div class="grid grid-cols-2 gap-2 bg-slate-950/60 p-3 rounded-lg border border-slate-800">
+          <div>
+            <span class="text-[10px] text-slate-400 block">पत्रांक:</span>
+            <span id="modal-notice-summary-ref" class="font-mono text-indigo-400 font-semibold text-xs">-</span>
+          </div>
+          <div>
+            <span class="text-[10px] text-slate-400 block">दिनांक:</span>
+            <span id="modal-notice-summary-date" class="text-slate-300 font-medium text-xs">-</span>
+          </div>
+          <div class="col-span-2 pt-1.5 border-t border-slate-800/80">
+            <span class="text-[10px] text-slate-400 block">नोटिस का मूल विषय (Subject):</span>
+            <span id="modal-notice-summary-subject"
+              class="text-slate-200 font-medium text-xs line-clamp-2 mt-0.5">-</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="px-6 py-3.5 bg-slate-950/80 border-t border-slate-800 flex items-center justify-between">
+        <button type="button" onclick="closeSaveModal()"
+          class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-xs font-semibold transition cursor-pointer">
+          रद्द करें (Cancel)
+        </button>
+        <button type="button" id="confirmSaveNoticeBtn" onclick="executeSaveNoticeToFirestore()"
+          class="px-5 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white rounded-xl text-xs font-bold transition flex items-center gap-2 shadow-lg shadow-emerald-600/30 cursor-pointer">
+          <i id="confirmSaveNoticeIcon" class="fa-solid fa-cloud-arrow-up"></i>
+          <span id="confirmSaveNoticeText">क्लाउड पर सहेजें</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================= NOTICE CLOUD BACKUPS & ARCHIVE MODAL ================= -->
+  <div id="noticeHistoryModal"
+    class="no-print fixed inset-0 z-[100] bg-slate-950/85 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+    <div
+      class="bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] flex flex-col overflow-hidden text-slate-100 font-sans">
+
+      <!-- Modal Header -->
+      <div class="px-6 py-4 border-b border-slate-800 flex items-center justify-between bg-slate-950/60">
+        <div class="flex items-center gap-3">
+          <div class="bg-indigo-600/20 text-indigo-400 p-2.5 rounded-xl border border-indigo-500/30">
+            <i class="fa-solid fa-box-archive text-lg"></i>
+          </div>
+          <div>
+            <h3 class="text-lg font-bold text-white flex items-center gap-2">
+              <span>नोटिस एवं स्पष्टीकरण संग्रह (Notice Cloud Archive)</span>
+              <span id="noticeModalCount"
+                class="bg-indigo-600 text-white text-xs px-2.5 py-0.5 rounded-full font-mono font-bold">0</span>
+            </h3>
+            <p class="text-xs text-slate-400">पूर्व में जारी किए गए सभी नोटिस का क्लाउड बैकअप देखें, लोड करें अथवा पुनः
+              प्रिंट करें</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2">
+          <button id="exportNoticeJsonBtn" type="button" onclick="exportNoticeArchiveJson()"
+            class="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white rounded-lg text-xs font-semibold border border-slate-700 transition flex items-center gap-1 cursor-pointer"
+            title="सभी नोटिस का बैकअप JSON फाइल में डाउनलोड करें">
+            <i class="fa-solid fa-download text-xs text-emerald-400"></i>
+            <span>Export JSON</span>
           </button>
-          <button type="button" onclick="confirmSaveNotice()"
-            class="px-4 py-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs font-bold cursor-pointer">
-            सहेजें (Save)
+          <button id="refreshNoticeBackupsBtn" type="button" onclick="fetchNoticeBackups()"
+            class="p-2 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition cursor-pointer"
+            title="सूची रीफ्रेश करें">
+            <i class="fa-solid fa-rotate text-sm"></i>
+          </button>
+          <button type="button" onclick="closeNoticeHistoryModal()"
+            class="p-2 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition cursor-pointer">
+            <i class="fa-solid fa-xmark text-lg"></i>
           </button>
         </div>
       </div>
+
+      <!-- Search Bar -->
+      <div class="px-6 py-3 border-b border-slate-800/80 bg-slate-900/50 flex gap-3">
+        <div class="relative flex-1">
+          <input type="text" id="noticeSearchInput" oninput="filterNoticeBackups(this.value)"
+            placeholder="पत्रांक संख्या, विषय, संबोधित व्यक्ति (Recipient), शीर्षक या दिनांक से खोजें..."
+            class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3.5 py-2 pl-9 text-xs text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent font-medium" />
+          <i class="fa-solid fa-magnifying-glass text-slate-500 absolute left-3 top-2.5 text-xs"></i>
+        </div>
+      </div>
+
+      <!-- Backups List -->
+      <div id="noticeBackupsList" class="flex-1 overflow-y-auto p-6 space-y-3 min-h-[300px]">
+        <div class="text-center py-12 text-slate-500 text-sm">
+          <div
+            class="animate-spin inline-block w-6 h-6 border-2 border-indigo-400 border-t-transparent rounded-full mb-2">
+          </div>
+          <p>क्लाउड बैकअप लोड हो रहे हैं...</p>
+        </div>
+      </div>
+
+      <!-- Modal Footer -->
+      <div
+        class="px-6 py-3 border-t border-slate-800 bg-slate-950/60 flex items-center justify-between text-xs text-slate-400">
+        <span class="flex items-center gap-1.5">
+          <span>संग्रह (Firestore):</span>
+          <code
+            class="text-indigo-400 bg-indigo-950/40 px-2 py-0.5 rounded border border-indigo-800/40 font-mono">pms_notices_backup</code>
+        </span>
+        <button type="button" onclick="closeNoticeHistoryModal()"
+          class="px-4 py-1.5 bg-slate-800 hover:bg-slate-700 text-white rounded-lg transition font-semibold cursor-pointer">
+          बंद करें (Close)
+        </button>
+      </div>
+
     </div>
   </div>
 
@@ -1547,10 +1786,10 @@
 
   <!-- ================= CORE LOGIC & CONTROLLER SCRIPT ================= -->
   <script>
-    // 16 Official Notice Presets
+    // Official Notice Presets
     const NOTICE_PRESETS = {
       uninformed_absence: {
-        title: "बिना पूर्व सूचना अनुपस्थिति स्पष्टीकरण (Exact as photo)",
+        title: "बिना पूर्व सूचना अनुपस्थिति स्पष्टीकरण (मूल फोटो प्रारूप)",
         heading: "-:नोटिस/ स्पष्टीकरण पत्र:-",
         recipient: "कु0 रागिनी\nसहायक अध्यापिका\nपुलिस माडर्न स्कूल\n25वीं वाहिनी पीएसी\nरायबरेली।",
         subject: "बिना पूर्व सूचना विद्यालय अनुपस्थित रहने के संबन्ध में स्पष्टीकरण।",
@@ -1568,7 +1807,7 @@
         body2: "अतः आपको निर्देशित किया जाता है कि भविष्य में समयपालन का कड़ाई से अनुपालन सुनिश्चित करें एवं उक्त विलंब से आगमन के संबंध में अपना लिखित स्पष्टीकरण 02 दिवस के भीतर कार्यालय में प्रस्तुत करना सुनिश्चित करें।"
       },
       teacher_diary: {
-        title: "शिक्षक डायरी एवं पाठ योजना अपूर्ण रहने पर स्पष्टीकरण",
+        title: "शिक्षक डायरी एवं पाठ योजना अपूर्ण रहने पर नोटिस",
         heading: "-:कारण बताओ नोटिस (Show Cause Notice):-",
         recipient: "संबंधित विषय अध्यापक / अध्यापिका\nपुलिस माडर्न स्कूल\n25वीं वाहिनी पीएसी\nरायबरेली।",
         subject: "दैनिक शिक्षक डायरी (Teacher's Diary) एवं पाठ योजना अपूर्ण रखने के संबंध में।",
@@ -1586,7 +1825,7 @@
         body2: "उक्त आदेश का कड़ाई से अनुपालन सुनिश्चित किया जाए। किसी भी दशा में अनौपचारिक वस्त्रों में विद्यालय संचालन की अनुमति नहीं होगी। आदेश की अवहेलना पर संबंधित के विरुद्ध अनुशासनात्मक संज्ञान लिया जाएगा।"
       },
       exam_duty_neglect: {
-        title: "परीक्षा कक्ष निरीक्षक ड्यूटी आदेश व निर्देश",
+        title: "परीक्षा कक्ष निरीक्षक ड्यूटी आदेश व दिशा-निर्देश",
         heading: "-:कार्यालय आदेश / परीक्षा ड्यूटी:-",
         recipient: "समस्त सम्मानित शिक्षकगण / कक्ष निरीक्षक\nपुलिस माडर्न स्कूल\n25वीं वाहिनी पीएसी\nरायबरेली।",
         subject: "आगामी परीक्षा में कक्ष निरीक्षक ड्यूटी संपादन विषयक।",
@@ -1620,17 +1859,35 @@
         salutation: "सर्वसंबंधित,",
         body1: "माननीय जिलाधिकारी महोदय, रायबरेली एवं उच्चाधिकारियों से प्राप्त निर्देशों के अनुपालन में, अत्यधिक शीत लहर एवं घने कोहरे को दृष्टिगत रखते हुए छात्र-छात्राओं के स्वास्थ्य हित में विद्यालय में कक्षा नर्सरी से 8 तक दिनांक ___ से ___ तक अवकाश घोषित किया जाता है।",
         body2: "समस्त शिक्षक एवं शिक्षणेत्तर कर्मचारी शासकीय समयानुसार विद्यालय में उपस्थित रहकर विभागीय व पत्राचार संबंधी कार्यों का संपादन सुनिश्चित करेंगे। विद्यालय पूर्ववत दिनांक ___ से संचालित होगा।"
+      },
+      indiscipline_staff: {
+        title: "विद्यालय कार्य में असहयोग एवं अनुशासनहीनता पर नोटिस",
+        heading: "-:चेतावनी पत्र (Warning Letter):-",
+        recipient: "संबंधित कर्मचारी / सहायक अध्यापक\nपुलिस माडर्न स्कूल, 25वीं वाहिनी पीएसी, रायबरेली।",
+        subject: "कार्यालयीय निर्देशों की अवहेलना एवं अनुशासनहीन आचरण के संबंध में चेतावनी।",
+        salutation: "महोदय / महोदया,",
+        body1: "यह संज्ञान में आया है कि उच्चाधिकारियों द्वारा सौंपे गए प्रशासनिक एवं शैक्षणिक कार्यों में आपके द्वारा निरंतर उदासीनता व असहयोगात्मक रवैया अपनाया जा रहा है। विद्यालय की मर्यादा एवं अनुशासन व्यवस्था के विरुद्ध इस प्रकार का आचरण सर्वथा अस्वीकार्य है।",
+        body2: "अतः आपको कठोर चेतावनी दी जाती है कि भविष्य में अपने दायित्वों का निष्ठापूर्वक निर्वहन करें। यदि भविष्य में पुनरावृत्ति पाई गई तो प्रकरण उच्चाधिकारियों को कठोर अनुशासनात्मक संज्ञान हेतु अग्रसारित कर दिया जाएगा।"
+      },
+      staff_meeting_urgent: {
+        title: "आपातकालीन स्टाफ बैठक (Urgent Staff Meeting)",
+        heading: "-:बैठक सूचना (Meeting Notice):-",
+        recipient: "समस्त शिक्षक एवं शिक्षणेत्तर कर्मचारीगण\nपुलिस माडर्न स्कूल, 25वीं वाहिनी पीएसी, रायबरेली।",
+        subject: "वार्षिक उत्सव एवं आगामी प्रशासनिक निरीक्षण की तैयारी बैठक विषयक।",
+        salutation: "समस्त शिक्षक एवं कर्मचारीगण,",
+        body1: "सर्वसंबंधित को सूचित किया जाता है कि आगामी वार्षिक उत्सव तथा वाहिनी स्तर पर होने वाले वार्षिक निरीक्षण की अग्रिम तैयारियों के संबंध में आज अपराह्न 02:00 बजे विद्यालय सभागार में एक आवश्यक बैठक आहूत की गई है।",
+        body2: "अतः समस्त शिक्षक एवं शिक्षणेत्तर कर्मचारी निर्धारित समय पर अपनी पूर्ण तैयारी व पंजिकाओं सहित बैठक में अनिवार्य रूप से उपस्थित होना सुनिश्चित करें।"
       }
     };
 
-    // State
+    // State Variables
     let currentFontFamily = 'mangal';
     let currentFontSize = 15.5;
     let currentZoom = 1.0;
     let currentLineHeight = 1.65;
     let currentParaSpacing = 12;
 
-    // Document Elements
+    // Document Preview References
     const docNoticeHeading = document.getElementById('doc-notice-heading');
     const docRecipient = document.getElementById('doc-recipient');
     const docSubject = document.getElementById('doc-subject');
@@ -1638,19 +1895,17 @@
     const docBody1 = document.getElementById('doc-body1');
     const docBody2 = document.getElementById('doc-body2');
     const docRefNo = document.getElementById('doc-ref-no');
-    const docSchoolEmail = document.getElementById('doc-school-email');
-    const docSchoolContact = document.getElementById('doc-school-contact');
     const docDate = document.getElementById('doc-date');
     const docSignTitle = document.getElementById('doc-sign-title');
     const docSignOrg = document.getElementById('doc-sign-org');
     const docSignLocation = document.getElementById('doc-sign-location');
-    const docSchoolName = document.getElementById('doc-school-name');
-    const docSchoolUnit = document.getElementById('doc-school-unit');
+    const docPratilipiContent = document.getElementById('doc-pratilipi-content');
 
-    // Sidebar Input Elements
+    // Sidebar Input References
     const inNoticeHeading = document.getElementById('in-notice-heading');
     const inRecipient = document.getElementById('in-recipient');
     const inSubject = document.getElementById('in-subject');
+    const inSalutation = document.getElementById('in-salutation');
     const inBody1 = document.getElementById('in-body1');
     const inBody2 = document.getElementById('in-body2');
     const inRefNo = document.getElementById('in-ref-no');
@@ -1658,6 +1913,7 @@
     const inSignTitle = document.getElementById('in-sign-title');
     const inSignOrg = document.getElementById('in-sign-org');
     const inSignLocation = document.getElementById('in-sign-location');
+    const inPratilipiList = document.getElementById('in-pratilipi-list');
 
     // Initialization
     window.addEventListener('DOMContentLoaded', () => {
@@ -1668,14 +1924,19 @@
       updatePageFitMeter();
     });
 
-    // Presets List Render
+    // Render Presets
     function renderPresetsList() {
       const container = document.getElementById('presetsGridContainer');
       if (!container) return;
       container.innerHTML = '';
 
-      Object.entries(NOTICE_PRESETS).forEach(([key, preset]) => {
-        if (key === 'uninformed_absence') return; // already featured
+      const keys = Object.keys(NOTICE_PRESETS);
+      const countBadge = document.getElementById('presetCountBadge');
+      if (countBadge) countBadge.innerText = `${keys.length} प्रारूप`;
+
+      keys.forEach((key) => {
+        if (key === 'uninformed_absence') return; // Featured at top
+        const preset = NOTICE_PRESETS[key];
         const item = document.createElement('div');
         item.className = 'bg-slate-800/80 hover:bg-slate-750 border border-slate-700/80 hover:border-blue-500/50 rounded-xl p-2.5 transition cursor-pointer flex flex-col justify-between gap-1 shadow-sm group';
         item.onclick = () => loadNoticePreset(key);
@@ -1694,7 +1955,7 @@
       });
     }
 
-    // Load Preset
+    // Load Specific Preset
     function loadNoticePreset(key) {
       const preset = NOTICE_PRESETS[key];
       if (!preset) return;
@@ -1708,7 +1969,8 @@
       if (inSubject) inSubject.value = preset.subject;
       if (docSubject) docSubject.innerText = preset.subject;
 
-      if (docSalutation && preset.salutation) docSalutation.innerText = preset.salutation;
+      if (inSalutation) inSalutation.value = preset.salutation || 'महोदय / महोदया,';
+      if (docSalutation) docSalutation.innerText = preset.salutation || 'महोदय / महोदया,';
 
       if (inBody1) inBody1.value = preset.body1;
       if (docBody1) docBody1.innerText = preset.body1;
@@ -1716,7 +1978,7 @@
       if (inBody2) inBody2.value = preset.body2;
       if (docBody2) docBody2.innerText = preset.body2;
 
-      // Clear extra dynamic paras
+      // Clear extra dynamic paragraphs
       const extraContainer = document.getElementById('doc-extra-paragraphs');
       if (extraContainer) extraContainer.innerHTML = '';
 
@@ -1724,7 +1986,7 @@
       updatePageFitMeter();
     }
 
-    // Bidirectional Sync
+    // Two-way synchronization between input controls and paper
     function setupBidirectionalSync() {
       const bind = (inEl, docEl) => {
         if (!inEl || !docEl) return;
@@ -1741,6 +2003,7 @@
       bind(inNoticeHeading, docNoticeHeading);
       bind(inRecipient, docRecipient);
       bind(inSubject, docSubject);
+      bind(inSalutation, docSalutation);
       bind(inBody1, docBody1);
       bind(inBody2, docBody2);
       bind(inRefNo, docRefNo);
@@ -1748,6 +2011,7 @@
       bind(inSignTitle, docSignTitle);
       bind(inSignOrg, docSignOrg);
       bind(inSignLocation, docSignLocation);
+      bind(inPratilipiList, docPratilipiContent);
     }
 
     // Tab Switcher
@@ -1766,7 +2030,7 @@
       });
     }
 
-    // Rich Text Exec (Bold, Italic, Lists etc.)
+    // Rich Text Exec
     function letterRichExec(cmd, val = null) {
       document.execCommand(cmd, false, val);
       updatePageFitMeter();
@@ -1777,7 +2041,7 @@
       updatePageFitMeter();
     }
 
-    // Universal Font & Size System (Identical to Letter Generator)
+    // Font Family System
     function applyUniversalFontFamily(fontKey) {
       currentFontFamily = fontKey;
       const doc = document.getElementById('noticeDocument');
@@ -1808,10 +2072,13 @@
       if (topSelect) topSelect.value = fontKey;
       const ribbonSelect = document.getElementById('ribbonFontFamily');
       if (ribbonSelect) ribbonSelect.value = fontKey;
+      const miniSelect = document.getElementById('miniBarFontFamily');
+      if (miniSelect) miniSelect.value = fontKey;
 
       updatePageFitMeter();
     }
 
+    // Font Sizing
     function smartChangeFontSize(delta) {
       currentFontSize = Math.min(24, Math.max(12, currentFontSize + delta));
       smartSetExactFontSize(currentFontSize);
@@ -1830,6 +2097,8 @@
       if (ribbonDisplay) ribbonDisplay.innerText = `${val}px`;
       const canvasDisplay = document.getElementById('canvasFontSizeBadge');
       if (canvasDisplay) canvasDisplay.innerText = `${val}px`;
+      const miniDisplay = document.getElementById('miniBarFontSize');
+      if (miniDisplay) miniDisplay.innerText = `${val}px`;
       const sizeSelect = document.getElementById('fontSizeSelectTop');
       if (sizeSelect) sizeSelect.value = val;
 
@@ -1859,7 +2128,7 @@
     function setLineSpacing(val) {
       currentLineHeight = parseFloat(val);
       const doc = document.getElementById('noticeDocument');
-      if (doc) doc.style.setProperty('--doc-line-height', val);
+      if (doc) doc.style.setProperty('--letter-line-height', val);
       const select = document.getElementById('ribbonLineSpacingSelect');
       if (select) select.value = val;
       updatePageFitMeter();
@@ -1885,11 +2154,11 @@
     }
 
     function setZoom(val) {
-      currentZoom = val;
+      currentZoom = parseFloat(val.toFixed(2));
       const wrapper = document.getElementById('previewWrapper');
-      if (wrapper) wrapper.style.setProperty('--canvas-zoom', val);
+      if (wrapper) wrapper.style.setProperty('--canvas-zoom', currentZoom);
       const select = document.getElementById('canvasZoomSelect');
-      if (select) select.value = val;
+      if (select) select.value = currentZoom;
     }
 
     // Page Fit Indicator & Auto-Fit
@@ -1897,7 +2166,7 @@
       const doc = document.getElementById('noticeDocument');
       if (!doc) return;
 
-      const a4MaxHeightPx = 1123; // standard A4 at 96dpi
+      const a4MaxHeightPx = 1123; // Standard A4 at 96 DPI
       const actualHeightPx = doc.scrollHeight;
       const percentage = Math.min(130, Math.round((actualHeightPx / a4MaxHeightPx) * 100));
 
@@ -2012,11 +2281,13 @@
     function toggleTableVisibility(checked) {
       const wrapper = document.getElementById('doc-table-wrapper');
       const controls = document.getElementById('tableControlsArea');
+      const checkbox = document.getElementById('toggleTableCheckbox');
       const badge = document.getElementById('tableStatusBadge');
 
       if (checked) {
         if (wrapper) wrapper.classList.remove('hidden');
         if (controls) controls.classList.remove('hidden');
+        if (checkbox) checkbox.checked = true;
         if (badge) {
           badge.innerText = 'चालू (On)';
           badge.className = 'text-[10px] bg-emerald-950 text-emerald-400 font-bold px-2 py-0.5 rounded border border-emerald-700';
@@ -2024,6 +2295,7 @@
       } else {
         if (wrapper) wrapper.classList.add('hidden');
         if (controls) controls.classList.add('hidden');
+        if (checkbox) checkbox.checked = false;
         if (badge) {
           badge.innerText = 'बंद (Off)';
           badge.className = 'text-[10px] bg-slate-900 text-slate-400 font-medium px-2 py-0.5 rounded border border-slate-700';
@@ -2043,8 +2315,7 @@
         <td contenteditable="true">दायित्व / समय</td>
       `;
       tbody.appendChild(tr);
-      const wrapper = document.getElementById('doc-table-wrapper');
-      if (wrapper) wrapper.classList.remove('hidden');
+      toggleTableVisibility(true);
       updatePageFitMeter();
     }
 
@@ -2059,6 +2330,8 @@
       if (rows.length > 1) {
         rows[rows.length - 1].remove();
         updatePageFitMeter();
+      } else {
+        showToast('कम से कम एक पंक्ति आवश्यक है', 'warn');
       }
     }
 
@@ -2096,6 +2369,8 @@
           if (tds.length > 2) tds[tds.length - 1].remove();
         });
         updatePageFitMeter();
+      } else {
+        showToast('कम से कम दो कॉलम आवश्यक हैं', 'warn');
       }
     }
 
@@ -2171,7 +2446,7 @@
       const table = document.getElementById('doc-custom-table');
       if (!bar || !table) return;
 
-      table.addEventListener('click', (e) => {
+      table.addEventListener('click', () => {
         const rect = table.getBoundingClientRect();
         bar.style.left = `${Math.max(10, rect.left + (rect.width / 2) - 180)}px`;
         bar.style.top = `${Math.max(10, rect.top - 40)}px`;
@@ -2185,7 +2460,7 @@
       });
     }
 
-    // Print & PDF Export
+    // Print & Direct PDF Export
     function triggerPrintNotice() {
       window.print();
     }
@@ -2211,54 +2486,7 @@
       });
     }
 
-    // Save Modal
-    function openSaveModal() {
-      const modal = document.getElementById('saveNoticeModal');
-      const inTitle = document.getElementById('in-save-title');
-      if (modal) {
-        modal.classList.remove('hidden');
-        if (inTitle) {
-          inTitle.value = (docSubject ? docSubject.innerText.trim() : '') || 'नोटिस ड्राफ्ट';
-          inTitle.focus();
-        }
-      }
-    }
-
-    function closeSaveModal() {
-      const modal = document.getElementById('saveNoticeModal');
-      if (modal) modal.classList.add('hidden');
-    }
-
-    function confirmSaveNotice() {
-      const inTitle = document.getElementById('in-save-title');
-      const title = (inTitle ? inTitle.value.trim() : '') || 'नोटिस ड्राफ्ट';
-
-      const data = {
-        id: `notice_${Date.now()}`,
-        title: title,
-        timestamp: new Date().toLocaleString('hi-IN'),
-        heading: docNoticeHeading ? docNoticeHeading.innerText : '',
-        recipient: docRecipient ? docRecipient.innerText : '',
-        subject: docSubject ? docSubject.innerText : '',
-        body1: docBody1 ? docBody1.innerText : '',
-        body2: docBody2 ? docBody2.innerText : '',
-        refNo: docRefNo ? docRefNo.innerText : '',
-        date: docDate ? docDate.innerText : '',
-        signTitle: docSignTitle ? docSignTitle.innerText : '',
-        signOrg: docSignOrg ? docSignOrg.innerText : '',
-        signLocation: docSignLocation ? docSignLocation.innerText : ''
-      };
-
-      let list = JSON.parse(localStorage.getItem('pms_saved_notices_history') || '[]');
-      list.unshift(data);
-      if (list.length > 25) list = list.slice(0, 25);
-      localStorage.setItem('pms_saved_notices_history', JSON.stringify(list));
-
-      closeSaveModal();
-      showToast(`नोटिस सहेजा गया: "${title}"`, 'success');
-    }
-
-    // Toast Notification
+    // Toast Notifications
     function showToast(message, type = 'info') {
       const container = document.getElementById('noticeToastContainer');
       if (!container) return;
@@ -2271,7 +2499,7 @@
         error: 'bg-rose-600 border-rose-400 text-white'
       };
 
-      toast.className = `${colors[type] || colors.info} border px-3.5 py-2 rounded-xl shadow-2xl text-xs font-semibold flex items-center gap-2 pointer-events-auto transition-all duration-300 transform translate-y-2 opacity-0`;
+      toast.className = `${colors[type] || colors.info} border px-3.5 py-2 rounded-xl shadow-2xl text-xs font-semibold flex items-center gap-2 pointer-events-auto transition-all duration-300 transform translate-y-2 opacity-0 font-sans z-50`;
       toast.innerHTML = `<i class="fa-solid fa-bell text-xs"></i><span>${message}</span>`;
 
       container.appendChild(toast);
@@ -2280,8 +2508,9 @@
       setTimeout(() => {
         toast.classList.add('translate-y-2', 'opacity-0');
         setTimeout(() => toast.remove(), 300);
-      }, 3000);
+      }, 3500);
     }
+    window.showToast = showToast;
 
     // Keyboard Shortcuts
     window.addEventListener('keydown', (e) => {
@@ -2291,10 +2520,646 @@
       }
       if ((e.ctrlKey || e.metaKey) && e.key === 's') {
         e.preventDefault();
-        openSaveModal();
+        if (typeof window.openSaveModal === 'function') window.openSaveModal();
       }
       if (e.key === 'Escape') {
-        closeSaveModal();
+        if (typeof window.closeSaveModal === 'function') window.closeSaveModal();
+        if (typeof window.closeNoticeHistoryModal === 'function') window.closeNoticeHistoryModal();
+      }
+    });
+  </script>
+
+  <!-- ================= FIREBASE FIRESTORE CLOUD INTEGRATION ================= -->
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js';
+    import { initializeFirestore, collection, doc, setDoc, getDocs, deleteDoc, query } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDsVKuptdW4jRWQ5rLX_h_fn53xuFoYVMI",
+      authDomain: "abcreport-27dea.firebaseapp.com",
+      projectId: "abcreport-27dea",
+      storageBucket: "abcreport-27dea.firebasestorage.app",
+      messagingSenderId: "1422972209",
+      appId: "1:1422972209:web:82fbc39400d75566d8cc10"
+    };
+
+    let app, db;
+    try {
+      app = initializeApp(firebaseConfig);
+      db = initializeFirestore(app, { experimentalAutoDetectLongPolling: true });
+    } catch (err) {
+      console.warn("Firebase Init Notice Generator:", err);
+    }
+
+    const COLLECTION_NAME = 'pms_notices_backup';
+    let cachedNotices = [];
+    let currentActiveDocId = null;
+    let currentActiveNoticeMeta = null;
+
+    // Active Document Management
+    window.setActiveDocument = function (docId, meta = {}) {
+      currentActiveDocId = docId;
+      currentActiveNoticeMeta = {
+        docId: docId,
+        title: meta.title || meta.noticeTitle || meta.subject || docId,
+        refNo: meta.refNo || ''
+      };
+      updateActiveDocBadgeUI();
+    };
+
+    window.clearActiveDocument = function () {
+      currentActiveDocId = null;
+      currentActiveNoticeMeta = null;
+      updateActiveDocBadgeUI();
+      if (window.showToast) window.showToast('सक्रिय क्लाउड लिंक हटा दिया गया (अब यह नया नोटिस बनेगा)', 'info');
+    };
+
+    function updateActiveDocBadgeUI() {
+      const badge = document.getElementById('activeNoticeBadge');
+      const titleSpan = document.getElementById('activeNoticeBadgeTitle');
+      if (!badge) return;
+      if (currentActiveDocId) {
+        badge.classList.remove('hidden');
+        badge.classList.add('flex');
+        if (titleSpan) {
+          const displayTitle = (currentActiveNoticeMeta && currentActiveNoticeMeta.title) || (currentActiveNoticeMeta && currentActiveNoticeMeta.refNo) || 'सक्रिय नोटिस';
+          titleSpan.textContent = displayTitle;
+          titleSpan.title = `${displayTitle} (ID: ${currentActiveDocId})`;
+        }
+      } else {
+        badge.classList.add('hidden');
+        badge.classList.remove('flex');
+      }
+    }
+
+    // Modal Opening & Mode Toggle
+    window.openSaveModal = function () {
+      const modal = document.getElementById('saveNoticeModal');
+      const inTitle = document.getElementById('modal-notice-title');
+      const saveModeContainer = document.getElementById('saveModeContainer');
+      const existingBanner = document.getElementById('existingNoticeBanner');
+      const existingTitleDisplay = document.getElementById('existingNoticeTitleDisplay');
+      const confirmBtnText = document.getElementById('confirmSaveNoticeText');
+      const confirmBtnIcon = document.getElementById('confirmSaveNoticeIcon');
+      const updateRadio = document.getElementById('saveModeUpdate');
+      const newRadio = document.getElementById('saveModeNew');
+
+      if (!modal) return;
+
+      const docSubject = document.getElementById('doc-subject');
+      const inSubject = document.getElementById('in-subject');
+      const currentSubject = (docSubject ? docSubject.innerText.trim() : '') || (inSubject ? inSubject.value.trim() : '');
+
+      const docRefNo = document.getElementById('doc-ref-no');
+      const inRefNo = document.getElementById('in-ref-no');
+      const currentRefNo = (docRefNo ? docRefNo.innerText.trim() : '') || (inRefNo ? inRefNo.value.trim() : '');
+
+      const docDate = document.getElementById('doc-date');
+      const inDate = document.getElementById('in-date');
+      const currentDate = (docDate ? docDate.innerText.trim() : '') || (inDate ? inDate.value.trim() : '');
+
+      // Populate Summary
+      const summaryRef = document.getElementById('modal-notice-summary-ref');
+      const summaryDate = document.getElementById('modal-notice-summary-date');
+      const summarySub = document.getElementById('modal-notice-summary-subject');
+      if (summaryRef) summaryRef.textContent = currentRefNo || '-';
+      if (summaryDate) summaryDate.textContent = currentDate || '-';
+      if (summarySub) summarySub.textContent = currentSubject || '-';
+
+      // Title suggestion
+      if (inTitle) {
+        if (currentActiveNoticeMeta && currentActiveNoticeMeta.title) {
+          inTitle.value = currentActiveNoticeMeta.title;
+        } else if (!inTitle.value.trim()) {
+          inTitle.value = currentSubject || 'नोटिस / स्पष्टीकरण पत्र';
+        }
+      }
+
+      // Configure Save Mode based on currentActiveDocId
+      if (currentActiveDocId) {
+        if (saveModeContainer) saveModeContainer.classList.remove('hidden');
+        if (existingBanner) existingBanner.classList.remove('hidden');
+        if (existingTitleDisplay) existingTitleDisplay.textContent = (currentActiveNoticeMeta && currentActiveNoticeMeta.title) || currentActiveDocId;
+        if (updateRadio) updateRadio.checked = true;
+        if (confirmBtnText) confirmBtnText.textContent = '🔄 मौजूदा नोटिस अपडेट करें';
+        if (confirmBtnIcon) confirmBtnIcon.className = 'fa-solid fa-arrows-rotate';
+      } else {
+        if (saveModeContainer) saveModeContainer.classList.add('hidden');
+        if (newRadio) newRadio.checked = true;
+        if (confirmBtnText) confirmBtnText.textContent = '☁️ क्लाउड पर नया सहेजें';
+        if (confirmBtnIcon) confirmBtnIcon.className = 'fa-solid fa-cloud-arrow-up';
+      }
+
+      // Radio change handlers
+      if (updateRadio && newRadio) {
+        updateRadio.onchange = () => {
+          if (confirmBtnText) confirmBtnText.textContent = '🔄 मौजूदा नोटिस अपडेट करें';
+          if (confirmBtnIcon) confirmBtnIcon.className = 'fa-solid fa-arrows-rotate';
+        };
+        newRadio.onchange = () => {
+          if (confirmBtnText) confirmBtnText.textContent = '➕ नया नोटिस सहेजें (Save as New)';
+          if (confirmBtnIcon) confirmBtnIcon.className = 'fa-solid fa-cloud-arrow-up';
+        };
+      }
+
+      modal.classList.remove('hidden');
+      if (inTitle) setTimeout(() => inTitle.focus(), 80);
+    };
+
+    window.closeSaveModal = function () {
+      const modal = document.getElementById('saveNoticeModal');
+      if (modal) modal.classList.add('hidden');
+    };
+
+    window.setSaveNoticeTag = function (tag) {
+      const inEl = document.getElementById('modal-notice-title');
+      if (inEl) {
+        inEl.value = tag;
+        inEl.focus();
+      }
+    };
+
+    // Capture Notice Payload
+    function captureNoticePayload(customTitle = null, forceNew = false) {
+      const getVal = (id) => {
+        const el = document.getElementById(id);
+        return el ? el.value.trim() : '';
+      };
+      const getText = (id) => {
+        const el = document.getElementById(id);
+        return el ? el.innerText.trim() : '';
+      };
+
+      const refNo = getVal('in-ref-no') || getText('doc-ref-no') || ('पीएमएस/' + new Date().getFullYear());
+      const dateVal = getVal('in-date') || getText('doc-date') || '';
+      const heading = getVal('in-notice-heading') || getText('doc-notice-heading') || '-:नोटिस/ स्पष्टीकरण पत्र:-';
+      const recipient = getVal('in-recipient') || getText('doc-recipient') || '';
+      const subject = getVal('in-subject') || getText('doc-subject') || '';
+      const salutation = getVal('in-salutation') || getText('doc-salutation') || 'महोदय / महोदया,';
+      const body1 = getVal('in-body1') || getText('doc-body1') || '';
+      const body2 = getVal('in-body2') || getText('doc-body2') || '';
+      const signTitle = getVal('in-sign-title') || getText('doc-sign-title') || 'प्रभारी प्रधानाचार्या';
+      const signOrg = getVal('in-sign-org') || getText('doc-sign-org') || 'पुलिस माडर्न स्कूल';
+      const signLocation = getVal('in-sign-location') || getText('doc-sign-location') || '25वीं वाहिनी पीएसी, रायबरेली';
+
+      // Extra dynamic paragraphs
+      const extraParas = [];
+      const extraContainer = document.getElementById('doc-extra-paragraphs');
+      if (extraContainer) {
+        extraContainer.querySelectorAll('p').forEach(p => {
+          const t = p.innerText.trim();
+          if (t) extraParas.push(t);
+        });
+      }
+
+      // Pratilipi state
+      const pratilipiBlock = document.getElementById('doc-pratilipi-block');
+      const isPratilipiEnabled = pratilipiBlock && !pratilipiBlock.classList.contains('hidden');
+      const pratilipiText = getVal('in-pratilipi-list') || getText('doc-pratilipi-content') || '';
+
+      // Table state
+      const tableWrapper = document.getElementById('doc-table-wrapper');
+      const isTableEnabled = tableWrapper && !tableWrapper.classList.contains('hidden');
+      const tableThead = document.querySelector('#doc-custom-table thead');
+      const tableTbody = document.getElementById('doc-table-tbody');
+
+      // Signature graphic
+      const sigGraphic = document.getElementById('doc-signature-graphic');
+      const isSignatureVisible = sigGraphic && !sigGraphic.classList.contains('hidden');
+
+      const noticeTitle = (customTitle && customTitle.trim()) || getVal('modal-notice-title') || subject || ('नोटिस - ' + refNo);
+
+      let docId;
+      if (!forceNew && currentActiveDocId) {
+        docId = currentActiveDocId;
+      } else {
+        docId = ('notice_' + refNo).replace(/[^a-zA-Z0-9_\u0900-\u097F-]/g, '_') + '_' + Date.now().toString().slice(-4);
+      }
+
+      return {
+        id: docId,
+        docId: docId,
+        title: noticeTitle,
+        noticeTitle: noticeTitle,
+        refNo: refNo,
+        date: dateVal,
+        heading: heading,
+        recipient: recipient,
+        subject: subject,
+        salutation: salutation,
+        body1: body1,
+        body2: body2,
+        extraParagraphs: extraParas,
+        signTitle: signTitle,
+        signOrg: signOrg,
+        signLocation: signLocation,
+        signatureVisible: isSignatureVisible,
+        pratilipiEnabled: isPratilipiEnabled,
+        pratilipiContent: pratilipiText,
+        tableEnabled: isTableEnabled,
+        tableState: {
+          enabled: isTableEnabled,
+          theadHtml: tableThead ? tableThead.innerHTML : '',
+          tbodyHtml: tableTbody ? tableTbody.innerHTML : ''
+        },
+        fontFamily: typeof currentFontFamily !== 'undefined' ? currentFontFamily : 'mangal',
+        fontSize: typeof currentFontSize !== 'undefined' ? currentFontSize : 15.5,
+        lineHeight: typeof currentLineHeight !== 'undefined' ? currentLineHeight : 1.65,
+        paraSpacing: typeof currentParaSpacing !== 'undefined' ? currentParaSpacing : 12,
+        schoolEmail: getText('doc-school-email') || 'PolicemodernSchoolBnpacrbl@gmail.com',
+        schoolContact: getText('doc-school-contact') || '+91 9454 4188 41',
+        schoolName: getText('doc-school-name') || 'कार्यालय पुलिस मॉडर्न स्कूल',
+        schoolUnit: getText('doc-school-unit') || '25वीं वाहिनी पीएसी, रायबरेली',
+        savedAt: new Date().toLocaleString('hi-IN', { timeZone: 'Asia/Kolkata' }),
+        timestamp: Date.now()
+      };
+    }
+
+    // Execute Save to Firestore
+    window.executeSaveNoticeToFirestore = async function () {
+      const inTitle = document.getElementById('modal-notice-title');
+      const titleVal = inTitle ? inTitle.value.trim() : '';
+      if (!titleVal) {
+        alert('कृपया नोटिस का शीर्षक दर्ज करें।');
+        if (inTitle) inTitle.focus();
+        return;
+      }
+
+      const updateRadio = document.getElementById('saveModeUpdate');
+      const isUpdating = updateRadio ? updateRadio.checked : false;
+      const forceNew = !isUpdating || !currentActiveDocId;
+
+      window.closeSaveModal();
+      await saveNoticeToFirestore(titleVal, forceNew);
+    };
+
+    // Save Notice to Firestore
+    async function saveNoticeToFirestore(customTitle = null, forceNew = false) {
+      const isUpdating = !forceNew && !!currentActiveDocId;
+      const payload = captureNoticePayload(customTitle, forceNew);
+
+      // Save local backup immediately as failsafe
+      try {
+        localStorage.setItem('pms_notice_draft', JSON.stringify(payload));
+        let localList = JSON.parse(localStorage.getItem('pms_saved_notices_history') || '[]');
+        const existingIdx = localList.findIndex(item => item.id === payload.id);
+        if (existingIdx >= 0) {
+          localList[existingIdx] = payload;
+        } else {
+          localList.unshift(payload);
+        }
+        if (localList.length > 50) localList = localList.slice(0, 50);
+        localStorage.setItem('pms_saved_notices_history', JSON.stringify(localList));
+      } catch (e) {
+        console.warn("Local storage write warning:", e);
+      }
+
+      const saveBtn = document.getElementById('saveDraftBtn');
+      if (saveBtn) saveBtn.classList.add('opacity-50', 'pointer-events-none');
+
+      if (!db) {
+        window.setActiveDocument(payload.id, payload);
+        if (window.showToast) window.showToast(`क्लाउड कनेक्ट नहीं हो सका (लोकल ड्राफ्ट सुरक्षित): "${payload.title}"`, 'info');
+        if (saveBtn) saveBtn.classList.remove('opacity-50', 'pointer-events-none');
+        updateBackupCountBadges();
+        return;
+      }
+
+      try {
+        const docRef = doc(db, COLLECTION_NAME, payload.id);
+        await setDoc(docRef, payload, { merge: true });
+
+        // Update active document reference so future saves update this document
+        window.setActiveDocument(payload.id, payload);
+
+        // Register in Universal Portal Index
+        if (window.PMS_DOC_INDEX && typeof window.PMS_DOC_INDEX.registerDocument === 'function') {
+          window.PMS_DOC_INDEX.registerDocument({
+            id: `notice_${payload.id}`,
+            title: `नोटिस: ${payload.title || payload.subject || payload.refNo}`,
+            category: "सहेजे गए नोटिस (Notices)",
+            desc: `शीर्षक: ${payload.title || '-'} | पत्रांक: ${payload.refNo} | संबंधित: ${(payload.recipient || '').split('\n')[0] || 'विभागीय'} | दिनांक: ${payload.date}`,
+            url: "pms_notice_generator.html",
+            icon: "fa-solid fa-bullhorn"
+          });
+        }
+
+        const successMsg = isUpdating
+          ? `नोटिस सफलतापूर्वक अपडेट किया गया: "${payload.title}" (${payload.refNo})`
+          : `नया नोटिस क्लाउड पर सहेजा गया: "${payload.title}" (${payload.refNo})`;
+        if (window.showToast) window.showToast(successMsg, 'success');
+        fetchNoticeBackups();
+      } catch (err) {
+        console.error("Error saving notice to firestore:", err);
+        if (window.showToast) window.showToast(`क्लाउड बैकअप त्रुटि: ${err.message} (लोकल ड्राफ्ट सुरक्षित)`, 'error');
+      } finally {
+        if (saveBtn) saveBtn.classList.remove('opacity-50', 'pointer-events-none');
+      }
+    }
+    window.saveNoticeToFirestore = saveNoticeToFirestore;
+
+    // Fetch Notice Backups from Firestore
+    async function fetchNoticeBackups() {
+      if (!db) {
+        // Fallback to local storage if offline
+        const localList = JSON.parse(localStorage.getItem('pms_saved_notices_history') || '[]');
+        cachedNotices = localList;
+        updateBackupCountBadges();
+        renderNoticeBackupsList(cachedNotices);
+        return;
+      }
+
+      try {
+        const q = query(collection(db, COLLECTION_NAME));
+        const snap = await getDocs(q);
+        cachedNotices = [];
+        snap.forEach(docSnap => {
+          cachedNotices.push({ docId: docSnap.id, id: docSnap.id, ...docSnap.data() });
+        });
+
+        cachedNotices.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+        updateBackupCountBadges();
+        renderNoticeBackupsList(cachedNotices);
+      } catch (err) {
+        console.error("Error fetching notices:", err);
+        // Fallback to local storage
+        const localList = JSON.parse(localStorage.getItem('pms_saved_notices_history') || '[]');
+        cachedNotices = localList;
+        updateBackupCountBadges();
+        renderNoticeBackupsList(cachedNotices);
+      }
+    }
+    window.fetchNoticeBackups = fetchNoticeBackups;
+
+    function updateBackupCountBadges() {
+      const count = cachedNotices.length;
+      const countBadge = document.getElementById('noticeBackupCountBadge');
+      const modalCount = document.getElementById('noticeModalCount');
+      if (countBadge) countBadge.textContent = count;
+      if (modalCount) modalCount.textContent = count;
+    }
+
+    // Render Cloud Archive List
+    function renderNoticeBackupsList(list) {
+      const container = document.getElementById('noticeBackupsList');
+      if (!container) return;
+
+      if (!list || list.length === 0) {
+        container.innerHTML = `
+          <div class="text-center py-14 text-slate-500">
+            <i class="fa-regular fa-folder-open text-4xl mb-3 opacity-40 text-amber-400"></i>
+            <p class="font-semibold text-sm text-slate-300">कोई नोटिस क्लाउड बैकअप नहीं मिला</p>
+            <p class="text-xs text-slate-500 mt-1">'सहेजें (Save)' बटन दबाकर पहला बैकअप सुरक्षित करें</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = list.map(item => `
+        <div class="bg-slate-950 border border-slate-800 hover:border-amber-500/50 rounded-xl p-4 transition duration-200 flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center gap-2 flex-wrap mb-1">
+              <span class="font-mono font-bold text-amber-400 text-xs bg-amber-950/60 px-2.5 py-0.5 rounded border border-amber-800/40">${item.refNo || 'बिना पत्रांक'}</span>
+              <span class="text-xs text-slate-400 font-medium">${item.date || '-'}</span>
+              ${item.tableEnabled || (item.tableState && item.tableState.enabled) ? '<span class="text-[10px] bg-emerald-950/80 border border-emerald-800 text-emerald-300 px-2 py-0.5 rounded font-semibold">📊 तालिका शामिल</span>' : ''}
+              ${item.pratilipiEnabled ? '<span class="text-[10px] bg-purple-950/80 border border-purple-800 text-purple-300 px-2 py-0.5 rounded font-semibold">📎 प्रतिलिपि</span>' : ''}
+              ${item.fontFamily ? `<span class="text-[10px] bg-slate-900 border border-slate-700 text-slate-300 px-2 py-0.5 rounded font-mono font-bold">🔤 ${item.fontFamily}</span>` : ''}
+              ${currentActiveDocId === item.id ? '<span class="text-[10px] bg-emerald-900/80 border border-emerald-500 text-emerald-300 px-2 py-0.5 rounded font-bold animate-pulse">✓ वर्तमान सक्रिय</span>' : ''}
+            </div>
+            <h4 class="font-black text-amber-300 text-sm line-clamp-1 mt-1 flex items-center gap-1.5">
+              <span class="text-amber-400">🏷️</span>
+              <span>${item.title || item.noticeTitle || item.subject || 'बिना शीर्षक नोटिस'}</span>
+            </h4>
+            ${item.subject ? `<div class="text-xs text-slate-300 mt-0.5 line-clamp-1"><b>विषय:</b> ${item.subject}</div>` : ''}
+            <div class="text-xs text-slate-400 mt-1.5 flex flex-wrap gap-x-4 gap-y-1">
+              <span><b>संबंधित:</b> ${(item.recipient || '').split('\n')[0] || '-'}</span>
+              <span><b>सहेजा गया:</b> <span class="text-slate-500 font-mono">${item.savedAt || '-'}</span></span>
+            </div>
+          </div>
+          <div class="flex items-center gap-2 self-end md:self-center flex-shrink-0">
+            <button class="load-notice-btn bg-slate-800 hover:bg-amber-600 hover:text-slate-950 text-slate-200 px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 border border-slate-700 hover:border-amber-500 cursor-pointer" data-id="${item.id}">
+              <i class="fa-solid fa-file-import text-xs"></i>
+              <span>लोड करें</span>
+            </button>
+            <button class="reprint-notice-btn bg-blue-600 hover:bg-blue-500 text-white px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 shadow cursor-pointer" data-id="${item.id}">
+              <i class="fa-solid fa-print text-xs"></i>
+              <span>रीप्रिंट</span>
+            </button>
+            <button class="delete-notice-btn bg-slate-800 hover:bg-rose-900/60 text-slate-400 hover:text-rose-300 p-2 rounded-lg transition border border-slate-700 hover:border-rose-700 cursor-pointer" data-id="${item.id}" title="डिलीट करें">
+              <i class="fa-regular fa-trash-can text-xs"></i>
+            </button>
+          </div>
+        </div>
+      `).join('');
+
+      container.querySelectorAll('.load-notice-btn').forEach(btn => {
+        btn.addEventListener('click', () => window.loadNoticeData(btn.dataset.id, false));
+      });
+
+      container.querySelectorAll('.reprint-notice-btn').forEach(btn => {
+        btn.addEventListener('click', () => window.loadNoticeData(btn.dataset.id, true));
+      });
+
+      container.querySelectorAll('.delete-notice-btn').forEach(btn => {
+        btn.addEventListener('click', () => window.deleteNoticeData(btn.dataset.id));
+      });
+    }
+
+    // Filter Notice Backups Live
+    window.filterNoticeBackups = function (queryStr) {
+      const q = (queryStr || '').toLowerCase().trim();
+      if (!q) {
+        renderNoticeBackupsList(cachedNotices);
+        return;
+      }
+      const filtered = cachedNotices.filter(item => {
+        const text = `${item.title || ''} ${item.refNo || ''} ${item.subject || ''} ${item.recipient || ''} ${item.date || ''}`.toLowerCase();
+        return text.includes(q);
+      });
+      renderNoticeBackupsList(filtered);
+    };
+
+    // Load Notice Data into Form & Paper
+    window.loadNoticeData = function (docId, triggerPrint = false) {
+      const data = cachedNotices.find(n => n.id === docId || n.docId === docId);
+      if (!data) {
+        if (window.showToast) window.showToast('नोटिस डेटा नहीं मिला', 'error');
+        return;
+      }
+
+      const setBoth = (inId, docId, val) => {
+        const inEl = document.getElementById(inId);
+        const docEl = document.getElementById(docId);
+        if (inEl && val !== undefined) inEl.value = val;
+        if (docEl && val !== undefined) docEl.innerText = val;
+      };
+
+      if (data.heading) setBoth('in-notice-heading', 'doc-notice-heading', data.heading);
+      if (data.refNo) setBoth('in-ref-no', 'doc-ref-no', data.refNo);
+      if (data.date) setBoth('in-date', 'doc-date', data.date);
+      if (data.recipient) setBoth('in-recipient', 'doc-recipient', data.recipient);
+      if (data.subject) setBoth('in-subject', 'doc-subject', data.subject);
+      if (data.salutation) setBoth('in-salutation', 'doc-salutation', data.salutation);
+      if (data.body1) setBoth('in-body1', 'doc-body1', data.body1);
+      if (data.body2) setBoth('in-body2', 'doc-body2', data.body2);
+      if (data.signTitle) setBoth('in-sign-title', 'doc-sign-title', data.signTitle);
+      if (data.signOrg) setBoth('in-sign-org', 'doc-sign-org', data.signOrg);
+      if (data.signLocation) setBoth('in-sign-location', 'doc-sign-location', data.signLocation);
+
+      // Restore Extra Paragraphs
+      const extraContainer = document.getElementById('doc-extra-paragraphs');
+      if (extraContainer) {
+        extraContainer.innerHTML = '';
+        if (Array.isArray(data.extraParagraphs)) {
+          data.extraParagraphs.forEach(text => {
+            if (typeof window.addNewParagraph === 'function') {
+              window.addNewParagraph(text, false);
+            }
+          });
+        }
+      }
+
+      // Restore Signature visibility
+      if (typeof window.toggleSignatureVisibility === 'function') {
+        const isSigVisible = data.signatureVisible !== false;
+        const sigCheckbox = document.getElementById('toggleSignatureCheckbox');
+        if (sigCheckbox) sigCheckbox.checked = isSigVisible;
+        window.toggleSignatureVisibility(isSigVisible);
+      }
+
+      // Restore Pratilipi
+      const isPratilipi = !!data.pratilipiEnabled;
+      if (typeof window.togglePratilipiVisibility === 'function') {
+        window.togglePratilipiVisibility(isPratilipi);
+      }
+      if (data.pratilipiContent) {
+        const docPrat = document.getElementById('doc-pratilipi-content');
+        const inPrat = document.getElementById('in-pratilipi-list');
+        if (docPrat) docPrat.innerText = data.pratilipiContent;
+        if (inPrat) inPrat.value = data.pratilipiContent;
+      }
+
+      // Restore Table
+      const isTable = !!(data.tableEnabled || (data.tableState && data.tableState.enabled));
+      if (typeof window.toggleTableVisibility === 'function') {
+        window.toggleTableVisibility(isTable);
+      }
+      if (data.tableState && data.tableState.tbodyHtml) {
+        const tbody = document.getElementById('doc-table-tbody');
+        if (tbody) tbody.innerHTML = data.tableState.tbodyHtml;
+      } else if (data.tableHtml) {
+        const customTable = document.getElementById('doc-custom-table');
+        if (customTable) customTable.innerHTML = data.tableHtml;
+      }
+
+      // Restore Typography & Layout
+      if (data.fontFamily && typeof window.applyUniversalFontFamily === 'function') {
+        window.applyUniversalFontFamily(data.fontFamily);
+      }
+      if (data.fontSize && typeof window.smartSetExactFontSize === 'function') {
+        window.smartSetExactFontSize(parseFloat(data.fontSize));
+      }
+      if (data.lineHeight && typeof window.setLineSpacing === 'function') {
+        window.setLineSpacing(data.lineHeight);
+      }
+
+      // Mark this document as active for updating
+      window.setActiveDocument(data.id || data.docId, data);
+
+      window.closeNoticeHistoryModal();
+      if (typeof window.updatePageFitMeter === 'function') {
+        window.updatePageFitMeter();
+      }
+
+      if (window.showToast) {
+        window.showToast(`नोटिस लोड किया गया: "${data.title || data.refNo}"`, 'success');
+      }
+
+      if (triggerPrint) {
+        setTimeout(() => {
+          if (typeof window.triggerPrintNotice === 'function') {
+            window.triggerPrintNotice();
+          }
+        }, 400);
+      }
+    };
+
+    // Delete Notice from Firestore
+    window.deleteNoticeData = async function (docId) {
+      if (!confirm('क्या आप इस नोटिस के बैकअप को स्थायी रूप से हटाना चाहते हैं?')) return;
+
+      if (!db) {
+        let localList = JSON.parse(localStorage.getItem('pms_saved_notices_history') || '[]');
+        localList = localList.filter(item => item.id !== docId && item.docId !== docId);
+        localStorage.setItem('pms_saved_notices_history', JSON.stringify(localList));
+        cachedNotices = localList;
+        if (currentActiveDocId === docId) window.clearActiveDocument();
+        updateBackupCountBadges();
+        renderNoticeBackupsList(cachedNotices);
+        if (window.showToast) window.showToast('लोकल बैकअप हटा दिया गया', 'info');
+        return;
+      }
+
+      try {
+        await deleteDoc(doc(db, COLLECTION_NAME, docId));
+        if (currentActiveDocId === docId) {
+          window.clearActiveDocument();
+        }
+        if (window.showToast) window.showToast('नोटिस क्लाउड से सफलतापूर्वक हटा दिया गया', 'info');
+        fetchNoticeBackups();
+      } catch (err) {
+        if (window.showToast) window.showToast(`हटाने में त्रुटि: ${err.message}`, 'error');
+      }
+    };
+
+    // Export Archive JSON
+    window.exportNoticeArchiveJson = function () {
+      if (!cachedNotices || cachedNotices.length === 0) {
+        if (window.showToast) window.showToast('निर्यात करने हेतु कोई नोटिस बैकअप उपलब्ध नहीं है', 'warn');
+        return;
+      }
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(cachedNotices, null, 2));
+      const a = document.createElement('a');
+      a.setAttribute("href", dataStr);
+      a.setAttribute("download", `pms_notices_archive_${new Date().toISOString().slice(0, 10)}.json`);
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      if (window.showToast) window.showToast('नोटिस बैकअप JSON सफलतापूर्वक डाउनलोड हुआ', 'success');
+    };
+
+    // Modal Controller functions
+    window.openNoticeHistoryModal = function () {
+      const modal = document.getElementById('noticeHistoryModal');
+      if (modal) {
+        modal.classList.remove('hidden');
+        fetchNoticeBackups();
+        const searchInput = document.getElementById('noticeSearchInput');
+        if (searchInput) {
+          searchInput.value = '';
+          setTimeout(() => searchInput.focus(), 80);
+        }
+      }
+    };
+    window.openHistoryModal = window.openNoticeHistoryModal;
+
+    window.closeNoticeHistoryModal = function () {
+      const modal = document.getElementById('noticeHistoryModal');
+      if (modal) modal.classList.add('hidden');
+    };
+    window.closeHistoryModal = window.closeNoticeHistoryModal;
+
+    // Initial Fetch & Auto-restore draft on DOM ready
+    window.addEventListener('DOMContentLoaded', () => {
+      fetchNoticeBackups();
+
+      // Check URL parameters for notice ID
+      const params = new URLSearchParams(window.location.search);
+      const urlNoticeId = params.get('noticeId') || params.get('id');
+      if (urlNoticeId) {
+        setTimeout(() => {
+          window.loadNoticeData(urlNoticeId, false);
+        }, 500);
       }
     });
   </script>

@@ -906,7 +906,7 @@
         <button id="tabBtnTableSanlagnak" type="button"
           class="sidebar-tab-btn px-3 py-2 font-bold rounded-t-lg text-slate-400 hover:text-slate-200 transition flex items-center gap-1.5 cursor-pointer whitespace-nowrap">
           <i class="fa-solid fa-table-list text-emerald-400"></i>
-          <span>3. तालिका व संलग्नक</span>
+          <span>3. तालिका, संलग्नक व प्रतिलिपि</span>
         </button>
         <button id="tabBtnLayout" type="button"
           class="sidebar-tab-btn px-3 py-2 font-bold rounded-t-lg text-slate-400 hover:text-slate-200 transition flex items-center gap-1.5 cursor-pointer whitespace-nowrap">
@@ -1440,6 +1440,71 @@
                 </div>
                 <textarea id="in-sanlagnak" rows="3"
                   class="w-full bg-slate-900 border border-slate-700 rounded px-2.5 py-1.5 text-white text-xs leading-relaxed focus:ring-1 focus:ring-blue-500 focus:outline-none">यथोक्त।</textarea>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- PRATILIPI (COPY TO) BUILDER SECTION -->
+          <div class="bg-slate-800/90 rounded-xl p-3.5 border border-slate-700 space-y-3 shadow-md">
+            <div class="flex items-center justify-between">
+              <label class="flex items-center gap-2 cursor-pointer select-none">
+                <input type="checkbox" id="togglePratilipiCheckbox"
+                  class="w-4 h-4 rounded bg-slate-900 text-blue-600 focus:ring-0 cursor-pointer">
+                <span class="text-xs font-black text-amber-400 uppercase tracking-wider flex items-center gap-1.5">
+                  <i class="fa-solid fa-share-nodes text-amber-400"></i>
+                  <span>प्रतिलिपि (Copy To) जोड़ें</span>
+                </span>
+              </label>
+              <span id="pratilipiStatusBadge"
+                class="text-[10px] bg-slate-900 text-slate-400 font-medium px-2 py-0.5 rounded border border-slate-700">बंद
+                (Off)</span>
+            </div>
+
+            <!-- Pratilipi Controls Area -->
+            <div id="pratilipiControlsArea" class="space-y-2.5 pt-2 border-t border-slate-700/80 hidden">
+
+              <!-- Quick Presets -->
+              <div>
+                <label class="block text-[10px] text-slate-400 mb-1">त्वरित प्रतिलिपि प्रारूप (Quick Presets):</label>
+                <div class="flex flex-wrap gap-1">
+                  <button type="button"
+                    class="pratilipi-preset-btn text-[10px] bg-slate-900 hover:bg-slate-700 text-slate-200 border border-slate-700 px-2 py-1 rounded transition cursor-pointer"
+                    data-text="1. श्रीमान सेनानायक महोदय/व्यवस्थापक, 25वीं वाहिनी पीएसी रायबरेली।&#10;2. नोडल अधिकारी (शिक्षा), 25वीं वाहिनी पीएसी।&#10;3. संबंधित कर्मचारी की व्यक्तिगत सेवा पत्रावली।&#10;4. विद्यालय नोटिस बोर्ड / कार्यालय प्रति।">
+                    मानक 4-बिंदु प्रतिलिपि
+                  </button>
+                  <button type="button"
+                    class="pratilipi-preset-btn text-[10px] bg-slate-900 hover:bg-slate-700 text-slate-200 border border-slate-700 px-2 py-1 rounded transition cursor-pointer"
+                    data-text="1. श्रीमान सेनानायक महोदय/व्यवस्थापक, 25वीं वाहिनी पीएसी रायबरेली को सादर सूचनार्थ प्रेषित।&#10;2. कार्यालय प्रति।">
+                    सेनानायक महोदय सूचनार्थ
+                  </button>
+                  <button type="button"
+                    class="pratilipi-preset-btn text-[10px] bg-slate-900 hover:bg-slate-700 text-slate-200 border border-slate-700 px-2 py-1 rounded transition cursor-pointer"
+                    data-text="1. नोडल अधिकारी (शिक्षा), 25वीं वाहिनी पीएसी रायबरेली।&#10;2. कार्यालय पत्रावली।">
+                    नोडल अधिकारी (शिक्षा)
+                  </button>
+                  <button type="button"
+                    class="pratilipi-preset-btn text-[10px] bg-slate-900 hover:bg-slate-700 text-slate-200 border border-slate-700 px-2 py-1 rounded transition cursor-pointer"
+                    data-text="1. संबंधित फर्म / सेवा प्रदाता को सूचनार्थ एवं आवश्यक कार्यवाही हेतु।&#10;2. लेखा पत्रावली।">
+                    फर्म / कार्यदायी संस्था
+                  </button>
+                </div>
+              </div>
+
+              <!-- Textarea & Quick Add Item -->
+              <div>
+                <div class="flex items-center justify-between mb-1">
+                  <label class="block text-[11px] font-semibold text-slate-300">प्रतिलिपि सूची (Copy To List)</label>
+                  <button type="button" id="btnAddPratilipiItem"
+                    class="text-[10px] text-blue-400 hover:text-blue-300 underline font-medium cursor-pointer">
+                    + अगला क्र.सं. जोड़ें
+                  </button>
+                </div>
+                <textarea id="in-pratilipi-list" rows="4"
+                  class="w-full bg-slate-900 border border-slate-700 rounded px-2.5 py-1.5 text-white text-xs leading-relaxed focus:ring-1 focus:ring-blue-500 focus:outline-none">1. श्रीमान सेनानायक महोदय/व्यवस्थापक, 25वीं वाहिनी पीएसी रायबरेली।
+2. नोडल अधिकारी (शिक्षा), 25वीं वाहिनी पीएसी।
+3. संबंधित कर्मचारी की व्यक्तिगत सेवा पत्रावली।
+4. विद्यालय नोटिस बोर्ड / कार्यालय प्रति।</textarea>
               </div>
 
             </div>
@@ -2322,12 +2387,22 @@
                       </div>
                     </div>
 
-                    <!-- Quick On-Paper Button to Add Sanlagnak When Hidden -->
-                    <button type="button" id="docQuickSanlagnakBtn"
-                      class="no-print on-paper-btn text-[11px] text-slate-500 hover:text-blue-600 border border-dashed border-slate-300 hover:border-blue-400 bg-white/80 hover:bg-blue-50/80 rounded px-2 py-0.5 mb-1 transition flex items-center gap-1 cursor-pointer font-medium"
-                      title="पत्र में संलग्नक जोड़ें">
-                      <span>📎 + संलग्नक जोड़ें</span>
-                    </button>
+                    <!-- Quick On-Paper Action Buttons -->
+                    <div class="no-print flex items-center gap-1.5 mb-1 flex-wrap">
+                      <!-- Quick On-Paper Button to Add Sanlagnak When Hidden -->
+                      <button type="button" id="docQuickSanlagnakBtn"
+                        class="on-paper-btn text-[11px] text-slate-500 hover:text-blue-600 border border-dashed border-slate-300 hover:border-blue-400 bg-white/80 hover:bg-blue-50/80 rounded px-2 py-0.5 transition flex items-center gap-1 cursor-pointer font-medium"
+                        title="पत्र में संलग्नक जोड़ें">
+                        <span>📎 + संलग्नक जोड़ें</span>
+                      </button>
+
+                      <!-- Quick On-Paper Button to Add Pratilipi When Hidden -->
+                      <button type="button" id="docQuickPratilipiBtn" onclick="window.togglePratilipiVisibility(true)"
+                        class="on-paper-btn text-[11px] text-slate-500 hover:text-blue-600 border border-dashed border-slate-300 hover:border-blue-400 bg-white/80 hover:bg-blue-50/80 rounded px-2 py-0.5 transition flex items-center gap-1 cursor-pointer font-medium"
+                        title="पत्र में प्रतिलिपि जोड़ें">
+                        <span>📋 + प्रतिलिपि जोड़ें</span>
+                      </button>
+                    </div>
 
                     <!-- Left Sanlagnak Block (Standard Position) -->
                     <div id="doc-sanlagnak-block-left"
@@ -2341,6 +2416,22 @@
                       <div id="doc-sanlagnak-content-left" contenteditable="true"
                         class="mt-1 whitespace-pre-line font-medium text-[13.5px] text-black focus:outline-none">यथोक्त।
                       </div>
+                    </div>
+
+                    <!-- Pratilipi Block (Left Section) -->
+                    <div id="doc-pratilipi-block"
+                      class="hidden text-black hindi-body text-[13.5px] leading-snug pl-1 mt-2">
+                      <div class="font-bold flex items-center gap-1.5">
+                        <span class="border-b border-black pb-0.5">प्रतिलिपि:</span>
+                        <button type="button" id="docPratilipiRemoveBtn" onclick="window.togglePratilipiVisibility(false)"
+                          class="no-print text-[10px] text-rose-500 hover:text-rose-700 hover:underline cursor-pointer font-sans"
+                          title="प्रतिलिपि हटाएं">✕ हटाएं</button>
+                      </div>
+                      <div id="doc-pratilipi-content" contenteditable="true"
+                        class="mt-1 whitespace-pre-line font-medium text-[13px] text-black focus:outline-none">1. श्रीमान सेनानायक महोदय/व्यवस्थापक, 25वीं वाहिनी पीएसी रायबरेली।
+2. नोडल अधिकारी (शिक्षा), 25वीं वाहिनी पीएसी।
+3. संबंधित कर्मचारी की व्यक्तिगत सेवा पत्रावली।
+4. विद्यालय नोटिस बोर्ड / कार्यालय प्रति।</div>
                     </div>
                   </div>
 
@@ -3370,6 +3461,136 @@
       });
     }
 
+    // ================= PRATILIPI (COPY TO) CONTROLLER =================
+    let isPratilipiEnabled = false;
+    window.isPratilipiEnabled = false;
+
+    const togglePratilipiCheckbox = document.getElementById('togglePratilipiCheckbox');
+    const pratilipiStatusBadge = document.getElementById('pratilipiStatusBadge');
+    const pratilipiControlsArea = document.getElementById('pratilipiControlsArea');
+    const inPratilipiList = document.getElementById('in-pratilipi-list');
+    const docPratilipiBlock = document.getElementById('doc-pratilipi-block');
+    const docPratilipiContent = document.getElementById('doc-pratilipi-content');
+    const docQuickPratilipiBtn = document.getElementById('docQuickPratilipiBtn');
+    const docPratilipiRemoveBtn = document.getElementById('docPratilipiRemoveBtn');
+    const btnAddPratilipiItem = document.getElementById('btnAddPratilipiItem');
+
+    window.togglePratilipiVisibility = function (enabled, text) {
+      isPratilipiEnabled = !!enabled;
+      window.isPratilipiEnabled = isPratilipiEnabled;
+
+      if (togglePratilipiCheckbox) {
+        togglePratilipiCheckbox.checked = isPratilipiEnabled;
+      }
+
+      if (pratilipiStatusBadge) {
+        if (isPratilipiEnabled) {
+          pratilipiStatusBadge.textContent = 'सक्रिय (ON)';
+          pratilipiStatusBadge.className = 'text-[10px] bg-emerald-950/70 text-emerald-300 font-semibold px-2 py-0.5 rounded border border-emerald-800/40';
+        } else {
+          pratilipiStatusBadge.textContent = 'बंद (Off)';
+          pratilipiStatusBadge.className = 'text-[10px] bg-slate-900 text-slate-400 font-medium px-2 py-0.5 rounded border border-slate-700';
+        }
+      }
+
+      if (pratilipiControlsArea) {
+        if (isPratilipiEnabled) {
+          pratilipiControlsArea.classList.remove('hidden');
+        } else {
+          pratilipiControlsArea.classList.add('hidden');
+        }
+      }
+
+      if (docQuickPratilipiBtn) {
+        if (isPratilipiEnabled) {
+          docQuickPratilipiBtn.classList.add('hidden');
+        } else {
+          docQuickPratilipiBtn.classList.remove('hidden');
+        }
+      }
+
+      if (docPratilipiBlock) {
+        if (isPratilipiEnabled) {
+          docPratilipiBlock.classList.remove('hidden');
+        } else {
+          docPratilipiBlock.classList.add('hidden');
+        }
+      }
+
+      if (typeof text === 'string') {
+        if (inPratilipiList) inPratilipiList.value = text;
+        if (docPratilipiContent) docPratilipiContent.innerText = text;
+      }
+
+      triggerA4Check();
+    };
+
+    if (togglePratilipiCheckbox) {
+      togglePratilipiCheckbox.addEventListener('change', () => {
+        window.togglePratilipiVisibility(togglePratilipiCheckbox.checked);
+      });
+    }
+
+    if (docQuickPratilipiBtn) {
+      docQuickPratilipiBtn.addEventListener('click', () => {
+        window.togglePratilipiVisibility(true);
+        setTimeout(() => {
+          if (docPratilipiContent) docPratilipiContent.focus();
+        }, 100);
+      });
+    }
+
+    if (docPratilipiRemoveBtn) {
+      docPratilipiRemoveBtn.addEventListener('click', () => {
+        window.togglePratilipiVisibility(false);
+      });
+    }
+
+    // 2-Way Text Syncing for Pratilipi
+    if (inPratilipiList) {
+      inPratilipiList.addEventListener('input', () => {
+        const val = inPratilipiList.value;
+        if (docPratilipiContent) docPratilipiContent.innerText = val;
+        triggerA4Check();
+      });
+    }
+
+    if (docPratilipiContent) {
+      docPratilipiContent.addEventListener('input', () => {
+        const val = docPratilipiContent.innerText;
+        if (inPratilipiList) inPratilipiList.value = val;
+        triggerA4Check();
+      });
+    }
+
+    // Preset Buttons for Pratilipi
+    document.querySelectorAll('.pratilipi-preset-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const txt = btn.getAttribute('data-text');
+        window.togglePratilipiVisibility(true, txt);
+      });
+    });
+
+    // Add Item helper (+ अगला क्र.सं.) for Pratilipi
+    if (btnAddPratilipiItem) {
+      btnAddPratilipiItem.addEventListener('click', () => {
+        const current = (inPratilipiList ? inPratilipiList.value : '').trim();
+        let nextVal = '';
+        if (!current) {
+          nextVal = '1. ';
+        } else {
+          const lines = current.split('\n');
+          const count = lines.length;
+          nextVal = current + '\n' + (count + 1) + '. ';
+        }
+        window.togglePratilipiVisibility(true, nextVal);
+        if (inPratilipiList) {
+          inPratilipiList.focus();
+          inPratilipiList.setSelectionRange(inPratilipiList.value.length, inPratilipiList.value.length);
+        }
+      });
+    }
+
     // ================= OFFICIAL HINDI FONTS CONTROLLER =================
     const HINDI_FONTS = {
       mangal: {
@@ -3668,6 +3889,12 @@
         if (sanlagnakLeft) sanlagnakLeft.style.fontSize = Math.max(11, Math.round(14 * scaleRatio * 10) / 10) + 'px';
         const sanlagnakRight = letterDoc.querySelector('#doc-sanlagnak-block-right');
         if (sanlagnakRight) sanlagnakRight.style.fontSize = Math.max(11, Math.round(13 * scaleRatio * 10) / 10) + 'px';
+
+        // Pratilipi block
+        const pratilipiBlock = letterDoc.querySelector('#doc-pratilipi-block');
+        if (pratilipiBlock) pratilipiBlock.style.fontSize = Math.max(10.5, Math.round(13.5 * scaleRatio * 10) / 10) + 'px';
+        const pratilipiContent = letterDoc.querySelector('#doc-pratilipi-content');
+        if (pratilipiContent) pratilipiContent.style.fontSize = Math.max(10, Math.round(13 * scaleRatio * 10) / 10) + 'px';
 
         // Table cells
         letterDoc.querySelectorAll('#doc-custom-table th').forEach(th => {
@@ -4142,6 +4369,9 @@
         }
         window.setSubjectVisibility(true);
         window.setSanlagnakState(false, 'left', 'यथोक्त।');
+        if (typeof window.togglePratilipiVisibility === 'function') {
+          window.togglePratilipiVisibility(false);
+        }
         window.setLetterFont('mangal');
         window.setFontScale(100);
         window.setLineHeight('1.7');
@@ -5260,6 +5490,7 @@
         const signOrg = get('doc-sign-org');
         const signLoc = get('doc-sign-location');
         const sanlagnak = window.isSanlagnakEnabled ? `संलग्नक: ${get('doc-sanlagnak-content-left') || get('doc-sanlagnak-content-right')}` : '';
+        const pratilipi = window.isPratilipiEnabled ? `प्रतिलिपि:\n${get('doc-pratilipi-content')}` : '';
 
         const extraTexts = (typeof window.getExtraParagraphsData === 'function')
           ? window.getExtraParagraphsData().map(p => (p.text || '').trim()).filter(Boolean)
@@ -5287,7 +5518,8 @@
           'हस्ताक्षर:',
           signTitle,
           signOrg,
-          signLoc
+          signLoc,
+          pratilipi ? '\n' + pratilipi : ''
         ].filter(Boolean).join('\n');
 
         navigator.clipboard.writeText(fullText).then(() => {
@@ -5322,6 +5554,8 @@
         sanlagnakEnabled: isSanlagnakEnabled,
         sanlagnakAlign: sanlagnakAlign,
         sanlagnakText: getVal('in-sanlagnak') || 'यथोक्त।',
+        pratilipiEnabled: isPratilipiEnabled,
+        pratilipiText: getVal('in-pratilipi-list') || (document.getElementById('doc-pratilipi-content') ? document.getElementById('doc-pratilipi-content').innerText : ''),
         fontKey: currentLetterFont,
         fontScale: currentFontScale,
         universalFontSize: window.currentUniversalFontSize || 15.5,
@@ -5386,6 +5620,9 @@
           }
           if (typeof d.sanlagnakEnabled !== 'undefined' && typeof window.setSanlagnakState === 'function') {
             window.setSanlagnakState(d.sanlagnakEnabled, d.sanlagnakAlign || 'left', d.sanlagnakText || 'यथोक्त।');
+          }
+          if (typeof d.pratilipiEnabled !== 'undefined' && typeof window.togglePratilipiVisibility === 'function') {
+            window.togglePratilipiVisibility(d.pratilipiEnabled, d.pratilipiText);
           }
           if (d.fontKey && typeof window.setLetterFont === 'function') {
             window.setLetterFont(d.fontKey);
@@ -5587,6 +5824,8 @@
         sanlagnakEnabled: (typeof window.isSanlagnakEnabled !== 'undefined') ? window.isSanlagnakEnabled : false,
         sanlagnakAlign: (typeof window.sanlagnakAlign !== 'undefined') ? window.sanlagnakAlign : 'left',
         sanlagnakText: document.getElementById('in-sanlagnak') ? document.getElementById('in-sanlagnak').value : 'यथोक्त।',
+        pratilipiEnabled: (typeof window.isPratilipiEnabled !== 'undefined') ? window.isPratilipiEnabled : false,
+        pratilipiText: document.getElementById('in-pratilipi-list') ? document.getElementById('in-pratilipi-list').value : (document.getElementById('doc-pratilipi-content') ? document.getElementById('doc-pratilipi-content').innerText : ''),
         fontKey: (typeof window.currentLetterFont !== 'undefined') ? window.currentLetterFont : 'mangal',
         subjectVisible: (typeof window.isSubjectVisible !== 'undefined') ? window.isSubjectVisible : true,
         schoolEmail: document.getElementById('doc-school-email') ? document.getElementById('doc-school-email').innerText.trim() : 'pms25bnraebareli@gmail.com',
@@ -5697,6 +5936,7 @@
               <span class="text-xs text-slate-400 font-medium">${item.date || '-'}</span>
               ${item.tableState && item.tableState.enabled ? '<span class="text-[10px] bg-emerald-950/80 border border-emerald-800 text-emerald-300 px-2 py-0.5 rounded font-semibold">📊 तालिका शामिल</span>' : ''}
               ${item.sanlagnakEnabled ? '<span class="text-[10px] bg-purple-950/80 border border-purple-800 text-purple-300 px-2 py-0.5 rounded font-semibold">📎 संलग्नक</span>' : ''}
+              ${item.pratilipiEnabled ? '<span class="text-[10px] bg-amber-950/80 border border-amber-800 text-amber-300 px-2 py-0.5 rounded font-semibold">📋 प्रतिलिपि</span>' : ''}
               ${item.fontKey ? `<span class="text-[10px] bg-slate-900 border border-slate-700 text-slate-300 px-2 py-0.5 rounded font-mono font-bold">🔤 ${item.fontKey}</span>` : ''}
               ${currentActiveDocId === item.docId ? '<span class="text-[10px] bg-emerald-900/80 border border-emerald-500 text-emerald-300 px-2 py-0.5 rounded font-bold animate-pulse">✓ वर्तमान सक्रिय</span>' : ''}
             </div>
@@ -5798,6 +6038,10 @@
 
       if (typeof window.setSanlagnakState === 'function') {
         window.setSanlagnakState(!!data.sanlagnakEnabled, data.sanlagnakAlign || 'left', data.sanlagnakText || 'यथोक्त।');
+      }
+
+      if (typeof window.togglePratilipiVisibility === 'function') {
+        window.togglePratilipiVisibility(!!data.pratilipiEnabled, data.pratilipiText || data.pratilipiContent || null);
       }
 
       if (typeof window.setLetterFont === 'function') {

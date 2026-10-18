@@ -81,7 +81,7 @@
       min-height: 297mm;
       max-height: 297mm;
       background: #ffffff;
-      padding: 14mm 19mm 14mm 19mm;
+      padding: 8mm 10mm 8mm 19mm;
       position: relative;
       box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(255, 255, 255, 0.1);
       overflow: hidden;
@@ -93,6 +93,17 @@
       transform-origin: top center;
       transition: box-shadow 0.2s ease, font-size 0.15s ease;
       font-size: calc(15px * var(--letter-font-scale));
+    }
+
+    /* Multi-Page Canvas Separation */
+    #pageBreakDivider {
+      width: 210mm;
+      margin: 24px auto;
+      user-select: none;
+    }
+
+    .a4-page-2 {
+      margin-top: 0;
     }
 
     /* Page scale preview container */
@@ -645,6 +656,7 @@
         box-shadow: none !important;
         padding: 0 !important;
       }
+
       .drag-handle-bar,
       .card-resize-handle,
       .drag-nudge-btn,
@@ -675,8 +687,9 @@
         top: -9999px !important;
       }
 
-      html,
-      body {
+      /* When in SINGLE-PAGE mode (default) */
+      body:not(.has-page-2) html,
+      body:not(.has-page-2) {
         width: 210mm !important;
         height: 297mm !important;
         margin: 0 !important;
@@ -687,7 +700,7 @@
         display: block !important;
       }
 
-      .app-layout {
+      body:not(.has-page-2) .app-layout {
         display: block !important;
         padding: 0 !important;
         margin: 0 !important;
@@ -698,8 +711,8 @@
         border: none !important;
       }
 
-      main,
-      .preview-viewport {
+      body:not(.has-page-2) main,
+      body:not(.has-page-2) .preview-viewport {
         display: block !important;
         padding: 0 !important;
         margin: 0 !important;
@@ -710,7 +723,7 @@
         overflow: visible !important;
       }
 
-      .preview-wrapper {
+      body:not(.has-page-2) .preview-wrapper {
         padding: 0 !important;
         margin: 0 !important;
         transform: none !important;
@@ -720,7 +733,7 @@
         background: #ffffff !important;
       }
 
-      .a4-document {
+      body:not(.has-page-2) .a4-document {
         margin: 0 !important;
         box-shadow: none !important;
         width: 210mm !important;
@@ -735,6 +748,100 @@
         border: none !important;
         background: #ffffff !important;
         font-size: calc(15px * var(--letter-font-scale)) !important;
+      }
+
+      body:not(.has-page-2) #letterDocumentPage2,
+      body:not(.has-page-2) #pageBreakDivider {
+        display: none !important;
+      }
+
+      /* When in MULTI-PAGE (2 PAGES) mode */
+      body.has-page-2 html,
+      body.has-page-2 {
+        width: 210mm !important;
+        height: auto !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #ffffff !important;
+        background-color: #ffffff !important;
+        overflow: visible !important;
+        display: block !important;
+      }
+
+      body.has-page-2 .app-layout {
+        display: block !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        width: 100% !important;
+        height: auto !important;
+        background: #ffffff !important;
+        background-color: #ffffff !important;
+        border: none !important;
+      }
+
+      body.has-page-2 main,
+      body.has-page-2 .preview-viewport {
+        display: block !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        width: 210mm !important;
+        height: auto !important;
+        background: #ffffff !important;
+        background-color: #ffffff !important;
+        overflow: visible !important;
+      }
+
+      body.has-page-2 .preview-wrapper {
+        padding: 0 !important;
+        margin: 0 !important;
+        transform: none !important;
+        display: block !important;
+        width: 210mm !important;
+        height: auto !important;
+        background: #ffffff !important;
+      }
+
+      body.has-page-2 #letterDocument {
+        margin: 0 !important;
+        box-shadow: none !important;
+        width: 210mm !important;
+        height: 297mm !important;
+        min-height: 297mm !important;
+        max-height: 297mm !important;
+        padding: 13mm 18mm 11mm 18mm !important;
+        page-break-before: auto !important;
+        page-break-after: always !important;
+        break-after: page !important;
+        overflow: hidden !important;
+        border: none !important;
+        background: #ffffff !important;
+        font-size: calc(15px * var(--letter-font-scale)) !important;
+        display: flex !important;
+        box-sizing: border-box !important;
+      }
+
+      body.has-page-2 #letterDocumentPage2 {
+        margin: 0 !important;
+        box-shadow: none !important;
+        width: 210mm !important;
+        height: 297mm !important;
+        min-height: 297mm !important;
+        max-height: 297mm !important;
+        padding: 13mm 18mm 11mm 18mm !important;
+        page-break-before: always !important;
+        break-before: page !important;
+        page-break-after: auto !important;
+        break-after: auto !important;
+        overflow: hidden !important;
+        border: none !important;
+        background: #ffffff !important;
+        font-size: calc(15px * var(--letter-font-scale)) !important;
+        display: flex !important;
+        box-sizing: border-box !important;
+      }
+
+      body.has-page-2 #pageBreakDivider {
+        display: none !important;
       }
 
       .table-border-invisible th,
@@ -933,11 +1040,16 @@
       </button>
 
       <!-- Active Document Status Indicator -->
-      <div id="activeDocBadge" class="hidden items-center gap-1.5 px-2.5 py-1 bg-emerald-950/80 border border-emerald-500/50 rounded-lg text-[11px] text-emerald-300 font-medium" title="वर्तमान में यह पत्र क्लाउड पर खुला हुआ है">
+      <div id="activeDocBadge"
+        class="hidden items-center gap-1.5 px-2.5 py-1 bg-emerald-950/80 border border-emerald-500/50 rounded-lg text-[11px] text-emerald-300 font-medium"
+        title="वर्तमान में यह पत्र क्लाउड पर खुला हुआ है">
         <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-        <span class="text-[10px] text-emerald-400 font-bold uppercase tracking-wider hidden md:inline">क्लाउड सक्रिय:</span>
+        <span class="text-[10px] text-emerald-400 font-bold uppercase tracking-wider hidden md:inline">क्लाउड
+          सक्रिय:</span>
         <span id="activeDocBadgeTitle" class="font-bold text-white max-w-[120px] truncate">-</span>
-        <button id="clearActiveDocBtn" type="button" class="ml-1 text-slate-400 hover:text-rose-300 p-0.5 rounded cursor-pointer transition" title="सक्रिय लिंक हटाएं (नए पत्र के रूप में कार्य करें)">
+        <button id="clearActiveDocBtn" type="button"
+          class="ml-1 text-slate-400 hover:text-rose-300 p-0.5 rounded cursor-pointer transition"
+          title="सक्रिय लिंक हटाएं (नए पत्र के रूप में कार्य करें)">
           <i class="fa-solid fa-xmark text-[10px]"></i>
         </button>
       </div>
@@ -1220,6 +1332,61 @@
               <span class="text-xs font-semibold text-slate-300">I/C P.M.S पृष्ठांकन / नोटिंग स्टैम्प दिखाएं</span>
             </label>
             <span class="text-[10px] text-slate-400 font-mono">Date: __/__/2026</span>
+          </div>
+
+          <!-- Multi-Page (Page 2) Management Section in Sidebar -->
+          <div id="sidebarPage2Section" class="bg-indigo-950/40 border border-indigo-500/30 rounded-xl p-3 space-y-2.5 mt-3 shadow-sm">
+            <div class="flex items-center justify-between">
+              <label class="flex items-center gap-2 cursor-pointer select-none">
+                <input type="checkbox" id="togglePage2Checkbox" onchange="window.togglePage2(this.checked)"
+                  class="w-4 h-4 rounded bg-slate-900 text-indigo-500 focus:ring-0 cursor-pointer">
+                <span class="text-xs font-black text-sky-300 uppercase tracking-wider flex items-center gap-1.5">
+                  <i class="fa-solid fa-file-circle-plus text-sky-400"></i>
+                  <span>द्वितीय पृष्ठ (Page 2) लोड करें</span>
+                </span>
+              </label>
+              <span id="page2StatusBadge" class="text-[10px] bg-slate-900 text-slate-400 font-medium px-2 py-0.5 rounded border border-slate-700">बंद (Off)</span>
+            </div>
+
+            <div id="sidebarPage2Controls" class="space-y-3 pt-2 border-t border-indigo-800/40 hidden">
+              <!-- Distribution Controls -->
+              <div class="space-y-1.5 bg-slate-950/70 p-2.5 rounded-lg border border-slate-800">
+                <div class="text-[11px] font-bold text-amber-300 flex items-center gap-1">
+                  <i class="fa-solid fa-arrows-split-up-and-left text-[10px]"></i>
+                  <span>सामग्री विभाजन (Page 1 & 2 Distribution):</span>
+                </div>
+                <div class="grid grid-cols-2 gap-2 text-xs pt-1">
+                  <label class="flex items-center gap-1.5 p-1.5 rounded bg-slate-900/90 border border-slate-700 cursor-pointer hover:bg-slate-800 transition">
+                    <input type="checkbox" id="chkSignaturesOnPage2" onchange="window.setSignaturesPage(this.checked ? 2 : 1)" class="w-3.5 h-3.5 text-indigo-600 rounded" checked>
+                    <span class="text-[11px] text-slate-200">✍️ हस्ताक्षर/प्रतिलिपि पृष्ठ 2 पर</span>
+                  </label>
+                  <label class="flex items-center gap-1.5 p-1.5 rounded bg-slate-900/90 border border-slate-700 cursor-pointer hover:bg-slate-800 transition">
+                    <input type="checkbox" id="chkTableOnPage2" onchange="window.setTablePage(this.checked ? 2 : 1)" class="w-3.5 h-3.5 text-indigo-600 rounded">
+                    <span class="text-[11px] text-slate-200">📊 तालिका पृष्ठ 2 पर</span>
+                  </label>
+                </div>
+              </div>
+
+              <!-- Page 2 Body Paragraph -->
+              <div>
+                <div class="flex items-center justify-between mb-1">
+                  <label class="block text-[11px] font-bold text-sky-300">पृष्ठ 2: निरंतरता विवरण (Continuation Text)</label>
+                  <span class="text-[10px] text-slate-400">Page 2 Body</span>
+                </div>
+                <textarea id="in-body-p2" rows="3"
+                  class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-2 text-white text-xs leading-relaxed focus:ring-1 focus:ring-indigo-500 focus:outline-none"
+                  placeholder="द्वितीय पृष्ठ का अतिरिक्त विवरण यहाँ दर्ज करें...">उक्त के क्रम में यह भी सादर अवगत कराना है कि विद्यालय की समस्त गतिविधियों एवं व्यवस्थाओं को सुचारु बनाए रखने हेतु संबंधित कार्यवाहियां निर्धारित समयानुसार पूर्ण की जानी अपेक्षित हैं।</textarea>
+              </div>
+
+              <!-- Extra Paragraphs on Page 2 in Sidebar -->
+              <div id="extraParagraphsContainerP2" class="space-y-2"></div>
+
+              <button type="button" onclick="window.addNewParagraphPage2('', true)"
+                class="w-full py-1.5 px-2 bg-indigo-900/40 hover:bg-indigo-600 text-indigo-200 hover:text-white rounded border border-indigo-700/60 text-xs font-semibold flex items-center justify-center gap-1.5 transition cursor-pointer">
+                <i class="fa-solid fa-plus-circle text-xs text-sky-400"></i>
+                <span>+ पृष्ठ 2 पर अतिरिक्त पैराग्राफ जोड़ें</span>
+              </button>
+            </div>
           </div>
 
         </div>
@@ -1612,10 +1779,13 @@
                 <i class="fa-solid fa-arrows-up-down-left-right text-sky-400"></i>
                 <span>निचले ब्लॉक ड्रैग व लेआउट</span>
               </span>
-              <span class="text-[10px] bg-sky-950/70 text-sky-300 font-semibold px-2 py-0.5 rounded border border-sky-800/40">सक्रिय (Free Drag)</span>
+              <span
+                class="text-[10px] bg-sky-950/70 text-sky-300 font-semibold px-2 py-0.5 rounded border border-sky-800/40">सक्रिय
+                (Free Drag)</span>
             </div>
             <p class="text-[11px] text-slate-300 leading-relaxed">
-              आप संलग्नक, प्रतिलिपि व हस्ताक्षर को सीधे माउस या मोबाइल टच से <b>खींचकर (Drag) कहीं भी रख सकते हैं</b> तथा कोने वाले हैंडल <b>⤡</b> से <b>आकार (Resize)</b> बदल सकते हैं।
+              आप संलग्नक, प्रतिलिपि व हस्ताक्षर को सीधे माउस या मोबाइल टच से <b>खींचकर (Drag) कहीं भी रख सकते हैं</b>
+              तथा कोने वाले हैंडल <b>⤡</b> से <b>आकार (Resize)</b> बदल सकते हैं।
             </p>
             <div class="pt-1">
               <button type="button" onclick="window.resetAllLowerBlocks()"
@@ -1632,13 +1802,15 @@
         <div id="tabContentLayout" class="space-y-4 hidden">
 
           <!-- Universal Apply Master Card (One-Click Global Apply) -->
-          <div class="bg-gradient-to-r from-blue-900/60 via-indigo-950/80 to-slate-900 rounded-xl p-3.5 border border-indigo-500/40 shadow-lg space-y-2.5">
+          <div
+            class="bg-gradient-to-r from-blue-900/60 via-indigo-950/80 to-slate-900 rounded-xl p-3.5 border border-indigo-500/40 shadow-lg space-y-2.5">
             <div class="flex items-center justify-between">
               <span class="text-xs font-bold text-amber-300 flex items-center gap-1.5 uppercase tracking-wider">
                 <i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i>
                 <span>यूनिवर्सल फॉण्ट मास्टर कंट्रोल</span>
               </span>
-              <span class="text-[10px] bg-blue-600/40 text-blue-200 px-2 py-0.5 rounded border border-blue-400/30 font-bold">ग्लोबल</span>
+              <span
+                class="text-[10px] bg-blue-600/40 text-blue-200 px-2 py-0.5 rounded border border-blue-400/30 font-bold">ग्लोबल</span>
             </div>
             <p class="text-[11px] text-slate-300 leading-snug">
               चयनित फॉन्ट स्टाइल और फॉन्ट साइज़ को एक-क्लिक में <b>सम्पूर्ण पत्र (Letter)</b> पर ग्लोबली लागू करें।
@@ -1687,7 +1859,8 @@
                 <option value="georgia">13. Georgia (जॉर्जिया)</option>
                 <option value="calibri">14. Calibri (कैलिबरी)</option>
               </select>
-              <button type="button" onclick="applyUniversalFontFamily(document.getElementById('fontSelectSidebar').value)"
+              <button type="button"
+                onclick="applyUniversalFontFamily(document.getElementById('fontSelectSidebar').value)"
                 class="px-2.5 py-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded text-xs font-bold transition flex items-center gap-1 shadow-sm cursor-pointer whitespace-nowrap"
                 title="यह फॉन्ट सम्पूर्ण पत्र पर तुरंत लागू करें">
                 <span>ग्लोबल</span>
@@ -1802,8 +1975,10 @@
               </div>
             </div>
 
-            <div class="text-[10px] text-slate-300 bg-slate-950/70 p-2.5 rounded-lg border border-slate-800 leading-relaxed">
-              💡 <b>सुझाव:</b> बिना सेलेक्ट किए <b>A+ / A−</b> या साइज़ दबाने पर सम्पूर्ण पत्र का फॉन्ट एक-साथ बदलेगा। यदि किसी विशिष्ट शब्द को बदलना हो, तो पहले उसे सेलेक्ट करके A+/A− दबाएं!
+            <div
+              class="text-[10px] text-slate-300 bg-slate-950/70 p-2.5 rounded-lg border border-slate-800 leading-relaxed">
+              💡 <b>सुझाव:</b> बिना सेलेक्ट किए <b>A+ / A−</b> या साइज़ दबाने पर सम्पूर्ण पत्र का फॉन्ट एक-साथ बदलेगा।
+              यदि किसी विशिष्ट शब्द को बदलना हो, तो पहले उसे सेलेक्ट करके A+/A− दबाएं!
             </div>
           </div>
 
@@ -1979,6 +2154,24 @@
           <span>1-पेज ऑटो-फिट</span>
         </button>
 
+        <!-- Multi-Page (Page 2) Toggle in Canvas Floating Bar -->
+        <button id="togglePage2FloatingBtn" type="button" onclick="window.togglePage2(!window.isPage2Enabled)"
+          class="bg-blue-600/30 hover:bg-blue-600 text-blue-200 hover:text-white px-2.5 py-1 rounded-full font-bold border border-blue-500/40 transition flex items-center gap-1 cursor-pointer"
+          title="द्वितीय पृष्ठ (Page 2) जोड़ें या हटाएं">
+          <i id="togglePage2FloatingIcon" class="fa-solid fa-file-circle-plus text-xs text-sky-300"></i>
+          <span id="togglePage2FloatingText">+ द्वितीय पृष्ठ (Page 2)</span>
+        </button>
+
+        <!-- Quick Switcher for Signatures/Pratilipi when Page 2 is Active -->
+        <div id="floatingPage2QuickOptions" class="hidden items-center gap-1 bg-slate-950/80 rounded-full border border-slate-700 px-2 py-0.5 text-[11px]">
+          <span class="text-slate-400">हस्ताक्षर:</span>
+          <button type="button" id="floatingSigP1Btn" onclick="window.setSignaturesPage(1)"
+            class="px-1.5 py-0.2 rounded text-[10px] font-semibold text-slate-400 hover:text-white cursor-pointer" title="हस्ताक्षर व प्रतिलिपि पृष्ठ 1 के नीचे रखें">पृष्ठ 1</button>
+          <span class="text-slate-600">|</span>
+          <button type="button" id="floatingSigP2Btn" onclick="window.setSignaturesPage(2)"
+            class="px-1.5 py-0.2 rounded text-[10px] font-bold text-sky-300 bg-sky-950 border border-sky-800 cursor-pointer" title="हस्ताक्षर व प्रतिलिपि पृष्ठ 2 पर रखें">पृष्ठ 2</button>
+        </div>
+
         <div class="h-4 w-px bg-slate-700"></div>
 
         <!-- Canvas Quick Font Size (A- / A+) with Universal Action -->
@@ -2026,8 +2219,9 @@
         <div class="h-4 w-px bg-slate-700"></div>
 
         <!-- Quick Print Button -->
-        <button onclick="if(typeof window.triggerPrintLetter==='function'){window.triggerPrintLetter();}else{window.print();}" type="button"
-          class="text-blue-400 hover:text-blue-300 font-bold flex items-center gap-1 cursor-pointer"
+        <button
+          onclick="if(typeof window.triggerPrintLetter==='function'){window.triggerPrintLetter();}else{window.print();}"
+          type="button" class="text-blue-400 hover:text-blue-300 font-bold flex items-center gap-1 cursor-pointer"
           title="सीधे प्रिंट या पीडीएफ डायलॉग खोलें (Ctrl+P)">
           <i class="fa-solid fa-print"></i>
           <span class="hidden sm:inline">प्रिंट</span>
@@ -2109,17 +2303,23 @@
           </select>
 
           <!-- Universal Action Buttons -->
-          <button type="button" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded px-2 py-0.5 text-xs flex items-center gap-1 shadow-sm transition active:scale-95 cursor-pointer"
-            onclick="applyUniversalFontAndSize()" title="फॉन्ट स्टाइल और साइज़ दोनों सम्पूर्ण पत्र पर लागू करें (Apply to All)">
+          <button type="button"
+            class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded px-2 py-0.5 text-xs flex items-center gap-1 shadow-sm transition active:scale-95 cursor-pointer"
+            onclick="applyUniversalFontAndSize()"
+            title="फॉन्ट स्टाइल और साइज़ दोनों सम्पूर्ण पत्र पर लागू करें (Apply to All)">
             <i class="fa-solid fa-wand-magic-sparkles text-amber-300 text-[10px]"></i>
             <span>Apply to All</span>
           </button>
-          <button type="button" class="text-sky-300 hover:text-white hover:bg-slate-800 rounded px-1.5 py-0.5 text-[11px] font-medium border border-slate-700 transition cursor-pointer"
-            onclick="applyUniversalFontFamily(document.getElementById('ribbonFontFamily').value)" title="केवल चयनित फ़ॉन्ट स्टाइल सम्पूर्ण पत्र पर लागू करें">
+          <button type="button"
+            class="text-sky-300 hover:text-white hover:bg-slate-800 rounded px-1.5 py-0.5 text-[11px] font-medium border border-slate-700 transition cursor-pointer"
+            onclick="applyUniversalFontFamily(document.getElementById('ribbonFontFamily').value)"
+            title="केवल चयनित फ़ॉन्ट स्टाइल सम्पूर्ण पत्र पर लागू करें">
             फ़ॉन्ट सभी
           </button>
-          <button type="button" class="text-amber-300 hover:text-white hover:bg-slate-800 rounded px-1.5 py-0.5 text-[11px] font-medium border border-slate-700 transition cursor-pointer"
-            onclick="applyUniversalFontSize(document.getElementById('ribbonFontSizeSelect').value)" title="केवल चयनित फ़ॉन्ट साइज़ सम्पूर्ण पत्र पर लागू करें">
+          <button type="button"
+            class="text-amber-300 hover:text-white hover:bg-slate-800 rounded px-1.5 py-0.5 text-[11px] font-medium border border-slate-700 transition cursor-pointer"
+            onclick="applyUniversalFontSize(document.getElementById('ribbonFontSizeSelect').value)"
+            title="केवल चयनित फ़ॉन्ट साइज़ सम्पूर्ण पत्र पर लागू करें">
             साइज़ सभी
           </button>
         </div>
@@ -2412,53 +2612,55 @@
                   मिस्त्री द्वारा जाँच कराया गया, जिसमें आर.ओ. में ही तकनीकी खराबी होना पाया गया है।
                 </p>
 
-                <!-- OPTIONAL EMBEDDED TABLE -->
-                <div id="doc-table-wrapper" class="hidden my-2 relative max-w-full" style="display: none;">
-                  <!-- Table Quick Hide Action on Paper -->
-                  <div class="no-print absolute -top-3 right-0 z-30">
-                    <button type="button" onclick="updateTableVisibility(false)"
-                      class="bg-rose-700/90 hover:bg-rose-800 text-white text-[10px] font-bold px-2 py-0.5 rounded shadow flex items-center gap-1 transition cursor-pointer"
-                      title="तालिका हटाएं / छिपाएं">
-                      <i class="fa-solid fa-eye-slash text-[9px]"></i> तालिका हटाएं
-                    </button>
+                <!-- OPTIONAL EMBEDDED TABLE (PAGE 1 SLOT) -->
+                <div id="page1-table-slot">
+                  <div id="doc-table-wrapper" class="hidden my-2 relative max-w-full" style="display: none;">
+                    <!-- Table Quick Hide Action on Paper -->
+                    <div class="no-print absolute -top-3 right-0 z-30">
+                      <button type="button" onclick="updateTableVisibility(false)"
+                        class="bg-rose-700/90 hover:bg-rose-800 text-white text-[10px] font-bold px-2 py-0.5 rounded shadow flex items-center gap-1 transition cursor-pointer"
+                        title="तालिका हटाएं / छिपाएं">
+                        <i class="fa-solid fa-eye-slash text-[9px]"></i> तालिका हटाएं
+                      </button>
+                    </div>
+                    <table id="doc-custom-table" class="pms-letter-table">
+                      <thead>
+                        <tr id="doc-table-thead-tr">
+                          <th contenteditable="true" style="width: 12%;">कम सं०</th>
+                          <th contenteditable="true" style="width: 60%;">सामग्री / विवरण</th>
+                          <th contenteditable="true" style="width: 28%;">मात्रा / संख्या</th>
+                        </tr>
+                      </thead>
+                      <tbody id="doc-table-tbody">
+                        <tr>
+                          <td contenteditable="true">1.</td>
+                          <td contenteditable="true">Activity Register</td>
+                          <td contenteditable="true">01 अदद</td>
+                        </tr>
+                        <tr>
+                          <td contenteditable="true">2.</td>
+                          <td contenteditable="true">Meeting & Minutes Register</td>
+                          <td contenteditable="true">01 अदद</td>
+                        </tr>
+                        <tr>
+                          <td contenteditable="true">3.</td>
+                          <td contenteditable="true">ऑफिस फाइल (Office Files)</td>
+                          <td contenteditable="true">05 अदद</td>
+                        </tr>
+                      </tbody>
+                    </table>
+
+                    <!-- Table Edge & Corner Drag-Resize Handles (Mobile Touch + Mouse) -->
+                    <div id="tableRightEdgeResizer" class="table-edge-resizer-right no-print"
+                      title="तालिका चौड़ाई बदलें (माउस या टच से खींचें)"></div>
+                    <div id="tableBottomEdgeResizer" class="table-edge-resizer-bottom no-print"
+                      title="तालिका पंक्ति ऊँचाई बदलें (माउस या टच से खींचें)"></div>
+                    <div id="tableCornerResizer" class="table-corner-resizer no-print"
+                      title="तालिका आकार बदलें (माउस या टच से खींचें)"></div>
+
+                    <!-- Live Drag HUD Tooltip -->
+                    <div id="tableResizeTooltip" class="table-resize-tooltip no-print hidden"></div>
                   </div>
-                  <table id="doc-custom-table" class="pms-letter-table">
-                    <thead>
-                      <tr id="doc-table-thead-tr">
-                        <th contenteditable="true" style="width: 12%;">कम सं०</th>
-                        <th contenteditable="true" style="width: 60%;">सामग्री / विवरण</th>
-                        <th contenteditable="true" style="width: 28%;">मात्रा / संख्या</th>
-                      </tr>
-                    </thead>
-                    <tbody id="doc-table-tbody">
-                      <tr>
-                        <td contenteditable="true">1.</td>
-                        <td contenteditable="true">Activity Register</td>
-                        <td contenteditable="true">01 अदद</td>
-                      </tr>
-                      <tr>
-                        <td contenteditable="true">2.</td>
-                        <td contenteditable="true">Meeting & Minutes Register</td>
-                        <td contenteditable="true">01 अदद</td>
-                      </tr>
-                      <tr>
-                        <td contenteditable="true">3.</td>
-                        <td contenteditable="true">ऑफिस फाइल (Office Files)</td>
-                        <td contenteditable="true">05 अदद</td>
-                      </tr>
-                    </tbody>
-                  </table>
-
-                  <!-- Table Edge & Corner Drag-Resize Handles (Mobile Touch + Mouse) -->
-                  <div id="tableRightEdgeResizer" class="table-edge-resizer-right no-print"
-                    title="तालिका चौड़ाई बदलें (माउस या टच से खींचें)"></div>
-                  <div id="tableBottomEdgeResizer" class="table-edge-resizer-bottom no-print"
-                    title="तालिका पंक्ति ऊँचाई बदलें (माउस या टच से खींचें)"></div>
-                  <div id="tableCornerResizer" class="table-corner-resizer no-print"
-                    title="तालिका आकार बदलें (माउस या टच से खींचें)"></div>
-
-                  <!-- Live Drag HUD Tooltip -->
-                  <div id="tableResizeTooltip" class="table-resize-tooltip no-print hidden"></div>
                 </div>
 
                 <!-- Body Paragraph 2 (Request) -->
@@ -2481,16 +2683,19 @@
                   </button>
                 </div>
 
-                <!-- Closing Line -->
-                <p class="indent-10 font-semibold" contenteditable="true" id="doc-closing">
-                  महोदय की महान कृपा होगी।
-                </p>
+                <!-- Closing Line (PAGE 1 SLOT) -->
+                <div id="page1-closing-slot">
+                  <p class="indent-10 font-semibold" contenteditable="true" id="doc-closing">
+                    महोदय की महान कृपा होगी।
+                  </p>
+                </div>
 
               </div>
 
-              <!-- SIGNATURE & NOTING & SANLAGNAK BLOCK -->
-              <div id="signature-container" class="mt-7 mb-2 relative">
-                <div class="flex justify-between items-end gap-4 flex-wrap sm:flex-nowrap">
+              <!-- SIGNATURE & NOTING & SANLAGNAK BLOCK (PAGE 1 SLOT) -->
+              <div id="page1-signature-slot">
+                <div id="signature-container" class="mt-7 mb-2 relative">
+                  <div class="flex justify-between items-end gap-4 flex-wrap sm:flex-nowrap">
 
                   <!-- Left Section: Noting Stamp & Left Sanlagnak & Pratilipi -->
                   <div class="flex flex-col justify-end items-start text-left flex-1 min-w-[200px]">
@@ -2522,20 +2727,37 @@
 
                     <!-- 1. Left Sanlagnak Block (Draggable & Resizable) -->
                     <div id="doc-sanlagnak-block-left"
-                      class="hidden text-black hindi-body text-[14px] leading-snug pl-1 drag-resize-box" data-x="0" data-y="0">
-                      
+                      class="hidden text-black hindi-body text-[14px] leading-snug pl-1 drag-resize-box" data-x="0"
+                      data-y="0">
+
                       <!-- Drag Handle Header (no-print) -->
-                      <div class="drag-handle-bar no-print flex items-center justify-between gap-1 py-0.5 px-1.5 mb-1 bg-slate-100 hover:bg-blue-50 border border-dashed border-slate-300 hover:border-blue-400 rounded text-[10px] text-slate-600 select-none transition cursor-grab active:cursor-grabbing">
+                      <div
+                        class="drag-handle-bar no-print flex items-center justify-between gap-1 py-0.5 px-1.5 mb-1 bg-slate-100 hover:bg-blue-50 border border-dashed border-slate-300 hover:border-blue-400 rounded text-[10px] text-slate-600 select-none transition cursor-grab active:cursor-grabbing">
                         <div class="flex items-center gap-1 font-bold text-blue-700">
                           <i class="fa-solid fa-grip-vertical"></i>
                           <span>📎 संलग्नक (Drag)</span>
                         </div>
                         <div class="flex items-center gap-0.5">
-                          <button type="button" class="drag-nudge-btn px-1 py-0.2 bg-white hover:bg-blue-100 rounded border border-slate-300 text-slate-700 cursor-pointer" onclick="window.nudgeLowerBlock('doc-sanlagnak-block-left', -10, 0)" title="बायें खिसकाएँ">◀</button>
-                          <button type="button" class="drag-nudge-btn px-1 py-0.2 bg-white hover:bg-blue-100 rounded border border-slate-300 text-slate-700 cursor-pointer" onclick="window.nudgeLowerBlock('doc-sanlagnak-block-left', 10, 0)" title="दायें खिसकाएँ">▶</button>
-                          <button type="button" class="drag-nudge-btn px-1 py-0.2 bg-white hover:bg-blue-100 rounded border border-slate-300 text-slate-700 cursor-pointer" onclick="window.nudgeLowerBlock('doc-sanlagnak-block-left', 0, -10)" title="ऊपर खिसकाएँ">▲</button>
-                          <button type="button" class="drag-nudge-btn px-1 py-0.2 bg-white hover:bg-blue-100 rounded border border-slate-300 text-slate-700 cursor-pointer" onclick="window.nudgeLowerBlock('doc-sanlagnak-block-left', 0, 10)" title="नीचे खिसकाएँ">▼</button>
-                          <button type="button" class="drag-reset-btn px-1.5 py-0.2 bg-white hover:bg-amber-100 text-amber-800 rounded border border-amber-300 font-semibold cursor-pointer" onclick="window.resetLowerBlock('doc-sanlagnak-block-left')" title="डिफ़ॉल्ट स्थान व आकार रीसेट करें">⟲ रीसेट</button>
+                          <button type="button"
+                            class="drag-nudge-btn px-1 py-0.2 bg-white hover:bg-blue-100 rounded border border-slate-300 text-slate-700 cursor-pointer"
+                            onclick="window.nudgeLowerBlock('doc-sanlagnak-block-left', -10, 0)"
+                            title="बायें खिसकाएँ">◀</button>
+                          <button type="button"
+                            class="drag-nudge-btn px-1 py-0.2 bg-white hover:bg-blue-100 rounded border border-slate-300 text-slate-700 cursor-pointer"
+                            onclick="window.nudgeLowerBlock('doc-sanlagnak-block-left', 10, 0)"
+                            title="दायें खिसकाएँ">▶</button>
+                          <button type="button"
+                            class="drag-nudge-btn px-1 py-0.2 bg-white hover:bg-blue-100 rounded border border-slate-300 text-slate-700 cursor-pointer"
+                            onclick="window.nudgeLowerBlock('doc-sanlagnak-block-left', 0, -10)"
+                            title="ऊपर खिसकाएँ">▲</button>
+                          <button type="button"
+                            class="drag-nudge-btn px-1 py-0.2 bg-white hover:bg-blue-100 rounded border border-slate-300 text-slate-700 cursor-pointer"
+                            onclick="window.nudgeLowerBlock('doc-sanlagnak-block-left', 0, 10)"
+                            title="नीचे खिसकाएँ">▼</button>
+                          <button type="button"
+                            class="drag-reset-btn px-1.5 py-0.2 bg-white hover:bg-amber-100 text-amber-800 rounded border border-amber-300 font-semibold cursor-pointer"
+                            onclick="window.resetLowerBlock('doc-sanlagnak-block-left')"
+                            title="डिफ़ॉल्ट स्थान व आकार रीसेट करें">⟲ रीसेट</button>
                           <button type="button" id="docSanlagnakRemoveBtnLeft"
                             class="no-print text-[10px] text-rose-500 hover:text-rose-700 hover:underline cursor-pointer font-sans ml-1"
                             title="संलग्नक हटाएं">✕ हटाएं</button>
@@ -2557,21 +2779,39 @@
 
                     <!-- 2. Pratilipi Block (Draggable & Resizable) -->
                     <div id="doc-pratilipi-block"
-                      class="hidden text-black hindi-body text-[13.5px] leading-snug pl-1 mt-2 drag-resize-box" data-x="0" data-y="0">
-                      
+                      class="hidden text-black hindi-body text-[13.5px] leading-snug pl-1 mt-2 drag-resize-box"
+                      data-x="0" data-y="0">
+
                       <!-- Drag Handle Header (no-print) -->
-                      <div class="drag-handle-bar no-print flex items-center justify-between gap-1 py-0.5 px-1.5 mb-1 bg-slate-100 hover:bg-blue-50 border border-dashed border-slate-300 hover:border-blue-400 rounded text-[10px] text-slate-600 select-none transition cursor-grab active:cursor-grabbing">
+                      <div
+                        class="drag-handle-bar no-print flex items-center justify-between gap-1 py-0.5 px-1.5 mb-1 bg-slate-100 hover:bg-blue-50 border border-dashed border-slate-300 hover:border-blue-400 rounded text-[10px] text-slate-600 select-none transition cursor-grab active:cursor-grabbing">
                         <div class="flex items-center gap-1 font-bold text-blue-700">
                           <i class="fa-solid fa-grip-vertical"></i>
                           <span>📋 प्रतिलिपि (Drag)</span>
                         </div>
                         <div class="flex items-center gap-0.5">
-                          <button type="button" class="drag-nudge-btn px-1 py-0.2 bg-white hover:bg-blue-100 rounded border border-slate-300 text-slate-700 cursor-pointer" onclick="window.nudgeLowerBlock('doc-pratilipi-block', -10, 0)" title="बायें खिसकाएँ">◀</button>
-                          <button type="button" class="drag-nudge-btn px-1 py-0.2 bg-white hover:bg-blue-100 rounded border border-slate-300 text-slate-700 cursor-pointer" onclick="window.nudgeLowerBlock('doc-pratilipi-block', 10, 0)" title="दायें खिसकाएँ">▶</button>
-                          <button type="button" class="drag-nudge-btn px-1 py-0.2 bg-white hover:bg-blue-100 rounded border border-slate-300 text-slate-700 cursor-pointer" onclick="window.nudgeLowerBlock('doc-pratilipi-block', 0, -10)" title="ऊपर खिसकाएँ">▲</button>
-                          <button type="button" class="drag-nudge-btn px-1 py-0.2 bg-white hover:bg-blue-100 rounded border border-slate-300 text-slate-700 cursor-pointer" onclick="window.nudgeLowerBlock('doc-pratilipi-block', 0, 10)" title="नीचे खिसकाएँ">▼</button>
-                          <button type="button" class="drag-reset-btn px-1.5 py-0.2 bg-white hover:bg-amber-100 text-amber-800 rounded border border-amber-300 font-semibold cursor-pointer" onclick="window.resetLowerBlock('doc-pratilipi-block')" title="डिफ़ॉल्ट स्थान व आकार रीसेट करें">⟲ रीसेट</button>
-                          <button type="button" id="docPratilipiRemoveBtn" onclick="window.togglePratilipiVisibility(false)"
+                          <button type="button"
+                            class="drag-nudge-btn px-1 py-0.2 bg-white hover:bg-blue-100 rounded border border-slate-300 text-slate-700 cursor-pointer"
+                            onclick="window.nudgeLowerBlock('doc-pratilipi-block', -10, 0)"
+                            title="बायें खिसकाएँ">◀</button>
+                          <button type="button"
+                            class="drag-nudge-btn px-1 py-0.2 bg-white hover:bg-blue-100 rounded border border-slate-300 text-slate-700 cursor-pointer"
+                            onclick="window.nudgeLowerBlock('doc-pratilipi-block', 10, 0)"
+                            title="दायें खिसकाएँ">▶</button>
+                          <button type="button"
+                            class="drag-nudge-btn px-1 py-0.2 bg-white hover:bg-blue-100 rounded border border-slate-300 text-slate-700 cursor-pointer"
+                            onclick="window.nudgeLowerBlock('doc-pratilipi-block', 0, -10)"
+                            title="ऊपर खिसकाएँ">▲</button>
+                          <button type="button"
+                            class="drag-nudge-btn px-1 py-0.2 bg-white hover:bg-blue-100 rounded border border-slate-300 text-slate-700 cursor-pointer"
+                            onclick="window.nudgeLowerBlock('doc-pratilipi-block', 0, 10)"
+                            title="नीचे खिसकाएँ">▼</button>
+                          <button type="button"
+                            class="drag-reset-btn px-1.5 py-0.2 bg-white hover:bg-amber-100 text-amber-800 rounded border border-amber-300 font-semibold cursor-pointer"
+                            onclick="window.resetLowerBlock('doc-pratilipi-block')"
+                            title="डिफ़ॉल्ट स्थान व आकार रीसेट करें">⟲ रीसेट</button>
+                          <button type="button" id="docPratilipiRemoveBtn"
+                            onclick="window.togglePratilipiVisibility(false)"
                             class="no-print text-[10px] text-rose-500 hover:text-rose-700 hover:underline cursor-pointer font-sans ml-1"
                             title="प्रतिलिपि हटाएं">✕ हटाएं</button>
                         </div>
@@ -2581,10 +2821,11 @@
                         <span class="border-b border-black pb-0.5">प्रतिलिपि:</span>
                       </div>
                       <div id="doc-pratilipi-content" contenteditable="true"
-                        class="mt-1 whitespace-pre-line font-medium text-[13px] text-black focus:outline-none">1. श्रीमान सेनानायक महोदय/व्यवस्थापक, 25वीं वाहिनी पीएसी रायबरेली।
-2. नोडल अधिकारी (शिक्षा), 25वीं वाहिनी पीएसी।
-3. संबंधित कर्मचारी की व्यक्तिगत सेवा पत्रावली।
-4. विद्यालय नोटिस बोर्ड / कार्यालय प्रति।</div>
+                        class="mt-1 whitespace-pre-line font-medium text-[13px] text-black focus:outline-none">1.
+                        श्रीमान सेनानायक महोदय/व्यवस्थापक, 25वीं वाहिनी पीएसी रायबरेली।
+                        2. नोडल अधिकारी (शिक्षा), 25वीं वाहिनी पीएसी।
+                        3. संबंधित कर्मचारी की व्यक्तिगत सेवा पत्रावली।
+                        4. विद्यालय नोटिस बोर्ड / कार्यालय प्रति।</div>
 
                       <!-- Corner Resize Handle (no-print) -->
                       <div class="card-resize-handle no-print" title="माउस या टच से खींचकर आकार बदलें (Drag to Resize)">
@@ -2595,20 +2836,35 @@
                   </div>
 
                   <!-- 3. Right Section: Right Sanlagnak & Official Signature Block (Draggable & Resizable) -->
-                  <div id="doc-signature-block" class="text-center min-w-[210px] ml-auto drag-resize-box" data-x="0" data-y="0">
-                    
+                  <div id="doc-signature-block" class="text-center min-w-[210px] ml-auto drag-resize-box" data-x="0"
+                    data-y="0">
+
                     <!-- Drag Handle Header (no-print) -->
-                    <div class="drag-handle-bar no-print flex items-center justify-between gap-1 py-0.5 px-1.5 mb-1 bg-slate-100 hover:bg-blue-50 border border-dashed border-slate-300 hover:border-blue-400 rounded text-[10px] text-slate-600 select-none transition cursor-grab active:cursor-grabbing">
+                    <div
+                      class="drag-handle-bar no-print flex items-center justify-between gap-1 py-0.5 px-1.5 mb-1 bg-slate-100 hover:bg-blue-50 border border-dashed border-slate-300 hover:border-blue-400 rounded text-[10px] text-slate-600 select-none transition cursor-grab active:cursor-grabbing">
                       <div class="flex items-center gap-1 font-bold text-blue-700">
                         <i class="fa-solid fa-grip-vertical"></i>
                         <span>✍️ हस्ताक्षर (Drag)</span>
                       </div>
                       <div class="flex items-center gap-0.5">
-                        <button type="button" class="drag-nudge-btn px-1 py-0.2 bg-white hover:bg-blue-100 rounded border border-slate-300 text-slate-700 cursor-pointer" onclick="window.nudgeLowerBlock('doc-signature-block', -10, 0)" title="बायें खिसकाएँ">◀</button>
-                        <button type="button" class="drag-nudge-btn px-1 py-0.2 bg-white hover:bg-blue-100 rounded border border-slate-300 text-slate-700 cursor-pointer" onclick="window.nudgeLowerBlock('doc-signature-block', 10, 0)" title="दायें खिसकाएँ">▶</button>
-                        <button type="button" class="drag-nudge-btn px-1 py-0.2 bg-white hover:bg-blue-100 rounded border border-slate-300 text-slate-700 cursor-pointer" onclick="window.nudgeLowerBlock('doc-signature-block', 0, -10)" title="ऊपर खिसकाएँ">▲</button>
-                        <button type="button" class="drag-nudge-btn px-1 py-0.2 bg-white hover:bg-blue-100 rounded border border-slate-300 text-slate-700 cursor-pointer" onclick="window.nudgeLowerBlock('doc-signature-block', 0, 10)" title="नीचे खिसकाएँ">▼</button>
-                        <button type="button" class="drag-reset-btn px-1.5 py-0.2 bg-white hover:bg-amber-100 text-amber-800 rounded border border-amber-300 font-semibold cursor-pointer" onclick="window.resetLowerBlock('doc-signature-block')" title="डिफ़ॉल्ट स्थान व आकार रीसेट करें">⟲ रीसेट</button>
+                        <button type="button"
+                          class="drag-nudge-btn px-1 py-0.2 bg-white hover:bg-blue-100 rounded border border-slate-300 text-slate-700 cursor-pointer"
+                          onclick="window.nudgeLowerBlock('doc-signature-block', -10, 0)"
+                          title="बायें खिसकाएँ">◀</button>
+                        <button type="button"
+                          class="drag-nudge-btn px-1 py-0.2 bg-white hover:bg-blue-100 rounded border border-slate-300 text-slate-700 cursor-pointer"
+                          onclick="window.nudgeLowerBlock('doc-signature-block', 10, 0)"
+                          title="दायें खिसकाएँ">▶</button>
+                        <button type="button"
+                          class="drag-nudge-btn px-1 py-0.2 bg-white hover:bg-blue-100 rounded border border-slate-300 text-slate-700 cursor-pointer"
+                          onclick="window.nudgeLowerBlock('doc-signature-block', 0, -10)" title="ऊपर खिसकाएँ">▲</button>
+                        <button type="button"
+                          class="drag-nudge-btn px-1 py-0.2 bg-white hover:bg-blue-100 rounded border border-slate-300 text-slate-700 cursor-pointer"
+                          onclick="window.nudgeLowerBlock('doc-signature-block', 0, 10)" title="नीचे खिसकाएँ">▼</button>
+                        <button type="button"
+                          class="drag-reset-btn px-1.5 py-0.2 bg-white hover:bg-amber-100 text-amber-800 rounded border border-amber-300 font-semibold cursor-pointer"
+                          onclick="window.resetLowerBlock('doc-signature-block')"
+                          title="डिफ़ॉल्ट स्थान व आकार रीसेट करें">⟲ रीसेट</button>
                       </div>
                     </div>
 
@@ -2648,10 +2904,78 @@
 
                 </div>
               </div>
-
             </div>
 
           </div>
+
+        </div>
+
+        <!-- DIVIDER BETWEEN PAGE 1 & PAGE 2 (SCREEN ONLY) -->
+        <div id="pageBreakDivider" class="no-print my-6 w-full max-w-[210mm] flex items-center justify-between gap-3 text-xs text-slate-400 select-none hidden">
+          <div class="h-px bg-gradient-to-r from-transparent via-slate-700 to-transparent flex-1"></div>
+          <div class="flex items-center gap-2 bg-slate-900/90 border border-slate-700 px-4 py-1.5 rounded-full shadow-xl">
+            <span class="text-amber-400 font-bold flex items-center gap-1.5"><i class="fa-solid fa-file text-xs"></i> पृष्ठ 1 समाप्त</span>
+            <span class="text-slate-600">────</span>
+            <span class="text-sky-400 font-bold flex items-center gap-1.5"><i class="fa-solid fa-file-circle-plus text-xs"></i> पृष्ठ 2 (Page 2)</span>
+            <button type="button" onclick="window.togglePage2(false)" class="ml-2 text-rose-400 hover:text-rose-300 hover:underline cursor-pointer font-bold text-[11px]" title="द्वितीय पृष्ठ हटाएं">
+              ✕ हटाएं
+            </button>
+          </div>
+          <div class="h-px bg-gradient-to-r from-transparent via-slate-700 to-transparent flex-1"></div>
+        </div>
+
+        <!-- A4 PHYSICAL DOCUMENT PAPER (PAGE 2) -->
+        <div class="a4-document a4-page-2 hidden" id="letterDocumentPage2">
+          <!-- PAGE 2 OFFICIAL CONTINUATION HEADER -->
+          <div class="page2-header pb-2 mb-3 border-b border-black flex justify-between items-center text-[12.5px] font-semibold text-black hindi-body select-none">
+            <div>
+              <span>पत्रांक संख्या: </span>
+              <span id="doc-ref-no-p2" class="font-bold">पीएमएस/2026/142</span>
+            </div>
+            <div class="text-center font-bold text-[12px] hindi-heading">
+              कार्यालय पुलिस मॉडर्न स्कूल, 25वीं वाहिनी पीएसी, रायबरेली
+            </div>
+            <div>
+              <span>दिनांक: </span>
+              <span id="doc-date-p2" class="font-bold">सितंबर, 12, 2026</span>
+              <span class="ml-1.5 px-2 py-0.5 bg-slate-100 border border-slate-300 rounded font-mono text-[11px] font-black">पृष्ठ - 2</span>
+            </div>
+          </div>
+
+          <!-- PAGE 2 CONTINUATION BODY AREA -->
+          <div id="doc-body-page2-container" class="text-[15.5px] text-justify text-black hindi-body space-y-3 flex-1 flex flex-col justify-between">
+            
+            <div class="space-y-3 flex-1">
+              <!-- Page 2 Table Slot (if table moved to page 2) -->
+              <div id="page2-table-slot"></div>
+
+              <!-- Page 2 Continuation Paragraph -->
+              <p class="indent-10" contenteditable="true" id="doc-body-p2" placeholder="द्वितीय पृष्ठ का अतिरिक्त विवरण यहाँ लिखें...">
+                उक्त के क्रम में यह भी सादर अवगत कराना है कि विद्यालय की समस्त गतिविधियों एवं व्यवस्थाओं को सुचारु बनाए रखने हेतु संबंधित कार्यवाहियां निर्धारित समयानुसार पूर्ण की जानी अपेक्षित हैं।
+              </p>
+
+              <!-- Page 2 Extra Paragraphs Container -->
+              <div id="doc-extra-paragraphs-p2" class="space-y-3"></div>
+
+              <!-- Quick Button to Add Paragraph on Page 2 (Screen only) -->
+              <div class="no-print pt-1 flex justify-end">
+                <button type="button" onclick="window.addNewParagraphPage2('', true)"
+                  class="text-[11px] bg-sky-50 hover:bg-sky-100 text-sky-800 border border-sky-300 hover:border-sky-400 px-2.5 py-1 rounded shadow-xs flex items-center gap-1.5 font-semibold transition cursor-pointer"
+                  title="पृष्ठ 2 पर नया पैराग्राफ जोड़ें">
+                  <i class="fa-solid fa-plus-circle text-sky-600 text-xs"></i>
+                  <span>+ पृष्ठ 2 पर पैराग्राफ जोड़ें</span>
+                </button>
+              </div>
+
+              <!-- Page 2 Closing Line Slot (if signatures moved to page 2) -->
+              <div id="page2-closing-slot" class="pt-2"></div>
+            </div>
+
+            <!-- Page 2 Signature & Lower Blocks Slot -->
+            <div id="page2-signature-slot" class="mt-auto"></div>
+
+          </div>
+        </div>
         </div>
       </div>
 
@@ -2693,18 +3017,23 @@
           </label>
           <div class="grid grid-cols-2 gap-2">
             <!-- Option 1: Update Existing -->
-            <label id="saveModeUpdateLabel" class="save-mode-option flex flex-col p-2.5 rounded-xl border-2 border-emerald-500 bg-emerald-950/40 cursor-pointer transition select-none shadow-sm">
+            <label id="saveModeUpdateLabel"
+              class="save-mode-option flex flex-col p-2.5 rounded-xl border-2 border-emerald-500 bg-emerald-950/40 cursor-pointer transition select-none shadow-sm">
               <div class="flex items-center gap-2">
-                <input type="radio" name="saveModeRadio" id="saveModeUpdate" value="update" checked class="text-emerald-500 focus:ring-0 cursor-pointer">
+                <input type="radio" name="saveModeRadio" id="saveModeUpdate" value="update" checked
+                  class="text-emerald-500 focus:ring-0 cursor-pointer">
                 <span class="font-bold text-xs text-emerald-200">🔄 मौजूदा अपडेट करें</span>
               </div>
-              <span class="text-[10px] text-slate-400 mt-1 leading-tight">उसी फाइल में बदलाव सहेजें (नई फाइल नहीं बनेगी)</span>
+              <span class="text-[10px] text-slate-400 mt-1 leading-tight">उसी फाइल में बदलाव सहेजें (नई फाइल नहीं
+                बनेगी)</span>
             </label>
 
             <!-- Option 2: Save as New Copy -->
-            <label id="saveModeNewLabel" class="save-mode-option flex flex-col p-2.5 rounded-xl border border-slate-700 bg-slate-900/60 hover:border-slate-600 cursor-pointer transition select-none">
+            <label id="saveModeNewLabel"
+              class="save-mode-option flex flex-col p-2.5 rounded-xl border border-slate-700 bg-slate-900/60 hover:border-slate-600 cursor-pointer transition select-none">
               <div class="flex items-center gap-2">
-                <input type="radio" name="saveModeRadio" id="saveModeNew" value="new" class="text-blue-500 focus:ring-0 cursor-pointer">
+                <input type="radio" name="saveModeRadio" id="saveModeNew" value="new"
+                  class="text-blue-500 focus:ring-0 cursor-pointer">
                 <span class="font-bold text-xs text-slate-300">➕ नई प्रतिलिपि सहेजें</span>
               </div>
               <span class="text-[10px] text-slate-400 mt-1 leading-tight">क्लाउड पर अलग नई फाइल के रूप में सहेजें</span>
@@ -2712,7 +3041,8 @@
           </div>
 
           <!-- Existing Linked Document Banner -->
-          <div id="existingDocBanner" class="mt-2 text-[11px] bg-slate-900/90 border border-slate-700/80 rounded-lg p-2.5 flex items-center justify-between text-slate-300">
+          <div id="existingDocBanner"
+            class="mt-2 text-[11px] bg-slate-900/90 border border-slate-700/80 rounded-lg p-2.5 flex items-center justify-between text-slate-300">
             <div class="flex items-center gap-2 min-w-0">
               <i class="fa-solid fa-link text-indigo-400 text-xs flex-shrink-0"></i>
               <div class="truncate">
@@ -2720,7 +3050,8 @@
                 <span id="existingDocTitleDisplay" class="font-semibold text-white truncate">-</span>
               </div>
             </div>
-            <span class="text-[9px] bg-indigo-950 text-indigo-300 border border-indigo-700/50 px-2 py-0.5 rounded font-mono font-bold flex-shrink-0">सक्रिय</span>
+            <span
+              class="text-[9px] bg-indigo-950 text-indigo-300 border border-indigo-700/50 px-2 py-0.5 rounded font-mono font-bold flex-shrink-0">सक्रिय</span>
           </div>
         </div>
 
@@ -3795,7 +4126,7 @@
       window.updateLowerBlocksContainerPadding();
     }
 
-    window.updateLowerBlocksContainerPadding = function() {
+    window.updateLowerBlocksContainerPadding = function () {
       const container = document.getElementById('signature-container');
       if (!container) return;
       let maxBottomY = 0;
@@ -3810,7 +4141,7 @@
       if (typeof triggerA4Check === 'function') triggerA4Check();
     };
 
-    window.nudgeLowerBlock = function(id, dx, dy) {
+    window.nudgeLowerBlock = function (id, dx, dy) {
       const el = document.getElementById(id);
       if (!el) return;
       const curX = parseFloat(el.dataset.x) || 0;
@@ -3821,7 +4152,7 @@
       if (typeof window.saveLocalDraft === 'function') window.saveLocalDraft(true);
     };
 
-    window.resetLowerBlock = function(id) {
+    window.resetLowerBlock = function (id) {
       const el = document.getElementById(id);
       if (!el) return;
       el.dataset.x = 0;
@@ -3838,7 +4169,7 @@
       }
     };
 
-    window.resetAllLowerBlocks = function() {
+    window.resetAllLowerBlocks = function () {
       DRAGGABLE_LOWER_BLOCK_IDS.forEach(id => {
         const el = document.getElementById(id);
         if (el) {
@@ -3912,7 +4243,7 @@
             isResizing = false;
             el.classList.remove('is-resizing');
             document.body.style.userSelect = '';
-            try { resizeHandle.releasePointerCapture(e.pointerId); } catch (_) {}
+            try { resizeHandle.releasePointerCapture(e.pointerId); } catch (_) { }
             if (typeof window.saveLocalDraft === 'function') window.saveLocalDraft(true);
             if (typeof triggerA4Check === 'function') triggerA4Check();
           }
@@ -3963,7 +4294,7 @@
           isDragging = false;
           el.classList.remove('is-dragging');
           document.body.style.userSelect = '';
-          try { el.releasePointerCapture(e.pointerId); } catch (_) {}
+          try { el.releasePointerCapture(e.pointerId); } catch (_) { }
           if (typeof window.saveLocalDraft === 'function') window.saveLocalDraft(true);
           if (typeof triggerA4Check === 'function') triggerA4Check();
         }
@@ -3973,14 +4304,14 @@
       el.addEventListener('pointercancel', stopDrag);
     }
 
-    window.initAllLowerBlocks = function() {
+    window.initAllLowerBlocks = function () {
       DRAGGABLE_LOWER_BLOCK_IDS.forEach(id => {
         const el = document.getElementById(id);
         if (el) initDraggableResizableBlock(el);
       });
     };
 
-    window.captureLowerBlocksState = function() {
+    window.captureLowerBlocksState = function () {
       const state = {};
       DRAGGABLE_LOWER_BLOCK_IDS.forEach(id => {
         const el = document.getElementById(id);
@@ -3996,7 +4327,7 @@
       return state;
     };
 
-    window.restoreLowerBlocksState = function(state) {
+    window.restoreLowerBlocksState = function (state) {
       if (!state) return;
       Object.keys(state).forEach(id => {
         const el = document.getElementById(id);
@@ -4198,11 +4529,12 @@
       document.documentElement.style.setProperty('--letter-font-heading', f.cssHeading);
 
       const letterDoc = document.getElementById('letterDocument');
-      if (letterDoc) {
-        letterDoc.style.fontFamily = f.cssBody;
+      const letterDocP2 = document.getElementById('letterDocumentPage2');
+      [letterDoc, letterDocP2].filter(Boolean).forEach(docEl => {
+        docEl.style.fontFamily = f.cssBody;
 
         // Set on all direct sections & editable blocks
-        const allTextNodes = letterDoc.querySelectorAll('p, div, span, h1, h2, h3, table, th, td, [contenteditable="true"]');
+        const allTextNodes = docEl.querySelectorAll('p, div, span, h1, h2, h3, table, th, td, [contenteditable="true"]');
         allTextNodes.forEach(el => {
           if (el.classList.contains('hindi-heading') || el.tagName === 'H1' || el.tagName === 'H2') {
             el.style.fontFamily = f.cssHeading;
@@ -4212,10 +4544,10 @@
         });
 
         // Clean inner custom-font-text spans so everything adopts the document font
-        letterDoc.querySelectorAll('.custom-font-text, span[style*="font-family"]').forEach(sp => {
+        docEl.querySelectorAll('.custom-font-text, span[style*="font-family"]').forEach(sp => {
           sp.style.fontFamily = '';
         });
-      }
+      });
 
       syncAllFontFamilySelects(fontKey, f);
       localStorage.setItem('pms_letter_font', fontKey);
@@ -4264,6 +4596,8 @@
       document.documentElement.style.setProperty('--letter-base-font-size', sizePx + 'px');
 
       const letterDoc = document.getElementById('letterDocument');
+      const letterDocP2 = document.getElementById('letterDocumentPage2');
+
       if (letterDoc) {
         letterDoc.style.fontSize = sizePx + 'px';
 
@@ -4333,6 +4667,16 @@
 
         // Clean inner custom-sized spans so entire letter is uniform
         letterDoc.querySelectorAll('.custom-sized-text, span[style*="font-size"]').forEach(sp => {
+          sp.style.fontSize = '';
+        });
+      }
+
+      if (letterDocP2) {
+        letterDocP2.style.fontSize = sizePx + 'px';
+        letterDocP2.querySelectorAll('p, [contenteditable="true"]').forEach(p => {
+          p.style.fontSize = sizePx + 'px';
+        });
+        letterDocP2.querySelectorAll('.custom-sized-text, span[style*="font-size"]').forEach(sp => {
           sp.style.fontSize = '';
         });
       }
@@ -5841,6 +6185,347 @@
       window.saveLocalDraft(true);
     };
 
+    // ================= MULTI-PAGE (PAGE 2) CONTROLLER SYSTEM =================
+    let isPage2Enabled = false;
+    let isSignaturesOnPage2 = true;
+    let isTableOnPage2 = false;
+    let extraParagraphsP2 = [];
+    window.isPage2Enabled = false;
+    window.isSignaturesOnPage2 = true;
+    window.isTableOnPage2 = false;
+
+    // Synchronize Page 2 continuation header with Page 1's dispatch no and date
+    window.syncPage2Header = function () {
+      const p1Ref = document.getElementById('doc-ref-no');
+      const p2Ref = document.getElementById('doc-ref-no-p2');
+      if (p1Ref && p2Ref) p2Ref.innerText = p1Ref.innerText;
+
+      const p1Date = document.getElementById('doc-date');
+      const p2Date = document.getElementById('doc-date-p2');
+      if (p1Date && p2Date) p2Date.innerText = p1Date.innerText;
+    };
+
+    // Move Signatures & Lower Blocks between Page 1 and Page 2
+    window.setSignaturesPage = function (targetPage = 2) {
+      isSignaturesOnPage2 = (targetPage === 2);
+      window.isSignaturesOnPage2 = isSignaturesOnPage2;
+
+      const sigContainer = document.getElementById('signature-container');
+      const closingEl = document.getElementById('doc-closing');
+      const p1SigSlot = document.getElementById('page1-signature-slot');
+      const p2SigSlot = document.getElementById('page2-signature-slot');
+      const p1ClosingSlot = document.getElementById('page1-closing-slot');
+      const p2ClosingSlot = document.getElementById('page2-closing-slot');
+
+      if (isPage2Enabled && isSignaturesOnPage2) {
+        if (sigContainer && p2SigSlot && sigContainer.parentElement !== p2SigSlot) {
+          p2SigSlot.appendChild(sigContainer);
+        }
+        if (closingEl && p2ClosingSlot && closingEl.parentElement !== p2ClosingSlot) {
+          p2ClosingSlot.appendChild(closingEl);
+        }
+      } else {
+        if (sigContainer && p1SigSlot && sigContainer.parentElement !== p1SigSlot) {
+          p1SigSlot.appendChild(sigContainer);
+        }
+        if (closingEl && p1ClosingSlot && closingEl.parentElement !== p1ClosingSlot) {
+          p1ClosingSlot.appendChild(closingEl);
+        }
+      }
+
+      // Sync checkbox in sidebar
+      const chk = document.getElementById('chkSignaturesOnPage2');
+      if (chk) chk.checked = isSignaturesOnPage2;
+
+      // Sync floating bar switcher buttons
+      const btnP1 = document.getElementById('floatingSigP1Btn');
+      const btnP2 = document.getElementById('floatingSigP2Btn');
+      if (btnP1 && btnP2) {
+        if (isSignaturesOnPage2) {
+          btnP1.className = 'px-1.5 py-0.2 rounded text-[10px] font-semibold text-slate-400 hover:text-white cursor-pointer';
+          btnP2.className = 'px-1.5 py-0.2 rounded text-[10px] font-bold text-sky-300 bg-sky-950 border border-sky-800 cursor-pointer';
+        } else {
+          btnP1.className = 'px-1.5 py-0.2 rounded text-[10px] font-bold text-amber-300 bg-amber-950 border border-amber-800 cursor-pointer';
+          btnP2.className = 'px-1.5 py-0.2 rounded text-[10px] font-semibold text-slate-400 hover:text-white cursor-pointer';
+        }
+      }
+
+      triggerA4Check();
+    };
+
+    // Move Table between Page 1 and Page 2
+    window.setTablePage = function (targetPage = 1) {
+      isTableOnPage2 = (targetPage === 2);
+      window.isTableOnPage2 = isTableOnPage2;
+
+      const tableWrap = document.getElementById('doc-table-wrapper');
+      const p1TableSlot = document.getElementById('page1-table-slot');
+      const p2TableSlot = document.getElementById('page2-table-slot');
+
+      if (isPage2Enabled && isTableOnPage2) {
+        if (tableWrap && p2TableSlot && tableWrap.parentElement !== p2TableSlot) {
+          p2TableSlot.appendChild(tableWrap);
+        }
+      } else {
+        if (tableWrap && p1TableSlot && tableWrap.parentElement !== p1TableSlot) {
+          p1TableSlot.appendChild(tableWrap);
+        }
+      }
+
+      const chk = document.getElementById('chkTableOnPage2');
+      if (chk) chk.checked = isTableOnPage2;
+
+      if (typeof window.updateTableResizeHandles === 'function') {
+        window.updateTableResizeHandles();
+      }
+      triggerA4Check();
+    };
+
+    // Toggle Page 2 Activation
+    window.togglePage2 = function (enable, silent = false) {
+      isPage2Enabled = !!enable;
+      window.isPage2Enabled = isPage2Enabled;
+
+      const page2El = document.getElementById('letterDocumentPage2');
+      const dividerEl = document.getElementById('pageBreakDivider');
+      const chkSidebar = document.getElementById('togglePage2Checkbox');
+      const badgeSidebar = document.getElementById('page2StatusBadge');
+      const controlsSidebar = document.getElementById('sidebarPage2Controls');
+      const floatBtn = document.getElementById('togglePage2FloatingBtn');
+      const floatIcon = document.getElementById('togglePage2FloatingIcon');
+      const floatText = document.getElementById('togglePage2FloatingText');
+      const floatQuick = document.getElementById('floatingPage2QuickOptions');
+
+      if (isPage2Enabled) {
+        document.body.classList.add('has-page-2');
+        if (page2El) page2El.classList.remove('hidden');
+        if (dividerEl) dividerEl.classList.remove('hidden');
+        if (chkSidebar) chkSidebar.checked = true;
+        if (badgeSidebar) {
+          badgeSidebar.textContent = 'सक्रिय (ON)';
+          badgeSidebar.className = 'text-[10px] bg-emerald-950/70 text-emerald-300 font-semibold px-2 py-0.5 rounded border border-emerald-800/40';
+        }
+        if (controlsSidebar) controlsSidebar.classList.remove('hidden');
+        if (floatBtn) {
+          floatBtn.className = 'bg-rose-950/60 hover:bg-rose-900 text-rose-200 hover:text-white px-2.5 py-1 rounded-full font-bold border border-rose-800/60 transition flex items-center gap-1 cursor-pointer';
+        }
+        if (floatIcon) floatIcon.className = 'fa-solid fa-file-slash text-xs text-rose-300';
+        if (floatText) floatText.textContent = 'द्वितीय पृष्ठ हटाएं';
+        if (floatQuick) {
+          floatQuick.classList.remove('hidden');
+          floatQuick.classList.add('flex');
+        }
+
+        window.syncPage2Header();
+        window.setSignaturesPage(isSignaturesOnPage2 ? 2 : 1);
+        window.setTablePage(isTableOnPage2 ? 2 : 1);
+
+        // Apply Universal font & size to Page 2
+        if (typeof window.applyUniversalFontFamily === 'function') {
+          window.applyUniversalFontFamily(window.currentLetterFont || 'mangal');
+        }
+        if (typeof window.applyUniversalFontSize === 'function') {
+          window.applyUniversalFontSize(window.currentUniversalFontSize || 15.5);
+        }
+
+        if (!silent && window.showLetterToast) {
+          window.showLetterToast('📄 द्वितीय पृष्ठ (Page 2) लोड हो गया - हस्ताक्षर व शेष सामग्री पृष्ठ 2 पर स्थानांतरित!', 'success');
+        }
+      } else {
+        document.body.classList.remove('has-page-2');
+        if (page2El) page2El.classList.add('hidden');
+        if (dividerEl) dividerEl.classList.add('hidden');
+        if (chkSidebar) chkSidebar.checked = false;
+        if (badgeSidebar) {
+          badgeSidebar.textContent = 'बंद (Off)';
+          badgeSidebar.className = 'text-[10px] bg-slate-900 text-slate-400 font-medium px-2 py-0.5 rounded border border-slate-700';
+        }
+        if (controlsSidebar) controlsSidebar.classList.add('hidden');
+        if (floatBtn) {
+          floatBtn.className = 'bg-blue-600/30 hover:bg-blue-600 text-blue-200 hover:text-white px-2.5 py-1 rounded-full font-bold border border-blue-500/40 transition flex items-center gap-1 cursor-pointer';
+        }
+        if (floatIcon) floatIcon.className = 'fa-solid fa-file-circle-plus text-xs text-sky-300';
+        if (floatText) floatText.textContent = '+ द्वितीय पृष्ठ (Page 2)';
+        if (floatQuick) {
+          floatQuick.classList.add('hidden');
+          floatQuick.classList.remove('flex');
+        }
+
+        // Return everything to Page 1
+        window.setSignaturesPage(1);
+        window.setTablePage(1);
+
+        if (!silent && window.showLetterToast) {
+          window.showLetterToast('📄 द्वितीय पृष्ठ हटा दिया गया (1 पृष्ठ मोड सक्रिय)', 'info');
+        }
+      }
+
+      triggerA4Check();
+      window.saveLocalDraft(true);
+    };
+
+    // Extra Paragraphs on Page 2
+    window.getExtraParagraphsDataP2 = function () {
+      return extraParagraphsP2.map(p => {
+        const inEl = document.getElementById('in-extra-p2-' + p.id);
+        const docEl = document.getElementById('doc-extra-p2-' + p.id);
+        return {
+          id: p.id,
+          text: inEl ? inEl.value : (docEl ? docEl.innerText : p.text)
+        };
+      });
+    };
+
+    window.restoreExtraParagraphsP2 = function (list) {
+      if (!Array.isArray(list)) return;
+      extraParagraphsP2 = [];
+      list.forEach(item => {
+        if (item && typeof item.text !== 'undefined') {
+          const id = item.id || ('para_p2_' + Date.now() + '_' + Math.floor(Math.random() * 1000));
+          extraParagraphsP2.push({ id: id, text: item.text });
+        }
+      });
+      window.renderExtraParagraphsP2();
+      triggerA4Check();
+    };
+
+    window.addNewParagraphPage2 = function (initialText = '', autoFocus = true) {
+      if (!isPage2Enabled) {
+        window.togglePage2(true, true);
+      }
+      const id = 'para_p2_' + Date.now() + '_' + Math.floor(Math.random() * 1000);
+      extraParagraphsP2.push({ id: id, text: initialText });
+      window.renderExtraParagraphsP2();
+
+      if (autoFocus) {
+        setTimeout(() => {
+          const newIn = document.getElementById('in-extra-p2-' + id);
+          if (newIn) {
+            newIn.focus();
+            newIn.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+        }, 120);
+
+        if (typeof showLetterToast === 'function') {
+          showLetterToast('पृष्ठ 2 पर नया पैराग्राफ जोड़ा गया', 'success');
+        }
+      }
+
+      triggerA4Check();
+      return id;
+    };
+
+    window.removeParagraphPage2 = function (id) {
+      extraParagraphsP2 = extraParagraphsP2.filter(p => p.id !== id);
+      window.renderExtraParagraphsP2();
+      triggerA4Check();
+      if (typeof showLetterToast === 'function') {
+        showLetterToast('पृष्ठ 2 का पैराग्राफ हटाया गया', 'info');
+      }
+    };
+
+    window.renderExtraParagraphsP2 = function () {
+      const containerSidebar = document.getElementById('extraParagraphsContainerP2');
+      const containerDoc = document.getElementById('doc-extra-paragraphs-p2');
+
+      if (!containerSidebar || !containerDoc) return;
+
+      extraParagraphsP2.forEach(p => {
+        const inEl = document.getElementById('in-extra-p2-' + p.id);
+        if (inEl) p.text = inEl.value;
+      });
+
+      containerSidebar.innerHTML = '';
+      containerDoc.innerHTML = '';
+
+      extraParagraphsP2.forEach((p, index) => {
+        const paraNum = index + 2;
+
+        // Sidebar Card
+        const card = document.createElement('div');
+        card.className = "bg-slate-900/90 rounded-lg p-2.5 border border-indigo-900/60 space-y-1.5 shadow-xs";
+        card.id = `card-extra-p2-${p.id}`;
+        card.innerHTML = `
+          <div class="flex items-center justify-between">
+            <label class="block text-[10.5px] font-bold text-sky-300 flex items-center gap-1">
+              <i class="fa-solid fa-paragraph text-sky-400 text-[10px]"></i>
+              <span>पृष्ठ 2: अतिरिक्त पैरा ${paraNum}</span>
+            </label>
+            <button type="button" onclick="window.removeParagraphPage2('${p.id}')"
+              class="text-[9px] bg-rose-950/60 hover:bg-rose-600 text-rose-300 hover:text-white px-1.5 py-0.5 rounded border border-rose-800/60 transition cursor-pointer flex items-center gap-0.5"
+              title="यह पैराग्राफ हटाएं">
+              <i class="fa-solid fa-trash-can text-[8px]"></i> हटाएं
+            </button>
+          </div>
+          <textarea id="in-extra-p2-${p.id}" rows="2"
+            class="w-full bg-slate-950 border border-slate-700 rounded px-2 py-1 text-white text-xs leading-relaxed focus:ring-1 focus:ring-indigo-500 focus:outline-none"
+            placeholder="पृष्ठ 2 का विवरण यहाँ दर्ज करें...">${p.text}</textarea>
+        `;
+        containerSidebar.appendChild(card);
+
+        // Document Paragraph on Page 2 Paper
+        const docWrap = document.createElement('div');
+        docWrap.className = "relative group";
+        docWrap.id = `doc-wrap-p2-${p.id}`;
+        docWrap.innerHTML = `
+          <p class="indent-10" contenteditable="true" id="doc-extra-p2-${p.id}">
+            ${p.text || 'यहाँ अतिरिक्त पैराग्राफ का विवरण दर्ज करें...'}
+          </p>
+          <button type="button" onclick="window.removeParagraphPage2('${p.id}')"
+            class="no-print hidden group-hover:flex absolute -right-3 top-0 bg-rose-600 hover:bg-rose-700 text-white rounded-full w-5 h-5 items-center justify-center text-[10px] shadow cursor-pointer transition font-bold"
+            title="पैराग्राफ हटाएं">
+            ✕
+          </button>
+        `;
+        containerDoc.appendChild(docWrap);
+
+        const inEl = card.querySelector(`#in-extra-p2-${p.id}`);
+        const docEl = docWrap.querySelector(`#doc-extra-p2-${p.id}`);
+
+        if (inEl && docEl) {
+          inEl.addEventListener('input', () => {
+            p.text = inEl.value;
+            docEl.innerText = inEl.value;
+            triggerA4Check();
+          });
+
+          docEl.addEventListener('input', () => {
+            p.text = docEl.innerText;
+            inEl.value = docEl.innerText;
+            triggerA4Check();
+          });
+        }
+      });
+    };
+
+    // Two-way sync for Page 2 main body paragraph
+    const inBodyP2 = document.getElementById('in-body-p2');
+    const docBodyP2 = document.getElementById('doc-body-p2');
+    if (inBodyP2 && docBodyP2) {
+      inBodyP2.addEventListener('input', () => {
+        docBodyP2.innerText = inBodyP2.value;
+        triggerA4Check();
+      });
+      docBodyP2.addEventListener('input', () => {
+        inBodyP2.value = docBodyP2.innerText;
+        triggerA4Check();
+      });
+    }
+
+    // Sync Page 2 Header whenever Ref No or Date inputs change
+    ['in-ref-no', 'in-date'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.addEventListener('input', window.syncPage2Header);
+      }
+    });
+    ['doc-ref-no', 'doc-date'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.addEventListener('input', window.syncPage2Header);
+      }
+    });
+
     // ================= A4 PAGE-FIT & OVERFLOW DETECTION SYSTEM =================
     let checkTimeout = null;
     function triggerA4Check() {
@@ -5850,26 +6535,57 @@
 
     function checkA4Overflow() {
       const doc = document.getElementById('letterDocument');
+      const docP2 = document.getElementById('letterDocumentPage2');
       const badge = document.getElementById('pageFitBadge');
       const icon = document.getElementById('pageFitIcon');
       const text = document.getElementById('pageFitText');
+      const floatBtn = document.getElementById('togglePage2FloatingBtn');
       if (!doc || !badge) return;
 
-      const isOverflowing = doc.scrollHeight > doc.clientHeight + 4;
+      window.syncPage2Header();
 
-      if (isOverflowing) {
-        badge.className = 'flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border transition-colors fit-badge-warn';
-        if (icon) icon.className = 'fa-solid fa-triangle-exclamation text-xs';
-        if (text) text.textContent = '⚠️ 1 पृष्ठ से अधिक (Overflow - Auto-Fit दबाएं)';
+      if (isPage2Enabled) {
+        const p1Overflow = doc.scrollHeight > doc.clientHeight + 6;
+        const p2Overflow = docP2 && (docP2.scrollHeight > docP2.clientHeight + 6);
+
+        if (p1Overflow || p2Overflow) {
+          badge.className = 'flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border transition-colors fit-badge-warn';
+          if (icon) icon.className = 'fa-solid fa-triangle-exclamation text-xs';
+          if (text) text.textContent = p1Overflow ? '⚠️ पृष्ठ 1 ओवरफ्लो (सामग्री पृष्ठ 2 पर भेजें)' : '⚠️ पृष्ठ 2 ओवरफ्लो (फॉन्ट कम करें)';
+        } else {
+          badge.className = 'flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border transition-colors fit-badge-ok bg-sky-950/60 border-sky-600/50 text-sky-300';
+          if (icon) icon.className = 'fa-solid fa-file-circle-check text-xs text-sky-400';
+          if (text) text.textContent = '📄 2 पृष्ठ में सटीक फिट (Page 1 & 2)';
+        }
       } else {
-        badge.className = 'flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border transition-colors fit-badge-ok';
-        if (icon) icon.className = 'fa-solid fa-circle-check text-xs';
-        if (text) text.textContent = '✅ 1 पृष्ठ में सटीक फिट (Fits 1 Page)';
+        const isOverflowing = doc.scrollHeight > doc.clientHeight + 4;
+        if (isOverflowing) {
+          badge.className = 'flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border transition-colors fit-badge-warn';
+          if (icon) icon.className = 'fa-solid fa-triangle-exclamation text-xs';
+          if (text) text.textContent = '⚠️ 1 पृष्ठ से अधिक (द्वितीय पृष्ठ लोड करें)';
+          if (floatBtn) {
+            floatBtn.className = 'bg-amber-600/40 hover:bg-amber-600 text-amber-200 hover:text-white px-2.5 py-1 rounded-full font-bold border border-amber-500/60 transition flex items-center gap-1 cursor-pointer animate-pulse';
+            const fText = document.getElementById('togglePage2FloatingText');
+            if (fText) fText.textContent = '+ द्वितीय पृष्ठ (Page 2) लोड करें';
+          }
+        } else {
+          badge.className = 'flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border transition-colors fit-badge-ok';
+          if (icon) icon.className = 'fa-solid fa-circle-check text-xs';
+          if (text) text.textContent = '✅ 1 पृष्ठ में सटीक फिट (Fits 1 Page)';
+          if (floatBtn) {
+            floatBtn.className = 'bg-blue-600/30 hover:bg-blue-600 text-blue-200 hover:text-white px-2.5 py-1 rounded-full font-bold border border-blue-500/40 transition flex items-center gap-1 cursor-pointer';
+            const fText = document.getElementById('togglePage2FloatingText');
+            if (fText) fText.textContent = '+ द्वितीय पृष्ठ (Page 2)';
+          }
+        }
       }
     }
 
     // Auto-Fit Algorithm: Automatically tunes font scale and spacing to fit on 1 A4 page
     window.autoFitToSinglePage = function () {
+      if (isPage2Enabled) {
+        window.togglePage2(false, true);
+      }
       const doc = document.getElementById('letterDocument');
       if (!doc) return;
 
@@ -5926,6 +6642,12 @@
           ? window.getExtraParagraphsData().map(p => (p.text || '').trim()).filter(Boolean)
           : [];
 
+        const isP2 = !!window.isPage2Enabled;
+        const bodyP2 = isP2 ? get('doc-body-p2') : '';
+        const extraTextsP2 = (isP2 && typeof window.getExtraParagraphsDataP2 === 'function')
+          ? window.getExtraParagraphsDataP2().map(p => (p.text || '').trim()).filter(Boolean)
+          : [];
+
         const fullText = [
           schoolName,
           schoolUnit,
@@ -5942,6 +6664,12 @@
           body1,
           body2,
           ...extraTexts,
+          ...(isP2 && (bodyP2 || extraTextsP2.length > 0) ? [
+            '',
+            '=== पृष्ठ - 2 ===',
+            bodyP2,
+            ...extraTextsP2
+          ] : []),
           closing,
           '',
           sanlagnak ? sanlagnak + '\n' : '',
@@ -5996,7 +6724,12 @@
         lineSpacing: currentLineSpacing,
         paraSpacing: currentParaSpacing,
         tableState: window.captureTableState(),
-        lowerBlocksLayout: (typeof window.captureLowerBlocksState === 'function') ? window.captureLowerBlocksState() : null
+        lowerBlocksLayout: (typeof window.captureLowerBlocksState === 'function') ? window.captureLowerBlocksState() : null,
+        page2Enabled: !!window.isPage2Enabled,
+        signaturesOnPage2: !!window.isSignaturesOnPage2,
+        tableOnPage2: !!window.isTableOnPage2,
+        bodyP2: getVal('in-body-p2'),
+        extraParagraphsP2: (typeof window.getExtraParagraphsDataP2 === 'function') ? window.getExtraParagraphsDataP2() : []
       };
 
       localStorage.setItem('pms_letter_draft', JSON.stringify(draft));
@@ -6082,6 +6815,26 @@
           } else if (typeof updateTableVisibility === 'function') {
             updateTableVisibility(false);
           }
+
+          // Restore Page 2 Multi-page State
+          if (typeof d.page2Enabled !== 'undefined' && typeof window.togglePage2 === 'function') {
+            window.togglePage2(!!d.page2Enabled, true);
+          }
+          if (typeof d.signaturesOnPage2 !== 'undefined' && typeof window.setSignaturesPage === 'function') {
+            window.setSignaturesPage(d.signaturesOnPage2 ? 2 : 1);
+          }
+          if (typeof d.tableOnPage2 !== 'undefined' && typeof window.setTablePage === 'function') {
+            window.setTablePage(d.tableOnPage2 ? 2 : 1);
+          }
+          if (d.bodyP2) {
+            const inBodyP2 = document.getElementById('in-body-p2');
+            const docBodyP2 = document.getElementById('doc-body-p2');
+            if (inBodyP2) inBodyP2.value = d.bodyP2;
+            if (docBodyP2) docBodyP2.innerText = d.bodyP2;
+          }
+          if (Array.isArray(d.extraParagraphsP2) && typeof window.restoreExtraParagraphsP2 === 'function') {
+            window.restoreExtraParagraphsP2(d.extraParagraphsP2);
+          }
         } catch (e) {
           console.warn("Draft restore error:", e);
         }
@@ -6089,6 +6842,7 @@
         if (typeof window.setLineSpacing === 'function') window.setLineSpacing(1.6, false);
         if (typeof window.setParagraphSpacing === 'function') window.setParagraphSpacing(12, false);
         if (typeof updateTableVisibility === 'function') updateTableVisibility(false);
+        if (typeof window.togglePage2 === 'function') window.togglePage2(false, true);
         const todayBtn = document.getElementById('todayDateBtn');
         if (todayBtn) todayBtn.click();
       }
@@ -6270,6 +7024,11 @@
         schoolContact: document.getElementById('doc-school-contact') ? document.getElementById('doc-school-contact').innerText.trim() : '+91 9454 4188 41',
         tableState: (typeof window.captureTableState === 'function') ? window.captureTableState() : null,
         lowerBlocksLayout: (typeof window.captureLowerBlocksState === 'function') ? window.captureLowerBlocksState() : null,
+        page2Enabled: (typeof window.isPage2Enabled !== 'undefined') ? !!window.isPage2Enabled : false,
+        signaturesOnPage2: (typeof window.isSignaturesOnPage2 !== 'undefined') ? !!window.isSignaturesOnPage2 : false,
+        tableOnPage2: (typeof window.isTableOnPage2 !== 'undefined') ? !!window.isTableOnPage2 : false,
+        bodyP2: getVal('in-body-p2'),
+        extraParagraphsP2: (typeof window.getExtraParagraphsDataP2 === 'function') ? window.getExtraParagraphsDataP2() : [],
         savedAt: new Date().toLocaleString('hi-IN', { timeZone: 'Asia/Kolkata' }),
         timestamp: Date.now()
       };
@@ -6373,6 +7132,7 @@
             <div class="flex items-center gap-2 flex-wrap mb-1">
               <span class="font-mono font-bold text-indigo-400 text-xs bg-indigo-950/60 px-2.5 py-0.5 rounded border border-indigo-800/40">${item.refNo || 'बिना पत्रांक'}</span>
               <span class="text-xs text-slate-400 font-medium">${item.date || '-'}</span>
+              ${item.page2Enabled ? '<span class="text-[10px] bg-cyan-950/80 border border-cyan-800 text-cyan-300 px-2 py-0.5 rounded font-semibold">📄 2 पृष्ठ पत्र</span>' : ''}
               ${item.tableState && item.tableState.enabled ? '<span class="text-[10px] bg-emerald-950/80 border border-emerald-800 text-emerald-300 px-2 py-0.5 rounded font-semibold">📊 तालिका शामिल</span>' : ''}
               ${item.sanlagnakEnabled ? '<span class="text-[10px] bg-purple-950/80 border border-purple-800 text-purple-300 px-2 py-0.5 rounded font-semibold">📎 संलग्नक</span>' : ''}
               ${item.pratilipiEnabled ? '<span class="text-[10px] bg-amber-950/80 border border-amber-800 text-amber-300 px-2 py-0.5 rounded font-semibold">📋 प्रतिलिपि</span>' : ''}
@@ -6497,6 +7257,23 @@
         window.restoreTableState(data.tableState);
       } else if (typeof window.restoreTableState === 'function') {
         window.restoreTableState({ enabled: false });
+      }
+
+      // Restore Page 2 Multi-page State
+      if (typeof window.togglePage2 === 'function') {
+        window.togglePage2(!!data.page2Enabled, true);
+      }
+      if (typeof window.setSignaturesPage === 'function') {
+        window.setSignaturesPage(data.signaturesOnPage2 ? 2 : 1);
+      }
+      if (typeof window.setTablePage === 'function') {
+        window.setTablePage(data.tableOnPage2 ? 2 : 1);
+      }
+      setBoth('in-body-p2', 'doc-body-p2', data.bodyP2 || '');
+      if (Array.isArray(data.extraParagraphsP2) && typeof window.restoreExtraParagraphsP2 === 'function') {
+        window.restoreExtraParagraphsP2(data.extraParagraphsP2);
+      } else if (typeof window.restoreExtraParagraphsP2 === 'function') {
+        window.restoreExtraParagraphsP2([]);
       }
 
       // Mark this document as active for updating

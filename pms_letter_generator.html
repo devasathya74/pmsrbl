@@ -555,8 +555,103 @@
       border-bottom: 2px solid #38bdf8;
     }
 
+    /* Draggable & Resizable Lower Blocks (Sanlagnak, Pratilipi, Signature) */
+    .drag-resize-box {
+      position: relative;
+      touch-action: none;
+      box-sizing: border-box;
+      transition: box-shadow 0.15s ease, border-color 0.15s ease;
+      border: 1px dashed transparent;
+      border-radius: 6px;
+      padding: 3px 5px;
+    }
+
+    .drag-resize-box:hover,
+    .drag-resize-box:focus-within {
+      border-color: rgba(59, 130, 246, 0.45);
+      background-color: rgba(240, 249, 255, 0.35);
+    }
+
+    .drag-resize-box.is-dragging {
+      border-color: #2563eb !important;
+      background-color: rgba(239, 246, 255, 0.85) !important;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.18), 0 8px 10px -6px rgba(0, 0, 0, 0.1) !important;
+      z-index: 50 !important;
+      cursor: grabbing !important;
+    }
+
+    .drag-resize-box.is-resizing {
+      border-color: #0284c7 !important;
+      background-color: rgba(240, 249, 255, 0.7) !important;
+      z-index: 50 !important;
+      cursor: nwse-resize !important;
+    }
+
+    /* Drag Handle Header Bar */
+    .drag-handle-bar {
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: none;
+      transition: all 0.15s ease;
+    }
+
+    .drag-nudge-btn {
+      cursor: pointer;
+      font-size: 9px;
+      line-height: 1.1;
+      padding: 1px 4px;
+      transition: all 0.12s ease;
+    }
+
+    .drag-reset-btn {
+      cursor: pointer;
+      font-size: 9px;
+      line-height: 1.1;
+      padding: 1px 5px;
+      transition: all 0.12s ease;
+    }
+
+    /* Corner Resize Handle */
+    .card-resize-handle {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      width: 22px;
+      height: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: nwse-resize;
+      touch-action: none;
+      user-select: none;
+      -webkit-user-select: none;
+      opacity: 0.35;
+      transition: opacity 0.15s ease, transform 0.15s ease;
+      z-index: 10;
+    }
+
+    .drag-resize-box:hover .card-resize-handle,
+    .drag-resize-box:focus-within .card-resize-handle,
+    .drag-resize-box.is-resizing .card-resize-handle {
+      opacity: 1;
+      transform: scale(1.15);
+    }
+
     /* PRINT RULES */
     @media print {
+      .drag-resize-box {
+        border: none !important;
+        background: transparent !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+      }
+      .drag-handle-bar,
+      .card-resize-handle,
+      .drag-nudge-btn,
+      .drag-reset-btn {
+        display: none !important;
+      }
+
       * {
         box-shadow: none !important;
         text-shadow: none !important;
@@ -1510,6 +1605,27 @@
             </div>
           </div>
 
+          <!-- LOWER BLOCKS DRAG & POSITION CONTROLS -->
+          <div class="bg-slate-800/90 rounded-xl p-3.5 border border-slate-700 space-y-2.5 shadow-md">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-black text-sky-400 uppercase tracking-wider flex items-center gap-1.5">
+                <i class="fa-solid fa-arrows-up-down-left-right text-sky-400"></i>
+                <span>निचले ब्लॉक ड्रैग व लेआउट</span>
+              </span>
+              <span class="text-[10px] bg-sky-950/70 text-sky-300 font-semibold px-2 py-0.5 rounded border border-sky-800/40">सक्रिय (Free Drag)</span>
+            </div>
+            <p class="text-[11px] text-slate-300 leading-relaxed">
+              आप संलग्नक, प्रतिलिपि व हस्ताक्षर को सीधे माउस या मोबाइल टच से <b>खींचकर (Drag) कहीं भी रख सकते हैं</b> तथा कोने वाले हैंडल <b>⤡</b> से <b>आकार (Resize)</b> बदल सकते हैं।
+            </p>
+            <div class="pt-1">
+              <button type="button" onclick="window.resetAllLowerBlocks()"
+                class="w-full py-1.5 px-2.5 bg-slate-900 hover:bg-slate-700 text-amber-300 hover:text-white rounded border border-slate-700 text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer">
+                <i class="fa-solid fa-rotate-left text-amber-400"></i>
+                <span>तीनों ब्लॉक का स्थान व आकार रीसेट करें (Reset Default)</span>
+              </button>
+            </div>
+          </div>
+
         </div>
 
         <!-- ================= TAB 4: TYPOGRAPHY & LAYOUT ================= -->
@@ -2373,11 +2489,11 @@
               </div>
 
               <!-- SIGNATURE & NOTING & SANLAGNAK BLOCK -->
-              <div id="signature-container" class="mt-7 mb-2">
-                <div class="flex justify-between items-end gap-4">
+              <div id="signature-container" class="mt-7 mb-2 relative">
+                <div class="flex justify-between items-end gap-4 flex-wrap sm:flex-nowrap">
 
-                  <!-- Left Section: Noting Stamp & Left Sanlagnak -->
-                  <div class="flex flex-col justify-end items-start text-left min-w-[200px] max-w-[55%]">
+                  <!-- Left Section: Noting Stamp & Left Sanlagnak & Pratilipi -->
+                  <div class="flex flex-col justify-end items-start text-left flex-1 min-w-[200px]">
 
                     <!-- Left Endorsement / Noting Stamp -->
                     <div id="doc-noting-block" class="hidden pl-2 pb-1 mb-2">
@@ -2404,39 +2520,97 @@
                       </button>
                     </div>
 
-                    <!-- Left Sanlagnak Block (Standard Position) -->
+                    <!-- 1. Left Sanlagnak Block (Draggable & Resizable) -->
                     <div id="doc-sanlagnak-block-left"
-                      class="hidden text-black hindi-body text-[14px] leading-snug pl-1">
+                      class="hidden text-black hindi-body text-[14px] leading-snug pl-1 drag-resize-box" data-x="0" data-y="0">
+                      
+                      <!-- Drag Handle Header (no-print) -->
+                      <div class="drag-handle-bar no-print flex items-center justify-between gap-1 py-0.5 px-1.5 mb-1 bg-slate-100 hover:bg-blue-50 border border-dashed border-slate-300 hover:border-blue-400 rounded text-[10px] text-slate-600 select-none transition cursor-grab active:cursor-grabbing">
+                        <div class="flex items-center gap-1 font-bold text-blue-700">
+                          <i class="fa-solid fa-grip-vertical"></i>
+                          <span>📎 संलग्नक (Drag)</span>
+                        </div>
+                        <div class="flex items-center gap-0.5">
+                          <button type="button" class="drag-nudge-btn px-1 py-0.2 bg-white hover:bg-blue-100 rounded border border-slate-300 text-slate-700 cursor-pointer" onclick="window.nudgeLowerBlock('doc-sanlagnak-block-left', -10, 0)" title="बायें खिसकाएँ">◀</button>
+                          <button type="button" class="drag-nudge-btn px-1 py-0.2 bg-white hover:bg-blue-100 rounded border border-slate-300 text-slate-700 cursor-pointer" onclick="window.nudgeLowerBlock('doc-sanlagnak-block-left', 10, 0)" title="दायें खिसकाएँ">▶</button>
+                          <button type="button" class="drag-nudge-btn px-1 py-0.2 bg-white hover:bg-blue-100 rounded border border-slate-300 text-slate-700 cursor-pointer" onclick="window.nudgeLowerBlock('doc-sanlagnak-block-left', 0, -10)" title="ऊपर खिसकाएँ">▲</button>
+                          <button type="button" class="drag-nudge-btn px-1 py-0.2 bg-white hover:bg-blue-100 rounded border border-slate-300 text-slate-700 cursor-pointer" onclick="window.nudgeLowerBlock('doc-sanlagnak-block-left', 0, 10)" title="नीचे खिसकाएँ">▼</button>
+                          <button type="button" class="drag-reset-btn px-1.5 py-0.2 bg-white hover:bg-amber-100 text-amber-800 rounded border border-amber-300 font-semibold cursor-pointer" onclick="window.resetLowerBlock('doc-sanlagnak-block-left')" title="डिफ़ॉल्ट स्थान व आकार रीसेट करें">⟲ रीसेट</button>
+                          <button type="button" id="docSanlagnakRemoveBtnLeft"
+                            class="no-print text-[10px] text-rose-500 hover:text-rose-700 hover:underline cursor-pointer font-sans ml-1"
+                            title="संलग्नक हटाएं">✕ हटाएं</button>
+                        </div>
+                      </div>
+
                       <div class="font-bold flex items-center gap-1.5">
                         <span class="border-b border-black pb-0.5">संलग्नक:</span>
-                        <button type="button" id="docSanlagnakRemoveBtnLeft"
-                          class="no-print text-[10px] text-rose-500 hover:text-rose-700 hover:underline cursor-pointer font-sans"
-                          title="संलग्नक हटाएं">✕ हटाएं</button>
                       </div>
                       <div id="doc-sanlagnak-content-left" contenteditable="true"
                         class="mt-1 whitespace-pre-line font-medium text-[13.5px] text-black focus:outline-none">यथोक्त।
                       </div>
+
+                      <!-- Corner Resize Handle (no-print) -->
+                      <div class="card-resize-handle no-print" title="माउस या टच से खींचकर आकार बदलें (Drag to Resize)">
+                        <i class="fa-solid fa-up-right-and-down-left-from-center text-[9px] text-slate-400"></i>
+                      </div>
                     </div>
 
-                    <!-- Pratilipi Block (Left Section) -->
+                    <!-- 2. Pratilipi Block (Draggable & Resizable) -->
                     <div id="doc-pratilipi-block"
-                      class="hidden text-black hindi-body text-[13.5px] leading-snug pl-1 mt-2">
+                      class="hidden text-black hindi-body text-[13.5px] leading-snug pl-1 mt-2 drag-resize-box" data-x="0" data-y="0">
+                      
+                      <!-- Drag Handle Header (no-print) -->
+                      <div class="drag-handle-bar no-print flex items-center justify-between gap-1 py-0.5 px-1.5 mb-1 bg-slate-100 hover:bg-blue-50 border border-dashed border-slate-300 hover:border-blue-400 rounded text-[10px] text-slate-600 select-none transition cursor-grab active:cursor-grabbing">
+                        <div class="flex items-center gap-1 font-bold text-blue-700">
+                          <i class="fa-solid fa-grip-vertical"></i>
+                          <span>📋 प्रतिलिपि (Drag)</span>
+                        </div>
+                        <div class="flex items-center gap-0.5">
+                          <button type="button" class="drag-nudge-btn px-1 py-0.2 bg-white hover:bg-blue-100 rounded border border-slate-300 text-slate-700 cursor-pointer" onclick="window.nudgeLowerBlock('doc-pratilipi-block', -10, 0)" title="बायें खिसकाएँ">◀</button>
+                          <button type="button" class="drag-nudge-btn px-1 py-0.2 bg-white hover:bg-blue-100 rounded border border-slate-300 text-slate-700 cursor-pointer" onclick="window.nudgeLowerBlock('doc-pratilipi-block', 10, 0)" title="दायें खिसकाएँ">▶</button>
+                          <button type="button" class="drag-nudge-btn px-1 py-0.2 bg-white hover:bg-blue-100 rounded border border-slate-300 text-slate-700 cursor-pointer" onclick="window.nudgeLowerBlock('doc-pratilipi-block', 0, -10)" title="ऊपर खिसकाएँ">▲</button>
+                          <button type="button" class="drag-nudge-btn px-1 py-0.2 bg-white hover:bg-blue-100 rounded border border-slate-300 text-slate-700 cursor-pointer" onclick="window.nudgeLowerBlock('doc-pratilipi-block', 0, 10)" title="नीचे खिसकाएँ">▼</button>
+                          <button type="button" class="drag-reset-btn px-1.5 py-0.2 bg-white hover:bg-amber-100 text-amber-800 rounded border border-amber-300 font-semibold cursor-pointer" onclick="window.resetLowerBlock('doc-pratilipi-block')" title="डिफ़ॉल्ट स्थान व आकार रीसेट करें">⟲ रीसेट</button>
+                          <button type="button" id="docPratilipiRemoveBtn" onclick="window.togglePratilipiVisibility(false)"
+                            class="no-print text-[10px] text-rose-500 hover:text-rose-700 hover:underline cursor-pointer font-sans ml-1"
+                            title="प्रतिलिपि हटाएं">✕ हटाएं</button>
+                        </div>
+                      </div>
+
                       <div class="font-bold flex items-center gap-1.5">
                         <span class="border-b border-black pb-0.5">प्रतिलिपि:</span>
-                        <button type="button" id="docPratilipiRemoveBtn" onclick="window.togglePratilipiVisibility(false)"
-                          class="no-print text-[10px] text-rose-500 hover:text-rose-700 hover:underline cursor-pointer font-sans"
-                          title="प्रतिलिपि हटाएं">✕ हटाएं</button>
                       </div>
                       <div id="doc-pratilipi-content" contenteditable="true"
                         class="mt-1 whitespace-pre-line font-medium text-[13px] text-black focus:outline-none">1. श्रीमान सेनानायक महोदय/व्यवस्थापक, 25वीं वाहिनी पीएसी रायबरेली।
 2. नोडल अधिकारी (शिक्षा), 25वीं वाहिनी पीएसी।
 3. संबंधित कर्मचारी की व्यक्तिगत सेवा पत्रावली।
 4. विद्यालय नोटिस बोर्ड / कार्यालय प्रति।</div>
+
+                      <!-- Corner Resize Handle (no-print) -->
+                      <div class="card-resize-handle no-print" title="माउस या टच से खींचकर आकार बदलें (Drag to Resize)">
+                        <i class="fa-solid fa-up-right-and-down-left-from-center text-[9px] text-slate-400"></i>
+                      </div>
                     </div>
+
                   </div>
 
-                  <!-- Right Section: Right Sanlagnak & Official Signature Block -->
-                  <div class="text-center min-w-[210px] ml-auto">
+                  <!-- 3. Right Section: Right Sanlagnak & Official Signature Block (Draggable & Resizable) -->
+                  <div id="doc-signature-block" class="text-center min-w-[210px] ml-auto drag-resize-box" data-x="0" data-y="0">
+                    
+                    <!-- Drag Handle Header (no-print) -->
+                    <div class="drag-handle-bar no-print flex items-center justify-between gap-1 py-0.5 px-1.5 mb-1 bg-slate-100 hover:bg-blue-50 border border-dashed border-slate-300 hover:border-blue-400 rounded text-[10px] text-slate-600 select-none transition cursor-grab active:cursor-grabbing">
+                      <div class="flex items-center gap-1 font-bold text-blue-700">
+                        <i class="fa-solid fa-grip-vertical"></i>
+                        <span>✍️ हस्ताक्षर (Drag)</span>
+                      </div>
+                      <div class="flex items-center gap-0.5">
+                        <button type="button" class="drag-nudge-btn px-1 py-0.2 bg-white hover:bg-blue-100 rounded border border-slate-300 text-slate-700 cursor-pointer" onclick="window.nudgeLowerBlock('doc-signature-block', -10, 0)" title="बायें खिसकाएँ">◀</button>
+                        <button type="button" class="drag-nudge-btn px-1 py-0.2 bg-white hover:bg-blue-100 rounded border border-slate-300 text-slate-700 cursor-pointer" onclick="window.nudgeLowerBlock('doc-signature-block', 10, 0)" title="दायें खिसकाएँ">▶</button>
+                        <button type="button" class="drag-nudge-btn px-1 py-0.2 bg-white hover:bg-blue-100 rounded border border-slate-300 text-slate-700 cursor-pointer" onclick="window.nudgeLowerBlock('doc-signature-block', 0, -10)" title="ऊपर खिसकाएँ">▲</button>
+                        <button type="button" class="drag-nudge-btn px-1 py-0.2 bg-white hover:bg-blue-100 rounded border border-slate-300 text-slate-700 cursor-pointer" onclick="window.nudgeLowerBlock('doc-signature-block', 0, 10)" title="नीचे खिसकाएँ">▼</button>
+                        <button type="button" class="drag-reset-btn px-1.5 py-0.2 bg-white hover:bg-amber-100 text-amber-800 rounded border border-amber-300 font-semibold cursor-pointer" onclick="window.resetLowerBlock('doc-signature-block')" title="डिफ़ॉल्ट स्थान व आकार रीसेट करें">⟲ रीसेट</button>
+                      </div>
+                    </div>
 
                     <!-- Right Sanlagnak Block (When Right Aligned) -->
                     <div id="doc-sanlagnak-block-right"
@@ -2453,8 +2627,6 @@
                     </div>
 
                     <!-- Signature Line -->
-
-
                     <div class="text-[15.5px] font-extrabold text-black hindi-heading mt-1" contenteditable="true"
                       id="doc-sign-title">
                       प्रभारी प्रधानाचार्य
@@ -2466,6 +2638,11 @@
                     <div class="text-[13px] font-semibold text-black hindi-body mt-0.5" contenteditable="true"
                       id="doc-sign-location">
                       25वीं वाहिनी पीएसी, रायबरेली
+                    </div>
+
+                    <!-- Corner Resize Handle (no-print) -->
+                    <div class="card-resize-handle no-print" title="माउस या टच से खींचकर आकार बदलें (Drag to Resize)">
+                      <i class="fa-solid fa-up-right-and-down-left-from-center text-[9px] text-slate-400"></i>
                     </div>
                   </div>
 
@@ -3363,6 +3540,9 @@
         if (docSanlagnakContentRight) docSanlagnakContentRight.innerText = text;
       }
 
+      if (typeof window.initAllLowerBlocks === 'function') {
+        setTimeout(window.initAllLowerBlocks, 40);
+      }
       triggerA4Check();
     };
 
@@ -3522,6 +3702,9 @@
         if (docPratilipiContent) docPratilipiContent.innerText = text;
       }
 
+      if (typeof window.initAllLowerBlocks === 'function') {
+        setTimeout(window.initAllLowerBlocks, 40);
+      }
       triggerA4Check();
     };
 
@@ -3590,6 +3773,250 @@
         }
       });
     }
+
+    // ================= LOWER BLOCKS DRAG & RESIZE ENGINE =================
+    // Supports:
+    // 1. Mouse & Mobile Touch Drag to Relocate
+    // 2. Mouse & Mobile Touch Drag to Resize (Corner Handle)
+    // 3. Precision Nudge Buttons (Left, Right, Up, Down)
+    // 4. Reset Position & Size
+    // 5. Auto-persistence to LocalStorage & Cloud
+
+    const DRAGGABLE_LOWER_BLOCK_IDS = [
+      'doc-sanlagnak-block-left',
+      'doc-pratilipi-block',
+      'doc-signature-block'
+    ];
+
+    function applyLowerBlockTransform(el, x, y) {
+      el.dataset.x = x;
+      el.dataset.y = y;
+      el.style.transform = (x === 0 && y === 0) ? '' : `translate(${x}px, ${y}px)`;
+      window.updateLowerBlocksContainerPadding();
+    }
+
+    window.updateLowerBlocksContainerPadding = function() {
+      const container = document.getElementById('signature-container');
+      if (!container) return;
+      let maxBottomY = 0;
+      DRAGGABLE_LOWER_BLOCK_IDS.forEach(id => {
+        const el = document.getElementById(id);
+        if (el && !el.classList.contains('hidden')) {
+          const y = parseFloat(el.dataset.y) || 0;
+          if (y > maxBottomY) maxBottomY = y;
+        }
+      });
+      container.style.paddingBottom = maxBottomY > 0 ? `${maxBottomY + 10}px` : '';
+      if (typeof triggerA4Check === 'function') triggerA4Check();
+    };
+
+    window.nudgeLowerBlock = function(id, dx, dy) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const curX = parseFloat(el.dataset.x) || 0;
+      const curY = parseFloat(el.dataset.y) || 0;
+      const newX = Math.round(curX + dx);
+      const newY = Math.round(curY + dy);
+      applyLowerBlockTransform(el, newX, newY);
+      if (typeof window.saveLocalDraft === 'function') window.saveLocalDraft(true);
+    };
+
+    window.resetLowerBlock = function(id) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.dataset.x = 0;
+      el.dataset.y = 0;
+      delete el.dataset.w;
+      delete el.dataset.h;
+      el.style.transform = '';
+      el.style.width = '';
+      el.style.minHeight = '';
+      window.updateLowerBlocksContainerPadding();
+      if (typeof window.saveLocalDraft === 'function') window.saveLocalDraft(true);
+      if (typeof window.showLetterToast === 'function') {
+        window.showLetterToast('ब्लॉक का स्थान व आकार डिफ़ॉल्ट पर रीसेट हो गया', 'info');
+      }
+    };
+
+    window.resetAllLowerBlocks = function() {
+      DRAGGABLE_LOWER_BLOCK_IDS.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+          el.dataset.x = 0;
+          el.dataset.y = 0;
+          delete el.dataset.w;
+          delete el.dataset.h;
+          el.style.transform = '';
+          el.style.width = '';
+          el.style.minHeight = '';
+        }
+      });
+      window.updateLowerBlocksContainerPadding();
+      if (typeof window.saveLocalDraft === 'function') window.saveLocalDraft(true);
+      if (typeof window.showLetterToast === 'function') {
+        window.showLetterToast('संलग्नक, प्रतिलिपि व हस्ताक्षर का स्थान व आकार रीसेट हो गया', 'success');
+      }
+    };
+
+    function initDraggableResizableBlock(el) {
+      if (!el || el.dataset.dragInitialized) return;
+      el.dataset.dragInitialized = "true";
+
+      let isDragging = false;
+      let isResizing = false;
+      let startX = 0, startY = 0;
+      let initialBlockX = 0, initialBlockY = 0;
+      let initialWidth = 0, initialHeight = 0;
+
+      const resizeHandle = el.querySelector('.card-resize-handle');
+
+      // ─── RESIZE LOGIC (Corner Handle) ───
+      if (resizeHandle) {
+        resizeHandle.addEventListener('pointerdown', (e) => {
+          e.stopPropagation();
+          e.preventDefault();
+
+          isResizing = true;
+          startX = e.clientX;
+          startY = e.clientY;
+          initialWidth = el.offsetWidth;
+          initialHeight = el.offsetHeight;
+
+          resizeHandle.setPointerCapture(e.pointerId);
+          el.classList.add('is-resizing');
+          document.body.style.userSelect = 'none';
+        });
+
+        resizeHandle.addEventListener('pointermove', (e) => {
+          if (!isResizing) return;
+          e.stopPropagation();
+          e.preventDefault();
+
+          const zoom = window.currentCanvasZoom || 1;
+          const dx = (e.clientX - startX) / zoom;
+          const dy = (e.clientY - startY) / zoom;
+
+          const newWidth = Math.max(120, Math.round(initialWidth + dx));
+          const newHeight = Math.max(35, Math.round(initialHeight + dy));
+
+          el.style.width = `${newWidth}px`;
+          el.style.minHeight = `${newHeight}px`;
+          el.dataset.w = newWidth;
+          el.dataset.h = newHeight;
+
+          window.updateLowerBlocksContainerPadding();
+        });
+
+        const stopResize = (e) => {
+          if (isResizing) {
+            isResizing = false;
+            el.classList.remove('is-resizing');
+            document.body.style.userSelect = '';
+            try { resizeHandle.releasePointerCapture(e.pointerId); } catch (_) {}
+            if (typeof window.saveLocalDraft === 'function') window.saveLocalDraft(true);
+            if (typeof triggerA4Check === 'function') triggerA4Check();
+          }
+        };
+
+        resizeHandle.addEventListener('pointerup', stopResize);
+        resizeHandle.addEventListener('pointercancel', stopResize);
+      }
+
+      // ─── DRAG & RELOCATE LOGIC ───
+      el.addEventListener('pointerdown', (e) => {
+        // Do not drag if user clicked inside resize handle
+        if (e.target.closest('.card-resize-handle')) return;
+
+        // Do not drag if user clicked a button or inside contenteditable text
+        if (e.target.closest('button') || e.target.closest('[contenteditable="true"]')) {
+          return;
+        }
+
+        e.preventDefault();
+        isDragging = true;
+        startX = e.clientX;
+        startY = e.clientY;
+        initialBlockX = parseFloat(el.dataset.x) || 0;
+        initialBlockY = parseFloat(el.dataset.y) || 0;
+
+        el.setPointerCapture(e.pointerId);
+        el.classList.add('is-dragging');
+        document.body.style.userSelect = 'none';
+      });
+
+      el.addEventListener('pointermove', (e) => {
+        if (!isDragging) return;
+        e.preventDefault();
+
+        const zoom = window.currentCanvasZoom || 1;
+        const dx = (e.clientX - startX) / zoom;
+        const dy = (e.clientY - startY) / zoom;
+
+        const newX = Math.round(initialBlockX + dx);
+        const newY = Math.round(initialBlockY + dy);
+
+        applyLowerBlockTransform(el, newX, newY);
+      });
+
+      const stopDrag = (e) => {
+        if (isDragging) {
+          isDragging = false;
+          el.classList.remove('is-dragging');
+          document.body.style.userSelect = '';
+          try { el.releasePointerCapture(e.pointerId); } catch (_) {}
+          if (typeof window.saveLocalDraft === 'function') window.saveLocalDraft(true);
+          if (typeof triggerA4Check === 'function') triggerA4Check();
+        }
+      };
+
+      el.addEventListener('pointerup', stopDrag);
+      el.addEventListener('pointercancel', stopDrag);
+    }
+
+    window.initAllLowerBlocks = function() {
+      DRAGGABLE_LOWER_BLOCK_IDS.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) initDraggableResizableBlock(el);
+      });
+    };
+
+    window.captureLowerBlocksState = function() {
+      const state = {};
+      DRAGGABLE_LOWER_BLOCK_IDS.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+          state[id] = {
+            x: parseFloat(el.dataset.x) || 0,
+            y: parseFloat(el.dataset.y) || 0,
+            w: el.dataset.w ? parseFloat(el.dataset.w) : null,
+            h: el.dataset.h ? parseFloat(el.dataset.h) : null
+          };
+        }
+      });
+      return state;
+    };
+
+    window.restoreLowerBlocksState = function(state) {
+      if (!state) return;
+      Object.keys(state).forEach(id => {
+        const el = document.getElementById(id);
+        const s = state[id];
+        if (el && s) {
+          const x = typeof s.x === 'number' ? s.x : 0;
+          const y = typeof s.y === 'number' ? s.y : 0;
+          applyLowerBlockTransform(el, x, y);
+          if (s.w) {
+            el.style.width = `${s.w}px`;
+            el.dataset.w = s.w;
+          }
+          if (s.h) {
+            el.style.minHeight = `${s.h}px`;
+            el.dataset.h = s.h;
+          }
+        }
+      });
+      window.updateLowerBlocksContainerPadding();
+    };
 
     // ================= OFFICIAL HINDI FONTS CONTROLLER =================
     const HINDI_FONTS = {
@@ -4371,6 +4798,9 @@
         window.setSanlagnakState(false, 'left', 'यथोक्त।');
         if (typeof window.togglePratilipiVisibility === 'function') {
           window.togglePratilipiVisibility(false);
+        }
+        if (typeof window.resetAllLowerBlocks === 'function') {
+          window.resetAllLowerBlocks();
         }
         window.setLetterFont('mangal');
         window.setFontScale(100);
@@ -5565,7 +5995,8 @@
         schoolContact: document.getElementById('doc-school-contact') ? document.getElementById('doc-school-contact').innerText.trim() : '+91 9454 4188 41',
         lineSpacing: currentLineSpacing,
         paraSpacing: currentParaSpacing,
-        tableState: window.captureTableState()
+        tableState: window.captureTableState(),
+        lowerBlocksLayout: (typeof window.captureLowerBlocksState === 'function') ? window.captureLowerBlocksState() : null
       };
 
       localStorage.setItem('pms_letter_draft', JSON.stringify(draft));
@@ -5624,6 +6055,9 @@
           if (typeof d.pratilipiEnabled !== 'undefined' && typeof window.togglePratilipiVisibility === 'function') {
             window.togglePratilipiVisibility(d.pratilipiEnabled, d.pratilipiText);
           }
+          if (d.lowerBlocksLayout && typeof window.restoreLowerBlocksState === 'function') {
+            window.restoreLowerBlocksState(d.lowerBlocksLayout);
+          }
           if (d.fontKey && typeof window.setLetterFont === 'function') {
             window.setLetterFont(d.fontKey);
           }
@@ -5657,6 +6091,10 @@
         if (typeof updateTableVisibility === 'function') updateTableVisibility(false);
         const todayBtn = document.getElementById('todayDateBtn');
         if (todayBtn) todayBtn.click();
+      }
+
+      if (typeof window.initAllLowerBlocks === 'function') {
+        window.initAllLowerBlocks();
       }
 
       triggerA4Check();
@@ -5831,6 +6269,7 @@
         schoolEmail: document.getElementById('doc-school-email') ? document.getElementById('doc-school-email').innerText.trim() : 'pms25bnraebareli@gmail.com',
         schoolContact: document.getElementById('doc-school-contact') ? document.getElementById('doc-school-contact').innerText.trim() : '+91 9454 4188 41',
         tableState: (typeof window.captureTableState === 'function') ? window.captureTableState() : null,
+        lowerBlocksLayout: (typeof window.captureLowerBlocksState === 'function') ? window.captureLowerBlocksState() : null,
         savedAt: new Date().toLocaleString('hi-IN', { timeZone: 'Asia/Kolkata' }),
         timestamp: Date.now()
       };
@@ -6042,6 +6481,12 @@
 
       if (typeof window.togglePratilipiVisibility === 'function') {
         window.togglePratilipiVisibility(!!data.pratilipiEnabled, data.pratilipiText || data.pratilipiContent || null);
+      }
+
+      if (data.lowerBlocksLayout && typeof window.restoreLowerBlocksState === 'function') {
+        window.restoreLowerBlocksState(data.lowerBlocksLayout);
+      } else if (typeof window.resetAllLowerBlocks === 'function') {
+        window.resetAllLowerBlocks();
       }
 
       if (typeof window.setLetterFont === 'function') {

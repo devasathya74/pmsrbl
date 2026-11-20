@@ -209,6 +209,13 @@
         <span>प्रिंट / PDF सेव करें (Letter)</span>
       </button>
 
+      <!-- Word (.doc) Button -->
+      <button onclick="exportScheduleWord()"
+        class="px-4 py-1.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-xs md:text-sm font-bold rounded-lg shadow-lg flex items-center gap-1.5 transition transform active:scale-95" title="Microsoft Word (.doc) में डाउनलोड करें">
+        <i class="fa-solid fa-file-word"></i>
+        <span>Word (.doc)</span>
+      </button>
+
       <!-- Link to 3-Round Quiz -->
       <a href="gandhi_30_mcq_quiz.html"
         class="px-3 py-1.5 bg-emerald-700 hover:bg-emerald-600 text-white text-xs font-bold rounded-lg flex items-center gap-1 transition shadow">
@@ -553,6 +560,53 @@
     });
 
     window.addEventListener('DOMContentLoaded', loadContent);
+
+    // Export to Word (.doc)
+    function exportScheduleWord() {
+      const container = document.getElementById('printSheet') || document.querySelector('.paper-sheet');
+      if (!container) return;
+      const clone = container.cloneNode(true);
+      const noPrints = clone.querySelectorAll('.no-print');
+      noPrints.forEach(el => el.remove());
+
+      const wordHtml = `
+        <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+        <head>
+          <meta charset='utf-8'>
+          <title>Gandhi Shastri Jayanti Program Schedule</title>
+          <!--[if gte mso 9]>
+          <xml>
+            <w:WordDocument>
+              <w:View>Print</w:View>
+              <w:Zoom>100</w:Zoom>
+              <w:DoNotOptimizeForBrowser/>
+            </w:WordDocument>
+          </xml>
+          <![endif]-->
+          <style>
+            @page { size: A4 portrait; margin: 1.2cm; }
+            body { font-family: 'Mangal', 'Noto Sans Devanagari', 'Calibri', sans-serif; font-size: 11pt; color: #111; line-height: 1.5; }
+            table { border-collapse: collapse; width: 100%; margin: 6pt 0; }
+            th, td { border: 0.5pt solid #333; padding: 4pt 6pt; }
+            th { background-color: #f1f5f9; font-weight: bold; }
+            .no-print { display: none !important; }
+          </style>
+        </head>
+        <body>
+          ${clone.innerHTML}
+        </body>
+        </html>
+      `;
+      const blob = new Blob(['\ufeff' + wordHtml], { type: 'application/msword;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'PMS_Gandhi_Shastri_Program_Schedule.doc';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
   </script>
 </body>
 

@@ -229,5 +229,52 @@ const ReportsModule = {
     document.body.appendChild(downloadLink);
     downloadLink.click();
     document.body.removeChild(downloadLink);
+  },
+
+  exportToWord() {
+    const table = document.querySelector('#report-output-container table');
+    if (!table) return alert('No report data available for export.');
+
+    const wordHtml = `
+      <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+      <head>
+        <meta charset='utf-8'>
+        <title>Fee Report - Police Modern School</title>
+        <!--[if gte mso 9]>
+        <xml>
+          <w:WordDocument>
+            <w:View>Print</w:View>
+            <w:Zoom>100</w:Zoom>
+            <w:DoNotOptimizeForBrowser/>
+          </w:WordDocument>
+        </xml>
+        <![endif]-->
+        <style>
+          @page { size: A4 landscape; margin: 1cm; }
+          body { font-family: 'Mangal', 'Noto Sans Devanagari', 'Calibri', sans-serif; font-size: 10pt; color: #111; }
+          table { border-collapse: collapse; width: 100%; margin-top: 8pt; }
+          th, td { border: 0.5pt solid #333; padding: 4pt 6pt; font-size: 9pt; text-align: left; }
+          th { background-color: #f1f5f9; font-weight: bold; }
+          h2, h3 { text-align: center; margin: 3px 0; }
+        </style>
+      </head>
+      <body>
+        <h2>Police Modern School, 25th Bn PAC, Raebareli</h2>
+        <h3>Fee Management & Collection Report</h3>
+        <p style="text-align:center;font-size:9pt;margin:2px 0 10px 0;">Generated on: ${new Date().toLocaleDateString('en-IN')}</p>
+        ${table.outerHTML}
+      </body>
+      </html>
+    `;
+
+    const blob = new Blob(['\ufeff' + wordHtml], { type: 'application/msword;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `PMS_Fee_Report_${new Date().toISOString().slice(0, 10)}.doc`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
   }
 };

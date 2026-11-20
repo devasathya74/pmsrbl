@@ -156,6 +156,13 @@
         <i class="fa-solid fa-print"></i>
         <span>प्रिंट / PDF सेव करें</span>
       </button>
+
+      <!-- Word (.doc) Button -->
+      <button onclick="exportDocWord()"
+        class="px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-xs md:text-sm font-bold rounded-lg shadow-lg flex items-center gap-2 transition transform active:scale-95" title="Microsoft Word (.doc) में डाउनलोड करें">
+        <i class="fa-solid fa-file-word"></i>
+        <span>Word (.doc)</span>
+      </button>
     </div>
   </header>
 
@@ -391,6 +398,54 @@
       } else {
         btn.innerHTML = '<i class="fa-solid fa-language"></i> <span>हिंदी अनुवाद दिखाएं</span>';
       }
+    }
+
+    // Export to Word (.doc)
+    function exportDocWord() {
+      const container = document.querySelector('.paper-sheet') || document.querySelector('main');
+      if (!container) return;
+      const clone = container.cloneNode(true);
+      const noPrints = clone.querySelectorAll('.no-print');
+      noPrints.forEach(el => el.remove());
+
+      const wordHtml = `
+        <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+        <head>
+          <meta charset='utf-8'>
+          <title>${document.title || 'Lal Bahadur Shastri 10 Lines'}</title>
+          <!--[if gte mso 9]>
+          <xml>
+            <w:WordDocument>
+              <w:View>Print</w:View>
+              <w:Zoom>100</w:Zoom>
+              <w:DoNotOptimizeForBrowser/>
+            </w:WordDocument>
+          </xml>
+          <![endif]-->
+          <style>
+            @page { size: A4 portrait; margin: 1.2cm; }
+            body { font-family: 'Mangal', 'Noto Sans Devanagari', 'Calibri', sans-serif; font-size: 11pt; color: #111; line-height: 1.5; }
+            table { border-collapse: collapse; width: 100%; margin: 6pt 0; }
+            th, td { border: 0.5pt solid #333; padding: 4pt 6pt; }
+            th { background-color: #f1f5f9; font-weight: bold; }
+            .no-print { display: none !important; }
+          </style>
+        </head>
+        <body>
+          ${clone.innerHTML}
+        </body>
+        </html>
+      `;
+      const blob = new Blob(['\ufeff' + wordHtml], { type: 'application/msword;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      const filename = (document.title || 'Lal_Bahadur_Shastri_10_Lines').replace(/[^a-zA-Z0-9_\u0900-\u097F]/g, '_') + '.doc';
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
     }
   </script>
   <script src="js/pms_nav_search.js"></script>

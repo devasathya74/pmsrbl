@@ -643,6 +643,13 @@
         <span class="hidden sm:inline">PDF</span>
       </button>
 
+      <button id="downloadWordBtn" type="button" onclick="downloadNoticeWord()"
+        class="px-3 py-1.5 bg-gradient-to-r from-blue-700 to-indigo-700 hover:from-blue-600 hover:to-indigo-600 text-white font-bold rounded-lg text-xs transition flex items-center gap-1.5 shadow-md border border-blue-400/40 cursor-pointer"
+        title="Microsoft Word (.doc) में डाउनलोड करें">
+        <i class="fa-solid fa-file-word text-white"></i>
+        <span class="hidden sm:inline">Word</span>
+      </button>
+
       <button id="printBtn" type="button" onclick="triggerPrintNotice()"
         class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white px-4 py-1.5 rounded-lg font-black transition flex items-center gap-1.5 shadow-lg shadow-blue-600/30 cursor-pointer">
         <i class="fa-solid fa-print text-xs"></i>
@@ -2485,6 +2492,57 @@
         window.print();
       });
     }
+
+    // ===== EXPORT NOTICE TO MICROSOFT WORD (.DOC) =====
+    function downloadNoticeWord() {
+      const doc = document.getElementById('noticeDocument');
+      if (!doc) return;
+
+      showToast('Word फ़ाइल तैयार की जा रही है...', 'info');
+
+      const wordHtml = `
+        <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+        <head>
+          <meta charset='utf-8'>
+          <title>सूचना / Notice - पुलिस मॉडर्न स्कूल</title>
+          <!--[if gte mso 9]>
+          <xml>
+            <w:WordDocument>
+              <w:View>Print</w:View>
+              <w:Zoom>100</w:Zoom>
+              <w:DoNotOptimizeForBrowser/>
+            </w:WordDocument>
+          </xml>
+          <![endif]-->
+          <style>
+            @page { size: A4 portrait; margin: 1.5cm; }
+            body { font-family: 'Mangal', 'Noto Sans Devanagari', 'Calibri', sans-serif; font-size: 11pt; color: #111; line-height: 1.5; }
+            table { border-collapse: collapse; width: 100%; margin: 8pt 0; }
+            th, td { border: 0.5pt solid #333; padding: 4pt 6pt; }
+            th { background-color: #f1f5f9; font-weight: bold; }
+            h1, h2, h3, h4 { text-align: center; margin: 3px 0; }
+            .no-print { display: none !important; }
+          </style>
+        </head>
+        <body>
+          ${doc.innerHTML}
+        </body>
+        </html>
+      `;
+
+      const blob = new Blob(['\ufeff' + wordHtml], { type: 'application/msword;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `PMS_Notice_${new Date().toISOString().slice(0, 10)}.doc`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast('Word (.doc) फ़ाइल सफलतापूर्वक डाउनलोड हुई!', 'success');
+    }
+
+    window.downloadNoticeWord = downloadNoticeWord;
 
     // Toast Notifications
     function showToast(message, type = 'info') {

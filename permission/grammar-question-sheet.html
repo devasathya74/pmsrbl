@@ -499,6 +499,13 @@
             <span class="hidden sm:inline">Save HTML</span>
           </button>
 
+          <!-- Download Word (.doc) Button -->
+          <button onclick="downloadOfflineWord()"
+            class="bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs px-3 py-1.5 rounded-lg shadow-md transition flex items-center gap-1.5" title="Microsoft Word (.doc) में डाउनलोड करें">
+            <i data-feather="file-text" class="w-3.5 h-3.5"></i>
+            <span class="hidden sm:inline">Word (.doc)</span>
+          </button>
+
         </div>
 
       </div>
@@ -1626,6 +1633,10 @@
             <i data-feather="download" class="w-3.5 h-3.5"></i>
             <span class="hidden sm:inline">Save HTML</span>
           </button>
+          <button onclick="downloadOfflineWord()" class="px-2.5 py-1 rounded bg-blue-700 hover:bg-blue-600 text-white font-bold text-xs flex items-center gap-1 cursor-pointer transition shadow" title="Download Word (.doc)">
+            <i data-feather="file-text" class="w-3.5 h-3.5"></i>
+            <span class="hidden sm:inline">Word (.doc)</span>
+          </button>
           <button onclick="exitBookMode()" class="px-2.5 py-1 rounded bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs flex items-center gap-1 cursor-pointer transition shadow">
             <i data-feather="x" class="w-3.5 h-3.5"></i>
             <span>Close</span>
@@ -1826,6 +1837,58 @@
       const a = document.createElement('a');
       a.href = url;
       a.download = `PMS_Raebareli_English_Grammar_Master_Book_2026.html`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    // Download Standalone Offline Word (.doc) Book
+    function downloadOfflineWord() {
+      const cfg = SUBJECT_CONFIGS[activeSubjectKey] || SUBJECT_CONFIGS['grammar'];
+      const data = cfg.data || [];
+      
+      let bookPagesHtml = generateCoverPageHtml(activeSubjectKey) + generateTableOfContentsHtml(activeSubjectKey);
+      data.forEach((ch, idx) => {
+        bookPagesHtml += "<div style='page-break-before:always; mso-special-character:line-break;'></div>" + generateStandardChapterHtml(ch, true, idx + 1, data.length);
+      });
+      bookPagesHtml += "<div style='page-break-before:always; mso-special-character:line-break;'></div>" + generateFinalAssessmentHtml(activeSubjectKey);
+
+      const wordHtml = `
+        <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+        <head>
+          <meta charset='utf-8'>
+          <title>PMS Raebareli - ${cfg.title}</title>
+          <!--[if gte mso 9]>
+          <xml>
+            <w:WordDocument>
+              <w:View>Print</w:View>
+              <w:Zoom>100</w:Zoom>
+              <w:DoNotOptimizeForBrowser/>
+            </w:WordDocument>
+          </xml>
+          <![endif]-->
+          <style>
+            @page { size: A4 portrait; margin: 1.2cm; }
+            body { font-family: 'Calibri', 'Segoe UI', 'Mangal', sans-serif; font-size: 11pt; color: #111; line-height: 1.4; }
+            table { border-collapse: collapse; width: 100%; margin: 8pt 0; }
+            th, td { border: 0.5pt solid #444; padding: 4pt 6pt; }
+            th { background-color: #1e1b4b; color: #fff; }
+            .section-ribbon { background: #1e1b4b; color: #fff; padding: 4pt 8pt; font-weight: bold; margin: 10pt 0 4pt 0; }
+            .qa-card { margin-bottom: 6pt; padding: 6pt; border: 0.5pt solid #cbd5e1; background: #f8fafc; }
+            .no-print { display: none !important; }
+          </style>
+        </head>
+        <body>
+          ${bookPagesHtml}
+        </body>
+        </html>
+      `;
+      const blob = new Blob(['\ufeff' + wordHtml], { type: 'application/msword;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `PMS_Raebareli_${activeSubjectKey}_Master_Book.doc`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);

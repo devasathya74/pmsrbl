@@ -231,6 +231,11 @@
         <button onclick="window.print()" class="bg-sky-600 hover:bg-sky-700 text-white text-xs font-bold px-3 py-1.5 rounded-lg flex items-center gap-1.5 shadow transition">
           <i class="fas fa-print"></i> <span>प्रिंट / PDF सेव करें</span>
         </button>
+
+        <!-- Download Word (.doc) -->
+        <button onclick="exportNotesWord()" class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-3 py-1.5 rounded-lg flex items-center gap-1.5 shadow transition" title="Microsoft Word (.doc) में डाउनलोड करें">
+          <i class="fas fa-file-word"></i> <span>Word (.doc)</span>
+        </button>
       </div>
     </div>
   </div>
@@ -1349,6 +1354,55 @@
         feedback.innerHTML = `<span class="text-rose-700"><i class="fas fa-times-circle"></i> गलत उत्तर। सही विकल्प को ध्यान से देखें।</span>`;
       }
       feedback.classList.remove('hidden');
+    }
+
+    // Export to Word (.doc)
+    function exportNotesWord() {
+      const container = document.getElementById('contentArea') || document.querySelector('main') || document.body;
+      if (!container) return;
+      const clone = container.cloneNode(true);
+      const topBars = clone.querySelectorAll('.top-toolbar, .no-print');
+      topBars.forEach(el => el.remove());
+
+      const wordHtml = `
+        <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+        <head>
+          <meta charset='utf-8'>
+          <title>${document.title || 'PMS Study Notes'}</title>
+          <!--[if gte mso 9]>
+          <xml>
+            <w:WordDocument>
+              <w:View>Print</w:View>
+              <w:Zoom>100</w:Zoom>
+              <w:DoNotOptimizeForBrowser/>
+            </w:WordDocument>
+          </xml>
+          <![endif]-->
+          <style>
+            @page { size: A4 portrait; margin: 1.2cm; }
+            body { font-family: 'Calibri', 'Segoe UI', 'Mangal', sans-serif; font-size: 11pt; color: #111; line-height: 1.4; }
+            table { border-collapse: collapse; width: 100%; margin: 6pt 0; }
+            th, td { border: 0.5pt solid #333; padding: 4pt 6pt; }
+            th { background-color: #f1f5f9; font-weight: bold; }
+            .section-card { border: 0.5pt solid #cbd5e1; padding: 8pt; margin: 8pt 0; background: #fff; }
+            .no-print { display: none !important; }
+          </style>
+        </head>
+        <body>
+          ${clone.innerHTML}
+        </body>
+        </html>
+      `;
+      const blob = new Blob(['\ufeff' + wordHtml], { type: 'application/msword;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      const safeName = (document.title || 'PMS_Class6_SST_Notes').replace(/[^a-zA-Z0-9_\u0900-\u097F]/g, '_');
+      a.download = safeName + '.doc';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
     }
   </script>
 </body>

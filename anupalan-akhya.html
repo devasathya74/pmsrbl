@@ -322,6 +322,13 @@
           <span>प्रिंट / PDF</span>
         </button>
 
+        <!-- 10. Word (.doc) Download Button -->
+        <button onclick="exportReportToWord()" title="Microsoft Word (.doc) में डाउनलोड करें"
+          class="px-3 py-1.5 rounded bg-blue-600 hover:bg-blue-500 text-white font-extrabold transition text-xs flex items-center gap-1.5 shadow cursor-pointer border border-blue-400">
+          <i data-feather="file-text" class="w-3.5 h-3.5 text-white"></i>
+          <span>Word (.doc)</span>
+        </button>
+
       </div>
     </div>
   </header>
@@ -341,7 +348,7 @@
        ========================================================================= -->
   <main class="w-full flex-1 py-4 sm:py-8 px-2 flex justify-center items-start sheet-container">
 
-    <article class="a4-sheet p-6 sm:p-10 text-black flex flex-col justify-between leading-relaxed bg-white">
+    <article id="akhyaSheet" class="a4-sheet p-6 sm:p-10 text-black flex flex-col justify-between leading-relaxed bg-white">
       <div>
 
         <!-- Top Official Letterhead -->
@@ -1711,6 +1718,55 @@
       }
     }
 
+    // Export Report to Microsoft Word (.doc)
+    function exportReportToWord() {
+      const sheet = document.getElementById('akhyaSheet');
+      if (!sheet) return;
+
+      const wordHtml = `
+        <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+        <head>
+          <meta charset='utf-8'>
+          <title>अनुपालन आख्या - पुलिस मॉडर्न स्कूल</title>
+          <!--[if gte mso 9]>
+          <xml>
+            <w:WordDocument>
+              <w:View>Print</w:View>
+              <w:Zoom>100</w:Zoom>
+              <w:DoNotOptimizeForBrowser/>
+            </w:WordDocument>
+          </xml>
+          <![endif]-->
+          <style>
+            @page { size: A4 portrait; margin: 1.5cm; }
+            body { font-family: 'Mangal', 'Noto Sans Devanagari', 'Calibri', sans-serif; font-size: 11pt; color: #111; line-height: 1.5; }
+            table { border-collapse: collapse; width: 100%; margin: 8pt 0; }
+            th, td { border: 0.5pt solid #333; padding: 5pt 6pt; font-size: 10pt; }
+            th { background-color: #f1f5f9; font-weight: bold; }
+            h1, h2, h3, h4 { text-align: center; margin: 3px 0; }
+            .no-print { display: none !important; }
+          </style>
+        </head>
+        <body>
+          ${sheet.innerHTML}
+        </body>
+        </html>
+      `;
+
+      const blob = new Blob(['\ufeff' + wordHtml], { type: 'application/msword;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `PMS_Anupalan_Akhya_${new Date().toISOString().slice(0, 10)}.doc`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      if (typeof showToast === 'function') {
+        showToast('Word (.doc) फ़ाइल सफलतापूर्वक डाउनलोड हुई!');
+      }
+    }
+
     // Save and Print wrapper
     function saveAndPrintReport() {
       saveReportToFirestore(true);
@@ -1741,6 +1797,7 @@
     window.executeSaveReport = executeSaveReport;
     window.saveReportToFirestore = saveReportToFirestore;
     window.saveAndPrintReport = saveAndPrintReport;
+    window.exportReportToWord = exportReportToWord;
     window.fetchSavedReports = fetchSavedReports;
     window.loadReportData = loadReportData;
     window.deleteReportData = deleteReportData;

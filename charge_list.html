@@ -734,6 +734,7 @@
 
                 <button id="print-btn" class="print-btn">🖨 चयनित शीट प्रिंट करें <span
                         id="print-count">(0)</span></button>
+                <button id="word-btn" class="print-btn" style="background:#2563eb; margin-top:8px;" title="Microsoft Word (.doc) में डाउनलोड करें">📄 चयनित शीट Word (.doc) में डाउनलोड करें</button>
             </aside>
         </main>
 
@@ -1124,6 +1125,58 @@
                 generateSheets();
                 setTimeout(() => window.print(), 150);
             });
+
+            const wordBtn = document.getElementById('word-btn');
+            if (wordBtn) {
+                wordBtn.addEventListener('click', () => {
+                    const selected = itemsData.filter(i => i.selected);
+                    if (!selected.length) {
+                        alert('पहले कम से कम एक item select करें।');
+                        return;
+                    }
+                    generateSheets();
+                    const printCont = document.getElementById('print-container');
+                    if (!printCont) return;
+
+                    const wordHtml = `
+                        <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+                        <head>
+                            <meta charset='utf-8'>
+                            <title>PMS Charge List</title>
+                            <!--[if gte mso 9]>
+                            <xml>
+                                <w:WordDocument>
+                                    <w:View>Print</w:View>
+                                    <w:Zoom>100</w:Zoom>
+                                    <w:DoNotOptimizeForBrowser/>
+                                </w:WordDocument>
+                            </xml>
+                            <![endif]-->
+                            <style>
+                                @page { size: A4 portrait; margin: 1cm; }
+                                body { font-family: 'Mangal', 'Noto Sans Devanagari', 'Calibri', sans-serif; font-size: 11pt; color: #111; line-height: 1.4; }
+                                table { border-collapse: collapse; width: 100%; margin: 6pt 0; }
+                                th, td { border: 0.5pt solid #333; padding: 4pt 6pt; text-align: left; }
+                                th { background-color: #f1f5f9; font-weight: bold; }
+                                .sheet { page-break-after: always; margin-bottom: 20pt; }
+                            </style>
+                        </head>
+                        <body>
+                            ${printCont.innerHTML}
+                        </body>
+                        </html>
+                    `;
+                    const blob = new Blob(['\ufeff' + wordHtml], { type: 'application/msword;charset=utf-8;' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'PMS_Charge_List.doc';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                });
+            }
 
             parseData();
         });

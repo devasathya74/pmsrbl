@@ -398,6 +398,7 @@
             <button id="openConsentHistoryBtn" class="btn" style="background:#4338ca;color:#fff;"><i class="fa-solid fa-folder-open"></i> पुराने बैकअप (<span id="consentBackupCountBadge">0</span>)</button>
             <button id="saveConsentCloudBtn" class="btn" style="background:#d97706;color:#fff;"><i class="fa-solid fa-cloud-arrow-up"></i> क्लाउड सेव</button>
             <button id="printSaveConsentBtn" class="btn btn-primary"><i class="fa-solid fa-print"></i> प्रिंट व बैकअप</button>
+            <button id="downloadConsentWordBtn" onclick="exportConsentWord()" class="btn" style="background:#2563eb;color:#fff;" title="Microsoft Word (.doc) में डाउनलोड करें"><i class="fa-solid fa-file-word"></i> Word (.doc)</button>
         </div>
     </div>
 
@@ -863,6 +864,51 @@
 
         if (saveCloudBtn) saveCloudBtn.addEventListener('click', () => saveConsentBackup(false));
         if (printSaveBtn) printSaveBtn.addEventListener('click', () => saveConsentBackup(true));
+
+        window.exportConsentWord = function() {
+            const form = document.getElementById('printable-form');
+            if (!form) return;
+            const clone = form.cloneNode(true);
+            const noPrints = clone.querySelectorAll('.no-print');
+            noPrints.forEach(el => el.remove());
+
+            const wordHtml = `
+                <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+                <head>
+                    <meta charset='utf-8'>
+                    <title>PMS Consent Form</title>
+                    <!--[if gte mso 9]>
+                    <xml>
+                        <w:WordDocument>
+                            <w:View>Print</w:View>
+                            <w:Zoom>100</w:Zoom>
+                            <w:DoNotOptimizeForBrowser/>
+                        </w:WordDocument>
+                    </xml>
+                    <![endif]-->
+                    <style>
+                        @page { size: A4 portrait; margin: 1.5cm; }
+                        body { font-family: 'Mangal', 'Noto Sans Devanagari', 'Calibri', sans-serif; font-size: 11pt; color: #111; line-height: 1.5; }
+                        table { border-collapse: collapse; width: 100%; margin: 6pt 0; }
+                        th, td { border: 0.5pt solid #333; padding: 4pt 6pt; }
+                        .no-print { display: none !important; }
+                    </style>
+                </head>
+                <body>
+                    ${clone.innerHTML}
+                </body>
+                </html>
+            `;
+            const blob = new Blob(['\ufeff' + wordHtml], { type: 'application/msword;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'PMS_Consent_Form.doc';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        };
 
         window.addEventListener('DOMContentLoaded', () => {
             fetchConsentBackups();

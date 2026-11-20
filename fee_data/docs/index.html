@@ -518,6 +518,11 @@
         प्रिंट (A4)
       </button>
 
+      <button onclick="exportStatementWord()" class="btn" style="background:#2563eb; color:#fff;" title="Microsoft Word (.doc) में डाउनलोड करें">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+        Word (.doc)
+      </button>
+
       <a href="../index.html" class="btn btn-back">
         ← पोर्टल
       </a>
@@ -1212,6 +1217,53 @@
       initFirebase();
       loadData();
     });
+
+    // Export to Word (.doc)
+    function exportStatementWord() {
+      const sheet = document.querySelector('.a4-sheet');
+      if (!sheet) return;
+      const clone = sheet.cloneNode(true);
+      const noPrints = clone.querySelectorAll('.no-print, .action-col, .add-row-bar, .btn-row-del');
+      noPrints.forEach(el => el.remove());
+
+      const wordHtml = `
+        <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+        <head>
+          <meta charset='utf-8'>
+          <title>PMS VC Statement</title>
+          <!--[if gte mso 9]>
+          <xml>
+            <w:WordDocument>
+              <w:View>Print</w:View>
+              <w:Zoom>100</w:Zoom>
+              <w:DoNotOptimizeForBrowser/>
+            </w:WordDocument>
+          </xml>
+          <![endif]-->
+          <style>
+            @page { size: A4 portrait; margin: 1cm; }
+            body { font-family: 'Mangal', 'Noto Sans Devanagari', 'Calibri', sans-serif; font-size: 10pt; color: #111; line-height: 1.4; }
+            table { border-collapse: collapse; width: 100%; margin: 4pt 0; }
+            th, td { border: 0.5pt solid #333; padding: 3pt 5pt; }
+            th { background-color: #f1f5f9; font-weight: bold; }
+            .no-print, .action-col, .add-row-bar, .btn-row-del { display: none !important; }
+          </style>
+        </head>
+        <body>
+          ${clone.innerHTML}
+        </body>
+        </html>
+      `;
+      const blob = new Blob(['\ufeff' + wordHtml], { type: 'application/msword;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'PMS_VC_Review_Statement.doc';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
   </script>
 </body>
 </html>

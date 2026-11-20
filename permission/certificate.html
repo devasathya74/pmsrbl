@@ -681,6 +681,12 @@
         <i data-feather="printer" style="width: 14px; height: 14px;"></i>
         <span>Print Certificate (A4)</span>
       </button>
+
+      <!-- Word (.doc) Button -->
+      <button class="btn" style="background:#2563eb; color:#fff;" onclick="exportCertificateWord()" title="Microsoft Word (.doc) में डाउनलोड करें">
+        <i data-feather="file-text" style="width: 14px; height: 14px;"></i>
+        <span>Word (.doc)</span>
+      </button>
     </div>
   </header>
 
@@ -1139,6 +1145,50 @@
       const mm = String(today.getMonth() + 1).padStart(2, '0');
       const yyyy = today.getFullYear();
       document.getElementById('dateField').value = `${dd}/${mm}/${yyyy}`;
+    }
+
+    // Export to Word (.doc)
+    function exportCertificateWord() {
+      const canvas = document.getElementById('certificateCanvas');
+      if (!canvas) return;
+      const clone = canvas.cloneNode(true);
+      const noPrints = clone.querySelectorAll('.no-print');
+      noPrints.forEach(el => el.remove());
+
+      const wordHtml = `
+        <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+        <head>
+          <meta charset='utf-8'>
+          <title>PMS Certificate</title>
+          <!--[if gte mso 9]>
+          <xml>
+            <w:WordDocument>
+              <w:View>Print</w:View>
+              <w:Zoom>100</w:Zoom>
+              <w:DoNotOptimizeForBrowser/>
+            </w:WordDocument>
+          </xml>
+          <![endif]-->
+          <style>
+            @page { size: A4 landscape; margin: 1cm; }
+            body { font-family: 'Calibri', 'Segoe UI', 'Mangal', sans-serif; font-size: 11pt; color: #111; line-height: 1.5; }
+            .no-print { display: none !important; }
+          </style>
+        </head>
+        <body>
+          ${clone.innerHTML}
+        </body>
+        </html>
+      `;
+      const blob = new Blob(['\ufeff' + wordHtml], { type: 'application/msword;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'PMS_Certificate.doc';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
     }
   </script>
 </body>

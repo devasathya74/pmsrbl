@@ -1603,6 +1603,94 @@ window.exportDistributionCSV = function () {
     showToast("एक्सेल (CSV) फाइल डाउनलोड हो गई है।", "success");
 };
 
+// Export to Word (.doc)
+window.exportDistributionWord = function () {
+    if (distributionLog.length === 0) {
+        showToast("डाउनलोड करने के लिए कोई वितरण रिकॉर्ड नहीं है।", "warning");
+        return;
+    }
+
+    let rowsHtml = '';
+    distributionLog.forEach((log, i) => {
+        const med = medicines.find(m => m.id === log.medicineId) || { nameHi: log.medicineName || "दवाई" };
+        rowsHtml += `
+            <tr>
+                <td align="center">${i + 1}</td>
+                <td align="left"><b>${log.studentName || ''}</b></td>
+                <td align="center">${log.studentClass || ''}</td>
+                <td align="center">${log.rollNo || ''}</td>
+                <td align="left">${log.fatherName || ''}</td>
+                <td align="left">${med.nameHi || ''}</td>
+                <td align="center">${log.quantity || 1}</td>
+                <td align="left">${log.reason || ''}</td>
+                <td align="center">${log.dispensedDate || ''}</td>
+                <td align="left">${log.dispensedBy || ''}</td>
+            </tr>
+        `;
+    });
+
+    const wordHtml = `
+        <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+        <head>
+            <meta charset='utf-8'>
+            <title>औषधि वितरण पंजिका - पुलिस मॉडर्न स्कूल</title>
+            <!--[if gte mso 9]>
+            <xml>
+                <w:WordDocument>
+                    <w:View>Print</w:View>
+                    <w:Zoom>100</w:Zoom>
+                    <w:DoNotOptimizeForBrowser/>
+                </w:WordDocument>
+            </xml>
+            <![endif]-->
+            <style>
+                @page { size: A4 landscape; margin: 1cm; }
+                body { font-family: 'Mangal', 'Noto Sans Devanagari', 'Calibri', sans-serif; font-size: 10pt; color: #111; }
+                table { border-collapse: collapse; width: 100%; margin-top: 8pt; }
+                th, td { border: 0.5pt solid #333; padding: 4pt 6pt; font-size: 9pt; }
+                th { background-color: #f1f5f9; font-weight: bold; }
+                h2, h3 { text-align: center; margin: 3px 0; }
+            </style>
+        </head>
+        <body>
+            <h2>पुलिस मॉडर्न स्कूल, 25वीं वाहिनी पीएसी, रायबरेली</h2>
+            <h3>औषधि एवं प्राथमिक चिकित्सा वितरण पंजिका (Medicine Distribution Register)</h3>
+            <p style="text-align:center;font-size:9pt;margin:2px 0 10px 0;">कुल वितरण रिकॉर्ड: ${distributionLog.length} | दिनांक: ${new Date().toLocaleDateString('hi-IN')}</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width:4%;">क्र०</th>
+                        <th style="width:16%;">छात्र का नाम</th>
+                        <th style="width:8%;">कक्षा</th>
+                        <th style="width:8%;">रोल नं०</th>
+                        <th style="width:16%;">पिता का नाम</th>
+                        <th style="width:14%;">दवाई का नाम</th>
+                        <th style="width:6%;">मात्रा</th>
+                        <th style="width:12%;">कारण / प्रयोजन</th>
+                        <th style="width:8%;">वितरण दिनांक</th>
+                        <th style="width:8%;">वितरणकर्ता</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${rowsHtml}
+                </tbody>
+            </table>
+        </body>
+        </html>
+    `;
+
+    const blob = new Blob(["\uFEFF" + wordHtml], { type: "application/msword;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.setAttribute("href", url);
+    link.setAttribute("download", `PMS_Medicine_Distribution_${new Date().toISOString().split('T')[0]}.doc`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+    showToast("Word (.doc) फ़ाइल सफलतापूर्वक डाउनलोड हुई!", "success");
+};
+
 // Populate Report Filter Dropdowns
 function populateReportFilters() {
     const classSelect = document.getElementById("report-class-filter");

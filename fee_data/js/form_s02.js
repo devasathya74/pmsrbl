@@ -1118,6 +1118,69 @@ const FormS02App = {
   },
 
   // --------------------------------------------------------------------------
+  // EXPORT TO MICROSOFT WORD (.DOC)
+  // --------------------------------------------------------------------------
+  exportToWord() {
+    this.renderPrintPages();
+    const container = document.getElementById('print-preview-container');
+    if (!container) return;
+
+    const pageElements = container.querySelectorAll('.s02-page');
+    if (!pageElements.length) {
+      this.showToast('No student pages found to generate Word doc.', 'warning');
+      return;
+    }
+
+    let pagesHtml = '';
+    pageElements.forEach((pg, idx) => {
+      if (idx > 0) {
+        pagesHtml += `<br clear=all style='mso-special-character:line-break;page-break-before:always'>`;
+      }
+      pagesHtml += pg.innerHTML;
+    });
+
+    const wordHtml = `
+      <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+      <head>
+        <meta charset='utf-8'>
+        <title>Form S02 - UDISE+ Student Entry</title>
+        <!--[if gte mso 9]>
+        <xml>
+          <w:WordDocument>
+            <w:View>Print</w:View>
+            <w:Zoom>100</w:Zoom>
+            <w:DoNotOptimizeForBrowser/>
+          </w:WordDocument>
+        </xml>
+        <![endif]-->
+        <style>
+          @page { size: A4 portrait; margin: 1cm; }
+          body { font-family: 'Mangal', 'Noto Sans Devanagari', 'Calibri', sans-serif; font-size: 10pt; color: #111; line-height: 1.4; }
+          table { border-collapse: collapse; width: 100%; margin: 6pt 0; }
+          th, td { border: 0.5pt solid #333; padding: 4pt 6pt; font-size: 9pt; }
+          th { background-color: #f1f5f9; font-weight: bold; }
+          .no-print { display: none !important; }
+        </style>
+      </head>
+      <body>
+        ${pagesHtml}
+      </body>
+      </html>
+    `;
+
+    const blob = new Blob(['\ufeff' + wordHtml], { type: 'application/msword;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `Form_S02_Combined_${new Date().toISOString().slice(0, 10)}.doc`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    this.showToast('Word (.doc) document downloaded successfully!', 'success');
+  },
+
+  // --------------------------------------------------------------------------
   // DIRECT DOWNLOAD 1 COMBINED MULTI-PAGE PDF (PAGE-BY-PAGE HIGH-RES ENGINE)
   // --------------------------------------------------------------------------
   async downloadCombinedPdf() {

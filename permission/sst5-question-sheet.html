@@ -512,6 +512,14 @@
           <span class="hidden sm:inline">प्रिंट / PDF</span>
         </button>
 
+        <!-- Word Download -->
+        <button onclick="actionDownloadWordBook()"
+          class="px-2.5 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-bold transition flex items-center gap-1.5 cursor-pointer shadow"
+          title="वर्तमान अध्याय Word (.doc) में डाउनलोड करें">
+          <i data-feather="file-text" class="w-3.5 h-3.5 text-white"></i>
+          <span class="hidden sm:inline">Word (.doc)</span>
+        </button>
+
         <!-- Master Book Suite Modal Trigger -->
         <button onclick="openBookModal()"
           class="px-3 py-1.5 rounded-lg bg-gradient-to-r from-amber-400 via-amber-500 to-amber-600 hover:from-amber-300 hover:to-amber-500 text-slate-950 font-black shadow-lg transition flex items-center gap-1.5 cursor-pointer border border-amber-300">
@@ -712,6 +720,12 @@
             class="px-3.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs flex items-center gap-1.5 transition cursor-pointer shadow-md">
             <i data-feather="download" class="w-4 h-4 text-white"></i>
             <span>💾 ऑफलाइन HTML बुक डाउनलोड</span>
+          </button>
+
+          <button onclick="actionDownloadWordBook()" title="Microsoft Word (.doc) में पूरी किताब या प्रश्न-पत्र डाउनलोड करें"
+            class="px-3.5 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs flex items-center gap-1.5 transition cursor-pointer shadow-md">
+            <i data-feather="file-text" class="w-4 h-4 text-white"></i>
+            <span>📄 Word (.doc) डाउनलोड</span>
           </button>
 
           <button onclick="actionPrintPdfBook()" title="सम्पूर्ण पुस्तक को A4 पृष्ठों पर प्रिंट करें या PDF सुरक्षित करें"
@@ -1884,6 +1898,54 @@
       renderCompleteBook(selectedBookSubject, selectedBookMode, selectedBookScope, selectedBookChapterId);
       setTimeout(() => window.print(), 400);
     }
+
+    function actionDownloadWordBook() {
+      closeBookModal();
+      const cfg = SUBJECT_CONFIGS[selectedBookSubject] || SUBJECT_CONFIGS['sst5'] || {};
+      const sheet = document.getElementById('sheetContent') || document.querySelector('.sheet-container');
+      const content = sheet ? sheet.innerHTML : 'No content available';
+
+      const wordHtml = `
+        <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+        <head>
+          <meta charset='utf-8'>
+          <title>${cfg.title || 'प्रश्न-पत्र'} - पुलिस मॉडर्न स्कूल</title>
+          <!--[if gte mso 9]>
+          <xml>
+            <w:WordDocument>
+              <w:View>Print</w:View>
+              <w:Zoom>100</w:Zoom>
+              <w:DoNotOptimizeForBrowser/>
+            </w:WordDocument>
+          </xml>
+          <![endif]-->
+          <style>
+            @page { size: A4 portrait; margin: 1.2cm; }
+            body { font-family: 'Mangal', 'Noto Sans Devanagari', 'Calibri', sans-serif; font-size: 11pt; color: #111; line-height: 1.5; }
+            table { border-collapse: collapse; width: 100%; margin: 6pt 0; }
+            th, td { border: 0.5pt solid #333; padding: 4pt 6pt; }
+            th { background-color: #f1f5f9; font-weight: bold; }
+            h1, h2, h3, h4 { text-align: center; margin: 3px 0; }
+            .no-print { display: none !important; }
+          </style>
+        </head>
+        <body>
+          ${content}
+        </body>
+        </html>
+      `;
+
+      const blob = new Blob(['\ufeff' + wordHtml], { type: 'application/msword;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `PMS_${(cfg.title || 'Question_Sheet').replace(/[^a-zA-Z0-9]/g, '_')}_${Date.now()}.doc`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+    window.actionDownloadWordBook = actionDownloadWordBook;
 
     function actionDownloadHtmlBook() {
       closeBookModal();

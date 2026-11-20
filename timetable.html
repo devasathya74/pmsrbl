@@ -1831,6 +1831,11 @@
           <i class="fa-solid fa-file-pdf"></i> PDF डाउनलोड
         </button>
 
+        <!-- Word (.doc) Download -->
+        <button class="btn" id="btnHeaderDownloadWord" onclick="window.downloadLandscapeWord()" style="background:#2563eb;color:#fff;">
+          <i class="fa-solid fa-file-word"></i> Word (.doc)
+        </button>
+
         <!-- More Menu -->
         <div class="dropdown-wrap" id="moreOptionsDropdown">
           <button class="btn btn-outline" onclick="window.toggleMoreDropdown(event)" title="अन्य विकल्प">
@@ -4003,6 +4008,67 @@
     window.triggerLandscapePrint = function () {
       window.updateDynamicPrintStyle();
       window.print();
+    };
+
+    // Export Timetable to Microsoft Word (.doc)
+    window.downloadLandscapeWord = function () {
+      const container = document.getElementById('sheetsContainer');
+      if (!container) return;
+
+      const sheets = container.querySelectorAll('.timetable-sheet');
+      if (sheets.length === 0) {
+        showToast('कोई समय-सारणी उपलब्ध नहीं है!');
+        return;
+      }
+
+      let contentHtml = '';
+      sheets.forEach((sheet, idx) => {
+        if (idx > 0) {
+          contentHtml += `<br clear=all style='mso-special-character:line-break;page-break-before:always'>`;
+        }
+        contentHtml += sheet.innerHTML;
+      });
+
+      const wordHtml = `
+        <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+        <head>
+          <meta charset='utf-8'>
+          <title>समय-सारणी - पुलिस मॉडर्न स्कूल</title>
+          <!--[if gte mso 9]>
+          <xml>
+            <w:WordDocument>
+              <w:View>Print</w:View>
+              <w:Zoom>100</w:Zoom>
+              <w:DoNotOptimizeForBrowser/>
+            </w:WordDocument>
+          </xml>
+          <![endif]-->
+          <style>
+            @page { size: A4 landscape; margin: 1cm; }
+            body { font-family: 'Mangal', 'Noto Sans Devanagari', 'Calibri', sans-serif; font-size: 10pt; color: #111; }
+            table { border-collapse: collapse; width: 100%; margin-top: 6pt; }
+            th, td { border: 0.5pt solid #333; padding: 4pt 6pt; text-align: center; }
+            th { background-color: #f1f5f9; font-weight: bold; }
+            h1, h2, h3, h4 { text-align: center; margin: 3px 0; }
+            .no-print { display: none !important; }
+          </style>
+        </head>
+        <body>
+          ${contentHtml}
+        </body>
+        </html>
+      `;
+
+      const blob = new Blob(['\ufeff' + wordHtml], { type: 'application/msword;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `PMS_Timetable_${new Date().toISOString().slice(0, 10)}.doc`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast('Word (.doc) फ़ाइल सफलतापूर्वक डाउनलोड हुई!');
     };
 
     window.downloadLandscapePDF = async function () {

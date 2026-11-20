@@ -355,6 +355,13 @@
           <i data-feather="printer" class="w-3.5 h-3.5"></i>
           <span>प्रिंट / PDF सेव करें</span>
         </button>
+
+        <!-- Download Word (.doc) -->
+        <button onclick="exportLetterWord()"
+          class="px-3.5 py-1.5 rounded bg-blue-600 hover:bg-blue-500 text-white font-semibold transition text-xs flex items-center gap-1.5 shadow cursor-pointer" title="Microsoft Word (.doc) में डाउनलोड करें">
+          <i data-feather="file-text" class="w-3.5 h-3.5"></i>
+          <span>Word (.doc)</span>
+        </button>
       </div>
     </div>
   </header>
@@ -686,6 +693,48 @@ ${signLoc}`;
       } catch (e) {
         console.error('Error loading saved state:', e);
       }
+    }
+    function exportLetterWord() {
+      const sheet = document.querySelector('.a4-sheet');
+      if (!sheet) return;
+      const clone = sheet.cloneNode(true);
+      const noPrints = clone.querySelectorAll('.no-print');
+      noPrints.forEach(el => el.remove());
+
+      const wordHtml = `
+        <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+        <head>
+          <meta charset='utf-8'>
+          <title>RO Repair Permission</title>
+          <!--[if gte mso 9]>
+          <xml>
+            <w:WordDocument>
+              <w:View>Print</w:View>
+              <w:Zoom>100</w:Zoom>
+              <w:DoNotOptimizeForBrowser/>
+            </w:WordDocument>
+          </xml>
+          <![endif]-->
+          <style>
+            @page { size: A4 portrait; margin: 1.5cm; }
+            body { font-family: 'Mangal', 'Noto Sans Devanagari', 'Calibri', sans-serif; font-size: 11pt; color: #111; line-height: 1.5; }
+            .no-print { display: none !important; }
+          </style>
+        </head>
+        <body>
+          ${clone.innerHTML}
+        </body>
+        </html>
+      `;
+      const blob = new Blob(['\ufeff' + wordHtml], { type: 'application/msword;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'PMS_RO_Repair_Permission.doc';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
     }
   </script>
   <script src="../js/pms_nav_search.js"></script>

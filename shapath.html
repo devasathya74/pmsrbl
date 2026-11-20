@@ -234,6 +234,7 @@
 
     <div class="action-container">
         <button onclick="printPledge()">🖨️ इसे इमेज/पीडीएफ के रूप में सेव करें</button>
+        <button onclick="exportPledgeWord()" style="background:#2563eb; color:#fff; border-color:#1d4ed8;">📄 Word (.doc) में डाउनलोड करें</button>
     </div>
 
     <script>
@@ -241,6 +242,53 @@
             // This triggers the browser's native print dialog
             // User can select "Save as PDF" or print to a physical printer
             window.print();
+        }
+
+        // Export to Word (.doc)
+        function exportPledgeWord() {
+            const container = document.querySelector('.pledge-container');
+            if (!container) return;
+            const clone = container.cloneNode(true);
+            const noPrints = clone.querySelectorAll('.action-container, .no-print');
+            noPrints.forEach(el => el.remove());
+
+            const wordHtml = `
+                <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+                <head>
+                    <meta charset='utf-8'>
+                    <title>शपथ पत्र - PMS Raebareli</title>
+                    <!--[if gte mso 9]>
+                    <xml>
+                        <w:WordDocument>
+                            <w:View>Print</w:View>
+                            <w:Zoom>100</w:Zoom>
+                            <w:DoNotOptimizeForBrowser/>
+                        </w:WordDocument>
+                    </xml>
+                    <![endif]-->
+                    <style>
+                        @page { size: A4 portrait; margin: 1.5cm; }
+                        body { font-family: 'Mangal', 'Noto Sans Devanagari', 'Calibri', sans-serif; font-size: 14pt; color: #111; line-height: 1.8; text-align: center; }
+                        h1 { font-size: 24pt; color: #b91c1c; }
+                        h2 { font-size: 18pt; color: #1e3a8a; }
+                        p { margin: 8pt 0; text-align: left; }
+                        .no-print { display: none !important; }
+                    </style>
+                </head>
+                <body>
+                    ${clone.innerHTML}
+                </body>
+                </html>
+            `;
+            const blob = new Blob(['\ufeff' + wordHtml], { type: 'application/msword;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'PMS_Shapath_Patra.doc';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
         }
     </script>
 

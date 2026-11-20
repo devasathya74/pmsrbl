@@ -191,6 +191,9 @@
         <button class="btn-download" onclick="downloadPDF()">
             ⬇️ Download PDF (A4)
         </button>
+        <button class="btn-download" onclick="downloadWord()" style="background-color:#2563eb;box-shadow:0 3px 8px rgba(37,99,235,0.3);">
+            ⬇️ Download Word (.doc)
+        </button>
     </div>
 
     <!-- Document 1: June 2026 -->
@@ -413,6 +416,56 @@
                 doc.classList.remove('active');
             });
             document.getElementById(docId).classList.add('active');
+        }
+
+        function downloadWord() {
+            var activeDoc = document.querySelector('.document.active');
+            if (!activeDoc) {
+                alert('कोई document नहीं चुना है।');
+                return;
+            }
+            var docId = activeDoc.id;
+            var monthName = docId === 'doc-june' ? 'June_2026' : 'July_2026';
+
+            var wordHtml = `
+                <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+                <head>
+                    <meta charset='utf-8'>
+                    <title>वेतन भुगतान पत्र - पुलिस मॉडर्न स्कूल</title>
+                    <!--[if gte mso 9]>
+                    <xml>
+                        <w:WordDocument>
+                            <w:View>Print</w:View>
+                            <w:Zoom>100</w:Zoom>
+                            <w:DoNotOptimizeForBrowser/>
+                        </w:WordDocument>
+                    </xml>
+                    <![endif]-->
+                    <style>
+                        @page { size: A4 portrait; margin: 1.5cm; }
+                        body { font-family: 'Mangal', 'Noto Sans Devanagari', 'Calibri', sans-serif; font-size: 11pt; color: #111; line-height: 1.5; }
+                        table { border-collapse: collapse; width: 100%; margin: 8pt 0; }
+                        th, td { border: 0.5pt solid #333; padding: 4pt 6pt; font-size: 10pt; }
+                        th { background-color: #f1f5f9; font-weight: bold; }
+                        .header { font-size: 14pt; font-weight: bold; text-align: center; }
+                        .no-print { display: none !important; }
+                    </style>
+                </head>
+                <body>
+                    ${activeDoc.innerHTML}
+                </body>
+                </html>
+            `;
+
+            var blob = new Blob(['\ufeff' + wordHtml], { type: 'application/msword;charset=utf-8;' });
+            var url = URL.createObjectURL(blob);
+            var a = document.createElement('a');
+            a.href = url;
+            a.download = 'Vetan_' + monthName + '_PMS_Raebareli.doc';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
         }
 
         function downloadPDF() {

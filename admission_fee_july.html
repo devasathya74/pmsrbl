@@ -49,6 +49,9 @@
             <button type="button" onclick="window.print()" class="tb-btn tb-btn-primary" title="दस्तावेज़ A4 प्रिंट करें">
                 <i class="fa-solid fa-print"></i> प्रिंट करें
             </button>
+            <button type="button" onclick="exportOrderWord()" class="tb-btn" style="background:#2563eb; color:#fff;" title="Microsoft Word (.doc) में डाउनलोड करें">
+                <i class="fa-solid fa-file-word"></i> Word (.doc)
+            </button>
             <button type="button" onclick="resetDocumentToDefault()" class="tb-btn tb-btn-danger" title="मूल प्रारूप पर रीसेट करें">
                 <i class="fa-solid fa-rotate-left"></i> रीसेट
             </button>
@@ -2404,6 +2407,53 @@
                 localStorage.removeItem('PMS_LAST_SAVED_DOC_ID');
                 location.reload();
             }
+        }
+
+        // Export to Word (.doc)
+        function exportOrderWord() {
+            const paper = document.getElementById('editableDocumentPaper');
+            if (!paper) return;
+            const clone = paper.cloneNode(true);
+            const noPrints = clone.querySelectorAll('.no-print');
+            noPrints.forEach(el => el.remove());
+
+            const wordHtml = `
+                <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+                <head>
+                    <meta charset='utf-8'>
+                    <title>PMS Admission Fee Order</title>
+                    <!--[if gte mso 9]>
+                    <xml>
+                        <w:WordDocument>
+                            <w:View>Print</w:View>
+                            <w:Zoom>100</w:Zoom>
+                            <w:DoNotOptimizeForBrowser/>
+                        </w:WordDocument>
+                    </xml>
+                    <![endif]-->
+                    <style>
+                        @page { size: A4 portrait; margin: 1.2cm; }
+                        body { font-family: 'Mangal', 'Noto Sans Devanagari', 'Calibri', sans-serif; font-size: 11pt; color: #111; line-height: 1.5; }
+                        table { border-collapse: collapse; width: 100%; margin: 6pt 0; }
+                        th, td { border: 0.5pt solid #333; padding: 4pt 6pt; }
+                        th { background-color: #f1f5f9; font-weight: bold; }
+                        .no-print { display: none !important; }
+                    </style>
+                </head>
+                <body>
+                    ${clone.innerHTML}
+                </body>
+                </html>
+            `;
+            const blob = new Blob(['\ufeff' + wordHtml], { type: 'application/msword;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'PMS_Admission_Fee_Order.doc';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
         }
     </script>
 

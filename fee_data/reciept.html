@@ -395,6 +395,7 @@
             <button class="btn btn-secondary" onclick="loadSampleData()">फोटो वाला सैंपल डेटा भरें</button>
             <button class="btn btn-secondary" onclick="clearAllData()">सब साफ़ करें (Blank)</button>
             <button class="btn btn-primary" onclick="window.print()">🖨️ प्रिंट करें (Print)</button>
+            <button class="btn" style="background:#2563eb; color:#fff;" onclick="exportReceiptWord()">📄 Word (.doc)</button>
         </div>
     </div>
 
@@ -651,6 +652,51 @@
                     else el.innerText = '';
                 });
             }
+        }
+
+        function exportReceiptWord() {
+            const receipt = document.getElementById('printable-receipt');
+            if (!receipt) return;
+            const clone = receipt.cloneNode(true);
+            const noPrints = clone.querySelectorAll('.no-print');
+            noPrints.forEach(el => el.remove());
+
+            const wordHtml = `
+                <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+                <head>
+                    <meta charset='utf-8'>
+                    <title>Transport Receipt</title>
+                    <!--[if gte mso 9]>
+                    <xml>
+                        <w:WordDocument>
+                            <w:View>Print</w:View>
+                            <w:Zoom>100</w:Zoom>
+                            <w:DoNotOptimizeForBrowser/>
+                        </w:WordDocument>
+                    </xml>
+                    <![endif]-->
+                    <style>
+                        @page { size: A4 landscape; margin: 1cm; }
+                        body { font-family: 'Mangal', 'Noto Sans Devanagari', 'Calibri', sans-serif; font-size: 10pt; color: #111; }
+                        table { border-collapse: collapse; width: 100%; }
+                        th, td { border: 0.5pt solid #333; padding: 3pt 5pt; }
+                        .no-print { display: none !important; }
+                    </style>
+                </head>
+                <body>
+                    ${clone.innerHTML}
+                </body>
+                </html>
+            `;
+            const blob = new Blob(['\ufeff' + wordHtml], { type: 'application/msword;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'Chaurasia_Transport_Receipt.doc';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
         }
     </script>
 </body>

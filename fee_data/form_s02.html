@@ -53,6 +53,9 @@
       <button class="btn btn-success btn-sm" onclick="FormS02App.downloadCombinedPdf()" title="Download Single Combined Multi-Page PDF">
         📥 1 Combined PDF
       </button>
+      <button class="btn btn-sm" onclick="FormS02App.exportToWord()" style="background:#2563eb;color:#fff;" title="Download Word (.doc) Format">
+        📄 Word (.doc)
+      </button>
     </div>
   </header>
 
@@ -120,6 +123,9 @@
           </button>
           <button type="button" class="btn btn-secondary btn-sm" onclick="FormS02App.exportToExcel()" title="Download Excel Format">
             📊 Export Excel
+          </button>
+          <button type="button" class="btn btn-secondary btn-sm" onclick="FormS02App.exportToWord()" title="Download Word (.doc) Format">
+            📄 Export Word
           </button>
           <button type="button" class="btn btn-success btn-sm" onclick="FormS02App.batchSaveSelectedStudents()" title="Batch Save to Firestore">
             ☁️ Batch Save to Cloud

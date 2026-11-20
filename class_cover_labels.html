@@ -312,6 +312,12 @@
                         </svg>
                         <span>Print / Save PDF</span>
                     </button>
+
+                    <!-- Word (.doc) Button -->
+                    <button onclick="exportLabelsWord()" class="inline-flex items-center gap-2 px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-sm rounded-xl shadow-lg shadow-indigo-600/30 transition transform active:scale-95 cursor-pointer" title="Microsoft Word (.doc) में डाउनलोड करें">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                        <span>Word (.doc)</span>
+                    </button>
                     
                     <button onclick="addNewCard()" class="inline-flex items-center gap-1.5 px-3.5 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white font-semibold text-sm rounded-xl border border-slate-700 transition cursor-pointer">
                         <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -710,6 +716,52 @@
         document.addEventListener('DOMContentLoaded', () => {
             renderCards();
         });
+
+        // Export to Word (.doc)
+        function exportLabelsWord() {
+            const container = document.querySelector('.print-container') || document.body;
+            if (!container) return;
+            const clone = container.cloneNode(true);
+            const noPrints = clone.querySelectorAll('.no-print');
+            noPrints.forEach(el => el.remove());
+
+            const wordHtml = `
+                <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+                <head>
+                    <meta charset='utf-8'>
+                    <title>PMS Register Cover Labels</title>
+                    <!--[if gte mso 9]>
+                    <xml>
+                        <w:WordDocument>
+                            <w:View>Print</w:View>
+                            <w:Zoom>100</w:Zoom>
+                            <w:DoNotOptimizeForBrowser/>
+                        </w:WordDocument>
+                    </xml>
+                    <![endif]-->
+                    <style>
+                        @page { size: A4 portrait; margin: 1cm; }
+                        body { font-family: 'Calibri', 'Segoe UI', 'Mangal', sans-serif; font-size: 11pt; color: #111; line-height: 1.4; }
+                        table { border-collapse: collapse; width: 100%; margin: 6pt 0; }
+                        th, td { border: 0.5pt solid #333; padding: 4pt 6pt; }
+                        .no-print { display: none !important; }
+                    </style>
+                </head>
+                <body>
+                    ${clone.innerHTML}
+                </body>
+                </html>
+            `;
+            const blob = new Blob(['\ufeff' + wordHtml], { type: 'application/msword;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'PMS_Register_Cover_Labels.doc';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
     </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
     <script src="js/pms_nav_search.js"></script>

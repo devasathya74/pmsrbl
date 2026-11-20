@@ -366,6 +366,14 @@
             <span>प्रिंट / PDF</span>
           </button>
 
+          <!-- Word (.doc) Button -->
+          <button onclick="exportSalaryToWord()"
+            class="inline-flex items-center gap-1.5 px-3 sm:px-4 py-1.5 sm:py-2 text-xs font-bold rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white shadow-md shadow-blue-600/30 transition-all active:scale-95"
+            title="Microsoft Word (.doc) में डाउनलोड करें">
+            <i data-feather="file-text" class="w-3.5 h-3.5"></i>
+            <span>Word (.doc)</span>
+          </button>
+
         </div>
       </div>
     </div>
@@ -2399,6 +2407,59 @@
       } else {
         drawer.classList.add('hidden');
       }
+    };
+
+    // Export Staff Salary to Microsoft Word (.doc)
+    window.exportSalaryToWord = function () {
+      const page = document.getElementById('salaryDocumentPage');
+      if (!page) {
+        showToast('सैलरी शीट नहीं मिली!', 'warning');
+        return;
+      }
+
+      const monthStr = window.currentSheet.month || 'वेतन';
+      const yearStr = window.currentSheet.year || '2026';
+
+      const wordHtml = `
+        <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+        <head>
+          <meta charset='utf-8'>
+          <title>कर्मचारी वेतन भुगतान बिल - पुलिस मॉडर्न स्कूल</title>
+          <!--[if gte mso 9]>
+          <xml>
+            <w:WordDocument>
+              <w:View>Print</w:View>
+              <w:Zoom>100</w:Zoom>
+              <w:DoNotOptimizeForBrowser/>
+            </w:WordDocument>
+          </xml>
+          <![endif]-->
+          <style>
+            @page { size: A4 portrait; margin: 1cm; }
+            body { font-family: 'Mangal', 'Noto Sans Devanagari', 'Calibri', sans-serif; font-size: 10pt; color: #111; }
+            table { border-collapse: collapse; width: 100%; margin-top: 6pt; }
+            th, td { border: 0.5pt solid #333; padding: 4pt 6pt; font-size: 9pt; }
+            th { background-color: #f1f5f9; font-weight: bold; }
+            h1, h2, h3, h4 { text-align: center; margin: 3px 0; }
+            .no-print { display: none !important; }
+          </style>
+        </head>
+        <body>
+          ${page.innerHTML}
+        </body>
+        </html>
+      `;
+
+      const blob = new Blob(['\ufeff' + wordHtml], { type: 'application/msword;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `PMS_Salary_${monthStr}_${yearStr}.doc`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast('Word (.doc) फ़ाइल सफलतापूर्वक डाउनलोड हुई!', 'success');
     };
 
     // Print & PDF Export Handler

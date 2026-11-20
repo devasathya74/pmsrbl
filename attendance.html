@@ -1352,6 +1352,10 @@
                             title="Dark Black & White PDF Download">
                             <i class="fa-solid fa-file-pdf"></i> B&W PDF सूची
                         </button>
+                        <button onclick="downloadStudentListWord()" id="dl-word-btn" class="btn" style="background:#2563eb;color:#ffffff;"
+                            title="Microsoft Word (.doc) में डाउनलोड करें">
+                            <i class="fa-solid fa-file-word"></i> Word सूची (.doc)
+                        </button>
                         <button onclick="openAddStudentModal()" class="btn btn-primary">
                             <i class="fa-solid fa-plus"></i> + नया छात्र जोड़ें
                         </button>
@@ -3742,6 +3746,115 @@
                 printBtn.innerHTML = originalText;
                 printBtn.disabled = false;
             }
+        };
+
+        // ─── DOWNLOAD STUDENT LIST AS WORD (.DOC) ─────────────────────────
+        window.downloadStudentListWord = function () {
+            if (students.length === 0) {
+                showCustomDialog("चेतावनी", "कोई छात्र नहीं मिला। पहले students add करें।", "warning");
+                return;
+            }
+
+            const today = new Date().toLocaleDateString('hi-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+            const classFilterEl = document.getElementById('filter-class');
+            const classFilter = classFilterEl ? classFilterEl.value.trim() : '';
+
+            let vFilterLabel = 'समस्त छात्र';
+            if (currentVehicleFilter === 'v1') vFilterLabel = `प्रातःकाल: ${vehicleNames.v1}`;
+            else if (currentVehicleFilter === 'v2') vFilterLabel = `प्रातःकाल: ${vehicleNames.v2}`;
+            else if (currentVehicleFilter === 'ret-kg') vFilterLabel = `वापसी: 12:30 PM (KG-I, KG-II)`;
+            else if (currentVehicleFilter === 'ret-prm') vFilterLabel = `वापसी: 01:30 PM (कक्षा 1-8)`;
+
+            if (classFilter) vFilterLabel += ` | कक्षा: ${classFilter}`;
+
+            const printStudents = students.filter(s => {
+                if (classFilter && normalizeClassName(s.class) !== normalizeClassName(classFilter)) return false;
+                if (currentVehicleFilter === 'all') return true;
+                if (currentVehicleFilter === 'v1') return s.vehicle === 'v1';
+                if (currentVehicleFilter === 'v2') return s.vehicle === 'v2';
+                if (currentVehicleFilter === 'ret-kg') return isKGStudent(s.class);
+                if (currentVehicleFilter === 'ret-prm') return !isKGStudent(s.class);
+                return true;
+            });
+
+            if (printStudents.length === 0) {
+                showCustomDialog("सूचना", "इस फ़िल्टर के लिए कोई छात्र उपलब्ध नहीं है।", "warning");
+                return;
+            }
+
+            let rowsHtml = '';
+            printStudents.forEach((s, idx) => {
+                const stopName = stops.find(st => st.id === s.stopId)?.name || s.stopName || s.stop || '—';
+                rowsHtml += `
+                    <tr>
+                        <td align="center">${idx + 1}</td>
+                        <td align="left"><b>${s.name || ''}</b></td>
+                        <td align="left">${s.father || ''}</td>
+                        <td align="center">${s.class || ''}</td>
+                        <td align="center">${s.mobile || ''}</td>
+                        <td align="left">${vehicleNames[s.vehicle] || s.vehicle || '—'}</td>
+                        <td align="left">${stopName}</td>
+                    </tr>
+                `;
+            });
+
+            const wordHtml = `
+                <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+                <head>
+                    <meta charset='utf-8'>
+                    <title>परिवहन छात्र पंजिका - पुलिस मॉडर्न स्कूल</title>
+                    <!--[if gte mso 9]>
+                    <xml>
+                        <w:WordDocument>
+                            <w:View>Print</w:View>
+                            <w:Zoom>100</w:Zoom>
+                            <w:DoNotOptimizeForBrowser/>
+                        </w:WordDocument>
+                    </xml>
+                    <![endif]-->
+                    <style>
+                        @page { size: A4 landscape; margin: 1cm; }
+                        body { font-family: 'Mangal', 'Noto Sans Devanagari', 'Calibri', sans-serif; font-size: 10pt; color: #111; }
+                        table { border-collapse: collapse; width: 100%; margin-top: 10px; }
+                        th, td { border: 0.5pt solid #333; padding: 4pt 6pt; font-size: 9pt; }
+                        th { background-color: #f1f5f9; font-weight: bold; }
+                        h2, h3 { text-align: center; margin: 4px; }
+                    </style>
+                </head>
+                <body>
+                    <h2>पुलिस मॉडर्न स्कूल, 25वीं वाहिनी पीएसी, रायबरेली</h2>
+                    <h3 style="color:#333;">परिवहन छात्र पंजिका (${vFilterLabel})</h3>
+                    <p style="text-align:center;font-size:9pt;margin:2px 0 10px 0;">कुल छात्र: ${printStudents.length} | दिनांक: ${today}</p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width:5%;">क्र०</th>
+                                <th style="width:25%;">छात्र / छात्रा का नाम</th>
+                                <th style="width:22%;">पिता का नाम</th>
+                                <th style="width:10%;">कक्षा</th>
+                                <th style="width:13%;">मोबाइल</th>
+                                <th style="width:12%;">वाहन</th>
+                                <th style="width:13%;">स्टॉप (स्थान)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${rowsHtml}
+                        </tbody>
+                    </table>
+                </body>
+                </html>
+            `;
+
+            const blob = new Blob(['\ufeff' + wordHtml], { type: 'application/msword;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `PMS_Transport_List_${new Date().toISOString().slice(0, 10)}.doc`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showCustomDialog("सफल", "Word (.doc) फ़ाइल डाउनलोड हो गई!", "success");
         };
 
         // ─── DOWNLOAD STUDENT LIST AS PDF (DARK BLACK & WHITE) ────────────────────

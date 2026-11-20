@@ -1279,6 +1279,8 @@
                 </label>
                 <button class="r-btn" onclick="exportCleanHTML()" title="HTML फ़ाइल डाउनलोड करें"><i
                         class="fa-brands fa-html5"></i> HTML</button>
+                <button class="r-btn" style="background:#2563eb;color:white;" onclick="exportInspectionToWord()" title="Microsoft Word (.doc) में डाउनलोड करें"><i
+                        class="fa-solid fa-file-word"></i> Word (.doc)</button>
                 <button class="r-btn" style="background: #059669; color: white;" onclick="printDoc()"
                     title="A4 Landscape प्रिंट या PDF बनाएं"><i class="fa-solid fa-print"></i> प्रिंट / PDF</button>
                 <button class="r-btn" style="color: #f87171;" onclick="resetToDefaultTemplate()"
@@ -3256,6 +3258,46 @@
         // ================= PRINT & EXPORT UTILITIES =================
         function printDoc() {
             window.print();
+        }
+
+        function exportInspectionToWord() {
+            const canvas = document.getElementById('canvas-zoom-wrapper');
+            const clone = canvas.cloneNode(true);
+            clone.querySelectorAll('.no-print, .row-hover-popup, .table-cell-actions').forEach(el => el.remove());
+            const title = (document.getElementById('doc-title')?.value || "निरीक्षण_रिपोर्ट").trim();
+
+            const wordHtml = `
+                <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+                <head>
+                    <meta charset='utf-8'>
+                    <title>${title}</title>
+                    <!--[if gte mso 9]>
+                    <xml>
+                        <w:WordDocument>
+                            <w:View>Print</w:View>
+                            <w:Zoom>100</w:Zoom>
+                            <w:DoNotOptimizeForBrowser/>
+                        </w:WordDocument>
+                    </xml>
+                    <![endif]-->
+                    <style>
+                        @page { size: A4 landscape; margin: 1cm; }
+                        body { font-family: 'Mangal', 'Noto Sans Devanagari', 'Calibri', sans-serif; font-size: 10pt; color: #111; }
+                        table { border-collapse: collapse; width: 100%; margin-top: 6pt; }
+                        th, td { border: 0.5pt solid #333; padding: 4pt 6pt; font-size: 9pt; }
+                        th { background-color: #f1f5f9; font-weight: bold; }
+                        h1, h2, h3, h4 { text-align: center; margin: 3px 0; }
+                    </style>
+                </head>
+                <body>
+                    ${clone.innerHTML}
+                </body>
+                </html>
+            `;
+
+            const blob = new Blob(['\ufeff' + wordHtml], { type: 'application/msword;charset=utf-8' });
+            downloadBlob(blob, `${title}.doc`);
+            showToast("Word (.doc) फ़ाइल डाउनलोड हो गई!");
         }
 
         function exportCleanHTML() {

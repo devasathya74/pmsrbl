@@ -183,6 +183,11 @@
         <button onclick="window.print()" class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-3.5 py-1.5 rounded-lg flex items-center gap-1.5 shadow-md transition cursor-pointer">
           <i class="fas fa-print"></i> <span>प्रिंट / PDF सेव करें</span>
         </button>
+
+        <!-- Download Word (.doc) -->
+        <button onclick="exportLetterWord()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold px-3.5 py-1.5 rounded-lg flex items-center gap-1.5 shadow-md transition cursor-pointer" title="Microsoft Word (.doc) में डाउनलोड करें">
+          <i class="fas fa-file-word"></i> <span>Word (.doc)</span>
+        </button>
       </div>
     </div>
   </aside>
@@ -354,6 +359,52 @@
       isHighlighted = !isHighlighted;
       document.body.classList.toggle('highlight-editable', isHighlighted);
       document.getElementById('hlText').innerText = isHighlighted ? "हाईलाइट छिपाएं" : "एडिट फील्ड दिखाएं";
+    }
+
+    // 3. Export to Word (.doc)
+    function exportLetterWord() {
+      const container = document.getElementById('letterDoc');
+      if (!container) return;
+      const clone = container.cloneNode(true);
+      const noPrints = clone.querySelectorAll('.no-print');
+      noPrints.forEach(el => el.remove());
+
+      const wordHtml = `
+        <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+        <head>
+          <meta charset='utf-8'>
+          <title>PMS Fee Deposit Letter</title>
+          <!--[if gte mso 9]>
+          <xml>
+            <w:WordDocument>
+              <w:View>Print</w:View>
+              <w:Zoom>100</w:Zoom>
+              <w:DoNotOptimizeForBrowser/>
+            </w:WordDocument>
+          </xml>
+          <![endif]-->
+          <style>
+            @page { size: A4 portrait; margin: 1.5cm; }
+            body { font-family: 'Mangal', 'Noto Sans Devanagari', 'Calibri', sans-serif; font-size: 11pt; color: #111; line-height: 1.5; }
+            table { border-collapse: collapse; width: 100%; margin: 6pt 0; }
+            th, td { border: 0.5pt solid #333; padding: 4pt 6pt; }
+            .no-print { display: none !important; }
+          </style>
+        </head>
+        <body>
+          ${clone.innerHTML}
+        </body>
+        </html>
+      `;
+      const blob = new Blob(['\ufeff' + wordHtml], { type: 'application/msword;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'PMS_Fee_Deposit_Letter_28Sep2026.doc';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
     }
   </script>
 </body>

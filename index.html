@@ -438,6 +438,7 @@
             <option value="no">Bus: No</option>
           </select>
           <button class="btn btn-gold btn-sm no-print" onclick="exportCSV()">&#11015; Export CSV</button>
+          <button class="btn btn-sm no-print" onclick="exportWord()" style="background:#2563eb;color:#fff;border-color:#1d4ed8;">&#11015; Word (.doc)</button>
           <button class="btn btn-sm btn-outline no-print" onclick="showPanel('trash')"
             style="border-color:var(--red);color:var(--red)">&#128465; Recycle Bin (<span
               id="trashCountStudents">0</span>)</button>
@@ -700,6 +701,7 @@
           <button class="btn btn-primary" onclick="downloadPDF('portrait')">&#11015; Portrait PDF</button>
           <button class="btn btn-primary" onclick="downloadPDF('landscape')">&#11015; Landscape PDF</button>
           <button class="btn btn-gold" onclick="exportCSV()">&#11015; Export CSV</button>
+          <button class="btn" onclick="exportWord()" style="background:#2563eb;color:#fff;border-color:#1d4ed8;">&#11015; Word (.doc)</button>
         </div>
 
         <!-- CUSTOM PRINT FIELDS SELECTION PANEL -->

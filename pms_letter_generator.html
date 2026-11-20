@@ -1166,6 +1166,14 @@
         <span>सहेजें (Save)</span>
       </button>
 
+      <!-- Export Word (.doc) Button -->
+      <button id="downloadWordBtn" type="button" onclick="exportCurrentLetterToWord()"
+        class="bg-gradient-to-r from-emerald-700 to-teal-700 hover:from-emerald-600 hover:to-teal-600 text-white px-3.5 py-1.5 rounded-lg font-bold transition flex items-center gap-1.5 shadow-lg shadow-emerald-700/20 cursor-pointer"
+        title="Microsoft Word (.doc) में डाउनलोड करें">
+        <i class="fa-solid fa-file-word text-xs"></i>
+        <span>Word (.doc)</span>
+      </button>
+
       <!-- Direct Print / PDF Button (Only Opens PDF Print Dialog) -->
       <button id="printSaveLetterBtn" type="button"
         class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white px-4 py-1.5 rounded-lg font-black transition flex items-center gap-1.5 shadow-lg shadow-blue-600/30 cursor-pointer"
@@ -7268,6 +7276,61 @@
 
       // Open browser PDF / Print dialogue directly
       window.print();
+    };
+
+    // Export Letter to Microsoft Word (.doc)
+    window.exportCurrentLetterToWord = function () {
+      const page1 = document.getElementById('letterDocument');
+      const page2 = document.getElementById('letterDocumentPage2');
+      if (!page1) return;
+
+      let content = page1.innerHTML;
+      if (page2 && !page2.classList.contains('hidden')) {
+        content += `<br clear=all style='mso-special-character:line-break;page-break-before:always'>` + page2.innerHTML;
+      }
+
+      const wordHtml = `
+        <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+        <head>
+          <meta charset='utf-8'>
+          <title>कार्यालय पत्र - पुलिस मॉडर्न स्कूल</title>
+          <!--[if gte mso 9]>
+          <xml>
+            <w:WordDocument>
+              <w:View>Print</w:View>
+              <w:Zoom>100</w:Zoom>
+              <w:DoNotOptimizeForBrowser/>
+            </w:WordDocument>
+          </xml>
+          <![endif]-->
+          <style>
+            @page { size: A4 portrait; margin: 1.5cm; }
+            body { font-family: 'Mangal', 'Noto Sans Devanagari', 'Calibri', sans-serif; font-size: 11pt; color: #111; line-height: 1.5; }
+            table { border-collapse: collapse; width: 100%; margin: 6pt 0; }
+            th, td { border: 0.5pt solid #333; padding: 4pt 6pt; }
+            th { background-color: #f1f5f9; font-weight: bold; }
+            h1, h2, h3, h4 { text-align: center; margin: 3px 0; }
+            .no-print { display: none !important; }
+          </style>
+        </head>
+        <body>
+          ${content}
+        </body>
+        </html>
+      `;
+
+      const blob = new Blob(['\ufeff' + wordHtml], { type: 'application/msword;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `PMS_Letter_${new Date().toISOString().slice(0, 10)}.doc`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      if (typeof showLetterToast === 'function') {
+        showLetterToast('Word (.doc) फ़ाइल सफलतापूर्वक डाउनलोड हुई!', 'success');
+      }
     };
 
     // Global Toast Notification Helper

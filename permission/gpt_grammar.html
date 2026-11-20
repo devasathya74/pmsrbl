@@ -490,6 +490,11 @@
 <i class="w-3.5 h-3.5" data-feather="printer"></i>
 <span class="hidden sm:inline">Print / PDF</span>
 </button>
+<!-- Download Word (.doc) -->
+<button class="bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs px-3 py-1.5 rounded-lg shadow-md transition flex items-center gap-1.5" onclick="executeDownloadSelectedUnitWord()" title="Download Word (.doc)">
+<i class="w-3.5 h-3.5" data-feather="file-text"></i>
+<span class="hidden sm:inline">Word (.doc)</span>
+</button>
 </div>
 </div>
 </div>
@@ -9644,6 +9649,10 @@
 <i class="w-3.5 h-3.5" data-feather="download"></i>
 <span>Download Standalone HTML</span>
 </button>
+<button class="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold shadow-md transition flex items-center gap-1.5" onclick="executeDownloadSelectedUnitWord()">
+<i class="w-3.5 h-3.5" data-feather="file-text"></i>
+<span>Download Word (.doc)</span>
+</button>
 </div>
 </div>
 </div>
@@ -9906,6 +9915,67 @@
       const a = document.createElement('a');
       a.href = url;
       a.download = `PMS_Raebareli_${safeName}.html`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    // Execute Word (.doc) Download of Selected Unit or Full Book
+    function executeDownloadSelectedUnitWord() {
+      const targetUnit = UNIT_RANGES.find(u => u.id === selectedUnitId) || UNIT_RANGES[0];
+      closeDownloadModal();
+
+      const allPageEls = document.querySelectorAll('.book-page');
+      let pagesHtml = '';
+
+      allPageEls.forEach(pageEl => {
+        const pNum = parseInt(pageEl.getAttribute('data-page-num'));
+        if (targetUnit.id === 'all' || (pNum >= targetUnit.start && pNum <= targetUnit.end)) {
+          const clone = pageEl.cloneNode(true);
+          const noPrints = clone.querySelectorAll('.no-print');
+          noPrints.forEach(np => np.remove());
+          pagesHtml += `<div style="page-break-before:always; mso-special-character:line-break; margin-bottom: 20pt;">${clone.innerHTML}</div>`;
+        }
+      });
+
+      const wordHtml = `
+        <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+        <head>
+          <meta charset='utf-8'>
+          <title>${targetUnit.name} - PMS Raebareli</title>
+          <!--[if gte mso 9]>
+          <xml>
+            <w:WordDocument>
+              <w:View>Print</w:View>
+              <w:Zoom>100</w:Zoom>
+              <w:DoNotOptimizeForBrowser/>
+            </w:WordDocument>
+          </xml>
+          <![endif]-->
+          <style>
+            @page { size: A4 portrait; margin: 1.2cm; }
+            body { font-family: 'Calibri', 'Segoe UI', 'Mangal', sans-serif; font-size: 11pt; color: #111; line-height: 1.4; }
+            table { border-collapse: collapse; width: 100%; margin: 6pt 0; }
+            th, td { border: 0.5pt solid #cbd5e1; padding: 5pt; }
+            th { background: #1e1b4b; color: #fff; font-weight: bold; }
+            .practice { background: #f8fafc; border: 1pt solid #cbd5e1; padding: 8pt; margin: 8pt 0; }
+            .answer { background: #f0fdf4; border: 1pt solid #a7f3d0; padding: 6pt 8pt; margin-top: 6pt; color: #065f46; }
+            .no-print { display: none !important; }
+          </style>
+        </head>
+        <body>
+          ${pagesHtml}
+        </body>
+        </html>
+      `;
+
+      const safeName = targetUnit.name.replace(/[^a-zA-Z0-9]/g, '_');
+      const blob = new Blob(['\ufeff' + wordHtml], { type: 'application/msword;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `PMS_Raebareli_${safeName}.doc`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);

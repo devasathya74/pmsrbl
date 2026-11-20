@@ -102,6 +102,23 @@
       user-select: none;
     }
 
+    /* A4 Landscape Document Specifications (297mm x 210mm) */
+    body.is-landscape .a4-document {
+      width: 297mm;
+      min-height: 210mm;
+      max-height: 210mm;
+      padding: 8mm 16mm 8mm 16mm;
+    }
+
+    body.is-landscape #pageBreakDivider {
+      width: 297mm !important;
+      max-width: 297mm !important;
+    }
+
+    body.is-landscape #officeRibbonToolbar {
+      max-width: 1123px;
+    }
+
     .a4-page-2 {
       margin-top: 0;
     }
@@ -844,6 +861,59 @@
         display: none !important;
       }
 
+      /* ================= LANDSCAPE PRINT OVERRIDES ================= */
+      body.is-landscape:not(.has-page-2) html,
+      body.is-landscape:not(.has-page-2) {
+        width: 297mm !important;
+        height: 210mm !important;
+        max-height: 210mm !important;
+      }
+
+      body.is-landscape:not(.has-page-2) main,
+      body.is-landscape:not(.has-page-2) .preview-viewport,
+      body.is-landscape:not(.has-page-2) .preview-wrapper {
+        width: 297mm !important;
+        height: 210mm !important;
+        max-height: 210mm !important;
+      }
+
+      body.is-landscape:not(.has-page-2) .a4-document {
+        width: 297mm !important;
+        height: 210mm !important;
+        min-height: 210mm !important;
+        max-height: 210mm !important;
+        padding: 9mm 16mm 9mm 16mm !important;
+      }
+
+      body.is-landscape.has-page-2 html,
+      body.is-landscape.has-page-2 {
+        width: 297mm !important;
+        height: auto !important;
+      }
+
+      body.is-landscape.has-page-2 main,
+      body.is-landscape.has-page-2 .preview-viewport,
+      body.is-landscape.has-page-2 .preview-wrapper {
+        width: 297mm !important;
+        height: auto !important;
+      }
+
+      body.is-landscape.has-page-2 #letterDocument {
+        width: 297mm !important;
+        height: 210mm !important;
+        min-height: 210mm !important;
+        max-height: 210mm !important;
+        padding: 9mm 16mm 9mm 16mm !important;
+      }
+
+      body.is-landscape.has-page-2 #letterDocumentPage2 {
+        width: 297mm !important;
+        height: 210mm !important;
+        min-height: 210mm !important;
+        max-height: 210mm !important;
+        padding: 9mm 16mm 9mm 16mm !important;
+      }
+
       .table-border-invisible th,
       .table-border-invisible td {
         border: none !important;
@@ -867,6 +937,14 @@
         size: A4 portrait;
         margin: 0mm;
       }
+    }
+  </style>
+
+  <!-- Dynamic Orientation Print Rule Engine -->
+  <style id="dynamicOrientationPrintStyle">
+    @page {
+      size: A4 portrait;
+      margin: 0mm;
     }
   </style>
 </head>
@@ -968,6 +1046,14 @@
         <i class="fa-solid fa-wand-magic-sparkles text-amber-300 text-[11px]"></i>
         <span class="hidden sm:inline">ग्लोबल अप्लाई</span>
         <span class="sm:hidden">ग्लोबल</span>
+      </button>
+
+      <!-- Orientation Quick Switcher (Header) -->
+      <button id="topOrientationToggleBtn" type="button" onclick="window.togglePageOrientation()"
+        class="bg-slate-900/90 hover:bg-slate-800 text-slate-200 px-2.5 py-1.5 rounded-lg transition flex items-center gap-1.5 font-semibold border border-slate-700/80 cursor-pointer shadow-sm text-xs"
+        title="पेज ओरिएंटेशन बदलें: लम्बवत (Portrait) / क्षैतिज (Landscape)">
+        <i id="topOrientationIcon" class="fa-solid fa-file-lines text-indigo-400 text-xs"></i>
+        <span id="topOrientationText" class="hidden sm:inline">Portrait</span>
       </button>
 
       <!-- Preview Canvas Zoom Controller -->
@@ -1138,7 +1224,7 @@
                 <span>पत्र विषय प्रारूप चुनें (Presets)</span>
               </label>
               <span
-                class="text-[10px] bg-slate-900 text-amber-300 font-mono px-2 py-0.5 rounded border border-slate-700 font-bold">16
+                class="text-[10px] bg-slate-900 text-amber-300 font-mono px-2 py-0.5 rounded border border-slate-700 font-bold">17
                 प्रारूप</span>
             </div>
 
@@ -1164,7 +1250,8 @@
                 <option value="fee_concession">13. छात्र-छात्रा शुल्क छूट/रियायत संस्तुति पत्र</option>
                 <option value="tour_permission">14. शैक्षणिक भ्रमण/टूर आयोजन अनुमति प्रार्थना पत्र</option>
                 <option value="annual_function">15. वार्षिकोत्सव एवं खेलकूद दिवस आयोजन अनुमति</option>
-                <option value="blank_letter">16. रिक्त प्रारूप (Custom Blank Letter)</option>
+                <option value="fee_deposit_cashbook">16. छात्र फीस मेन कैश बुक में जमा (रु० 1,12,351/-)</option>
+                <option value="blank_letter">17. रिक्त प्रारूप (Custom Blank Letter)</option>
               </optgroup>
             </select>
           </div>
@@ -1215,8 +1302,9 @@
                 <option value="sahayak_senanayak">2. सहायक सेनानायक महोदय</option>
                 <option value="shivirpal">3. शिविरपाल महोदय</option>
                 <option value="subedar_major">4. सूबेदार मेजर महोदय</option>
-                <option value="lekha">5. वाहिनी लेखाकार / वित्त अधिकारी</option>
-                <option value="bsa">6. जिला बेसिक शिक्षा अधिकारी</option>
+                <option value="aankik">5. आंकिक महोदय (वाहिनी आंकिक)</option>
+                <option value="lekha">6. वाहिनी लेखाकार / वित्त अधिकारी</option>
+                <option value="bsa">7. जिला बेसिक शिक्षा अधिकारी</option>
                 <option value="custom">-- कस्टम दर्ज करें --</option>
               </select>
             </div>
@@ -2087,6 +2175,38 @@
               </button>
             </div>
 
+            <!-- 3. Page Orientation Control -->
+            <div class="space-y-1.5 bg-slate-950/70 p-2.5 rounded-lg border border-slate-800">
+              <div class="flex items-center justify-between">
+                <span class="text-[11px] font-bold text-slate-300 flex items-center gap-1.5">
+                  <i class="fa-solid fa-compass-drafting text-[10px] text-indigo-400"></i>
+                  <span>पेज ओरिएंटेशन (Orientation):</span>
+                </span>
+                <span id="orientationDisplayBadge"
+                  class="text-[11px] bg-indigo-950 text-indigo-300 font-mono font-bold px-2 py-0.5 rounded border border-indigo-800">लम्बवत (Portrait)</span>
+              </div>
+
+              <!-- Orientation Buttons -->
+              <div class="grid grid-cols-2 gap-1.5 pt-0.5">
+                <button type="button" id="btnOrientPortrait" onclick="window.setPageOrientation('portrait')"
+                  class="px-2.5 py-1.5 bg-indigo-600 text-white rounded border border-indigo-500 text-xs font-bold flex items-center justify-center gap-1.5 cursor-pointer transition shadow-sm"
+                  title="लम्बवत (Portrait): 210 × 297 mm (मानक पत्र)">
+                  <i class="fa-solid fa-file text-xs"></i>
+                  <span>लम्बवत (Portrait)</span>
+                </button>
+                <button type="button" id="btnOrientLandscape" onclick="window.setPageOrientation('landscape')"
+                  class="px-2.5 py-1.5 bg-slate-900 hover:bg-slate-700 text-slate-300 rounded border border-slate-700 text-xs font-bold flex items-center justify-center gap-1.5 cursor-pointer transition"
+                  title="क्षैतिज (Landscape): 297 × 210 mm (विस्तृत तालिका व रिपोर्ट)">
+                  <i class="fa-solid fa-file-invoice text-xs rotate-90 text-amber-400"></i>
+                  <span>क्षैतिज (Landscape)</span>
+                </button>
+              </div>
+              <div class="text-[10px] text-slate-400 flex items-center justify-between px-0.5 pt-0.5">
+                <span>A4 Portrait (210×297)</span>
+                <span>A4 Landscape (297×210)</span>
+              </div>
+            </div>
+
             <!-- Page Padding Buttons -->
             <div>
               <label class="block text-[11px] font-bold text-slate-300 mb-1">पेज मार्जिन (Margins):</label>
@@ -2170,6 +2290,25 @@
           <span class="text-slate-600">|</span>
           <button type="button" id="floatingSigP2Btn" onclick="window.setSignaturesPage(2)"
             class="px-1.5 py-0.2 rounded text-[10px] font-bold text-sky-300 bg-sky-950 border border-sky-800 cursor-pointer" title="हस्ताक्षर व प्रतिलिपि पृष्ठ 2 पर रखें">पृष्ठ 2</button>
+        </div>
+
+        <div class="h-4 w-px bg-slate-700"></div>
+
+        <!-- Orientation Segmented Switcher in Floating Bar -->
+        <div class="flex items-center bg-slate-950/80 rounded-full border border-slate-700 p-0.5 text-xs shadow-inner"
+          title="पेज ओरिएंटेशन (लम्बवत Portrait / क्षैतिज Landscape)">
+          <button id="floatingOrientPortraitBtn" type="button" onclick="window.setPageOrientation('portrait')"
+            class="px-2 py-0.5 rounded-full font-bold transition flex items-center gap-1 cursor-pointer text-sky-300 bg-sky-950 border border-sky-800"
+            title="लम्बवत (Portrait - 210 × 297 mm)">
+            <i class="fa-solid fa-file text-[10px]"></i>
+            <span class="text-[11px]">Portrait</span>
+          </button>
+          <button id="floatingOrientLandscapeBtn" type="button" onclick="window.setPageOrientation('landscape')"
+            class="px-2 py-0.5 rounded-full font-bold transition flex items-center gap-1 cursor-pointer text-slate-400 hover:text-white"
+            title="क्षैतिज (Landscape - 297 × 210 mm)">
+            <i class="fa-solid fa-file-invoice text-[10px] rotate-90"></i>
+            <span class="text-[11px]">Landscape</span>
+          </button>
         </div>
 
         <div class="h-4 w-px bg-slate-700"></div>
@@ -3377,6 +3516,12 @@
         body1: "सादर अवगत कराना है कि विद्यालय के छात्र-छात्राओं की बहुमुखी प्रतिभा के प्रदर्शन हेतु आगामी माह में वार्षिक सांस्कृतिक संध्या का आयोजन वाहिनी प्रेक्षागृह/परिसर में किया जाना प्रस्तावित है।",
         body2: "अतः श्रीमान जी से सादर अनुरोध है कि वार्षिकोत्सव के भव्य एवं गरिमामय आयोजन हेतु आवश्यक दिशा-निर्देश एवं मार्गदर्शन प्रदान करने की कृपा करें।"
       },
+      fee_deposit_cashbook: {
+        title: "छात्र-छात्राओं की फीस मेन कैश बुक में जमा (रु० 1,12,351/-)",
+        subject: "विद्यालय के छात्र-छात्राओं से प्राप्त फीस की नकद धनराशि मेन कैश बुक में जमा करने के संबंध में।",
+        body1: "पुलिस मॉडर्न स्कूल 25वीं वाहिनी पीएसी रायबरेली के बच्चों से फीस के रूप में जमा कुल नकद धनराशि रु० 1,12,351.00 (एक लाख बारह हजार तीन सौ इक्यावन रुपये मात्र) (रसीद संख्या 4801 से 4900 तक) आंकिक महोदय को मेन कैश बुक में जमा करने हेतु प्रदान किये।",
+        body2: "मदवार शुल्क विवरण निम्नवत् है:-\n• ट्यूशन फीस से प्राप्त: रु० 1,12,351.00\n• कुल प्राप्त धन: रु० 1,12,351.00 (एक लाख बारह हजार तीन सौ इक्यावन रुपये मात्र)\n\nअतः सादर अनुरोध है कि उक्त धनराशि नियमानुसार मेन कैश बुक में दर्ज कर पावती/रसीद प्रदान करने की कृपा करें।"
+      },
       blank_letter: {
         title: "रिक्त प्रारूप (Custom Blank Letter)",
         subject: "विषय यहाँ दर्ज करें...",
@@ -3636,6 +3781,25 @@
             loadTableTemplate('items_qty');
           }
 
+          if (key === 'fee_deposit_cashbook') {
+            const inDate = document.getElementById('in-date');
+            const docDate = document.getElementById('doc-date');
+            if (inDate) inDate.value = 'सितम्बर, 28, 2026';
+            if (docDate) docDate.innerText = 'सितम्बर, 28, 2026';
+
+            const inRefNo = document.getElementById('in-ref-no');
+            const docRefNo = document.getElementById('doc-ref-no');
+            if (inRefNo) inRefNo.value = 'पीएमएस/सत्र 2026-27/शुल्क';
+            if (docRefNo) docRefNo.innerText = 'पीएमएस/सत्र 2026-27/शुल्क';
+
+            const inRec = document.getElementById('in-recipient');
+            const docRec = document.getElementById('doc-recipient');
+            const recText = 'श्रीमान आंकिक महोदय,\n25वीं वाहिनी पीएसी,\nरायबरेली।';
+            if (inRec) inRec.value = recText;
+            if (docRec) docRec.innerText = recText;
+            if (recipientPreset) recipientPreset.value = 'aankik';
+          }
+
           triggerA4Check();
         }
       });
@@ -3655,6 +3819,8 @@
           text = 'श्रीमान शिविरपाल महोदय,\n25वीं वाहिनी पीएसी,\nरायबरेली।';
         } else if (val === 'subedar_major') {
           text = 'श्रीमान सूबेदार मेजर महोदय,\n25वीं वाहिनी पीएसी,\nरायबरेली।';
+        } else if (val === 'aankik') {
+          text = 'श्रीमान आंकिक महोदय,\n25वीं वाहिनी पीएसी,\nरायबरेली।';
         } else if (val === 'lekha') {
           text = 'श्रीमान वाहिनी लेखाकार / वित्त अधिकारी महोदय,\n25वीं वाहिनी पीएसी,\nरायबरेली।';
         } else if (val === 'bsa') {
@@ -5101,8 +5267,8 @@
         const mainEl = document.querySelector('main');
         if (mainEl) {
           const availWidth = mainEl.clientWidth - 48;
-          const a4Px = 794; // approx 210mm in px at 96dpi
-          const fitScale = Math.min(1.05, Math.max(0.65, Math.round((availWidth / a4Px) * 100) / 100));
+          const a4Px = (window.currentOrientation === 'landscape') ? 1123 : 794; // approx 297mm vs 210mm in px at 96dpi
+          const fitScale = Math.min(1.05, Math.max(0.5, Math.round((availWidth / a4Px) * 100) / 100));
           window.setCanvasZoom(fitScale);
         }
       });
@@ -5150,6 +5316,9 @@
         window.setFontScale(100);
         window.setLineHeight('1.7');
         window.setDocMargin('14mm 19mm 14mm 19mm');
+        if (typeof window.setPageOrientation === 'function') {
+          window.setPageOrientation('portrait', true);
+        }
         const todayBtn = document.getElementById('todayDateBtn');
         if (todayBtn) todayBtn.click();
       });
@@ -6167,8 +6336,18 @@
     };
 
     window.setDocMargin = function (paddingCss) {
+      const isLandscape = (window.currentOrientation === 'landscape');
+      let effectivePadding = paddingCss;
+      if (isLandscape) {
+        if (paddingCss.includes('20mm')) effectivePadding = '6mm 14mm 6mm 14mm';
+        else if (paddingCss.includes('25mm')) effectivePadding = '8mm 18mm 8mm 18mm';
+        else if (paddingCss.includes('30mm')) effectivePadding = '12mm 24mm 12mm 24mm';
+      }
+
       const letterDoc = document.getElementById('letterDocument');
-      if (letterDoc) letterDoc.style.padding = paddingCss;
+      if (letterDoc) letterDoc.style.padding = effectivePadding;
+      const letterDocP2 = document.getElementById('letterDocumentPage2');
+      if (letterDocP2) letterDocP2.style.padding = effectivePadding;
 
       const bComp = document.getElementById('btnMarginCompact');
       const bNorm = document.getElementById('btnMarginNormal');
@@ -6178,11 +6357,139 @@
           b.className = 'px-2 py-1 bg-slate-900 hover:bg-slate-700 text-slate-300 rounded border border-slate-700 text-xs font-semibold cursor-pointer';
         }
       });
-      if (paddingCss.includes('20mm') && bComp) bComp.className = 'px-2 py-1 bg-blue-600 text-white rounded border border-blue-500 text-xs font-semibold cursor-pointer';
-      if (paddingCss.includes('25mm') && bNorm) bNorm.className = 'px-2 py-1 bg-blue-600 text-white rounded border border-blue-500 text-xs font-semibold cursor-pointer';
-      if (paddingCss.includes('30mm') && bWide) bWide.className = 'px-2 py-1 bg-blue-600 text-white rounded border border-blue-500 text-xs font-semibold cursor-pointer';
+      if ((paddingCss.includes('20mm') || paddingCss.includes('6mm')) && bComp) bComp.className = 'px-2 py-1 bg-blue-600 text-white rounded border border-blue-500 text-xs font-semibold cursor-pointer';
+      if ((paddingCss.includes('25mm') || paddingCss.includes('8mm')) && bNorm) bNorm.className = 'px-2 py-1 bg-blue-600 text-white rounded border border-blue-500 text-xs font-semibold cursor-pointer';
+      if ((paddingCss.includes('30mm') || paddingCss.includes('12mm')) && bWide) bWide.className = 'px-2 py-1 bg-blue-600 text-white rounded border border-blue-500 text-xs font-semibold cursor-pointer';
       triggerA4Check();
       window.saveLocalDraft(true);
+    };
+
+    // ================= PAGE ORIENTATION CONTROLLER (PORTRAIT / LANDSCAPE) =================
+    window.currentOrientation = 'portrait';
+
+    window.applyPrintOrientation = function (orientation) {
+      let dynamicStyle = document.getElementById('dynamicOrientationPrintStyle');
+      if (!dynamicStyle) {
+        dynamicStyle = document.createElement('style');
+        dynamicStyle.id = 'dynamicOrientationPrintStyle';
+        document.head.appendChild(dynamicStyle);
+      }
+      if (orientation === 'landscape') {
+        dynamicStyle.textContent = '@page { size: A4 landscape !important; margin: 0mm !important; }';
+      } else {
+        dynamicStyle.textContent = '@page { size: A4 portrait !important; margin: 0mm !important; }';
+      }
+    };
+
+    window.addEventListener('beforeprint', () => {
+      if (typeof window.applyPrintOrientation === 'function') {
+        window.applyPrintOrientation(window.currentOrientation || 'portrait');
+      }
+    });
+
+    window.setPageOrientation = function (orientation, silent = false) {
+      const isLandscape = (orientation === 'landscape');
+      window.currentOrientation = isLandscape ? 'landscape' : 'portrait';
+
+      // Toggle classes on body
+      document.body.classList.toggle('is-landscape', isLandscape);
+      document.body.classList.toggle('is-portrait', !isLandscape);
+
+      // Clean inline padding so orientation-specific defaults take effect smoothly
+      const letterDoc = document.getElementById('letterDocument');
+      const letterDocP2 = document.getElementById('letterDocumentPage2');
+      if (letterDoc) letterDoc.style.padding = '';
+      if (letterDocP2) letterDocP2.style.padding = '';
+
+      // Reset margin button active states to standard
+      const bComp = document.getElementById('btnMarginCompact');
+      const bNorm = document.getElementById('btnMarginNormal');
+      const bWide = document.getElementById('btnMarginWide');
+      if (bComp) bComp.className = 'px-2 py-1 bg-slate-900 hover:bg-slate-700 text-slate-300 rounded border border-slate-700 text-xs font-semibold cursor-pointer';
+      if (bNorm) bNorm.className = 'px-2 py-1 bg-blue-600 text-white rounded border border-blue-500 text-xs font-semibold cursor-pointer';
+      if (bWide) bWide.className = 'px-2 py-1 bg-slate-900 hover:bg-slate-700 text-slate-300 rounded border border-slate-700 text-xs font-semibold cursor-pointer';
+
+      // Apply dynamic print @page rule
+      window.applyPrintOrientation(window.currentOrientation);
+
+      // Update UI: Sidebar Tab 4
+      const btnPort = document.getElementById('btnOrientPortrait');
+      const btnLand = document.getElementById('btnOrientLandscape');
+      const badge = document.getElementById('orientationDisplayBadge');
+      if (btnPort) {
+        btnPort.className = !isLandscape
+          ? 'px-2.5 py-1.5 bg-indigo-600 text-white rounded border border-indigo-500 text-xs font-bold flex items-center justify-center gap-1.5 cursor-pointer transition shadow-sm'
+          : 'px-2.5 py-1.5 bg-slate-900 hover:bg-slate-700 text-slate-300 rounded border border-slate-700 text-xs font-bold flex items-center justify-center gap-1.5 cursor-pointer transition';
+      }
+      if (btnLand) {
+        btnLand.className = isLandscape
+          ? 'px-2.5 py-1.5 bg-indigo-600 text-white rounded border border-indigo-500 text-xs font-bold flex items-center justify-center gap-1.5 cursor-pointer transition shadow-sm'
+          : 'px-2.5 py-1.5 bg-slate-900 hover:bg-slate-700 text-slate-300 rounded border border-slate-700 text-xs font-bold flex items-center justify-center gap-1.5 cursor-pointer transition';
+      }
+      if (badge) {
+        badge.textContent = isLandscape ? 'क्षैतिज (Landscape)' : 'लम्बवत (Portrait)';
+        badge.className = isLandscape
+          ? 'text-[11px] bg-amber-950 text-amber-300 font-mono font-bold px-2 py-0.5 rounded border border-amber-800'
+          : 'text-[11px] bg-indigo-950 text-indigo-300 font-mono font-bold px-2 py-0.5 rounded border border-indigo-800';
+      }
+
+      // Update UI: Floating Toolbar
+      const floatPortBtn = document.getElementById('floatingOrientPortraitBtn');
+      const floatLandBtn = document.getElementById('floatingOrientLandscapeBtn');
+      if (floatPortBtn) {
+        floatPortBtn.className = !isLandscape
+          ? 'px-2 py-0.5 rounded-full font-bold transition flex items-center gap-1 cursor-pointer text-sky-300 bg-sky-950 border border-sky-800'
+          : 'px-2 py-0.5 rounded-full font-bold transition flex items-center gap-1 cursor-pointer text-slate-400 hover:text-white';
+      }
+      if (floatLandBtn) {
+        floatLandBtn.className = isLandscape
+          ? 'px-2 py-0.5 rounded-full font-bold transition flex items-center gap-1 cursor-pointer text-amber-300 bg-amber-950 border border-amber-800'
+          : 'px-2 py-0.5 rounded-full font-bold transition flex items-center gap-1 cursor-pointer text-slate-400 hover:text-white';
+      }
+
+      // Update UI: Header
+      const topOrientText = document.getElementById('topOrientationText');
+      const topOrientIcon = document.getElementById('topOrientationIcon');
+      if (topOrientText) {
+        topOrientText.textContent = isLandscape ? 'Landscape' : 'Portrait';
+      }
+      if (topOrientIcon) {
+        topOrientIcon.className = isLandscape
+          ? 'fa-solid fa-file-invoice text-amber-400 text-xs rotate-90'
+          : 'fa-solid fa-file-lines text-indigo-400 text-xs';
+      }
+
+      // Adjust Canvas Zoom so preview fits comfortably on screen
+      const mainEl = document.querySelector('main');
+      if (mainEl && isLandscape) {
+        const availWidth = mainEl.clientWidth - 48;
+        if (availWidth < 1123 * (window.currentCanvasZoom || 1)) {
+          const fitScale = Math.min(1.0, Math.max(0.5, Math.round((availWidth / 1123) * 100) / 100));
+          window.setCanvasZoom(fitScale);
+        }
+      }
+
+      // Refresh table resizers
+      if (typeof window.updateTableResizeHandles === 'function') {
+        window.updateTableResizeHandles();
+      }
+
+      // Persist in localStorage
+      localStorage.setItem('pms_letter_orientation', window.currentOrientation);
+
+      // Trigger A4 Overflow Check
+      triggerA4Check();
+
+      if (!silent && window.showLetterToast) {
+        showLetterToast(isLandscape ? '📐 पेज ओरिएंटेशन: क्षैतिज (Landscape 297×210 mm)' : '📐 पेज ओरिएंटेशन: लम्बवत (Portrait 210×297 mm)', 'info');
+      }
+
+      window.saveLocalDraft(true);
+    };
+
+    window.togglePageOrientation = function () {
+      const next = (window.currentOrientation === 'landscape') ? 'portrait' : 'landscape';
+      window.setPageOrientation(next);
     };
 
     // ================= MULTI-PAGE (PAGE 2) CONTROLLER SYSTEM =================
@@ -6603,7 +6910,11 @@
 
       // If still overflowing, reduce margins
       if (doc.scrollHeight > doc.clientHeight) {
-        window.setDocMargin('11mm 15mm 10mm 15mm');
+        if (window.currentOrientation === 'landscape') {
+          window.setDocMargin('6mm 12mm 6mm 12mm');
+        } else {
+          window.setDocMargin('11mm 15mm 10mm 15mm');
+        }
       }
 
       checkA4Overflow();
@@ -6729,7 +7040,8 @@
         signaturesOnPage2: !!window.isSignaturesOnPage2,
         tableOnPage2: !!window.isTableOnPage2,
         bodyP2: getVal('in-body-p2'),
-        extraParagraphsP2: (typeof window.getExtraParagraphsDataP2 === 'function') ? window.getExtraParagraphsDataP2() : []
+        extraParagraphsP2: (typeof window.getExtraParagraphsDataP2 === 'function') ? window.getExtraParagraphsDataP2() : [],
+        orientation: window.currentOrientation || 'portrait'
       };
 
       localStorage.setItem('pms_letter_draft', JSON.stringify(draft));
@@ -6753,6 +7065,12 @@
       const savedUniversalSize = localStorage.getItem('pms_letter_universal_font_size');
       if (savedUniversalSize && typeof window.applyUniversalFontSize === 'function') {
         window.applyUniversalFontSize(parseFloat(savedUniversalSize));
+      }
+
+      // Restore Orientation
+      const savedOrientation = localStorage.getItem('pms_letter_orientation') || 'portrait';
+      if (typeof window.setPageOrientation === 'function') {
+        window.setPageOrientation(savedOrientation, true);
       }
 
       const saved = localStorage.getItem('pms_letter_draft');
@@ -6834,6 +7152,9 @@
           }
           if (Array.isArray(d.extraParagraphsP2) && typeof window.restoreExtraParagraphsP2 === 'function') {
             window.restoreExtraParagraphsP2(d.extraParagraphsP2);
+          }
+          if (d.orientation && typeof window.setPageOrientation === 'function') {
+            window.setPageOrientation(d.orientation, true);
           }
         } catch (e) {
           console.warn("Draft restore error:", e);
@@ -6940,6 +7261,11 @@
         window.checkLetterPageOverflow();
       }
 
+      // Ensure orientation print style is applied
+      if (typeof window.applyPrintOrientation === 'function') {
+        window.applyPrintOrientation(window.currentOrientation || 'portrait');
+      }
+
       // Open browser PDF / Print dialogue directly
       window.print();
     };
@@ -7029,6 +7355,7 @@
         tableOnPage2: (typeof window.isTableOnPage2 !== 'undefined') ? !!window.isTableOnPage2 : false,
         bodyP2: getVal('in-body-p2'),
         extraParagraphsP2: (typeof window.getExtraParagraphsDataP2 === 'function') ? window.getExtraParagraphsDataP2() : [],
+        orientation: window.currentOrientation || 'portrait',
         savedAt: new Date().toLocaleString('hi-IN', { timeZone: 'Asia/Kolkata' }),
         timestamp: Date.now()
       };
@@ -7274,6 +7601,10 @@
         window.restoreExtraParagraphsP2(data.extraParagraphsP2);
       } else if (typeof window.restoreExtraParagraphsP2 === 'function') {
         window.restoreExtraParagraphsP2([]);
+      }
+
+      if (typeof window.setPageOrientation === 'function') {
+        window.setPageOrientation(data.orientation || 'portrait', true);
       }
 
       // Mark this document as active for updating

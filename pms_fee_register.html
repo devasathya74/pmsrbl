@@ -1,0 +1,1908 @@
+<!DOCTYPE html>
+<html lang="hi" class="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>मासिक छात्र शुल्क पंजिका (Monthly Fee Register) - पुलिस मॉडर्न स्कूल, 25वीं वाहिनी पीएसी, रायबरेली</title>
+  <meta name="description"
+    content="Official Police Modern School 25th Bn PAC Raebareli - Monthly Student Fee Register with Firestore Integration. Dual Mode: High-Precision Printable Physical Paper Register & Interactive Web App.">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            pac: {
+              50: '#f0f7ff',
+              100: '#e0effe',
+              500: '#0284c7',
+              600: '#0369a1',
+              700: '#075985',
+              800: '#0c4a6e',
+              900: '#082f49',
+              950: '#041d30',
+            },
+            brandEmerald: {
+              50: '#ecfdf5',
+              100: '#d1fae5',
+              600: '#059669',
+              700: '#047857',
+              800: '#065f46',
+            }
+          },
+          fontFamily: {
+            sans: ['"Noto Sans Devanagari"', '"Inter"', 'sans-serif'],
+            serif: ['"Martel"', '"Noto Serif Devanagari"', 'serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&family=Martel:wght@700;800;900&family=Noto+Sans+Devanagari:wght@400;500;600;700;800;900&family=Noto+Serif+Devanagari:wght@600;700;800&display=swap"
+    rel="stylesheet">
+
+  <!-- Font Awesome 6.5.1 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    :root {
+      --cell-py: 7px;
+      --cell-px: 5px;
+      --month-cell-w: 52px;
+      --paper-font-size: 11.5px;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+
+    body {
+      font-family: 'Noto Sans Devanagari', 'Inter', sans-serif;
+      background-color: #0b1120;
+      color: #0f172a;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Print Paper Container - Strict A4 Landscape Dimensions */
+    .print-paper {
+      width: 297mm;
+      min-height: 210mm;
+      background: #ffffff;
+      margin: 20px auto;
+      padding: 6mm 8mm 6mm 8mm;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.1);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      color: #000000;
+      border-radius: 4px;
+    }
+
+    /* Master Fee Register Table */
+    .fee-table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+      font-size: var(--paper-font-size);
+      line-height: 1.25;
+    }
+
+    .fee-table th {
+      background-color: #f1f5f9;
+      color: #000000;
+      border: 1px solid #000000;
+      padding: 5px 3px;
+      font-weight: 800;
+      text-align: center;
+      vertical-align: middle;
+      font-size: 10.5px;
+    }
+
+    .fee-table td {
+      border: 1px solid #000000;
+      padding: var(--cell-py) var(--cell-px);
+      vertical-align: middle;
+      color: #000000;
+    }
+
+    /* Month Checkbox Container: Spacious Checkbox + Handwriting Dotted Line */
+    .month-cell {
+      height: 100%;
+      min-height: 38px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      cursor: pointer;
+      user-select: none;
+      position: relative;
+      transition: background-color 0.15s ease;
+    }
+
+    .month-cell:hover {
+      background-color: #f8fafc;
+    }
+
+    /* Status Mark inside Month Cell */
+    .status-mark {
+      font-size: 13px;
+      font-weight: 900;
+      line-height: 1;
+      min-height: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Dotted Line for writing receipt no./date by hand with pen */
+    .handwrite-line {
+      width: 90%;
+      border-bottom: 1px dashed #94a3b8;
+      height: 8px;
+      margin-top: 1px;
+    }
+
+    /* Status Styles in Interactive Mode */
+    .status-paid {
+      background-color: #ecfdf5;
+      color: #047857;
+    }
+    .status-paid .status-mark {
+      color: #059669;
+    }
+
+    .status-pending {
+      background-color: #fffbeb;
+      color: #b45309;
+    }
+    .status-pending .status-mark {
+      color: #d97706;
+    }
+
+    .status-concession {
+      background-color: #eff6ff;
+      color: #1d4ed8;
+    }
+    .status-concession .status-mark {
+      color: #2563eb;
+    }
+
+    .status-due {
+      background-color: #fef2f2;
+      color: #b91c1c;
+    }
+    .status-due .status-mark {
+      color: #dc2626;
+    }
+
+    /* Handwriting Spacing Presets */
+    body[data-spacing="compact"] {
+      --cell-py: 4px;
+      --cell-px: 3px;
+      --paper-font-size: 10.5px;
+    }
+
+    body[data-spacing="spacious"] {
+      --cell-py: 8px;
+      --cell-px: 5px;
+      --paper-font-size: 11.5px;
+    }
+
+    body[data-spacing="jumbo"] {
+      --cell-py: 13px;
+      --cell-px: 6px;
+      --paper-font-size: 12.5px;
+    }
+
+    /* Print Formatting */
+    @page {
+      size: A4 landscape;
+      margin: 6mm 8mm 6mm 8mm;
+    }
+
+    @media print {
+      body {
+        background: #ffffff !important;
+        color: #000000 !important;
+        padding: 0 !important;
+      }
+
+      .no-print {
+        display: none !important;
+      }
+
+      .print-paper {
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+        box-shadow: none !important;
+        border: none !important;
+        min-height: auto !important;
+      }
+
+      .fee-table {
+        border: 1.5px solid #000000 !important;
+      }
+
+      .fee-table th,
+      .fee-table td {
+        border: 1px solid #000000 !important;
+      }
+
+      .fee-table th {
+        background-color: #e2e8f0 !important;
+      }
+
+      /* In print, high-contrast status marks */
+      .status-paid .status-mark {
+        color: #047857 !important;
+      }
+
+      .status-pending .status-mark {
+        color: #b45309 !important;
+      }
+
+      .status-concession .status-mark {
+        color: #1d4ed8 !important;
+      }
+
+      .status-due .status-mark {
+        color: #b91c1c !important;
+      }
+
+      .handwrite-line {
+        border-bottom: 1px dashed #000000 !important;
+      }
+
+      /* When printing blank register, empty out */
+      body.print-blank-mode .status-mark {
+        display: none !important;
+      }
+
+      body.print-blank-mode .handwrite-line {
+        border-bottom: 1px dashed #666666 !important;
+      }
+    }
+  </style>
+</head>
+
+<body class="antialiased" data-spacing="spacious">
+
+  <!-- ==================== TOP CONTROL BAR (SCREEN ONLY) ==================== -->
+  <aside aria-label="Register Toolbar" class="no-print sticky top-0 z-50 bg-slate-900 border-b border-slate-700 text-white shadow-2xl px-3 py-2.5">
+    <div class="max-w-[1700px] mx-auto flex flex-wrap items-center justify-between gap-3">
+
+      <!-- Left Branding & Cloud Status -->
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-lg bg-pac-700 flex items-center justify-center text-white shadow">
+          <i class="fa-solid fa-receipt text-lg"></i>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-black tracking-wider text-pac-400 uppercase">PMS 25TH BN PAC RAEBARELI</span>
+            <!-- Live Cloud Status Pill -->
+            <div id="cloudStatusBadge" class="flex items-center gap-1.5 text-[10px] bg-slate-800 text-amber-300 font-mono px-2 py-0.5 rounded border border-slate-700">
+              <span id="cloudDot" class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+              <span id="cloudStatusText">फायरस्टोर: कनेक्ट हो रहा है...</span>
+            </div>
+          </div>
+          <h1 class="text-sm font-extrabold text-white flex items-center gap-2">
+            मासिक छात्र शुल्क पंजिका (Monthly Student Fee Register)
+          </h1>
+        </div>
+      </div>
+
+      <!-- Center Controls: Filters & Toggles -->
+      <div class="flex flex-wrap items-center gap-2">
+
+        <!-- Manual Firestore Sync Button -->
+        <button id="btnSyncFirestore" onclick="window.syncWithFirestore(true)"
+          class="bg-pac-700 hover:bg-pac-600 text-white border border-pac-500/80 text-xs font-bold px-2.5 py-1 rounded-lg flex items-center gap-1.5 transition cursor-pointer shadow-sm"
+          title="फायरस्टोर से नवीनतम छात्र व फीस डेटा लोड करें">
+          <i class="fa-solid fa-cloud-arrow-down" id="syncIcon"></i>
+          <span>सिंक (Firestore)</span>
+        </button>
+
+        <!-- Month Cycle Toggle (Jan-Dec vs Apr-Mar) -->
+        <div class="bg-slate-800/90 rounded-lg p-0.5 border border-slate-700 flex items-center text-xs">
+          <button id="btnCycleJanDec" onclick="setMonthCycle('jan_dec')"
+            class="px-2.5 py-1 rounded font-bold transition flex items-center gap-1.5 bg-pac-600 text-white shadow-sm">
+            <i class="fa-regular fa-calendar-days text-xs"></i>
+            <span>जनवरी–दिसम्बर</span>
+          </button>
+          <button id="btnCycleAprMar" onclick="setMonthCycle('apr_mar')"
+            class="px-2.5 py-1 rounded font-semibold text-slate-300 hover:text-white transition flex items-center gap-1.5">
+            <i class="fa-solid fa-graduation-cap text-xs"></i>
+            <span>अप्रैल–मार्च (सत्र)</span>
+          </button>
+        </div>
+
+        <!-- Handwriting Spacing Dropdown -->
+        <div class="flex items-center bg-slate-800 border border-slate-700 rounded-lg px-2 py-1 text-xs">
+          <label class="text-[11px] text-slate-300 mr-1.5 flex items-center gap-1">
+            <i class="fa-solid fa-pen-nib text-amber-400"></i>
+            <span>स्पेसिंग:</span>
+          </label>
+          <select id="selectSpacing" onchange="changeSpacing(this.value)"
+            class="bg-slate-900 text-white border-0 text-xs font-semibold rounded focus:ring-1 focus:ring-pac-500 py-0.5 px-1 cursor-pointer">
+            <option value="compact">संक्षिप्त (Compact - 36px)</option>
+            <option value="spacious" selected>हस्तलेखन (Spacious - 48px)</option>
+            <option value="jumbo">जम्बो (Jumbo - 58px)</option>
+          </select>
+        </div>
+
+        <!-- Class Filter (Dynamically Populated from Firestore) -->
+        <div class="flex items-center bg-slate-800 border border-slate-700 rounded-lg px-2 py-1 text-xs">
+          <label class="text-[11px] text-slate-300 mr-1.5 flex items-center gap-1">
+            <i class="fa-solid fa-school text-sky-400"></i>
+            <span>कक्षा:</span>
+          </label>
+          <select id="filterClass" onchange="applyFilters()"
+            class="bg-slate-900 text-white border-0 text-xs font-semibold rounded focus:ring-1 focus:ring-pac-500 py-0.5 px-1 cursor-pointer min-w-[110px]">
+            <option value="all">सभी कक्षाएं (All)</option>
+            <option value="KG-1">KG-1 (LKG)</option>
+            <option value="KG-2">KG-2 (UKG)</option>
+            <option value="1st">1st (कक्षा 1)</option>
+            <option value="2nd">2nd (कक्षा 2)</option>
+            <option value="3rd">3rd (कक्षा 3)</option>
+            <option value="4th">4th (कक्षा 4)</option>
+            <option value="5th" selected>5th (कक्षा 5)</option>
+            <option value="6th">6th (कक्षा 6)</option>
+            <option value="7th">7th (कक्षा 7)</option>
+            <option value="8th">8th (कक्षा 8)</option>
+          </select>
+        </div>
+
+        <!-- Section Filter -->
+        <select id="filterSection" onchange="applyFilters()"
+          class="bg-slate-800 border border-slate-700 text-white text-xs font-semibold rounded-lg px-2 py-1 focus:ring-1 focus:ring-pac-500 cursor-pointer">
+          <option value="all">वर्ग (सभी)</option>
+          <option value="A" selected>वर्ग A</option>
+          <option value="B">वर्ग B</option>
+        </select>
+
+        <!-- Status Filter -->
+        <select id="filterStatus" onchange="applyFilters()"
+          class="bg-slate-800 border border-slate-700 text-white text-xs font-semibold rounded-lg px-2 py-1 focus:ring-1 focus:ring-pac-500 cursor-pointer">
+          <option value="all">स्थिति (सभी)</option>
+          <option value="paid">पूर्ण भुगतान (Paid)</option>
+          <option value="partial">आंशिक / लंबित (Partial)</option>
+          <option value="due">बकाया / Defaulter</option>
+        </select>
+
+        <!-- Live Search Input -->
+        <div class="relative">
+          <input type="text" id="searchInput" oninput="applyFilters()"
+            placeholder="छात्र/पिता/एसआर खोजें..."
+            class="bg-slate-800 border border-slate-700 rounded-lg pl-7 pr-2.5 py-1 text-xs text-white placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-pac-500 w-44" />
+          <i class="fa-solid fa-magnifying-glass text-slate-400 text-xs absolute left-2 top-2"></i>
+        </div>
+      </div>
+
+      <!-- Right Action Buttons -->
+      <div class="flex items-center gap-2">
+
+        <!-- Add Student Modal Trigger -->
+        <button onclick="openAddStudentModal()"
+          class="bg-pac-600 hover:bg-pac-700 text-white text-xs font-bold px-3 py-1.5 rounded-lg flex items-center gap-1.5 shadow transition cursor-pointer">
+          <i class="fa-solid fa-user-plus"></i>
+          <span>नया छात्र</span>
+        </button>
+
+        <!-- Blank Register Print Toggle -->
+        <button id="btnBlankToggle" onclick="toggleBlankPrintMode()"
+          class="bg-slate-800 hover:bg-slate-700 text-amber-300 border border-slate-700 text-xs font-bold px-2.5 py-1.5 rounded-lg flex items-center gap-1.5 transition cursor-pointer"
+          title="कोरी लाइनदार शीट प्रिंट करें ताकि पेन से हाथ से भरा जा सके">
+          <i class="fa-regular fa-square"></i>
+          <span id="blankToggleText">कोरी शीट मोड</span>
+        </button>
+
+        <!-- Export Dropdown / Menu -->
+        <div class="relative group">
+          <button class="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-bold px-2.5 py-1.5 rounded-lg flex items-center gap-1 cursor-pointer">
+            <i class="fa-solid fa-file-export"></i>
+            <span>डेटा</span>
+            <i class="fa-solid fa-chevron-down text-[10px]"></i>
+          </button>
+          <div class="hidden group-hover:block absolute right-0 top-full pt-1 z-50 w-48 shadow-xl">
+            <div class="bg-slate-900 border border-slate-700 rounded-lg p-1.5 text-xs space-y-1">
+              <button onclick="exportToWordDoc()" class="w-full text-left px-2 py-1.5 hover:bg-slate-800 rounded flex items-center gap-2 text-blue-300 hover:text-white">
+                <i class="fa-solid fa-file-word text-blue-400"></i> Word (.doc) निर्यात
+              </button>
+              <button onclick="exportToCSV()" class="w-full text-left px-2 py-1.5 hover:bg-slate-800 rounded flex items-center gap-2 text-slate-200">
+                <i class="fa-solid fa-file-excel text-emerald-400"></i> Excel / CSV निर्यात
+              </button>
+              <button onclick="exportJSONBackup()" class="w-full text-left px-2 py-1.5 hover:bg-slate-800 rounded flex items-center gap-2 text-slate-200">
+                <i class="fa-solid fa-download text-sky-400"></i> JSON बैकअप डाउनलोड
+              </button>
+              <label class="w-full text-left px-2 py-1.5 hover:bg-slate-800 rounded flex items-center gap-2 text-slate-200 cursor-pointer">
+                <i class="fa-solid fa-upload text-amber-400"></i> JSON बैकअप लोड
+                <input type="file" id="jsonFileInput" onchange="importJSONBackup(event)" class="hidden" accept=".json" />
+              </label>
+              <div class="border-t border-slate-700 my-1"></div>
+              <button onclick="resetToSampleData()" class="w-full text-left px-2 py-1.5 hover:bg-slate-800 rounded flex items-center gap-2 text-amber-300">
+                <i class="fa-solid fa-rotate-left"></i> PMS सैंपल डेटा लोड
+              </button>
+              <button onclick="clearAllData()" class="w-full text-left px-2 py-1.5 hover:bg-rose-950/80 rounded flex items-center gap-2 text-rose-400">
+                <i class="fa-solid fa-trash-can"></i> सभी रिकॉर्ड साफ़ करें
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Documentation Link -->
+        <a href="fee_register_documentation.md" target="_blank"
+          class="bg-slate-800 hover:bg-slate-700 text-sky-300 border border-slate-700 text-xs font-bold px-2 py-1.5 rounded-lg flex items-center gap-1 transition"
+          title="पंजिका उपयोगकर्ता मार्गदर्शिका पढ़ें">
+          <i class="fa-solid fa-book"></i>
+        </a>
+
+        <!-- Print Button (Primary) -->
+        <button onclick="window.print()"
+          class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-3.5 py-1.5 rounded-lg flex items-center gap-1.5 shadow-lg transition cursor-pointer">
+          <i class="fa-solid fa-print"></i>
+          <span>प्रिंट (A4 Landscape)</span>
+        </button>
+
+      </div>
+    </div>
+  </aside>
+
+  <!-- ==================== DASHBOARD METRICS SUMMARY BAR (SCREEN ONLY) ==================== -->
+  <section class="no-print bg-slate-950 border-b border-slate-800 py-2.5 px-4">
+    <div class="max-w-[1700px] mx-auto flex flex-wrap items-center justify-between gap-4 text-xs">
+
+      <!-- Stats Counters -->
+      <div class="flex flex-wrap items-center gap-5">
+        <div class="flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-sky-400"></span>
+          <span class="text-slate-400">कक्षा में छात्र:</span>
+          <span id="statTotalStudents" class="font-extrabold text-white text-sm">0</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
+          <span class="text-slate-400">मासिक शुल्क दर:</span>
+          <span class="font-bold text-white font-mono">₹<span id="statFeeRate">800</span>/माह</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-teal-400"></span>
+          <span class="text-slate-400">सत्र कुल प्राप्त शुल्क:</span>
+          <span id="statTotalCollected" class="font-extrabold text-emerald-400 font-mono text-sm">₹0.00</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-rose-400"></span>
+          <span class="text-slate-400">अवशेष / बकाया शुल्क:</span>
+          <span id="statTotalDue" class="font-extrabold text-rose-400 font-mono text-sm">₹0.00</span>
+        </div>
+      </div>
+
+      <!-- Quick Legend & Instructions -->
+      <div class="flex items-center gap-3 text-[11px] text-slate-300 bg-slate-900/80 px-3 py-1 rounded-lg border border-slate-800">
+        <span class="text-slate-400 font-semibold">क्लिक संकेत:</span>
+        <span class="flex items-center gap-1"><span class="w-3.5 h-3.5 bg-emerald-600 rounded text-[9px] text-white flex items-center justify-center font-bold">✓</span> जमा</span>
+        <span class="flex items-center gap-1"><span class="w-3.5 h-3.5 bg-amber-500 rounded text-[9px] text-white flex items-center justify-center font-bold">⏳</span> लंबित</span>
+        <span class="flex items-center gap-1"><span class="w-3.5 h-3.5 bg-blue-500 rounded text-[9px] text-white flex items-center justify-center font-bold">★</span> छूट</span>
+        <span class="flex items-center gap-1"><span class="w-3.5 h-3.5 bg-rose-500 rounded text-[9px] text-white flex items-center justify-center font-bold">✗</span> बकाया</span>
+        <span class="flex items-center gap-1 text-slate-400"><i class="fa-solid fa-pencil text-[10px]"></i> डबल क्लिक: रसीद सं०</span>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== MAIN A4 PRINT PAPER CONTAINER ==================== -->
+  <main class="py-4 px-2">
+    <div id="printSheet" class="print-paper">
+
+      <!-- ==================== 1. INSTITUTIONAL HEADER ==================== -->
+      <div>
+        <div class="text-center border-b-2 border-black pb-2 mb-2">
+          <div class="flex items-center justify-between">
+
+            <!-- Left Seal & Affiliation -->
+            <div class="text-left w-64 leading-tight">
+              <span class="text-[10px] uppercase font-bold text-black block tracking-wider">
+                उत्तर प्रदेश पुलिस कल्याण संस्थान
+              </span>
+              <span class="text-[9.5px] text-black block">
+                सीबीएसई सम्बद्धता सं०: 2130382
+              </span>
+              <span class="text-[9.5px] text-black font-semibold">
+                विद्यालय कोड: 70845
+              </span>
+            </div>
+
+            <!-- Center Crest & School Name -->
+            <div class="text-center flex-1">
+              <h1 class="text-lg md:text-xl font-black font-serif text-black uppercase tracking-wide">
+                कार्यालय पुलिस मॉडर्न स्कूल, 25वीं वाहिनी पीएसी, रायबरेली
+              </h1>
+              <h2 class="text-xs md:text-sm font-extrabold text-black tracking-normal mt-0.5">
+                मासिक छात्र शुल्क पंजिका (STUDENT MONTHLY FEE REGISTER)
+              </h2>
+            </div>
+
+            <!-- Right Meta: Session & Date -->
+            <div class="text-right w-64 leading-tight">
+              <span class="text-xs font-bold text-black block">
+                सत्र: <strong class="font-mono text-sm" id="dispSession">2026–2027</strong>
+              </span>
+              <span class="text-[10px] text-black block">
+                चक्र: <strong id="dispCycleText">जनवरी से दिसम्बर</strong>
+              </span>
+              <span class="text-[9.5px] text-black italic">
+                मुद्रण दिनांक: <span id="dispPrintDate">19/11/2026</span>
+              </span>
+            </div>
+
+          </div>
+
+          <!-- Sub-bar: Class, Section, Teacher Name, Fee Rate -->
+          <div class="flex items-center justify-between mt-2 pt-1.5 border-t border-black/40 text-[11px] font-bold text-black">
+            <div>
+              <span>कक्षा व वर्ग: </span>
+              <span id="dispClassSection" class="border-b border-black px-1.5 font-extrabold text-sm">5th - A</span>
+            </div>
+            <div>
+              <span>मासिक शुल्क दर: </span>
+              <span class="font-mono border-b border-black px-1.5">₹<span id="dispFeeRate">800</span>/- प्रति माह</span>
+            </div>
+            <div>
+              <span>कक्षाध्यापक का नाम: </span>
+              <span class="border-b border-black px-2 inline-block min-w-[140px]" contenteditable="true">श्रीमान / श्रीमती ______________</span>
+            </div>
+            <div>
+              <span>कुल छात्र संख्या: </span>
+              <span id="dispStudentCount" class="font-mono border-b border-black px-1.5 text-sm">0</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==================== 2. MASTER FEE REGISTER TABLE ==================== -->
+        <div class="overflow-x-auto">
+          <table id="mainFeeTable" class="fee-table">
+            <thead>
+              <tr id="tableHeaderRow">
+                <!-- Dynamically generated headers by JS -->
+              </tr>
+            </thead>
+            <tbody id="tableBody">
+              <!-- Dynamically populated student rows -->
+            </tbody>
+            <tfoot id="tableFoot">
+              <!-- Month-wise tally row generated by JS -->
+            </tfoot>
+          </table>
+        </div>
+      </div>
+
+      <!-- ==================== 3. THREE-TIER AUTHENTIC SIGNATURE FOOTER ==================== -->
+      <div class="mt-4 pt-3 border-t-2 border-black">
+        <div class="grid grid-cols-3 gap-6 text-center text-black">
+
+          <!-- 1. Class Teacher -->
+          <div class="space-y-1">
+            <div class="h-10"></div>
+            <div class="border-t border-black w-48 mx-auto font-bold text-[11.5px]">
+              हस्ताक्षर कक्षाध्यापक
+            </div>
+            <div class="text-[10px] text-slate-700">
+              (नाम व पदनाम)
+            </div>
+          </div>
+
+          <!-- 2. Fee Incharge / Accountant -->
+          <div class="space-y-1">
+            <div class="h-10"></div>
+            <div class="border-t border-black w-48 mx-auto font-bold text-[11.5px]">
+              हस्ताक्षर शुल्क प्रभारी / लिपिक
+            </div>
+            <div class="text-[10px] text-slate-700">
+              (लेखा व कैश मिलानकर्ता)
+            </div>
+          </div>
+
+          <!-- 3. Incharge Principal -->
+          <div class="space-y-1">
+            <div class="h-10"></div>
+            <div class="border-t border-black w-52 mx-auto font-extrabold text-[12px]">
+              प्रभारी प्रधानाचार्या / प्रधानाचार्य
+            </div>
+            <div class="text-[10px] text-slate-700">
+              पुलिस मॉडर्न स्कूल, 25वीं वाहिनी पीएसी, रायबरेली
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Micro Footer Note -->
+        <div class="flex items-center justify-between text-[9px] text-slate-600 mt-3 pt-1 border-t border-slate-300">
+          <span>* प्रत्येक माह के खाने में पेन से टिक (✓) लगाएं अथवा रसीद संख्या व भुगतान दिनांक दर्ज करें।</span>
+          <span>POLICE MODERN SCHOOL 25TH BN PAC RAEBARELI · OFFICIAL FEE REGISTER SHEET</span>
+          <span>पृष्ठ संख्या: 1 / 1</span>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ==================== ADD / EDIT STUDENT MODAL ==================== -->
+  <div id="studentModal" class="no-print hidden fixed inset-0 z-[100] bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-700 rounded-2xl w-full max-w-lg shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-150">
+      
+      <!-- Modal Header -->
+      <div class="bg-slate-800 px-5 py-3.5 border-b border-slate-700 flex items-center justify-between">
+        <h3 id="modalTitle" class="text-sm font-extrabold text-white flex items-center gap-2">
+          <i class="fa-solid fa-user-plus text-pac-400"></i>
+          <span>नया छात्र विवरण दर्ज करें</span>
+        </h3>
+        <button onclick="closeStudentModal()" class="text-slate-400 hover:text-white text-lg p-1">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- Modal Body -->
+      <form id="studentForm" onsubmit="saveStudentForm(event)" class="p-5 space-y-3.5 text-xs text-slate-200">
+        <input type="hidden" id="modalStudentId" value="" />
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-semibold mb-1 text-slate-300">अनुक्रमांक / Roll No. *</label>
+            <input type="number" id="inRollNo" required min="1" max="500"
+              class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-white font-mono focus:ring-1 focus:ring-pac-500 focus:outline-none" />
+          </div>
+          <div>
+            <label class="block font-semibold mb-1 text-slate-300">एस.आर. नं० / PEN *</label>
+            <input type="text" id="inSrNo" required placeholder="जैसे: SR-1842 या PEN"
+              class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-white font-mono focus:ring-1 focus:ring-pac-500 focus:outline-none" />
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-semibold mb-1 text-slate-300">छात्र / छात्रा का नाम *</label>
+          <input type="text" id="inName" required placeholder="जैसे: आदित्य कुमार / Aarav"
+            class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-white focus:ring-1 focus:ring-pac-500 focus:outline-none" />
+        </div>
+
+        <div>
+          <label class="block font-semibold mb-1 text-slate-300">पिता का नाम *</label>
+          <input type="text" id="inFatherName" required placeholder="जैसे: श्री देवेन्द्र कुमार"
+            class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-white focus:ring-1 focus:ring-pac-500 focus:outline-none" />
+        </div>
+
+        <div class="grid grid-cols-3 gap-3">
+          <div>
+            <label class="block font-semibold mb-1 text-slate-300">कक्षा *</label>
+            <select id="inClass" required
+              class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2 py-1.5 text-white focus:ring-1 focus:ring-pac-500 focus:outline-none">
+              <option value="KG-1">KG-1 (LKG)</option>
+              <option value="KG-2">KG-2 (UKG)</option>
+              <option value="1st">1st (कक्षा 1)</option>
+              <option value="2nd">2nd (कक्षा 2)</option>
+              <option value="3rd">3rd (कक्षा 3)</option>
+              <option value="4th">4th (कक्षा 4)</option>
+              <option value="5th" selected>5th (कक्षा 5)</option>
+              <option value="6th">6th (कक्षा 6)</option>
+              <option value="7th">7th (कक्षा 7)</option>
+              <option value="8th">8th (कक्षा 8)</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-semibold mb-1 text-slate-300">वर्ग (Sec) *</label>
+            <select id="inSection" required
+              class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2 py-1.5 text-white focus:ring-1 focus:ring-pac-500 focus:outline-none">
+              <option value="A" selected>A</option>
+              <option value="B">B</option>
+              <option value="C">C</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-semibold mb-1 text-slate-300">प्रवेश तिथि</label>
+            <input type="text" id="inAdmDate" placeholder="05/04/2024"
+              class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2 py-1.5 text-white font-mono focus:ring-1 focus:ring-pac-500 focus:outline-none" />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-semibold mb-1 text-slate-300">मासिक शुल्क दर (₹)</label>
+            <input type="number" id="inFeeRate" value="800" min="0" step="50"
+              class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-white font-mono focus:ring-1 focus:ring-pac-500 focus:outline-none" />
+          </div>
+          <div>
+            <label class="block font-semibold mb-1 text-slate-300">कैफियत / श्रेणी</label>
+            <input type="text" id="inRemarks" placeholder="जैसे: पीएसी वार्ड / सामान्य"
+              class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-white focus:ring-1 focus:ring-pac-500 focus:outline-none" />
+          </div>
+        </div>
+
+        <!-- Modal Footer -->
+        <div class="flex items-center justify-end gap-2 pt-3 border-t border-slate-800">
+          <button type="button" onclick="closeStudentModal()"
+            class="px-3.5 py-1.5 rounded-lg border border-slate-700 bg-slate-800 hover:bg-slate-700 text-slate-300 transition cursor-pointer">
+            रद्द करें
+          </button>
+          <button type="submit"
+            class="px-4 py-1.5 rounded-lg bg-pac-600 hover:bg-pac-700 text-white font-bold transition shadow cursor-pointer">
+            सुरक्षित करें
+          </button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+
+  <!-- ==================== PAYMENT DETAILS POPUP MODAL ==================== -->
+  <div id="paymentDetailModal" class="no-print hidden fixed inset-0 z-[100] bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-700 rounded-2xl w-full max-w-sm shadow-2xl p-4 text-xs text-slate-200">
+      <div class="flex items-center justify-between border-b border-slate-700 pb-2 mb-3">
+        <h4 class="font-extrabold text-white text-sm flex items-center gap-1.5">
+          <i class="fa-solid fa-receipt text-emerald-400"></i>
+          <span>माह शुल्क विवरण संपादन</span>
+        </h4>
+        <button onclick="closePaymentDetailModal()" class="text-slate-400 hover:text-white">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="space-y-3">
+        <div class="bg-slate-950 p-2 rounded-lg border border-slate-800">
+          <div class="font-bold text-white" id="payModalStudentName">छात्र नाम</div>
+          <div class="text-[11px] text-slate-400" id="payModalMonthLabel">महीना: जनवरी</div>
+        </div>
+
+        <div>
+          <label class="block font-semibold mb-1 text-slate-300">शुल्क स्थिति (Status)</label>
+          <select id="payModalStatus" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-white">
+            <option value="paid">पूर्ण भुगतान (Paid - ✓)</option>
+            <option value="pending">आंशिक / लंबित (Pending - ⏳)</option>
+            <option value="concession">शुल्क छूट / स्टाफ (Concession - ★)</option>
+            <option value="due">बकाया (Defaulter - ✗)</option>
+            <option value="unmarked">रिक्त / unmarked (—)</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block font-semibold mb-1 text-slate-300">रसीद संख्या (Receipt No.)</label>
+          <input type="text" id="payModalReceiptNo" placeholder="जैसे: R-4812"
+            class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-white font-mono" />
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block font-semibold mb-1 text-slate-300">भुगतान दिनांक</label>
+            <input type="text" id="payModalDate" placeholder="12/09/2026"
+              class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2 py-1.5 text-white font-mono" />
+          </div>
+          <div>
+            <label class="block font-semibold mb-1 text-slate-300">जमा धनराशि (₹)</label>
+            <input type="number" id="payModalAmount" placeholder="800"
+              class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2 py-1.5 text-white font-mono" />
+          </div>
+        </div>
+
+        <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-800">
+          <button type="button" onclick="closePaymentDetailModal()" class="px-3 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300">रद्द</button>
+          <button type="button" onclick="savePaymentDetail()" class="px-3.5 py-1 rounded bg-emerald-600 hover:bg-emerald-700 text-white font-bold">सुरक्षित करें</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== FIREBASE MODULAR SDK & CONTROLLER SCRIPT ==================== -->
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js';
+    import { initializeFirestore, collection, getDocs, doc, setDoc } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
+
+    // ===== OFFICIAL FIREBASE CONFIG (Found from index.html / js/script.js) =====
+    const firebaseConfig = {
+      apiKey: "AIzaSyDsVKuptdW4jRWQ5rLX_h_fn53xuFoYVMI",
+      authDomain: "abcreport-27dea.firebaseapp.com",
+      projectId: "abcreport-27dea",
+      storageBucket: "abcreport-27dea.firebasestorage.app",
+      messagingSenderId: "1422972209",
+      appId: "1:1422972209:web:82fbc39400d75566d8cc10"
+    };
+
+    // Standard Fee Chart per Class
+    const FEE_CHART = {
+      'KG-I': 600, 'KG-II': 600, 'LKG': 600, 'UKG': 600, 'KG-1': 600, 'KG-2': 600,
+      '1st': 700, '2nd': 700, '3rd': 800, '4th': 800, '5th': 800,
+      '6th': 1000, '7th': 1000, '8th': 1000
+    };
+
+    let app = null, db = null, auth = null;
+    let isFirestoreConnected = false;
+
+    try {
+      app = initializeApp(firebaseConfig);
+      db = initializeFirestore(app, { experimentalAutoDetectLongPolling: true });
+      auth = getAuth(app);
+    } catch (e) {
+      console.warn("Firebase initialization notice:", e);
+    }
+
+    // Auto Normalize Class Name
+    function normalizeClassName(cls) {
+      if (!cls || typeof cls !== 'string') return cls || '';
+      const t = cls.trim();
+      if (/^(u\.?k\.?g\.?|kg-?2|kg-?ii|kg\s*2)/i.test(t) || /^kg-?2\b/i.test(t) || /^kg-?ii\b/i.test(t)) return 'KG-2';
+      if (/^(l\.?k\.?g\.?|kg-?1|kg-?i(?!i)|kg\s*1)/i.test(t) || /^kg-?1\b/i.test(t) || /^kg-?i(?!i)\b/i.test(t)) return 'KG-1';
+      if (/^(1|1st|first|कक्षा 1|class 1)$/i.test(t)) return '1st';
+      if (/^(2|2nd|second|कक्षा 2|class 2)$/i.test(t)) return '2nd';
+      if (/^(3|3rd|third|कक्षा 3|class 3)$/i.test(t)) return '3rd';
+      if (/^(4|4th|fourth|कक्षा 4|class 4)$/i.test(t)) return '4th';
+      if (/^(5|5th|fifth|कक्षा 5|class 5)$/i.test(t)) return '5th';
+      if (/^(6|6th|sixth|कक्षा 6|class 6)$/i.test(t)) return '6th';
+      if (/^(7|7th|seventh|कक्षा 7|class 7)$/i.test(t)) return '7th';
+      if (/^(8|8th|eighth|कक्षा 8|class 8)$/i.test(t)) return '8th';
+      return t;
+    }
+
+    // Month Definitions
+    const MONTHS_JAN_DEC = [
+      { key: "jan", name: "जनवरी", eng: "January", short: "जन" },
+      { key: "feb", name: "फरवरी", eng: "February", short: "फर" },
+      { key: "mar", name: "मार्च", eng: "March", short: "मार्च" },
+      { key: "apr", name: "अप्रैल", eng: "April", short: "अप्रै" },
+      { key: "may", name: "मई", eng: "May", short: "मई" },
+      { key: "jun", name: "जून", eng: "June", short: "जून" },
+      { key: "jul", name: "जुलाई", eng: "July", short: "जुला" },
+      { key: "aug", name: "अगस्त", eng: "August", short: "अग" },
+      { key: "sep", name: "सितम्बर", eng: "September", short: "सित" },
+      { key: "oct", name: "अक्टूबर", eng: "October", short: "अक्टू" },
+      { key: "nov", name: "नवम्बर", eng: "November", short: "नव" },
+      { key: "dec", name: "दिसम्बर", eng: "December", short: "दिस" }
+    ];
+
+    const MONTHS_APR_MAR = [
+      { key: "apr", name: "अप्रैल", eng: "April", short: "अप्रै" },
+      { key: "may", name: "मई", eng: "May", short: "मई" },
+      { key: "jun", name: "जून", eng: "June", short: "जून" },
+      { key: "jul", name: "जुलाई", eng: "July", short: "जुला" },
+      { key: "aug", name: "अगस्त", eng: "August", short: "अग" },
+      { key: "sep", name: "सितम्बर", eng: "September", short: "सित" },
+      { key: "oct", name: "अक्टूबर", eng: "October", short: "अक्टू" },
+      { key: "nov", name: "नवम्बर", eng: "November", short: "नव" },
+      { key: "dec", name: "दिसम्बर", eng: "December", short: "दिस" },
+      { key: "jan", name: "जनवरी", eng: "January", short: "जन" },
+      { key: "feb", name: "फरवरी", eng: "February", short: "फर" },
+      { key: "mar", name: "मार्च", eng: "March", short: "मार्च" }
+    ];
+
+    const MONTH_NAME_MAP = {
+      'january': 'jan', 'jan': 'jan',
+      'february': 'feb', 'feb': 'feb',
+      'march': 'mar', 'mar': 'mar',
+      'april': 'apr', 'apr': 'apr',
+      'may': 'may',
+      'june': 'jun', 'jun': 'jun',
+      'july': 'jul', 'jul': 'jul',
+      'august': 'aug', 'aug': 'aug',
+      'september': 'sep', 'sep': 'sep',
+      'october': 'oct', 'oct': 'oct',
+      'november': 'nov', 'nov': 'nov',
+      'december': 'dec', 'dec': 'dec'
+    };
+
+    const STATUS_FLOW = {
+      "unmarked": "paid",
+      "paid": "pending",
+      "pending": "concession",
+      "concession": "due",
+      "due": "unmarked"
+    };
+
+    const STATUS_ICONS = {
+      "paid": "✓",
+      "pending": "⏳",
+      "concession": "★",
+      "due": "✗",
+      "unmarked": ""
+    };
+
+    // Fallback Sample Students
+    const DEFAULT_STUDENTS = [
+      { id: "pms_01", roll: 1, srNo: "SR-1801", name: "आदित्य कुमार", father: "श्री देवेन्द्र कुमार (मुख्य आरक्षी)", class: "5th", sec: "A", admDate: "05/04/2024", feeRate: 800, remarks: "पीएसी वार्ड", payments: { jan: { s: "paid", r: "R-4801" }, feb: { s: "paid", r: "R-4822" }, mar: { s: "paid", r: "R-4845" }, apr: { s: "paid" }, may: { s: "paid" }, jun: { s: "paid" }, jul: { s: "paid" }, aug: { s: "paid" }, sep: { s: "paid" } } },
+      { id: "pms_02", roll: 2, srNo: "SR-1802", name: "आर्यन पासवान", father: "श्री रामपाल पासवान (आरक्षी)", class: "5th", sec: "A", admDate: "08/04/2024", feeRate: 800, remarks: "पीएसी वार्ड", payments: { jan: { s: "paid", r: "R-4802" }, feb: { s: "paid" }, mar: { s: "paid" }, apr: { s: "paid" }, may: { s: "paid" }, jun: { s: "paid" }, jul: { s: "paid" }, aug: { s: "paid" }, sep: { s: "paid" } } },
+      { id: "pms_03", roll: 3, srNo: "SR-1805", name: "अंशिका मौर्या", father: "श्री रमेश मौर्या (नागरिक)", class: "5th", sec: "A", admDate: "10/04/2024", feeRate: 800, remarks: "सामान्य", payments: { jan: { s: "paid" }, feb: { s: "paid" }, mar: { s: "paid" }, apr: { s: "paid" }, may: { s: "paid" }, jun: { s: "paid" }, jul: { s: "paid" }, aug: { s: "paid" }, sep: { s: "pending" } } },
+      { id: "pms_04", roll: 4, srNo: "SR-1809", name: "अनुष्का वर्मा", father: "श्री सतीश वर्मा (उप निरीक्षक)", class: "5th", sec: "A", admDate: "12/04/2024", feeRate: 800, remarks: "पीएसी वार्ड", payments: { jan: { s: "paid" }, feb: { s: "paid" }, mar: { s: "paid" }, apr: { s: "paid" }, may: { s: "paid" }, jun: { s: "paid" }, jul: { s: "paid" }, aug: { s: "paid" }, sep: { s: "paid" } } },
+      { id: "pms_05", roll: 5, srNo: "SR-1811", name: "अमरेन्द्र सिंह", father: "श्री जितेन्द्र सिंह (मुख्य आरक्षी)", class: "5th", sec: "A", admDate: "15/04/2024", feeRate: 800, remarks: "पीएसी वार्ड", payments: { jan: { s: "paid" }, feb: { s: "paid" }, mar: { s: "paid" }, apr: { s: "paid" }, may: { s: "paid" }, jun: { s: "paid" }, jul: { s: "paid" }, aug: { s: "paid" }, sep: { s: "paid" } } },
+      { id: "pms_06", roll: 6, srNo: "SR-1815", name: "आयुषी तिवारी", father: "श्री विनोद तिवारी (व्यापारी)", class: "5th", sec: "A", admDate: "16/04/2024", feeRate: 800, remarks: "सामान्य", payments: { jan: { s: "paid" }, feb: { s: "paid" }, mar: { s: "paid" }, apr: { s: "paid" }, may: { s: "paid" }, jun: { s: "paid" }, jul: { s: "paid" }, aug: { s: "pending" }, sep: { s: "due" } } },
+      { id: "pms_07", roll: 7, srNo: "SR-1819", name: "आराध्या बाजपेयी", father: "श्री शशिकांत बाजपेयी (शिक्षक)", class: "5th", sec: "A", admDate: "18/04/2024", feeRate: 800, remarks: "स्टाफ वार्ड", payments: { jan: { s: "concession" }, feb: { s: "concession" }, mar: { s: "concession" }, apr: { s: "concession" }, may: { s: "concession" }, jun: { s: "concession" }, jul: { s: "concession" }, aug: { s: "concession" }, sep: { s: "concession" } } },
+      { id: "pms_08", roll: 8, srNo: "SR-1823", name: "कार्तिक यादव", father: "श्री सुरेन्द्र यादव (आरक्षी चालक)", class: "5th", sec: "A", admDate: "20/04/2024", feeRate: 800, remarks: "पीएसी वार्ड", payments: { jan: { s: "paid" }, feb: { s: "paid" }, mar: { s: "paid" }, apr: { s: "paid" }, may: { s: "paid" }, jun: { s: "paid" }, jul: { s: "paid" }, aug: { s: "paid" }, sep: { s: "paid" } } },
+      { id: "pms_09", roll: 9, srNo: "SR-1827", name: "कृष्णा गौतम", father: "श्री विजय गौतम (मुख्य आरक्षी)", class: "5th", sec: "A", admDate: "22/04/2024", feeRate: 800, remarks: "पीएसी वार्ड", payments: { jan: { s: "paid" }, feb: { s: "paid" }, mar: { s: "paid" }, apr: { s: "paid" }, may: { s: "paid" }, jun: { s: "paid" }, jul: { s: "paid" }, aug: { s: "paid" }, sep: { s: "paid" } } },
+      { id: "pms_10", roll: 10, srNo: "SR-1830", name: "खुशी पाल", father: "श्री रामसनेही पाल (आरक्षी)", class: "5th", sec: "A", admDate: "24/04/2024", feeRate: 800, remarks: "पीएसी वार्ड", payments: { jan: { s: "paid" }, feb: { s: "paid" }, mar: { s: "paid" }, apr: { s: "paid" }, may: { s: "paid" }, jun: { s: "paid" }, jul: { s: "paid" }, aug: { s: "paid" }, sep: { s: "paid" } } }
+    ];
+
+    // State Variables
+    let currentMonthCycle = "jan_dec"; // "jan_dec" or "apr_mar"
+    let studentsData = [];
+    let isBlankPrintMode = false;
+    let editingPaymentTarget = null; // { studentId, monthKey }
+    let firestoreRawStudents = [];
+    let firestoreRawFees = [];
+
+    // Initialize App
+    window.addEventListener('DOMContentLoaded', async () => {
+      loadSavedData();
+      updateClassFilterOptions();
+      renderRegister();
+      updateMetrics();
+      updatePrintDate();
+      
+      // Auto-trigger Firestore Sync
+      syncWithFirestore(false);
+    });
+
+    // Load Data from LocalStorage or Default
+    function loadSavedData() {
+      try {
+        const saved = localStorage.getItem('pms_fee_register_v1');
+        if (saved) {
+          studentsData = JSON.parse(saved);
+        } else {
+          studentsData = JSON.parse(JSON.stringify(DEFAULT_STUDENTS));
+          saveData();
+        }
+      } catch (e) {
+        console.error("Storage load error:", e);
+        studentsData = JSON.parse(JSON.stringify(DEFAULT_STUDENTS));
+      }
+    }
+
+    // Save Data to LocalStorage
+    function saveData() {
+      try {
+        localStorage.setItem('pms_fee_register_v1', JSON.stringify(studentsData));
+      } catch (e) {
+        console.error("Storage save error:", e);
+      }
+    }
+
+    // Update Cloud Status UI
+    function setCloudStatus(status, text) {
+      const dot = document.getElementById('cloudDot');
+      const txt = document.getElementById('cloudStatusText');
+      if (!dot || !txt) return;
+
+      if (status === 'connected') {
+        dot.className = "w-2 h-2 rounded-full bg-emerald-400";
+        txt.className = "text-emerald-300 font-semibold";
+        txt.innerText = text || "फायरस्टोर: कनेक्टेड";
+      } else if (status === 'loading') {
+        dot.className = "w-2 h-2 rounded-full bg-amber-400 animate-pulse";
+        txt.className = "text-amber-300 font-semibold";
+        txt.innerText = text || "सिंक हो रहा है...";
+      } else {
+        dot.className = "w-2 h-2 rounded-full bg-slate-400";
+        txt.className = "text-slate-300";
+        txt.innerText = text || "लोकल ऑफलाइन मोड";
+      }
+    }
+
+    // Connect & Sync with Firestore (Students & Fees collections)
+    window.syncWithFirestore = async function (showFeedback = true) {
+      const icon = document.getElementById('syncIcon');
+      if (icon) icon.classList.add('fa-spin');
+      setCloudStatus('loading', 'क्लाउड से डेटा लोड हो रहा है...');
+
+      try {
+        if (!db) {
+          throw new Error("Firestore SDK not initialized.");
+        }
+
+
+        // Fetch Students and Fees collections simultaneously
+        const [stuSnap, feeSnap] = await Promise.all([
+          getDocs(collection(db, 'students')),
+          getDocs(collection(db, 'fees'))
+        ]);
+
+        if (!stuSnap || stuSnap.empty) {
+          setCloudStatus('connected', 'क्लाउड: 0 छात्र (लोकल डेटा सक्रिय)');
+          if (showFeedback) alert("फायरस्टोर से कोई छात्र रिकॉर्ड नहीं मिला। वर्तमान पंजिका डेटा का उपयोग किया जा रहा है।");
+          return;
+        }
+
+        firestoreRawStudents = stuSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+        firestoreRawFees = feeSnap ? feeSnap.docs.map(d => ({ id: d.id, ...d.data() })) : [];
+
+        // Build Processed Student List
+        const activeStudents = firestoreRawStudents
+          .filter(s => !s.deleted)
+          .map((d, index) => {
+            const rawCls = d.cls || d.class || '5th';
+            const normalizedCls = normalizeClassName(rawCls);
+            const feeRate = d.feeRate || FEE_CHART[normalizedCls] || 800;
+
+            // Map Fee Payments for this student
+            const payments = {};
+            const stIdStr = String(d.id);
+            const stPenStr = String(d.pen || '');
+
+            const studentFees = firestoreRawFees.filter(f => {
+              const fStuId = String(f.studentId || f.pen || '');
+              return (fStuId === stIdStr || (stPenStr && fStuId === stPenStr));
+            });
+
+            studentFees.forEach(f => {
+              const mName = String(f.month || '').trim().toLowerCase();
+              const mKey = MONTH_NAME_MAP[mName];
+              if (mKey) {
+                payments[mKey] = {
+                  s: "paid",
+                  r: f.receipt || "Paid",
+                  amt: f.amount || feeRate,
+                  d: f.ts ? new Date(f.ts).toLocaleDateString('en-GB') : ""
+                };
+              }
+            });
+
+            return {
+              id: d.id,
+              roll: typeof d.serial === 'number' && !isNaN(d.serial) ? d.serial : (index + 1),
+              srNo: d.sr || d.srNo || d.admissionNo || d.pen || `SR-${1800 + index + 1}`,
+              name: d.name || d.studentName || 'छात्र नाम अनुपलब्ध',
+              father: d.father || d.fatherName || 'पिता का नाम अनुपलब्ध',
+              class: normalizedCls,
+              sec: (d.sec || d.section || 'A').toUpperCase(),
+              admDate: d.admDate || d.admissionDate || d.dob || '',
+              feeRate: feeRate,
+              remarks: d.remarks || (d.pacDisc ? 'पीएसी वार्ड' : (d.siblingDisc ? 'सिबलिंग छूट' : 'सामान्य')),
+              payments: payments
+            };
+          });
+
+        // Sort by Roll / Serial Number
+        activeStudents.sort((a, b) => (a.roll || 0) - (b.roll || 0));
+
+        studentsData = activeStudents;
+        isFirestoreConnected = true;
+        saveData();
+
+        updateClassFilterOptions();
+        renderRegister();
+        updateMetrics();
+
+        setCloudStatus('connected', `क्लाउड: ${activeStudents.length} छात्र लोड ✓`);
+        if (showFeedback) {
+          alert(`फायरस्टोर से ${activeStudents.length} छात्रों का विवरण एवं शुल्क रिकॉर्ड सफलतापूर्वक लोड किया गया!`);
+        }
+      } catch (err) {
+        console.error("Firestore sync error:", err);
+        setCloudStatus('offline', 'ऑफलाइन मोड (लोकल डेटा)');
+        if (showFeedback) {
+          alert("फायरस्टोर सिंक नहीं हो सका। वर्तमान में लोकल स्टोरेज का डेटा सुरक्षित प्रदर्शित हो रहा है। विवरण: " + err.message);
+        }
+      } finally {
+        if (icon) icon.classList.remove('fa-spin');
+      }
+    };
+
+    // Dynamically Populated Class Filter Options
+    function updateClassFilterOptions() {
+      const select = document.getElementById('filterClass');
+      const currentSelected = select.value;
+      const classCounts = {};
+
+      studentsData.forEach(st => {
+        const c = st.class || 'Unknown';
+        classCounts[c] = (classCounts[c] || 0) + 1;
+      });
+
+      const uniqueClasses = Object.keys(classCounts).sort((a, b) => {
+        const order = ['KG-1', 'KG-2', '1st', '2nd', '3rd', '4th', '5th', '6th', '7th', '8th'];
+        const idxA = order.indexOf(a);
+        const idxB = order.indexOf(b);
+        if (idxA !== -1 && idxB !== -1) return idxA - idxB;
+        return a.localeCompare(b);
+      });
+
+      let html = `<option value="all">सभी कक्षाएं (कुल: ${studentsData.length} छात्र)</option>`;
+      uniqueClasses.forEach(cls => {
+        const count = classCounts[cls];
+        html += `<option value="${cls}">${cls} (छात्र: ${count})</option>`;
+      });
+
+      select.innerHTML = html;
+      if (uniqueClasses.includes(currentSelected)) {
+        select.value = currentSelected;
+      } else if (uniqueClasses.includes('5th')) {
+        select.value = '5th';
+      } else if (uniqueClasses.length > 0) {
+        select.value = uniqueClasses[0];
+      }
+    }
+
+    // Set Month Cycle (Jan-Dec vs Apr-Mar)
+    window.setMonthCycle = function (cycle) {
+      currentMonthCycle = cycle;
+      const btnJan = document.getElementById('btnCycleJanDec');
+      const btnApr = document.getElementById('btnCycleAprMar');
+      const dispCycle = document.getElementById('dispCycleText');
+
+      if (cycle === 'jan_dec') {
+        btnJan.className = "px-2.5 py-1 rounded font-bold transition flex items-center gap-1.5 bg-pac-600 text-white shadow-sm";
+        btnApr.className = "px-2.5 py-1 rounded font-semibold text-slate-300 hover:text-white transition flex items-center gap-1.5";
+        dispCycle.innerText = "जनवरी से दिसम्बर";
+      } else {
+        btnApr.className = "px-2.5 py-1 rounded font-bold transition flex items-center gap-1.5 bg-pac-600 text-white shadow-sm";
+        btnJan.className = "px-2.5 py-1 rounded font-semibold text-slate-300 hover:text-white transition flex items-center gap-1.5";
+        dispCycle.innerText = "अप्रैल से मार्च (शैक्षणिक सत्र 2026-27)";
+      }
+
+      renderRegister();
+      updateMetrics();
+    };
+
+    // Handwriting Spacing Preset
+    window.changeSpacing = function (val) {
+      document.body.setAttribute('data-spacing', val);
+    };
+
+    // Toggle Blank Register Print Mode
+    window.toggleBlankPrintMode = function () {
+      isBlankPrintMode = !isBlankPrintMode;
+      document.body.classList.toggle('print-blank-mode', isBlankPrintMode);
+      const btn = document.getElementById('btnBlankToggle');
+      const txt = document.getElementById('blankToggleText');
+
+      if (isBlankPrintMode) {
+        btn.classList.add('bg-amber-600', 'text-white');
+        btn.classList.remove('bg-slate-800', 'text-amber-300');
+        txt.innerText = "कोरी शीट मोड सक्रिय ✓";
+      } else {
+        btn.classList.remove('bg-amber-600', 'text-white');
+        btn.classList.add('bg-slate-800', 'text-amber-300');
+        txt.innerText = "कोरी शीट मोड";
+      }
+      renderRegister();
+    };
+
+    // Get Active Months Array
+    function getActiveMonths() {
+      return (currentMonthCycle === "jan_dec") ? MONTHS_JAN_DEC : MONTHS_APR_MAR;
+    }
+
+    // Render Master Register Table
+    window.renderRegister = function () {
+      const activeMonths = getActiveMonths();
+      const theadRow = document.getElementById('tableHeaderRow');
+      const tbody = document.getElementById('tableBody');
+      const tfoot = document.getElementById('tableFoot');
+
+      // 1. Build Header (S.R. No. column removed to maximize printable horizontal space)
+      let headHtml = `
+        <th style="width: 35px;">क्र०</th>
+        <th style="width: 72px;">प्रवेश तिथि</th>
+        <th style="width: 170px; text-align: left; padding-left: 6px;">छात्र / छात्रा का नाम</th>
+        <th style="width: 155px; text-align: left; padding-left: 6px;">पिता का नाम</th>
+        <th style="width: 50px;">कक्षा</th>
+      `;
+
+      activeMonths.forEach((m, idx) => {
+        headHtml += `
+          <th style="width: 52px;" title="${m.name} (${m.eng})">
+            <div class="font-extrabold text-[11px]">${m.short}</div>
+            <div class="text-[9px] font-normal text-slate-600">M-${idx + 1}</div>
+          </th>
+        `;
+      });
+
+      headHtml += `
+        <th style="width: 45px;">जमा माह</th>
+        <th style="width: 58px;">कुल जमा (₹)</th>
+        <th style="width: 55px;">बकाया (₹)</th>
+        <th style="width: 75px;">कैफियत</th>
+        <th class="no-print" style="width: 48px;">क्रियाएं</th>
+      `;
+      theadRow.innerHTML = headHtml;
+
+      // 2. Filter Students
+      const filterC = document.getElementById('filterClass').value;
+      const filterS = document.getElementById('filterSection').value;
+      const filterSt = document.getElementById('filterStatus').value;
+      const query = (document.getElementById('searchInput').value || "").trim().toLowerCase();
+
+      let filtered = studentsData.filter(st => {
+        if (filterC !== 'all' && st.class !== filterC) return false;
+        if (filterS !== 'all' && st.sec !== filterS) return false;
+        if (query) {
+          const matchName = String(st.name || '').toLowerCase().includes(query);
+          const matchFather = String(st.father || '').toLowerCase().includes(query);
+          const matchSr = String(st.srNo || '').toLowerCase().includes(query);
+          if (!matchName && !matchFather && !matchSr) return false;
+        }
+
+        // Status Filter
+        if (filterSt !== 'all') {
+          const paidCount = getStudentPaidMonthsCount(st);
+          if (filterSt === 'paid' && paidCount < 12) return false;
+          if (filterSt === 'partial' && (paidCount === 0 || paidCount >= 12)) return false;
+          if (filterSt === 'due' && paidCount > 0) return false;
+        }
+        return true;
+      });
+
+      // Update Header Sub-bar Text
+      const currentClassRate = (filterC !== 'all' && FEE_CHART[filterC]) ? FEE_CHART[filterC] : 800;
+      document.getElementById('dispClassSection').innerText = (filterC === 'all' ? 'समस्त कक्षाएं' : filterC) + (filterS === 'all' ? '' : ' - ' + filterS);
+      document.getElementById('dispStudentCount').innerText = filtered.length;
+      document.getElementById('dispFeeRate').innerText = currentClassRate;
+      document.getElementById('statFeeRate').innerText = currentClassRate;
+
+      // Blank Print Mode
+      if (isBlankPrintMode) {
+        let blankRowsHtml = '';
+        const count = Math.max(25, filtered.length);
+        for (let i = 1; i <= count; i++) {
+          blankRowsHtml += `
+            <tr class="hover:bg-slate-50">
+              <td class="text-center font-bold font-mono text-[11px]">${i}</td>
+              <td class="font-mono text-center text-slate-400"></td>
+              <td></td>
+              <td></td>
+              <td class="text-center font-mono"></td>
+          `;
+
+          activeMonths.forEach(m => {
+            blankRowsHtml += `
+              <td class="text-center p-0">
+                <div class="month-cell">
+                  <div class="handwrite-line"></div>
+                </div>
+              </td>
+            `;
+          });
+
+          blankRowsHtml += `
+              <td class="text-center font-mono font-bold"></td>
+              <td class="text-right font-mono font-bold"></td>
+              <td class="text-right font-mono font-bold"></td>
+              <td></td>
+              <td class="no-print"></td>
+            </tr>
+          `;
+        }
+        tbody.innerHTML = blankRowsHtml;
+        tfoot.innerHTML = buildTfootHtml([], activeMonths);
+        return;
+      }
+
+      // Render Normal Populated Rows
+      let bodyHtml = '';
+      filtered.forEach((st, idx) => {
+        const rate = st.feeRate || currentClassRate;
+        const paidCount = getStudentPaidMonthsCount(st);
+        const totalPaidAmt = paidCount * rate;
+        const annualExpected = 12 * rate;
+        const totalDueAmt = Math.max(0, annualExpected - totalPaidAmt);
+
+        bodyHtml += `
+          <tr class="hover:bg-slate-50 transition" id="row_${st.id}">
+            <!-- Roll No -->
+            <td class="text-center font-extrabold font-mono text-[11.5px]">${st.roll || (idx + 1)}</td>
+            
+            <!-- Adm Date -->
+            <td class="font-mono text-center text-[10.5px] text-slate-800">${st.admDate || '—'}</td>
+            
+            <!-- Student Name -->
+            <td class="font-bold text-[11.5px] text-black">
+              ${st.name}
+            </td>
+            
+            <!-- Father's Name -->
+            <td class="text-[11px] text-slate-800 font-medium">
+              ${st.father}
+            </td>
+            
+            <!-- Class & Section -->
+            <td class="text-center font-bold text-[11px] font-mono">
+              ${st.sec ? (st.class + '-' + st.sec) : st.class}
+            </td>
+        `;
+
+        // 12 Month Cells
+        activeMonths.forEach(m => {
+          const pay = (st.payments && st.payments[m.key]) ? st.payments[m.key] : { s: "unmarked" };
+          const status = pay.s || "unmarked";
+          const icon = STATUS_ICONS[status] || "";
+          const receiptText = pay.r ? pay.r : "";
+
+          bodyHtml += `
+            <td class="text-center p-0" title="${m.name}: क्लिक: स्थिति बदलें / डबल-क्लिक: रसीद दर्ज करें">
+              <div class="month-cell status-${status}" 
+                   onclick="window.toggleMonthStatus('${st.id}', '${m.key}', event)"
+                   ondblclick="window.openPaymentDetailModal('${st.id}', '${m.key}', event)">
+                <span class="status-mark">${icon}</span>
+                <div class="handwrite-line text-[9px] font-mono text-slate-600 truncate leading-none pt-0.5">
+                  ${receiptText}
+                </div>
+              </div>
+            </td>
+          `;
+        });
+
+        // Computed Totals & Remarks
+        bodyHtml += `
+            <!-- Total Paid Months -->
+            <td class="text-center font-extrabold font-mono text-[11.5px] ${paidCount >= 9 ? 'text-emerald-700' : (paidCount <= 3 ? 'text-rose-700' : 'text-slate-900')}">
+              ${paidCount}
+            </td>
+            
+            <!-- Total Amount Paid -->
+            <td class="text-right font-bold font-mono text-[11px] text-emerald-800 pr-1.5">
+              ₹${totalPaidAmt}
+            </td>
+            
+            <!-- Total Due -->
+            <td class="text-right font-bold font-mono text-[11px] ${totalDueAmt > 0 ? 'text-rose-700' : 'text-slate-400'} pr-1.5">
+              ${totalDueAmt > 0 ? ('₹' + totalDueAmt) : '0'}
+            </td>
+            
+            <!-- Remarks -->
+            <td class="text-[10px] text-slate-700 leading-tight">
+              ${st.remarks || '—'}
+            </td>
+            
+            <!-- Actions (Screen Only) -->
+            <td class="no-print text-center">
+              <div class="flex items-center justify-center gap-1">
+                <button onclick="window.openEditStudentModal('${st.id}')" class="text-pac-600 hover:text-pac-800 p-1" title="छात्र विवरण संपादित करें">
+                  <i class="fa-solid fa-pen-to-square text-xs"></i>
+                </button>
+                <button onclick="window.deleteStudentRecord('${st.id}')" class="text-rose-600 hover:text-rose-800 p-1" title="हटाएं">
+                  <i class="fa-solid fa-trash-can text-xs"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+      });
+
+      tbody.innerHTML = bodyHtml || `<tr><td colspan="22" class="text-center py-6 text-slate-500 font-bold">चयनित कक्षा में कोई छात्र रिकॉर्ड उपलब्ध नहीं है। ऊपर "+ नया छात्र" बटन दबाकर जोड़ें।</td></tr>`;
+
+      // 3. Build Tfoot Summary Row
+      tfoot.innerHTML = buildTfootHtml(filtered, activeMonths);
+    };
+
+    // Build Tfoot Summary Row
+    function buildTfootHtml(students, months) {
+      let tfootHtml = `
+        <tr class="bg-slate-100 font-black text-black border-t-2 border-black">
+          <td colspan="5" class="text-right pr-3 font-extrabold text-[11px]">
+            कुल मासिक जमा छात्र संख्या (Tally of Paid Students):
+          </td>
+      `;
+
+      months.forEach(m => {
+        let count = 0;
+        students.forEach(st => {
+          if (st.payments && st.payments[m.key] && (st.payments[m.key].s === 'paid' || st.payments[m.key].s === 'concession')) {
+            count++;
+          }
+        });
+        tfootHtml += `
+          <td class="text-center font-mono text-[11.5px] font-extrabold bg-slate-200 border border-black">
+            ${count > 0 ? count : '—'}
+          </td>
+        `;
+      });
+
+      let grandMonthsPaid = 0;
+      let grandAmountPaid = 0;
+      students.forEach(st => {
+        const p = getStudentPaidMonthsCount(st);
+        grandMonthsPaid += p;
+        grandAmountPaid += p * (st.feeRate || 800);
+      });
+
+      tfootHtml += `
+          <td class="text-center font-mono font-extrabold text-[11.5px] bg-slate-200 border border-black">${grandMonthsPaid}</td>
+          <td class="text-right font-mono font-extrabold text-[11px] pr-1 bg-slate-200 border border-black">₹${grandAmountPaid.toLocaleString('en-IN')}</td>
+          <td colspan="3" class="text-left pl-2 text-[10px] text-slate-700 italic border border-black">
+            * योग लेखा परीक्षित
+          </td>
+        </tr>
+      `;
+      return tfootHtml;
+    }
+
+    // Helper: Count Paid Months for a student
+    function getStudentPaidMonthsCount(st) {
+      if (!st.payments) return 0;
+      let cnt = 0;
+      Object.keys(st.payments).forEach(k => {
+        const s = st.payments[k].s;
+        if (s === 'paid' || s === 'concession') cnt++;
+      });
+      return cnt;
+    }
+
+    // Toggle Status on Single Click
+    window.toggleMonthStatus = function (studentId, monthKey, event) {
+      if (event) event.stopPropagation();
+      const st = studentsData.find(s => s.id === studentId);
+      if (!st) return;
+
+      if (!st.payments) st.payments = {};
+      if (!st.payments[monthKey]) st.payments[monthKey] = { s: "unmarked" };
+
+      const current = st.payments[monthKey].s || "unmarked";
+      const next = STATUS_FLOW[current] || "paid";
+      st.payments[monthKey].s = next;
+
+      if (next === 'paid' && !st.payments[monthKey].r) {
+        st.payments[monthKey].r = "✓";
+      }
+
+      saveData();
+      renderRegister();
+      updateMetrics();
+    };
+
+    // Payment Detail Modal (Double click / Right click)
+    window.openPaymentDetailModal = function (studentId, monthKey, event) {
+      if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+      const st = studentsData.find(s => s.id === studentId);
+      if (!st) return;
+
+      editingPaymentTarget = { studentId, monthKey };
+      const monthObj = (currentMonthCycle === "jan_dec" ? MONTHS_JAN_DEC : MONTHS_APR_MAR).find(m => m.key === monthKey);
+      const pay = (st.payments && st.payments[monthKey]) ? st.payments[monthKey] : {};
+
+      document.getElementById('payModalStudentName').innerText = `${st.name} (रोल नं०: ${st.roll}, SR: ${st.srNo})`;
+      document.getElementById('payModalMonthLabel').innerText = `महीना: ${monthObj ? monthObj.name : monthKey}`;
+      document.getElementById('payModalStatus').value = pay.s || "unmarked";
+      document.getElementById('payModalReceiptNo').value = pay.r || "";
+      document.getElementById('payModalDate').value = pay.d || "";
+      document.getElementById('payModalAmount').value = pay.amt || st.feeRate || 800;
+
+      document.getElementById('paymentDetailModal').classList.remove('hidden');
+    };
+
+    window.closePaymentDetailModal = function () {
+      document.getElementById('paymentDetailModal').classList.add('hidden');
+      editingPaymentTarget = null;
+    };
+
+    window.savePaymentDetail = function () {
+      if (!editingPaymentTarget) return;
+      const { studentId, monthKey } = editingPaymentTarget;
+      const st = studentsData.find(s => s.id === studentId);
+      if (!st) return;
+
+      if (!st.payments) st.payments = {};
+      st.payments[monthKey] = {
+        s: document.getElementById('payModalStatus').value,
+        r: document.getElementById('payModalReceiptNo').value.trim(),
+        d: document.getElementById('payModalDate').value.trim(),
+        amt: parseFloat(document.getElementById('payModalAmount').value) || (st.feeRate || 800)
+      };
+
+      saveData();
+      closePaymentDetailModal();
+      renderRegister();
+      updateMetrics();
+    };
+
+    // Filter Change Handler
+    window.applyFilters = function () {
+      renderRegister();
+      updateMetrics();
+    };
+
+    // Update Dashboard Metrics
+    function updateMetrics() {
+      const filterC = document.getElementById('filterClass').value;
+      const activeStudents = filterC === 'all' ? studentsData : studentsData.filter(s => s.class === filterC);
+
+      document.getElementById('statTotalStudents').innerText = activeStudents.length;
+
+      let totalCollected = 0;
+      let totalAnnualExpected = 0;
+
+      activeStudents.forEach(st => {
+        const rate = st.feeRate || 800;
+        totalAnnualExpected += 12 * rate;
+        const paidCount = getStudentPaidMonthsCount(st);
+        totalCollected += paidCount * rate;
+      });
+
+      const totalDue = Math.max(0, totalAnnualExpected - totalCollected);
+
+      document.getElementById('statTotalCollected').innerText = '₹' + totalCollected.toLocaleString('en-IN');
+      document.getElementById('statTotalDue').innerText = '₹' + totalDue.toLocaleString('en-IN');
+    }
+
+    // Update Print Date
+    function updatePrintDate() {
+      const d = new Date();
+      const str = `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear()}`;
+      const disp = document.getElementById('dispPrintDate');
+      if (disp) disp.innerText = str;
+    }
+
+    // Student Modal Management (Add / Edit)
+    window.openAddStudentModal = function () {
+      document.getElementById('modalTitle').innerHTML = '<i class="fa-solid fa-user-plus text-pac-400"></i> नया छात्र विवरण दर्ज करें';
+      document.getElementById('modalStudentId').value = "";
+      document.getElementById('studentForm').reset();
+      
+      const currentCls = document.getElementById('filterClass').value;
+      if (currentCls !== 'all') {
+        document.getElementById('inClass').value = currentCls;
+      }
+      
+      document.getElementById('inRollNo').value = studentsData.length + 1;
+      document.getElementById('inSrNo').value = `SR-${1800 + studentsData.length + 1}`;
+      document.getElementById('inFeeRate').value = 800;
+      document.getElementById('studentModal').classList.remove('hidden');
+    };
+
+    window.openEditStudentModal = function (id) {
+      const st = studentsData.find(s => s.id === id);
+      if (!st) return;
+
+      document.getElementById('modalTitle').innerHTML = '<i class="fa-solid fa-pen-to-square text-pac-400"></i> छात्र विवरण संपादित करें';
+      document.getElementById('modalStudentId').value = st.id;
+      document.getElementById('inRollNo').value = st.roll;
+      document.getElementById('inSrNo').value = st.srNo;
+      document.getElementById('inName').value = st.name;
+      document.getElementById('inFatherName').value = st.father;
+      document.getElementById('inClass').value = st.class;
+      document.getElementById('inSection').value = st.sec;
+      document.getElementById('inAdmDate').value = st.admDate || '';
+      document.getElementById('inFeeRate').value = st.feeRate || 800;
+      document.getElementById('inRemarks').value = st.remarks || '';
+
+      document.getElementById('studentModal').classList.remove('hidden');
+    };
+
+    window.closeStudentModal = function () {
+      document.getElementById('studentModal').classList.add('hidden');
+    };
+
+    window.saveStudentForm = function (e) {
+      e.preventDefault();
+      const id = document.getElementById('modalStudentId').value;
+      const roll = parseInt(document.getElementById('inRollNo').value) || 1;
+      const srNo = document.getElementById('inSrNo').value.trim();
+      const name = document.getElementById('inName').value.trim();
+      const father = document.getElementById('inFatherName').value.trim();
+      const cls = document.getElementById('inClass').value;
+      const sec = document.getElementById('inSection').value;
+      const admDate = document.getElementById('inAdmDate').value.trim();
+      const feeRate = parseFloat(document.getElementById('inFeeRate').value) || 800;
+      const remarks = document.getElementById('inRemarks').value.trim();
+
+      if (id) {
+        const st = studentsData.find(s => s.id === id);
+        if (st) {
+          st.roll = roll;
+          st.srNo = srNo;
+          st.name = name;
+          st.father = father;
+          st.class = cls;
+          st.sec = sec;
+          st.admDate = admDate;
+          st.feeRate = feeRate;
+          st.remarks = remarks;
+        }
+      } else {
+        const newStudent = {
+          id: "pms_" + Date.now(),
+          roll,
+          srNo,
+          name,
+          father,
+          class: cls,
+          sec,
+          admDate,
+          feeRate,
+          remarks,
+          payments: {}
+        };
+        studentsData.push(newStudent);
+      }
+
+      saveData();
+      closeStudentModal();
+      updateClassFilterOptions();
+      renderRegister();
+      updateMetrics();
+    };
+
+    window.deleteStudentRecord = function (id) {
+      const st = studentsData.find(s => s.id === id);
+      if (!st) return;
+      if (confirm(`क्या आप छात्र "${st.name}" (SR: ${st.srNo}) का रिकॉर्ड पंजिका से हटाना चाहते हैं?`)) {
+        studentsData = studentsData.filter(s => s.id !== id);
+        saveData();
+        updateClassFilterOptions();
+        renderRegister();
+        updateMetrics();
+      }
+    };
+
+    // Reset to Sample Data
+    window.resetToSampleData = function () {
+      if (confirm("क्या आप पुलिस मॉडर्न स्कूल के 10 डिफ़ॉल्ट सैंपल रिकॉर्ड लोड करना चाहते हैं?")) {
+        studentsData = JSON.parse(JSON.stringify(DEFAULT_STUDENTS));
+        saveData();
+        updateClassFilterOptions();
+        renderRegister();
+        updateMetrics();
+        alert("सैंपल छात्र डेटा सफलतापूर्वक लोड किया गया!");
+      }
+    };
+
+    // Clear All Records
+    window.clearAllData = function () {
+      if (confirm("सावधानी: क्या आप वास्तव में पंजिका के सभी छात्रों का डेटा साफ़ करना चाहते हैं?")) {
+        studentsData = [];
+        saveData();
+        updateClassFilterOptions();
+        renderRegister();
+        updateMetrics();
+      }
+    };
+
+    // Export to MS Word (.doc)
+    window.exportToWordDoc = function () {
+      const activeMonths = getActiveMonths();
+      const filterC = document.getElementById('filterClass').value;
+      const targetList = (filterC === 'all') ? studentsData : studentsData.filter(s => (s.class === filterC || normalizeClassName(s.class) === filterC));
+
+      if (!targetList || targetList.length === 0) {
+        alert("एक्सपोर्ट करने के लिए कोई छात्र डेटा उपलब्ध नहीं है।");
+        return;
+      }
+
+      let classLabel = (filterC === 'all') ? 'समस्त कक्षाएं (All Classes)' : `कक्षा ${filterC}`;
+      const sessionText = (currentMonthCycle === 'jan-dec') ? 'कैलेंडर वर्ष 2026 (जनवरी से दिसम्बर)' : 'शैक्षणिक सत्र 2026–2027 (अप्रैल से मार्च)';
+
+      let rowsHtml = '';
+      targetList.forEach((st, idx) => {
+        let monthTds = '';
+        activeMonths.forEach(m => {
+          const pay = (st.payments && st.payments[m.key]) ? st.payments[m.key] : {};
+          let statusText = '';
+          if (pay.s === 'paid') statusText = '<span style="color:#15803d; font-weight:bold;">✓</span>';
+          else if (pay.s === 'concession') statusText = '<span style="color:#2563eb; font-weight:bold;">छूट</span>';
+          else if (pay.s === 'due') statusText = '<span style="color:#dc2626; font-weight:bold;">!</span>';
+
+          if (pay.r) {
+            statusText += `<br><span style="font-size:6.5pt; color:#475569;">${pay.r}</span>`;
+          }
+          monthTds += `<td align="center" style="border: 0.5pt solid #000; padding: 2pt;">${statusText}</td>`;
+        });
+
+        rowsHtml += `
+          <tr>
+            <td align="center" style="border: 0.5pt solid #000; padding: 2.5pt 1.5pt;">${st.roll || (idx + 1)}</td>
+            <td align="center" style="border: 0.5pt solid #000; padding: 2.5pt 1.5pt;">${st.admDate || '—'}</td>
+            <td align="left" style="border: 0.5pt solid #000; padding: 2.5pt 3pt; font-weight: bold;">${st.name || ''}</td>
+            <td align="left" style="border: 0.5pt solid #000; padding: 2.5pt 3pt;">${st.father || ''}</td>
+            <td align="center" style="border: 0.5pt solid #000; padding: 2.5pt 1.5pt;"><strong>${st.class || ''}</strong></td>
+            ${monthTds}
+          </tr>
+        `;
+      });
+
+      // Monthly Tally TD
+      let tallyTds = '';
+      activeMonths.forEach(m => {
+        const count = targetList.filter(s => s.payments && (s.payments[m.key]?.s === 'paid' || s.payments[m.key]?.s === 'concession')).length;
+        tallyTds += `<td align="center" style="border: 0.5pt solid #000; padding: 2.5pt; font-weight: bold;">${count > 0 ? count : '—'}</td>`;
+      });
+
+      const wordHtml = `
+        <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+        <head>
+          <meta charset='utf-8'>
+          <title>PMS_Fee_Register_${filterC}</title>
+          <!--[if gte mso 9]>
+          <xml>
+            <w:WordDocument>
+              <w:View>Print</w:View>
+              <w:Zoom>100</w:Zoom>
+              <w:DoNotOptimizeForBrowser/>
+            </w:WordDocument>
+          </xml>
+          <![endif]-->
+          <style>
+            @page Section1 {
+              size: 841.9pt 595.3pt;
+              mso-page-orientation: landscape;
+              margin: 18pt 18pt 18pt 18pt;
+              mso-header-margin: 10pt;
+              mso-footer-margin: 10pt;
+            }
+            div.Section1 {
+              page: Section1;
+            }
+            body {
+              font-family: 'Mangal', 'Noto Sans Devanagari', 'Arial Unicode MS', 'Calibri', sans-serif;
+              font-size: 8pt;
+              color: #000000;
+              margin: 0;
+              padding: 0;
+            }
+            table {
+              border-collapse: collapse;
+              width: 100%;
+            }
+          </style>
+        </head>
+        <body>
+          <div class="Section1">
+            <table width="100%" style="border:none; margin-bottom: 4pt;">
+              <tr>
+                <td align="center">
+                  <div style="font-size: 13.5pt; font-weight: bold; color: #0f172a;">पुलिस मॉडर्न स्कूल, 25वीं वाहिनी पीएसी, रायबरेली (उ०प्र०)</div>
+                  <div style="font-size: 8pt; font-weight: bold; color: #475569; text-transform: uppercase;">POLICE MODERN SCHOOL, 25TH BATTALION PAC, RAEBARELI (U.P.)</div>
+                  <div style="font-size: 9.5pt; font-weight: bold; color: #1e3a8a; margin-top: 2pt;">मासिक छात्र शुल्क पंजिका — ${sessionText}</div>
+                </td>
+              </tr>
+            </table>
+
+            <table width="100%" style="border: 0.5pt solid #cbd5e1; background: #f8fafc; margin-bottom: 5pt; font-size: 8pt;">
+              <tr>
+                <td style="padding: 3pt 6pt;"><strong>कक्षा:</strong> ${classLabel}</td>
+                <td style="padding: 3pt 6pt;"><strong>कुल छात्र:</strong> ${targetList.length}</td>
+                <td style="padding: 3pt 6pt;"><strong>सत्र:</strong> 2026–2027</td>
+              </tr>
+            </table>
+
+            <table width="100%" style="border: 0.5pt solid #000; border-collapse: collapse;">
+              <thead>
+                <tr style="background: #f1f5f9; font-weight: bold;">
+                  <th rowspan="2" width="3%" style="border: 0.5pt solid #000; padding: 2.5pt;">क्र०</th>
+                  <th rowspan="2" width="7%" style="border: 0.5pt solid #000; padding: 2.5pt;">प्रवेश तिथि</th>
+                  <th rowspan="2" width="14%" style="border: 0.5pt solid #000; padding: 2.5pt;">छात्र / छात्रा का नाम</th>
+                  <th rowspan="2" width="13%" style="border: 0.5pt solid #000; padding: 2.5pt;">पिता का नाम</th>
+                  <th rowspan="2" width="5%" style="border: 0.5pt solid #000; padding: 2.5pt;">कक्षा</th>
+                  <th colspan="12" style="border: 0.5pt solid #000; padding: 2.5pt; background: #e2e8f0;">शुल्क विवरण (${sessionText})</th>
+                </tr>
+                <tr style="background: #f1f5f9; font-weight: bold;">
+                  ${activeMonths.map(m => `<th width="4.8%" style="border: 0.5pt solid #000; padding: 2pt;">${m.name}<br><span style="font-size:6.5pt; font-weight:normal;">${m.eng}</span></th>`).join('')}
+                </tr>
+              </thead>
+              <tbody>
+                ${rowsHtml}
+              </tbody>
+              <tfoot>
+                <tr style="background: #f8fafc; font-weight: bold; border-top: 1.25pt solid #000;">
+                  <td colspan="5" align="right" style="border: 0.5pt solid #000; padding: 3pt 6pt;">कुल जमा छात्र (Tally):</td>
+                  ${tallyTds}
+                </tr>
+              </tfoot>
+            </table>
+
+            <table width="100%" style="margin-top: 20pt; border: none;">
+              <tr>
+                <td width="33%" align="center">
+                  <div style="border-top: 0.75pt solid #000; width: 140pt; margin: 0 auto; padding-top: 2pt; font-weight: bold;">हस्ताक्षर कक्षाध्यापक</div>
+                </td>
+                <td width="33%" align="center">
+                  <div style="border-top: 0.75pt solid #000; width: 140pt; margin: 0 auto; padding-top: 2pt; font-weight: bold;">हस्ताक्षर शुल्क प्रभारी / लिपिक</div>
+                </td>
+                <td width="34%" align="center">
+                  <div style="border-top: 0.75pt solid #000; width: 150pt; margin: 0 auto; padding-top: 2pt; font-weight: bold;">प्रभारी प्रधानाचार्या (हस्ताक्षर व मोहर)</div>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </body>
+        </html>
+      `;
+
+      const blob = new Blob(['\ufeff' + wordHtml], { type: 'application/msword;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `PMS_Fee_Register_${filterC}_${new Date().toISOString().slice(0, 10)}.doc`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    };
+    window.exportWordDoc = window.exportToWordDoc;
+
+    // Export to Excel / CSV
+    window.exportToCSV = function () {
+      const activeMonths = getActiveMonths();
+      let csv = "\uFEFF"; // UTF-8 BOM for authentic Hindi display in Excel
+      csv += "क्र० सं०,एस.आर. नं०,प्रवेश तिथि,छात्र / छात्रा का नाम,पिता का नाम,कक्षा,वर्ग,";
+      activeMonths.forEach(m => {
+        csv += `"${m.name} (स्थिति)","${m.name} (रसीद सं०)",`;
+      });
+      csv += "कुल जमा माह,मासिक शुल्क,कुल जमा धनराशि (₹),अवशेष बकाया (₹),कैफियत\n";
+
+      studentsData.forEach((st, idx) => {
+        const rate = st.feeRate || 800;
+        const paidCount = getStudentPaidMonthsCount(st);
+        const totalPaid = paidCount * rate;
+        const totalDue = Math.max(0, (12 * rate) - totalPaid);
+
+        csv += `${st.roll || (idx + 1)},"${st.srNo}","${st.admDate || ''}","${st.name}","${st.father}","${st.class}","${st.sec}",`;
+        activeMonths.forEach(m => {
+          const pay = (st.payments && st.payments[m.key]) ? st.payments[m.key] : {};
+          csv += `"${pay.s || ''}","${pay.r || ''}",`;
+        });
+        csv += `${paidCount},${rate},${totalPaid},${totalDue},"${st.remarks || ''}"\n`;
+      });
+
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `PMS_Fee_Register_${currentMonthCycle}_2026-27.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    };
+
+    // Export JSON Backup
+    window.exportJSONBackup = function () {
+      const json = JSON.stringify(studentsData, null, 2);
+      const blob = new Blob([json], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `PMS_Fee_Register_Backup_${new Date().toISOString().slice(0, 10)}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    };
+
+    // Import JSON Backup
+    window.importJSONBackup = function (event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        try {
+          const imported = JSON.parse(e.target.result);
+          if (Array.isArray(imported)) {
+            studentsData = imported;
+            saveData();
+            updateClassFilterOptions();
+            renderRegister();
+            updateMetrics();
+            alert("डेटा सफलतापूर्वक रिस्टोर किया गया!");
+          } else {
+            alert("अमान्य JSON फाइल प्रारूप।");
+          }
+        } catch (err) {
+          alert("फाइल पढ़ने में त्रुटि: " + err.message);
+        }
+      };
+      reader.readAsText(file);
+    };
+  </script>
+</body>
+
+</html>

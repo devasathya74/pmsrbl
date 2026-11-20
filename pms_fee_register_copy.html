@@ -1,0 +1,2267 @@
+<!DOCTYPE html>
+<html lang="hi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>मासिक छात्र शुल्क पंजिका (2026-2027) - पुलिस मॉडर्न स्कूल, रायबरेली</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Font Awesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Google Fonts (Devanagari & English) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&family=Martel:wght@700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Noto+Serif+Devanagari:wght@600;700&display=swap"
+    rel="stylesheet">
+
+  <style>
+    :root {
+      --row-height: 48px;
+      /* Default: Spacious (48px) */
+      --brand-red: #b91c1c;
+      --brand-green: #15803d;
+    }
+
+    body {
+      font-family: 'Noto Sans Devanagari', 'Inter', sans-serif;
+      background-color: #f1f5f9;
+      color: #0f172a;
+    }
+
+    .font-heading-hi {
+      font-family: 'Noto Serif Devanagari', 'Martel', serif;
+    }
+
+    .font-heading-en {
+      font-family: 'Cinzel', 'Times New Roman', serif;
+    }
+
+    .font-mono-num {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* Register Table Styling */
+    .register-table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+      background: #ffffff;
+    }
+
+    .register-table th,
+    .register-table td {
+      border: 1px solid #334155;
+      padding: 3px 4px;
+      vertical-align: middle;
+      word-wrap: break-word;
+    }
+
+    .register-table thead th {
+      background-color: #f8fafc;
+      color: #0f172a;
+      font-weight: 700;
+      font-size: 11px;
+      text-align: center;
+      line-height: 1.25;
+      border-bottom: 2px solid #0f172a;
+    }
+
+    .register-table tbody tr {
+      height: var(--row-height);
+      transition: background-color 0.15s ease;
+    }
+
+    .register-table tbody tr:hover {
+      background-color: #f8fafc;
+    }
+
+    /* Month Cell Layout (Checkbox + Receipt Line) */
+    .month-cell {
+      cursor: pointer;
+      position: relative;
+      padding: 2px 3px !important;
+      text-align: center;
+    }
+
+    .month-cell:hover {
+      background-color: #eff6ff !important;
+    }
+
+    .checkbox-box {
+      width: 15px;
+      height: 15px;
+      border: 1.4px solid #1e293b;
+      border-radius: 2px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: bold;
+      margin: 0 auto 2px auto;
+      background-color: #fff;
+    }
+
+    .receipt-line {
+      border-bottom: 1px dotted #475569;
+      min-height: 13px;
+      font-size: 9px;
+      line-height: 1.1;
+      color: #1e293b;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    /* Status Visuals */
+    .status-paid .checkbox-box {
+      background-color: #dcfce7;
+      border-color: #15803d;
+      color: #15803d;
+    }
+
+    .status-pending .checkbox-box {
+      border-color: #64748b;
+    }
+
+    .status-concession .checkbox-box {
+      background-color: #fef9c3;
+      border-color: #a16207;
+      color: #a16207;
+    }
+
+    .status-due .checkbox-box {
+      background-color: #fee2e2;
+      border-color: #b91c1c;
+      color: #b91c1c;
+    }
+
+    /* Print Media Query (A4 Landscape) */
+    @media print {
+      @page {
+        size: A4 landscape;
+        margin: 6mm 8mm 6mm 8mm;
+      }
+
+      body {
+        background: #ffffff !important;
+        margin: 0;
+        padding: 0;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+
+      .no-print {
+        display: none !important;
+      }
+
+      .print-container {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        box-shadow: none !important;
+        border: none !important;
+      }
+
+      .register-table th,
+      .register-table td {
+        border: 1px solid #000000 !important;
+      }
+
+      .register-table thead th {
+        background-color: #f1f5f9 !important;
+        font-size: 9.5px !important;
+        padding: 2px !important;
+      }
+
+      .register-table tbody td {
+        font-size: 10px !important;
+      }
+
+      .receipt-line {
+        border-bottom: 1px dotted #000000 !important;
+        font-size: 8px !important;
+      }
+
+      .checkbox-box {
+        border: 1.2px solid #000000 !important;
+        width: 13px;
+        height: 13px;
+      }
+
+      /* Avoid row breaking across pages */
+      tr {
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
+
+      thead {
+        display: table-header-group;
+      }
+
+      .page-break {
+        page-break-after: always !important;
+        break-after: page !important;
+      }
+
+      .batch-page {
+        min-height: 195mm;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        margin: 0 !important;
+        padding: 4mm 6mm !important;
+      }
+    }
+  </style>
+</head>
+
+<body class="min-h-screen flex flex-col">
+
+  <!-- Top Control Toolbar (Hidden on Print) -->
+  <header class="no-print bg-slate-900 text-white shadow-md sticky top-0 z-30 border-b-4 border-red-700">
+    <div class="max-w-[1600px] mx-auto px-4 py-2.5 flex flex-wrap items-center justify-between gap-3">
+
+      <!-- Brand / Title & Cloud Status -->
+      <div class="flex items-center gap-3">
+        <div
+          class="w-10 h-10 rounded-lg bg-gradient-to-br from-red-600 to-green-700 flex items-center justify-center text-white font-bold shadow">
+          <i class="fa-solid fa-school text-lg"></i>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="text-base font-bold leading-tight text-white">मासिक छात्र शुल्क पंजिका (2026–2027)</h1>
+            <!-- Live Cloud Status Pill -->
+            <div id="cloudStatusBadge"
+              class="flex items-center gap-1.5 text-[10px] bg-slate-800 text-amber-300 font-mono px-2 py-0.5 rounded border border-slate-700">
+              <span id="cloudDot" class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+              <span id="cloudStatusText">फायरस्टोर: कनेक्ट हो रहा है...</span>
+            </div>
+          </div>
+          <p class="text-xs text-slate-300">पुलिस मॉडर्न स्कूल, 25वीं वाहिनी पीएसी, रायबरेली (उ०प्र०)</p>
+        </div>
+      </div>
+
+      <!-- Primary Actions -->
+      <div class="flex flex-wrap items-center gap-2 text-xs">
+        <!-- Save to Cloud Button -->
+        <button id="btnSaveCloud" onclick="saveToCloudNow()"
+          class="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-2 rounded font-semibold flex items-center gap-1.5 shadow transition"
+          title="पंजिका के वर्तमान डेटा को फायरस्टोर कलेक्शन में तुरंत सेव करें">
+          <i class="fa-solid fa-cloud-arrow-up" id="saveCloudIcon"></i>
+          <span>क्लाउड पर सेव करें</span>
+        </button>
+
+        <!-- Fetch From Original Source Button -->
+        <button id="btnFetchSource" onclick="fetchOriginalSourceAndSync(true)"
+          class="bg-cyan-700 hover:bg-cyan-600 text-white px-2.5 py-2 rounded font-semibold flex items-center gap-1.5 shadow transition"
+          title="मूल छात्र एवं फीस कलेक्शन से डेटा तुरंत प्राप्त करें">
+          <i class="fa-solid fa-arrows-rotate" id="fetchSourceIcon"></i>
+          <span>स्रोत से सिंक</span>
+        </button>
+
+        <button onclick="openStudentModal()"
+          class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-2 rounded font-semibold flex items-center gap-1.5 shadow transition"
+          title="Alt + N">
+          <i class="fa-solid fa-user-plus"></i> नया छात्र जोड़ें
+        </button>
+
+        <!-- Print Selected Class -->
+        <button onclick="printFilledRegister()"
+          class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded font-semibold flex items-center gap-1.5 shadow transition"
+          title="वर्तमान चयनित कक्षा का प्रिंट / PDF सेव करें (Ctrl + P)">
+          <i class="fa-solid fa-print"></i>
+          <span id="btnPrintText">कक्षा प्रिंट (A4)</span>
+        </button>
+
+        <!-- Batch Print All Classes Separately -->
+        <button onclick="batchPrintAllClasses()"
+          class="bg-purple-700 hover:bg-purple-800 text-white px-3 py-2 rounded font-semibold flex items-center gap-1.5 shadow transition"
+          title="समस्त कक्षाओं को अलग-अलग A4 पृष्ठों पर एक साथ प्रिंट करें">
+          <i class="fa-solid fa-copy"></i>
+          <span>कक्षावार सभी प्रिंट (Batch)</span>
+        </button>
+
+        <button onclick="printBlankRegister()"
+          class="bg-amber-600 hover:bg-amber-700 text-white px-3 py-2 rounded font-semibold flex items-center gap-1.5 shadow transition"
+          title="वर्तमान चयनित कक्षा हेतु कोरी पंजिका प्रिंट">
+          <i class="fa-regular fa-file-lines"></i>
+          <span>कोरी कक्षा शीट</span>
+        </button>
+
+        <!-- Dropdown / More Actions -->
+        <div class="flex items-center bg-slate-800 rounded border border-slate-700 p-0.5">
+          <button onclick="exportWordDoc()"
+            class="hover:bg-slate-700 text-slate-200 px-2.5 py-1.5 rounded flex items-center gap-1 font-medium"
+            title="MS Word (.doc) में एक्सपोर्ट करें">
+            <i class="fa-solid fa-file-word text-blue-400"></i> Word (.doc)
+          </button>
+          <button onclick="exportCSV()"
+            class="hover:bg-slate-700 text-slate-200 px-2.5 py-1.5 rounded flex items-center gap-1"
+            title="CSV / Excel में डाउनलोड करें">
+            <i class="fa-solid fa-file-csv text-green-400"></i> CSV
+          </button>
+          <button onclick="exportJSON()"
+            class="hover:bg-slate-700 text-slate-200 px-2.5 py-1.5 rounded flex items-center gap-1"
+            title="JSON बैकअप डाउनलोड करें">
+            <i class="fa-solid fa-download text-sky-400"></i> बैकअप
+          </button>
+          <label class="hover:bg-slate-700 text-slate-200 px-2.5 py-1.5 rounded flex items-center gap-1 cursor-pointer"
+            title="JSON बैकअप रिस्टोर करें">
+            <i class="fa-solid fa-upload text-amber-400"></i> रिस्टोर
+            <input type="file" id="jsonImportInput" accept=".json" class="hidden" onchange="importJSON(event)">
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Secondary Filter & Settings Bar -->
+    <div class="bg-slate-800 border-t border-slate-700 px-4 py-2">
+      <div class="max-w-[1600px] mx-auto flex flex-wrap items-center justify-between gap-3 text-xs">
+
+        <!-- Search & Class Filter -->
+        <div class="flex flex-wrap items-center gap-2">
+          <div class="relative">
+            <i class="fa-solid fa-magnifying-glass absolute left-2.5 top-2.5 text-slate-400"></i>
+            <input type="text" id="searchInput" oninput="renderTable()"
+              placeholder="छात्र का नाम, पिता या प्रवेश तिथि खोजें..."
+              class="bg-slate-900 text-white border border-slate-600 rounded pl-8 pr-3 py-1.5 w-64 focus:outline-none focus:border-blue-500">
+          </div>
+
+          <select id="classFilter" onchange="renderTable()"
+            class="bg-slate-900 text-white border border-slate-600 rounded px-2.5 py-1.5 focus:outline-none focus:border-blue-500 font-semibold"
+            title="कक्षा अनुसार फ़िल्टर करें">
+            <option value="ALL">सभी कक्षाएं (All Classes)</option>
+          </select>
+
+          <select id="sectionFilter" onchange="renderTable()"
+            class="bg-slate-900 text-white border border-slate-600 rounded px-2 py-1.5 focus:outline-none focus:border-blue-500 font-medium"
+            title="वर्ग (Section) अनुसार फ़िल्टर करें">
+            <option value="ALL">सभी वर्ग (All Sec)</option>
+            <option value="A">वर्ग A</option>
+            <option value="B">वर्ग B</option>
+            <option value="C">वर्ग C</option>
+          </select>
+
+          <select id="sortOrderFilter" onchange="renderTable()"
+            class="bg-slate-900 text-amber-300 border border-slate-600 rounded px-2.5 py-1.5 focus:outline-none focus:border-blue-500 font-semibold"
+            title="छात्रों का क्रम (Sorting Order)">
+            <option value="name_asc" selected>नाम: A ➔ Z (अ से ज्ञ)</option>
+            <option value="name_desc">नाम: Z ➔ A (ज्ञ से अ)</option>
+            <option value="roll_asc">क्रमांक (Roll No / S.No.)</option>
+            <option value="adm_asc">प्रवेश तिथि (Admission Date)</option>
+          </select>
+
+          <button onclick="editRegisterMeta()"
+            class="bg-slate-700 hover:bg-slate-600 text-slate-200 px-2.5 py-1.5 rounded flex items-center gap-1 font-medium">
+            <i class="fa-solid fa-pen-to-square"></i> कक्षा विवरण
+          </button>
+        </div>
+
+        <!-- 10-Second Auto-Sync Loop & Row Spacing Selector & Stats -->
+        <div class="flex flex-wrap items-center gap-3">
+          <!-- 10s Auto-Sync Indicator & Toggle -->
+          <div class="flex items-center gap-1.5 bg-slate-900 border border-slate-700 rounded px-2 py-1">
+            <span class="text-[11px] text-slate-300 flex items-center gap-1">
+              <i class="fa-solid fa-clock-rotate-left text-sky-400"></i>
+              <span>ऑटो-सिंक:</span>
+            </span>
+            <button id="btnToggleAutoSync" onclick="toggleAutoSync()"
+              class="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-600 text-white hover:bg-emerald-500 transition"
+              title="10-सेकंड ऑटो सिंक को चालू या बंद करें">
+              10s चालू ✓
+            </button>
+            <span id="syncCountdown" class="text-[10px] font-mono text-slate-400">10s</span>
+          </div>
+
+          <div class="flex items-center gap-1.5">
+            <span class="text-slate-400">रो-स्पेसिंग:</span>
+            <select id="spacingSelect" onchange="changeRowSpacing(this.value)"
+              class="bg-slate-900 text-white border border-slate-600 rounded px-2 py-1 focus:outline-none">
+              <option value="38px">सामान्य (Normal - 38px)</option>
+              <option value="48px" selected>हस्तलेखन अनुकूल (Spacious - 48px)</option>
+              <option value="58px">अतिरिक्त विस्तृत (Extra Spacious - 58px)</option>
+            </select>
+          </div>
+
+          <div
+            class="hidden md:flex items-center gap-3 text-slate-300 bg-slate-900 px-3 py-1 rounded border border-slate-700">
+            <span>कुल छात्र: <strong id="statTotalStudents" class="text-white">0</strong></span>
+            <span class="text-slate-600">|</span>
+            <span class="text-emerald-400">जमा प्रविष्टियाँ: <strong id="statPaidCount">0</strong></span>
+            <span class="text-slate-600">|</span>
+            <span class="text-rose-400">बकाया (Due): <strong id="statDueCount">0</strong></span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Printable Register Container -->
+  <main class="flex-1 p-3 md:p-5">
+
+    <!-- Quick Class Selector Tabs (Screen Only) -->
+    <div
+      class="no-print max-w-[1600px] mx-auto mb-3 flex items-center justify-between flex-wrap gap-2 bg-slate-800 p-2 rounded-lg border border-slate-700 shadow-sm">
+      <div class="flex items-center gap-1.5 overflow-x-auto py-0.5" id="classTabsList">
+        <!-- Injected via JavaScript -->
+      </div>
+      <div class="text-[11px] text-slate-300 font-semibold flex items-center gap-2">
+        <span class="text-amber-300"><i class="fa-solid fa-lightbulb"></i> कक्षा चयन:</span>
+        <span class="text-slate-300">कक्षा पर क्लिक करें — प्रिंट केवल उसी कक्षा का निकलेगा</span>
+      </div>
+    </div>
+
+    <div
+      class="print-container max-w-[1600px] mx-auto bg-white shadow-lg border border-slate-300 p-4 md:p-6 rounded-sm">
+
+      <!-- Official Register Header -->
+      <div class="border-b-2 border-slate-900 pb-2 mb-3">
+        <div class="flex items-center justify-between gap-2">
+          <!-- Left Accent Strip -->
+          <div class="w-3 h-14 bg-red-700 rounded-xs shrink-0"></div>
+
+          <!-- Center School Title -->
+          <div class="text-center flex-1">
+            <h2 class="font-heading-hi text-xl md:text-2xl font-extrabold text-slate-900 tracking-wide">
+              पुलिस मॉडर्न स्कूल, 25वीं वाहिनी पीएसी, रायबरेली (उ०प्र०)
+            </h2>
+            <p class="font-heading-en text-xs md:text-sm font-bold text-slate-700 tracking-wider uppercase">
+              POLICE MODERN SCHOOL, 25TH BATTALION PAC, RAEBARELI (U.P.)
+            </p>
+            <div class="mt-1 inline-block bg-slate-100 border border-slate-400 px-4 py-0.5 rounded-full">
+              <span class="font-bold text-xs md:text-sm text-slate-900">
+                मासिक छात्र शुल्क पंजिका (MONTHLY STUDENT FEE REGISTER) — सत्र: <span
+                  id="displaySession">2026–2027</span>
+              </span>
+            </div>
+          </div>
+
+          <!-- Right Accent Strip -->
+          <div class="w-3 h-14 bg-green-700 rounded-xs shrink-0"></div>
+        </div>
+
+        <!-- Sub-Header Meta Info -->
+        <div
+          class="flex flex-wrap justify-between items-center mt-2 pt-1.5 border-t border-slate-300 text-xs font-semibold text-slate-800">
+          <div>कक्षा व वर्ग (Class & Section): <span id="displayMetaClass"
+              class="underline decoration-dotted px-2 font-bold">समस्त / कक्षा .................</span></div>
+          <div>कक्षाध्यापक (Class Teacher): <span id="displayMetaTeacher"
+              class="underline decoration-dotted px-2 font-bold">........................................</span></div>
+          <div>मासिक शुल्क दर (Monthly Fee Rate): <span id="displayMetaFee"
+              class="underline decoration-dotted px-2 font-bold">₹ ...............</span></div>
+        </div>
+      </div>
+
+      <!-- 17-Column Register Table (No extra columns after months) -->
+      <div class="overflow-x-auto">
+        <table class="register-table" id="feeRegisterTable">
+          <colgroup>
+            <!-- Col 1: S.No. -->
+            <col style="width: 3.2%;">
+            <!-- Col 2: Adm. Date -->
+            <col style="width: 6.8%;">
+            <!-- Col 3: Student Name -->
+            <col style="width: 12.5%;">
+            <!-- Col 4: Father's Name -->
+            <col style="width: 12.0%;">
+            <!-- Col 5: Class & Sec -->
+            <col style="width: 5.5%;">
+            <!-- Col 6-17: 12 Months (April to March) = 60% total (5% each) -->
+            <col style="width: 5%;">
+            <col style="width: 5%;">
+            <col style="width: 5%;">
+            <col style="width: 5%;">
+            <col style="width: 5%;">
+            <col style="width: 5%;">
+            <col style="width: 5%;">
+            <col style="width: 5%;">
+            <col style="width: 5%;">
+            <col style="width: 5%;">
+            <col style="width: 5%;">
+            <col style="width: 5%;">
+          </colgroup>
+          <thead>
+            <tr>
+              <th rowspan="2">क्र०<br>सं०<br><span class="text-[9px] font-normal">(1)</span></th>
+              <th rowspan="2">प्रवेश तिथि<br><span class="text-[9px] font-normal">Adm. Date (2)</span></th>
+              <th rowspan="2" class="cursor-pointer hover:bg-slate-200 transition select-none"
+                onclick="window.toggleNameSort()" title="नाम क्रम बदलें (A-Z / Z-A)">
+                छात्र / छात्रा का नाम<br>
+                <span class="text-[9px] font-normal inline-flex items-center justify-center gap-1">
+                  Student Name (3) <i id="nameSortIcon" class="fa-solid fa-arrow-down-a-z text-blue-600"></i>
+                </span>
+              </th>
+              <th rowspan="2">पिता का नाम<br><span class="text-[9px] font-normal">Father's Name (4)</span></th>
+              <th rowspan="2">कक्षा व<br>वर्ग<br><span class="text-[9px] font-normal">(5)</span></th>
+              <th colspan="12" class="bg-slate-200 text-slate-900 py-1">शैक्षणिक सत्र 2026–2027 (अप्रैल से मार्च) —
+                शुल्क विवरण (टिक ✓ एवं रसीद सं० / दिनांक)</th>
+            </tr>
+            <tr>
+              <th>अप्रैल<br><span class="text-[9px] font-normal">Apr (6)</span></th>
+              <th>मई<br><span class="text-[9px] font-normal">May (7)</span></th>
+              <th>जून<br><span class="text-[9px] font-normal">Jun (8)</span></th>
+              <th>जुलाई<br><span class="text-[9px] font-normal">Jul (9)</span></th>
+              <th>अगस्त<br><span class="text-[9px] font-normal">Aug (10)</span></th>
+              <th>सितम्बर<br><span class="text-[9px] font-normal">Sep (11)</span></th>
+              <th>अक्टूबर<br><span class="text-[9px] font-normal">Oct (12)</span></th>
+              <th>नवम्बर<br><span class="text-[9px] font-normal">Nov (13)</span></th>
+              <th>दिसम्बर<br><span class="text-[9px] font-normal">Dec (14)</span></th>
+              <th>जनवरी<br><span class="text-[9px] font-normal">Jan (15)</span></th>
+              <th>फरवरी<br><span class="text-[9px] font-normal">Feb (16)</span></th>
+              <th>मार्च<br><span class="text-[9px] font-normal">Mar (17)</span></th>
+            </tr>
+          </thead>
+          <tbody id="registerTableBody">
+            <!-- Rows injected via JavaScript -->
+          </tbody>
+          <tfoot id="registerTableFoot">
+            <!-- Monthly Tally Row Injected via JavaScript -->
+          </tfoot>
+        </table>
+      </div>
+
+      <!-- Legend & Instructions Note -->
+      <div class="mt-2 flex flex-wrap justify-between items-center text-[10px] text-slate-700">
+        <div class="flex flex-wrap items-center gap-3">
+          <span><strong>संकेत:</strong></span>
+          <span>[✓] शुल्क जमा (Paid)</span>
+          <span>[C] शुल्क छूट (Concession)</span>
+          <span>[!] बकाया (Due)</span>
+          <span>[ ] लंबित (Pending)</span>
+        </div>
+        <div class="no-print text-blue-700 font-medium">
+          <i class="fa-solid fa-circle-info"></i> सुझाव: किसी भी छात्र की जानकारी बदलने हेतु नाम पर क्लिक करें, या शुल्क
+          दर्ज करने हेतु संबंधित माह के बॉक्स पर क्लिक करें।
+        </div>
+      </div>
+
+      <!-- Three-Tier Official Authentication Footer -->
+      <div class="mt-10 pt-4 grid grid-cols-3 gap-6 text-center text-xs font-bold text-slate-900">
+        <div>
+          <div class="border-t border-slate-800 w-48 mx-auto pt-1">
+            कक्षाध्यापक हस्ताक्षर<br>
+            <span class="text-[10px] font-normal text-slate-600">(Class Teacher Sign)</span>
+          </div>
+        </div>
+        <div>
+          <div class="border-t border-slate-800 w-48 mx-auto pt-1">
+            शुल्क लिपिक / लेखाकार हस्ताक्षर<br>
+            <span class="text-[10px] font-normal text-slate-600">(Fee Clerk / Accountant Sign)</span>
+          </div>
+        </div>
+        <div>
+          <div class="border-t border-slate-800 w-52 mx-auto pt-1">
+            प्रभारी प्रधानाचार्या हस्ताक्षर व मोहर<br>
+            <span class="text-[10px] font-normal text-slate-600">(Incharge Principal Sign & Seal)</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- MODAL 1: Add / Edit Student -->
+  <div id="studentModal" class="no-print fixed inset-0 bg-slate-900/60 hidden items-center justify-center z-50 p-4">
+    <div class="bg-white rounded-lg shadow-xl max-w-md w-full overflow-hidden border border-slate-200">
+      <div class="bg-slate-900 text-white px-4 py-3 flex justify-between items-center">
+        <h3 id="studentModalTitle" class="font-bold text-sm flex items-center gap-2">
+          <i class="fa-solid fa-user-plus text-emerald-400"></i> नया छात्र जोड़ें
+        </h3>
+        <button onclick="closeModal('studentModal')" class="text-slate-400 hover:text-white">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+      <form id="studentForm" onsubmit="saveStudent(event)" class="p-4 space-y-3 text-xs">
+        <input type="hidden" id="editStudentId">
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">प्रवेश तिथि (Adm. Date) *</label>
+            <input type="text" id="inputAdmDate" placeholder="उदा० 04-04-2026" required
+              class="w-full border border-slate-300 rounded px-2.5 py-1.5 focus:outline-none focus:border-blue-600">
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">कक्षा व वर्ग (Class & Sec) *</label>
+            <input type="text" id="inputClassSec" placeholder="उदा० 5-A, KG-2" required
+              class="w-full border border-slate-300 rounded px-2.5 py-1.5 focus:outline-none focus:border-blue-600">
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">छात्र / छात्रा का नाम (Student Name) *</label>
+          <input type="text" id="inputStudentName" placeholder="उदा० आरव वर्मा / Aarav Verma" required
+            class="w-full border border-slate-300 rounded px-2.5 py-1.5 focus:outline-none focus:border-blue-600">
+        </div>
+
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">पिता का नाम (Father's Name) *</label>
+          <input type="text" id="inputFatherName" placeholder="उदा० श्री राजेश वर्मा" required
+            class="w-full border border-slate-300 rounded px-2.5 py-1.5 focus:outline-none focus:border-blue-600">
+        </div>
+
+        <div class="pt-2 flex items-center justify-between border-t border-slate-200">
+          <button type="button" id="deleteStudentBtn" onclick="deleteCurrentStudent()"
+            class="hidden bg-rose-100 hover:bg-rose-200 text-rose-700 px-3 py-1.5 rounded font-semibold">
+            <i class="fa-solid fa-trash"></i> छात्र हटाएं
+          </button>
+          <div class="flex gap-2 ml-auto">
+            <button type="button" onclick="closeModal('studentModal')"
+              class="bg-slate-200 hover:bg-slate-300 text-slate-800 px-3 py-1.5 rounded font-semibold">रद्द
+              करें</button>
+            <button type="submit"
+              class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-1.5 rounded font-semibold">सुरक्षित
+              करें</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL 2: Update Monthly Fee Entry -->
+  <div id="feeModal" class="no-print fixed inset-0 bg-slate-900/60 hidden items-center justify-center z-50 p-4">
+    <div class="bg-white rounded-lg shadow-xl max-w-sm w-full overflow-hidden border border-slate-200">
+      <div class="bg-slate-900 text-white px-4 py-3 flex justify-between items-center">
+        <h3 class="font-bold text-sm flex items-center gap-2">
+          <i class="fa-solid fa-receipt text-amber-400"></i> मासिक शुल्क विवरण अपडेट
+        </h3>
+        <button onclick="closeModal('feeModal')" class="text-slate-400 hover:text-white">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+      <form id="feeForm" onsubmit="saveFeeEntry(event)" class="p-4 space-y-3 text-xs">
+        <input type="hidden" id="feeStudentId">
+        <input type="hidden" id="feeMonthKey">
+
+        <div class="bg-slate-100 p-2.5 rounded border border-slate-200">
+          <div class="font-bold text-slate-900 text-sm" id="feeModalStudentName">छात्र का नाम</div>
+          <div class="text-slate-600 mt-0.5">माह: <strong id="feeModalMonthLabel" class="text-blue-700">अप्रैल</strong>
+            | कक्षा: <span id="feeModalClassLabel">5-A</span></div>
+        </div>
+
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">शुल्क स्थिति (Status)</label>
+          <select id="feeStatusInput"
+            class="w-full border border-slate-300 rounded px-2.5 py-1.5 focus:outline-none focus:border-blue-600 font-semibold">
+            <option value="paid">✓ जमा (Paid)</option>
+            <option value="pending">लंबित (Pending - खाली)</option>
+            <option value="concession">C - शुल्क छूट (Concession)</option>
+            <option value="due">! - बकाया (Due)</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">रसीद संख्या / दिनांक (Receipt No. & Date)</label>
+          <input type="text" id="feeReceiptInput" placeholder="उदा० R-104 / 12-04"
+            class="w-full border border-slate-300 rounded px-2.5 py-1.5 focus:outline-none focus:border-blue-600">
+          <p class="text-[10px] text-slate-500 mt-1">यह विवरण प्रिंट में चेकबॉक्स के नीचे डॉटेड लाइन पर दिखाई देगा।</p>
+        </div>
+
+        <div class="pt-2 flex justify-end gap-2 border-t border-slate-200">
+          <button type="button" onclick="closeModal('feeModal')"
+            class="bg-slate-200 hover:bg-slate-300 text-slate-800 px-3 py-1.5 rounded font-semibold">रद्द करें</button>
+          <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-1.5 rounded font-semibold">अपडेट
+            करें</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL 3: Register Header Meta Edit -->
+  <div id="metaModal" class="no-print fixed inset-0 bg-slate-900/60 hidden items-center justify-center z-50 p-4">
+    <div class="bg-white rounded-lg shadow-xl max-w-md w-full overflow-hidden border border-slate-200">
+      <div class="bg-slate-900 text-white px-4 py-3 flex justify-between items-center">
+        <h3 class="font-bold text-sm">पंजिका शीर्षक विवरण संपादन</h3>
+        <button onclick="closeModal('metaModal')" class="text-slate-400 hover:text-white">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+      <form onsubmit="saveRegisterMeta(event)" class="p-4 space-y-3 text-xs">
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">शैक्षणिक सत्र (Session)</label>
+          <input type="text" id="metaSessionInput" value="2026–2027"
+            class="w-full border border-slate-300 rounded px-2.5 py-1.5">
+        </div>
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">कक्षा व वर्ग (Class & Section)</label>
+          <input type="text" id="metaClassInput" placeholder="उदा० कक्षा 5 - वर्ग 'अ'"
+            class="w-full border border-slate-300 rounded px-2.5 py-1.5">
+        </div>
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">कक्षाध्यापक का नाम (Class Teacher)</label>
+          <input type="text" id="metaTeacherInput" placeholder="उदा० श्रीमती सुमन तिवारी"
+            class="w-full border border-slate-300 rounded px-2.5 py-1.5">
+        </div>
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">मासिक शुल्क दर (Monthly Fee Rate)</label>
+          <input type="text" id="metaFeeInput" placeholder="उदा० ₹ 850/- प्रतिमाह"
+            class="w-full border border-slate-300 rounded px-2.5 py-1.5">
+        </div>
+        <div class="pt-2 flex justify-end gap-2 border-t border-slate-200">
+          <button type="button" onclick="closeModal('metaModal')"
+            class="bg-slate-200 text-slate-800 px-3 py-1.5 rounded font-semibold">रद्द करें</button>
+          <button type="submit" class="bg-slate-900 text-white px-4 py-1.5 rounded font-semibold">लागू करें</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="miniToast"
+    class="no-print fixed bottom-4 right-4 z-50 bg-slate-900 text-white border border-slate-700 px-4 py-2.5 rounded-lg shadow-2xl text-xs font-semibold flex items-center gap-2 transition-all duration-300 opacity-0 pointer-events-none translate-y-3">
+    <i class="fa-solid fa-cloud-check text-emerald-400 text-base"></i>
+    <span id="miniToastText">संदेश</span>
+  </div>
+
+  <!-- ==================== FIREBASE MODULAR SDK & CONTROLLER SCRIPT ==================== -->
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js';
+    import { initializeFirestore, collection, doc, getDoc, getDocs, setDoc } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
+
+    // ===== OFFICIAL FIREBASE CONFIG (Matching index.html / pms_fee_register.html) =====
+    const firebaseConfig = {
+      apiKey: "AIzaSyDsVKuptdW4jRWQ5rLX_h_fn53xuFoYVMI",
+      authDomain: "abcreport-27dea.firebaseapp.com",
+      projectId: "abcreport-27dea",
+      storageBucket: "abcreport-27dea.firebasestorage.app",
+      messagingSenderId: "1422972209",
+      appId: "1:1422972209:web:82fbc39400d75566d8cc10"
+    };
+
+    // Dedicated Firestore Collection & Doc for Fee Register
+    const REGISTER_COLLECTION = 'pms_fee_registers';
+    const REGISTER_DOC_ID = 'session_2026_2027';
+    const STORAGE_KEY = 'pms_fee_register_v1';
+
+    let app = null, db = null;
+    try {
+      app = initializeApp(firebaseConfig);
+      db = initializeFirestore(app, { experimentalAutoDetectLongPolling: true });
+    } catch (e) {
+      console.warn("Firebase Init note:", e);
+    }
+
+    // =========================================================================
+    // 1. CONSTANTS & CONFIGURATION (April to March Fixed Academic Cycle)
+    // =========================================================================
+    const MONTHS = [
+      { key: 'apr', hi: 'अप्रैल', en: 'Apr' },
+      { key: 'may', hi: 'मई', en: 'May' },
+      { key: 'jun', hi: 'जून', en: 'Jun' },
+      { key: 'jul', hi: 'जुलाई', en: 'Jul' },
+      { key: 'aug', hi: 'अगस्त', en: 'Aug' },
+      { key: 'sep', hi: 'सितम्बर', en: 'Sep' },
+      { key: 'oct', hi: 'अक्टूबर', en: 'Oct' },
+      { key: 'nov', hi: 'नवम्बर', en: 'Nov' },
+      { key: 'dec', hi: 'दिसम्बर', en: 'Dec' },
+      { key: 'jan', hi: 'जनवरी', en: 'Jan' },
+      { key: 'feb', hi: 'फरवरी', en: 'Feb' },
+      { key: 'mar', hi: 'मार्च', en: 'Mar' }
+    ];
+
+    const MONTH_KEY_MAP = {
+      'apr': 'apr', 'april': 'apr', '4': 'apr',
+      'may': 'may', '5': 'may',
+      'jun': 'jun', 'june': 'jun', '6': 'jun',
+      'jul': 'jul', 'july': 'jul', '7': 'jul',
+      'aug': 'aug', 'august': 'aug', '8': 'aug',
+      'sep': 'sep', 'september': 'sep', '9': 'sep',
+      'oct': 'oct', 'october': 'oct', '10': 'oct',
+      'nov': 'nov', 'november': 'nov', '11': 'nov',
+      'dec': 'dec', 'december': 'dec', '12': 'dec',
+      'jan': 'jan', 'january': 'jan', '1': 'jan',
+      'feb': 'feb', 'february': 'feb', '2': 'feb',
+      'mar': 'mar', 'march': 'mar', '3': 'mar'
+    };
+
+    function extractMonthKey(str) {
+      if (!str) return null;
+      const s = String(str).toLowerCase().trim();
+      for (const [k, v] of Object.entries(MONTH_KEY_MAP)) {
+        if (s.includes(k)) return v;
+      }
+      return null;
+    }
+
+    // =========================================================================
+    // 1.5 CLASS DEFINITIONS & SORTING CONFIGURATION
+    // =========================================================================
+    const STANDARD_CLASS_ORDER = ['KG-1', 'KG-2', '1st', '2nd', '3rd', '4th', '5th', '6th', '7th', '8th'];
+
+    const FEE_CHART = {
+      'KG-1': 600, 'KG-2': 600, 'LKG': 600, 'UKG': 600, 'KG-I': 600, 'KG-II': 600,
+      '1st': 700, '2nd': 700, '3rd': 800, '4th': 800, '5th': 800,
+      '6th': 1000, '7th': 1000, '8th': 1000
+    };
+
+    function getStudentBaseClass(item) {
+      if (!item) return '5th';
+      let raw = (typeof item === 'string') ? item : (item.classSec || item.cls || item.class || '');
+      const t = String(raw).trim();
+
+      // 1. Check KG-2 FIRST (UKG, KG-2, KG2, KG-II, kg 2, etc.)
+      if (/^(u\.?k\.?g\.?|kg-?2|kg-?ii|kg\s*2)/i.test(t) || /^kg-?2\b/i.test(t) || /^kg-?ii\b/i.test(t) || /\b(ukg|kg-2|kg2|kg-ii)\b/i.test(t)) {
+        return 'KG-2';
+      }
+
+      // 2. Check KG-1 SECOND (LKG, KG-1, KG1, KG-I, kg 1, etc.)
+      if (/^(l\.?k\.?g\.?|kg-?1|kg-?i(?!i)|kg\s*1)/i.test(t) || /^kg-?1\b/i.test(t) || /^kg-?i(?!i)\b/i.test(t) || /\b(lkg|kg-1|kg1|kg-i)\b/i.test(t)) {
+        return 'KG-1';
+      }
+
+      // 3. Bare KG fallback
+      if (/^kg\b/i.test(t)) {
+        if (typeof item === 'object') {
+          const sec = String(item.sec || item.section || '').trim().toUpperCase();
+          if (sec === '2' || sec === 'II' || sec === 'UKG' || sec === 'KG-2') return 'KG-2';
+          if (sec === '1' || sec === 'I' || sec === 'LKG' || sec === 'KG-1') return 'KG-1';
+        }
+        if (/2|ii/i.test(t)) return 'KG-2';
+        return 'KG-1';
+      }
+
+      // 4. Standard 1st to 8th
+      if (/^(1|1st|first|कक्षा\s*1|class\s*1)\b/i.test(t) || /^1(?:st)?[-_\s]/i.test(t)) return '1st';
+      if (/^(2|2nd|second|कक्षा\s*2|class\s*2)\b/i.test(t) || /^2(?:nd)?[-_\s]/i.test(t)) return '2nd';
+      if (/^(3|3rd|third|कक्षा\s*3|class\s*3)\b/i.test(t) || /^3(?:rd)?[-_\s]/i.test(t)) return '3rd';
+      if (/^(4|4th|fourth|कक्षा\s*4|class\s*4)\b/i.test(t) || /^4(?:th)?[-_\s]/i.test(t)) return '4th';
+      if (/^(5|5th|fifth|कक्षा\s*5|class\s*5)\b/i.test(t) || /^5(?:th)?[-_\s]/i.test(t)) return '5th';
+      if (/^(6|6th|sixth|कक्षा\s*6|class\s*6)\b/i.test(t) || /^6(?:th)?[-_\s]/i.test(t)) return '6th';
+      if (/^(7|7th|seventh|कक्षा\s*7|class\s*7)\b/i.test(t) || /^7(?:th)?[-_\s]/i.test(t)) return '7th';
+      if (/^(8|8th|eighth|कक्षा\s*8|class\s*8)\b/i.test(t) || /^8(?:th)?[-_\s]/i.test(t)) return '8th';
+
+      const numMatch = t.match(/^([0-9]+(?:st|nd|rd|th)?)/i);
+      if (numMatch) return numMatch[1];
+      return t;
+    }
+
+    function normalizeClassName(cls) {
+      return getStudentBaseClass(cls);
+    }
+
+    function getStudentSection(stu) {
+      if (!stu) return '';
+      if (stu.sec || stu.section) return String(stu.sec || stu.section).trim().toUpperCase();
+      const raw = String(stu.classSec || stu.class || '').trim();
+      const m = raw.match(/[-_\s]([A-Za-z])$/);
+      if (m) return m[1].toUpperCase();
+      return '';
+    }
+
+    function sortClasses(classList) {
+      return classList.sort((a, b) => {
+        const baseA = getStudentBaseClass(a);
+        const baseB = getStudentBaseClass(b);
+        const idxA = STANDARD_CLASS_ORDER.indexOf(baseA);
+        const idxB = STANDARD_CLASS_ORDER.indexOf(baseB);
+        if (idxA !== -1 && idxB !== -1) return idxA - idxB;
+        if (idxA !== -1) return -1;
+        if (idxB !== -1) return 1;
+        return baseA.localeCompare(baseB);
+      });
+    }
+
+    function sortStudentsMulti(list, sortOrder = 'name_asc', isAllClasses = false) {
+      return [...list].sort((a, b) => {
+        // If viewing All Classes, ALWAYS group by standard class order first!
+        if (isAllClasses) {
+          const clsA = getStudentBaseClass(a);
+          const clsB = getStudentBaseClass(b);
+          if (clsA !== clsB) {
+            const idxA = STANDARD_CLASS_ORDER.indexOf(clsA);
+            const idxB = STANDARD_CLASS_ORDER.indexOf(clsB);
+            if (idxA !== -1 && idxB !== -1) return idxA - idxB;
+            if (idxA !== -1) return -1;
+            if (idxB !== -1) return 1;
+            return clsA.localeCompare(clsB);
+          }
+        }
+
+        // Now sort within the class (or entire list if single class selected)
+        if (sortOrder === 'name_asc') {
+          const nameA = String(a.name || '').trim();
+          const nameB = String(b.name || '').trim();
+          return nameA.localeCompare(nameB, ['hi', 'en'], { sensitivity: 'base', numeric: true });
+        }
+        if (sortOrder === 'name_desc') {
+          const nameA = String(a.name || '').trim();
+          const nameB = String(b.name || '').trim();
+          return nameB.localeCompare(nameA, ['hi', 'en'], { sensitivity: 'base', numeric: true });
+        }
+        if (sortOrder === 'roll_asc') {
+          const rA = Number(a.roll || a.serial || 0);
+          const rB = Number(b.roll || b.serial || 0);
+          if (rA && rB) return rA - rB;
+          return String(a.name || '').localeCompare(String(b.name || ''));
+        }
+        if (sortOrder === 'adm_asc') {
+          const dA = String(a.admDate || '');
+          const dB = String(b.admDate || '');
+          return dA.localeCompare(dB);
+        }
+        return 0;
+      });
+    }
+
+    // =========================================================================
+    // 2. UI STATUS HELPERS & TOAST
+    // =========================================================================
+    function setCloudStatus(status, text) {
+      const dot = document.getElementById('cloudDot');
+      const txt = document.getElementById('cloudStatusText');
+      if (!dot || !txt) return;
+
+      if (status === 'connected') {
+        dot.className = "w-2 h-2 rounded-full bg-emerald-400";
+        txt.className = "text-emerald-300 font-semibold";
+        txt.innerText = text || "फायरस्टोर: कनेक्टेड ✓";
+      } else if (status === 'loading') {
+        dot.className = "w-2 h-2 rounded-full bg-amber-400 animate-pulse";
+        txt.className = "text-amber-300 font-semibold";
+        txt.innerText = text || "सिंक हो रहा है...";
+      } else {
+        dot.className = "w-2 h-2 rounded-full bg-slate-400";
+        txt.className = "text-slate-300";
+        txt.innerText = text || "लोकल ऑफलाइन मोड";
+      }
+    }
+
+    function showMiniToast(msg) {
+      const toast = document.getElementById('miniToast');
+      const txt = document.getElementById('miniToastText');
+      if (!toast || !txt) return;
+      txt.textContent = msg;
+      toast.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-3');
+      toast.classList.add('opacity-100', 'translate-y-0');
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'pointer-events-none', 'translate-y-3');
+        toast.classList.remove('opacity-100', 'translate-y-0');
+      }, 3200);
+    }
+
+    // =========================================================================
+    // 3. STORAGE & FIRESTORE DEDICATED COLLECTION SERVICE
+    // =========================================================================
+    const StorageService = {
+      // 1. Initial Load: Tries Dedicated Collection -> Original Source -> LocalStorage
+      async loadData() {
+        // Step A: Read from dedicated Firestore collection
+        try {
+          if (db) {
+            setCloudStatus('loading', 'क्लाउड कलेक्शन से लोड हो रहा है...');
+            const docRef = doc(db, REGISTER_COLLECTION, REGISTER_DOC_ID);
+            const snap = await getDoc(docRef);
+            if (snap.exists()) {
+              const cloudData = snap.data();
+              if (cloudData && Array.isArray(cloudData.students) && cloudData.students.length > 0) {
+                appState = {
+                  meta: cloudData.meta || this.getDefaultSeedData().meta,
+                  students: cloudData.students
+                };
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+                setCloudStatus('connected', `क्लाउड: ${appState.students.length} छात्र लोड ✓`);
+                return appState;
+              }
+            }
+          }
+        } catch (err) {
+          console.warn("Dedicated collection read warning:", err);
+        }
+
+        // Step B: Dedicated doc not found; fetch from original source (students & fees) and create dedicated doc!
+        try {
+          if (db) {
+            setCloudStatus('loading', 'मूल स्रोत (students & fees) से फेच कर नया कलेक्शन बना रहे हैं...');
+            const builtState = await fetchFromOriginalSourceAndBuild();
+            if (builtState && builtState.students.length > 0) {
+              appState = builtState;
+              await this.saveToDedicatedCollection(appState);
+              localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+              setCloudStatus('connected', `क्लाउड: नया कलेक्शन तैयार (${appState.students.length} छात्र) ✓`);
+              return appState;
+            }
+          }
+        } catch (err) {
+          console.warn("Original source build warning:", err);
+        }
+
+        // Step C: Fallback to LocalStorage
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          try {
+            appState = JSON.parse(raw);
+            setCloudStatus('offline', 'लोकल ऑफलाइन मोड');
+            return appState;
+          } catch (e) {
+            console.error('Data parse error:', e);
+          }
+        }
+
+        // Step D: Fallback to default sample seed data
+        appState = this.getDefaultSeedData();
+        setCloudStatus('offline', 'डिफ़ॉल्ट डेटा (ऑफलाइन)');
+        return appState;
+      },
+
+      // 2. Save Data: LocalStorage + Dedicated Firestore Collection
+      async saveData(state, pushToCloud = true) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+
+        if (pushToCloud && db) {
+          try {
+            await this.saveToDedicatedCollection(state);
+            setCloudStatus('connected', `क्लाउड पर सुरक्षित (${new Date().toLocaleTimeString('en-IN')}) ✓`);
+          } catch (err) {
+            console.warn("Cloud save warning:", err);
+            setCloudStatus('offline', 'क्लाउड सिंक विफल (लोकल सुरक्षित)');
+          }
+        }
+      },
+
+      // Write directly to Dedicated Firestore Collection
+      async saveToDedicatedCollection(state) {
+        if (!db) return;
+        const docRef = doc(db, REGISTER_COLLECTION, REGISTER_DOC_ID);
+        await setDoc(docRef, {
+          meta: state.meta || {},
+          students: state.students || [],
+          totalStudents: (state.students || []).length,
+          lastUpdated: new Date().toISOString(),
+          session: '2026-2027'
+        }, { merge: true });
+      },
+
+      getDefaultSeedData() {
+        return {
+          meta: {
+            session: '2026–2027',
+            classTitle: 'समस्त / कक्षा .................',
+            teacherName: '........................................',
+            feeRate: '₹ ...............'
+          },
+          students: [
+            {
+              id: 'stu_1',
+              serial: 1,
+              admDate: '02-04-2026',
+              name: 'आरव सिंह (Aarav Singh)',
+              fatherName: 'श्री विक्रम सिंह',
+              classSec: '5-A',
+              fees: {
+                apr: { status: 'paid', receipt: 'R-101/05-04' },
+                may: { status: 'paid', receipt: 'R-214/08-05' },
+                jun: { status: 'paid', receipt: 'R-214/08-05' },
+                jul: { status: 'due', receipt: '' }
+              }
+            },
+            {
+              id: 'stu_2',
+              serial: 2,
+              admDate: '04-04-2026',
+              name: 'अनन्या यादव (Ananya Yadav)',
+              fatherName: 'श्री मनोज यादव',
+              classSec: '5-A',
+              fees: {
+                apr: { status: 'paid', receipt: 'R-108/07-04' },
+                may: { status: 'concession', receipt: 'Staff Ward' }
+              }
+            },
+            {
+              id: 'stu_3',
+              serial: 3,
+              admDate: '10-04-2026',
+              name: 'प्रियांशु शुक्ला (Priyanshu Shukla)',
+              fatherName: 'श्री आलोक शुक्ला',
+              classSec: '4-B',
+              fees: {
+                apr: { status: 'paid', receipt: 'R-115/10-04' }
+              }
+            }
+          ]
+        };
+      }
+    };
+
+    // =========================================================================
+    // 4. FETCH FROM ORIGINAL SOURCE & BUILD DEDICATED SNAPSHOT
+    // =========================================================================
+    async function fetchFromOriginalSourceAndBuild() {
+      if (!db) return null;
+
+      const [stuSnap, feeSnap] = await Promise.all([
+        getDocs(collection(db, 'students')),
+        getDocs(collection(db, 'fees'))
+      ]);
+
+      if (!stuSnap || stuSnap.empty) return null;
+
+      const rawStudents = stuSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+      const rawFees = feeSnap ? feeSnap.docs.map(d => ({ id: d.id, ...d.data() })) : [];
+
+      const students = rawStudents
+        .filter(s => !s.deleted)
+        .map((d, index) => {
+          const rawCls = d.cls || d.class || '5th';
+          const normCls = normalizeClassName(rawCls);
+          const sec = (d.sec || d.section || '').trim().toUpperCase();
+          const classSec = sec ? `${normCls}-${sec}` : normCls;
+          const admDate = d.admDate || d.admissionDate || d.dob || '';
+          const name = d.name || d.studentName || 'छात्र नाम अनुपलब्ध';
+          const fatherName = d.father || d.fatherName || 'पिता का नाम अनुपलब्ध';
+          const stIdStr = String(d.id);
+          const stPenStr = String(d.pen || '');
+
+          // Map Fee Payments for all 12 Months
+          const fees = {};
+          const studentFees = rawFees.filter(f => {
+            const fStuId = String(f.studentId || f.pen || '');
+            return (fStuId === stIdStr || (stPenStr && fStuId === stPenStr));
+          });
+
+          studentFees.forEach(f => {
+            const mKey = extractMonthKey(f.month);
+            if (mKey) {
+              fees[mKey] = {
+                status: 'paid',
+                receipt: f.receipt || (f.amount ? `₹${f.amount}` : 'Paid')
+              };
+            }
+          });
+
+          return {
+            id: d.id,
+            serial: typeof d.serial === 'number' && !isNaN(d.serial) ? d.serial : (index + 1),
+            admDate: admDate,
+            name: name,
+            fatherName: fatherName,
+            classSec: classSec,
+            fees: fees
+          };
+        });
+
+      // Class-wise sorting in standard order, then Name Ascending order
+      const sortedStudents = sortStudentsMulti(students, 'name_asc', true);
+
+      return {
+        meta: {
+          session: '2026–2027',
+          classTitle: 'समस्त कक्षाएं (All Classes)',
+          teacherName: '........................................',
+          feeRate: '₹ 800/-'
+        },
+        students: sortedStudents
+      };
+    }
+
+    // =========================================================================
+    // 5. 10-SECOND BACKGROUND POLLING & SYNC ENGINE
+    // =========================================================================
+    let autoSyncInterval = null;
+    let isAutoSyncEnabled = true;
+    let countdownSeconds = 10;
+    let isSyncing = false;
+
+    async function fetchOriginalSourceAndSync(manualTrigger = false) {
+      if (!db || isSyncing) return;
+
+      // Do not interrupt user if editing in a modal
+      const studentModalOpen = !document.getElementById('studentModal').classList.contains('hidden');
+      const feeModalOpen = !document.getElementById('feeModal').classList.contains('hidden');
+      const metaModalOpen = !document.getElementById('metaModal').classList.contains('hidden');
+      const hasModalOpen = studentModalOpen || feeModalOpen || metaModalOpen;
+
+      if (!manualTrigger && hasModalOpen) {
+        return; // Skip background sync while typing in modal
+      }
+
+      isSyncing = true;
+      const icon = document.getElementById('fetchSourceIcon');
+      if (icon) icon.classList.add('fa-spin');
+      setCloudStatus('loading', 'मूल स्रोत (students & fees) से 10s सिंक...');
+
+      try {
+        const [stuSnap, feeSnap] = await Promise.all([
+          getDocs(collection(db, 'students')),
+          getDocs(collection(db, 'fees'))
+        ]);
+
+        if (stuSnap && !stuSnap.empty) {
+          const rawStudents = stuSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+          const rawFees = feeSnap ? feeSnap.docs.map(d => ({ id: d.id, ...d.data() })) : [];
+
+          // Clone current students
+          const currentStudents = [...appState.students];
+          let updatedCount = 0;
+
+          rawStudents.filter(s => !s.deleted).forEach((d, index) => {
+            const rawCls = d.cls || d.class || '5th';
+            const normCls = normalizeClassName(rawCls);
+            const sec = (d.sec || d.section || '').trim().toUpperCase();
+            const classSec = sec ? `${normCls}-${sec}` : normCls;
+            const admDate = d.admDate || d.admissionDate || d.dob || '';
+            const name = d.name || d.studentName || 'छात्र नाम अनुपलब्ध';
+            const fatherName = d.father || d.fatherName || 'पिता का नाम अनुपलब्ध';
+            const stIdStr = String(d.id);
+            const stPenStr = String(d.pen || '');
+
+            let existing = currentStudents.find(s => s.id === d.id || (stPenStr && s.id === stPenStr));
+
+            if (!existing) {
+              // Newly registered student in school!
+              const newStu = {
+                id: d.id,
+                serial: typeof d.serial === 'number' && !isNaN(d.serial) ? d.serial : (index + 1),
+                admDate: admDate,
+                name: name,
+                fatherName: fatherName,
+                classSec: classSec,
+                fees: {}
+              };
+              currentStudents.push(newStu);
+              existing = newStu;
+              updatedCount++;
+            } else {
+              // Update master details if updated in main school system
+              existing.name = name;
+              existing.fatherName = fatherName;
+              existing.classSec = classSec;
+              if (admDate && !existing.admDate) existing.admDate = admDate;
+            }
+
+            // Merge fee payments
+            if (!existing.fees) existing.fees = {};
+            const studentFees = rawFees.filter(f => {
+              const fStuId = String(f.studentId || f.pen || '');
+              return (fStuId === stIdStr || (stPenStr && fStuId === stPenStr));
+            });
+
+            studentFees.forEach(f => {
+              const mKey = extractMonthKey(f.month);
+              if (mKey) {
+                // If not already marked paid, sync official paid receipt
+                if (!existing.fees[mKey] || existing.fees[mKey].status !== 'paid') {
+                  existing.fees[mKey] = {
+                    status: 'paid',
+                    receipt: f.receipt || (f.amount ? `₹${f.amount}` : 'Paid')
+                  };
+                  updatedCount++;
+                }
+              }
+            });
+          });
+
+          // Sort students by standard class order, then Name Ascending order
+          currentStudents = sortStudentsMulti(currentStudents, 'name_asc', true);
+          appState.students = currentStudents;
+
+          // 1. Save directly to dedicated Firestore collection
+          await StorageService.saveToDedicatedCollection(appState);
+
+          // 2. Save locally
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+
+          // 3. Re-render table smoothly
+          if (!hasModalOpen) {
+            populateClassFilter();
+            renderTable();
+          }
+
+          setCloudStatus('connected', `क्लाउड: सिंक पूर्ण (${appState.students.length} छात्र) ✓`);
+          if (manualTrigger) {
+            showMiniToast(`स्रोत से सिंक सफल! कुल ${appState.students.length} छात्र लोड हुए।`);
+          }
+        }
+      } catch (err) {
+        console.error("Auto-fetch source error:", err);
+        setCloudStatus('connected', 'क्लाउड: कनेक्टेड (सिंक पुनः प्रयास 10s में)');
+      } finally {
+        isSyncing = false;
+        if (icon) icon.classList.remove('fa-spin');
+        countdownSeconds = 10;
+      }
+    }
+
+    function startAutoSyncLoop() {
+      if (autoSyncInterval) clearInterval(autoSyncInterval);
+      countdownSeconds = 10;
+
+      autoSyncInterval = setInterval(async () => {
+        if (!isAutoSyncEnabled) return;
+
+        countdownSeconds--;
+        const cdEl = document.getElementById('syncCountdown');
+        if (cdEl) cdEl.textContent = `${countdownSeconds}s`;
+
+        if (countdownSeconds <= 0) {
+          countdownSeconds = 10;
+          await fetchOriginalSourceAndSync(false);
+        }
+      }, 1000);
+    }
+
+    // Toggle 10s auto-sync
+    window.toggleAutoSync = function () {
+      isAutoSyncEnabled = !isAutoSyncEnabled;
+      const btn = document.getElementById('btnToggleAutoSync');
+      if (btn) {
+        if (isAutoSyncEnabled) {
+          btn.className = "text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-600 text-white hover:bg-emerald-500 transition";
+          btn.textContent = "10s चालू ✓";
+          countdownSeconds = 10;
+          showMiniToast("10-सेकंड ऑटो-सिंक सक्रिय कर दिया गया है।");
+        } else {
+          btn.className = "text-[10px] font-bold px-2 py-0.5 rounded bg-slate-700 text-amber-300 hover:bg-slate-600 transition";
+          btn.textContent = "रोक दिया गया ⏸";
+          showMiniToast("ऑटो-सिंक रोक दिया गया है।");
+        }
+      }
+    };
+
+    // Save to Cloud Now (Manual Button)
+    window.saveToCloudNow = async function () {
+      const icon = document.getElementById('saveCloudIcon');
+      if (icon) icon.className = 'fa-solid fa-spinner fa-spin';
+      setCloudStatus('loading', 'क्लाउड कलेक्शन में सेव हो रहा है...');
+
+      try {
+        await StorageService.saveToDedicatedCollection(appState);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+        setCloudStatus('connected', `क्लाउड पर सुरक्षित (${new Date().toLocaleTimeString('en-IN')}) ✓`);
+        showMiniToast('पंजिका डेटा फायरस्टोर कलेक्शन में सफलतापूर्वक सेव हो गया!');
+      } catch (err) {
+        console.error("Manual save to cloud error:", err);
+        setCloudStatus('offline', 'सेव विफल');
+        alert("क्लाउड पर सेव नहीं हो सका। विवरण: " + err.message);
+      } finally {
+        if (icon) icon.className = 'fa-solid fa-cloud-arrow-up';
+      }
+    };
+
+    window.fetchOriginalSourceAndSync = fetchOriginalSourceAndSync;
+
+    // =========================================================================
+    // 7. APPLICATION STATE & RENDERING
+    // =========================================================================
+    let appState = { meta: {}, students: [] };
+    let isBlankPrintMode = false;
+
+    async function initApp() {
+      appState = await StorageService.loadData();
+      applyMetaToDOM();
+      populateClassFilter();
+      renderTable();
+
+      // Start 10-second background fetch & sync loop
+      startAutoSyncLoop();
+    }
+
+    function applyMetaToDOM() {
+      document.getElementById('displaySession').textContent = appState.meta.session || '2026–2027';
+      document.getElementById('displayMetaClass').textContent = appState.meta.classTitle || 'समस्त / कक्षा .................';
+      document.getElementById('displayMetaTeacher').textContent = appState.meta.teacherName || '........................................';
+      document.getElementById('displayMetaFee').textContent = appState.meta.feeRate || '₹ ...............';
+    }
+
+    function populateClassFilter() {
+      const select = document.getElementById('classFilter');
+      const tabsList = document.getElementById('classTabsList');
+      const currentVal = select.value || 'ALL';
+
+      // Extract unique classes using robust getStudentBaseClass
+      const rawClasses = [...new Set(appState.students.map(s => getStudentBaseClass(s)).filter(Boolean))];
+
+      const sortedClasses = sortClasses(rawClasses);
+
+      // 1. Populate Dropdown Options
+      select.innerHTML = '<option value="ALL">समस्त कक्षाएं (All Classes)</option>';
+      sortedClasses.forEach(cls => {
+        const count = appState.students.filter(s => getStudentBaseClass(s) === cls).length;
+        const opt = document.createElement('option');
+        opt.value = cls;
+        opt.textContent = `कक्षा: ${cls} (${count} छात्र)`;
+        select.appendChild(opt);
+      });
+
+      if (sortedClasses.includes(currentVal) || currentVal === 'ALL') {
+        select.value = currentVal;
+      }
+
+      // 2. Populate Class Tabs Pills (Quick Selector)
+      if (tabsList) {
+        let tabsHtml = `
+          <button type="button" onclick="window.selectClassTab('ALL')" 
+            class="class-tab-btn px-2.5 py-1 rounded text-xs font-bold transition flex items-center gap-1.5 cursor-pointer ${currentVal === 'ALL' ? 'bg-blue-600 text-white shadow ring-2 ring-blue-400' : 'bg-slate-700 text-slate-300 hover:bg-slate-600 hover:text-white'}">
+            <span>समस्त</span>
+            <span class="bg-slate-900/50 text-[10px] px-1.5 py-0.2 rounded-full font-mono">${appState.students.length}</span>
+          </button>
+        `;
+
+        sortedClasses.forEach(cls => {
+          const count = appState.students.filter(s => getStudentBaseClass(s) === cls).length;
+          const isActive = currentVal === cls;
+          tabsHtml += `
+            <button type="button" onclick="window.selectClassTab('${cls}')" 
+              class="class-tab-btn px-2.5 py-1 rounded text-xs font-bold transition flex items-center gap-1.5 cursor-pointer ${isActive ? 'bg-blue-600 text-white shadow ring-2 ring-blue-400' : 'bg-slate-700 text-slate-300 hover:bg-slate-600 hover:text-white'}">
+              <span>${cls}</span>
+              <span class="bg-slate-900/50 text-[10px] px-1.5 py-0.2 rounded-full font-mono">${count}</span>
+            </button>
+          `;
+        });
+
+        tabsList.innerHTML = tabsHtml;
+      }
+    }
+
+    window.selectClassTab = function (cls) {
+      const select = document.getElementById('classFilter');
+      if (select) {
+        select.value = cls;
+        populateClassFilter();
+        renderTable();
+      }
+    };
+
+    function renderTable() {
+      const tbody = document.getElementById('registerTableBody');
+      const tfoot = document.getElementById('registerTableFoot');
+      tbody.innerHTML = '';
+      if (tfoot) tfoot.innerHTML = '';
+
+      const query = (document.getElementById('searchInput')?.value || "").toLowerCase().trim();
+      const classFilter = document.getElementById('classFilter')?.value || 'ALL';
+      const sectionFilter = document.getElementById('sectionFilter')?.value || 'ALL';
+      const sortOrder = document.getElementById('sortOrderFilter')?.value || 'name_asc';
+
+      // 1. Filter students by selected class, section and search query
+      let filteredStudents = appState.students.filter(stu => {
+        const stuCls = getStudentBaseClass(stu);
+        const matchesClass = (classFilter === 'ALL' || stuCls === classFilter || (stu.classSec || '').trim() === classFilter);
+
+        let matchesSec = true;
+        if (sectionFilter !== 'ALL') {
+          const stuSec = getStudentSection(stu);
+          matchesSec = (stuSec === sectionFilter);
+        }
+
+        const matchesSearch = !query ||
+          String(stu.name || '').toLowerCase().includes(query) ||
+          String(stu.fatherName || '').toLowerCase().includes(query) ||
+          String(stu.admDate || '').toLowerCase().includes(query) ||
+          String(stu.classSec || '').toLowerCase().includes(query);
+
+        return matchesClass && matchesSec && matchesSearch;
+      });
+
+      // 2. Sort filtered students (Class-wise if ALL, then by chosen sort order)
+      filteredStudents = sortStudentsMulti(filteredStudents, sortOrder, classFilter === 'ALL');
+
+      // Update Sub-Header Meta Info for Class-wise Printing!
+      const metaClassEl = document.getElementById('displayMetaClass');
+      const metaFeeEl = document.getElementById('displayMetaFee');
+      const btnPrintText = document.getElementById('btnPrintText');
+
+      if (classFilter === 'ALL') {
+        if (metaClassEl) metaClassEl.textContent = 'समस्त कक्षाएं (All Classes)';
+        if (metaFeeEl) metaFeeEl.textContent = '₹ 600 - ₹ 1000 (कक्षावार)';
+        if (btnPrintText) btnPrintText.textContent = 'प्रिंट (समस्त)';
+      } else {
+        const rate = FEE_CHART[classFilter] || 800;
+        if (metaClassEl) metaClassEl.textContent = `कक्षा: ${classFilter} (छात्र संख्या: ${filteredStudents.length})`;
+        if (metaFeeEl) metaFeeEl.textContent = `₹ ${rate}/- प्रतिमाह`;
+        if (btnPrintText) btnPrintText.textContent = `कक्षा ${classFilter} प्रिंट`;
+      }
+
+      // If Blank Register Print Mode is active
+      if (isBlankPrintMode) {
+        const blankCount = Math.max(25, filteredStudents.length || 25);
+        for (let i = 1; i <= blankCount; i++) {
+          const tr = document.createElement('tr');
+          let rowHtml = `
+            <td class="text-center font-mono-num text-xs font-bold">${i}</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td class="text-center font-bold text-xs">${classFilter !== 'ALL' ? classFilter : ''}</td>
+          `;
+          MONTHS.forEach(() => {
+            rowHtml += `
+              <td class="month-cell">
+                <div class="checkbox-box"></div>
+                <div class="receipt-line"></div>
+              </td>
+            `;
+          });
+          tr.innerHTML = rowHtml;
+          tbody.appendChild(tr);
+        }
+        return;
+      }
+
+      // Calculate class-wise stats
+      let classPaid = 0;
+      let classDue = 0;
+      filteredStudents.forEach(stu => {
+        MONTHS.forEach(m => {
+          const entry = stu.fees?.[m.key];
+          if (entry?.status === 'paid') classPaid++;
+          if (entry?.status === 'due') classDue++;
+        });
+      });
+
+      document.getElementById('statTotalStudents').textContent = filteredStudents.length;
+      document.getElementById('statPaidCount').textContent = classPaid;
+      document.getElementById('statDueCount').textContent = classDue;
+
+      if (filteredStudents.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="17" class="text-center py-8 text-slate-500 text-sm font-semibold">
+              कक्षा <strong>"${classFilter}"</strong> में कोई छात्र रिकॉर्ड उपलब्ध नहीं है। ऊपर "+ नया छात्र" बटन दबाकर जोड़ें।
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      // Populate students rows with S.No. resetting from 1 to N for that class!
+      filteredStudents.forEach((stu, idx) => {
+        const tr = document.createElement('tr');
+
+        // Columns 1 to 5 (S.No. 1, 2, 3... per class)
+        let cellsHtml = `
+          <td class="text-center font-mono-num text-xs font-semibold">${idx + 1}</td>
+          <td class="text-center font-mono-num text-[11px]">${escapeHtml(stu.admDate || '—')}</td>
+          <td class="font-semibold text-xs text-slate-900 cursor-pointer hover:text-blue-700 hover:underline" onclick="openStudentModal('${stu.id}')" title="छात्र विवरण संपादित करें">
+            ${escapeHtml(stu.name)}
+          </td>
+          <td class="text-xs text-slate-700">${escapeHtml(stu.fatherName)}</td>
+          <td class="text-center font-bold text-xs text-slate-800">${escapeHtml(stu.classSec)}</td>
+        `;
+
+        // Columns 6 to 17 (12 Months: April to March)
+        MONTHS.forEach(m => {
+          const entry = stu.fees?.[m.key] || { status: 'pending', receipt: '' };
+          let symbol = '';
+          let statusClass = 'status-pending';
+
+          if (entry.status === 'paid') {
+            symbol = '✓';
+            statusClass = 'status-paid';
+          } else if (entry.status === 'concession') {
+            symbol = 'C';
+            statusClass = 'status-concession';
+          } else if (entry.status === 'due') {
+            symbol = '!';
+            statusClass = 'status-due';
+          }
+
+          cellsHtml += `
+            <td class="month-cell ${statusClass}" onclick="openFeeModal('${stu.id}', '${m.key}')" title="${m.hi} - शुल्क स्थिति बदलें">
+              <div class="checkbox-box">${symbol}</div>
+              <div class="receipt-line">${escapeHtml(entry.receipt || '')}</div>
+            </td>
+          `;
+        });
+
+        tr.innerHTML = cellsHtml;
+        tbody.appendChild(tr);
+      });
+
+      // Injects Monthly Tally Row into Table Foot
+      if (tfoot) {
+        let tfootHtml = `
+          <tr class="bg-slate-100 font-bold text-slate-900 border-t-2 border-slate-900 text-xs">
+            <td colspan="5" class="text-right pr-2 py-1.5 font-extrabold text-[11px]">
+              कुल मासिक जमा छात्र संख्या (Tally):
+            </td>
+        `;
+
+        MONTHS.forEach(m => {
+          let paidCount = 0;
+          filteredStudents.forEach(stu => {
+            if (stu.fees?.[m.key]?.status === 'paid' || stu.fees?.[m.key]?.status === 'concession') {
+              paidCount++;
+            }
+          });
+          tfootHtml += `
+            <td class="text-center font-mono-num text-xs font-bold bg-slate-200 border border-slate-700">
+              ${paidCount > 0 ? paidCount : '—'}
+            </td>
+          `;
+        });
+
+        tfootHtml += `</tr>`;
+        tfoot.innerHTML = tfootHtml;
+      }
+    }
+
+    // =========================================================================
+    // 7. MODAL HANDLERS (CRUD Operations)
+    // =========================================================================
+    function openStudentModal(studentId = null) {
+      const modal = document.getElementById('studentModal');
+      const title = document.getElementById('studentModalTitle');
+      const delBtn = document.getElementById('deleteStudentBtn');
+
+      if (studentId) {
+        const stu = appState.students.find(s => s.id === studentId);
+        if (!stu) return;
+        title.innerHTML = '<i class="fa-solid fa-user-pen text-blue-400"></i> छात्र विवरण संपादित करें';
+        document.getElementById('editStudentId').value = stu.id;
+        document.getElementById('inputAdmDate').value = stu.admDate || '';
+        document.getElementById('inputClassSec').value = stu.classSec || '';
+        document.getElementById('inputStudentName').value = stu.name || '';
+        document.getElementById('inputFatherName').value = stu.fatherName || '';
+        delBtn.classList.remove('hidden');
+      } else {
+        title.innerHTML = '<i class="fa-solid fa-user-plus text-emerald-400"></i> नया छात्र जोड़ें';
+        document.getElementById('studentForm').reset();
+        document.getElementById('editStudentId').value = '';
+        delBtn.classList.add('hidden');
+      }
+
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      document.getElementById('inputAdmDate').focus();
+    }
+
+    async function saveStudent(e) {
+      e.preventDefault();
+      const id = document.getElementById('editStudentId').value;
+      const admDate = document.getElementById('inputAdmDate').value.trim();
+      const classSec = document.getElementById('inputClassSec').value.trim();
+      const name = document.getElementById('inputStudentName').value.trim();
+      const fatherName = document.getElementById('inputFatherName').value.trim();
+
+      if (id) {
+        const idx = appState.students.findIndex(s => s.id === id);
+        if (idx !== -1) {
+          appState.students[idx] = { ...appState.students[idx], admDate, classSec, name, fatherName };
+        }
+      } else {
+        appState.students.push({
+          id: 'stu_' + Date.now(),
+          serial: appState.students.length + 1,
+          admDate,
+          classSec,
+          name,
+          fatherName,
+          fees: {}
+        });
+      }
+
+      await StorageService.saveData(appState, true);
+      populateClassFilter();
+      renderTable();
+      closeModal('studentModal');
+      showMiniToast('छात्र रिकॉर्ड सुरक्षित व क्लाउड पर सिंक हो गया!');
+    }
+
+    async function deleteCurrentStudent() {
+      const id = document.getElementById('editStudentId').value;
+      if (!id) return;
+      if (confirm('क्या आप वाकई इस छात्र का रिकॉर्ड पंजिका से हटाना चाहते हैं?')) {
+        appState.students = appState.students.filter(s => s.id !== id);
+        await StorageService.saveData(appState, true);
+        populateClassFilter();
+        renderTable();
+        closeModal('studentModal');
+        showMiniToast('छात्र रिकॉर्ड हटा दिया गया।');
+      }
+    }
+
+    function openFeeModal(studentId, monthKey) {
+      const stu = appState.students.find(s => s.id === studentId);
+      const monthObj = MONTHS.find(m => m.key === monthKey);
+      if (!stu || !monthObj) return;
+
+      const currentEntry = stu.fees?.[monthKey] || { status: 'pending', receipt: '' };
+
+      document.getElementById('feeStudentId').value = studentId;
+      document.getElementById('feeMonthKey').value = monthKey;
+      document.getElementById('feeModalStudentName').textContent = stu.name;
+      document.getElementById('feeModalMonthLabel').textContent = `${monthObj.hi} (${monthObj.en})`;
+      document.getElementById('feeModalClassLabel').textContent = stu.classSec;
+      document.getElementById('feeStatusInput').value = currentEntry.status || 'pending';
+      document.getElementById('feeReceiptInput').value = currentEntry.receipt || '';
+
+      const modal = document.getElementById('feeModal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      document.getElementById('feeReceiptInput').focus();
+    }
+
+    async function saveFeeEntry(e) {
+      e.preventDefault();
+      const studentId = document.getElementById('feeStudentId').value;
+      const monthKey = document.getElementById('feeMonthKey').value;
+      const status = document.getElementById('feeStatusInput').value;
+      const receipt = document.getElementById('feeReceiptInput').value.trim();
+
+      const stu = appState.students.find(s => s.id === studentId);
+      if (stu) {
+        if (!stu.fees) stu.fees = {};
+        stu.fees[monthKey] = { status, receipt };
+        await StorageService.saveData(appState, true);
+        renderTable();
+        showMiniToast(`शुल्क प्रविष्टि अपडेट व क्लाउड पर सेव हुई!`);
+      }
+      closeModal('feeModal');
+    }
+
+    function editRegisterMeta() {
+      document.getElementById('metaSessionInput').value = appState.meta.session || '2026–2027';
+      document.getElementById('metaClassInput').value = appState.meta.classTitle || '';
+      document.getElementById('metaTeacherInput').value = appState.meta.teacherName || '';
+      document.getElementById('metaFeeInput').value = appState.meta.feeRate || '';
+
+      const modal = document.getElementById('metaModal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    async function saveRegisterMeta(e) {
+      e.preventDefault();
+      appState.meta = {
+        session: document.getElementById('metaSessionInput').value.trim() || '2026–2027',
+        classTitle: document.getElementById('metaClassInput').value.trim() || 'समस्त / कक्षा .................',
+        teacherName: document.getElementById('metaTeacherInput').value.trim() || '........................................',
+        feeRate: document.getElementById('metaFeeInput').value.trim() || '₹ ...............'
+      };
+      await StorageService.saveData(appState, true);
+      applyMetaToDOM();
+      closeModal('metaModal');
+      showMiniToast('पंजिका शीर्षक विवरण क्लाउड पर अपडेट हुआ!');
+    }
+
+    function closeModal(modalId) {
+      const modal = document.getElementById(modalId);
+      if (modal) {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      }
+    }
+
+    // =========================================================================
+    // 8. SPACING, PRINTING & EXPORT/IMPORT
+    // =========================================================================
+    function changeRowSpacing(val) {
+      document.documentElement.style.setProperty('--row-height', val);
+    }
+
+    function printFilledRegister() {
+      isBlankPrintMode = false;
+      renderTable();
+      setTimeout(() => window.print(), 100);
+    }
+
+    function printBlankRegister() {
+      isBlankPrintMode = true;
+      renderTable();
+      setTimeout(() => {
+        window.print();
+        setTimeout(() => {
+          isBlankPrintMode = false;
+          renderTable();
+        }, 500);
+      }, 100);
+    }
+
+    // Batch Print All Classes Separately (1 Class Per Page)
+    window.batchPrintAllClasses = function () {
+      const rawClasses = [...new Set(appState.students.map(s => getStudentBaseClass(s)).filter(Boolean))];
+
+      const sortedClasses = sortClasses(rawClasses);
+      if (sortedClasses.length === 0) {
+        alert("प्रिंट करने के लिए कोई कक्षा डेटा उपलब्ध नहीं है।");
+        return;
+      }
+
+      let batchContainer = document.getElementById('batchPrintContainer');
+      if (!batchContainer) {
+        batchContainer = document.createElement('div');
+        batchContainer.id = 'batchPrintContainer';
+        document.body.appendChild(batchContainer);
+      }
+
+      const standardContainer = document.querySelector('.print-container');
+      const classTabsContainer = document.getElementById('classTabsList')?.parentElement;
+      if (standardContainer) standardContainer.classList.add('hidden');
+      if (classTabsContainer) classTabsContainer.classList.add('hidden');
+
+      let batchHtml = '';
+      sortedClasses.forEach((cls, cIdx) => {
+        const rawClassStudents = appState.students.filter(s => getStudentBaseClass(s) === cls);
+        if (rawClassStudents.length === 0) return;
+        const classStudents = sortStudentsMulti(rawClassStudents, 'name_asc', false);
+
+        const rate = FEE_CHART[cls] || 800;
+        const isLast = (cIdx === sortedClasses.length - 1);
+
+        batchHtml += `
+          <div class="batch-page ${isLast ? '' : 'page-break'}">
+            <!-- Header -->
+            <div class="border-b-2 border-slate-900 pb-2 mb-2">
+              <div class="flex items-center justify-between gap-2">
+                <div class="w-3 h-12 bg-red-700 shrink-0"></div>
+                <div class="text-center flex-1">
+                  <h2 class="font-heading-hi text-xl font-extrabold text-slate-900 tracking-wide">
+                    पुलिस मॉडर्न स्कूल, 25वीं वाहिनी पीएसी, रायबरेली (उ०प्र०)
+                  </h2>
+                  <p class="font-heading-en text-xs font-bold text-slate-700 tracking-wider uppercase">
+                    POLICE MODERN SCHOOL, 25TH BATTALION PAC, RAEBARELI (U.P.)
+                  </p>
+                  <div class="mt-0.5 inline-block bg-slate-100 border border-slate-400 px-3 py-0.5 rounded-full">
+                    <span class="font-bold text-xs text-slate-900">
+                      मासिक छात्र शुल्क पंजिका — सत्र: ${appState.meta.session || '2026–2027'}
+                    </span>
+                  </div>
+                </div>
+                <div class="w-3 h-12 bg-green-700 shrink-0"></div>
+              </div>
+              <div class="flex justify-between items-center mt-2 pt-1 border-t border-slate-300 text-xs font-semibold text-slate-800">
+                <div>कक्षा व वर्ग: <strong class="underline font-bold">कक्षा ${cls} (${classStudents.length} छात्र)</strong></div>
+                <div>कक्षाध्यापक: <strong>${appState.meta.teacherName || '........................................'}</strong></div>
+                <div>मासिक शुल्क दर: <strong>₹ ${rate}/- प्रतिमाह</strong></div>
+              </div>
+            </div>
+
+            <!-- Table -->
+            <div class="overflow-x-auto flex-1">
+              <table class="register-table">
+                <thead>
+                  <tr>
+                    <th rowspan="2" style="width: 3.2%;">क्र०</th>
+                    <th rowspan="2" style="width: 6.8%;">प्रवेश तिथि</th>
+                    <th rowspan="2" style="width: 13%;">छात्र / छात्रा का नाम</th>
+                    <th rowspan="2" style="width: 12%;">पिता का नाम</th>
+                    <th rowspan="2" style="width: 5%;">कक्षा</th>
+                    <th colspan="12" class="bg-slate-200 text-slate-900 py-0.5">शुल्क विवरण (अप्रैल 2026 से मार्च 2027)</th>
+                  </tr>
+                  <tr>
+                    ${MONTHS.map(m => `<th style="width: 5%;">${m.hi}<br><span class="text-[8px] font-normal">${m.en}</span></th>`).join('')}
+                  </tr>
+                </thead>
+                <tbody>
+                  ${classStudents.map((stu, idx) => `
+                    <tr>
+                      <td class="text-center font-mono-num text-xs font-semibold">${idx + 1}</td>
+                      <td class="text-center font-mono-num text-[11px]">${escapeHtml(stu.admDate || '—')}</td>
+                      <td class="font-semibold text-xs text-slate-900">${escapeHtml(stu.name)}</td>
+                      <td class="text-xs text-slate-700">${escapeHtml(stu.fatherName)}</td>
+                      <td class="text-center font-bold text-xs text-slate-800">${escapeHtml(stu.classSec)}</td>
+                      ${MONTHS.map(m => {
+          const entry = stu.fees?.[m.key] || { status: 'pending', receipt: '' };
+          let sym = entry.status === 'paid' ? '✓' : (entry.status === 'concession' ? 'C' : (entry.status === 'due' ? '!' : ''));
+          return `
+                          <td class="month-cell status-${entry.status}">
+                            <div class="checkbox-box">${sym}</div>
+                            <div class="receipt-line">${escapeHtml(entry.receipt || '')}</div>
+                          </td>
+                        `;
+        }).join('')}
+                    </tr>
+                  `).join('')}
+                </tbody>
+                <tfoot>
+                  <tr class="bg-slate-100 font-bold border-t-2 border-slate-900 text-xs">
+                    <td colspan="5" class="text-right pr-2 py-1 text-[11px]">कुल मासिक जमा छात्र (Tally):</td>
+                    ${MONTHS.map(m => {
+          let pCnt = classStudents.filter(s => s.fees?.[m.key]?.status === 'paid' || s.fees?.[m.key]?.status === 'concession').length;
+          return `<td class="text-center font-mono-num text-xs font-bold bg-slate-200 border border-slate-700">${pCnt > 0 ? pCnt : '—'}</td>`;
+        }).join('')}
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+
+            <!-- Signatures -->
+            <div class="mt-6 pt-2 grid grid-cols-3 gap-6 text-center text-xs font-bold text-slate-900">
+              <div><div class="border-t border-slate-800 w-44 mx-auto pt-1">हस्ताक्षर कक्षाध्यापक</div></div>
+              <div><div class="border-t border-slate-800 w-44 mx-auto pt-1">हस्ताक्षर शुल्क प्रभारी / लिपिक</div></div>
+              <div><div class="border-t border-slate-800 w-48 mx-auto pt-1">प्रभारी प्रधानाचार्या हस्ताक्षर व मोहर</div></div>
+            </div>
+          </div>
+        `;
+      });
+
+      batchContainer.innerHTML = batchHtml;
+      batchContainer.classList.remove('hidden');
+
+      setTimeout(() => {
+        window.print();
+        setTimeout(() => {
+          batchContainer.classList.add('hidden');
+          batchContainer.innerHTML = '';
+          if (standardContainer) standardContainer.classList.remove('hidden');
+          if (classTabsContainer) classTabsContainer.classList.remove('hidden');
+        }, 500);
+      }, 100);
+    };
+
+    // =========================================================================
+    // 9. EXPORT TO MS WORD (.doc)
+    // =========================================================================
+    function exportWordDoc() {
+      const classFilter = document.getElementById('classFilter')?.value || 'ALL';
+      const sectionFilter = document.getElementById('sectionFilter')?.value || 'ALL';
+      const sortOrder = document.getElementById('sortOrderFilter')?.value || 'name_asc';
+
+      let targetList = appState.students.filter(stu => {
+        const stuCls = getStudentBaseClass(stu);
+        const matchesClass = (classFilter === 'ALL' || stuCls === classFilter || (stu.classSec || '').trim() === classFilter);
+        let matchesSec = true;
+        if (sectionFilter !== 'ALL') {
+          matchesSec = (getStudentSection(stu) === sectionFilter);
+        }
+        return matchesClass && matchesSec;
+      });
+
+      if (!targetList || targetList.length === 0) {
+        alert("वर्ड (.doc) में एक्सपोर्ट करने के लिए कोई छात्र डेटा उपलब्ध नहीं है।");
+        return;
+      }
+
+      // Sort students
+      targetList = sortStudentsMulti(targetList, sortOrder, classFilter === 'ALL');
+
+      const classLabel = (classFilter === 'ALL') ? 'समस्त कक्षाएं (All Classes)' : `कक्षा: ${classFilter}`;
+      const feeRateText = (classFilter === 'ALL') ? '₹ 600 - ₹ 1000 (कक्षावार)' : `₹ ${FEE_CHART[classFilter] || 800}/- प्रतिमाह`;
+      const sessionText = appState.meta.session || '2026–2027';
+      const teacherText = appState.meta.teacherName || '........................................';
+
+      let rowsHtml = '';
+      targetList.forEach((st, idx) => {
+        let monthTds = '';
+        MONTHS.forEach(m => {
+          const entry = st.fees?.[m.key] || { status: 'pending', receipt: '' };
+          let statusText = '';
+          if (entry.status === 'paid') statusText = '<span style="color:#15803d; font-weight:bold; font-size:10pt;">✓</span>';
+          else if (entry.status === 'concession') statusText = '<span style="color:#2563eb; font-weight:bold; font-size:8pt;">छूट</span>';
+          else if (entry.status === 'due') statusText = '<span style="color:#dc2626; font-weight:bold; font-size:10pt;">!</span>';
+
+          if (entry.receipt) {
+            statusText += `<br><span style="font-size:6pt; color:#475569;">${escapeHtml(entry.receipt)}</span>`;
+          }
+          monthTds += `<td align="center" style="border: 0.5pt solid #000; padding: 2pt; font-size: 7.5pt;">${statusText}</td>`;
+        });
+
+        rowsHtml += `
+          <tr>
+            <td align="center" style="border: 0.5pt solid #000; padding: 2.5pt 1.5pt; font-size: 8pt; font-weight: bold;">${idx + 1}</td>
+            <td align="center" style="border: 0.5pt solid #000; padding: 2.5pt 1.5pt; font-size: 7.5pt;">${escapeHtml(st.admDate || '—')}</td>
+            <td align="left" style="border: 0.5pt solid #000; padding: 2.5pt 3pt; font-size: 8pt; font-weight: bold;">${escapeHtml(st.name || '')}</td>
+            <td align="left" style="border: 0.5pt solid #000; padding: 2.5pt 3pt; font-size: 7.5pt;">${escapeHtml(st.fatherName || '')}</td>
+            <td align="center" style="border: 0.5pt solid #000; padding: 2.5pt 1.5pt; font-size: 8pt; font-weight: bold;">${escapeHtml(st.classSec || getStudentBaseClass(st))}</td>
+            ${monthTds}
+          </tr>
+        `;
+      });
+
+      // Monthly Tally TD
+      let tallyTds = '';
+      MONTHS.forEach(m => {
+        const count = targetList.filter(s => s.fees && (s.fees[m.key]?.status === 'paid' || s.fees[m.key]?.status === 'concession')).length;
+        tallyTds += `<td align="center" style="border: 0.5pt solid #000; padding: 2.5pt; font-weight: bold; font-size: 8pt; background-color: #f1f5f9;">${count > 0 ? count : '—'}</td>`;
+      });
+
+      const wordHtml = `
+        <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+        <head>
+          <meta charset='utf-8'>
+          <title>PMS_Fee_Register_${classFilter}</title>
+          <!--[if gte mso 9]>
+          <xml>
+            <w:WordDocument>
+              <w:View>Print</w:View>
+              <w:Zoom>100</w:Zoom>
+              <w:DoNotOptimizeForBrowser/>
+            </w:WordDocument>
+          </xml>
+          <![endif]-->
+          <style>
+            @page Section1 {
+              size: 841.9pt 595.3pt;
+              mso-page-orientation: landscape;
+              margin: 18pt 18pt 18pt 18pt;
+              mso-header-margin: 10pt;
+              mso-footer-margin: 10pt;
+            }
+            div.Section1 {
+              page: Section1;
+            }
+            body {
+              font-family: 'Mangal', 'Noto Sans Devanagari', 'Arial Unicode MS', 'Calibri', sans-serif;
+              font-size: 8pt;
+              color: #000000;
+              margin: 0;
+              padding: 0;
+            }
+            table {
+              border-collapse: collapse;
+              width: 100%;
+              table-layout: fixed;
+            }
+            th, td {
+              font-family: 'Mangal', 'Noto Sans Devanagari', 'Arial Unicode MS', 'Calibri', sans-serif;
+              word-wrap: break-word;
+            }
+            .header-title {
+              font-size: 13pt;
+              font-weight: bold;
+              text-align: center;
+              margin: 0;
+              padding: 0;
+              color: #880000;
+            }
+            .header-sub {
+              font-size: 9pt;
+              font-weight: bold;
+              text-align: center;
+              margin: 1pt 0;
+              padding: 0;
+            }
+            .header-reg {
+              font-size: 9pt;
+              font-weight: bold;
+              text-align: center;
+              margin: 2pt 0;
+              padding: 1pt 0;
+              background-color: #f1f5f9;
+              border: 0.5pt solid #cbd5e1;
+            }
+            .meta-table {
+              width: 100%;
+              margin-bottom: 4pt;
+              border: none;
+            }
+            .meta-table td {
+              border: none;
+              font-size: 8pt;
+              padding: 2pt;
+            }
+            .sig-table {
+              width: 100%;
+              margin-top: 24pt;
+              border: none;
+            }
+            .sig-table td {
+              border: none;
+              text-align: center;
+              font-size: 8pt;
+              font-weight: bold;
+              padding: 4pt;
+            }
+          </style>
+        </head>
+        <body>
+          <div class="Section1">
+            <table class="meta-table" style="margin-bottom: 0;">
+              <tr>
+                <td style="width: 10px; background-color: #b91c1c;"></td>
+                <td>
+                  <div class="header-title">पुलिस मॉडर्न स्कूल, 25वीं वाहिनी पीएसी, रायबरेली (उ०प्र०)</div>
+                  <div class="header-sub">POLICE MODERN SCHOOL, 25TH BATTALION PAC, RAEBARELI (U.P.)</div>
+                  <div class="header-reg">मासिक छात्र शुल्क पंजिका — सत्र: ${sessionText}</div>
+                </td>
+                <td style="width: 10px; background-color: #15803d;"></td>
+              </tr>
+            </table>
+
+            <table class="meta-table" style="border-top: 1pt solid #000; border-bottom: 1pt solid #000; margin-top: 2pt; margin-bottom: 4pt;">
+              <tr>
+                <td style="width: 35%;"><strong>कक्षा व वर्ग:</strong> <span style="text-decoration: underline;">${classLabel} (कुल छात्र: ${targetList.length})</span></td>
+                <td style="width: 35%; text-align: center;"><strong>कक्षाध्यापक:</strong> ${teacherText}</td>
+                <td style="width: 30%; text-align: right;"><strong>मासिक शुल्क दर:</strong> ${feeRateText}</td>
+              </tr>
+            </table>
+
+            <table border="1" cellspacing="0" cellpadding="2" style="border: 0.5pt solid #000; width: 100%;">
+              <thead>
+                <tr style="background-color: #e2e8f0;">
+                  <th rowspan="2" style="width: 3%; border: 0.5pt solid #000; text-align: center; font-size: 7.5pt;">क्र०</th>
+                  <th rowspan="2" style="width: 6.5%; border: 0.5pt solid #000; text-align: center; font-size: 7.5pt;">प्रवेश तिथि</th>
+                  <th rowspan="2" style="width: 13.5%; border: 0.5pt solid #000; text-align: center; font-size: 8pt;">छात्र / छात्रा का नाम</th>
+                  <th rowspan="2" style="width: 12.5%; border: 0.5pt solid #000; text-align: center; font-size: 8pt;">पिता का नाम</th>
+                  <th rowspan="2" style="width: 5.5%; border: 0.5pt solid #000; text-align: center; font-size: 7.5pt;">कक्षा/वर्ग</th>
+                  <th colspan="12" style="border: 0.5pt solid #000; text-align: center; font-size: 8pt; background-color: #cbd5e1;">माहवार शुल्क स्थिति (सत्र ${sessionText})</th>
+                </tr>
+                <tr style="background-color: #f1f5f9;">
+                  ${MONTHS.map(m => `<th style="width: 4.9%; border: 0.5pt solid #000; text-align: center; font-size: 7pt; padding: 1.5pt;">${m.hi}<br><span style="font-size: 6pt; font-weight: normal;">${m.en}</span></th>`).join('')}
+                </tr>
+              </thead>
+              <tbody>
+                ${rowsHtml}
+              </tbody>
+              <tfoot>
+                <tr style="background-color: #f1f5f9; font-weight: bold;">
+                  <td colspan="5" align="right" style="border: 0.5pt solid #000; padding: 2.5pt; font-size: 7.5pt;">कुल जमा छात्र (Tally):</td>
+                  ${tallyTds}
+                </tr>
+              </tfoot>
+            </table>
+
+            <table class="sig-table">
+              <tr>
+                <td style="width: 33%;">
+                  <br><br>
+                  ________________________________<br>
+                  हस्ताक्षर कक्षाध्यापक
+                </td>
+                <td style="width: 34%;">
+                  <br><br>
+                  ________________________________<br>
+                  हस्ताक्षर शुल्क प्रभारी / लिपिक
+                </td>
+                <td style="width: 33%;">
+                  <br><br>
+                  ________________________________<br>
+                  प्रभारी प्रधानाचार्या हस्ताक्षर व मोहर
+                </td>
+              </tr>
+            </table>
+          </div>
+        </body>
+        </html>
+      `;
+
+      const blob = new Blob(['\ufeff' + wordHtml], { type: 'application/msword;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `PMS_Fee_Register_${classFilter}_${new Date().toISOString().slice(0, 10)}.doc`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showMiniToast(`MS Word (.doc) फाइल सफलतापूर्वक डाउनलोड हो गई!`);
+    }
+
+    function exportCSV() {
+      let csvContent = '\uFEFF';
+      const headers = [
+        'क्र० सं०', 'प्रवेश तिथि', 'छात्र / छात्रा का नाम', 'पिता का नाम', 'कक्षा व वर्ग',
+        ...MONTHS.map(m => `${m.hi} (${m.en})`)
+      ];
+      csvContent += headers.map(h => `"${h}"`).join(',') + '\n';
+
+      appState.students.forEach((stu, idx) => {
+        const row = [
+          idx + 1,
+          stu.admDate || '',
+          stu.name || '',
+          stu.fatherName || '',
+          stu.classSec || '',
+          ...MONTHS.map(m => {
+            const entry = stu.fees?.[m.key];
+            if (!entry || entry.status === 'pending') return '';
+            const statusText = entry.status === 'paid' ? 'Paid' : (entry.status === 'concession' ? 'Concession' : 'Due');
+            return entry.receipt ? `${statusText} (${entry.receipt})` : statusText;
+          })
+        ];
+        csvContent += row.map(val => `"${String(val).replace(/"/g, '""')}"`).join(',') + '\n';
+      });
+
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `PMS_Fee_Register_2026_27.csv`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function exportJSON() {
+      const blob = new Blob([JSON.stringify(appState, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `PMS_Fee_Register_Backup_${new Date().toISOString().slice(0, 10)}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function importJSON(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = async function (e) {
+        try {
+          const parsed = JSON.parse(e.target.result);
+          if (parsed && Array.isArray(parsed.students)) {
+            appState = parsed;
+            await StorageService.saveData(appState, true);
+            applyMetaToDOM();
+            populateClassFilter();
+            renderTable();
+            alert('बैकअप डेटा सफलतापूर्वक रिस्टोर व क्लाउड पर सेव हो गया है!');
+          } else {
+            alert('अमान्य बैकअप फाइल प्रारूप।');
+          }
+        } catch (err) {
+          alert('फाइल पढ़ने में त्रुटि हुई: ' + err.message);
+        }
+      };
+      reader.readAsText(file);
+      event.target.value = '';
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    // Expose all functions to window for DOM event handlers
+    window.openStudentModal = openStudentModal;
+    window.saveStudent = saveStudent;
+    window.deleteCurrentStudent = deleteCurrentStudent;
+    window.openFeeModal = openFeeModal;
+    window.saveFeeEntry = saveFeeEntry;
+    window.editRegisterMeta = editRegisterMeta;
+    window.saveRegisterMeta = saveRegisterMeta;
+    window.closeModal = closeModal;
+    window.changeRowSpacing = changeRowSpacing;
+    window.printFilledRegister = printFilledRegister;
+    window.batchPrintAllClasses = batchPrintAllClasses;
+    window.printBlankRegister = printBlankRegister;
+    window.selectClassTab = selectClassTab;
+    window.exportWordDoc = exportWordDoc;
+    window.exportToWordDoc = exportWordDoc;
+    window.exportCSV = exportCSV;
+    window.exportJSON = exportJSON;
+    window.importJSON = importJSON;
+    window.renderTable = renderTable;
+    window.getStudentBaseClass = getStudentBaseClass;
+    window.normalizeClassName = normalizeClassName;
+    window.getStudentSection = getStudentSection;
+    window.sortStudentsMulti = sortStudentsMulti;
+    window.sortClasses = sortClasses;
+
+    // Keyboard Shortcuts (Alt+N, Esc)
+    document.addEventListener('keydown', (e) => {
+      if (e.altKey && (e.key === 'n' || e.key === 'N')) {
+        e.preventDefault();
+        openStudentModal();
+      } else if (e.key === 'Escape') {
+        closeModal('studentModal');
+        closeModal('feeModal');
+        closeModal('metaModal');
+      }
+    });
+
+    // Initialize on load
+    window.addEventListener('DOMContentLoaded', initApp);
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="hi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>फीस जमा ज्ञापन - कार्यालय पुलिस मॉडर्न स्कूल, 25वीं वाहिनी पीएसी, रायबरेली (दिनांक 28 सितम्बर 2026)</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Google Fonts: Official Hindi Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Martel:wght@600;700;800;900&family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=Noto+Serif+Devanagari:wght@500;600;700;800&display=swap"
+    rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            pacBlue: {
+              50: '#f0f7ff',
+              100: '#e0effe',
+              700: '#0369a1',
+              800: '#075985',
+              900: '#0c4a6e',
+              950: '#082f49',
+            }
+          },
+          fontFamily: {
+            sans: ['"Noto Sans Devanagari"', '"Inter"', 'sans-serif'],
+            serif: ['"Martel"', '"Noto Serif Devanagari"', 'serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+
+    body {
+      font-family: 'Noto Sans Devanagari', 'Inter', sans-serif;
+      background-color: #0f172a;
+      color: #000000;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* A4 Document Page - Official Specifications */
+    .a4-page {
+      width: 210mm;
+      min-height: 297mm;
+      background: #ffffff;
+      margin: 25px auto;
+      padding: 16mm 20mm 16mm 22mm;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.1);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border-radius: 4px;
+      line-height: 1.8;
+      font-size: 15.5px;
+    }
+
+    /* Editable Field Highlights */
+    [contenteditable="true"] {
+      outline: none;
+      transition: all 0.2s ease;
+      border-radius: 3px;
+      padding: 1px 3px;
+    }
+
+    body.highlight-editable [contenteditable="true"] {
+      background-color: #fef9c3 !important;
+      box-shadow: 0 0 0 1px #eab308;
+    }
+
+    [contenteditable="true"]:focus {
+      background-color: #fef08a !important;
+      box-shadow: 0 0 0 2px #ca8a04;
+    }
+
+    /* Voucher Table */
+    .voucher-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.25rem 0;
+    }
+
+    .voucher-table th {
+      border: 1.5px solid #000000;
+      background-color: #f1f5f9;
+      padding: 9px 12px;
+      font-weight: 700;
+      text-align: left;
+      font-size: 14.5px;
+    }
+
+    .voucher-table td {
+      border: 1.5px solid #000000;
+      padding: 10px 12px;
+      font-size: 15px;
+    }
+
+    /* Print Setup */
+    @page {
+      size: A4 portrait;
+      margin: 14mm 18mm 14mm 18mm;
+    }
+
+    @media print {
+      body {
+        background: #ffffff !important;
+        color: #000000 !important;
+        padding: 0 !important;
+      }
+
+      .no-print {
+        display: none !important;
+      }
+
+      .a4-page {
+        margin: 0 auto !important;
+        padding: 0 !important;
+        box-shadow: none !important;
+        width: 100% !important;
+        min-height: auto !important;
+        border: none !important;
+      }
+
+      .voucher-table th {
+        background-color: #e2e8f0 !important;
+        -webkit-print-color-adjust: exact !important;
+      }
+    }
+  </style>
+</head>
+
+<body class="antialiased text-slate-900">
+
+  <!-- ==================== TOP ACTION & TOOLBAR (NO PRINT) ==================== -->
+  <aside aria-label="Official Tools" class="no-print sticky top-0 z-50 bg-slate-900 border-b border-slate-700 text-white shadow-xl px-4 py-2.5">
+    <div class="max-w-5xl mx-auto flex flex-wrap justify-between items-center gap-3">
+      <div class="flex items-center gap-2">
+        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span class="font-bold text-xs md:text-sm text-slate-100 font-sans">
+          पुलिस मॉडर्न स्कूल · फीस जमा ज्ञापन पत्र (Main Cash Book Handover)
+        </span>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <!-- Highlight Editables Toggle -->
+        <button onclick="toggleHighlight()" class="bg-slate-800 hover:bg-slate-700 text-amber-300 text-xs font-semibold px-3 py-1.5 rounded-lg border border-slate-700 flex items-center gap-1.5 transition cursor-pointer">
+          <i class="fas fa-highlighter"></i> <span id="hlText">एडिट फील्ड दिखाएं</span>
+        </button>
+
+        <!-- Font Size Toggles -->
+        <button onclick="changeFontSize(-1)" class="bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold px-2.5 py-1.5 rounded border border-slate-700 cursor-pointer" title="फॉन्ट छोटा करें">
+          A-
+        </button>
+        <button onclick="changeFontSize(1)" class="bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold px-2.5 py-1.5 rounded border border-slate-700 cursor-pointer" title="फॉन्ट बड़ा करें">
+          A+
+        </button>
+
+        <!-- Generator Link -->
+        <a href="pms_letter_generator.html" class="bg-slate-800 hover:bg-slate-700 text-sky-300 text-xs font-bold px-3 py-1.5 rounded-lg border border-slate-700 flex items-center gap-1.5 transition">
+          <i class="fas fa-external-link-alt"></i> <span>लेटर जनरेटर में खोलें</span>
+        </a>
+
+        <!-- Print / PDF Save -->
+        <button onclick="window.print()" class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-3.5 py-1.5 rounded-lg flex items-center gap-1.5 shadow-md transition cursor-pointer">
+          <i class="fas fa-print"></i> <span>प्रिंट / PDF सेव करें</span>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ==================== A4 DOCUMENT CANVAS ==================== -->
+  <main class="py-4 px-2">
+    <div id="letterDoc" class="a4-page">
+
+      <!-- TOP SECTION: HEADER, SESSION & DATE -->
+      <div>
+        <!-- Institutional Header -->
+        <div class="text-center border-b-2 border-black pb-3 mb-4">
+          <div class="flex items-center justify-center gap-3 mb-1">
+            <div class="w-12 h-12 rounded-full border-2 border-black flex items-center justify-center text-black font-black text-xl">
+              <i class="fas fa-shield-alt"></i>
+            </div>
+            <div>
+              <h1 class="text-xl md:text-2xl font-black tracking-wide font-serif text-black uppercase" contenteditable="true">
+                कार्यालय पुलिस मॉडर्न स्कूल
+              </h1>
+              <h2 class="text-base md:text-lg font-bold font-serif text-black tracking-normal" contenteditable="true">
+                25वीं वाहिनी पीएसी, रायबरेली
+              </h2>
+            </div>
+          </div>
+          <p class="text-xs text-black font-medium tracking-wide">
+            (उत्तर प्रदेश पुलिस कल्याण संस्थान द्वारा संचालित · सीबीएसई से सम्बद्ध)
+          </p>
+        </div>
+
+        <!-- Session & Date Row -->
+        <div class="flex items-center justify-between text-black font-bold text-sm md:text-base mb-6 border-b border-black/40 pb-2">
+          <div>
+            <span>सत्र : </span>
+            <span contenteditable="true" class="font-mono text-black">2026–2027</span>
+          </div>
+          <div>
+            <span>दिनांक : </span>
+            <span contenteditable="true" class="text-black">सितम्बर, 28, 2026</span>
+          </div>
+        </div>
+
+        <!-- Subject/Heading Tag -->
+        <div class="text-center mb-5">
+          <span class="inline-block border-2 border-black px-4 py-1 text-sm font-black uppercase tracking-wider bg-slate-50" contenteditable="true">
+            ज्ञापन / फीस जमा पत्र
+          </span>
+        </div>
+
+        <!-- Main Narrative Body -->
+        <div class="space-y-4 text-justify leading-relaxed text-black">
+          <p class="indent-10 font-normal" contenteditable="true">
+            पुलिस मॉडर्न स्कूल 25वीं वाहिनी पीएसी रायबरेली के बच्चों से फीस के रूप में जमा कुल नकद धनराशि <strong>रु० 1,12,351.00</strong> (<strong>एक लाख बारह हजार तीन सौ इक्यावन रुपये मात्र</strong>) (रसीद संख्या <strong>4801 से 4900 तक</strong>) आंकिक महोदय को मेन कैश बुक में जमा करने हेतु प्रदान किये।
+          </p>
+        </div>
+
+        <!-- Structured Fee Breakdown Table -->
+        <div class="mt-4 mb-5">
+          <table class="voucher-table text-black">
+            <thead>
+              <tr>
+                <th class="w-12 text-center">क्र०</th>
+                <th>मद / शुल्क का विवरण</th>
+                <th class="w-48">रसीद संख्या</th>
+                <th class="w-44 text-right">धनराशि (रु०)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="text-center font-bold" contenteditable="true">1.</td>
+                <td class="font-semibold" contenteditable="true">
+                  ट्यूशन फीस (Tuition Fee) से प्राप्त
+                </td>
+                <td class="font-mono text-center font-semibold" contenteditable="true">
+                  4801 से 4900 तक (100 रसीदें)
+                </td>
+                <td class="font-mono text-right font-bold text-base" contenteditable="true">
+                  रु० 1,12,351.00
+                </td>
+              </tr>
+              <tr class="bg-slate-50 font-bold border-t-2 border-black">
+                <td colspan="3" class="text-right pr-4 text-black font-serif">
+                  कुल प्राप्त धन (Total Amount Received):
+                </td>
+                <td class="font-mono text-right text-base text-black font-extrabold" contenteditable="true">
+                  रु० 1,12,351.00
+                </td>
+              </tr>
+              <tr class="bg-white">
+                <td colspan="4" class="italic text-xs md:text-sm text-black pt-2 pb-2">
+                  <strong>शब्दों में:</strong> <span contenteditable="true">एक लाख बारह हजार तीन सौ इक्यावन रुपये मात्र।</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p class="text-xs text-black italic">
+          * उक्त समस्त रसीदें (रसीद सं० 4801 से 4900 तक) मूल रूप में मिलान व रिकॉर्ड हेतु संलग्न हैं।
+        </p>
+      </div>
+
+      <!-- BOTTOM SECTION: SIGNATURE & ACKNOWLEDGMENT RECEIPT -->
+      <div class="mt-8 pt-4 border-t-2 border-black">
+        <div class="grid grid-cols-2 gap-6 items-end">
+
+          <!-- Left Side: Receiving / Cashier Acknowledgment Box -->
+          <div class="border-2 border-black p-3.5 rounded bg-slate-50/60 text-xs space-y-2">
+            <div class="font-black border-b border-black pb-1 uppercase tracking-wide flex items-center gap-1.5 text-black">
+              <i class="fas fa-stamp text-xs"></i>
+              <span>प्राप्ति पावती / आंकिक शाखा</span>
+            </div>
+            <p class="text-[12.5px] leading-relaxed text-black">
+              उपरोक्तानुसार नकद धनराशि <strong>रु० 1,12,351.00</strong> (एक लाख बारह हजार तीन सौ इक्यावन रुपये मात्र) प्राप्त कर 25वीं वाहिनी पीएसी की मेन कैश बुक में दर्ज किया गया।
+            </p>
+            <div class="pt-2 text-[12px] space-y-1 font-medium text-black">
+              <p>मेन कैश बुक पृष्ठ सं०: <span class="font-mono underline font-bold" contenteditable="true">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></p>
+              <p>रसीद / वाउचर क्रमांक: <span class="font-mono underline font-bold" contenteditable="true">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></p>
+            </div>
+            <div class="pt-6 text-center">
+              <div class="border-t border-dashed border-black w-44 mx-auto pt-1 font-bold text-xs text-black">
+                हस्ताक्षर आंकिक / कैशियर
+              </div>
+              <p class="text-[10px] text-black">25वीं वाहिनी पीएसी, रायबरेली</p>
+            </div>
+          </div>
+
+          <!-- Right Side: Incharge Principal Signature Block -->
+          <div class="text-center space-y-1 pb-1">
+            <div class="h-16 flex items-center justify-center text-xs text-slate-300 italic">
+              <!-- Digital Signature / Stamp Area -->
+            </div>
+            <div class="font-bold text-black text-base" contenteditable="true">
+              (प्रभारी प्रधानाचार्या)
+            </div>
+            <div class="text-sm font-semibold text-black" contenteditable="true">
+              पुलिस मॉडर्न स्कूल
+            </div>
+            <div class="text-sm text-black" contenteditable="true">
+              25वीं वाहिनी पीएसी, रायबरेली।
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Official Footer Note -->
+        <div class="mt-6 pt-2 border-t border-slate-300 text-center text-[10px] text-slate-500 font-mono">
+          POLICE MODERN SCHOOL · 25TH BN PAC RAEBARELI · OFFICIAL FEE HANDOVER MEMORANDUM · SESSION 2026-27
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ==================== JAVASCRIPT CONTROLLERS ==================== -->
+  <script>
+    // 1. Font Size Controller
+    let currentScale = 15.5;
+    function changeFontSize(delta) {
+      currentScale += delta * 0.5;
+      if (currentScale < 13) currentScale = 13;
+      if (currentScale > 20) currentScale = 20;
+      document.getElementById('letterDoc').style.fontSize = currentScale + 'px';
+    }
+
+    // 2. Toggle Editable Highlights
+    let isHighlighted = false;
+    function toggleHighlight() {
+      isHighlighted = !isHighlighted;
+      document.body.classList.toggle('highlight-editable', isHighlighted);
+      document.getElementById('hlText').innerText = isHighlighted ? "हाईलाइट छिपाएं" : "एडिट फील्ड दिखाएं";
+    }
+  </script>
+</body>
+
+</html>

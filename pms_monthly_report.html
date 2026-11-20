@@ -382,9 +382,14 @@
     }
 
     /* Official Government Table Styling matching User Samples */
-    .report-table {
+    .a4-landscape-page table,
+    .report-table,
+    .student-matrix-table {
       width: 100%;
-      border-collapse: collapse;
+      border-collapse: collapse !important;
+      border-spacing: 0 !important;
+      border: 1px solid #000000 !important;
+      border-color: #000000 !important;
       margin-top: 4px;
       margin-bottom: 4px;
       font-size: calc(11.5px * var(--doc-scale, 1));
@@ -392,9 +397,19 @@
       table-layout: fixed;
     }
 
+    .a4-landscape-page table th,
+    .a4-landscape-page table td,
     .report-table th,
-    .report-table td {
-      border: 1px solid #000000;
+    .report-table td,
+    .student-matrix-table th,
+    .student-matrix-table td {
+      border: 1px solid #000000 !important;
+      border-color: #000000 !important;
+      border-top: 1px solid #000000 !important;
+      border-bottom: 1px solid #000000 !important;
+      border-left: 1px solid #000000 !important;
+      border-right: 1px solid #000000 !important;
+      background-clip: padding-box !important;
       padding: 3.5px 3px;
       text-align: center;
       vertical-align: middle;
@@ -420,7 +435,10 @@
     /* Student Class Matrix Table for Page 3 */
     .student-matrix-table {
       width: 100%;
-      border-collapse: collapse;
+      border-collapse: collapse !important;
+      border-spacing: 0 !important;
+      border: 1px solid #000000 !important;
+      border-color: #000000 !important;
       margin-top: 4px;
       margin-bottom: 4px;
       font-size: calc(11px * var(--doc-scale, 1));
@@ -430,7 +448,13 @@
 
     .student-matrix-table th,
     .student-matrix-table td {
-      border: 1px solid #000000;
+      border: 1px solid #000000 !important;
+      border-color: #000000 !important;
+      border-top: 1px solid #000000 !important;
+      border-bottom: 1px solid #000000 !important;
+      border-left: 1px solid #000000 !important;
+      border-right: 1px solid #000000 !important;
+      background-clip: padding-box !important;
       padding: 3px 1.5px;
       text-align: center;
       vertical-align: middle;
@@ -979,12 +1003,32 @@
         break-after: auto !important;
       }
 
+      .a4-landscape-page table,
+      .report-table,
+      .student-matrix-table {
+        border-collapse: collapse !important;
+        border-spacing: 0 !important;
+        border: 1.2px solid #000000 !important;
+        border-color: #000000 !important;
+      }
+
+      .a4-landscape-page table th,
+      .a4-landscape-page table td,
       .report-table th,
       .report-table td,
       .student-matrix-table th,
       .student-matrix-table td {
-        border: 1px solid #000000 !important;
+        border: 1.2px solid #000000 !important;
+        border-color: #000000 !important;
+        border-top: 1.2px solid #000000 !important;
+        border-bottom: 1.2px solid #000000 !important;
+        border-left: 1.2px solid #000000 !important;
+        border-right: 1.2px solid #000000 !important;
+        background-clip: padding-box !important;
+        position: static !important;
         color: #000000 !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
       }
     }
 
@@ -6072,7 +6116,7 @@
     function richCellFill(c) { const cell = richCell(); if (!cell) { showToast('पहले table cell पर click करें', 'warning'); return } cell.style.backgroundColor = c; richAfterEdit() }
     function richCellText(c) { const cell = richCell(); if (!cell) { showToast('पहले table cell पर click करें', 'warning'); return } cell.style.color = c; richAfterEdit() }
     function richBorder() { const cell = richCell(); if (!cell) { showToast('पहले table cell पर click करें', 'warning'); return } const w = document.getElementById('officeBorderWidth').value, c = document.getElementById('officeBorderColor').value; cell.style.border = `${w}px solid ${c}`; richAfterEdit() }
-    function richClearCell() { const cell = richCell(); if (!cell) return; cell.style.backgroundColor = ''; cell.style.color = ''; cell.style.border = ''; cell.style.fontWeight = ''; richAfterEdit() }
+    function richClearCell() { const cell = richCell(); if (!cell) return; cell.style.backgroundColor = ''; cell.style.color = ''; cell.style.border = '1px solid #000'; cell.style.borderColor = '#000'; cell.style.fontWeight = ''; richAfterEdit() }
     function richLink() { if (!richFocus()) return; const url = prompt('Link URL दर्ज करें:', 'https://'); if (!url) return; richRestoreSelection(); document.execCommand('createLink', false, url); richAfterEdit() }
     function richInsertText() { if (!richFocus()) return; const t = prompt('Text दर्ज करें:'); if (t === null) return; richRestoreSelection(); document.execCommand('insertText', false, t); richAfterEdit() }
     function richInsertDate() { if (!richFocus()) return; richRestoreSelection(); document.execCommand('insertText', false, new Date().toLocaleDateString('en-GB')); richAfterEdit() }
@@ -7317,6 +7361,9 @@
         clone.querySelectorAll('.v4-row-grip,.v4-col-grip,.table-col-resizer,.table-row-resizer').forEach(x => x.remove());
         [...clone.cells].forEach(c => {
           c.innerText = ''; c.contentEditable = 'true';
+          c.style.border = '1px solid #000';
+          c.style.borderColor = '#000';
+          c.style.backgroundClip = 'padding-box';
         });
         v4Row.parentNode.insertBefore(clone, v4Row.nextSibling);
         installV4Handles();
@@ -7326,7 +7373,12 @@
         if (!v4Table || !v4Row) return alert('पहले किसी table cell पर click/tap करें।');
         const clone = v4Row.cloneNode(true);
         clone.querySelectorAll('.v4-row-grip,.v4-col-grip,.table-col-resizer,.table-row-resizer').forEach(x => x.remove());
-        [...clone.cells].forEach(c => { c.innerText = ''; c.contentEditable = 'true'; });
+        [...clone.cells].forEach(c => {
+          c.innerText = ''; c.contentEditable = 'true';
+          c.style.border = '1px solid #000';
+          c.style.borderColor = '#000';
+          c.style.backgroundClip = 'padding-box';
+        });
         v4Row.parentNode.insertBefore(clone, v4Row);
         installV4Handles();
         try { richAfterEdit() } catch (_) { }
@@ -7346,6 +7398,9 @@
           const c = row.insertCell(index + 1);
           c.innerText = i === 0 ? 'नया कॉलम' : '';
           c.contentEditable = 'true';
+          c.style.border = '1px solid #000';
+          c.style.borderColor = '#000';
+          c.style.backgroundClip = 'padding-box';
         });
         installV4Handles();
         try { richAfterEdit() } catch (_) { }
@@ -7383,6 +7438,11 @@
         v4Table.dataset.v4Borders = current ? 'off' : 'on';
         v4Table.querySelectorAll('th,td').forEach(c => {
           c.style.border = current ? 'none' : '1px solid #000';
+          c.style.borderColor = current ? 'transparent' : '#000';
+          c.style.borderTop = current ? 'none' : '1px solid #000';
+          c.style.borderBottom = current ? 'none' : '1px solid #000';
+          c.style.borderLeft = current ? 'none' : '1px solid #000';
+          c.style.borderRight = current ? 'none' : '1px solid #000';
         });
         try { richAfterEdit() } catch (_) { }
       };
@@ -7910,18 +7970,29 @@
       box-sizing: border-box !important;
     }
 
+    .a4-landscape-page table,
     .a4-landscape-page .report-table,
     .a4-landscape-page .student-matrix-table {
       box-sizing: border-box !important;
       border-collapse: collapse !important;
+      border-spacing: 0 !important;
+      border: 1px solid #000000 !important;
+      border-color: #000000 !important;
     }
 
+    .a4-landscape-page table th,
+    .a4-landscape-page table td,
     .a4-landscape-page .report-table th,
     .a4-landscape-page .report-table td,
     .a4-landscape-page .student-matrix-table th,
     .a4-landscape-page .student-matrix-table td {
-      border: 1px solid #000 !important;
-      border-color: #000 !important;
+      border: 1px solid #000000 !important;
+      border-color: #000000 !important;
+      border-top: 1px solid #000000 !important;
+      border-bottom: 1px solid #000000 !important;
+      border-left: 1px solid #000000 !important;
+      border-right: 1px solid #000000 !important;
+      background-clip: padding-box !important;
     }
 
     /* Print must never replace an edited table width with wrapper width. */
@@ -7941,6 +8012,10 @@
         max-width: none !important;
         box-sizing: border-box !important;
         table-layout: fixed !important;
+        border: 1.2px solid #000000 !important;
+        border-color: #000000 !important;
+        border-collapse: collapse !important;
+        border-spacing: 0 !important;
       }
 
       .a4-landscape-page {
@@ -7950,12 +8025,32 @@
         box-sizing: border-box !important;
       }
 
+      .a4-landscape-page table,
+      .a4-landscape-page .report-table,
+      .a4-landscape-page .student-matrix-table {
+        border: 1.2px solid #000000 !important;
+        border-color: #000000 !important;
+        border-collapse: collapse !important;
+        border-spacing: 0 !important;
+      }
+
+      .a4-landscape-page table th,
+      .a4-landscape-page table td,
       .a4-landscape-page .report-table th,
       .a4-landscape-page .report-table td,
       .a4-landscape-page .student-matrix-table th,
       .a4-landscape-page .student-matrix-table td {
-        border: 1px solid #000 !important;
-        border-color: #000 !important;
+        border: 1.2px solid #000000 !important;
+        border-color: #000000 !important;
+        border-top: 1.2px solid #000000 !important;
+        border-bottom: 1.2px solid #000000 !important;
+        border-left: 1.2px solid #000000 !important;
+        border-right: 1.2px solid #000000 !important;
+        background-clip: padding-box !important;
+        position: static !important;
+        color: #000000 !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
       }
     }
   </style>
@@ -8106,61 +8201,101 @@
         }
       };
 
-      function syncEditedTableDimensions() {
-        document.querySelectorAll('.a4-landscape-page .report-table, .a4-landscape-page .student-matrix-table')
-          .forEach(table => {
-            const wrapper = table.closest('.table-drag-wrapper');
-            if (wrapper) {
-              wrapper.style.setProperty('width', 'auto', 'important');
-              wrapper.style.setProperty('max-width', 'none', 'important');
-              wrapper.style.setProperty('min-width', '0', 'important');
-            }
+      let isSyncing = false;
 
-            // The inline dimensions are the user's edited dimensions. Never fall back
-            // to the intrinsic table width/height during print preparation.
-            const rect = table.getBoundingClientRect();
-            const width = table.style.width || (rect.width ? Math.round(rect.width) + 'px' : '');
-            const height = table.style.height || (rect.height ? Math.round(rect.height) + 'px' : '');
-
-            if (width) {
-              table.style.setProperty('--pms-table-print-width', width);
-              table.style.setProperty('width', width, 'important');
-            } else {
-              table.style.removeProperty('--pms-table-print-width');
-            }
-            if (height) {
-              table.style.setProperty('--pms-table-print-height', height);
-              table.style.setProperty('height', height, 'important');
-            } else {
-              table.style.removeProperty('--pms-table-print-height');
-            }
-
-            table.style.setProperty('table-layout', 'fixed', 'important');
-
-            // Lock every edited column and row dimension into the print copy.
-            table.querySelectorAll('th,td').forEach(cell => {
-              const w = cell.style.width;
-              if (w) cell.style.setProperty('width', w, 'important');
-              const h = cell.style.height;
-              if (h) cell.style.setProperty('height', h, 'important');
-              const pt = cell.style.paddingTop;
-              if (pt) cell.style.setProperty('padding-top', pt, 'important');
-              const pb = cell.style.paddingBottom;
-              if (pb) cell.style.setProperty('padding-bottom', pb, 'important');
-            });
-            table.querySelectorAll('tr').forEach(row => {
-              const h = row.style.height;
-              if (h) row.style.setProperty('height', h, 'important');
-            });
+      function ensureBlackBorders() {
+        document.querySelectorAll('.a4-landscape-page table, .report-table, .student-matrix-table').forEach(table => {
+          table.style.setProperty('border', '1px solid #000000', 'important');
+          table.style.setProperty('border-color', '#000000', 'important');
+          table.style.setProperty('border-collapse', 'collapse', 'important');
+          table.style.setProperty('border-spacing', '0', 'important');
+          table.querySelectorAll('th, td').forEach(cell => {
+            cell.style.setProperty('border', '1px solid #000000', 'important');
+            cell.style.setProperty('border-color', '#000000', 'important');
+            cell.style.setProperty('border-top', '1px solid #000000', 'important');
+            cell.style.setProperty('border-bottom', '1px solid #000000', 'important');
+            cell.style.setProperty('border-left', '1px solid #000000', 'important');
+            cell.style.setProperty('border-right', '1px solid #000000', 'important');
+            cell.style.setProperty('background-clip', 'padding-box', 'important');
           });
+        });
+      }
+
+      function syncEditedTableDimensions() {
+        if (isSyncing) return;
+        isSyncing = true;
+        try {
+          document.querySelectorAll('.a4-landscape-page table, .a4-landscape-page .report-table, .a4-landscape-page .student-matrix-table')
+            .forEach(table => {
+              const wrapper = table.closest('.table-drag-wrapper');
+              if (wrapper) {
+                wrapper.style.setProperty('width', 'auto', 'important');
+                wrapper.style.setProperty('max-width', 'none', 'important');
+                wrapper.style.setProperty('min-width', '0', 'important');
+              }
+
+              table.style.setProperty('border', '1px solid #000000', 'important');
+              table.style.setProperty('border-color', '#000000', 'important');
+              table.style.setProperty('border-collapse', 'collapse', 'important');
+              table.style.setProperty('border-spacing', '0', 'important');
+
+              // The inline dimensions are the user's edited dimensions. Never fall back
+              // to the intrinsic table width/height during print preparation.
+              const rect = table.getBoundingClientRect();
+              const width = table.style.width || (rect.width ? Math.round(rect.width) + 'px' : '');
+              const height = table.style.height || (rect.height ? Math.round(rect.height) + 'px' : '');
+
+              if (width) {
+                table.style.setProperty('--pms-table-print-width', width);
+                table.style.setProperty('width', width, 'important');
+              } else {
+                table.style.removeProperty('--pms-table-print-width');
+              }
+              if (height) {
+                table.style.setProperty('--pms-table-print-height', height);
+                table.style.setProperty('height', height, 'important');
+              } else {
+                table.style.removeProperty('--pms-table-print-height');
+              }
+
+              table.style.setProperty('table-layout', 'fixed', 'important');
+
+              // Lock every edited column and row dimension into the print copy.
+              table.querySelectorAll('th,td').forEach(cell => {
+                cell.style.setProperty('border', '1px solid #000000', 'important');
+                cell.style.setProperty('border-color', '#000000', 'important');
+                cell.style.setProperty('border-top', '1px solid #000000', 'important');
+                cell.style.setProperty('border-bottom', '1px solid #000000', 'important');
+                cell.style.setProperty('border-left', '1px solid #000000', 'important');
+                cell.style.setProperty('border-right', '1px solid #000000', 'important');
+                cell.style.setProperty('background-clip', 'padding-box', 'important');
+                const w = cell.style.width;
+                if (w) cell.style.setProperty('width', w, 'important');
+                const h = cell.style.height;
+                if (h) cell.style.setProperty('height', h, 'important');
+                const pt = cell.style.paddingTop;
+                if (pt) cell.style.setProperty('padding-top', pt, 'important');
+                const pb = cell.style.paddingBottom;
+                if (pb) cell.style.setProperty('padding-bottom', pb, 'important');
+              });
+              table.querySelectorAll('tr').forEach(row => {
+                const h = row.style.height;
+                if (h) row.style.setProperty('height', h, 'important');
+              });
+            });
+        } finally {
+          isSyncing = false;
+        }
       }
 
       function preparePrint() {
         try {
           if (typeof setPageViewMode === 'function') setPageViewMode('all');
           if (typeof restoreTableSizes === 'function') restoreTableSizes();
+          ensureBlackBorders();
           syncEditedTableDimensions();
           window.autoShrinkToFitA4(false);
+          ensureBlackBorders();
           syncEditedTableDimensions();
         } catch (err) {
           console.warn('PMS print preparation error:', err);
@@ -8203,6 +8338,7 @@
       // Existing resize code calls saveTableSizes internally. This observer catches
       // direct/manual style changes too without adding controls or changing the UI.
       const observer = new MutationObserver(() => {
+        if (isSyncing) return;
         if (document.documentElement.classList.contains('pms-printing-preview')) return;
         syncEditedTableDimensions();
       });
@@ -8212,6 +8348,7 @@
           observer.observe(t, { attributes: true, subtree: true, attributeFilter: ['style'] });
         });
         if (typeof restoreTableSizes === 'function') restoreTableSizes();
+        ensureBlackBorders();
         syncEditedTableDimensions();
       }
 

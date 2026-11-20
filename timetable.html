@@ -1760,6 +1760,7 @@
           <h1>
             <span>पुलिस मॉडर्न स्कूल, रायबरेली</span>
             <span class="session-pill">सत्र 2026-27</span>
+            <span class="session-pill" style="background:#fef3c7;color:#92400e;border:1px solid #fcd34d;"><i class="fa-solid fa-clock"></i> नया समय: 05 नवम्बर 2026</span>
             <span class="cloud-badge" id="cloudStatusBadge">
               <span class="cloud-dot" id="cloudDot"></span>
               <span id="cloudStatusText">कनेक्टिंग...</span>
@@ -1918,14 +1919,14 @@
         <div class="form-field-col">
           <label><i class="fa-regular fa-clock" style="color:#2563eb;"></i> 2. पीरियड चुनें (Period)</label>
           <select id="formPeriodSelect" class="form-select" onchange="window.syncFormDropdownValues()">
-            <option value="1">1st Period (08:20 - 08:55)</option>
-            <option value="2">2nd Period (08:55 - 09:30)</option>
-            <option value="3">3rd Period (09:30 - 10:05)</option>
-            <option value="4">4th Period (10:05 - 10:40)</option>
-            <option value="5">5th Period (11:10 - 11:45)</option>
-            <option value="6">6th Period (11:45 - 12:20)</option>
-            <option value="7">7th Period (12:20 - 12:55)</option>
-            <option value="8">8th Period (12:55 - 01:25)</option>
+            <option value="1">1st Period (08:50 - 09:25)</option>
+            <option value="2">2nd Period (09:25 - 10:00)</option>
+            <option value="3">3rd Period (10:00 - 10:35)</option>
+            <option value="4">4th Period (10:35 - 11:10)</option>
+            <option value="5">5th Period (11:40 - 12:15)</option>
+            <option value="6">6th Period (12:15 - 12:50)</option>
+            <option value="7">7th Period (12:50 - 01:25)</option>
+            <option value="8">8th Period (01:25 - 01:55)</option>
           </select>
         </div>
 
@@ -2075,6 +2076,25 @@
           <i class="fa-solid fa-compress"></i> 1-Page Auto Fit
         </button>
       </div>
+    </div>
+
+    <!-- New School Timing Notice Banner (Effective 05 Nov 2026) -->
+    <div class="no-print" style="max-width:var(--sheet-max-width, 1100px);width:100%;margin:0 auto 12px;background:linear-gradient(135deg, #eff6ff 0%, #f0fdf4 100%);border:1px solid #bfdbfe;border-left:5px solid #2563eb;border-radius:10px;padding:10px 16px;box-shadow:0 2px 8px rgba(37,99,235,0.08);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+        <span style="background:#2563eb;color:#ffffff;font-size:0.75rem;font-weight:800;padding:3px 10px;border-radius:20px;display:inline-flex;align-items:center;gap:5px;">
+          <i class="fa-solid fa-bullhorn"></i> आवश्यक सूचना
+        </span>
+        <div style="font-size:0.82rem;color:#1e293b;line-height:1.4;">
+          <b>नया विद्यालय समय लागू (05 नवम्बर 2026 से):</b> 
+          विद्यार्थी रिपोर्टिंग: <b style="color:#1d4ed8;">प्रातः 08:20 बजे</b> &bull; 
+          प्रार्थना सभा: <b style="color:#1d4ed8;">प्रातः 08:30 बजे</b> &bull; 
+          KG-1 एवं KG-2 छुट्टी: <b style="color:#059669;">अपराह्न 01:00 बजे</b> &bull; 
+          कक्षा 1 से 8 तक छुट्टी: <b style="color:#b91c1c;">अपराह्न 02:00 बजे</b>
+        </div>
+      </div>
+      <span style="font-size:0.74rem;color:#475569;font-weight:700;background:#ffffff;padding:4px 10px;border-radius:6px;border:1px solid #cbd5e1;">
+        <i class="fa-regular fa-calendar-check" style="color:#2563eb;"></i> दिनांक: 05/11/2026 से प्रभावी
+      </span>
     </div>
 
     <div id="sheetsContainer" style="width:100%;display:flex;flex-direction:column;align-items:center;"></div>
@@ -2321,17 +2341,17 @@
       session: '2026-27',
       lastSaved: new Date().toISOString(),
       periodInfo: [
-        { id: 'assembly', badge: 'प्रार्थना', time: '08:00 AM - 08:20 AM', dur: '20 min', isSpecial: true, specialText: '🔔 प्रार्थना सभा, राष्ट्रगान व प्रतिज्ञा (Morning Assembly, National Anthem & Pledge)' },
-        { id: '1', badge: '1st', time: '08:20 AM - 08:55 AM', dur: '35 min' },
-        { id: '2', badge: '2nd', time: '08:55 AM - 09:30 AM', dur: '35 min' },
-        { id: '3', badge: '3rd', time: '09:30 AM - 10:05 AM', dur: '35 min' },
-        { id: '4', badge: '4th', time: '10:05 AM - 10:40 AM', dur: '35 min' },
-        { id: 'lunch', badge: 'लंच', time: '10:40 AM - 11:10 AM', dur: '30 min', isSpecial: true, specialText: '🍽️ LUNCH BREAK (मध्य भोजन) (10:40 AM - 11:10 AM)' },
-        { id: '5', badge: '5th', time: '11:10 AM - 11:45 AM', dur: '35 min' },
-        { id: '6', badge: '6th', time: '11:45 AM - 12:20 PM', dur: '35 min' },
-        { id: '7', badge: '7th', time: '12:20 PM - 12:55 PM', dur: '35 min' },
-        { id: '8', badge: '8th', time: '12:55 PM - 01:25 PM', dur: '30 min' },
-        { id: 'departure', badge: 'प्रस्थान', time: '01:25 PM - 01:30 PM', dur: '05 min', isSpecial: true, specialText: '🔔 डायरी चेकिंग, पंक्तिबद्ध विसर्जन एवं विद्यालय छुट्टी (01:30 PM Departure)' }
+        { id: 'assembly', badge: 'प्रार्थना', time: '08:30 AM - 08:50 AM', dur: '20 min', isSpecial: true, specialText: '🔔 प्रातः 08:20 AM रिपोर्टिंग | 08:30 AM प्रार्थना सभा, राष्ट्रगान व प्रतिज्ञा (Morning Assembly & Pledge)' },
+        { id: '1', badge: '1st', time: '08:50 AM - 09:25 AM', dur: '35 min' },
+        { id: '2', badge: '2nd', time: '09:25 AM - 10:00 AM', dur: '35 min' },
+        { id: '3', badge: '3rd', time: '10:00 AM - 10:35 AM', dur: '35 min' },
+        { id: '4', badge: '4th', time: '10:35 AM - 11:10 AM', dur: '35 min' },
+        { id: 'lunch', badge: 'लंच', time: '11:10 AM - 11:40 AM', dur: '30 min', isSpecial: true, specialText: '🍽️ LUNCH BREAK (मध्य भोजन) (11:10 AM - 11:40 AM)' },
+        { id: '5', badge: '5th', time: '11:40 AM - 12:15 PM', dur: '35 min' },
+        { id: '6', badge: '6th', time: '12:15 PM - 12:50 PM', dur: '35 min' },
+        { id: '7', badge: '7th', time: '12:50 PM - 01:25 PM', dur: '35 min' },
+        { id: '8', badge: '8th', time: '01:25 PM - 01:55 PM', dur: '30 min' },
+        { id: 'departure', badge: 'प्रस्थान', time: '01:55 PM - 02:00 PM', dur: '05 min', isSpecial: true, specialText: '🔔 डायरी चेकिंग, पंक्तिबद्ध विसर्जन एवं विद्यालय छुट्टी (कक्षा 1 से 8: 02:00 PM | KG-1 व KG-2: 01:00 PM)' }
       ],
       classes: {
         'kg1': {
@@ -2675,6 +2695,17 @@
     let currentTab = 'exam';
     let showTeacherNames = true;
     let timetableData = JSON.parse(localStorage.getItem('pms_timetable_data_v3')) || JSON.parse(JSON.stringify(DEFAULT_TIMETABLE));
+
+    // Auto-update to new school timing (05 Nov 2026) if old timing is detected in localStorage
+    if (timetableData && Array.isArray(timetableData.periodInfo)) {
+      const p1 = timetableData.periodInfo.find(x => x.id === '1');
+      if (p1 && (p1.time.includes('08:20') || p1.time.includes('08:00') || p1.time.includes('08:55 AM'))) {
+        timetableData.periodInfo = JSON.parse(JSON.stringify(DEFAULT_TIMETABLE.periodInfo));
+        try {
+          localStorage.setItem('pms_timetable_data_v3', JSON.stringify(timetableData));
+        } catch (e) { }
+      }
+    }
     let currentCloudDocId = localStorage.getItem('pms_active_cloud_doc_id') || FIRESTORE_DOC_ID;
     let currentCloudFileName = localStorage.getItem('pms_active_cloud_file_name') || 'मुख्य समय-सारणी (Session 2026-27)';
     let savedFilesCache = {};
@@ -2703,7 +2734,16 @@
     }
 
     function normalizeTimetableData(data) {
-      if (!data || !data.classes) return;
+      if (!data) return;
+      if (!data.periodInfo || !Array.isArray(data.periodInfo) || data.periodInfo.length === 0) {
+        data.periodInfo = JSON.parse(JSON.stringify(DEFAULT_TIMETABLE.periodInfo));
+      } else {
+        const p1 = data.periodInfo.find(x => x.id === '1');
+        if (p1 && (p1.time.includes('08:20') || p1.time.includes('08:00') || p1.time.includes('08:55 AM'))) {
+          data.periodInfo = JSON.parse(JSON.stringify(DEFAULT_TIMETABLE.periodInfo));
+        }
+      }
+      if (!data.classes) return;
       ['kg1', 'kg2', 'class1', 'class2', 'class3', 'class4', 'class5', 'class6'].forEach(k => {
         const defClass = DEFAULT_TIMETABLE.classes[k];
         if (!data.classes[k]) {
@@ -4175,16 +4215,25 @@
         if (p.isSpecial) {
           let badgeClass = p.id === 'lunch' ? 'badge-lunch' : (p.id === 'departure' ? 'badge-departure' : 'badge-assembly');
           let textClass = p.id === 'lunch' ? 'lunch-text' : (p.id === 'departure' ? 'departure-text' : 'assembly-text');
+          let displayTime = p.time;
+          let displayDur = p.dur;
+          let displayText = p.specialText;
+
+          if (isKG && p.id === 'departure') {
+            displayTime = '01:00 PM';
+            displayDur = 'छुट्टी';
+            displayText = '🔔 डायरी चेकिंग, पंक्तिबद्ध विसर्जन एवं KG छुट्टी (01:00 PM Departure)';
+          }
 
           rowsHtml += `
             <tr class="special-row">
               <td><span class="pd-badge ${badgeClass}">${escapeHTML(p.badge)}</span></td>
               <td class="time-slot">
-                <div contenteditable="true" onblur="window.updatePeriodTime('${p.id}', this.innerText)">${escapeHTML(p.time)}</div>
-                <div class="time-dur">${escapeHTML(p.dur)}</div>
+                <div contenteditable="true" onblur="window.updatePeriodTime('${p.id}', this.innerText)">${escapeHTML(displayTime)}</div>
+                <div class="time-dur">${escapeHTML(displayDur)}</div>
               </td>
               <td colspan="6" class="${textClass}" contenteditable="true" onblur="window.updateSpecialText('${p.id}', this.innerText)">
-                ${escapeHTML(p.specialText)}
+                ${escapeHTML(displayText)}
               </td>
             </tr>
           `;
@@ -4241,7 +4290,7 @@
             <span>${escapeHTML(cData.classTitle)}</span>
             <span>कक्ष: <b contenteditable="true" onblur="window.updateRoomNo('${classKey}', this.innerText)">${escapeHTML(cData.roomNo)}</b></span>
             <span class="meta-ct">कक्षा अध्यापक: <span class="teacher-input-field teacher-val-${classKey}" contenteditable="true" onblur="window.updateClassTeacher('${classKey}', this.innerText)">${escapeHTML(cData.classTeacher)}</span></span>
-            <span>समय: 08:00 AM - 01:30 PM | वादन: ${maxPeriods} Periods</span>
+            <span>समय: ${isKG ? '08:20 AM - 01:00 PM' : '08:20 AM - 02:00 PM'} | वादन: ${maxPeriods} Periods</span>
           </div>
 
           <div class="sheet-banner-box">
@@ -4251,12 +4300,12 @@
                 <i class="fa-solid ${isClassTeacherShown ? 'fa-eye' : 'fa-eye-slash'}"></i>
                 <span>विषय शिक्षक नाम: ${isClassTeacherShown ? 'दृश्य (Visible)' : 'छुपा हुआ (Hidden)'}</span>
               </button>
-              <span class="banner-time">08:00 AM - 01:30 PM</span>
+              <span class="banner-time">${isKG ? '08:20 AM - 01:00 PM' : '08:20 AM - 02:00 PM'}</span>
             </div>
           </div>
           <div class="banner-subinfo">
             <span>कक्ष: ${escapeHTML(cData.roomNo)} | प्रतिदिन ${maxPeriods} वादन | ${isNoRotationClass(classKey) ? `कक्षा अध्यापक शिक्षण: ${escapeHTML(cData.classTeacher)}` : 'विषयवार शिक्षक रोटेशन'}</span>
-            <span>सत्र: 2026-27</span>
+            <span>नया समय: 05 नवम्बर 2026 से प्रभावी | सत्र: 2026-27</span>
           </div>
 
           <table class="timetable-grid">

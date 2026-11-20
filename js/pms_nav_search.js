@@ -9,6 +9,17 @@
 (function () {
   // Built-in Static Portal Pages
   const staticPortalPages = [
+    // --- School Fee Register & Finance ---
+    {
+      id: "pms_fee_register",
+      title: "मासिक छात्र शुल्क पंजिका (Monthly Student Fee Register 2026-27)",
+      category: "लेखा व छात्र शुल्क",
+      desc: "A4 लैंडस्केप प्रिंट-रेडी पेपर पंजिका + डिजिटल वेब ऐप (जनवरी से दिसम्बर / 12 माह चेकबॉक्स व रसीद सं०)",
+      url: "pms_fee_register.html",
+      icon: "fa-solid fa-receipt",
+      badge: "सत्र 2026-27",
+      keywords: "fee register shulk panjika fees month january december student father admission date receipt"
+    },
     // --- School Timetable & Administration ---
     {
       id: "school_timetable",

@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="hi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>बाल दिवस विशेष खेलकूद एवं आनंद मेला कार्ययोजना - 14 नवम्बर 2026 | Police Modern School Raebareli</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Google Fonts: Poppins, Martel, Noto Sans Devanagari, Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Martel:wght@700;800;900&family=Noto+Sans+Devanagari:wght@400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            pmsNavy: {
+              50: '#eff6ff',
+              100: '#dbeafe',
+              700: '#1d4ed8',
+              800: '#1e40af',
+              900: '#1e3a8a',
+              950: '#172554',
+            },
+            pmsSaffron: {
+              50: '#fff7ed',
+              100: '#ffedd5',
+              500: '#f97316',
+              600: '#ea580c',
+              700: '#c2410c',
+            },
+            pmsGreen: {
+              50: '#f0fdf4',
+              100: '#dcfce7',
+              600: '#16a34a',
+              700: '#15803d',
+              800: '#166534',
+            }
+          },
+          fontFamily: {
+            sans: ['"Noto Sans Devanagari"', '"Poppins"', '"Inter"', 'sans-serif'],
+            heading: ['"Martel"', '"Noto Sans Devanagari"', 'serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+
+    body {
+      font-family: 'Noto Sans Devanagari', 'Poppins', sans-serif;
+      background-color: #0f172a;
+      color: #0f172a;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Standard A4 Paper Sheet for Print & Screen */
+    .paper-sheet {
+      background: #ffffff;
+      width: 210mm;
+      min-height: 297mm;
+      margin: 20px auto;
+      padding: 12mm 15mm 12mm 15mm;
+      box-shadow: 0 10px 35px rgba(0, 0, 0, 0.45);
+      border-radius: 6px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .plan-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+      margin-bottom: 12px;
+    }
+
+    .plan-table th,
+    .plan-table td {
+      border: 1.5px solid #000000;
+      padding: 6px 10px;
+      font-size: 12.5px;
+      line-height: 1.4;
+      color: #000000;
+    }
+
+    .plan-table th {
+      background-color: #f1f5f9;
+      font-weight: 800;
+      text-transform: uppercase;
+      font-size: 12px;
+    }
+
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 8px;
+      border-radius: 9999px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .stall-card {
+      border: 1.5px solid #000000;
+      border-radius: 6px;
+      padding: 8px 10px;
+      background: #ffffff;
+      transition: all 0.15s ease;
+    }
+
+    .stall-card:hover {
+      background-color: #fefce8;
+      border-color: #d97706;
+    }
+
+    @media print {
+      body {
+        background-color: #ffffff !important;
+        padding: 0 !important;
+        margin: 0 !important;
+      }
+
+      .no-print {
+        display: none !important;
+      }
+
+      .paper-sheet {
+        box-shadow: none !important;
+        margin: 0 auto !important;
+        padding: 8mm 12mm 8mm 12mm !important;
+        width: 100% !important;
+        min-height: auto !important;
+        page-break-after: avoid;
+      }
+    }
+  </style>
+</head>
+
+<body class="antialiased">
+
+  <!-- ==================== TOP STICKY CONTROLS ==================== -->
+  <div class="no-print sticky top-0 z-50 bg-slate-900 text-white shadow-md border-b border-slate-700 px-4 py-2.5">
+    <div class="max-w-4xl mx-auto flex flex-wrap justify-between items-center gap-3">
+      <div class="flex items-center gap-2">
+        <span class="bg-amber-500 text-slate-950 font-black text-xs px-2.5 py-1 rounded">
+          <i class="fas fa-calendar-star mr-1"></i> 14 नवम्बर 2026
+        </span>
+        <span class="font-bold text-sm text-slate-200">
+          बाल दिवस एवं आनंद मेला कार्ययोजना
+        </span>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <button onclick="copyNoticeText()"
+          class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-3 py-1.5 rounded-lg flex items-center gap-1.5 shadow transition">
+          <i class="fab fa-whatsapp"></i> <span>व्हाट्सएप सूचना कॉपी करें</span>
+        </button>
+        <button onclick="window.print()"
+          class="bg-sky-600 hover:bg-sky-700 text-white text-xs font-bold px-3.5 py-1.5 rounded-lg flex items-center gap-1.5 shadow transition">
+          <i class="fas fa-print"></i> <span>प्रिंट / PDF सेव करें</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== PRINTABLE A4 SHEET ==================== -->
+  <div class="paper-sheet">
+
+    <!-- HEADER BLOCK -->
+    <div>
+      <div class="border-b-2 border-black pb-3 mb-3">
+        <div class="flex items-center justify-between gap-4">
+          <img src="logo1.png" alt="PMS Logo" class="w-16 h-16 object-contain"
+            onerror="this.onerror=null; this.src='pac_logo.png';" />
+          <div class="text-center flex-1">
+            <span class="text-xs font-extrabold uppercase tracking-widest text-slate-700 block">
+              25वीं वाहिनी पीएसी, रायबरेली (उ०प्र०)
+            </span>
+            <h1 class="text-2xl font-black text-black tracking-tight font-heading leading-tight">
+              पुलिस मॉडर्न स्कूल
+            </h1>
+            <p class="text-xs font-bold text-slate-800 tracking-wide mt-0.5">
+              POLICE MODERN SCHOOL, 25TH BN PAC, RAEBARELI
+            </p>
+          </div>
+          <img src="pac_logo.png" alt="PAC Logo" class="w-16 h-16 object-contain"
+            onerror="this.onerror=null; this.src='logo1.png';" />
+        </div>
+
+        <!-- Sub-header Ribbon -->
+        <div class="mt-2.5 bg-black text-white text-center py-1 rounded">
+          <h2 class="text-sm font-extrabold tracking-wide uppercase">
+            ★ बाल दिवस विशेष समारोह, खेलकूद प्रतियोगिता एवं आनंद मेला - 14 नवम्बर 2026 ★
+          </h2>
+        </div>
+      </div>
+
+      <!-- INTRO NOTE -->
+      <div class="bg-slate-50 border border-black p-2.5 rounded mb-3 text-xs leading-relaxed">
+        <div class="flex items-center justify-between">
+          <span><strong>दिनांक:</strong> 14 नवम्बर 2026 (बाल दिवस / पं० जवाहरलाल नेहरू जयंती)</span>
+          <span><strong>स्थान:</strong> विद्यालय प्रांगण एवं क्रीड़ा स्थल</span>
+          <span><strong>समय:</strong> प्रातः 08:30 बजे से समाप्ति तक</span>
+        </div>
+        <p class="mt-1 text-slate-700 font-medium">
+          <strong>उद्देश्य:</strong> विद्यार्थियों में शारीरिक स्फूर्ति, खेल भावना, सहयोग, नेतृत्व एवं उद्यमशीलता
+          (Entrepreneurship) का विकास करना।
+        </p>
+      </div>
+
+      <!-- SECTION 1: PROGRAM TIMELINE TABLE -->
+      <div class="mb-4">
+        <div class="flex items-center gap-2 mb-1">
+          <span
+            class="w-5 h-5 rounded-full bg-black text-white flex items-center justify-center text-xs font-bold">1</span>
+          <h3 class="text-sm font-black text-black uppercase tracking-wide">
+            कार्यक्रम रूपरेखा एवं समय-सारणी (Program Schedule)
+          </h3>
+        </div>
+
+        <table class="plan-table">
+          <thead>
+            <tr>
+              <th class="w-36 text-center">समय (Time)</th>
+              <th>कार्यक्रम / गतिविधि (Event / Activity)</th>
+              <th class="w-48">स्थान एवं प्रभारी (Venue & Incharge)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="text-center font-bold font-mono">08:30 AM — 09:00 AM</td>
+              <td>
+                <strong>विशेष प्रातःकालीन सभा (Special Assembly):</strong>
+                <ul class="list-disc list-inside text-[11.5px] mt-0.5 text-slate-800">
+                  <li>प्रार्थना एवं राष्ट्रगान</li>
+                  <li>चाचा नेहरू जी के चित्र पर माल्यार्पण एवं पुष्पांजलि</li>
+                  <li>शिक्षकों एवं प्रधानाचार्या द्वारा बाल दिवस का प्रेरक संदेश</li>
+                </ul>
+              </td>
+              <td class="text-xs">
+                विद्यालय प्रार्थना स्थल<br>
+                <span class="text-slate-600 font-medium">समस्त शिक्षकगण</span>
+              </td>
+            </tr>
+            <tr>
+              <td class="text-center font-bold font-mono">09:00 AM — 09:30 AM</td>
+              <td>
+                <strong>खेलकूद तैयारी एवं नन्हे-मुन्नों के खेल (KG-II Special Games):</strong>
+                <p class="text-[11.5px] text-slate-800 mt-0.5">
+                  • <strong>खेल 1:</strong> बोरी रेस<br>
+                  • <strong>खेल 2:</strong>म्यूजिकल सर्कल
+                </p>
+              </td>
+              <td class="text-xs">
+                प्राथमिक ग्राउंड<br>
+                <span class="text-slate-600 font-medium">KG शिक्षिकाएँ</span>
+              </td>
+            </tr>
+            <tr>
+              <td class="text-center font-bold font-mono">09:30 AM — 10:00 AM</td>
+              <td>
+                <strong>कबड्डी प्रतियोगिता (Kabaddi Match - Start):</strong>
+                <p class="text-[11.5px] text-slate-800 mt-0.5">
+                  बालक एवं बालिका वर्ग के मध्य रोमांचक कबड्डी मुकाबले। खेल भावना एवं अनुशासन का प्रदर्शन।
+                </p>
+              </td>
+              <td class="text-xs">
+                मुख्य कबड्डी कोर्ट<br>
+                <span class="text-slate-600 font-medium">क्रीड़ा शिक्षक व रेफरी दल</span>
+              </td>
+            </tr>
+            <tr>
+              <td class="text-center font-bold font-mono">10:00 AM — 11:00 AM</td>
+              <td>
+                <strong>रस्साकसी (Tug of War) + म्यूजिकल चेयर (Musical Chair):</strong>
+                <ul class="list-disc list-inside text-[11.5px] mt-0.5 text-slate-800">
+                  <li><strong>रस्साकसी:</strong> सदनों (Houses) एवं कक्षावार छात्र-छात्राओं के मध्य जोर-आजमाइश</li>
+                  <li><strong>म्यूजिकल चेयर:</strong> विद्यार्थियों एवं शिक्षिकाओं के लिए मनोरंजक प्रतियोगिता</li>
+                </ul>
+              </td>
+              <td class="text-xs">
+                मुख्य खेल मैदान<br>
+                <span class="text-slate-600 font-medium">स्पोर्ट्स कमेटी</span>
+              </td>
+            </tr>
+            <tr>
+              <td class="text-center font-bold font-mono bg-amber-50">11:00 AM — समाप्ति तक</td>
+              <td class="bg-amber-50">
+                <strong class="text-amber-900">भव्य आनंद मेला (Bal Mela / Food Stalls & Fete):</strong>
+                <p class="text-[11.5px] text-slate-800 mt-0.5">
+                  छात्रों द्वारा संचालित लजीज व्यंजन स्टॉल, गेम्स कॉर्नर एवं संगीत आनंद। कूपन द्वारा क्रय-विक्रय।
+                </p>
+              </td>
+              <td class="bg-amber-50 text-xs font-bold text-amber-950">
+                मेला प्रांगण (Stall Area)<br>
+                <span class="text-slate-700 font-medium">मेला निरीक्षण समिति</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- SECTION 2: FOOD STALLS ALLOCATION -->
+      <div class="mb-4">
+        <div class="flex items-center justify-between mb-1.5">
+          <div class="flex items-center gap-2">
+            <span
+              class="w-5 h-5 rounded-full bg-black text-white flex items-center justify-center text-xs font-bold">2</span>
+            <h3 class="text-sm font-black text-black uppercase tracking-wide">
+              आनंद मेला: छात्र व्यंजन स्टॉल आवंटन सूची (Food Stalls & Incharges)
+            </h3>
+          </div>
+          <span class="text-[11px] font-bold text-slate-600 border border-black px-2 py-0.5 rounded">
+            कुल 7 प्रमुख स्टॉल
+          </span>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 text-xs">
+          <!-- Stall 1 -->
+          <div class="stall-card">
+            <div class="flex items-center justify-between border-b border-black pb-1 mb-1">
+              <span class="font-bold text-[11px] bg-slate-200 px-1.5 rounded">स्टॉल नं० 1</span>
+              <i class="fas fa-utensils text-slate-700"></i>
+            </div>
+            <p class="font-extrabold text-sm text-black">आर्यन पासवान</p>
+            <p class="text-slate-700 font-bold mt-0.5">
+              <span class="text-amber-700">व्यंजन:</span> मोमोज (Momos)
+            </p>
+          </div>
+
+          <!-- Stall 2 -->
+          <div class="stall-card">
+            <div class="flex items-center justify-between border-b border-black pb-1 mb-1">
+              <span class="font-bold text-[11px] bg-slate-200 px-1.5 rounded">स्टॉल नं० 2</span>
+              <i class="fas fa-bowl-food text-slate-700"></i>
+            </div>
+            <p class="font-extrabold text-sm text-black">वंशिका गौतम & आयुषी</p>
+            <p class="text-slate-700 font-bold mt-0.5">
+              <span class="text-amber-700">व्यंजन:</span> पानीपूरी (Panipuri)
+            </p>
+          </div>
+
+          <!-- Stall 3 -->
+          <div class="stall-card">
+            <div class="flex items-center justify-between border-b border-black pb-1 mb-1">
+              <span class="font-bold text-[11px] bg-slate-200 px-1.5 rounded">स्टॉल नं० 3</span>
+              <i class="fas fa-pepper-hot text-slate-700"></i>
+            </div>
+            <p class="font-extrabold text-sm text-black">मुस्कान (Muskan)</p>
+            <p class="text-slate-700 font-bold mt-0.5">
+              <span class="text-amber-700">व्यंजन:</span> भेलपूरी (Bhelpuri)
+            </p>
+          </div>
+
+          <!-- Stall 4 -->
+          <div class="stall-card">
+            <div class="flex items-center justify-between border-b border-black pb-1 mb-1">
+              <span class="font-bold text-[11px] bg-slate-200 px-1.5 rounded">स्टॉल नं० 4</span>
+              <i class="fas fa-cookie text-slate-700"></i>
+            </div>
+            <p class="font-extrabold text-sm text-black">अराध्या (Aradhya)</p>
+            <p class="text-slate-700 font-bold mt-0.5">
+              <span class="text-amber-700">व्यंजन:</span> समोसा (Samosa)
+            </p>
+          </div>
+
+          <!-- Stall 5 -->
+          <div class="stall-card">
+            <div class="flex items-center justify-between border-b border-black pb-1 mb-1">
+              <span class="font-bold text-[11px] bg-slate-200 px-1.5 rounded">स्टॉल नं० 5</span>
+              <i class="fas fa-utensils text-slate-700"></i>
+            </div>
+            <p class="font-extrabold text-sm text-black">अनुष्का (Anushka)</p>
+            <p class="text-slate-700 font-bold mt-0.5">
+              <span class="text-amber-700">व्यंजन:</span> मोमोज (Momos)
+            </p>
+          </div>
+
+          <!-- Stall 6 -->
+          <div class="stall-card">
+            <div class="flex items-center justify-between border-b border-black pb-1 mb-1">
+              <span class="font-bold text-[11px] bg-slate-200 px-1.5 rounded">स्टॉल नं० 6</span>
+              <i class="fas fa-box-open text-slate-700"></i>
+            </div>
+            <p class="font-extrabold text-sm text-black">अमरेंद्र (Amrendra)</p>
+            <p class="text-slate-700 font-bold mt-0.5">
+              <span class="text-amber-700">व्यंजन:</span> स्नैक्स (Snacks)
+            </p>
+          </div>
+
+          <!-- Stall 7 -->
+          <div class="stall-card">
+            <div class="flex items-center justify-between border-b border-black pb-1 mb-1">
+              <span class="font-bold text-[11px] bg-slate-200 px-1.5 rounded">स्टॉल नं० 7</span>
+              <i class="fas fa-mug-hot text-slate-700"></i>
+            </div>
+            <p class="font-extrabold text-sm text-black">सुभय (Subhay)</p>
+            <p class="text-slate-700 font-bold mt-0.5">
+              <span class="text-amber-700">व्यंजन:</span> स्नैक्स (Snacks)
+            </p>
+          </div>
+
+          <!-- Extra Guide -->
+          <div class="stall-card bg-slate-50 border-dashed">
+            <div class="flex items-center justify-between border-b border-black pb-1 mb-1">
+              <span class="font-bold text-[11px] text-slate-600">विशेष काउंटर</span>
+              <i class="fas fa-ticket text-slate-700"></i>
+            </div>
+            <p class="font-bold text-xs text-black">कूपन / टोकन काउंटर</p>
+            <p class="text-slate-500 text-[10px] mt-0.5">नगद रहित सुगम व्यवस्था</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 3: KEY INSTRUCTIONS FOR STUDENTS & TEACHERS -->
+      <div class="border border-black rounded p-3 bg-white mb-2 text-xs">
+        <h3 class="font-bold text-black uppercase mb-1.5 flex items-center gap-1.5">
+          <i class="fas fa-clipboard-list text-slate-800"></i> आवश्यक दिशा-निर्देश (Important Guidelines):
+        </h3>
+        <ol class="list-decimal list-inside space-y-1 text-slate-800 leading-normal">
+          <li><strong>स्वच्छता एवं पर्यावरण:</strong> प्रत्येक स्टॉल प्रभारी अपने काउंटर के पास डस्टबिन (कूड़ेदान)
+            अनिवार्य रूप से रखेंगे। सिंगल-यूज़ प्लास्टिक पूर्णतः वर्जित है।</li>
+          <li><strong>गुणवत्ता एवं सुरक्षा:</strong> खाद्य सामग्री ताज़ा, शुद्ध, ढकी हुई और हाइजीनिक होनी चाहिए। पानी
+            पीने योग्य शुद्ध आरओ वाटर होना चाहिए।</li>
+          <li><strong>अनुशासन एवं खेल भावना:</strong> खेलकूद प्रतियोगिता के दौरान सभी खिलाड़ी खेल भावना (Sportsmanship)
+            का परिचय देंगे। रेफरी का निर्णय अंतिम एवं सर्वमान्य होगा।</li>
+          <li><strong>टोकन व्यवस्था:</strong> अव्यवस्था से बचने के लिए स्टॉल पर कूपन/टोकन प्रणाली अपनाई जाए।</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- FOOTER SIGNATURE BLOCK -->
+
+    <!-- WHATSAPP MESSAGE HELPER (Hidden from Print) -->
+    <div class="no-print max-w-4xl mx-auto px-4 pb-12">
+      <div class="bg-slate-800 border border-slate-700 rounded-xl p-4 text-white">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-sm font-bold text-amber-400">
+            <i class="fab fa-whatsapp mr-1"></i> व्हाट्सएप नोटिस टेक्स्ट (अभिभावक व शिक्षक ग्रुप हेतु):
+          </span>
+          <button onclick="copyNoticeText()"
+            class="text-xs bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-3 py-1 rounded transition">
+            कॉपी करें
+          </button>
+        </div>
+        <textarea id="whatsappNotice" readonly
+          class="w-full bg-slate-900 border border-slate-700 rounded p-3 text-xs font-mono text-slate-200 h-44 resize-none">
+📢 पुलिस मॉडर्न स्कूल, 25वीं वाहिनी पीएसी, रायबरेली
+★ बाल दिवस (14 नवम्बर 2026) विशेष खेलकूद एवं आनंद मेला सूचना ★
+
+समस्त शिक्षकगण, अभिभावक एवं प्रिय विद्यार्थियों,
+दिनांक 14 नवम्बर 2026 (बाल दिवस) को विद्यालय में विशेष खेलकूद एवं भव्य आनंद मेले का आयोजन किया जा रहा है। 
+
+⏰ कार्यक्रम समय-सारणी:
+• 08:30 AM - 09:00 AM : विशेष प्रार्थना सभा (चाचा नेहरू स्मरण)
+• 09:00 AM - 09:30 AM : KG-II के मनोरंजक खेल
+• 09:30 AM - 10:00 AM : कबड्डी प्रतियोगिता
+• 10:00 AM - 11:00 AM : रस्साकसी एवं म्यूजिकल चेयर प्रतियोगिता
+• 11:00 AM से समाप्ति तक : भव्य आनंद मेला (स्वादिष्ट व्यंजन स्टॉल)
+
+🍲 बाल मेला स्टॉल सूची:
+1. आर्यन पासवान — मोमोज
+2. वंशिका गौतम & आयुषी — पानीपूरी
+3. मुस्कान — भेलपूरी
+4. अवाध्या — समोसा
+5. अनुष्का — मोमोज
+6. अमरेंद्र — स्नैक्स
+7. सुभय — स्नैक्स
+
+सभी विद्यार्थी समय से विद्यालय पहुँचे और खेल भावना व आनंद मेले का उत्साहपूर्वक हिस्सा बनें।
+
+- प्रधानाचार्या
+पुलिस मॉडर्न स्कूल, 25वीं वाहिनी पीएसी, रायबरेली</textarea>
+      </div>
+    </div>
+
+    <script>
+      function copyNoticeText() {
+        const textarea = document.getElementById('whatsappNotice');
+        textarea.select();
+        document.execCommand('copy');
+        alert('व्हाट्सएप सूचना सफलतापूर्वक कॉपी हो गई है! अब आप इसे व्हाट्सएप ग्रुप में पेस्ट कर सकते हैं।');
+      }
+    </script>
+</body>
+
+</html>

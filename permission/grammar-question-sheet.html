@@ -1846,6 +1846,14 @@
     // Download Standalone Offline Word (.doc) Book
     function downloadOfflineWord() {
       const cfg = SUBJECT_CONFIGS[activeSubjectKey] || SUBJECT_CONFIGS['grammar'];
+      const sheet = document.getElementById('sheetContent') || document.querySelector('.sheet-container') || document.querySelector('main');
+      if (typeof window.exportElementToWord === 'function' && sheet) {
+        window.exportElementToWord(sheet, {
+          title: `Police Modern School - ${cfg.title || 'Grammar'}`,
+          filename: `PMS_Raebareli_${activeSubjectKey}_Master_Book`
+        });
+        return;
+      }
       const data = cfg.data || [];
       
       let bookPagesHtml = generateCoverPageHtml(activeSubjectKey) + generateTableOfContentsHtml(activeSubjectKey);
@@ -1957,7 +1965,9 @@
       renderActiveChapter();
     }
   </script>
-
+  <!-- Universal Word Export & Search Integration -->
+  <script src="../js/pms_word_export.js"></script>
+  <script src="../js/pms_nav_search.js"></script>
 </body>
 
 </html>

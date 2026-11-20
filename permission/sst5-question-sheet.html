@@ -1903,7 +1903,18 @@
       closeBookModal();
       const cfg = SUBJECT_CONFIGS[selectedBookSubject] || SUBJECT_CONFIGS['sst5'] || {};
       const sheet = document.getElementById('sheetContent') || document.querySelector('.sheet-container');
-      const content = sheet ? sheet.innerHTML : 'No content available';
+      if (!sheet) return;
+
+      const filename = `PMS_${(cfg.title || 'Question_Sheet').replace(/[^a-zA-Z0-9]/g, '_')}_${Date.now()}`;
+      if (typeof window.exportElementToWord === 'function') {
+        window.exportElementToWord(sheet, {
+          title: `${cfg.title || 'प्रश्न-पत्र'} - पुलिस मॉडर्न स्कूल`,
+          filename: filename
+        });
+        return;
+      }
+
+      const content = sheet.innerHTML;
 
       const wordHtml = `
         <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
@@ -2127,6 +2138,9 @@ ${endHtml}`;
       if (window.feather) feather.replace();
     });
   </script>
+  <!-- Universal Word Export & Search Integration -->
+  <script src="../js/pms_word_export.js"></script>
+  <script src="../js/pms_nav_search.js"></script>
 </body>
 
 </html>

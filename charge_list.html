@@ -1138,6 +1138,14 @@
                     const printCont = document.getElementById('print-container');
                     if (!printCont) return;
 
+                    if (typeof window.exportElementToWord === 'function') {
+                        window.exportElementToWord(printCont, {
+                            title: 'PMS Charge List',
+                            filename: 'PMS_Charge_List'
+                        });
+                        return;
+                    }
+
                     const wordHtml = `
                         <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
                         <head>
@@ -1182,6 +1190,8 @@
         });
     </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <!-- Universal Word Export & Search Integration -->
+    <script src="js/pms_word_export.js"></script>
     <script src="js/pms_nav_search.js"></script>
 </body>
 

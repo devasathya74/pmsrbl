@@ -459,6 +459,15 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
     <script>
       function exportQuestionBankWord() {
+        const container = document.querySelector('main') || document.body;
+        if (typeof window.exportElementToWord === 'function') {
+          window.exportElementToWord(container, {
+            title: document.title || 'Class 6 Science Question Bank',
+            filename: 'PMS_Class6_Science_Question_Bank'
+          });
+          return;
+        }
+
         const clone = document.body.cloneNode(true);
         const noPrints = clone.querySelectorAll('.no-print');
         noPrints.forEach(el => el.remove());
@@ -503,6 +512,8 @@
         URL.revokeObjectURL(url);
       }
     </script>
+    <!-- Universal Word Export Integration -->
+    <script src="js/pms_word_export.js"></script>
     <script src="js/pms_nav_search.js"></script>
 </body>
 </html>

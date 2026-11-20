@@ -9926,7 +9926,31 @@
       const targetUnit = UNIT_RANGES.find(u => u.id === selectedUnitId) || UNIT_RANGES[0];
       closeDownloadModal();
 
+      const container = document.createElement('div');
       const allPageEls = document.querySelectorAll('.book-page');
+      let count = 0;
+      allPageEls.forEach(pageEl => {
+        const pNum = parseInt(pageEl.getAttribute('data-page-num'));
+        if (targetUnit.id === 'all' || (pNum >= targetUnit.start && pNum <= targetUnit.end)) {
+          const clone = pageEl.cloneNode(true);
+          clone.querySelectorAll('.no-print').forEach(np => np.remove());
+          if (count > 0) {
+            clone.style.pageBreakBefore = 'always';
+          }
+          container.appendChild(clone);
+          count++;
+        }
+      });
+
+      const safeName = targetUnit.name.replace(/[^a-zA-Z0-9_\u0900-\u097F]/g, '_');
+      if (typeof window.exportElementToWord === 'function' && count > 0) {
+        window.exportElementToWord(container, {
+          title: `${targetUnit.name} - PMS Raebareli`,
+          filename: `PMS_Raebareli_${safeName}`
+        });
+        return;
+      }
+
       let pagesHtml = '';
 
       allPageEls.forEach(pageEl => {
@@ -9982,5 +10006,8 @@
       URL.revokeObjectURL(url);
     }
   </script>
+  <!-- Universal Word Export & Search Integration -->
+  <script src="../js/pms_word_export.js"></script>
+  <script src="../js/pms_nav_search.js"></script>
 </body>
 </html>

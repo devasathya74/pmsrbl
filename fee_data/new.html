@@ -427,6 +427,14 @@
             var docId = activeDoc.id;
             var monthName = docId === 'doc-june' ? 'June_2026' : 'July_2026';
 
+            if (typeof window.exportElementToWord === 'function') {
+                window.exportElementToWord(activeDoc, {
+                    title: 'वेतन भुगतान पत्र - पुलिस मॉडर्न स्कूल',
+                    filename: 'Vetan_' + monthName + '_PMS_Raebareli'
+                });
+                return;
+            }
+
             var wordHtml = `
                 <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
                 <head>
@@ -493,6 +501,8 @@
             }, 1000);
         }
     </script>
+    <!-- Universal Word Export Integration -->
+    <script src="../js/pms_word_export.js"></script>
 </body>
 
 </html>

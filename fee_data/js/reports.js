@@ -235,6 +235,15 @@ const ReportsModule = {
     const table = document.querySelector('#report-output-container table');
     if (!table) return alert('No report data available for export.');
 
+    if (typeof window.exportElementToWord === 'function') {
+      window.exportElementToWord(table, {
+        title: 'Fee Report - Police Modern School',
+        landscape: true,
+        filename: `PMS_Fee_Report_${this.activeReportType}`
+      });
+      return;
+    }
+
     const wordHtml = `
       <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
       <head>

@@ -1644,37 +1644,46 @@ window.exportDistributionWord = function () {
             </xml>
             <![endif]-->
             <style>
-                @page { size: A4 landscape; margin: 1cm; }
-                body { font-family: 'Mangal', 'Noto Sans Devanagari', 'Calibri', sans-serif; font-size: 10pt; color: #111; }
-                table { border-collapse: collapse; width: 100%; margin-top: 8pt; }
-                th, td { border: 0.5pt solid #333; padding: 4pt 6pt; font-size: 9pt; }
+                @page Section1 {
+                    size: 841.9pt 595.3pt;
+                    mso-page-orientation: landscape;
+                    margin: 15.0pt 20.0pt 15.0pt 20.0pt;
+                    mso-header-margin: 0pt;
+                    mso-footer-margin: 0pt;
+                }
+                div.Section1 { page: Section1; }
+                body { font-family: 'Mangal', 'Noto Sans Devanagari', 'Calibri', sans-serif; font-size: 9pt; color: #111; margin: 0; padding: 0; }
+                table { border-collapse: collapse; width: 100%; margin-top: 6pt; }
+                th, td { border: 0.5pt solid #333; padding: 3pt 5pt; font-size: 8.5pt; }
                 th { background-color: #f1f5f9; font-weight: bold; }
-                h2, h3 { text-align: center; margin: 3px 0; }
+                h2, h3 { text-align: center; margin: 2px 0; }
             </style>
         </head>
         <body>
-            <h2>पुलिस मॉडर्न स्कूल, 25वीं वाहिनी पीएसी, रायबरेली</h2>
-            <h3>औषधि एवं प्राथमिक चिकित्सा वितरण पंजिका (Medicine Distribution Register)</h3>
-            <p style="text-align:center;font-size:9pt;margin:2px 0 10px 0;">कुल वितरण रिकॉर्ड: ${distributionLog.length} | दिनांक: ${new Date().toLocaleDateString('hi-IN')}</p>
-            <table>
-                <thead>
-                    <tr>
-                        <th style="width:4%;">क्र०</th>
-                        <th style="width:16%;">छात्र का नाम</th>
-                        <th style="width:8%;">कक्षा</th>
-                        <th style="width:8%;">रोल नं०</th>
-                        <th style="width:16%;">पिता का नाम</th>
-                        <th style="width:14%;">दवाई का नाम</th>
-                        <th style="width:6%;">मात्रा</th>
-                        <th style="width:12%;">कारण / प्रयोजन</th>
-                        <th style="width:8%;">वितरण दिनांक</th>
-                        <th style="width:8%;">वितरणकर्ता</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    ${rowsHtml}
-                </tbody>
-            </table>
+            <div class="Section1">
+                <h2>पुलिस मॉडर्न स्कूल, 25वीं वाहिनी पीएसी, रायबरेली</h2>
+                <h3>औषधि एवं प्राथमिक चिकित्सा वितरण पंजिका (Medicine Distribution Register)</h3>
+                <p style="text-align:center;font-size:9pt;margin:2px 0 8px 0;">कुल वितरण रिकॉर्ड: ${distributionLog.length} | दिनांक: ${new Date().toLocaleDateString('hi-IN')}</p>
+                <table border="1" width="100%">
+                    <thead>
+                        <tr>
+                            <th style="width:4%;">क्र०</th>
+                            <th style="width:16%;">छात्र का नाम</th>
+                            <th style="width:8%;">कक्षा</th>
+                            <th style="width:8%;">रोल नं०</th>
+                            <th style="width:16%;">पिता का नाम</th>
+                            <th style="width:14%;">दवाई का नाम</th>
+                            <th style="width:6%;">मात्रा</th>
+                            <th style="width:12%;">कारण / प्रयोजन</th>
+                            <th style="width:8%;">वितरण दिनांक</th>
+                            <th style="width:8%;">वितरणकर्ता</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${rowsHtml}
+                    </tbody>
+                </table>
+            </div>
         </body>
         </html>
     `;

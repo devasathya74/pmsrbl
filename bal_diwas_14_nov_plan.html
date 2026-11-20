@@ -509,6 +509,14 @@
       function exportDocWord() {
         const container = document.querySelector('.paper-sheet') || document.querySelector('main');
         if (!container) return;
+        if (typeof window.exportElementToWord === 'function') {
+          window.exportElementToWord(container, {
+            title: 'बाल दिवस (14 नवंबर) विशेष कार्यक्रम कार्ययोजना',
+            filename: 'PMS_Bal_Diwas_14_Nov_Plan'
+          });
+          return;
+        }
+
         const clone = container.cloneNode(true);
         const noPrints = clone.querySelectorAll('.no-print');
         noPrints.forEach(el => el.remove());
@@ -552,6 +560,8 @@
         URL.revokeObjectURL(url);
       }
     </script>
+    <!-- Universal Word Export Integration -->
+    <script src="js/pms_word_export.js"></script>
 </body>
 
 </html>

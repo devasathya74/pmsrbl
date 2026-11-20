@@ -1814,6 +1814,18 @@
     }
 
     function exportToWord() {
+      const card = document.getElementById('printDocumentCard') || document.getElementById('mainDataTable');
+      if (!card) return;
+
+      if (typeof window.exportElementToWord === 'function') {
+        window.exportElementToWord(card, {
+          title: 'वामा खेलोत्सव 2026 - 25वीं वाहिनी पीएसी, रायबरेली',
+          landscape: true,
+          filename: 'Vama_Khelotsav_2026_Record'
+        });
+        return;
+      }
+
       const table = document.getElementById('mainDataTable');
       const eventDate = document.getElementById('docEventDate').innerText;
 
@@ -1860,5 +1872,7 @@
       }
     });
   </script>
+  <!-- Universal Word Export Integration -->
+  <script src="js/pms_word_export.js"></script>
 </body>
 </html>

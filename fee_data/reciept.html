@@ -657,6 +657,15 @@
         function exportReceiptWord() {
             const receipt = document.getElementById('printable-receipt');
             if (!receipt) return;
+            if (typeof window.exportElementToWord === 'function') {
+                window.exportElementToWord(receipt, {
+                    title: 'Chaurasia Transport Receipt',
+                    landscape: true,
+                    filename: 'Chaurasia_Transport_Receipt'
+                });
+                return;
+            }
+
             const clone = receipt.cloneNode(true);
             const noPrints = clone.querySelectorAll('.no-print');
             noPrints.forEach(el => el.remove());
@@ -699,6 +708,8 @@
             URL.revokeObjectURL(url);
         }
     </script>
+    <!-- Universal Word Export Integration -->
+    <script src="../js/pms_word_export.js"></script>
 </body>
 
 </html>

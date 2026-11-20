@@ -3813,8 +3813,18 @@
                     </xml>
                     <![endif]-->
                     <style>
-                        @page { size: A4 landscape; margin: 1cm; }
-                        body { font-family: 'Mangal', 'Noto Sans Devanagari', 'Calibri', sans-serif; font-size: 10pt; color: #111; }
+                        @page Section1 {
+                            size: 841.9pt 595.3pt;
+                            mso-page-orientation: landscape;
+                            margin: 20pt 25pt 20pt 25pt;
+                            mso-header-margin: 0pt;
+                            mso-footer-margin: 0pt;
+                            mso-paper-source: 0;
+                        }
+                        div.Section1 {
+                            page: Section1;
+                        }
+                        body { font-family: 'Mangal', 'Noto Sans Devanagari', 'Calibri', sans-serif; font-size: 10pt; color: #111; margin: 0; padding: 0; }
                         table { border-collapse: collapse; width: 100%; margin-top: 10px; }
                         th, td { border: 0.5pt solid #333; padding: 4pt 6pt; font-size: 9pt; }
                         th { background-color: #f1f5f9; font-weight: bold; }
@@ -3822,6 +3832,7 @@
                     </style>
                 </head>
                 <body>
+                    <div class="Section1">
                     <h2>पुलिस मॉडर्न स्कूल, 25वीं वाहिनी पीएसी, रायबरेली</h2>
                     <h3 style="color:#333;">परिवहन छात्र पंजिका (${vFilterLabel})</h3>
                     <p style="text-align:center;font-size:9pt;margin:2px 0 10px 0;">कुल छात्र: ${printStudents.length} | दिनांक: ${today}</p>
@@ -3841,6 +3852,7 @@
                             ${rowsHtml}
                         </tbody>
                     </table>
+                    </div>
                 </body>
                 </html>
             `;

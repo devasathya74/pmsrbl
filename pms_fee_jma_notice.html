@@ -244,13 +244,64 @@
       document.getElementById('hlText').innerText = isHighlighted ? "हाईलाइट छिपाएं" : "एडिट फील्ड दिखाएं";
     }
 
-    // 3. Export to Word (.doc)
+    // 3. Export to Word (.doc) with 100% Preview-Identical Layout
     function exportNoticeWord() {
       const container = document.getElementById('noticeCanvas');
       if (!container) return;
-      const clone = container.cloneNode(true);
-      const noPrints = clone.querySelectorAll('.no-print');
-      noPrints.forEach(el => el.remove());
+
+      // Extract current live editable values to preserve any user changes
+      const h1El = container.querySelector('h1');
+      const headerText = h1El ? h1El.innerText.trim() : 'कार्यालय पुलिस माडर्न स्कूल 25वीं वाहिनी पीएसी रायबरेली';
+
+      const h2El = container.querySelector('h2');
+      const sessionText = h2El ? h2El.innerText.trim() : 'सत्र:—2026-2027';
+
+      const dateEl = container.querySelector('.text-right p');
+      const dateText = dateEl ? dateEl.innerText.trim() : 'दिनांक—सितम्बर 28 ,2026';
+
+      const narrativeEl = container.querySelector('.leading-\\[2\\.1\\]') || container.querySelector('.space-y-1');
+      let narrativeHtml = '';
+      if (narrativeEl) {
+        const ps = narrativeEl.querySelectorAll('p');
+        if (ps.length > 0) {
+          narrativeHtml = Array.from(ps).map(p => `<p style="margin: 0 0 4pt 0; font-weight: bold; font-size: 13.5pt; line-height: 2.1;">${p.innerText.trim()}</p>`).join('');
+        } else {
+          narrativeHtml = `<p style="margin: 0 0 4pt 0; font-weight: bold; font-size: 13.5pt; line-height: 2.1;">${narrativeEl.innerText.trim()}</p>`;
+        }
+      }
+
+      // Breakdown amounts
+      const breakdownRows = container.querySelectorAll('.pl-12 .flex, .pl-16 .flex');
+      let tuitionLabel = 'ट्यूशन फीस से प्राप्त';
+      let tuitionVal = '—रू0 112,351.00';
+      let totalLabel = 'कुल प्राप्त धन';
+      let totalVal = '—रू0 112,351.00';
+      if (breakdownRows.length >= 1) {
+        const spans = breakdownRows[0].querySelectorAll('span');
+        if (spans.length >= 2) {
+          tuitionLabel = spans[0].innerText.trim();
+          tuitionVal = spans[1].innerText.trim();
+        }
+      }
+      if (breakdownRows.length >= 2) {
+        const spans = breakdownRows[1].querySelectorAll('span');
+        if (spans.length >= 2) {
+          totalLabel = spans[0].innerText.trim();
+          totalVal = spans[1].innerText.trim();
+        }
+      }
+      const wordsEl = container.querySelector('.pl-12 .mt-2, .pl-16 .mt-2');
+      const wordsText = wordsEl ? wordsEl.innerText.trim() : '(एक लाख बारह हजार तीन सौ इक्यावन रूपये मात्र)';
+
+      // Signatory lines
+      const sigEl = container.querySelector('.justify-end .text-center');
+      let sigLines = ['प्रभारी प्रधानाचार्या', 'पुलिस माडर्न स्कूल', '25वीं वाहिनी पीएसी', 'रायबरेली।'];
+      if (sigEl) {
+        const divs = sigEl.querySelectorAll('div');
+        if (divs.length >= 4) {
+          sigLines = Array.from(divs).map(d => d.innerText.trim());
+        }
+      }
 
       const wordHtml = `
         <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
@@ -267,15 +318,105 @@
           </xml>
           <![endif]-->
           <style>
-            @page { size: A4 portrait; margin: 1.5cm; }
-            body { font-family: 'Mangal', 'Noto Sans Devanagari', 'Calibri', sans-serif; font-size: 11pt; color: #111; line-height: 1.5; }
-            table { border-collapse: collapse; width: 100%; margin: 6pt 0; }
-            th, td { border: 0.5pt solid #333; padding: 4pt 6pt; }
-            .no-print { display: none !important; }
+            @page Section1 {
+              size: 595.3pt 841.9pt; /* A4 Portrait */
+              margin: 36.0pt 45.0pt 36.0pt 45.0pt;
+              mso-header-margin: 0pt;
+              mso-footer-margin: 0pt;
+              mso-paper-source: 0;
+            }
+            div.Section1 {
+              page: Section1;
+            }
+            body {
+              font-family: 'Mangal', 'Noto Sans Devanagari', 'Calibri', 'Segoe UI', Arial, sans-serif;
+              color: #000000;
+              margin: 0;
+              padding: 0;
+            }
+            .header-title {
+              font-size: 18pt;
+              font-weight: 900;
+              text-align: center;
+              margin-top: 10pt;
+              margin-bottom: 16pt;
+              line-height: 1.3;
+            }
+            .session-title {
+              font-size: 15pt;
+              font-weight: 900;
+              text-align: center;
+              text-decoration: underline;
+              margin-bottom: 20pt;
+            }
+            .date-row {
+              font-size: 13.5pt;
+              font-weight: 900;
+              text-align: right;
+              margin-bottom: 26pt;
+              padding-right: 4pt;
+            }
+            .narrative-box {
+              margin-bottom: 26pt;
+            }
+            .breakdown-table {
+              width: 100%;
+              border: none;
+              border-collapse: collapse;
+              margin-left: 36pt;
+              margin-bottom: 30pt;
+            }
+            .breakdown-table td {
+              border: none;
+              padding: 5pt 0;
+              font-size: 13.5pt;
+              vertical-align: top;
+            }
+            .sig-table {
+              width: 100%;
+              border: none;
+              border-collapse: collapse;
+              margin-top: 45pt;
+            }
+            .sig-table td {
+              border: none;
+              vertical-align: top;
+            }
           </style>
         </head>
         <body>
-          ${clone.innerHTML}
+          <div class="Section1">
+            <div class="header-title">${headerText}</div>
+            <div class="session-title"><u>${sessionText.replace(/<\/?u>/g, '')}</u></div>
+            <div class="date-row">${dateText}</div>
+            <div class="narrative-box">
+              ${narrativeHtml}
+            </div>
+            <table class="breakdown-table">
+              <tr>
+                <td style="width: 230pt; font-weight: normal;">${tuitionLabel}</td>
+                <td style="font-weight: normal;">${tuitionVal}</td>
+              </tr>
+              <tr>
+                <td style="padding-top: 10pt; font-weight: 900; text-decoration: underline;">${totalLabel}</td>
+                <td style="padding-top: 10pt; font-weight: 900; text-decoration: underline;">${totalVal}</td>
+              </tr>
+              <tr>
+                <td colspan="2" style="padding-top: 6pt; font-weight: 900; font-size: 13.5pt;">${wordsText}</td>
+              </tr>
+            </table>
+            <table class="sig-table">
+              <tr>
+                <td style="width: 58%;"></td>
+                <td style="width: 42%; text-align: center; font-size: 13pt; line-height: 1.55;">
+                  <div style="font-weight: 900; font-size: 13.5pt; margin-bottom: 2pt;">${sigLines[0] || 'प्रभारी प्रधानाचार्या'}</div>
+                  <div style="font-weight: normal;">${sigLines[1] || 'पुलिस माडर्न स्कूल'}</div>
+                  <div style="font-weight: normal;">${sigLines[2] || '25वीं वाहिनी पीएसी'}</div>
+                  <div style="font-weight: normal;">${sigLines[3] || 'रायबरेली।'}</div>
+                </td>
+              </tr>
+            </table>
+          </div>
         </body>
         </html>
       `;

@@ -2419,6 +2419,15 @@
 
       const monthStr = window.currentSheet.month || 'वेतन';
       const yearStr = window.currentSheet.year || '2026';
+      const filename = `PMS_Salary_${monthStr}_${yearStr}`;
+
+      if (typeof window.exportElementToWord === 'function') {
+        window.exportElementToWord(page, {
+          title: `कर्मचारी वेतन भुगतान बिल - ${monthStr} ${yearStr} - पुलिस मॉडर्न स्कूल`,
+          filename: filename
+        });
+        return;
+      }
 
       const wordHtml = `
         <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
@@ -2521,6 +2530,8 @@
     });
 
   </script>
+  <!-- Universal Word Export & Search Integration -->
+  <script src="js/pms_word_export.js"></script>
   <script src="js/pms_nav_search.js"></script>
 </body>
 

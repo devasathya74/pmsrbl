@@ -868,6 +868,14 @@
         window.exportConsentWord = function() {
             const form = document.getElementById('printable-form');
             if (!form) return;
+            if (typeof window.exportElementToWord === 'function') {
+                window.exportElementToWord(form, {
+                    title: 'सहमति पत्र (Consent Form) - PMS',
+                    filename: 'PMS_Consent_Form'
+                });
+                return;
+            }
+
             const clone = form.cloneNode(true);
             const noPrints = clone.querySelectorAll('.no-print');
             noPrints.forEach(el => el.remove());
@@ -914,6 +922,8 @@
             fetchConsentBackups();
         });
     </script>
+    <!-- Universal Word Export & Search Integration -->
+    <script src="js/pms_word_export.js"></script>
     <script src="js/pms_nav_search.js"></script>
 </body>
 

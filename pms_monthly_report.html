@@ -5248,6 +5248,25 @@
         return;
       }
 
+      if (typeof window.exportElementToWord === 'function') {
+        const container = document.createElement('div');
+        pages.forEach((page, idx) => {
+          const clone = page.cloneNode(true);
+          if (idx > 0) {
+            const pb = document.createElement('div');
+            pb.className = 'page-break';
+            container.appendChild(pb);
+          }
+          container.appendChild(clone);
+        });
+        window.exportElementToWord(container, {
+          title: 'मासिक प्रगति व आय-व्यय रिपोर्ट - पुलिस मॉडर्न स्कूल',
+          landscape: true,
+          filename: `PMS_Monthly_Report_${new Date().toISOString().slice(0, 10)}`
+        });
+        return;
+      }
+
       let contentHtml = '';
       pages.forEach((page, idx) => {
         if (idx > 0) {
@@ -8427,7 +8446,9 @@
       }
     })();
   </script>
-
+  <!-- Universal Word Export & Search Integration -->
+  <script src="js/pms_word_export.js"></script>
+  <script src="js/pms_nav_search.js"></script>
 </body>
 
 </html>

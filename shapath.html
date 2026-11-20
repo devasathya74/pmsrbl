@@ -248,6 +248,14 @@
         function exportPledgeWord() {
             const container = document.querySelector('.pledge-container');
             if (!container) return;
+            if (typeof window.exportElementToWord === 'function') {
+                window.exportElementToWord(container, {
+                    title: 'शपथ पत्र - PMS Raebareli',
+                    filename: 'PMS_Shapath_Patra'
+                });
+                return;
+            }
+
             const clone = container.cloneNode(true);
             const noPrints = clone.querySelectorAll('.action-container, .no-print');
             noPrints.forEach(el => el.remove());
@@ -291,7 +299,8 @@
             URL.revokeObjectURL(url);
         }
     </script>
-
+    <!-- Universal Word Export Integration -->
+    <script src="js/pms_word_export.js"></script>
 </body>
 
 </html>

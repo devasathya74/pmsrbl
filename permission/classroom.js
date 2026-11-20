@@ -164,48 +164,17 @@ document.addEventListener('DOMContentLoaded', () => {
   if (window.feather) feather.replace();
 });
 
-// Export to Word (.doc)
+// Export to Word (.doc) with 100% Preview-Identical Layout
 function exportClassroomWord() {
   const page = document.querySelector('.a4-page');
   if (!page) return;
-  const clone = page.cloneNode(true);
-  const noPrints = clone.querySelectorAll('.no-print');
-  noPrints.forEach(el => el.remove());
 
-  const wordHtml = `
-    <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
-    <head>
-      <meta charset='utf-8'>
-      <title>Classroom English Sentences</title>
-      <!--[if gte mso 9]>
-      <xml>
-        <w:WordDocument>
-          <w:View>Print</w:View>
-          <w:Zoom>100</w:Zoom>
-          <w:DoNotOptimizeForBrowser/>
-        </w:WordDocument>
-      </xml>
-      <![endif]-->
-      <style>
-        @page { size: A4 portrait; margin: 1.2cm; }
-        body { font-family: 'Calibri', 'Segoe UI', 'Mangal', sans-serif; font-size: 11pt; color: #111; line-height: 1.4; }
-        .sentence-card { border: 0.5pt solid #cbd5e1; padding: 6pt; margin: 4pt 0; background: #f8fafc; }
-        .no-print { display: none !important; }
-      </style>
-    </head>
-    <body>
-      ${clone.innerHTML}
-    </body>
-    </html>
-  `;
-  const blob = new Blob(['\ufeff' + wordHtml], { type: 'application/msword;charset=utf-8;' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'PMS_Classroom_English_Sentences.doc';
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
+  if (typeof window.exportElementToWord === 'function') {
+    window.exportElementToWord(page, {
+      title: 'Classroom English Sentences',
+      filename: 'PMS_Classroom_English_Sentences'
+    });
+    return;
+  }
 }
 window.exportClassroomWord = exportClassroomWord;

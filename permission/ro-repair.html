@@ -697,46 +697,18 @@ ${signLoc}`;
     function exportLetterWord() {
       const sheet = document.querySelector('.a4-sheet');
       if (!sheet) return;
-      const clone = sheet.cloneNode(true);
-      const noPrints = clone.querySelectorAll('.no-print');
-      noPrints.forEach(el => el.remove());
 
-      const wordHtml = `
-        <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
-        <head>
-          <meta charset='utf-8'>
-          <title>RO Repair Permission</title>
-          <!--[if gte mso 9]>
-          <xml>
-            <w:WordDocument>
-              <w:View>Print</w:View>
-              <w:Zoom>100</w:Zoom>
-              <w:DoNotOptimizeForBrowser/>
-            </w:WordDocument>
-          </xml>
-          <![endif]-->
-          <style>
-            @page { size: A4 portrait; margin: 1.5cm; }
-            body { font-family: 'Mangal', 'Noto Sans Devanagari', 'Calibri', sans-serif; font-size: 11pt; color: #111; line-height: 1.5; }
-            .no-print { display: none !important; }
-          </style>
-        </head>
-        <body>
-          ${clone.innerHTML}
-        </body>
-        </html>
-      `;
-      const blob = new Blob(['\ufeff' + wordHtml], { type: 'application/msword;charset=utf-8;' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'PMS_RO_Repair_Permission.doc';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
+      if (typeof window.exportElementToWord === 'function') {
+        window.exportElementToWord(sheet, {
+          title: 'RO Repair Permission',
+          filename: 'PMS_RO_Repair_Permission'
+        });
+        return;
+      }
     }
   </script>
+  <!-- Universal Word Export & Search Integration -->
+  <script src="../js/pms_word_export.js"></script>
   <script src="../js/pms_nav_search.js"></script>
 </body>
 

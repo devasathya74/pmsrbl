@@ -1756,6 +1756,15 @@
     function exportNotesWord() {
       const container = document.getElementById('contentArea') || document.querySelector('main') || document.body;
       if (!container) return;
+      const safeName = (document.title || 'PMS_Mridang_Class2_Notes').replace(/[^a-zA-Z0-9_\u0900-\u097F]/g, '_');
+      if (typeof window.exportElementToWord === 'function') {
+        window.exportElementToWord(container, {
+          title: document.title || 'PMS Study Notes',
+          filename: safeName
+        });
+        return;
+      }
+
       const clone = container.cloneNode(true);
       const topBars = clone.querySelectorAll('.top-toolbar, .no-print');
       topBars.forEach(el => el.remove());
@@ -1801,6 +1810,8 @@
       URL.revokeObjectURL(url);
     }
   </script>
+  <!-- Universal Word Export Integration -->
+  <script src="js/pms_word_export.js"></script>
 </body>
 
 </html>

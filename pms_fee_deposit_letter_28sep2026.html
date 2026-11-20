@@ -361,13 +361,66 @@
       document.getElementById('hlText').innerText = isHighlighted ? "हाईलाइट छिपाएं" : "एडिट फील्ड दिखाएं";
     }
 
-    // 3. Export to Word (.doc)
+    // 3. Export to Word (.doc) with 100% Preview-Identical Layout
     function exportLetterWord() {
-      const container = document.getElementById('letterDoc');
-      if (!container) return;
-      const clone = container.cloneNode(true);
-      const noPrints = clone.querySelectorAll('.no-print');
-      noPrints.forEach(el => el.remove());
+      const doc = document.getElementById('letterDoc');
+      if (!doc) return;
+
+      const h1El = doc.querySelector('h1');
+      const h1Text = h1El ? h1El.innerText.trim() : 'कार्यालय पुलिस मॉडर्न स्कूल';
+      const h2El = doc.querySelector('h2');
+      const h2Text = h2El ? h2El.innerText.trim() : '25वीं वाहिनी पीएसी, रायबरेली';
+      const headerSub = doc.querySelector('.text-center > p') ? doc.querySelector('.text-center > p').innerText.trim() : '(उत्तर प्रदेश पुलिस कल्याण संस्थान द्वारा संचालित · सीबीएसई से सम्बद्ध)';
+
+      // Session & Date
+      const sessionEl = doc.querySelector('.border-b\\/40 div:first-child');
+      const sessionText = sessionEl ? sessionEl.innerText.trim() : 'सत्र : 2026–2027';
+      const dateEl = doc.querySelector('.border-b\\/40 div:last-child');
+      const dateText = dateEl ? dateEl.innerText.trim() : 'दिनांक : सितम्बर, 28, 2026';
+
+      // Heading Tag
+      const tagEl = doc.querySelector('.text-center .inline-block.border-2');
+      const tagText = tagEl ? tagEl.innerText.trim() : 'ज्ञापन / फीस जमा पत्र';
+
+      // Narrative
+      const narrativeEl = doc.querySelector('.indent-10');
+      const narrativeHtml = narrativeEl ? narrativeEl.innerHTML : 'पुलिस मॉडर्न स्कूल 25वीं वाहिनी पीएसी रायबरेली के बच्चों से फीस के रूप में जमा कुल नकद धनराशि <strong>रु० 1,12,351.00</strong> (<strong>एक लाख बारह हजार तीन सौ इक्यावन रुपये मात्र</strong>) (रसीद संख्या <strong>4801 से 4900 तक</strong>) आंकिक महोदय को मेन कैश बुक में जमा करने हेतु प्रदान किये।';
+
+      // Voucher table clone
+      const vTable = doc.querySelector('.voucher-table');
+      let vTableHtml = '';
+      if (vTable) {
+        const vClone = vTable.cloneNode(true);
+        vClone.querySelectorAll('.no-print').forEach(el => el.remove());
+        vClone.setAttribute('width', '100%');
+        vClone.setAttribute('style', 'width: 100%; border-collapse: collapse; margin-top: 6pt; margin-bottom: 6pt; border: 1.5pt solid #000;');
+        vClone.querySelectorAll('th').forEach(th => {
+          th.setAttribute('style', 'border: 1.5pt solid #000; background-color: #f1f5f9; padding: 6pt 8pt; font-weight: bold; font-size: 11pt; text-align: left;');
+          if (th.classList.contains('text-center')) th.style.textAlign = 'center';
+          if (th.classList.contains('text-right')) th.style.textAlign = 'right';
+        });
+        vClone.querySelectorAll('td').forEach(td => {
+          td.setAttribute('style', 'border: 1.5pt solid #000; padding: 6pt 8pt; font-size: 11pt; vertical-align: middle;');
+          if (td.classList.contains('text-center')) td.style.textAlign = 'center';
+          if (td.classList.contains('text-right')) td.style.textAlign = 'right';
+        });
+        vTableHtml = vClone.outerHTML;
+      }
+
+      // Note text
+      const noteEl = doc.querySelector('p.italic');
+      const noteText = noteEl ? noteEl.innerText.trim() : '* उक्त समस्त रसीदें (रसीद सं० 4801 से 4900 तक) मूल रूप में मिलान व रिकॉर्ड हेतु संलग्न हैं।';
+
+      // Receiving cashier box content
+      const cashierBox = doc.querySelector('.grid-cols-2 > div:first-child');
+      const cashierBodyEl = cashierBox ? cashierBox.querySelector('p') : null;
+      const cashierBody = cashierBodyEl ? cashierBodyEl.innerHTML : 'उपरोक्तानुसार नकद धनराशि <strong>रु० 1,12,351.00</strong> (एक लाख बारह हजार तीन सौ इक्यावन रुपये मात्र) प्राप्त कर 25वीं वाहिनी पीएसी की मेन कैश बुक में दर्ज किया गया।';
+
+      // Principal signature content
+      const principalBox = doc.querySelector('.grid-cols-2 > div:last-child');
+      const pTitle = principalBox && principalBox.querySelector('.text-base') ? principalBox.querySelector('.text-base').innerText.trim() : '(प्रभारी प्रधानाचार्या)';
+      const pOrg = principalBox && principalBox.querySelector('.text-sm.font-semibold') ? principalBox.querySelector('.text-sm.font-semibold').innerText.trim() : 'पुलिस मॉडर्न स्कूल';
+      const pLoc = principalBox && principalBox.querySelector('.text-sm:not(.font-semibold)') ? principalBox.querySelector('.text-sm:not(.font-semibold)').innerText.trim() : '25वीं वाहिनी पीएसी, रायबरेली।';
 
       const wordHtml = `
         <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
@@ -384,15 +437,202 @@
           </xml>
           <![endif]-->
           <style>
-            @page { size: A4 portrait; margin: 1.5cm; }
-            body { font-family: 'Mangal', 'Noto Sans Devanagari', 'Calibri', sans-serif; font-size: 11pt; color: #111; line-height: 1.5; }
-            table { border-collapse: collapse; width: 100%; margin: 6pt 0; }
-            th, td { border: 0.5pt solid #333; padding: 4pt 6pt; }
-            .no-print { display: none !important; }
+            @page Section1 {
+              size: 595.3pt 841.9pt; /* A4 Portrait */
+              margin: 36.0pt 45.0pt 36.0pt 45.0pt;
+              mso-header-margin: 0pt;
+              mso-footer-margin: 0pt;
+              mso-paper-source: 0;
+            }
+            div.Section1 {
+              page: Section1;
+            }
+            body {
+              font-family: 'Mangal', 'Noto Sans Devanagari', 'Calibri', 'Segoe UI', Arial, sans-serif;
+              color: #0f172a;
+              margin: 0;
+              padding: 0;
+              font-size: 11pt;
+              line-height: 1.5;
+            }
+            .header-tbl {
+              width: 100%;
+              border-bottom: 2pt solid #000000;
+              padding-bottom: 6pt;
+              margin-bottom: 8pt;
+              border-collapse: collapse;
+            }
+            .header-title {
+              font-size: 16pt;
+              font-weight: 900;
+              text-align: center;
+              font-family: 'Mangal', 'Times New Roman', serif;
+              text-transform: uppercase;
+              color: #000;
+            }
+            .header-sub {
+              font-size: 12.5pt;
+              font-weight: bold;
+              text-align: center;
+              font-family: 'Mangal', 'Times New Roman', serif;
+              color: #000;
+              margin-top: 1pt;
+            }
+            .header-affil {
+              font-size: 9pt;
+              text-align: center;
+              color: #000;
+              margin-top: 2pt;
+            }
+            .meta-tbl {
+              width: 100%;
+              border-bottom: 1pt solid #000;
+              padding-bottom: 4pt;
+              margin-bottom: 12pt;
+              border-collapse: collapse;
+              font-weight: bold;
+              font-size: 11pt;
+            }
+            .tag-box {
+              text-align: center;
+              margin-bottom: 12pt;
+            }
+            .tag-inner {
+              display: inline-block;
+              border: 1.5pt solid #000000;
+              padding: 3pt 12pt;
+              font-size: 11pt;
+              font-weight: 900;
+              text-transform: uppercase;
+              background-color: #f8fafc;
+            }
+            .narrative-p {
+              font-size: 11.5pt;
+              line-height: 1.7;
+              text-align: justify;
+              text-indent: 28pt;
+              margin-bottom: 10pt;
+            }
+            .cashier-box {
+              border: 1.5pt solid #000000;
+              background-color: #f8fafc;
+              padding: 8pt;
+              font-size: 9.5pt;
+              line-height: 1.4;
+            }
+            .cashier-head {
+              font-weight: 900;
+              border-bottom: 1pt solid #000000;
+              padding-bottom: 3pt;
+              margin-bottom: 4pt;
+              text-transform: uppercase;
+            }
+            .cashier-fields {
+              font-size: 9pt;
+              margin-top: 6pt;
+              margin-bottom: 10pt;
+            }
+            .cashier-sig {
+              text-align: center;
+              margin-top: 12pt;
+            }
+            .cashier-line {
+              border-top: 1pt dashed #000000;
+              width: 130pt;
+              margin: 0 auto;
+              padding-top: 2pt;
+              font-weight: bold;
+              font-size: 8.5pt;
+            }
+            .footer-note {
+              margin-top: 16pt;
+              border-top: 0.5pt solid #cbd5e1;
+              padding-top: 4pt;
+              text-align: center;
+              font-size: 7.5pt;
+              color: #64748b;
+              font-family: Calibri, sans-serif;
+            }
           </style>
         </head>
         <body>
-          ${clone.innerHTML}
+          <div class="Section1">
+            <!-- Institutional Header -->
+            <table class="header-tbl" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                <td align="center" style="border: none; text-align: center;">
+                  <div class="header-title">${h1Text}</div>
+                  <div class="header-sub">${h2Text}</div>
+                  <div class="header-affil">${headerSub}</div>
+                </td>
+              </tr>
+            </table>
+
+            <!-- Session & Date -->
+            <table class="meta-tbl" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                <td align="left" style="border: none; text-align: left; width: 50%;">${sessionText}</td>
+                <td align="right" style="border: none; text-align: right; width: 50%;">${dateText}</td>
+              </tr>
+            </table>
+
+            <!-- Subject / Heading Box -->
+            <div class="tag-box">
+              <span class="tag-inner">${tagText}</span>
+            </div>
+
+            <!-- Narrative Paragraph -->
+            <div class="narrative-p">
+              ${narrativeHtml}
+            </div>
+
+            <!-- Voucher Table -->
+            <div style="margin: 6pt 0;">
+              ${vTableHtml}
+            </div>
+
+            <p style="font-size: 8.5pt; font-style: italic; margin-top: 2pt; margin-bottom: 14pt;">
+              ${noteText}
+            </p>
+
+            <!-- Bottom 2-Column Section: Cashier Receipt (Left) & Principal Signature (Right) -->
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" style="width: 100%; border-top: 2pt solid #000; padding-top: 8pt; margin-top: 12pt; border-collapse: collapse;">
+              <tr>
+                <!-- Left Box -->
+                <td style="width: 53%; vertical-align: bottom; border: none; padding-right: 12pt;">
+                  <div class="cashier-box">
+                    <div class="cashier-head">
+                      प्राप्ति पावती / आंकिक शाखा
+                    </div>
+                    <div style="font-size: 9.5pt; margin-bottom: 6pt;">
+                      ${cashierBody}
+                    </div>
+                    <div class="cashier-fields">
+                      <div>मेन कैश बुक पृष्ठ सं०: <span style="font-weight: bold; text-decoration: underline;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div>
+                      <div style="margin-top: 2pt;">रसीद / वाउचर क्रमांक: <span style="font-weight: bold; text-decoration: underline;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div>
+                    </div>
+                    <div class="cashier-sig">
+                      <div class="cashier-line">हस्ताक्षर आंकिक / कैशियर</div>
+                      <div style="font-size: 8pt; color: #334155; margin-top: 1pt;">25वीं वाहिनी पीएसी, रायबरेली</div>
+                    </div>
+                  </div>
+                </td>
+
+                <!-- Right Box -->
+                <td style="width: 47%; vertical-align: bottom; border: none; text-align: center; padding-left: 12pt;">
+                  <div style="height: 38pt;"></div>
+                  <div style="font-weight: bold; font-size: 12pt; color: #000;">${pTitle}</div>
+                  <div style="font-weight: bold; font-size: 10.5pt; color: #000; margin-top: 2pt;">${pOrg}</div>
+                  <div style="font-size: 10pt; color: #000; margin-top: 1pt;">${pLoc}</div>
+                </td>
+              </tr>
+            </table>
+
+            <!-- Footer note -->
+            <div class="footer-note">
+              POLICE MODERN SCHOOL · 25TH BN PAC RAEBARELI · OFFICIAL FEE HANDOVER MEMORANDUM · SESSION 2026-27
+            </div>
+          </div>
         </body>
         </html>
       `;

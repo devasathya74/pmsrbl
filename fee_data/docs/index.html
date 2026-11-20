@@ -1222,6 +1222,14 @@
     function exportStatementWord() {
       const sheet = document.querySelector('.a4-sheet');
       if (!sheet) return;
+      if (typeof window.exportElementToWord === 'function') {
+        window.exportElementToWord(sheet, {
+          title: 'PMS VC Review Statement',
+          filename: 'PMS_VC_Review_Statement'
+        });
+        return;
+      }
+
       const clone = sheet.cloneNode(true);
       const noPrints = clone.querySelectorAll('.no-print, .action-col, .add-row-bar, .btn-row-del');
       noPrints.forEach(el => el.remove());
@@ -1265,5 +1273,7 @@
       URL.revokeObjectURL(url);
     }
   </script>
+  <!-- Universal Word Export Integration -->
+  <script src="../../js/pms_word_export.js"></script>
 </body>
 </html>

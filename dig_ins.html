@@ -3262,6 +3262,18 @@
 
         function exportInspectionToWord() {
             const canvas = document.getElementById('canvas-zoom-wrapper');
+            if (!canvas) return;
+            const title = (document.getElementById('doc-title')?.value || "निरीक्षण_रिपोर्ट").trim();
+
+            if (typeof window.exportElementToWord === 'function') {
+                window.exportElementToWord(canvas, {
+                    title: title,
+                    landscape: true,
+                    filename: title
+                });
+                return;
+            }
+
             const clone = canvas.cloneNode(true);
             clone.querySelectorAll('.no-print, .row-hover-popup, .table-cell-actions').forEach(el => el.remove());
             const title = (document.getElementById('doc-title')?.value || "निरीक्षण_रिपोर्ट").trim();
@@ -3863,6 +3875,8 @@
             }
         });
     </script>
+    <!-- Universal Word Export & Search Integration -->
+    <script src="js/pms_word_export.js"></script>
     <script src="js/pms_nav_search.js"></script>
 </body>
 

@@ -2413,6 +2413,14 @@
         function exportOrderWord() {
             const paper = document.getElementById('editableDocumentPaper');
             if (!paper) return;
+            if (typeof window.exportElementToWord === 'function') {
+                window.exportElementToWord(paper, {
+                    title: 'PMS Admission Fee Order',
+                    filename: 'PMS_Admission_Fee_Order'
+                });
+                return;
+            }
+
             const clone = paper.cloneNode(true);
             const noPrints = clone.querySelectorAll('.no-print');
             noPrints.forEach(el => el.remove());
@@ -2457,7 +2465,8 @@
         }
     </script>
 
-    <!-- PMS Navigation Search Script -->
+    <!-- Universal Word Export & Search Integration -->
+    <script src="js/pms_word_export.js"></script>
     <script src="js/pms_nav_search.js"></script>
 </body>
 

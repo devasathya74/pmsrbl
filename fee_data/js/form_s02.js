@@ -1131,6 +1131,24 @@ const FormS02App = {
       return;
     }
 
+    if (typeof window.exportElementToWord === 'function') {
+      const wrapper = document.createElement('div');
+      pageElements.forEach((pg, idx) => {
+        const clone = pg.cloneNode(true);
+        if (idx > 0) {
+          const pb = document.createElement('div');
+          pb.className = 'page-break';
+          wrapper.appendChild(pb);
+        }
+        wrapper.appendChild(clone);
+      });
+      window.exportElementToWord(wrapper, {
+        title: 'Form S02 - UDISE+ Student Entry',
+        filename: `Form_S02_Combined_${new Date().toISOString().slice(0, 10)}`
+      });
+      return;
+    }
+
     let pagesHtml = '';
     pageElements.forEach((pg, idx) => {
       if (idx > 0) {

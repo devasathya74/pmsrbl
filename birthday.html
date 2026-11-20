@@ -1034,50 +1034,24 @@
       }
     }
 
-    // Export to Word (.doc)
+    // Export to Word (.doc) with 100% Preview-Identical Layout
     function exportCardWord() {
       const card = document.getElementById('birthdayCard');
       if (!card) return;
-      const clone = card.cloneNode(true);
-      const noPrints = clone.querySelectorAll('.no-print');
-      noPrints.forEach(el => el.remove());
 
-      const wordHtml = `
-        <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
-        <head>
-          <meta charset='utf-8'>
-          <title>PMS Birthday Card</title>
-          <!--[if gte mso 9]>
-          <xml>
-            <w:WordDocument>
-              <w:View>Print</w:View>
-              <w:Zoom>100</w:Zoom>
-              <w:DoNotOptimizeForBrowser/>
-            </w:WordDocument>
-          </xml>
-          <![endif]-->
-          <style>
-            @page { size: A5 landscape; margin: 0.8cm; }
-            body { font-family: 'Calibri', 'Segoe UI', 'Mangal', sans-serif; font-size: 11pt; color: #111; line-height: 1.4; }
-            .no-print { display: none !important; }
-          </style>
-        </head>
-        <body>
-          ${clone.innerHTML}
-        </body>
-        </html>
-      `;
-      const blob = new Blob(['\ufeff' + wordHtml], { type: 'application/msword;charset=utf-8;' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'PMS_Birthday_Card.doc';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
+      if (typeof window.exportElementToWord === 'function') {
+        window.exportElementToWord(card, {
+          title: 'PMS Birthday Card',
+          filename: 'PMS_Birthday_Card',
+          landscape: true
+        });
+        return;
+      }
     }
   </script>
+  <!-- Universal Word Export & Search Integration -->
+  <script src="js/pms_word_export.js"></script>
+  <script src="js/pms_nav_search.js"></script>
 </body>
 
 </html>

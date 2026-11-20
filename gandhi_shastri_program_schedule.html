@@ -565,6 +565,14 @@
     function exportScheduleWord() {
       const container = document.getElementById('printSheet') || document.querySelector('.paper-sheet');
       if (!container) return;
+      if (typeof window.exportElementToWord === 'function') {
+        window.exportElementToWord(container, {
+          title: 'गांधी एवं शास्त्री जयंती कार्यक्रम सारणी',
+          filename: 'PMS_Gandhi_Shastri_Program_Schedule'
+        });
+        return;
+      }
+
       const clone = container.cloneNode(true);
       const noPrints = clone.querySelectorAll('.no-print');
       noPrints.forEach(el => el.remove());
@@ -608,6 +616,8 @@
       URL.revokeObjectURL(url);
     }
   </script>
+  <!-- Universal Word Export Integration -->
+  <script src="js/pms_word_export.js"></script>
 </body>
 
 </html>

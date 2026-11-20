@@ -7278,15 +7278,96 @@
       window.print();
     };
 
-    // Export Letter to Microsoft Word (.doc)
+    // Export Letter to Microsoft Word (.doc) with 100% Preview-Identical Layout
     window.exportCurrentLetterToWord = function () {
       const page1 = document.getElementById('letterDocument');
       const page2 = document.getElementById('letterDocumentPage2');
       if (!page1) return;
 
-      let content = page1.innerHTML;
+      const preparePageClone = (pageEl) => {
+        const clone = pageEl.cloneNode(true);
+        clone.querySelectorAll('.no-print, [data-no-print], button, select, input, .card-resize-handle, .drag-handle-pill').forEach(el => el.remove());
+
+        // Images absolute URLs
+        clone.querySelectorAll('img').forEach(img => {
+          try {
+            const s = img.getAttribute('src');
+            if (s) img.src = new URL(s, window.location.href).href;
+          } catch(e) {}
+        });
+
+        // Dispatch bar (पत्रांक & दिनांक)
+        clone.querySelectorAll('.official-dispatch-bar, .page2-header, .flex.justify-between').forEach(el => {
+          const children = Array.from(el.children).filter(c => !c.classList.contains('no-print'));
+          if (children.length === 2) {
+            const tbl = document.createElement('table');
+            tbl.setAttribute('width', '100%');
+            tbl.setAttribute('border', '0');
+            tbl.setAttribute('cellspacing', '0');
+            tbl.setAttribute('cellpadding', '0');
+            tbl.setAttribute('style', 'width:100%; border:none; border-collapse:collapse; margin-top:2pt; margin-bottom:6pt;');
+            const tr = document.createElement('tr');
+            const td1 = document.createElement('td');
+            td1.setAttribute('align', 'left');
+            td1.setAttribute('style', 'border:none; text-align:left; vertical-align:middle; width:50%; font-weight:bold;');
+            td1.appendChild(children[0]);
+            const td2 = document.createElement('td');
+            td2.setAttribute('align', 'right');
+            td2.setAttribute('style', 'border:none; text-align:right; vertical-align:middle; width:50%; font-weight:bold;');
+            td2.appendChild(children[1]);
+            tr.appendChild(td1);
+            tr.appendChild(td2);
+            tbl.appendChild(tr);
+            el.parentNode.replaceChild(tbl, el);
+          } else if (children.length === 3) {
+            const tbl = document.createElement('table');
+            tbl.setAttribute('width', '100%');
+            tbl.setAttribute('border', '0');
+            tbl.setAttribute('cellspacing', '0');
+            tbl.setAttribute('cellpadding', '0');
+            tbl.setAttribute('style', 'width:100%; border:none; border-collapse:collapse; margin-top:2pt; margin-bottom:6pt;');
+            const tr = document.createElement('tr');
+            children.forEach((c, idx) => {
+              const td = document.createElement('td');
+              td.setAttribute('style', 'border:none; vertical-align:middle;' + (idx === 0 ? 'text-align:left; width:30%;' : idx === 1 ? 'text-align:center; width:40%;' : 'text-align:right; width:30%;'));
+              td.appendChild(c);
+              tr.appendChild(td);
+            });
+            tbl.appendChild(tr);
+            el.parentNode.replaceChild(tbl, el);
+          }
+        });
+
+        // Signatures (Right-aligned or dual)
+        clone.querySelectorAll('#doc-signature-block-container, .flex.justify-end').forEach(el => {
+          const sigBlock = el.querySelector('#doc-signature-block') || el.children[0];
+          if (sigBlock) {
+            const tbl = document.createElement('table');
+            tbl.setAttribute('width', '100%');
+            tbl.setAttribute('border', '0');
+            tbl.setAttribute('cellspacing', '0');
+            tbl.setAttribute('cellpadding', '0');
+            tbl.setAttribute('style', 'width:100%; border:none; border-collapse:collapse; margin-top:24pt; margin-bottom:12pt;');
+            const tr = document.createElement('tr');
+            const td1 = document.createElement('td');
+            td1.setAttribute('style', 'border:none; width:55%;');
+            const td2 = document.createElement('td');
+            td2.setAttribute('align', 'center');
+            td2.setAttribute('style', 'border:none; width:45%; text-align:center; vertical-align:top;');
+            td2.appendChild(sigBlock);
+            tr.appendChild(td1);
+            tr.appendChild(td2);
+            tbl.appendChild(tr);
+            el.parentNode.replaceChild(tbl, el);
+          }
+        });
+
+        return clone.innerHTML;
+      };
+
+      let content = preparePageClone(page1);
       if (page2 && !page2.classList.contains('hidden')) {
-        content += `<br clear=all style='mso-special-character:line-break;page-break-before:always'>` + page2.innerHTML;
+        content += `<br clear=all style='mso-special-character:line-break;page-break-before:always'>` + preparePageClone(page2);
       }
 
       const wordHtml = `
@@ -7304,17 +7385,59 @@
           </xml>
           <![endif]-->
           <style>
-            @page { size: A4 portrait; margin: 1.5cm; }
-            body { font-family: 'Mangal', 'Noto Sans Devanagari', 'Calibri', sans-serif; font-size: 11pt; color: #111; line-height: 1.5; }
-            table { border-collapse: collapse; width: 100%; margin: 6pt 0; }
-            th, td { border: 0.5pt solid #333; padding: 4pt 6pt; }
-            th { background-color: #f1f5f9; font-weight: bold; }
-            h1, h2, h3, h4 { text-align: center; margin: 3px 0; }
+            @page Section1 {
+              size: 595.3pt 841.9pt; /* A4 Portrait */
+              margin: 36.0pt 45.0pt 36.0pt 45.0pt;
+              mso-header-margin: 0pt;
+              mso-footer-margin: 0pt;
+              mso-paper-source: 0;
+            }
+            div.Section1 {
+              page: Section1;
+            }
+            body {
+              font-family: 'Mangal', 'Noto Sans Devanagari', 'Calibri', 'Segoe UI', Arial, sans-serif;
+              font-size: 11pt;
+              color: #0f172a;
+              line-height: 1.5;
+              margin: 0;
+              padding: 0;
+            }
+            table {
+              border-collapse: collapse;
+              width: 100%;
+            }
+            th, td {
+              border: 0.5pt solid #333;
+              padding: 4pt 6pt;
+            }
+            th {
+              background-color: #f1f5f9;
+              font-weight: bold;
+            }
+            h1, h2, h3, h4 {
+              text-align: center;
+              margin: 3px 0;
+            }
+            .text-center { text-align: center !important; }
+            .text-right { text-align: right !important; }
+            .text-left { text-align: left !important; }
+            .text-justify { text-align: justify !important; }
+            .font-bold, .font-extrabold, .font-black, strong, b { font-weight: bold !important; }
+            .font-semibold { font-weight: bold !important; }
+            .underline, u { text-decoration: underline !important; }
+            .border-b { border-bottom: 1pt solid #000000 !important; }
+            .border-b-2 { border-bottom: 2pt solid #000000 !important; }
+            .border-t { border-top: 1pt solid #000000 !important; }
+            .border-t-2 { border-top: 2pt solid #000000 !important; }
+            .indent-10 { text-indent: 28pt !important; }
             .no-print { display: none !important; }
           </style>
         </head>
         <body>
-          ${content}
+          <div class="Section1">
+            ${content}
+          </div>
         </body>
         </html>
       `;

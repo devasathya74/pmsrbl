@@ -768,7 +768,7 @@
         <div>
           <label class="block font-semibold mb-1 text-slate-300">शुल्क स्थिति (Status)</label>
           <select id="payModalStatus" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-white">
-            <option value="paid">पूर्ण भुगतान (Paid - ✓)</option>
+            <option value="paid" selected>पूर्ण भुगतान (Paid - ✓)</option>
             <option value="pending">आंशिक / लंबित (Pending - ⏳)</option>
             <option value="concession">शुल्क छूट / स्टाफ (Concession - ★)</option>
             <option value="due">बकाया (Defaulter - ✗)</option>
@@ -1059,6 +1059,7 @@
               srNo: d.sr || d.srNo || d.admissionNo || d.pen || `SR-${1800 + index + 1}`,
               name: d.name || d.studentName || 'छात्र नाम अनुपलब्ध',
               father: d.father || d.fatherName || 'पिता का नाम अनुपलब्ध',
+              mobile: d.mobile || d.phone || d.contact || d.mob || '',
               class: normalizedCls,
               sec: (d.sec || d.section || 'A').toUpperCase(),
               admDate: d.admDate || d.admissionDate || d.dob || '',
@@ -1225,8 +1226,9 @@
         if (query) {
           const matchName = String(st.name || '').toLowerCase().includes(query);
           const matchFather = String(st.father || '').toLowerCase().includes(query);
+          const matchMobile = String(st.mobile || '').toLowerCase().includes(query);
           const matchSr = String(st.srNo || '').toLowerCase().includes(query);
-          if (!matchName && !matchFather && !matchSr) return false;
+          if (!matchName && !matchFather && !matchMobile && !matchSr) return false;
         }
 
         // Status Filter
@@ -1307,8 +1309,9 @@
             </td>
             
             <!-- Father's Name -->
-            <td class="text-[11px] text-slate-800 font-medium">
-              ${st.father}
+            <td class="text-[11px] text-slate-800 font-medium leading-snug">
+              <div>${st.father || '—'}</div>
+              ${st.mobile ? `<div class="text-[9.5px] font-mono text-slate-600 mt-0.5 tracking-tight flex items-center gap-1"><i class="fa-solid fa-phone text-[8.5px] text-slate-400 no-print"></i><span>${st.mobile}</span></div>` : ''}
             </td>
             
             <!-- Class & Section -->
@@ -1471,7 +1474,7 @@
 
       document.getElementById('payModalStudentName').innerText = `${st.name} (रोल नं०: ${st.roll}, SR: ${st.srNo})`;
       document.getElementById('payModalMonthLabel').innerText = `महीना: ${monthObj ? monthObj.name : monthKey}`;
-      document.getElementById('payModalStatus').value = pay.s || "unmarked";
+      document.getElementById('payModalStatus').value = (pay.s && pay.s !== 'unmarked') ? pay.s : "paid";
       document.getElementById('payModalReceiptNo').value = pay.r || "";
       document.getElementById('payModalDate').value = pay.d || "";
       document.getElementById('payModalAmount').value = pay.amt || st.feeRate || 800;
@@ -1701,7 +1704,10 @@
             <td align="center" style="border: 0.5pt solid #000; padding: 2.5pt 1.5pt;">${st.roll || (idx + 1)}</td>
             <td align="center" style="border: 0.5pt solid #000; padding: 2.5pt 1.5pt;">${st.admDate || '—'}</td>
             <td align="left" style="border: 0.5pt solid #000; padding: 2.5pt 3pt; font-weight: bold;">${st.name || ''}</td>
-            <td align="left" style="border: 0.5pt solid #000; padding: 2.5pt 3pt;">${st.father || ''}</td>
+            <td align="left" style="border: 0.5pt solid #000; padding: 2.5pt 3pt; font-size: 7.5pt;">
+              ${st.father || ''}
+              ${st.mobile ? `<br><span style="font-size: 6.5pt; color: #475569; font-family: Calibri, sans-serif;">${st.mobile}</span>` : ''}
+            </td>
             <td align="center" style="border: 0.5pt solid #000; padding: 2.5pt 1.5pt;"><strong>${st.class || ''}</strong></td>
             ${monthTds}
           </tr>
@@ -1832,7 +1838,7 @@
     window.exportToCSV = function () {
       const activeMonths = getActiveMonths();
       let csv = "\uFEFF"; // UTF-8 BOM for authentic Hindi display in Excel
-      csv += "क्र० सं०,एस.आर. नं०,प्रवेश तिथि,छात्र / छात्रा का नाम,पिता का नाम,कक्षा,वर्ग,";
+      csv += "क्र० सं०,एस.आर. नं०,प्रवेश तिथि,छात्र / छात्रा का नाम,पिता का नाम / मोबाइल,कक्षा,वर्ग,";
       activeMonths.forEach(m => {
         csv += `"${m.name} (स्थिति)","${m.name} (रसीद सं०)",`;
       });
@@ -1843,8 +1849,9 @@
         const paidCount = getStudentPaidMonthsCount(st);
         const totalPaid = paidCount * rate;
         const totalDue = Math.max(0, (12 * rate) - totalPaid);
+        const fatherWithMob = st.mobile ? `${st.father || ''} (${st.mobile})` : (st.father || '');
 
-        csv += `${st.roll || (idx + 1)},"${st.srNo}","${st.admDate || ''}","${st.name}","${st.father}","${st.class}","${st.sec}",`;
+        csv += `${st.roll || (idx + 1)},"${st.srNo}","${st.admDate || ''}","${st.name}","${fatherWithMob}","${st.class}","${st.sec}",`;
         activeMonths.forEach(m => {
           const pay = (st.payments && st.payments[m.key]) ? st.payments[m.key] : {};
           csv += `"${pay.s || ''}","${pay.r || ''}",`;

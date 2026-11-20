@@ -250,11 +250,19 @@
       <!-- Primary Actions -->
       <div class="flex flex-wrap items-center gap-2 text-xs">
         <!-- Save to Cloud Button -->
-        <button id="btnSaveCloud" onclick="saveToCloudNow()"
+        <button id="btnSaveCloud" onclick="openSaveCloudModal()"
           class="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-2 rounded font-semibold flex items-center gap-1.5 shadow transition"
-          title="पंजिका के वर्तमान डेटा को फायरस्टोर कलेक्शन में तुरंत सेव करें">
+          title="वर्तमान फ़ाइल अपडेट करें अथवा नई फ़ाइल/स्नैपशॉट के रूप में क्लाउड पर सेव करें">
           <i class="fa-solid fa-cloud-arrow-up" id="saveCloudIcon"></i>
           <span>क्लाउड पर सेव करें</span>
+        </button>
+
+        <!-- Load from Cloud Button -->
+        <button id="btnLoadCloud" onclick="openLoadCloudModal()"
+          class="bg-sky-600 hover:bg-sky-700 text-white px-3 py-2 rounded font-semibold flex items-center gap-1.5 shadow transition"
+          title="फायरस्टोर क्लाउड में सहेजी गई पंजिका या नई फाइल लोड करें">
+          <i class="fa-solid fa-cloud-arrow-down" id="loadCloudIcon"></i>
+          <span>क्लाउड से लोड करें</span>
         </button>
 
         <!-- Fetch From Original Source Button -->
@@ -262,7 +270,7 @@
           class="bg-cyan-700 hover:bg-cyan-600 text-white px-2.5 py-2 rounded font-semibold flex items-center gap-1.5 shadow transition"
           title="मूल छात्र एवं फीस कलेक्शन से डेटा तुरंत प्राप्त करें">
           <i class="fa-solid fa-arrows-rotate" id="fetchSourceIcon"></i>
-          <span>स्रोत से सिंक</span>
+          <span>मूल स्रोत सिंक</span>
         </button>
 
         <button onclick="openStudentModal()"
@@ -606,6 +614,12 @@
             class="w-full border border-slate-300 rounded px-2.5 py-1.5 focus:outline-none focus:border-blue-600">
         </div>
 
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">मोबाइल नंबर (Mobile No.)</label>
+          <input type="tel" id="inputMobile" placeholder="उदा० 9876543210 (10 अंक)" maxlength="15"
+            class="w-full border border-slate-300 rounded px-2.5 py-1.5 focus:outline-none focus:border-blue-600 font-mono">
+        </div>
+
         <div class="pt-2 flex items-center justify-between border-t border-slate-200">
           <button type="button" id="deleteStudentBtn" onclick="deleteCurrentStudent()"
             class="hidden bg-rose-100 hover:bg-rose-200 text-rose-700 px-3 py-1.5 rounded font-semibold">
@@ -649,7 +663,7 @@
           <label class="block font-semibold text-slate-700 mb-1">शुल्क स्थिति (Status)</label>
           <select id="feeStatusInput"
             class="w-full border border-slate-300 rounded px-2.5 py-1.5 focus:outline-none focus:border-blue-600 font-semibold">
-            <option value="paid">✓ जमा (Paid)</option>
+            <option value="paid" selected>✓ जमा (Paid)</option>
             <option value="pending">लंबित (Pending - खाली)</option>
             <option value="concession">C - शुल्क छूट (Concession)</option>
             <option value="due">! - बकाया (Due)</option>
@@ -712,6 +726,124 @@
     </div>
   </div>
 
+  <!-- MODAL 4: Save to Cloud (Update Current vs Save as New File) -->
+  <div id="saveCloudModal" class="no-print fixed inset-0 bg-slate-900/60 hidden items-center justify-center z-50 p-4">
+    <div class="bg-white rounded-lg shadow-2xl max-w-lg w-full overflow-hidden border border-slate-200">
+      <div class="bg-indigo-900 text-white px-4 py-3 flex justify-between items-center">
+        <h3 class="font-bold text-sm flex items-center gap-2">
+          <i class="fa-solid fa-cloud-arrow-up text-indigo-300"></i> क्लाउड में सुरक्षित करें (Save to Cloud)
+        </h3>
+        <button onclick="closeModal('saveCloudModal')" class="text-slate-300 hover:text-white">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <div class="p-4 space-y-4 text-xs">
+        <!-- Current Status Banner -->
+        <div class="bg-indigo-50 border border-indigo-200 rounded p-2.5 flex items-center justify-between text-indigo-950">
+          <div>
+            <div class="font-bold">सक्रिय पंजिका: <span id="currentActiveDocLabel" class="font-mono text-indigo-700">session_2026_2027</span></div>
+            <div class="text-[11px] text-indigo-700 mt-0.5">सत्र: <span id="saveModalSession">2026–2027</span> | कुल छात्र: <strong id="saveModalTotalStudents">106</strong></div>
+          </div>
+          <span class="bg-indigo-200 text-indigo-900 font-bold px-2 py-0.5 rounded text-[10px]">सक्रिय</span>
+        </div>
+
+        <!-- Option 1: Update Current -->
+        <div class="border border-slate-200 rounded-lg p-3 hover:border-indigo-400 transition bg-slate-50/50">
+          <div class="flex items-start justify-between gap-2">
+            <div>
+              <div class="font-bold text-slate-900 text-sm flex items-center gap-1.5">
+                <i class="fa-solid fa-pen-to-square text-indigo-600"></i>
+                <span>विकल्प 1: वर्तमान फ़ाइल अपडेट करें (Update Current)</span>
+              </div>
+              <p class="text-slate-600 mt-1 text-[11px] leading-relaxed">
+                यह वर्तमान सक्रिय फ़ाइल (<strong id="saveModalDocTarget">session_2026_2027</strong>) में सभी हालिया बदलावों, छात्र प्रविष्टियों और शुल्क भुगतानों को तुरंत सुरक्षित करेगा।
+              </p>
+            </div>
+            <button type="button" onclick="executeSaveCurrentDoc()"
+              class="shrink-0 bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1.5 rounded font-bold transition flex items-center gap-1 shadow">
+              <i class="fa-solid fa-check"></i> अपडेट करें
+            </button>
+          </div>
+        </div>
+
+        <!-- Option 2: Save as New File -->
+        <div class="border border-slate-200 rounded-lg p-3 hover:border-emerald-400 transition bg-slate-50/50">
+          <div class="font-bold text-slate-900 text-sm flex items-center gap-1.5 mb-2">
+            <i class="fa-solid fa-file-circle-plus text-emerald-600"></i>
+            <span>विकल्प 2: नई फ़ाइल / स्नैपशॉट के रूप में सेव करें (Save as New File)</span>
+          </div>
+          <p class="text-slate-600 text-[11px] mb-2 leading-relaxed">
+            वर्तमान डेटा को क्लाउड पर एक नए नाम/वर्जन के रूप में सुरक्षित करें, ताकि पुराना रिकॉर्ड सुरक्षित रहे।
+          </p>
+
+          <div class="space-y-2 bg-white p-2.5 rounded border border-slate-200">
+            <div>
+              <label class="block font-semibold text-slate-700 mb-0.5">नई फ़ाइल का नाम (Document ID / File Name) *</label>
+              <input type="text" id="newCloudDocName" placeholder="उदा० session_2026_2027_nov_backup"
+                class="w-full border border-slate-300 rounded px-2.5 py-1.5 font-mono text-xs focus:outline-none focus:border-emerald-600">
+            </div>
+            <div>
+              <label class="block font-semibold text-slate-700 mb-0.5">विवरण / नोट (Description / Remarks)</label>
+              <input type="text" id="newCloudDocNote" placeholder="उदा० नवंबर माह शुल्क अद्यतन पूर्व का बैकअप"
+                class="w-full border border-slate-300 rounded px-2.5 py-1 focus:outline-none focus:border-emerald-600 text-xs">
+            </div>
+            <div class="pt-1 flex justify-end">
+              <button type="button" onclick="executeSaveNewDoc()"
+                class="bg-emerald-600 hover:bg-emerald-700 text-white px-3.5 py-1.5 rounded font-bold transition flex items-center gap-1.5 shadow">
+                <i class="fa-solid fa-cloud-arrow-up"></i> नई फ़ाइल सेव करें
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-2 flex justify-end border-t border-slate-200">
+          <button type="button" onclick="closeModal('saveCloudModal')"
+            class="bg-slate-200 hover:bg-slate-300 text-slate-700 px-4 py-1.5 rounded font-semibold">बंद करें</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 5: Load from Cloud (Browse and Load Available Registers) -->
+  <div id="loadCloudModal" class="no-print fixed inset-0 bg-slate-900/60 hidden items-center justify-center z-50 p-4">
+    <div class="bg-white rounded-lg shadow-2xl max-w-xl w-full overflow-hidden border border-slate-200 flex flex-col max-h-[85vh]">
+      <div class="bg-sky-900 text-white px-4 py-3 flex justify-between items-center shrink-0">
+        <h3 class="font-bold text-sm flex items-center gap-2">
+          <i class="fa-solid fa-cloud-arrow-down text-sky-300"></i> क्लाउड से पंजिका लोड करें (Load from Cloud)
+        </h3>
+        <button onclick="closeModal('loadCloudModal')" class="text-slate-300 hover:text-white">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <div class="p-4 overflow-y-auto flex-1 space-y-3 text-xs">
+        <div class="flex items-center justify-between">
+          <p class="text-slate-600">क्लाउड फायरस्टोर (<code class="bg-slate-100 px-1 py-0.5 rounded text-sky-700">pms_fee_registers</code>) में सहेजी गई उपलब्ध पंजिकाएं:</p>
+          <button type="button" onclick="refreshCloudFileList()" class="text-sky-700 hover:text-sky-900 font-bold flex items-center gap-1">
+            <i class="fa-solid fa-arrows-rotate"></i> रीफ्रेश सूची
+          </button>
+        </div>
+
+        <!-- Cloud Files List Container -->
+        <div id="cloudFilesListContainer" class="space-y-2">
+          <div class="text-center py-6 text-slate-500">
+            <i class="fa-solid fa-spinner fa-spin text-xl text-sky-600 mb-2"></i>
+            <div>क्लाउड से फाइलों की सूची प्राप्त हो रही है...</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="p-3 bg-slate-100 border-t border-slate-200 flex items-center justify-between shrink-0 text-xs">
+        <div class="text-slate-500 text-[11px]">
+          <i class="fa-solid fa-info-circle text-sky-600"></i> किसी भी फाइल को चुनकर वर्तमान पंजिका में लोड कर सकते हैं।
+        </div>
+        <button type="button" onclick="closeModal('loadCloudModal')"
+          class="bg-slate-300 hover:bg-slate-400 text-slate-800 px-4 py-1.5 rounded font-semibold">बंद करें</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Toast Notification -->
   <div id="miniToast"
     class="no-print fixed bottom-4 right-4 z-50 bg-slate-900 text-white border border-slate-700 px-4 py-2.5 rounded-lg shadow-2xl text-xs font-semibold flex items-center gap-2 transition-all duration-300 opacity-0 pointer-events-none translate-y-3">
@@ -722,7 +854,7 @@
   <!-- ==================== FIREBASE MODULAR SDK & CONTROLLER SCRIPT ==================== -->
   <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js';
-    import { initializeFirestore, collection, doc, getDoc, getDocs, setDoc } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
+    import { initializeFirestore, collection, doc, getDoc, getDocs, setDoc, deleteDoc } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
 
     // ===== OFFICIAL FIREBASE CONFIG (Matching index.html / pms_fee_register.html) =====
     const firebaseConfig = {
@@ -737,6 +869,7 @@
     // Dedicated Firestore Collection & Doc for Fee Register
     const REGISTER_COLLECTION = 'pms_fee_registers';
     const REGISTER_DOC_ID = 'session_2026_2027';
+    let currentActiveDocId = REGISTER_DOC_ID;
     const STORAGE_KEY = 'pms_fee_register_v1';
 
     let app = null, db = null;
@@ -955,17 +1088,29 @@
         try {
           if (db) {
             setCloudStatus('loading', 'क्लाउड कलेक्शन से लोड हो रहा है...');
-            const docRef = doc(db, REGISTER_COLLECTION, REGISTER_DOC_ID);
+            const docRef = doc(db, REGISTER_COLLECTION, currentActiveDocId);
             const snap = await getDoc(docRef);
             if (snap.exists()) {
               const cloudData = snap.data();
               if (cloudData && Array.isArray(cloudData.students) && cloudData.students.length > 0) {
+                // If existing dedicated doc lacks mobile numbers, backfill from original source
+                const hasMobileData = cloudData.students.some(s => s.mobile);
+                if (!hasMobileData) {
+                  const builtState = await fetchFromOriginalSourceAndBuild();
+                  if (builtState && builtState.students.length > 0) {
+                    appState = builtState;
+                    await this.saveToDedicatedCollection(appState, currentActiveDocId);
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+                    setCloudStatus('connected', `क्लाउड: ${appState.students.length} छात्र लोड (मोबाइल सिंक) ✓`);
+                    return appState;
+                  }
+                }
                 appState = {
                   meta: cloudData.meta || this.getDefaultSeedData().meta,
                   students: cloudData.students
                 };
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
-                setCloudStatus('connected', `क्लाउड: ${appState.students.length} छात्र लोड ✓`);
+                setCloudStatus('connected', `क्लाउड (${currentActiveDocId}): ${appState.students.length} छात्र लोड ✓`);
                 return appState;
               }
             }
@@ -981,7 +1126,7 @@
             const builtState = await fetchFromOriginalSourceAndBuild();
             if (builtState && builtState.students.length > 0) {
               appState = builtState;
-              await this.saveToDedicatedCollection(appState);
+              await this.saveToDedicatedCollection(appState, currentActiveDocId);
               localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
               setCloudStatus('connected', `क्लाउड: नया कलेक्शन तैयार (${appState.students.length} छात्र) ✓`);
               return appState;
@@ -1015,7 +1160,7 @@
 
         if (pushToCloud && db) {
           try {
-            await this.saveToDedicatedCollection(state);
+            await this.saveToDedicatedCollection(state, currentActiveDocId);
             setCloudStatus('connected', `क्लाउड पर सुरक्षित (${new Date().toLocaleTimeString('en-IN')}) ✓`);
           } catch (err) {
             console.warn("Cloud save warning:", err);
@@ -1025,16 +1170,45 @@
       },
 
       // Write directly to Dedicated Firestore Collection
-      async saveToDedicatedCollection(state) {
+      async saveToDedicatedCollection(state, targetDocId = currentActiveDocId, note = '') {
         if (!db) return;
-        const docRef = doc(db, REGISTER_COLLECTION, REGISTER_DOC_ID);
+        const targetId = targetDocId || currentActiveDocId || REGISTER_DOC_ID;
+        const docRef = doc(db, REGISTER_COLLECTION, targetId);
         await setDoc(docRef, {
           meta: state.meta || {},
           students: state.students || [],
           totalStudents: (state.students || []).length,
           lastUpdated: new Date().toISOString(),
-          session: '2026-2027'
+          session: state.meta?.session || '2026–2027',
+          docTitle: targetId,
+          note: note || ''
         }, { merge: true });
+      },
+
+      // List all registers saved in pms_fee_registers collection
+      async listAllCloudFiles() {
+        if (!db) return [];
+        const snap = await getDocs(collection(db, REGISTER_COLLECTION));
+        return snap.docs.map(d => ({ id: d.id, ...d.data() })).sort((a, b) => {
+          if (a.id === REGISTER_DOC_ID) return -1;
+          if (b.id === REGISTER_DOC_ID) return 1;
+          return new Date(b.lastUpdated || 0) - new Date(a.lastUpdated || 0);
+        });
+      },
+
+      // Load specific document by docId
+      async loadSpecificDoc(targetDocId) {
+        if (!db) return null;
+        const docRef = doc(db, REGISTER_COLLECTION, targetDocId);
+        const snap = await getDoc(docRef);
+        return snap.exists() ? snap.data() : null;
+      },
+
+      // Delete specific snapshot (protects REGISTER_DOC_ID)
+      async deleteCloudDoc(targetDocId) {
+        if (!db || targetDocId === REGISTER_DOC_ID) return;
+        const docRef = doc(db, REGISTER_COLLECTION, targetDocId);
+        await deleteDoc(docRef);
       },
 
       getDefaultSeedData() {
@@ -1052,6 +1226,7 @@
               admDate: '02-04-2026',
               name: 'आरव सिंह (Aarav Singh)',
               fatherName: 'श्री विक्रम सिंह',
+              mobile: '9876543210',
               classSec: '5-A',
               fees: {
                 apr: { status: 'paid', receipt: 'R-101/05-04' },
@@ -1066,6 +1241,7 @@
               admDate: '04-04-2026',
               name: 'अनन्या यादव (Ananya Yadav)',
               fatherName: 'श्री मनोज यादव',
+              mobile: '9415012345',
               classSec: '5-A',
               fees: {
                 apr: { status: 'paid', receipt: 'R-108/07-04' },
@@ -1078,6 +1254,7 @@
               admDate: '10-04-2026',
               name: 'प्रियांशु शुक्ला (Priyanshu Shukla)',
               fatherName: 'श्री आलोक शुक्ला',
+              mobile: '9935123456',
               classSec: '4-B',
               fees: {
                 apr: { status: 'paid', receipt: 'R-115/10-04' }
@@ -1114,6 +1291,7 @@
           const admDate = d.admDate || d.admissionDate || d.dob || '';
           const name = d.name || d.studentName || 'छात्र नाम अनुपलब्ध';
           const fatherName = d.father || d.fatherName || 'पिता का नाम अनुपलब्ध';
+          const mobile = d.mobile || d.phone || d.contact || d.mob || '';
           const stIdStr = String(d.id);
           const stPenStr = String(d.pen || '');
 
@@ -1140,6 +1318,7 @@
             admDate: admDate,
             name: name,
             fatherName: fatherName,
+            mobile: mobile,
             classSec: classSec,
             fees: fees
           };
@@ -1207,6 +1386,7 @@
             const admDate = d.admDate || d.admissionDate || d.dob || '';
             const name = d.name || d.studentName || 'छात्र नाम अनुपलब्ध';
             const fatherName = d.father || d.fatherName || 'पिता का नाम अनुपलब्ध';
+            const mobile = d.mobile || d.phone || d.contact || d.mob || '';
             const stIdStr = String(d.id);
             const stPenStr = String(d.pen || '');
 
@@ -1220,6 +1400,7 @@
                 admDate: admDate,
                 name: name,
                 fatherName: fatherName,
+                mobile: mobile,
                 classSec: classSec,
                 fees: {}
               };
@@ -1231,6 +1412,7 @@
               existing.name = name;
               existing.fatherName = fatherName;
               existing.classSec = classSec;
+              if (mobile) existing.mobile = mobile;
               if (admDate && !existing.admDate) existing.admDate = admDate;
             }
 
@@ -1261,7 +1443,7 @@
           appState.students = currentStudents;
 
           // 1. Save directly to dedicated Firestore collection
-          await StorageService.saveToDedicatedCollection(appState);
+          await StorageService.saveToDedicatedCollection(appState, currentActiveDocId);
 
           // 2. Save locally
           localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
@@ -1323,25 +1505,271 @@
       }
     };
 
-    // Save to Cloud Now (Manual Button)
-    window.saveToCloudNow = async function () {
+    // =========================================================================
+    // 6. CLOUD FILE MANAGER (SAVE TO CLOUD: UPDATE CURRENT / SAVE AS NEW & LOAD FROM CLOUD)
+    // =========================================================================
+
+    // Open Save Cloud Modal
+    function openSaveCloudModal() {
+      const modal = document.getElementById('saveCloudModal');
+      if (!modal) return;
+
+      const lblActive = document.getElementById('currentActiveDocLabel');
+      const lblTarget = document.getElementById('saveModalDocTarget');
+      const lblSession = document.getElementById('saveModalSession');
+      const lblTotal = document.getElementById('saveModalTotalStudents');
+      const inputNewName = document.getElementById('newCloudDocName');
+      const inputNewNote = document.getElementById('newCloudDocNote');
+
+      if (lblActive) lblActive.textContent = currentActiveDocId;
+      if (lblTarget) lblTarget.textContent = currentActiveDocId;
+      if (lblSession) lblSession.textContent = appState.meta?.session || '2026–2027';
+      if (lblTotal) lblTotal.textContent = (appState.students || []).length;
+
+      if (inputNewName) {
+        const today = new Date().toISOString().slice(0, 10).replace(/-/g, '_');
+        inputNewName.value = `session_2026_2027_backup_${today}`;
+      }
+      if (inputNewNote) {
+        inputNewNote.value = `स्नैपशॉट ${new Date().toLocaleDateString('hi-IN')}`;
+      }
+
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    // Option 1: Execute Update Current Cloud Document
+    async function executeSaveCurrentDoc() {
+      if (!db) {
+        alert("क्लाउड डेटाबेस से कनेक्शन उपलब्ध नहीं है!");
+        return;
+      }
       const icon = document.getElementById('saveCloudIcon');
       if (icon) icon.className = 'fa-solid fa-spinner fa-spin';
-      setCloudStatus('loading', 'क्लाउड कलेक्शन में सेव हो रहा है...');
+      setCloudStatus('loading', `फ़ाइल '${currentActiveDocId}' अपडेट हो रही है...`);
 
       try {
-        await StorageService.saveToDedicatedCollection(appState);
+        await StorageService.saveToDedicatedCollection(appState, currentActiveDocId);
         localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+        closeModal('saveCloudModal');
         setCloudStatus('connected', `क्लाउड पर सुरक्षित (${new Date().toLocaleTimeString('en-IN')}) ✓`);
-        showMiniToast('पंजिका डेटा फायरस्टोर कलेक्शन में सफलतापूर्वक सेव हो गया!');
+        showMiniToast(`फ़ाइल '${currentActiveDocId}' क्लाउड पर सफलतापूर्वक अपडेट हो गई!`);
       } catch (err) {
-        console.error("Manual save to cloud error:", err);
-        setCloudStatus('offline', 'सेव विफल');
-        alert("क्लाउड पर सेव नहीं हो सका। विवरण: " + err.message);
+        console.error("Save current doc error:", err);
+        setCloudStatus('offline', 'अपडेट विफल');
+        alert("क्लाउड पर अपडेट नहीं हो सका। विवरण: " + err.message);
       } finally {
         if (icon) icon.className = 'fa-solid fa-cloud-arrow-up';
       }
-    };
+    }
+
+    // Option 2: Execute Save as New File / Snapshot
+    async function executeSaveNewDoc() {
+      if (!db) {
+        alert("क्लाउड डेटाबेस से कनेक्शन उपलब्ध नहीं है!");
+        return;
+      }
+      const nameInput = document.getElementById('newCloudDocName');
+      const noteInput = document.getElementById('newCloudDocNote');
+      let rawName = nameInput ? nameInput.value.trim() : '';
+      const note = noteInput ? noteInput.value.trim() : '';
+
+      if (!rawName) {
+        alert("कृपया नई फ़ाइल का नाम (Document ID) दर्ज करें!");
+        return;
+      }
+
+      // Sanitize: replace whitespace with underscores, allow letters, numbers, _, -
+      const cleanDocId = rawName.replace(/[\s\/\\]+/g, '_').replace(/[^a-zA-Z0-9_\-]/g, '');
+      if (!cleanDocId) {
+        alert("अमान्य फ़ाइल नाम। कृपया अंग्रेजी अक्षरों, अंकों, हाइफ़न या अंडरस्कोर का प्रयोग करें।");
+        return;
+      }
+
+      const icon = document.getElementById('saveCloudIcon');
+      if (icon) icon.className = 'fa-solid fa-spinner fa-spin';
+      setCloudStatus('loading', `नई फ़ाइल '${cleanDocId}' सुरक्षित हो रही है...`);
+
+      try {
+        await StorageService.saveToDedicatedCollection(appState, cleanDocId, note);
+        currentActiveDocId = cleanDocId;
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+        closeModal('saveCloudModal');
+        setCloudStatus('connected', `क्लाउड: ${cleanDocId} सक्रिय ✓`);
+        showMiniToast(`नई फ़ाइल '${cleanDocId}' क्लाउड पर सुरक्षित हो गई एवं सक्रिय है!`);
+      } catch (err) {
+        console.error("Save new cloud doc error:", err);
+        setCloudStatus('offline', 'सेव विफल');
+        alert("नई फ़ाइल सेव करने में त्रुटि: " + err.message);
+      } finally {
+        if (icon) icon.className = 'fa-solid fa-cloud-arrow-up';
+      }
+    }
+
+    // Open Load Cloud Modal
+    function openLoadCloudModal() {
+      const modal = document.getElementById('loadCloudModal');
+      if (!modal) return;
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      refreshCloudFileList();
+    }
+
+    // Refresh and display list of all cloud documents
+    async function refreshCloudFileList() {
+      const container = document.getElementById('cloudFilesListContainer');
+      if (!container) return;
+
+      container.innerHTML = `
+        <div class="text-center py-6 text-slate-500">
+          <i class="fa-solid fa-spinner fa-spin text-xl text-sky-600 mb-2"></i>
+          <div>क्लाउड से फाइलों की सूची प्राप्त हो रही है...</div>
+        </div>
+      `;
+
+      if (!db) {
+        container.innerHTML = `
+          <div class="p-4 bg-red-50 border border-red-200 rounded text-red-700 text-center">
+            क्लाउड डेटाबेस से कनेक्शन उपलब्ध नहीं है।
+          </div>
+        `;
+        return;
+      }
+
+      try {
+        const files = await StorageService.listAllCloudFiles();
+        if (!files || files.length === 0) {
+          container.innerHTML = `
+            <div class="p-6 bg-slate-50 border border-slate-200 rounded text-center text-slate-600">
+              क्लाउड कलेक्शन में कोई फाइल नहीं मिली।
+            </div>
+          `;
+          return;
+        }
+
+        let html = '';
+        files.forEach(f => {
+          const isCurrentActive = (f.id === currentActiveDocId);
+          const isDefaultMain = (f.id === REGISTER_DOC_ID);
+          const studentCount = f.totalStudents || (Array.isArray(f.students) ? f.students.length : 0);
+          const session = f.session || f.meta?.session || '2026–2027';
+          const note = f.note ? escapeHtml(f.note) : '';
+          let dateStr = 'उपलब्ध नहीं';
+          if (f.lastUpdated) {
+            try {
+              const d = new Date(f.lastUpdated);
+              dateStr = d.toLocaleString('hi-IN', {
+                day: '2-digit', month: 'short', year: 'numeric',
+                hour: '2-digit', minute: '2-digit', hour12: true
+              });
+            } catch (e) {
+              dateStr = f.lastUpdated;
+            }
+          }
+
+          html += `
+            <div class="border ${isCurrentActive ? 'border-sky-500 bg-sky-50/60' : 'border-slate-200 bg-white'} rounded-lg p-3 hover:shadow-sm transition flex flex-col md:flex-row md:items-center justify-between gap-3">
+              <div class="space-y-1 flex-1">
+                <div class="flex items-center gap-2 flex-wrap">
+                  <span class="font-bold text-slate-900 font-mono text-sm">${escapeHtml(f.id)}</span>
+                  ${isCurrentActive ? '<span class="bg-sky-600 text-white font-bold text-[10px] px-2 py-0.5 rounded-full"><i class="fa-solid fa-check"></i> वर्तमान सक्रिय</span>' : ''}
+                  ${isDefaultMain ? '<span class="bg-indigo-100 text-indigo-800 font-semibold text-[10px] px-2 py-0.5 rounded-full">डिफ़ॉल्ट मुख्य सत्र</span>' : ''}
+                </div>
+                <div class="text-[11px] text-slate-600 flex items-center gap-3 flex-wrap">
+                  <span><i class="fa-solid fa-graduation-cap text-slate-400"></i> सत्र: <strong>${escapeHtml(session)}</strong></span>
+                  <span><i class="fa-solid fa-users text-slate-400"></i> कुल छात्र: <strong>${studentCount}</strong></span>
+                  <span><i class="fa-regular fa-clock text-slate-400"></i> अद्यतन: <strong>${dateStr}</strong></span>
+                </div>
+                ${note ? `<div class="text-[11px] text-slate-500 italic bg-slate-50 px-2 py-1 rounded border border-slate-100"><i class="fa-regular fa-comment-dots text-slate-400 mr-1"></i>${note}</div>` : ''}
+              </div>
+              <div class="flex items-center gap-1.5 shrink-0 self-end md:self-center">
+                <button type="button" onclick="window.loadSpecificCloudDoc('${escapeHtml(f.id)}')"
+                  class="${isCurrentActive ? 'bg-sky-700 hover:bg-sky-800' : 'bg-sky-600 hover:bg-sky-700'} text-white px-3 py-1.5 rounded font-bold transition flex items-center gap-1 text-xs shadow-sm"
+                  title="इस फ़ाइल को पंजिका में लोड करें">
+                  <i class="fa-solid fa-cloud-arrow-down"></i> ${isCurrentActive ? 'पुनः लोड करें' : 'लोड करें'}
+                </button>
+                ${!isDefaultMain ? `
+                  <button type="button" onclick="window.deleteSpecificCloudDoc('${escapeHtml(f.id)}')"
+                    class="bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 px-2.5 py-1.5 rounded font-bold transition text-xs"
+                    title="इस स्नैपशॉट को क्लाउड से हटाएं">
+                    <i class="fa-solid fa-trash"></i>
+                  </button>
+                ` : ''}
+              </div>
+            </div>
+          `;
+        });
+
+        container.innerHTML = html;
+      } catch (err) {
+        console.error("List cloud files error:", err);
+        container.innerHTML = `
+          <div class="p-4 bg-red-50 border border-red-200 rounded text-red-700 text-center">
+            क्लाउड सूची लोड करने में त्रुटि: ${escapeHtml(err.message)}
+          </div>
+        `;
+      }
+    }
+
+    // Load specific document from Firestore
+    async function loadSpecificCloudDoc(targetDocId) {
+      if (!targetDocId) return;
+      const isConfirmed = confirm(`क्या आप फ़ाइल '${targetDocId}' को लोड करना चाहते हैं?\n(वर्तमान अप्रकाशित बदलाव इस फ़ाइल के डेटा से बदल जाएंगे)`);
+      if (!isConfirmed) return;
+
+      setCloudStatus('loading', `फ़ाइल '${targetDocId}' लोड हो रही है...`);
+      try {
+        const cloudData = await StorageService.loadSpecificDoc(targetDocId);
+        if (!cloudData || !Array.isArray(cloudData.students)) {
+          alert("चयनित फ़ाइल में कोई वैध छात्र रिकॉर्ड नहीं मिला!");
+          setCloudStatus('connected', 'क्लाउड: लोड विफल');
+          return;
+        }
+
+        currentActiveDocId = targetDocId;
+        appState = {
+          meta: cloudData.meta || StorageService.getDefaultSeedData().meta,
+          students: cloudData.students
+        };
+
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+        applyMetaToDOM();
+        populateClassFilter();
+        renderTable();
+        closeModal('loadCloudModal');
+
+        setCloudStatus('connected', `क्लाउड (${currentActiveDocId}): ${appState.students.length} छात्र लोड ✓`);
+        showMiniToast(`फ़ाइल '${targetDocId}' (${appState.students.length} छात्र) सफलतापूर्वक लोड हो गई!`);
+      } catch (err) {
+        console.error("Load cloud doc error:", err);
+        alert("फ़ाइल लोड करने में त्रुटि: " + err.message);
+        setCloudStatus('offline', 'लोड विफल');
+      }
+    }
+
+    // Delete a specific snapshot document from Firestore
+    async function deleteSpecificCloudDoc(targetDocId) {
+      if (!targetDocId || targetDocId === REGISTER_DOC_ID) {
+        alert("डिफ़ॉल्ट मुख्य सत्र फ़ाइल को हटाया नहीं जा सकता!");
+        return;
+      }
+      const isConfirmed = confirm(`चेतावनी: क्या आप स्नैपशॉट '${targetDocId}' को क्लाउड से हमेशा के लिए हटाना चाहते हैं?`);
+      if (!isConfirmed) return;
+
+      try {
+        await StorageService.deleteCloudDoc(targetDocId);
+        showMiniToast(`स्नैपशॉट '${targetDocId}' क्लाउड से हटा दिया गया।`);
+        if (currentActiveDocId === targetDocId) {
+          currentActiveDocId = REGISTER_DOC_ID;
+        }
+        refreshCloudFileList();
+      } catch (err) {
+        console.error("Delete cloud doc error:", err);
+        alert("हटाने में त्रुटि: " + err.message);
+      }
+    }
+
+    window.saveToCloudNow = openSaveCloudModal;
 
     window.fetchOriginalSourceAndSync = fetchOriginalSourceAndSync;
 
@@ -1452,6 +1880,7 @@
         const matchesSearch = !query ||
           String(stu.name || '').toLowerCase().includes(query) ||
           String(stu.fatherName || '').toLowerCase().includes(query) ||
+          String(stu.mobile || '').toLowerCase().includes(query) ||
           String(stu.admDate || '').toLowerCase().includes(query) ||
           String(stu.classSec || '').toLowerCase().includes(query);
 
@@ -1540,7 +1969,10 @@
           <td class="font-semibold text-xs text-slate-900 cursor-pointer hover:text-blue-700 hover:underline" onclick="openStudentModal('${stu.id}')" title="छात्र विवरण संपादित करें">
             ${escapeHtml(stu.name)}
           </td>
-          <td class="text-xs text-slate-700">${escapeHtml(stu.fatherName)}</td>
+          <td class="text-xs text-slate-800 leading-snug">
+            <div class="font-medium text-slate-900">${escapeHtml(stu.fatherName || '—')}</div>
+            ${stu.mobile ? `<div class="text-[10px] font-mono text-slate-600 mt-0.5 tracking-tight flex items-center gap-1"><i class="fa-solid fa-phone text-[8.5px] text-slate-400 no-print"></i><span>${escapeHtml(stu.mobile)}</span></div>` : ''}
+          </td>
           <td class="text-center font-bold text-xs text-slate-800">${escapeHtml(stu.classSec)}</td>
         `;
 
@@ -1618,11 +2050,13 @@
         document.getElementById('inputClassSec').value = stu.classSec || '';
         document.getElementById('inputStudentName').value = stu.name || '';
         document.getElementById('inputFatherName').value = stu.fatherName || '';
+        document.getElementById('inputMobile').value = stu.mobile || '';
         delBtn.classList.remove('hidden');
       } else {
         title.innerHTML = '<i class="fa-solid fa-user-plus text-emerald-400"></i> नया छात्र जोड़ें';
         document.getElementById('studentForm').reset();
         document.getElementById('editStudentId').value = '';
+        document.getElementById('inputMobile').value = '';
         delBtn.classList.add('hidden');
       }
 
@@ -1638,11 +2072,12 @@
       const classSec = document.getElementById('inputClassSec').value.trim();
       const name = document.getElementById('inputStudentName').value.trim();
       const fatherName = document.getElementById('inputFatherName').value.trim();
+      const mobile = document.getElementById('inputMobile').value.trim();
 
       if (id) {
         const idx = appState.students.findIndex(s => s.id === id);
         if (idx !== -1) {
-          appState.students[idx] = { ...appState.students[idx], admDate, classSec, name, fatherName };
+          appState.students[idx] = { ...appState.students[idx], admDate, classSec, name, fatherName, mobile };
         }
       } else {
         appState.students.push({
@@ -1652,6 +2087,7 @@
           classSec,
           name,
           fatherName,
+          mobile,
           fees: {}
         });
       }
@@ -1688,7 +2124,7 @@
       document.getElementById('feeModalStudentName').textContent = stu.name;
       document.getElementById('feeModalMonthLabel').textContent = `${monthObj.hi} (${monthObj.en})`;
       document.getElementById('feeModalClassLabel').textContent = stu.classSec;
-      document.getElementById('feeStatusInput').value = currentEntry.status || 'pending';
+      document.getElementById('feeStatusInput').value = (currentEntry.status && currentEntry.status !== 'pending') ? currentEntry.status : 'paid';
       document.getElementById('feeReceiptInput').value = currentEntry.receipt || '';
 
       const modal = document.getElementById('feeModal');
@@ -1854,7 +2290,10 @@
                       <td class="text-center font-mono-num text-xs font-semibold">${idx + 1}</td>
                       <td class="text-center font-mono-num text-[11px]">${escapeHtml(stu.admDate || '—')}</td>
                       <td class="font-semibold text-xs text-slate-900">${escapeHtml(stu.name)}</td>
-                      <td class="text-xs text-slate-700">${escapeHtml(stu.fatherName)}</td>
+                      <td class="text-xs text-slate-800 leading-snug">
+                        <div>${escapeHtml(stu.fatherName || '—')}</div>
+                        ${stu.mobile ? `<div class="text-[9.5px] font-mono text-slate-600 mt-0.5">${escapeHtml(stu.mobile)}</div>` : ''}
+                      </td>
                       <td class="text-center font-bold text-xs text-slate-800">${escapeHtml(stu.classSec)}</td>
                       ${MONTHS.map(m => {
           const entry = stu.fees?.[m.key] || { status: 'pending', receipt: '' };
@@ -1957,7 +2396,10 @@
             <td align="center" style="border: 0.5pt solid #000; padding: 2.5pt 1.5pt; font-size: 8pt; font-weight: bold;">${idx + 1}</td>
             <td align="center" style="border: 0.5pt solid #000; padding: 2.5pt 1.5pt; font-size: 7.5pt;">${escapeHtml(st.admDate || '—')}</td>
             <td align="left" style="border: 0.5pt solid #000; padding: 2.5pt 3pt; font-size: 8pt; font-weight: bold;">${escapeHtml(st.name || '')}</td>
-            <td align="left" style="border: 0.5pt solid #000; padding: 2.5pt 3pt; font-size: 7.5pt;">${escapeHtml(st.fatherName || '')}</td>
+            <td align="left" style="border: 0.5pt solid #000; padding: 2.5pt 3pt; font-size: 7.5pt;">
+              ${escapeHtml(st.fatherName || '')}
+              ${st.mobile ? `<br><span style="font-size: 6.5pt; color: #475569; font-family: Calibri, sans-serif;">${escapeHtml(st.mobile)}</span>` : ''}
+            </td>
             <td align="center" style="border: 0.5pt solid #000; padding: 2.5pt 1.5pt; font-size: 8pt; font-weight: bold;">${escapeHtml(st.classSec || getStudentBaseClass(st))}</td>
             ${monthTds}
           </tr>
@@ -2146,7 +2588,7 @@
     function exportCSV() {
       let csvContent = '\uFEFF';
       const headers = [
-        'क्र० सं०', 'प्रवेश तिथि', 'छात्र / छात्रा का नाम', 'पिता का नाम', 'कक्षा व वर्ग',
+        'क्र० सं०', 'प्रवेश तिथि', 'छात्र / छात्रा का नाम', 'पिता का नाम / मोबाइल', 'कक्षा व वर्ग',
         ...MONTHS.map(m => `${m.hi} (${m.en})`)
       ];
       csvContent += headers.map(h => `"${h}"`).join(',') + '\n';
@@ -2156,7 +2598,7 @@
           idx + 1,
           stu.admDate || '',
           stu.name || '',
-          stu.fatherName || '',
+          stu.mobile ? `${stu.fatherName || ''} (${stu.mobile})` : (stu.fatherName || ''),
           stu.classSec || '',
           ...MONTHS.map(m => {
             const entry = stu.fees?.[m.key];
@@ -2247,6 +2689,15 @@
     window.sortStudentsMulti = sortStudentsMulti;
     window.sortClasses = sortClasses;
 
+    // Cloud Manager window bindings
+    window.openSaveCloudModal = openSaveCloudModal;
+    window.executeSaveCurrentDoc = executeSaveCurrentDoc;
+    window.executeSaveNewDoc = executeSaveNewDoc;
+    window.openLoadCloudModal = openLoadCloudModal;
+    window.refreshCloudFileList = refreshCloudFileList;
+    window.loadSpecificCloudDoc = loadSpecificCloudDoc;
+    window.deleteSpecificCloudDoc = deleteSpecificCloudDoc;
+
     // Keyboard Shortcuts (Alt+N, Esc)
     document.addEventListener('keydown', (e) => {
       if (e.altKey && (e.key === 'n' || e.key === 'N')) {
@@ -2256,6 +2707,8 @@
         closeModal('studentModal');
         closeModal('feeModal');
         closeModal('metaModal');
+        closeModal('saveCloudModal');
+        closeModal('loadCloudModal');
       }
     });
 

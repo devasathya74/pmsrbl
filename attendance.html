@@ -14,10 +14,11 @@
         href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700;800&display=swap"
         rel="stylesheet">
 
-    <!-- External PDF Libraries -->
+    <!-- External PDF & Word Libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+    <script src="js/pms_word_export.js"></script>
 
     <style>
         :root {
@@ -1579,6 +1580,9 @@
 
                             <button onclick="triggerPrint()" class="btn btn-amber">
                                 <i class="fa-solid fa-print"></i> A4 Landscape PDF डाउनलोड
+                            </button>
+                            <button onclick="triggerWordAttendanceSheet()" class="btn" style="background:#2563eb;color:#ffffff;" title="अटेंडेंस शीट Word (.doc) में डाउनलोड करें">
+                                <i class="fa-solid fa-file-word"></i> Word (.doc)
                             </button>
                         </div>
                     </div>
@@ -3745,6 +3749,22 @@
             } finally {
                 printBtn.innerHTML = originalText;
                 printBtn.disabled = false;
+            }
+        };
+
+        // ─── DOWNLOAD ATTENDANCE SHEET AS WORD (.DOC) ─────────────────────
+        window.triggerWordAttendanceSheet = function () {
+            switchTab('preview', activePreviewShift);
+            const previewContainer = document.getElementById('live-preview-container') || document.getElementById('print-area-wrapper');
+            if (previewContainer && typeof window.exportElementToWord === 'function') {
+                const curFilter = document.getElementById('print-vehicle-filter')?.value || activePreviewShift || 'v1';
+                window.exportElementToWord(previewContainer, {
+                    title: `छात्र वाहन उपस्थिति पंजिका - ${curFilter.toUpperCase()}`,
+                    filename: `PMS_Attendance_Sheet_${curFilter}_${new Date().toISOString().slice(0, 10)}`,
+                    landscape: true
+                });
+            } else if (typeof window.showCustomDialog === 'function') {
+                showCustomDialog("सूचना", "Word Exporter लोड नहीं हुआ।", "warning");
             }
         };
 

@@ -405,157 +405,16 @@
     function exportDocWord() {
       const container = document.querySelector('.paper-sheet') || document.querySelector('main');
       if (!container) return;
-      const clone = container.cloneNode(true);
-      clone.querySelectorAll('.no-print').forEach(el => el.remove());
-
-      // 1. Transform Header (PMS Logo - Title - PAC Logo)
-      const headerFlex = clone.querySelector('.flex.items-center.justify-between');
-      if (headerFlex) {
-        const pmsLogo = headerFlex.querySelector('img[alt*="Police"]') || headerFlex.querySelector('img');
-        const pacLogo = headerFlex.querySelectorAll('img')[1] || null;
-        const infoDiv = headerFlex.querySelector('.text-center');
-
-        const tbl = document.createElement('table');
-        tbl.setAttribute('width', '100%');
-        tbl.setAttribute('style', 'width: 100%; border: none; border-collapse: collapse; margin-bottom: 6pt;');
-        tbl.innerHTML = `
-          <tr>
-            <td style="width: 75px; text-align: center; vertical-align: middle; border: none;">
-              ${pmsLogo ? `<img src="${new URL(pmsLogo.getAttribute('src') || 'pms-logo.png', window.location.href).href}" width="65" height="65" style="width:65px; height:65px;" alt="Logo" />` : ''}
-            </td>
-            <td style="text-align: center; vertical-align: middle; border: none; padding: 0 8pt;">
-              <div style="font-size: 18pt; font-weight: 900; color: #0f172a; line-height: 1.2;">POLICE MODERN SCHOOL</div>
-              <div style="font-size: 10.5pt; font-weight: bold; color: #334155; margin-top: 2pt;">25TH BN. P.A.C., RAEBARELI (U.P.)</div>
-              <div style="margin-top: 4pt;">
-                <span style="background-color: #fef3c7; border: 1pt solid #f59e0b; padding: 2pt 8pt; font-size: 8.5pt; font-weight: 900; color: #78350f;">
-                  🇮🇳 Gandhi Jayanti Special Essay Worksheet 🇮🇳
-                </span>
-              </div>
-              <div style="font-size: 9.5pt; font-weight: bold; color: #475569; margin-top: 3pt;">
-                Topic: 10 Lines on Mahatma Gandhi (राष्ट्रपिता महात्मा गांधी)
-              </div>
-            </td>
-            <td style="width: 75px; text-align: center; vertical-align: middle; border: none;">
-              ${pacLogo ? `<img src="${new URL(pacLogo.getAttribute('src') || 'pac_logo.png', window.location.href).href}" width="65" height="65" style="width:65px; height:65px;" alt="Logo" />` : ''}
-            </td>
-          </tr>
-        `;
-        headerFlex.parentNode.replaceChild(tbl, headerFlex);
+      if (typeof window.exportElementToWord === 'function') {
+        window.exportElementToWord(container, {
+          title: document.title || 'Mahatma Gandhi 10 Lines',
+          filename: 'Mahatma_Gandhi_10_Lines_Essay',
+          landscape: false
+        });
       }
-
-      // 2. Transform Student Fill-in Row
-      const studentGrid = clone.querySelector('.grid.grid-cols-4');
-      if (studentGrid) {
-        const tbl = document.createElement('table');
-        tbl.setAttribute('width', '100%');
-        tbl.setAttribute('style', 'width: 100%; border: 1pt solid #cbd5e1; background-color: #f8fafc; border-collapse: collapse; margin-top: 4pt; margin-bottom: 8pt;');
-        tbl.innerHTML = `
-          <tr>
-            <td style="border: none; padding: 4pt 6pt; font-size: 8.5pt; width: 30%; color: #0f172a;"><span style="color: #64748b;">Student Name:</span> <b>_______________</b></td>
-            <td style="border: none; padding: 4pt 6pt; font-size: 8.5pt; width: 25%; color: #0f172a;"><span style="color: #64748b;">Class & Sec:</span> <b>_________</b></td>
-            <td style="border: none; padding: 4pt 6pt; font-size: 8.5pt; width: 20%; color: #0f172a;"><span style="color: #64748b;">Roll No:</span> <b>_______</b></td>
-            <td style="border: none; padding: 4pt 6pt; font-size: 8.5pt; width: 25%; text-align: right; color: #0f172a;"><span style="color: #64748b;">Date:</span> <b>02 October</b></td>
-          </tr>
-        `;
-        studentGrid.parentNode.replaceChild(tbl, studentGrid);
-      }
-
-      // 3. Transform 10 Essay Cards
-      clone.querySelectorAll('.essay-card').forEach((card, idx) => {
-        const badge = card.querySelector('.num-badge');
-        const numText = badge ? badge.innerText.trim() : (idx + 1);
-        const engDiv = card.querySelector('div.text-\\[14px\\]') || card.querySelector('.font-bold');
-        const hiDiv = card.querySelector('.hindi-text');
-        const engText = engDiv ? engDiv.innerHTML.trim() : '';
-        const hiText = hiDiv ? hiDiv.innerHTML.trim() : '';
-
-        const tbl = document.createElement('table');
-        tbl.setAttribute('width', '100%');
-        tbl.setAttribute('style', 'width: 100%; border: 1pt solid #cbd5e1; border-collapse: collapse; margin-bottom: 6pt; background-color: #ffffff;');
-        tbl.innerHTML = `
-          <tr>
-            <td style="width: 32px; vertical-align: top; padding: 6pt 4pt 6pt 8pt; border: none; text-align: center;">
-              <div style="width: 22px; height: 22px; background-color: #0f172a; color: #fbbf24; border: 1.5pt solid #fbbf24; font-weight: 900; font-size: 10.5pt; text-align: center; line-height: 20px;">
-                ${numText}
-              </div>
-            </td>
-            <td style="padding: 6pt 8pt 6pt 4pt; vertical-align: top; border: none;">
-              <div style="font-size: 10.5pt; font-weight: bold; color: #0f172a; line-height: 1.35;">
-                ${engText}
-              </div>
-              <div style="font-size: 9.5pt; color: #475569; margin-top: 2pt; font-family: 'Mangal', 'Noto Sans Devanagari', sans-serif;">
-                ${hiText}
-              </div>
-            </td>
-          </tr>
-        `;
-        card.parentNode.replaceChild(tbl, card);
-      });
-
-      // 4. Transform Bottom Quote / Banner
-      const quoteBanner = clone.querySelector('.mt-3.pt-2') || clone.querySelector('.bg-amber-50');
-      if (quoteBanner) {
-        quoteBanner.setAttribute('style', 'border-top: 1pt solid #cbd5e1; padding-top: 6pt; margin-top: 8pt; text-align: center; font-size: 9pt; color: #475569;');
-      }
-
-      const wordHtml = `
-        <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
-        <head>
-          <meta charset='utf-8'>
-          <title>${document.title || 'Mahatma Gandhi 10 Lines'}</title>
-          <!--[if gte mso 9]>
-          <xml>
-            <w:WordDocument>
-              <w:View>Print</w:View>
-              <w:Zoom>100</w:Zoom>
-              <w:DoNotOptimizeForBrowser/>
-            </w:WordDocument>
-          </xml>
-          <![endif]-->
-          <style>
-            @page Section1 {
-              size: 595.3pt 841.9pt; /* A4 Portrait */
-              margin: 28.0pt 36.0pt 28.0pt 36.0pt;
-              mso-header-margin: 0pt;
-              mso-footer-margin: 0pt;
-              mso-paper-source: 0;
-            }
-            div.Section1 {
-              page: Section1;
-            }
-            body {
-              font-family: 'Mangal', 'Noto Sans Devanagari', 'Calibri', 'Segoe UI', Arial, sans-serif;
-              font-size: 10.5pt;
-              color: #0f172a;
-              line-height: 1.4;
-              margin: 0;
-              padding: 0;
-            }
-            .border-b-2 { border-bottom: 2pt solid #0f172a; }
-            .text-center { text-align: center; }
-            .text-right { text-align: right; }
-            .font-bold { font-weight: bold; }
-          </style>
-        </head>
-        <body>
-          <div class="Section1">
-            ${clone.innerHTML}
-          </div>
-        </body>
-        </html>
-      `;
-      const blob = new Blob(['\ufeff' + wordHtml], { type: 'application/msword;charset=utf-8;' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      const filename = (document.title || 'Mahatma_Gandhi_10_Lines').replace(/[^a-zA-Z0-9_\u0900-\u097F]/g, '_') + '.doc';
-      a.download = filename;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
     }
   </script>
+  <script src="js/pms_word_export.js"></script>
   <script src="js/pms_nav_search.js"></script>
 </body>
 

@@ -459,6 +459,15 @@
         function exportSignboardWord() {
             const main = document.querySelector('main');
             if (!main) return;
+            if (typeof window.exportElementToWord === 'function') {
+                window.exportElementToWord(main, {
+                    title: '25वीं वाहिनी पीएसी - साइनबोर्ड 3D ब्लूप्रिंट',
+                    filename: 'PAC_Signboard_3D_Blueprint',
+                    landscape: true
+                });
+                return;
+            }
+
             const clone = main.cloneNode(true);
             const noPrints = clone.querySelectorAll('.no-print');
             noPrints.forEach(el => el.remove());
@@ -503,5 +512,6 @@
         }
     </script>
     <script src="js/pms_nav_search.js"></script>
+    <script src="js/pms_word_export.js"></script>
 </body>
 </html>

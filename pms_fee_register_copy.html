@@ -2348,6 +2348,19 @@
     // 9. EXPORT TO MS WORD (.doc)
     // =========================================================================
     function exportWordDoc() {
+      if (typeof window.exportElementToWord === 'function') {
+        const target = document.querySelector('.print-container') || document.getElementById('batchPrintContainer') || document.querySelector('.table-container');
+        if (target) {
+          const classFilter = document.getElementById('classFilter')?.value || 'ALL';
+          window.exportElementToWord(target, {
+            landscape: true,
+            title: 'पुलिस मॉडर्न स्कूल - मासिक शुल्क रजिस्टर (' + classFilter + ')',
+            filename: 'PMS_Fee_Register_' + classFilter + '_' + new Date().toISOString().slice(0, 10)
+          });
+          return;
+        }
+      }
+
       const classFilter = document.getElementById('classFilter')?.value || 'ALL';
       const sectionFilter = document.getElementById('sectionFilter')?.value || 'ALL';
       const sortOrder = document.getElementById('sortOrderFilter')?.value || 'name_asc';
@@ -2715,6 +2728,7 @@
     // Initialize on load
     window.addEventListener('DOMContentLoaded', initApp);
   </script>
+  <script src="js/pms_word_export.js"></script>
 </body>
 
 </html>

@@ -366,6 +366,15 @@
       const doc = document.getElementById('letterDoc');
       if (!doc) return;
 
+      if (typeof window.exportElementToWord === 'function') {
+        window.exportElementToWord(doc, {
+          title: 'कार्यालय पुलिस मॉडर्न स्कूल - फीस जमा पत्र',
+          filename: 'PMS_Fee_Deposit_Letter_28Sep2026',
+          landscape: false
+        });
+        return;
+      }
+
       const h1El = doc.querySelector('h1');
       const h1Text = h1El ? h1El.innerText.trim() : 'कार्यालय पुलिस मॉडर्न स्कूल';
       const h2El = doc.querySelector('h2');
@@ -647,6 +656,7 @@
       URL.revokeObjectURL(url);
     }
   </script>
+  <script src="js/pms_word_export.js"></script>
 </body>
 
 </html>

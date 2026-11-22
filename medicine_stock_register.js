@@ -1610,6 +1610,60 @@ window.exportDistributionWord = function () {
         return;
     }
 
+    if (typeof window.exportElementToWord === 'function') {
+        const wrap = document.createElement('div');
+        let rowsHtml = '';
+        distributionLog.forEach((log, i) => {
+            const med = medicines.find(m => m.id === log.medicineId) || { nameHi: log.medicineName || "दवाई" };
+            rowsHtml += `
+                <tr>
+                    <td align="center" style="text-align:center;">${i + 1}</td>
+                    <td align="left"><b>${log.studentName || ''}</b></td>
+                    <td align="center" style="text-align:center;">${log.studentClass || ''}</td>
+                    <td align="center" style="text-align:center;">${log.rollNo || ''}</td>
+                    <td align="left">${log.fatherName || ''}</td>
+                    <td align="left">${med.nameHi || ''}</td>
+                    <td align="center" style="text-align:center;">${log.quantity || 1}</td>
+                    <td align="left">${log.reason || ''}</td>
+                    <td align="center" style="text-align:center;">${log.dispensedDate || ''}</td>
+                    <td align="left">${log.dispensedBy || ''}</td>
+                </tr>
+            `;
+        });
+        wrap.innerHTML = `
+            <div style="text-align:center; margin-bottom:12pt;">
+                <h2 style="font-size:14pt; margin:0; font-weight:bold;">पुलिस मॉडर्न स्कूल, 25वीं वाहिनी पीएसी, रायबरेली</h2>
+                <h3 style="font-size:12pt; margin:4pt 0; font-weight:bold; color:#1e293b;">औषधि एवं प्राथमिक चिकित्सा वितरण पंजिका (Medicine Distribution Register)</h3>
+                <p style="font-size:9pt; margin:2pt 0; color:#475569;">कुल वितरण रिकॉर्ड: ${distributionLog.length} | दिनांक: ${new Date().toLocaleDateString('hi-IN')}</p>
+            </div>
+            <table border="1" width="100%" style="border-collapse:collapse; width:100%; font-size:8.5pt;">
+                <thead>
+                    <tr style="background:#f1f5f9; font-weight:bold;">
+                        <th style="width:4%; text-align:center; padding:4pt;">क्र०</th>
+                        <th style="width:16%; text-align:left; padding:4pt;">छात्र का नाम</th>
+                        <th style="width:8%; text-align:center; padding:4pt;">कक्षा</th>
+                        <th style="width:8%; text-align:center; padding:4pt;">रोल नं०</th>
+                        <th style="width:16%; text-align:left; padding:4pt;">पिता का नाम</th>
+                        <th style="width:14%; text-align:left; padding:4pt;">दवाई का नाम</th>
+                        <th style="width:6%; text-align:center; padding:4pt;">मात्रा</th>
+                        <th style="width:12%; text-align:left; padding:4pt;">कारण / प्रयोजन</th>
+                        <th style="width:8%; text-align:center; padding:4pt;">वितरण दिनांक</th>
+                        <th style="width:8%; text-align:left; padding:4pt;">वितरक</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${rowsHtml}
+                </tbody>
+            </table>
+        `;
+        window.exportElementToWord(wrap, {
+            landscape: true,
+            title: 'औषधि वितरण पंजिका - पुलिस मॉडर्न स्कूल',
+            filename: 'PMS_Medicine_Distribution_Register_' + new Date().toISOString().slice(0, 10)
+        });
+        return;
+    }
+
     let rowsHtml = '';
     distributionLog.forEach((log, i) => {
         const med = medicines.find(m => m.id === log.medicineId) || { nameHi: log.medicineName || "दवाई" };

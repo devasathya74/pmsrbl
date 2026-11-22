@@ -404,6 +404,14 @@
     function exportDocWord() {
       const container = document.querySelector('.paper-sheet') || document.querySelector('main');
       if (!container) return;
+      if (typeof window.exportElementToWord === 'function') {
+        window.exportElementToWord(container, {
+          title: document.title || 'Lal Bahadur Shastri 10 Lines',
+          filename: 'Lal_Bahadur_Shastri_10_Lines_Essay',
+          landscape: false
+        });
+        return;
+      }
       const clone = container.cloneNode(true);
       clone.querySelectorAll('.no-print').forEach(el => el.remove());
 
@@ -554,6 +562,7 @@
       URL.revokeObjectURL(url);
     }
   </script>
+  <script src="js/pms_word_export.js"></script>
   <script src="js/pms_nav_search.js"></script>
 </body>
 

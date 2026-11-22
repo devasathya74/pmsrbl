@@ -7284,6 +7284,23 @@
       const page2 = document.getElementById('letterDocumentPage2');
       if (!page1) return;
 
+      if (typeof window.exportElementToWord === 'function') {
+        const wrapper = document.createElement('div');
+        wrapper.appendChild(page1.cloneNode(true));
+        if (page2 && !page2.classList.contains('hidden')) {
+          const pb = document.createElement('div');
+          pb.className = 'page-break';
+          wrapper.appendChild(pb);
+          wrapper.appendChild(page2.cloneNode(true));
+        }
+        window.exportElementToWord(wrapper, {
+          title: 'कार्यालय पत्र - पुलिस मॉडर्न स्कूल',
+          filename: `PMS_Letter_${new Date().toISOString().slice(0, 10)}`,
+          landscape: document.body.classList.contains('is-landscape')
+        });
+        return;
+      }
+
       const preparePageClone = (pageEl) => {
         const clone = pageEl.cloneNode(true);
         clone.querySelectorAll('.no-print, [data-no-print], button, select, input, .card-resize-handle, .drag-handle-pill').forEach(el => el.remove());
@@ -8134,6 +8151,7 @@
 
   <!-- Universal Search Integration -->
   <script src="js/pms_nav_search.js"></script>
+  <script src="js/pms_word_export.js"></script>
 </body>
 
 </html>

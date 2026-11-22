@@ -1420,60 +1420,25 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.1/fireba
     // ===== EXPORT MS WORD (.DOC) =====
     function exportWord() {
       const printArea = document.getElementById("printArea");
-      let contentHtml = '';
-      if (printArea && printArea.innerHTML.trim()) {
-        contentHtml = printArea.innerHTML;
-      } else {
-        const mainTable = document.getElementById("studentTable") || document.querySelector(".tbl-wrap table");
-        if (mainTable) {
-          contentHtml = mainTable.outerHTML;
-        }
+      const isPrintAreaActive = printArea && printArea.innerHTML.trim().length > 20;
+      const targetEl = isPrintAreaActive ? printArea : (document.getElementById("studentTable") || document.querySelector(".tbl-wrap table"));
+
+      if (!targetEl) {
+        toast("डाउनलोड करने के लिए कोई डेटा नहीं है!", "error");
+        return;
       }
 
-      if (!contentHtml) { toast("डाउनलोड करने के लिए कोई डेटा नहीं है!"); return; }
-
-      const wordHtml = `
-        <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
-        <head>
-          <meta charset='utf-8'>
-          <title>पुलिस मॉडर्न स्कूल - छात्र विवरण</title>
-          <!--[if gte mso 9]>
-          <xml>
-            <w:WordDocument>
-              <w:View>Print</w:View>
-              <w:Zoom>100</w:Zoom>
-              <w:DoNotOptimizeForBrowser/>
-            </w:WordDocument>
-          </xml>
-          <![endif]-->
-          <style>
-            @page { size: A4 landscape; margin: 1cm; }
-            body { font-family: 'Mangal', 'Noto Sans Devanagari', 'Calibri', sans-serif; font-size: 10pt; color: #111; }
-            table { border-collapse: collapse; width: 100%; margin-top: 10px; }
-            th, td { border: 0.5pt solid #333; padding: 4pt 5pt; font-size: 9pt; }
-            th { background-color: #f1f5f9; font-weight: bold; }
-            h1, h2, h3 { text-align: center; margin: 4px; }
-            .no-print { display: none !important; }
-          </style>
-        </head>
-        <body>
-          <h2 style="text-align:center;margin:2px 0;font-size:14pt;">पुलिस मॉडर्न स्कूल, 25वीं वाहिनी पीएसी, रायबरेली</h2>
-          <p style="text-align:center;margin:2px 0 8px 0;font-size:10pt;">छात्र विवरण तालिका — दिनांक: ${new Date().toLocaleDateString('hi-IN')}</p>
-          ${contentHtml}
-        </body>
-        </html>
-      `;
-
-      const blob = new Blob(['\ufeff' + wordHtml], { type: 'application/msword;charset=utf-8;' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `PMS_Students_${new Date().toISOString().slice(0, 10)}.doc`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-      toast("Word (.doc) फ़ाइल डाउनलोड हो गई!");
+      if (typeof window.exportElementToWord === 'function') {
+        const prView = document.getElementById('prView')?.value || '';
+        const isLandscape = prView === 'monthly-register' || Boolean(printArea && printArea.querySelector('.print-paper.landscape, [data-orientation="landscape"]'));
+        window.exportElementToWord(targetEl, {
+          title: "पुलिस मॉडर्न स्कूल - छात्र विवरण",
+          landscape: isLandscape,
+          filename: `PMS_Students_${new Date().toISOString().slice(0, 10)}`
+        });
+      } else {
+        toast("Word Exporter लोड हो रहा है, कृपया पुनः प्रयास करें।", "warning");
+      }
     }
 
     function downloadPDF(forcedOrientation = 'portrait') {

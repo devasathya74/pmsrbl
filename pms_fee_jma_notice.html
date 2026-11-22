@@ -249,6 +249,15 @@
       const container = document.getElementById('noticeCanvas');
       if (!container) return;
 
+      if (typeof window.exportElementToWord === 'function') {
+        window.exportElementToWord(container, {
+          title: 'कार्यालय पुलिस माडर्न स्कूल - फीस जमा नोटिस',
+          filename: 'PMS_Fee_Jma_Notice',
+          landscape: false
+        });
+        return;
+      }
+
       // Extract current live editable values to preserve any user changes
       const h1El = container.querySelector('h1');
       const headerText = h1El ? h1El.innerText.trim() : 'कार्यालय पुलिस माडर्न स्कूल 25वीं वाहिनी पीएसी रायबरेली';
@@ -431,6 +440,7 @@
       URL.revokeObjectURL(url);
     }
   </script>
+  <script src="js/pms_word_export.js"></script>
 </body>
 
 </html>

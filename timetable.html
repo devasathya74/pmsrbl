@@ -19,6 +19,7 @@
   <!-- html2canvas and jsPDF for Direct Landscape PDF Download -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="js/pms_word_export.js"></script>
 
   <style>
     :root {
@@ -4021,146 +4022,15 @@
         return;
       }
 
-      let contentHtml = '';
-      sheets.forEach((sheet, idx) => {
-        if (idx > 0) {
-          contentHtml += `<br clear=all style='mso-special-character:line-break;page-break-before:always'>`;
-        }
-        const clone = sheet.cloneNode(true);
-        clone.querySelectorAll('.no-print, button, input[type="file"], select').forEach(el => el.remove());
-
-        // Meta bar to table
-        clone.querySelectorAll('.sheet-meta-bar').forEach(bar => {
-          const spans = Array.from(bar.querySelectorAll('span'));
-          if (spans.length >= 2) {
-            const tbl = document.createElement('table');
-            tbl.setAttribute('width', '100%');
-            tbl.setAttribute('style', 'width:100%; border:none; border-collapse:collapse; margin-bottom:4pt; font-size:8.5pt;');
-            const tr = document.createElement('tr');
-            spans.forEach(sp => {
-              const td = document.createElement('td');
-              td.setAttribute('style', 'border:none; padding:2pt 4pt; font-size:8.5pt;');
-              td.innerHTML = sp.innerHTML;
-              tr.appendChild(td);
-            });
-            tbl.appendChild(tr);
-            bar.parentNode.replaceChild(tbl, bar);
-          }
+      if (typeof window.exportElementToWord === 'function') {
+        window.exportElementToWord(container, {
+          title: 'दैनिक कक्षावार समय-सारणी - पुलिस मॉडर्न स्कूल, रायबरेली',
+          filename: `PMS_Timetable_Session_2026_27_${new Date().toISOString().slice(0, 10)}`,
+          landscape: true
         });
-
-        // Signatures to table
-        clone.querySelectorAll('.sheet-signatures').forEach(sig => {
-          const divs = Array.from(sig.children);
-          if (divs.length >= 2) {
-            const tbl = document.createElement('table');
-            tbl.setAttribute('width', '100%');
-            tbl.setAttribute('style', 'width:100%; border:none; border-collapse:collapse; margin-top:20pt; font-size:8pt;');
-            const tr = document.createElement('tr');
-            divs.forEach(d => {
-              const td = document.createElement('td');
-              td.setAttribute('align', 'center');
-              td.setAttribute('style', 'border:none; text-align:center; vertical-align:top; width:' + Math.floor(100 / divs.length) + '%;');
-              td.innerHTML = d.innerHTML;
-              tr.appendChild(td);
-            });
-            tbl.appendChild(tr);
-            sig.parentNode.replaceChild(tbl, sig);
-          }
-        });
-
-        // Fix table borders and widths
-        clone.querySelectorAll('table').forEach(tbl => {
-          tbl.setAttribute('width', '100%');
-          tbl.style.borderCollapse = 'collapse';
-        });
-
-        contentHtml += clone.innerHTML;
-      });
-
-      const wordHtml = `
-        <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
-        <head>
-          <meta charset='utf-8'>
-          <title>समय-सारणी - पुलिस मॉडर्न स्कूल</title>
-          <!--[if gte mso 9]>
-          <xml>
-            <w:WordDocument>
-              <w:View>Print</w:View>
-              <w:Zoom>100</w:Zoom>
-              <w:DoNotOptimizeForBrowser/>
-            </w:WordDocument>
-          </xml>
-          <![endif]-->
-          <style>
-            @page Section1 {
-              size: 841.9pt 595.3pt;
-              mso-page-orientation: landscape;
-              margin: 20pt 25pt 20pt 25pt;
-              mso-header-margin: 0pt;
-              mso-footer-margin: 0pt;
-              mso-paper-source: 0;
-            }
-            div.Section1 {
-              page: Section1;
-            }
-            body {
-              font-family: 'Mangal', 'Noto Sans Devanagari', 'Calibri', 'Segoe UI', Arial, sans-serif;
-              font-size: 8.5pt;
-              color: #000;
-              margin: 0;
-              padding: 0;
-            }
-            table {
-              border-collapse: collapse;
-              width: 100%;
-              margin-top: 4pt;
-            }
-            th, td {
-              border: 0.5pt solid #333;
-              padding: 3pt 4pt;
-              text-align: center;
-              font-size: 8pt;
-            }
-            th {
-              background-color: #f1f5f9;
-              font-weight: bold;
-            }
-            .sheet-title-main {
-              font-size: 13pt;
-              font-weight: bold;
-              text-align: center;
-              margin: 2pt 0;
-            }
-            .sheet-title-sub {
-              font-size: 10pt;
-              font-weight: bold;
-              text-align: center;
-              margin: 1pt 0 4pt 0;
-            }
-            .text-center { text-align: center !important; }
-            .text-right { text-align: right !important; }
-            .font-bold { font-weight: bold !important; }
-            .no-print { display: none !important; }
-          </style>
-        </head>
-        <body>
-          <div class="Section1">
-            ${contentHtml}
-          </div>
-        </body>
-        </html>
-      `;
-
-      const blob = new Blob(['\ufeff' + wordHtml], { type: 'application/msword;charset=utf-8;' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `PMS_Timetable_${new Date().toISOString().slice(0, 10)}.doc`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-      showToast('Word (.doc) फ़ाइल सफलतापूर्वक डाउनलोड हुई!');
+      } else {
+        showToast('Word Exporter लोड हो रहा है, कृपया पुनः प्रयास करें।');
+      }
     };
 
     window.downloadLandscapePDF = async function () {

@@ -1669,168 +1669,17 @@
       }
     };
 
-    // Export to MS Word (.doc)
+    // Export to MS Word (.doc) with 100% Preview-Identical Landscape Layout
     window.exportToWordDoc = function () {
-      const activeMonths = getActiveMonths();
-      const filterC = document.getElementById('filterClass').value;
-      const targetList = (filterC === 'all') ? studentsData : studentsData.filter(s => (s.class === filterC || normalizeClassName(s.class) === filterC));
-
-      if (!targetList || targetList.length === 0) {
-        alert("एक्सपोर्ट करने के लिए कोई छात्र डेटा उपलब्ध नहीं है।");
-        return;
-      }
-
-      let classLabel = (filterC === 'all') ? 'समस्त कक्षाएं (All Classes)' : `कक्षा ${filterC}`;
-      const sessionText = (currentMonthCycle === 'jan-dec') ? 'कैलेंडर वर्ष 2026 (जनवरी से दिसम्बर)' : 'शैक्षणिक सत्र 2026–2027 (अप्रैल से मार्च)';
-
-      let rowsHtml = '';
-      targetList.forEach((st, idx) => {
-        let monthTds = '';
-        activeMonths.forEach(m => {
-          const pay = (st.payments && st.payments[m.key]) ? st.payments[m.key] : {};
-          let statusText = '';
-          if (pay.s === 'paid') statusText = '<span style="color:#15803d; font-weight:bold;">✓</span>';
-          else if (pay.s === 'concession') statusText = '<span style="color:#2563eb; font-weight:bold;">छूट</span>';
-          else if (pay.s === 'due') statusText = '<span style="color:#dc2626; font-weight:bold;">!</span>';
-
-          if (pay.r) {
-            statusText += `<br><span style="font-size:6.5pt; color:#475569;">${pay.r}</span>`;
-          }
-          monthTds += `<td align="center" style="border: 0.5pt solid #000; padding: 2pt;">${statusText}</td>`;
+      const sheet = document.getElementById('printSheet') || document.querySelector('.print-paper');
+      const filterC = (document.getElementById('filterClass')?.value || 'All').replace(/\s+/g, '_');
+      if (sheet && typeof window.exportElementToWord === 'function') {
+        window.exportElementToWord(sheet, {
+          title: `मासिक छात्र शुल्क पंजिका - ${filterC}`,
+          filename: `PMS_Fee_Register_${filterC}_${new Date().toISOString().slice(0, 10)}`,
+          landscape: true
         });
-
-        rowsHtml += `
-          <tr>
-            <td align="center" style="border: 0.5pt solid #000; padding: 2.5pt 1.5pt;">${st.roll || (idx + 1)}</td>
-            <td align="center" style="border: 0.5pt solid #000; padding: 2.5pt 1.5pt;">${st.admDate || '—'}</td>
-            <td align="left" style="border: 0.5pt solid #000; padding: 2.5pt 3pt; font-weight: bold;">${st.name || ''}</td>
-            <td align="left" style="border: 0.5pt solid #000; padding: 2.5pt 3pt; font-size: 7.5pt;">
-              ${st.father || ''}
-              ${st.mobile ? `<br><span style="font-size: 6.5pt; color: #475569; font-family: Calibri, sans-serif;">${st.mobile}</span>` : ''}
-            </td>
-            <td align="center" style="border: 0.5pt solid #000; padding: 2.5pt 1.5pt;"><strong>${st.class || ''}</strong></td>
-            ${monthTds}
-          </tr>
-        `;
-      });
-
-      // Monthly Tally TD
-      let tallyTds = '';
-      activeMonths.forEach(m => {
-        const count = targetList.filter(s => s.payments && (s.payments[m.key]?.s === 'paid' || s.payments[m.key]?.s === 'concession')).length;
-        tallyTds += `<td align="center" style="border: 0.5pt solid #000; padding: 2.5pt; font-weight: bold;">${count > 0 ? count : '—'}</td>`;
-      });
-
-      const wordHtml = `
-        <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
-        <head>
-          <meta charset='utf-8'>
-          <title>PMS_Fee_Register_${filterC}</title>
-          <!--[if gte mso 9]>
-          <xml>
-            <w:WordDocument>
-              <w:View>Print</w:View>
-              <w:Zoom>100</w:Zoom>
-              <w:DoNotOptimizeForBrowser/>
-            </w:WordDocument>
-          </xml>
-          <![endif]-->
-          <style>
-            @page Section1 {
-              size: 841.9pt 595.3pt;
-              mso-page-orientation: landscape;
-              margin: 18pt 18pt 18pt 18pt;
-              mso-header-margin: 10pt;
-              mso-footer-margin: 10pt;
-            }
-            div.Section1 {
-              page: Section1;
-            }
-            body {
-              font-family: 'Mangal', 'Noto Sans Devanagari', 'Arial Unicode MS', 'Calibri', sans-serif;
-              font-size: 8pt;
-              color: #000000;
-              margin: 0;
-              padding: 0;
-            }
-            table {
-              border-collapse: collapse;
-              width: 100%;
-            }
-          </style>
-        </head>
-        <body>
-          <div class="Section1">
-            <table width="100%" style="border:none; margin-bottom: 4pt;">
-              <tr>
-                <td align="center">
-                  <div style="font-size: 13.5pt; font-weight: bold; color: #0f172a;">पुलिस मॉडर्न स्कूल, 25वीं वाहिनी पीएसी, रायबरेली (उ०प्र०)</div>
-                  <div style="font-size: 8pt; font-weight: bold; color: #475569; text-transform: uppercase;">POLICE MODERN SCHOOL, 25TH BATTALION PAC, RAEBARELI (U.P.)</div>
-                  <div style="font-size: 9.5pt; font-weight: bold; color: #1e3a8a; margin-top: 2pt;">मासिक छात्र शुल्क पंजिका — ${sessionText}</div>
-                </td>
-              </tr>
-            </table>
-
-            <table width="100%" style="border: 0.5pt solid #cbd5e1; background: #f8fafc; margin-bottom: 5pt; font-size: 8pt;">
-              <tr>
-                <td style="padding: 3pt 6pt;"><strong>कक्षा:</strong> ${classLabel}</td>
-                <td style="padding: 3pt 6pt;"><strong>कुल छात्र:</strong> ${targetList.length}</td>
-                <td style="padding: 3pt 6pt;"><strong>सत्र:</strong> 2026–2027</td>
-              </tr>
-            </table>
-
-            <table width="100%" style="border: 0.5pt solid #000; border-collapse: collapse;">
-              <thead>
-                <tr style="background: #f1f5f9; font-weight: bold;">
-                  <th rowspan="2" width="3%" style="border: 0.5pt solid #000; padding: 2.5pt;">क्र०</th>
-                  <th rowspan="2" width="7%" style="border: 0.5pt solid #000; padding: 2.5pt;">प्रवेश तिथि</th>
-                  <th rowspan="2" width="14%" style="border: 0.5pt solid #000; padding: 2.5pt;">छात्र / छात्रा का नाम</th>
-                  <th rowspan="2" width="13%" style="border: 0.5pt solid #000; padding: 2.5pt;">पिता का नाम</th>
-                  <th rowspan="2" width="5%" style="border: 0.5pt solid #000; padding: 2.5pt;">कक्षा</th>
-                  <th colspan="12" style="border: 0.5pt solid #000; padding: 2.5pt; background: #e2e8f0;">शुल्क विवरण (${sessionText})</th>
-                </tr>
-                <tr style="background: #f1f5f9; font-weight: bold;">
-                  ${activeMonths.map(m => `<th width="4.8%" style="border: 0.5pt solid #000; padding: 2pt;">${m.name}<br><span style="font-size:6.5pt; font-weight:normal;">${m.eng}</span></th>`).join('')}
-                </tr>
-              </thead>
-              <tbody>
-                ${rowsHtml}
-              </tbody>
-              <tfoot>
-                <tr style="background: #f8fafc; font-weight: bold; border-top: 1.25pt solid #000;">
-                  <td colspan="5" align="right" style="border: 0.5pt solid #000; padding: 3pt 6pt;">कुल जमा छात्र (Tally):</td>
-                  ${tallyTds}
-                </tr>
-              </tfoot>
-            </table>
-
-            <table width="100%" style="margin-top: 20pt; border: none;">
-              <tr>
-                <td width="33%" align="center">
-                  <div style="border-top: 0.75pt solid #000; width: 140pt; margin: 0 auto; padding-top: 2pt; font-weight: bold;">हस्ताक्षर कक्षाध्यापक</div>
-                </td>
-                <td width="33%" align="center">
-                  <div style="border-top: 0.75pt solid #000; width: 140pt; margin: 0 auto; padding-top: 2pt; font-weight: bold;">हस्ताक्षर शुल्क प्रभारी / लिपिक</div>
-                </td>
-                <td width="34%" align="center">
-                  <div style="border-top: 0.75pt solid #000; width: 150pt; margin: 0 auto; padding-top: 2pt; font-weight: bold;">प्रभारी प्रधानाचार्या (हस्ताक्षर व मोहर)</div>
-                </td>
-              </tr>
-            </table>
-          </div>
-        </body>
-        </html>
-      `;
-
-      const blob = new Blob(['\ufeff' + wordHtml], { type: 'application/msword;charset=utf-8;' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `PMS_Fee_Register_${filterC}_${new Date().toISOString().slice(0, 10)}.doc`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
+      }
     };
     window.exportWordDoc = window.exportToWordDoc;
 
@@ -1910,6 +1759,7 @@
       reader.readAsText(file);
     };
   </script>
+  <script src="js/pms_word_export.js"></script>
 </body>
 
 </html>

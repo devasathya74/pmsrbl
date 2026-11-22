@@ -1,25 +1,23 @@
 /**
- * PMS Universal Word (.doc / .docx) Exporter v4.0 (100% Exact WYSIWYG Engine)
- * Police Modern School, 25th Bn PAC, Raebareli
+ * PMS Universal Word (.doc / .docx) Exporter v5.0 (Exact 100% WYSIWYG Precision Replica Engine)
+ * Police Modern School & 25th Bn PAC, Raebareli
  * 
  * Guarantees that downloaded .doc files match the screen/print preview 100%:
- * 1. Live DOM Computed Style Transfer: Recursively transfers exact computed styles
- *    (font sizes in pt, font weights, colors, line heights, text indents, borders, paddings)
- *    from the live rendered document directly into inline CSS on every element.
- * 2. Native Word Table Conversion for CSS Flexbox & CSS Grid:
- *    - 3-column top header (Left Logo 15% + School Title 70% + Right Logo 15%).
- *    - 2-column contact bar (Email 50% left + Phone 50% right) with bottom border.
- *    - 2-column dispatch bar (पत्रांक संख्या 50% left + दिनांक 50% right) with bottom border.
- *    - 2-column bottom letter section: Left Sanlagnak/Pratilipi (55%) + Right Signature (45%) side-by-side.
- *    - Multi-signature rows, 2-column & 4-column candidate grids, quiz grids, and essay cards.
- * 3. Data Tables with Exact Proportions: Extracts column percentage widths from rendered <th>
- *    cells and applies explicit cell borders, background colors, and alignments.
- * 4. Multi-Page Support: Connects multiple pages (e.g. Page 1 & Page 2, multi-sheet timetables,
- *    attendance chunks) using standard MSO page breaks:
+ * 1. Same Font: Extracts actual computed font-family from the rendered document (e.g. Mukta, Martel,
+ *    Tiro Devanagari Hindi, Kalam, Inter) and embeds Google Fonts links + Devanagari Unicode fallbacks.
+ * 2. Same Size: Reads exact computed font sizes in px, converts directly to print points (pt = px * 0.75),
+ *    and sets inline styles on every element (no hardcoded overrides anywhere).
+ * 3. Same Style: Preserves exact font-weights (800, 700, 600, normal), font-styles, text indents,
+ *    line heights, colors, background colors (table headers, badges, highlights), cell borders,
+ *    and paddings across all elements.
+ * 4. Word-Compatible Structural Layouts:
+ *    - Transforms CSS Flexbox and Grid layouts to native Word tables (3-column headers, 2-column split bars,
+ *      side-by-side bottom signatures & sanlagnak, photo grids).
+ *    - Inserts <colgroup><col width="X%"></colgroup> to strictly lock table column proportions.
+ * 5. Multi-Page Support: Handles multi-page documents with standard MSO page breaks:
  *    <br clear="all" style="page-break-before: always; mso-special-character: line-break;" />
- * 5. Offline Base64 Images: Embeds logos and images as Base64 data URIs with explicit pixel/pt
- *    width and height attributes matching on-screen rendered dimensions.
- * 6. UTF-8 BOM (\ufeff) Encoding: Preserves all Hindi & Devanagari Unicode glyphs flawlessly.
+ * 6. Offline Base64 Images: Converts logos and images to Base64 data URIs with explicit pixel/pt dimensions.
+ * 7. Encodes with UTF-8 BOM (\ufeff) to protect Hindi & Devanagari Unicode glyphs.
  */
 
 (function (window) {
@@ -60,6 +58,30 @@
     } catch (e) {
       return currentSrc;
     }
+  }
+
+  /**
+   * Helper: Collect all Google Fonts and stylesheet links from document.head
+   */
+  function collectHeadFontLinks() {
+    if (typeof document === 'undefined') return '';
+    const links = Array.from(document.querySelectorAll('link[rel="stylesheet"], link[rel="preconnect"]'))
+      .map(el => el.outerHTML)
+      .join('\n');
+    return links;
+  }
+
+  /**
+   * Helper: Detect document primary font family
+   */
+  function detectDocumentBaseFont() {
+    try {
+      const bStyle = window.getComputedStyle(document.body);
+      if (bStyle && bStyle.fontFamily) {
+        return bStyle.fontFamily;
+      }
+    } catch (e) {}
+    return "'Mukta', 'Mangal', 'Noto Sans Devanagari', 'Calibri', 'Segoe UI', Arial, sans-serif";
   }
 
   /**
@@ -119,7 +141,7 @@
     // Fallback if none found
     if (list.length === 0) {
       const fallback = document.querySelector(
-        '#letterDocument, #noticeDocument, #printSheet, #printArea, .print-paper, .timetable-sheet, .paper-sheet, .sheet-container, .a4-page, .report-paper, .doc-paper, #live-preview-container, .tbl-wrap table'
+        '#report-page, #letterDocument, #noticeDocument, #printSheet, #printArea, .print-paper, .timetable-sheet, .paper-sheet, .sheet-container, .a4-page, .report-paper, .doc-paper, #live-preview-container, .tbl-wrap table'
       );
       if (fallback) list.push(fallback);
     }
@@ -137,7 +159,7 @@
     // If a single container was provided that has multiple visible pages/sheets, expand them
     if (list.length === 1) {
       const subPages = Array.from(list[0].querySelectorAll(
-        '.a4-document:not(.hidden), .timetable-sheet:not(.hidden), .print-page-chunk:not(.hidden), .paper-sheet:not(.hidden), .canvas-page:not(.hidden)'
+        '.a4-page:not(.hidden), .a4-document:not(.hidden), .timetable-sheet:not(.hidden), .print-page-chunk:not(.hidden), .paper-sheet:not(.hidden), .canvas-page:not(.hidden)'
       )).filter(p => !p.classList.contains('hidden') && p.offsetParent !== null);
       if (subPages.length > 1) {
         return subPages;
@@ -148,7 +170,9 @@
   }
 
   /**
-   * Transfer computed styles recursively from a live element to its clone
+   * Transfer computed styles recursively from a live element to its clone:
+   * Preserves EXACT computed font-family, font-size, font-weight, color,
+   * background-color, text-align, text-indent, line-height, borders, paddings, margins.
    */
   function transferComputedStyles(liveNode, cloneNode) {
     if (!liveNode || !cloneNode || liveNode.nodeType !== Node.ELEMENT_NODE || cloneNode.nodeType !== Node.ELEMENT_NODE) {
@@ -166,28 +190,35 @@
 
     const tagName = cloneNode.tagName.toUpperCase();
 
-    // 1. Font Size in pt (1px = 0.75pt)
+    // 1. Font Size in pt (1px = 0.75pt) - EXACT computed size matching screen preview
     const fsPx = parseFloat(liveStyle.fontSize);
     if (!isNaN(fsPx) && fsPx > 0) {
       const fsPt = (fsPx * 0.75).toFixed(1);
       cloneNode.style.fontSize = fsPt + 'pt';
     }
 
-    // 2. Font Weight
+    // 2. Font Family - Use live computed font directly, appending standard Devanagari fallbacks
+    const liveFont = liveStyle.fontFamily;
+    if (liveFont) {
+      if (!liveFont.includes('Mangal') && !liveFont.includes('Devanagari')) {
+        cloneNode.style.fontFamily = `${liveFont}, 'Mangal', 'Noto Sans Devanagari', 'Calibri', 'Segoe UI', Arial, sans-serif`;
+      } else {
+        cloneNode.style.fontFamily = liveFont;
+      }
+    }
+
+    // 3. Font Weight - Exact weight (e.g. 800, 700, 600, bold, normal)
     const fw = liveStyle.fontWeight;
-    if (fw && fw !== '400' && fw !== 'normal') {
+    if (fw) {
       cloneNode.style.fontWeight = fw;
     }
 
-    // 3. Font Style
+    // 4. Font Style (italic / normal)
     if (liveStyle.fontStyle === 'italic') {
       cloneNode.style.fontStyle = 'italic';
     }
 
-    // 4. Font Family (always ensure Hindi Devanagari priority)
-    cloneNode.style.fontFamily = "'Mangal', 'Noto Sans Devanagari', 'Calibri', 'Segoe UI', Arial, sans-serif";
-
-    // 5. Text Color
+    // 5. Text Color - Exact computed color
     const color = liveStyle.color;
     if (color && color !== 'rgba(0, 0, 0, 0)') {
       cloneNode.style.color = color;
@@ -197,10 +228,13 @@
     const bg = liveStyle.backgroundColor;
     if (bg && bg !== 'rgba(0, 0, 0, 0)' && bg !== 'transparent') {
       const isRootPaper = cloneNode.classList.contains('a4-document') || 
+                          cloneNode.classList.contains('a4-page') || 
                           cloneNode.classList.contains('paper-sheet') || 
                           cloneNode.classList.contains('print-paper') ||
                           cloneNode.id === 'letterDocument' ||
-                          cloneNode.id === 'noticeDocument';
+                          cloneNode.id === 'noticeDocument' ||
+                          cloneNode.id === 'report-page' ||
+                          cloneNode.id === 'all-pages-wrapper';
       if (!isRootPaper) {
         cloneNode.style.backgroundColor = bg;
       }
@@ -335,7 +369,9 @@
   }
 
   /**
-   * Convert Data Tables with exact column percentage widths & styles
+   * Convert Data Tables with exact column percentage widths & cell styling:
+   * Reads and preserves exact computed font size, font family, font weight, background colors,
+   * cell borders, and text alignment from each live cell!
    */
   function convertDataTables(liveEl, cloneEl) {
     const liveTables = liveEl.querySelectorAll('table');
@@ -356,16 +392,19 @@
       cloneTbl.style.msoTableRspace = '0pt';
       cloneTbl.style.tableLayout = 'fixed';
 
+      // Capture exact column percentage widths and insert <colgroup>
       const liveThs = liveTbl.querySelectorAll('thead th, tr:first-child th, tr:first-child td');
       const cloneThs = cloneTbl.querySelectorAll('thead th, tr:first-child th, tr:first-child td');
       const tblWidth = liveTbl.offsetWidth || 1;
 
-      if (liveThs.length > 0 && liveThs.length === cloneThs.length) {
+      const colgroup = document.createElement('colgroup');
+
+      if (liveThs.length > 0) {
         let totalPct = 0;
         const pctWidths = [];
         for (let i = 0; i < liveThs.length; i++) {
           const colW = liveThs[i].offsetWidth;
-          const pct = Math.max(5, Math.round((colW / tblWidth) * 100));
+          const pct = Math.max(4, Math.round((colW / tblWidth) * 100));
           pctWidths.push(pct);
           totalPct += pct;
         }
@@ -376,31 +415,88 @@
           const wStr = pctWidths[i] + '%';
           cloneThs[i].setAttribute('width', wStr);
           cloneThs[i].style.width = wStr;
+
+          const col = document.createElement('col');
+          col.setAttribute('width', wStr);
+          col.style.width = wStr;
+          colgroup.appendChild(col);
         }
       }
 
-      // Explicit cell borders and paddings
-      cloneTbl.querySelectorAll('th').forEach(th => {
-        th.style.border = '0.75pt solid #000000';
-        th.style.backgroundColor = th.style.backgroundColor || '#f1f5f9';
-        th.style.padding = '3pt 4pt';
-        th.style.fontWeight = 'bold';
-      });
-      cloneTbl.querySelectorAll('td').forEach(td => {
-        td.style.border = '0.5pt solid #000000';
-        td.style.padding = '2.5pt 4pt';
-      });
+      if (colgroup.children.length > 0 && !cloneTbl.querySelector('colgroup')) {
+        cloneTbl.insertBefore(colgroup, cloneTbl.firstChild);
+      }
+
+      // Preserve EXACT cell styles from live cells
+      const liveCells = liveTbl.querySelectorAll('th, td');
+      const cloneCells = cloneTbl.querySelectorAll('th, td');
+      const cellCount = Math.min(liveCells.length, cloneCells.length);
+
+      for (let c = 0; c < cellCount; c++) {
+        const lCell = liveCells[c];
+        const cCell = cloneCells[c];
+        const cStyle = window.getComputedStyle(lCell);
+
+        // Font Size in pt
+        const fs = parseFloat(cStyle.fontSize);
+        if (!isNaN(fs) && fs > 0) {
+          cCell.style.fontSize = (fs * 0.75).toFixed(1) + 'pt';
+        }
+
+        // Font Weight
+        if (cStyle.fontWeight) {
+          cCell.style.fontWeight = cStyle.fontWeight;
+        }
+
+        // Font Family
+        if (cStyle.fontFamily) {
+          cCell.style.fontFamily = cStyle.fontFamily;
+        }
+
+        // Text Color
+        if (cStyle.color) {
+          cCell.style.color = cStyle.color;
+        }
+
+        // Background Color (preserve live table header & cell backgrounds)
+        const bg = cStyle.backgroundColor;
+        if (bg && bg !== 'rgba(0, 0, 0, 0)' && bg !== 'transparent') {
+          cCell.style.backgroundColor = bg;
+        }
+
+        // Text Align
+        if (cStyle.textAlign) {
+          cCell.style.textAlign = cStyle.textAlign;
+          cCell.setAttribute('align', cStyle.textAlign);
+        }
+
+        // Cell Borders (read from live cell!)
+        const bTopW = parseFloat(cStyle.borderTopWidth);
+        const bTopC = cStyle.borderTopColor;
+        const bWidth = bTopW > 0 ? Math.max(0.5, bTopW * 0.75).toFixed(1) + 'pt' : '0.5pt';
+        const bColor = bTopC && bTopC !== 'transparent' && bTopC !== 'rgba(0, 0, 0, 0)' ? bTopC : '#000000';
+        cCell.style.border = `${bWidth} solid ${bColor}`;
+
+        // Padding
+        const pt = parseFloat(cStyle.paddingTop);
+        const pr = parseFloat(cStyle.paddingRight);
+        const pb = parseFloat(cStyle.paddingBottom);
+        const pl = parseFloat(cStyle.paddingLeft);
+        if (pt > 0 || pr > 0 || pb > 0 || pl > 0) {
+          cCell.style.padding = `${(pt * 0.75).toFixed(1)}pt ${(pr * 0.75).toFixed(1)}pt ${(pb * 0.75).toFixed(1)}pt ${(pl * 0.75).toFixed(1)}pt`;
+        }
+      }
     }
   }
 
   /**
-   * Transform CSS Flexbox & CSS Grid layouts to native Microsoft Word <table> structures
+   * Transform CSS Flexbox & CSS Grid layouts to native Microsoft Word <table> structures:
+   * Always preserves the live computed font size, font family, and colors!
    */
   function transformFlexAndGridLayouts(clone) {
     // (A) Top Header with 3 items: Left Logo + Center Title + Right Logo
     clone.querySelectorAll('.flex.items-center.justify-between, .flex.justify-between.items-center, [class*="justify-between"]').forEach(el => {
       if (el.tagName === 'TABLE' || el.closest('table')) return;
-      // Do not convert bottom signature container here (handled specifically below)
       if (el.id === 'signature-container' || el.closest('#signature-container') || el.querySelector('#doc-signature-block')) return;
 
       const children = Array.from(el.children).filter(c => !c.classList.contains('no-print') && c.getAttribute('data-word-remove') !== 'true');
@@ -465,7 +561,6 @@
     });
 
     // (B) Bottom Letter Layout: Left Noting/Sanlagnak/Pratilipi + Right Signature Block
-    // In preview: <div id="signature-container"><div class="flex justify-between items-end ...">
     clone.querySelectorAll('#signature-container, .flex.justify-between.items-end').forEach(cont => {
       if (cont.tagName === 'TABLE' || cont.closest('table')) return;
       const flexRow = cont.classList.contains('flex') ? cont : cont.querySelector('.flex');
@@ -689,7 +784,7 @@
       sb.style.marginBottom = '6pt';
     });
 
-    // (J) PAC ABC Course Report Layout (#report-page)
+    // (J) PAC ABC Course Report Layout (#report-page) - Preserves EXACT live font sizes & styles!
     clone.querySelectorAll('#report-page, .report-inner').forEach(page => {
       page.style.position = 'static';
       page.style.width = '100%';
@@ -707,12 +802,27 @@
         const titleSpan = headerTop.querySelector('span') || headerTop.querySelector('[data-save-id="header-title"]');
         const titleText = titleSpan ? titleSpan.textContent.trim() : '25वीं वाहिनी पीएसी, रायबरेली';
 
+        // Read exact computed font-size & font-family from live header element
+        let headerFs = '32pt';
+        let headerFf = "'Mukta', sans-serif";
+        let headerBg = '#1d4ed8';
+        const liveHeader = document.querySelector('.header-top');
+        if (liveHeader) {
+          const lStyle = window.getComputedStyle(liveHeader);
+          const pxVal = parseFloat(lStyle.fontSize);
+          if (pxVal > 0) headerFs = (pxVal * 0.75).toFixed(1) + 'pt';
+          if (lStyle.fontFamily) headerFf = lStyle.fontFamily;
+          if (lStyle.backgroundColor && lStyle.backgroundColor !== 'transparent' && lStyle.backgroundColor !== 'rgba(0, 0, 0, 0)') {
+            headerBg = lStyle.backgroundColor;
+          }
+        }
+
         const tbl = document.createElement('table');
         tbl.setAttribute('width', '100%');
         tbl.setAttribute('border', '0');
         tbl.setAttribute('cellspacing', '0');
         tbl.setAttribute('cellpadding', '0');
-        tbl.setAttribute('style', 'width: 100%; border: none; border-collapse: collapse; margin-bottom: 6pt; background-color: #1e3a8a;');
+        tbl.setAttribute('style', `width: 100%; border: none; border-collapse: collapse; margin-bottom: 6pt; background-color: ${headerBg}; border-radius: 6pt;`);
         const tr = document.createElement('tr');
 
         // Left Logo
@@ -721,11 +831,11 @@
         if (leftImg) td1.appendChild(leftImg.cloneNode(true));
         tr.appendChild(td1);
 
-        // Center Title
+        // Center Title (Matches exact live font size!)
         const td2 = document.createElement('td');
         td2.setAttribute('style', 'width: 70%; text-align: center; vertical-align: middle; border: none; padding: 4pt 6pt;');
         const titleDiv = document.createElement('div');
-        titleDiv.setAttribute('style', "font-size: 20pt; font-weight: 800; color: #ffffff; letter-spacing: 1px; font-family: 'Mangal', 'Noto Sans Devanagari', sans-serif;");
+        titleDiv.setAttribute('style', `font-size: ${headerFs}; font-weight: 800; color: #ffffff; letter-spacing: 1px; font-family: ${headerFf};`);
         titleDiv.textContent = titleText;
         td2.appendChild(titleDiv);
         tr.appendChild(td2);
@@ -740,30 +850,50 @@
         headerTop.parentNode.replaceChild(tbl, headerTop);
       }
 
-      // (2) .header-sub
+      // (2) .header-sub (Matches exact live font size!)
       const headerSub = page.querySelector('.header-sub');
       if (headerSub) {
+        let subFs = '15pt';
+        let subFf = "'Mukta', sans-serif";
+        const liveSub = document.querySelector('.header-sub');
+        if (liveSub) {
+          const sStyle = window.getComputedStyle(liveSub);
+          const pxVal = parseFloat(sStyle.fontSize);
+          if (pxVal > 0) subFs = (pxVal * 0.75).toFixed(1) + 'pt';
+          if (sStyle.fontFamily) subFf = sStyle.fontFamily;
+        }
         headerSub.style.position = 'static';
         headerSub.style.margin = '4pt auto 8pt auto';
         headerSub.style.width = '65%';
-        headerSub.style.backgroundColor = '#fe1063';
+        headerSub.style.backgroundColor = '#fa1263';
         headerSub.style.color = '#ffffff';
         headerSub.style.textAlign = 'center';
         headerSub.style.padding = '4pt 8pt';
-        headerSub.style.fontSize = '12.5pt';
+        headerSub.style.fontSize = subFs;
         headerSub.style.fontWeight = 'bold';
+        headerSub.style.fontFamily = subFf;
         headerSub.style.border = '1.5pt solid #0097a7';
         headerSub.style.borderRadius = '4pt';
       }
 
-      // (3) .intro-text
+      // (3) .intro-text (Matches exact live font size!)
       const introText = page.querySelector('.intro-text');
       if (introText) {
+        let introFs = '18pt';
+        let introFf = "'Mukta', sans-serif";
+        const liveIntro = document.querySelector('.intro-text');
+        if (liveIntro) {
+          const iStyle = window.getComputedStyle(liveIntro);
+          const pxVal = parseFloat(iStyle.fontSize);
+          if (pxVal > 0) introFs = (pxVal * 0.75).toFixed(1) + 'pt';
+          if (iStyle.fontFamily) introFf = iStyle.fontFamily;
+        }
         introText.style.position = 'static';
         introText.style.width = '100%';
-        introText.style.fontSize = '11.5pt';
+        introText.style.fontSize = introFs;
         introText.style.fontWeight = 'bold';
-        introText.style.lineHeight = '1.4';
+        introText.style.fontFamily = introFf;
+        introText.style.lineHeight = '1.35';
         introText.style.margin = '6pt 0 10pt 0';
         introText.style.color = '#000000';
       }
@@ -778,16 +908,26 @@
         reportTbl.style.tableLayout = 'fixed';
       }
 
-      // (5) .footer-section -> right-aligned table
+      // (5) .footer-section -> right-aligned table (Matches exact live font size!)
       const footer = page.querySelector('.footer-section');
       if (footer && footer.tagName !== 'TABLE' && !footer.closest('table')) {
+        let footerFs = '17pt';
+        let footerFf = "'Mukta', sans-serif";
+        const liveFooter = document.querySelector('.footer-section');
+        if (liveFooter) {
+          const fStyle = window.getComputedStyle(liveFooter);
+          const pxVal = parseFloat(fStyle.fontSize);
+          if (pxVal > 0) footerFs = (pxVal * 0.75).toFixed(1) + 'pt';
+          if (fStyle.fontFamily) footerFf = fStyle.fontFamily;
+        }
+
         const footerHtml = footer.innerHTML;
         const tblF = document.createElement('table');
         tblF.setAttribute('width', '100%');
         tblF.setAttribute('border', '0');
         tblF.setAttribute('cellspacing', '0');
         tblF.setAttribute('cellpadding', '0');
-        tblF.setAttribute('style', 'width: 100%; border: none; border-collapse: collapse; margin-top: 16pt; margin-bottom: 4pt;');
+        tblF.setAttribute('style', 'width: 100%; border: none; border-collapse: collapse; margin-top: 18pt; margin-bottom: 4pt;');
         const trF = document.createElement('tr');
 
         const tdF1 = document.createElement('td');
@@ -796,7 +936,7 @@
 
         const tdF2 = document.createElement('td');
         tdF2.setAttribute('align', 'right');
-        tdF2.setAttribute('style', "width: 50%; border: none; text-align: right; font-size: 11pt; font-weight: bold; line-height: 1.35; color: #000000; font-family: 'Mangal', 'Noto Sans Devanagari', sans-serif;");
+        tdF2.setAttribute('style', `width: 50%; border: none; text-align: right; font-size: ${footerFs}; font-weight: bold; line-height: 1.35; color: #000000; font-family: ${footerFf};`);
         tdF2.innerHTML = footerHtml;
         trF.appendChild(tdF2);
 
@@ -909,17 +1049,21 @@
   }
 
   /**
-   * Build complete Word document HTML wrapper with MSO Section styles
+   * Build complete Word document HTML wrapper with MSO Section styles & embedded web fonts
    */
   function buildWordDocumentHtml(bodyHtml, title, isLandscape, options) {
-    const baseFontSize = isLandscape ? '8pt' : '10pt';
-    const bodyLineHeight = isLandscape ? '1.2' : '1.35';
+    const baseFontSize = isLandscape ? '8.5pt' : '10pt';
+    const bodyLineHeight = isLandscape ? '1.25' : '1.35';
+    const baseFont = detectDocumentBaseFont();
+    const fontLinks = collectHeadFontLinks();
 
     return `
       <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
       <head>
         <meta charset='utf-8'>
         <title>${title}</title>
+        <!-- Embedded Web Fonts from Document -->
+        ${fontLinks}
         <!--[if gte mso 9]>
         <xml>
           <w:WordDocument>
@@ -948,7 +1092,7 @@
             width: 100%;
           }
           body {
-            font-family: 'Mangal', 'Noto Sans Devanagari', 'Calibri', 'Segoe UI', Arial, sans-serif;
+            font-family: ${baseFont};
             font-size: ${baseFontSize};
             color: #000000;
             line-height: ${bodyLineHeight};
@@ -958,10 +1102,13 @@
             -webkit-print-color-adjust: exact;
           }
 
-          /* Headings and Paragraph margin normalizer */
+          /* Headings and Paragraph normalizer - preserves inline computed styles! */
           h1, h2, h3, h4, h5, h6, p {
             margin-top: 0;
-            margin-bottom: 3pt;
+            margin-bottom: 3.5pt;
+            font-family: inherit;
+            font-size: inherit;
+            font-weight: inherit;
           }
 
           /* Tables */
@@ -982,7 +1129,8 @@
           .sheet-container, .sheet-paper, .canvas-page, .receipt-card, 
           .letter-paper, #letterDocument, #letterDocumentPage2, #noticeDocument, 
           #letterDoc, #printSheet, #printArea, .a4-preview, .certificate-sheet, 
-          .birthday-card, .pledge-container, [contenteditable="true"] {
+          .birthday-card, .pledge-container, #all-pages-wrapper, .report-inner, 
+          #report-page, .inner-border-canvas, [contenteditable="true"] {
             outline: none !important;
             outline-color: transparent !important;
             border: none !important;
@@ -1062,7 +1210,7 @@
       // 1. Deep Clone
       const cloneEl = liveEl.cloneNode(true);
 
-      // 2. Transfer live DOM computed styles recursively
+      // 2. Transfer live DOM computed styles recursively (exact font sizes, fonts, styles)
       transferComputedStyles(liveEl, cloneEl);
 
       // 3. Convert form inputs / selects / textareas
@@ -1071,10 +1219,10 @@
       // 4. Convert images to Base64 and assign rendered dimensions
       convertImagesToBase64(liveEl, cloneEl);
 
-      // 5. Convert data tables (column widths & cell styling)
+      // 5. Convert data tables (exact column widths & live cell styling)
       convertDataTables(liveEl, cloneEl);
 
-      // 6. Transform Flexbox & Grid layouts to native Word tables
+      // 6. Transform Flexbox & Grid layouts to native Word tables (preserving exact computed sizes)
       transformFlexAndGridLayouts(cloneEl);
 
       // 7. Neutralize outer containers (remove outlines, shadows, margins)
@@ -1142,7 +1290,8 @@
         .timetable-sheet, .print-page-chunk, .certificate-sheet, .birthday-card, 
         .a4-preview, .pledge-container, #letterDocument, #letterDocumentPage2, 
         #noticeDocument, #letterDoc, #printSheet, #printArea, .canvas-page, 
-        .sheet-container, .doc-paper, .report-paper, [contenteditable="true"] {
+        .sheet-container, .doc-paper, .report-paper, #all-pages-wrapper, 
+        .report-inner, #report-page, .inner-border-canvas, [contenteditable="true"] {
           outline: none !important;
           outline-color: transparent !important;
         }

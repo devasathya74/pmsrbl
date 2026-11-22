@@ -7288,16 +7288,13 @@
       const page2 = document.getElementById('letterDocumentPage2');
       if (!page1) return;
 
+      const pages = [page1];
+      if (page2 && !page2.classList.contains('hidden')) {
+        pages.push(page2);
+      }
+
       if (typeof window.exportElementToWord === 'function') {
-        const wrapper = document.createElement('div');
-        wrapper.appendChild(page1.cloneNode(true));
-        if (page2 && !page2.classList.contains('hidden')) {
-          const pb = document.createElement('div');
-          pb.className = 'page-break';
-          wrapper.appendChild(pb);
-          wrapper.appendChild(page2.cloneNode(true));
-        }
-        window.exportElementToWord(wrapper, {
+        window.exportElementToWord(pages, {
           title: 'कार्यालय पत्र - पुलिस मॉडर्न स्कूल',
           filename: `PMS_Letter_${new Date().toISOString().slice(0, 10)}`,
           landscape: document.body.classList.contains('is-landscape')

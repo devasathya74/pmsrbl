@@ -72,8 +72,8 @@
     if (options.orientation === 'portrait') return false;
 
     if (sourceEl) {
-      const classStr = ((sourceEl.className || '') + ' ' + (document.body.className || '')).toLowerCase();
-      if (classStr.includes('landscape') || classStr.includes('timetable') || classStr.includes('vama') || classStr.includes('shulk_panjika') || classStr.includes('is-landscape')) {
+      const classStr = ((sourceEl.className || '') + ' ' + (document.body.className || '') + ' ' + (sourceEl.id || '')).toLowerCase();
+      if (classStr.includes('landscape') || classStr.includes('timetable') || classStr.includes('vama') || classStr.includes('shulk_panjika') || classStr.includes('is-landscape') || classStr.includes('abc') || classStr.includes('course') || classStr.includes('report-page')) {
         return true;
       }
       try {
@@ -688,6 +688,179 @@
       sb.style.marginTop = '10pt';
       sb.style.marginBottom = '6pt';
     });
+
+    // (J) PAC ABC Course Report Layout (#report-page)
+    clone.querySelectorAll('#report-page, .report-inner').forEach(page => {
+      page.style.position = 'static';
+      page.style.width = '100%';
+      page.style.maxWidth = '100%';
+      page.style.height = 'auto';
+      page.style.border = 'none';
+      page.style.padding = '0';
+      page.style.background = '#ffffff';
+
+      // (1) .header-top -> 3-column table
+      const headerTop = page.querySelector('.header-top');
+      if (headerTop && headerTop.tagName !== 'TABLE' && !headerTop.closest('table')) {
+        const leftImg = headerTop.querySelector('.logo-left') || headerTop.querySelector('img:first-child');
+        const rightImg = headerTop.querySelector('.logo-right') || headerTop.querySelector('img:last-child');
+        const titleSpan = headerTop.querySelector('span') || headerTop.querySelector('[data-save-id="header-title"]');
+        const titleText = titleSpan ? titleSpan.textContent.trim() : '25वीं वाहिनी पीएसी, रायबरेली';
+
+        const tbl = document.createElement('table');
+        tbl.setAttribute('width', '100%');
+        tbl.setAttribute('border', '0');
+        tbl.setAttribute('cellspacing', '0');
+        tbl.setAttribute('cellpadding', '0');
+        tbl.setAttribute('style', 'width: 100%; border: none; border-collapse: collapse; margin-bottom: 6pt; background-color: #1e3a8a;');
+        const tr = document.createElement('tr');
+
+        // Left Logo
+        const td1 = document.createElement('td');
+        td1.setAttribute('style', 'width: 15%; text-align: center; vertical-align: middle; border: none; padding: 4pt;');
+        if (leftImg) td1.appendChild(leftImg.cloneNode(true));
+        tr.appendChild(td1);
+
+        // Center Title
+        const td2 = document.createElement('td');
+        td2.setAttribute('style', 'width: 70%; text-align: center; vertical-align: middle; border: none; padding: 4pt 6pt;');
+        const titleDiv = document.createElement('div');
+        titleDiv.setAttribute('style', "font-size: 20pt; font-weight: 800; color: #ffffff; letter-spacing: 1px; font-family: 'Mangal', 'Noto Sans Devanagari', sans-serif;");
+        titleDiv.textContent = titleText;
+        td2.appendChild(titleDiv);
+        tr.appendChild(td2);
+
+        // Right Logo
+        const td3 = document.createElement('td');
+        td3.setAttribute('style', 'width: 15%; text-align: center; vertical-align: middle; border: none; padding: 4pt;');
+        if (rightImg) td3.appendChild(rightImg.cloneNode(true));
+        tr.appendChild(td3);
+
+        tbl.appendChild(tr);
+        headerTop.parentNode.replaceChild(tbl, headerTop);
+      }
+
+      // (2) .header-sub
+      const headerSub = page.querySelector('.header-sub');
+      if (headerSub) {
+        headerSub.style.position = 'static';
+        headerSub.style.margin = '4pt auto 8pt auto';
+        headerSub.style.width = '65%';
+        headerSub.style.backgroundColor = '#fe1063';
+        headerSub.style.color = '#ffffff';
+        headerSub.style.textAlign = 'center';
+        headerSub.style.padding = '4pt 8pt';
+        headerSub.style.fontSize = '12.5pt';
+        headerSub.style.fontWeight = 'bold';
+        headerSub.style.border = '1.5pt solid #0097a7';
+        headerSub.style.borderRadius = '4pt';
+      }
+
+      // (3) .intro-text
+      const introText = page.querySelector('.intro-text');
+      if (introText) {
+        introText.style.position = 'static';
+        introText.style.width = '100%';
+        introText.style.fontSize = '11.5pt';
+        introText.style.fontWeight = 'bold';
+        introText.style.lineHeight = '1.4';
+        introText.style.margin = '6pt 0 10pt 0';
+        introText.style.color = '#000000';
+      }
+
+      // (4) Data Table in report page
+      const reportTbl = page.querySelector('table:not([border="0"])');
+      if (reportTbl) {
+        reportTbl.style.position = 'static';
+        reportTbl.style.width = '100%';
+        reportTbl.style.margin = '6pt 0 10pt 0';
+        reportTbl.style.borderCollapse = 'collapse';
+        reportTbl.style.tableLayout = 'fixed';
+      }
+
+      // (5) .footer-section -> right-aligned table
+      const footer = page.querySelector('.footer-section');
+      if (footer && footer.tagName !== 'TABLE' && !footer.closest('table')) {
+        const footerHtml = footer.innerHTML;
+        const tblF = document.createElement('table');
+        tblF.setAttribute('width', '100%');
+        tblF.setAttribute('border', '0');
+        tblF.setAttribute('cellspacing', '0');
+        tblF.setAttribute('cellpadding', '0');
+        tblF.setAttribute('style', 'width: 100%; border: none; border-collapse: collapse; margin-top: 16pt; margin-bottom: 4pt;');
+        const trF = document.createElement('tr');
+
+        const tdF1 = document.createElement('td');
+        tdF1.setAttribute('style', 'width: 50%; border: none;');
+        trF.appendChild(tdF1);
+
+        const tdF2 = document.createElement('td');
+        tdF2.setAttribute('align', 'right');
+        tdF2.setAttribute('style', "width: 50%; border: none; text-align: right; font-size: 11pt; font-weight: bold; line-height: 1.35; color: #000000; font-family: 'Mangal', 'Noto Sans Devanagari', sans-serif;");
+        tdF2.innerHTML = footerHtml;
+        trF.appendChild(tdF2);
+
+        tblF.appendChild(trF);
+        footer.parentNode.replaceChild(tblF, footer);
+      }
+    });
+
+    // (K) Photo Pages (.inner-border-canvas)
+    clone.querySelectorAll('.inner-border-canvas').forEach(canvas => {
+      canvas.style.position = 'static';
+      canvas.style.width = '100%';
+      canvas.style.height = 'auto';
+      canvas.style.border = 'none';
+      canvas.style.padding = '0';
+      canvas.style.background = '#ffffff';
+
+      const boxes = Array.from(canvas.querySelectorAll('.resizable-box')).filter(b => {
+        const img = b.querySelector('img');
+        return img && img.src && !img.src.includes('data:image/gif') && img.style.display !== 'none' && !b.classList.contains('no-print');
+      });
+
+      if (boxes.length > 0) {
+        const cols = boxes.length <= 6 ? 2 : 3;
+        const colWidth = Math.floor(100 / cols) + '%';
+
+        const tbl = document.createElement('table');
+        tbl.setAttribute('width', '100%');
+        tbl.setAttribute('border', '0');
+        tbl.setAttribute('cellspacing', '6');
+        tbl.setAttribute('cellpadding', '0');
+        tbl.setAttribute('style', 'width: 100%; border-collapse: separate; margin: 6pt auto;');
+
+        for (let i = 0; i < boxes.length; i += cols) {
+          const tr = document.createElement('tr');
+          for (let c = 0; c < cols; c++) {
+            const td = document.createElement('td');
+            td.setAttribute('width', colWidth);
+            td.setAttribute('align', 'center');
+            td.setAttribute('valign', 'middle');
+            td.setAttribute('style', `width: ${colWidth}; text-align: center; vertical-align: middle; padding: 4pt; border: 0.75pt solid #cbd5e1; background-color: #f8fafc;`);
+
+            const box = boxes[i + c];
+            if (box) {
+              const img = box.querySelector('img');
+              if (img) {
+                const cloneImg = img.cloneNode(true);
+                cloneImg.setAttribute('width', cols === 2 ? 340 : 220);
+                cloneImg.setAttribute('height', cols === 2 ? 220 : 160);
+                cloneImg.style.width = (cols === 2 ? 340 : 220) + 'px';
+                cloneImg.style.height = (cols === 2 ? 220 : 160) + 'px';
+                cloneImg.style.objectFit = 'contain';
+                cloneImg.style.maxWidth = '100%';
+                td.appendChild(cloneImg);
+              }
+            }
+            tr.appendChild(td);
+          }
+          tbl.appendChild(tr);
+        }
+        canvas.innerHTML = '';
+        canvas.appendChild(tbl);
+      }
+    });
   }
 
   /**
@@ -698,7 +871,8 @@
       '.print-paper', '.paper-sheet', '.sheet-container', '.timetable-sheet',
       '#letterDocument', '#letterDocumentPage2', '.a4-document', '.a4-page', '.canvas-page', '.doc-paper', '.report-paper',
       '.print-page-chunk', '.sheet-paper', '.receipt-card', '.letter-paper',
-      '.signboard-overlay-box', '.signboard-panel', '#noticeCanvas', '#letterDoc', '.pledge-container', '.a4-preview'
+      '.signboard-overlay-box', '.signboard-panel', '#noticeCanvas', '#letterDoc', '.pledge-container', '.a4-preview',
+      '#all-pages-wrapper', '.inner-border-canvas', '.report-inner', '#report-page'
     ];
 
     const applyNeutralStyle = (el) => {
@@ -730,7 +904,7 @@
    */
   function cleanInteractiveElements(clone) {
     clone.querySelectorAll(
-      '.no-print, [data-no-print], [data-word-remove="true"], button, input[type="file"], input[type="button"], input[type="submit"], script, noscript, .card-resize-handle, .drag-handle-bar, .drag-handle-pill, .modal, .overlay, .view-switch-bar, .table-edge-resizer-right, .table-edge-resizer-bottom, .table-corner-resizer, .table-resize-tooltip'
+      '.no-print, [data-no-print], [data-word-remove="true"], button, input[type="file"], input[type="button"], input[type="submit"], script, noscript, .card-resize-handle, .drag-handle-bar, .drag-handle-pill, .modal, .overlay, .view-switch-bar, .table-edge-resizer-right, .table-edge-resizer-bottom, .table-corner-resizer, .table-resize-tooltip, .page-label, .add-box-controls, .add-container-btn, .box-control-btn'
     ).forEach(el => el.remove());
   }
 

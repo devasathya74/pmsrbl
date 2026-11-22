@@ -158,7 +158,7 @@
       '.print-paper', '.paper-sheet', '.sheet-container', '.timetable-sheet',
       '#letterDocument', '#letterDocumentPage2', '.a4-document', '.a4-page', '.canvas-page', '.doc-paper', '.report-paper',
       '.print-page-chunk', '.sheet-paper', '.receipt-card', '.letter-paper',
-      '.signboard-overlay-box', '.signboard-panel', '#noticeCanvas', '#letterDoc'
+      '.signboard-overlay-box', '.signboard-panel', '#noticeCanvas', '#letterDoc', '.pledge-container', '.a4-preview'
     ];
     containerSelectors.forEach(sel => {
       clone.querySelectorAll(sel).forEach(cont => {
@@ -171,6 +171,9 @@
         cont.style.padding = '0';
         cont.style.boxShadow = 'none';
         cont.style.border = 'none';
+        cont.style.borderColor = 'transparent';
+        cont.style.outline = 'none';
+        cont.style.outlineColor = 'transparent';
         cont.style.background = 'transparent';
       });
     });
@@ -185,6 +188,9 @@
       clone.style.padding = '0';
       clone.style.boxShadow = 'none';
       clone.style.border = 'none';
+      clone.style.borderColor = 'transparent';
+      clone.style.outline = 'none';
+      clone.style.outlineColor = 'transparent';
       clone.style.background = 'transparent';
     }
 
@@ -575,6 +581,20 @@
           .bg-orange-100 { background-color: #ffedd5 !important; }
           .bg-white { background-color: #ffffff !important; }
 
+          /* Document Containers Outline & Border No-Color */
+          .paper-sheet, .a4-sheet, .a4-document, .a4-page, .print-paper, 
+          .timetable-sheet, .print-page-chunk, .doc-paper, .report-paper, 
+          .sheet-container, .sheet-paper, .canvas-page, .receipt-card, 
+          .letter-paper, #letterDocument, #letterDocumentPage2, #noticeDocument, 
+          #letterDoc, #printSheet, #printArea, .a4-preview, .certificate-sheet, 
+          .birthday-card, .pledge-container, [contenteditable="true"] {
+            outline: none !important;
+            outline-color: transparent !important;
+            border: none !important;
+            border-color: transparent !important;
+            box-shadow: none !important;
+          }
+
           /* Multi-Page Break Handling */
           .page-break, .paper-sheet + .paper-sheet, .timetable-sheet + .timetable-sheet, .print-page-chunk + .print-page-chunk {
             page-break-before: always;
@@ -620,5 +640,31 @@
   window.exportWord = exportElementToWord;
   window.exportDocWord = exportElementToWord;
   window.pmsExportWord = exportElementToWord;
+
+  // Universal on-page outline no-color enforcement for all content containers in HTML web view
+  if (typeof document !== 'undefined') {
+    const injectUniversalNoOutlineCSS = function () {
+      if (document.getElementById('pms-universal-no-outline-css')) return;
+      const st = document.createElement('style');
+      st.id = 'pms-universal-no-outline-css';
+      st.textContent = `
+        /* Universal Outline No-Color Rule across all pages */
+        .paper-sheet, .a4-document, .a4-sheet, .a4-page, .print-paper, 
+        .timetable-sheet, .print-page-chunk, .certificate-sheet, .birthday-card, 
+        .a4-preview, .pledge-container, #letterDocument, #letterDocumentPage2, 
+        #noticeDocument, #letterDoc, #printSheet, #printArea, .canvas-page, 
+        .sheet-container, .doc-paper, .report-paper, [contenteditable="true"] {
+          outline: none !important;
+          outline-color: transparent !important;
+        }
+      `;
+      (document.head || document.documentElement).appendChild(st);
+    };
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', injectUniversalNoOutlineCSS);
+    } else {
+      injectUniversalNoOutlineCSS();
+    }
+  }
 
 })(window);

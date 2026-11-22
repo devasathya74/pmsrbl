@@ -111,7 +111,7 @@
       margin: 0 auto;
       padding: 11mm 16mm 11mm 16mm;
       position: relative;
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.08);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.55);
       border-radius: 2px;
       line-height: 1.45;
       font-size: calc(14px * var(--doc-scale, 1));
@@ -121,7 +121,11 @@
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
-    }
+    
+      outline: none !important;
+      outline-color: transparent !important;
+      border: none !important;
+}
 
     /* Table Styles - Clear, Legible & Balanced */
     .doc-table {
@@ -161,13 +165,13 @@
     body.highlight-editable [contenteditable="true"]:hover,
     .editable-inline:hover {
       background-color: #fef08a !important;
-      box-shadow: 0 0 0 1px #ca8a04;
+      box-shadow: none !important;
     }
 
     body.highlight-editable [contenteditable="true"]:focus,
     .editable-inline:focus {
       background-color: #fde047 !important;
-      box-shadow: 0 0 0 1.5px #a16207;
+      box-shadow: none !important;
     }
 
     /* Official Left Subject Line Vertical Bar */

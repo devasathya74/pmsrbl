@@ -64,7 +64,7 @@
       background: #ffffff;
       margin: 25px auto;
       padding: 16mm 20mm 16mm 22mm;
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.1);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
       position: relative;
       display: flex;
       flex-direction: column;
@@ -72,7 +72,11 @@
       border-radius: 4px;
       line-height: 1.8;
       font-size: 15.5px;
-    }
+    
+      outline: none !important;
+      outline-color: transparent !important;
+      border: none !important;
+}
 
     /* Editable Field Highlights */
     [contenteditable="true"] {
@@ -84,7 +88,7 @@
 
     body.highlight-editable [contenteditable="true"] {
       background-color: #fef9c3 !important;
-      box-shadow: 0 0 0 1px #eab308;
+      box-shadow: none !important;
     }
 
     [contenteditable="true"]:focus {

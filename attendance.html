@@ -505,7 +505,7 @@
         .mode-pill.all {
             background: #f8fafc;
             color: #334155;
-            border: 1px solid #cbd5e1;
+            border: none; outline: none;
         }
 
         .mode-subnote {
@@ -3470,7 +3470,7 @@
                     let endStud = Math.min(startStud + studentChunkSize, printStudents.length);
                     const chunkedStudents = printStudents.slice(startStud, endStud);
 
-                    html += '<div class="print-page-chunk" style="width:1122px; height:793px; background:white; color:black; padding: 36px; font-family: sans-serif; box-sizing: border-box; border: 1px solid #cbd5e1; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); page-break-after: always; display: flex; flex-direction: column; overflow: hidden; flex-shrink: 0; position: relative;">';
+                    html += '<div class="print-page-chunk" style="width:1122px; height:793px; background:white; color:black; padding: 36px; font-family: sans-serif; box-sizing: border-box; border: none; outline: none; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); page-break-after: always; display: flex; flex-direction: column; overflow: hidden; flex-shrink: 0; position: relative;">';
 
                     // Fixed Height Header Area
                     html += '<div style="flex: 0 0 auto; display:flex; justify-content:space-between; align-items:flex-end; border-bottom: 2px solid black; padding-bottom: 8px; margin-bottom: 12px;">';

@@ -72,13 +72,17 @@
       width: 210mm;
       min-height: 297mm;
       background: #ffffff;
-      box-shadow: 0 10px 40px -5px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.08);
+      box-shadow: 0 10px 40px -5px rgba(0, 0, 0, 0.5);
       padding: 14mm 16mm 16mm 16mm;
       box-sizing: border-box;
       position: relative;
       border-radius: 4px;
       margin-bottom: 24px;
-    }
+    
+      outline: none !important;
+      outline-color: transparent !important;
+      border: none !important;
+}
 
     /* Print Preview Simulation */
     body.print-preview-mode {
@@ -379,7 +383,7 @@
 
     /* Editable Fields */
     [contenteditable="true"]:focus {
-      outline: 2px dashed #4338ca;
+      outline: none !important; outline-color: transparent !important;
       background-color: #eef2ff;
       border-radius: 2px;
     }

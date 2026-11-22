@@ -618,7 +618,7 @@
 
     [contenteditable="true"]:hover {
       background-color: rgba(37, 99, 235, 0.06);
-      box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.25);
+      box-shadow: none !important;
     }
 
     [contenteditable="true"]:focus {
@@ -648,6 +648,9 @@
       box-shadow: 0 8px 25px rgba(15, 23, 42, 0.08), 0 1px 3px rgba(0, 0, 0, 0.06);
       border-radius: 4px;
       color: #000000;
+      border: none !important;
+      outline: none !important;
+      outline-color: transparent !important;
       margin-bottom: 24px;
       position: relative;
       transform: scale(var(--sheet-scale, 1));
@@ -1712,7 +1715,7 @@
 
       .timetable-sheet {
         box-shadow: none !important;
-        border: 1.5px solid #000000 !important;
+        border: none !important; outline: none !important;
         border-radius: 0 !important;
         margin: 0 !important;
         width: 100% !important;

@@ -156,7 +156,9 @@
       margin: 0 auto;
       background: #ffffff;
       padding: 28px 34px;
-      border: 1px solid #cbd5e1;
+      border: none !important;
+      outline: none !important;
+      outline-color: transparent !important;
       box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
       position: relative;
     }
@@ -179,13 +181,15 @@
 
     [contenteditable="true"]:hover {
       background-color: #fef3c7;
-      outline: 1px dashed #f59e0b;
+      outline: none !important;
+      outline-color: transparent !important;
     }
 
     [contenteditable="true"]:focus {
       background-color: #fffbeb;
-      outline: 2px solid #2563eb;
-      box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+      outline: none !important;
+      outline-color: transparent !important;
+      box-shadow: none !important;
     }
 
     td[contenteditable="true"], th[contenteditable="true"] {

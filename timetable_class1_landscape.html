@@ -242,7 +242,9 @@
       max-height: 760px;
       box-shadow: 0 16px 38px rgba(0,0,0,0.4), 0 2px 10px rgba(0,0,0,0.15);
       border-radius: 4px;
-      border: 2px solid #000000;
+      border: none !important;
+      outline: none !important;
+      outline-color: transparent !important;
       padding: 7px 10px 8px 10px;
       color: #000000;
       position: relative;
@@ -258,7 +260,7 @@
 
     /* Editable focus highlight */
     [contenteditable="plaintext-only"]:focus {
-      outline: 2px solid #0284c7;
+      outline: none !important; outline-color: transparent !important;
       background-color: #f0f9ff;
       border-radius: 2px;
     }
@@ -604,7 +606,7 @@
 
       .timetable-sheet {
         box-shadow: none !important;
-        border: 2px solid #000000 !important;
+        border: none !important; outline: none !important;
         border-radius: 0 !important;
         padding: 3mm 4.5mm !important;
         margin: 0 !important;

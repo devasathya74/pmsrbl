@@ -503,6 +503,9 @@
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1), 0 1px 4px rgba(0, 0, 0, 0.06);
       border-radius: 4px;
       color: #000000;
+      border: none !important;
+      outline: none !important;
+      outline-color: transparent !important;
       margin-bottom: 24px;
       position: relative;
       transform: scale(var(--sheet-scale, 1));
@@ -800,14 +803,14 @@
     /* KG-1 & KG-2 ORNATE SHEET STYLING (EXACT FROM PHOTO) */
     /* =================================================== */
     .kg-sheet-card {
-      border: 2px solid #000000;
+      border: none !important; outline: none !important;
       padding: 5px;
       position: relative;
       background: #ffffff;
     }
 
     .kg-sheet-inner-border {
-      border: 1.5px solid #000000;
+      border: none !important; outline: none !important;
       padding: 16px 20px 14px 20px;
       position: relative;
       min-height: 640px;
@@ -1896,7 +1899,7 @@
 
       .timetable-sheet {
         box-shadow: none !important;
-        border: 2px solid #000000 !important;
+        border: none !important; outline: none !important;
         border-radius: 0 !important;
         padding: var(--sheet-margin-val, 3mm 4mm) !important;
         margin: 0 !important;

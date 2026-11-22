@@ -220,13 +220,15 @@
     }
     body.print-preview-active .a4-sheet {
       box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5) !important;
-      border: 1px solid #9ca3af !important;
+      border: none !important;
+      outline: none !important;
+      outline-color: transparent !important;
       margin: 1.5rem auto !important;
     }
 
     /* Editable active cues */
     [contenteditable="true"]:focus {
-      outline: 1.5px dashed #2563eb;
+      outline: none !important; outline-color: transparent !important;
       background-color: #eff6ff;
       border-radius: 2px;
     }

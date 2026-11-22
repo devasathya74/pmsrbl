@@ -41,7 +41,7 @@
       background: #ffffff;
       margin: 30px auto;
       padding: 24mm 24mm 22mm 24mm;
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.1);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
       position: relative;
       display: flex;
       flex-direction: column;
@@ -49,7 +49,11 @@
       color: #000000;
       line-height: 1.85;
       font-size: 16.5px;
-    }
+    
+      outline: none !important;
+      outline-color: transparent !important;
+      border: none !important;
+}
 
     /* Editable Fields */
     [contenteditable="true"] {
@@ -61,12 +65,12 @@
 
     body.highlight-editable [contenteditable="true"] {
       background-color: #fef08a !important;
-      box-shadow: 0 0 0 1px #ca8a04;
+      box-shadow: none !important;
     }
 
     [contenteditable="true"]:focus {
       background-color: #fde047 !important;
-      box-shadow: 0 0 0 1.5px #a16207;
+      box-shadow: none !important;
     }
 
     /* Strict Print Layout */

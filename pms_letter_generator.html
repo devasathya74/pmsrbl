@@ -83,7 +83,7 @@
       background: #ffffff;
       padding: 8mm 10mm 8mm 19mm;
       position: relative;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(255, 255, 255, 0.1);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65);
       overflow: hidden;
       display: flex;
       flex-direction: column;
@@ -93,7 +93,11 @@
       transform-origin: top center;
       transition: box-shadow 0.2s ease, font-size 0.15s ease;
       font-size: calc(15px * var(--letter-font-scale));
-    }
+    
+      outline: none !important;
+      outline-color: transparent !important;
+      border: none !important;
+}
 
     /* Multi-Page Canvas Separation */
     #pageBreakDivider {
@@ -148,12 +152,12 @@
 
     body.highlight-editable [contenteditable="true"]:hover {
       background-color: #fef08a !important;
-      box-shadow: 0 0 0 1px #ca8a04;
+      box-shadow: none !important;
     }
 
     body.highlight-editable [contenteditable="true"]:focus {
       background-color: #fde047 !important;
-      box-shadow: 0 0 0 1.5px #a16207;
+      box-shadow: none !important;
     }
 
     .subject-bar {

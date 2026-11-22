@@ -41,7 +41,11 @@
       flex-direction: column;
       justify-content: space-between;
       border-radius: 2px;
-    }
+    
+      outline: none !important;
+      outline-color: transparent !important;
+      border: none !important;
+}
 
     [contenteditable="true"] {
       outline: none;
@@ -52,12 +56,12 @@
 
     body.highlight-editable [contenteditable="true"]:hover {
       background-color: #fef08a !important;
-      box-shadow: 0 0 0 1px #ca8a04;
+      box-shadow: none !important;
     }
 
     body.highlight-editable [contenteditable="true"]:focus {
       background-color: #fde047 !important;
-      box-shadow: 0 0 0 1.5px #a16207;
+      box-shadow: none !important;
     }
 
     .bsnl-blue-text {

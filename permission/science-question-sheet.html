@@ -58,11 +58,15 @@
       background: #ffffff;
       color: #000000;
       padding: 14mm 16mm 16mm 16mm;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 0 1px #000000;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
       box-sizing: border-box;
       position: relative;
       border: 1.5px solid #000000;
-    }
+    
+      outline: none !important;
+      outline-color: transparent !important;
+      border: none !important;
+}
 
     @page {
       size: A4 portrait;
@@ -249,7 +253,7 @@
 
     /* Speaking Pulse */
     .active-speaking {
-      outline: 2px solid #000000 !important;
+      outline: none !important; outline-color: transparent !important;
       background: #f2f2f2 !important;
     }
 
@@ -274,7 +278,7 @@
       background-color: #000000 !important;
       color: #ffffff !important;
       font-weight: 800 !important;
-      outline: 2px solid #ffffff !important;
+      outline: none !important; outline-color: transparent !important;
     }
 
     #chapterSelect optgroup {

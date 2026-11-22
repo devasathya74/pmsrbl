@@ -105,7 +105,7 @@
       margin: 0 auto 30px auto;
       padding: 8mm 12mm 8mm 12mm;
       position: relative;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(0, 0, 0, 0.12);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
       border-radius: 2px;
       line-height: 1.32;
       font-size: calc(12px * var(--doc-scale, 1));
@@ -467,12 +467,12 @@
 
     body.highlight-editable [contenteditable="true"]:hover {
       background-color: #fef08a !important;
-      box-shadow: 0 0 0 1px #ca8a04;
+      box-shadow: none !important;
     }
 
     body.highlight-editable [contenteditable="true"]:focus {
       background-color: #fde047 !important;
-      box-shadow: 0 0 0 1.5px #a16207;
+      box-shadow: none !important;
     }
 
     /* Page Switcher Visibility (On Screen) */
@@ -651,7 +651,7 @@
     }
 
     .table-selected-cell {
-      outline: 2px solid #0284c7 !important;
+      outline: none !important; outline-color: transparent !important;
       outline-offset: -2px;
     }
 
@@ -1226,11 +1226,11 @@
     }
 
     .ux-required {
-      box-shadow: 0 0 0 1px rgba(245, 158, 11, .45) !important;
+      box-shadow: none !important;
     }
 
     .ux-invalid {
-      box-shadow: 0 0 0 1px rgba(244, 63, 94, .7) !important;
+      box-shadow: none !important;
     }
 
     .ux-hidden-by-search {
@@ -1463,12 +1463,12 @@
     }
 
     .rich-edit-target:hover {
-      outline: 1px dashed rgba(56, 189, 248, .22);
+      outline: none !important; outline-color: transparent !important;
       outline-offset: 1px
     }
 
     .rich-edit-target.rich-selected {
-      outline: 2px solid rgba(56, 189, 248, .45);
+      outline: none !important; outline-color: transparent !important;
       outline-offset: 1px
     }
 
@@ -2297,7 +2297,7 @@
     }
 
     .v4-selected-cell {
-      outline: 2px solid #38bdf8 !important;
+      outline: none !important; outline-color: transparent !important;
       outline-offset: -2px !important;
       box-shadow: inset 0 0 0 2px rgba(56, 189, 248, .15) !important;
     }
@@ -2536,7 +2536,7 @@
     #previewToolbar button:focus-visible,
     #officeRibbonWrap select:focus-visible,
     #previewToolbar select:focus-visible{
-      outline: 2px solid #38bdf8 !important;
+      outline: none !important; outline-color: transparent !important;
       outline-offset: 2px !important;
     }
   }
@@ -3479,7 +3479,7 @@
 
         <!-- The 3 Landscape Pages Container -->
         <div id="reportDocumentWrapper"
-          class="w-full flex flex-col items-center overflow-x-auto pb-12 p-2 sm:p-4 rounded-xl bg-slate-900/60 border border-slate-800/80">
+          class="w-full flex flex-col items-center overflow-x-auto pb-12 p-2 sm:p-4 rounded-xl bg-slate-900/60 border-none outline-none" style="outline: none !important; outline-color: transparent !important; border: none !important;">
 
           <!-- ======================================================== -->
           <!-- ================= PAGE 1 OF 3 (LANDSCAPE) =============== -->

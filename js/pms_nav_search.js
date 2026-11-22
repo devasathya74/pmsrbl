@@ -576,10 +576,20 @@
     }
   };
 
-  // Inject CSS Styles for Universal Search
+  // Inject CSS Styles for Universal Search & Content Container No-Outline
   const searchStyles = document.createElement("style");
   searchStyles.id = "pms-search-styles";
   searchStyles.innerHTML = `
+    /* Universal Outline No-Color Rule across all pages */
+    .paper-sheet, .a4-document, .a4-sheet, .a4-page, .print-paper, 
+    .timetable-sheet, .print-page-chunk, .certificate-sheet, .birthday-card, 
+    .a4-preview, .pledge-container, #letterDocument, #letterDocumentPage2, 
+    #noticeDocument, #letterDoc, #printSheet, #printArea, .canvas-page, 
+    .sheet-container, .doc-paper, .report-paper, [contenteditable="true"] {
+      outline: none !important;
+      outline-color: transparent !important;
+    }
+
     .pms-search-modal-overlay {
       position: fixed;
       top: 0;

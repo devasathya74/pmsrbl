@@ -118,6 +118,9 @@ body {
   min-height: 297mm;
   background: #ffffff;
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+  border: none !important;
+  outline: none !important;
+  outline-color: transparent !important;
   padding: 12mm 16mm 14mm 16mm;
   box-sizing: border-box;
   display: flex;

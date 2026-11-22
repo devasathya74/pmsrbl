@@ -161,19 +161,19 @@
 
     /* Cell Focus & Selection States */
     .khel-table td:focus {
-      outline: 2px solid #0284c7 !important;
+      outline: none !important; outline-color: transparent !important;
       background-color: #f0fdf4;
       z-index: 20;
     }
 
     .cell-selected {
       background-color: #bae6fd !important;
-      outline: 1.5px solid #0284c7 !important;
+      outline: none !important; outline-color: transparent !important;
       z-index: 10;
     }
 
     .cell-active-anchor {
-      outline: 2px solid #0369a1 !important;
+      outline: none !important; outline-color: transparent !important;
       background-color: #e0f2fe !important;
       z-index: 25;
     }
@@ -660,7 +660,7 @@
   <main class="flex-grow p-3 md:p-6 flex justify-center overflow-x-auto">
     
     <!-- Printable / Editable A4 Document Card -->
-    <div id="printDocumentCard" class="print-page-wrapper w-full max-w-[1360px] bg-white text-slate-900 rounded-xl shadow-2xl p-6 md:p-8 border border-slate-300">
+    <div id="printDocumentCard" class="print-page-wrapper w-full max-w-[1360px] bg-white text-slate-900 rounded-xl shadow-2xl p-6 md:p-8 border-none outline-none" style="outline: none !important; outline-color: transparent !important; border: none !important;">
       
       <!-- Document Official Header -->
       <div class="border-b-2 border-slate-900 pb-4 mb-4 text-center">
